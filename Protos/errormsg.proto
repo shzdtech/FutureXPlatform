@@ -1,0 +1,13 @@
+package Micro.Future.Message.Business;
+
+message BizErrorMsg {
+required uint32 messageId = 1;
+required int32 errorcode = 2;
+required bytes description = 3;
+required int32 syserrcode = 4;
+}
+
+message Result
+{
+	required int32 code = 1;
+}

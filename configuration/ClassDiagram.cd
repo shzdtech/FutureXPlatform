@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AbstractConfigReaderFactory" Collapsed="true">
+    <Position X="6" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AbstractConfigReaderFactory.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IConfigReader" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAACgAAAAAAAAAAAAAAAAAAEAAAACAEAA=</HashCode>
+      <FileName>IConfigReader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SysConfig" Collapsed="true">
+    <Position X="3.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAgAAQAAAAAAAAAAAIBAAAAAAAAAACAAAAA=</HashCode>
+      <FileName>SysConfig.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SysConfigImpl" Collapsed="true">
+    <Position X="3.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAQAAAAAAAAAAAAAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SysConfigImpl.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="XMLConfigReader" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAACgAAAAAAAAAAAAAAAAAAEAABACAEAA=</HashCode>
+      <FileName>XMLConfigReader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Typedef Name="IConfigReader_Ptr" Collapsed="true">
+    <Position X="6" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IConfigReader.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Font Name="微软雅黑" Size="9" />
+</ClassDiagram>

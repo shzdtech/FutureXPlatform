@@ -1,0 +1,35 @@
+/***********************************************************************
+ * Module:  MicroFurtureSystem.h
+ * Author:  milk
+ * Modified: 2015年8月6日 0:31:35
+ * Purpose: Declaration of the class MicroFurtureSystem
+ ***********************************************************************/
+
+#if !defined(__message_AppDomain_h)
+#define __message_AppDomain_h
+
+#include "ISystem.h"
+#include <map>
+#include "system_exp.h"
+#include "../message/IMessageServer.h"
+#include "../utility/singleton_templ.h"
+
+class SYSTEM_CLASS_EXPORT MicroFurtureSystem : public ISystem, public singleton_ptr < MicroFurtureSystem >
+{
+public:
+	MicroFurtureSystem();
+	~MicroFurtureSystem();
+
+	bool Load(const char* config);
+	bool Load(const std::string& config);
+	bool IsRunning(void);
+	bool Run(void);
+	bool Stop(void);
+
+protected:
+private:
+	std::vector<IMessageServer_Ptr> _servers;
+	bool _running;
+};
+
+#endif

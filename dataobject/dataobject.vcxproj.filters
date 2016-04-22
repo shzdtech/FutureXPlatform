@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="头文件\DO">
+      <UniqueIdentifier>{e431d3a6-94e6-4ca9-b957-ea8ab1664e5a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="dataobject_exp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractDataObj.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="data_buffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BizErrorSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IDataSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="data_commondef.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DataBufferSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FieldName.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AccountInfoDO.h">
+      <Filter>头文件\DO</Filter>
+    </ClInclude>
+    <ClInclude Include="BizErrorDO.h">
+      <Filter>头文件\DO</Filter>
+    </ClInclude>
+    <ClInclude Include="ComplexTableDO.h">
+      <Filter>头文件\DO</Filter>
+    </ClInclude>
+    <ClInclude Include="ExchangeDO.h">
+      <Filter>头文件\DO</Filter>
+    </ClInclude>
+    <ClInclude Include="InstrumentDO.h">
+      <Filter>头文件\DO</Filter>
+    </ClInclude>
+    <ClInclude Include="MarketDataDO.h">
+      <Filter>头文件\DO</Filter>
+    </ClInclude>
+    <ClInclude Include="MultiRecordDO.h">
+      <Filter>头文件\DO</Filter>
+    </ClInclude>
+    <ClInclude Include="OrderDO.h">
+      <Filter>头文件\DO</Filter>
+    </ClInclude>
+    <ClInclude Include="TemplateDO.h">
+      <Filter>头文件\DO</Filter>
+    </ClInclude>
+    <ClInclude Include="TradeRecordDO.h">
+      <Filter>头文件\DO</Filter>
+    </ClInclude>
+    <ClInclude Include="UserInfoDO.h">
+      <Filter>头文件\DO</Filter>
+    </ClInclude>
+    <ClInclude Include="UserPositionDO.h">
+      <Filter>头文件\DO</Filter>
+    </ClInclude>
+    <ClInclude Include="ContractParam.h">
+      <Filter>头文件\DO</Filter>
+    </ClInclude>
+    <ClInclude Include="StrategyContractDO.h">
+      <Filter>头文件\DO</Filter>
+    </ClInclude>
+    <ClInclude Include="ContractKey.h">
+      <Filter>头文件\DO</Filter>
+    </ClInclude>
+    <ClInclude Include="UserContractParam.h">
+      <Filter>头文件\DO</Filter>
+    </ClInclude>
+    <ClInclude Include="PricingDO.h">
+      <Filter>头文件\DO</Filter>
+    </ClInclude>
+    <ClInclude Include="ContractDO.h">
+      <Filter>头文件\DO</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultDO.h">
+      <Filter>头文件\DO</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractMessageSerializerFactory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IMessageSerializerFactory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EchoMsgDO.h">
+      <Filter>头文件\DO</Filter>
+    </ClInclude>
+    <ClInclude Include="databoject_config.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TypedefDO.h">
+      <Filter>头文件\DO</Filter>
+    </ClInclude>
+    <ClInclude Include="EnumTypes.h">
+      <Filter>头文件\DO</Filter>
+    </ClInclude>
+    <ClInclude Include="PortfolioDO.h">
+      <Filter>头文件\DO</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BizErrorSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DataBufferSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AbstractMessageSerializerFactory.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+</Project>

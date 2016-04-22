@@ -1,0 +1,24 @@
+/***********************************************************************
+ * Module:  CTPOTCCancelOrder.h
+ * Author:  milk
+ * Modified: 2015年10月14日 0:09:09
+ * Purpose: Declaration of the class CTPOTCCancelOrder
+ ***********************************************************************/
+
+#if !defined(__CTPOTC_CTPOTCCancelOrder_h)
+#define __CTPOTC_CTPOTCCancelOrder_h
+
+#include "../message/MessageHandler.h"
+
+class CTPOTCCancelOrder : public MessageHandler
+{
+public:
+   dataobj_ptr HandleRequest(dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session);
+   dataobj_ptr HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session);
+
+protected:
+private:
+
+};
+
+#endif

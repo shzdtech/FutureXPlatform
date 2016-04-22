@@ -1,0 +1,24 @@
+/***********************************************************************
+ * Module:  NopHandler.h
+ * Author:  milk
+ * Modified: 2014年10月17日 20:03:39
+ * Purpose: Declaration of the class NopHandler
+ ***********************************************************************/
+
+#if !defined(__message_NopHandler_h)
+#define __message_NopHandler_h
+
+#include "MessageHandler.h"
+
+class NopHandler : public MessageHandler
+{
+public:
+	dataobj_ptr HandleRequest(dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session){ return nullptr; };
+	dataobj_ptr HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session){ return nullptr; }
+
+protected:
+private:
+
+};
+
+#endif

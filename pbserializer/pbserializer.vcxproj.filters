@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="protos">
+      <UniqueIdentifier>{499f391e-531f-4866-ac70-cb6cfd14f0ef}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="PBBizErrorSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PBComplexTableSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="pbserializer_exp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PBDoubleTableSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PBIntTableSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PBStringTableSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ExceptionDef.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PBMarketDataSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PBExchangeSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PBInstrumentSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PBOrderSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PBTradeRecordSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PBUserPositionSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PBAccountInfoSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="proto\PBMsgMDA.pb.h">
+      <Filter>protos</Filter>
+    </ClInclude>
+    <ClInclude Include="proto\PBMsgTrader.pb.h">
+      <Filter>protos</Filter>
+    </ClInclude>
+    <ClInclude Include="pbserializers.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="proto\simpletable.pb.h">
+      <Filter>protos</Filter>
+    </ClInclude>
+    <ClInclude Include="PBSubMarketDataSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="proto\errormsg.pb.h">
+      <Filter>protos</Filter>
+    </ClInclude>
+    <ClInclude Include="proto\businessobj.pb.h">
+      <Filter>protos</Filter>
+    </ClInclude>
+    <ClInclude Include="PBCombineSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PBPricingDataSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PBStrategySerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PBContractParamSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PBUserParamSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PBResultSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PBUserInfoSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PBUserInfoListSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PBMessageSerializerFactory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PBEchoMsgSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="PBBizErrorSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PBComplexTableSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PBDoubleTableSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PBIntTableSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PBStringTableSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PBMarketDataSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PBAccountInfoSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PBExchangeSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PBInstrumentSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PBOrderSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PBTradeRecordSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PBUserPositionSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="proto\PBMsgMDA.pb.cc">
+      <Filter>protos</Filter>
+    </ClCompile>
+    <ClCompile Include="proto\PBMsgTrader.pb.cc">
+      <Filter>protos</Filter>
+    </ClCompile>
+    <ClCompile Include="proto\simpletable.pb.cc">
+      <Filter>protos</Filter>
+    </ClCompile>
+    <ClCompile Include="PBSubMarketDataSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="proto\errormsg.pb.cc">
+      <Filter>protos</Filter>
+    </ClCompile>
+    <ClCompile Include="proto\businessobj.pb.cc">
+      <Filter>protos</Filter>
+    </ClCompile>
+    <ClCompile Include="PBCombineSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PBPricingDataSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PBStrategySerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PBContractParamSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PBUserParamSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PBResultSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PBUserInfoSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PBUserInfoListSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PBMessageSerializerFactory.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="pbserializer_exp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PBEchoMsgSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\Protos\businessobj.proto">
+      <Filter>protos</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\Protos\errormsg.proto">
+      <Filter>protos</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\Protos\PBMsgMDA.proto">
+      <Filter>protos</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\Protos\PBMsgTrader.proto">
+      <Filter>protos</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\Protos\simpletable.proto">
+      <Filter>protos</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>

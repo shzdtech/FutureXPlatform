@@ -1,0 +1,309 @@
+package Micro.Future.Message.Business;
+
+message PBUserInfo
+{
+   required string userId = 1;
+   optional string password = 2;
+   optional string brokerId = 3;
+   optional string name = 4;
+   optional string company = 5;
+   optional string email = 6;
+   optional string contactNum = 7;
+   optional int32 role = 8;
+   optional int32 permission = 9;
+}
+
+message PBUserInfoList
+{
+	repeated PBUserInfo userInfo = 1;
+}
+
+message PBParam
+{
+	required string name = 1;
+	required double value = 2;
+}
+
+message PBMarketData {
+	//MD Common Data
+	required string symbol = 1;
+	optional string timeStamp = 2;
+	optional double preCloseValue = 3;
+	optional double openValue = 4;
+	optional double turnover = 5;
+	optional int32  volume = 6;
+	optional double highValue = 7;
+	optional double lowValue = 8;
+
+	//Equity Data
+	optional double matchPrice = 9;
+	repeated double askPrice = 10;
+	repeated int32 askVolume = 11;
+	repeated double bidPrice = 12;
+	repeated int32 bidVolume = 13;
+	
+	//Index Data
+	optional double preSettlePrice = 14;
+	optional double priceChange = 15;
+	optional double settlePrice = 16;
+	optional int32 highLimit = 17;
+	optional int32 lowLimit = 18;
+}
+
+message PBMarketDataList
+{
+	repeated PBMarketData mdList = 1;
+}
+
+message PBPricingData {
+	//MD Common Data
+	required string exchange = 1;
+	required string contract = 2;
+
+	//Equity Data
+	required double askPrice = 3;
+	required double bidPrice = 4;
+}
+
+message PBPricingDataList
+{
+	repeated PBPricingData pricing = 1;
+}
+
+message PBStrategyWeight
+{
+	required string exchange = 3;
+	required string contract = 4;
+	required float weight = 6;
+}
+
+message PBStrategy
+{
+	required string exchange = 1;
+	required string contract = 2;
+	optional string underlying = 3;
+	optional string symbol = 4;
+	optional string description = 5;
+	optional bool allowTrading = 6;
+	optional int32 quantity = 7;
+	optional int32 depth = 8;
+	optional float spread = 9;
+	optional float offset = 10;
+	optional bool enabled = 11;
+	repeated PBStrategyWeight weightContract = 12;
+	repeated PBParam params = 13;
+}
+
+message PBStrategyList
+{
+	repeated PBStrategy strategy = 1;
+}
+
+message PBContractParam
+{
+	required string exchange = 1;
+	required string contract = 2;
+	optional int32 depthVol = 3;
+	optional float gamma = 4;
+}
+
+message PBContractParamList
+{
+	repeated PBContractParam params = 1;
+}
+
+message PBOTCUserParam
+{
+	required string exchange = 1;
+	required string contract = 2;
+	required float quantity = 3;
+}
+
+message PBOTCUserParamList
+{
+	repeated PBOTCUserParam params = 1;
+}
+
+///报单
+message PBOrderInfo {
+	///报单编号
+	optional uint64 orderID = 1;
+	///系统报单编号
+	optional uint64	orderSysID = 2;	
+	///经纪公司代码
+	optional string	brokerID = 3;
+	///投资者代码
+	optional string	investorID = 4;
+	///交易所代码
+	optional string	exchange = 5;
+	///合约代码
+	optional string	contract = 6;
+	///报单价格条件
+	optional int32	execType = 7;
+	///TIF
+	optional int32	tif = 8;
+	///交易类型
+	optional int32	tradingType = 9;
+	///买卖方向
+	optional int32	direction = 10;
+	///价格
+	optional double	limitPrice = 11;
+	///止损价
+	optional double	stopPrice = 12;	
+	///报单状态
+	optional int32 orderStatus = 13;
+	///报单类型
+	optional int32	orderType = 14;
+	///数量
+	optional int32	volume = 15;
+	///委托时间
+	optional string insertTime = 17;
+	///最后修改时间
+	optional string	updateTime = 18;
+	///撤销时间
+	optional string	cancelTime = 19;
+	///今成交数量
+	optional int32 volumeTraded = 20;
+	///剩余数量
+	optional int32 volumeRemain = 21;
+	///成交量类型
+	optional int32 volumeCondition = 22;
+	///交易日
+	optional int32 tradingDay = 23;
+	///活动状态
+	optional bool active = 24;
+	///开平标志
+	optional int32 openclose = 25;
+}
+
+///成交
+message PBTradeNotification {
+	///报单引用
+	required uint64 orderID = 1;
+	///经纪公司代码
+	optional string	brokerID = 2;
+	///投资者代码
+	optional string	investorID = 3;
+	///交易所代码
+	optional string	exchange = 4;
+	///合约代码
+	optional string	contract = 5;
+	///用户代码
+	optional string	userID = 6;
+	///成交编号
+	optional uint64	tradeID = 7;
+	///买卖方向
+	optional int32 direction = 8;
+	///报单编号
+	required uint64	orderSysID = 9;
+	///价格
+	required double	price = 10;
+	///数量
+	required int32	volume = 11;
+	///成交时期
+	optional string	tradeDate = 12;
+	///成交时间
+	optional string	tradeTime = 13;
+	///成交类型
+	optional int32 tradeType = 14;
+}
+
+message PBPosition {
+	///交易所代码
+	required string	exchange = 1;
+	///合约代码
+	required string	contract = 2;
+	///持仓多空方向
+	required int32 direction = 3;
+	///持仓
+	required int32 position = 5;
+	///上日持仓
+	optional int32 ydPosition = 4;
+	///持仓日期
+	optional string	positionDate = 6;	
+	///开仓量
+	optional int32 openVolume = 7;
+	///平仓量
+	optional int32 closeVolume = 8;
+	///开仓金额
+	optional double	openAmount = 9;
+	///平仓金额
+	optional double	closeAmount = 10;
+	///持仓成本
+	optional double	cost = 11;
+	///开仓成本
+	optional double	openCost = 12;
+	///持仓盈亏
+	optional double profit = 13;
+	///平仓盈亏
+	optional double	closeProfit = 14;
+	///占用的保证金
+	optional double	useMargin = 15;
+	///投机套保标志
+	optional int32 hedgeFlag = 16;
+}
+
+message PBAccountInfo {
+	///经纪公司代码
+	optional string	BrokerID = 2;
+	///投资者帐号
+	optional string	AccountID = 3;
+	///上次质押金额
+	optional double	PreMortgage = 4;
+	///上次信用额度
+	optional double	PreCredit = 5;
+	///上次存款额
+	optional double	PreDeposit = 6;
+	///上次结算准备金
+	optional double	PreBalance = 7;
+	///上次占用的保证金
+	optional double	PreMargin = 8;
+	///利息基数
+	optional double	InterestBase = 9;
+	///利息收入
+	optional double	Interest = 10;
+	///入金金额
+	optional double	Deposit = 11;
+	///出金金额
+	optional double	Withdraw = 12;
+	///冻结的保证金
+	optional double	FrozenMargin = 13;
+	///冻结的资金
+	optional double	FrozenCash = 14;
+	///冻结的手续费
+	optional double	FrozenCommission = 15;
+	///当前保证金总额
+	optional double	CurrMargin = 16;
+	///资金差额
+	optional double	CashIn = 17;
+	///手续费
+	optional double	Commission = 18;
+	///平仓盈亏
+	optional double	CloseProfit = 19;
+	///持仓盈亏
+	optional double	PositionProfit = 20;
+	///期货结算准备金
+	optional double	Balance = 21;
+	///可用资金
+	optional double	Available = 22;
+	///可取资金
+	optional double	WithdrawQuota = 23;
+	///基本准备金
+	optional double	Reserve = 24;
+	///交易日
+	optional string	TradingDay = 25;
+	///结算编号
+	optional int32	SettlementID = 26;
+	///信用额度
+	optional double	Credit = 27;
+	///质押金额
+	optional double	Mortgage = 28;
+	///交易所保证金
+	optional double	ExchangeMargin = 29;
+	///投资者交割保证金
+	optional double	DeliveryMargin = 30;
+	///交易所交割保证金
+	optional double	ExchangeDeliveryMargin = 31;
+	///保底期货结算准备金
+	optional double	ReserveBalance = 32;
+}

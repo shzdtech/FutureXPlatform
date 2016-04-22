@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="头文件\MarketData">
+      <UniqueIdentifier>{b0641b1f-30f2-4bee-aa2d-55e5808211cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Trader">
+      <UniqueIdentifier>{21c67324-a6c7-463f-931d-ad461f6cf3d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\MarketData">
+      <UniqueIdentifier>{5fc817b4-964b-4521-99e8-91c67fd7e19d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Trader">
+      <UniqueIdentifier>{00517502-9024-40f9-8b35-f44f45799198}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ctsexport.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CTSConvertor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="cts_handlers.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CTSReturnMarketData.h">
+      <Filter>头文件\MarketData</Filter>
+    </ClInclude>
+    <ClInclude Include="CTSSubscribeMarketData.h">
+      <Filter>头文件\MarketData</Filter>
+    </ClInclude>
+    <ClInclude Include="CTSProcessor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CTSAPIWrapper.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CTSConstant.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CTSLoginHandler.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CTSNewOrder.h">
+      <Filter>头文件\Trader</Filter>
+    </ClInclude>
+    <ClInclude Include="CTSServiceFactory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CTSUtility.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CTSCancelOrder.h">
+      <Filter>头文件\Trader</Filter>
+    </ClInclude>
+    <ClInclude Include="CTSQueryOrder.h">
+      <Filter>头文件\Trader</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AssemblyInfo.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ctsexport.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CTSConvertor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CTSReturnMarketData.cpp">
+      <Filter>源文件\MarketData</Filter>
+    </ClCompile>
+    <ClCompile Include="CTSSubscribeMarketData.cpp">
+      <Filter>源文件\MarketData</Filter>
+    </ClCompile>
+    <ClCompile Include="CTSProcessor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CTSAPIWrapper.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CTSLoginHandler.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CTSNewOrder.cpp">
+      <Filter>源文件\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTSServiceFactory.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CTSUtility.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CTSCancelOrder.cpp">
+      <Filter>源文件\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTSQueryOrder.cpp">
+      <Filter>源文件\Trader</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="app.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="app.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

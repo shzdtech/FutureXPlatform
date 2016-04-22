@@ -1,0 +1,60 @@
+package Micro.Future.Message.Business;
+
+message NamedStringVector
+{
+required string name = 1;
+repeated string entry = 2;
+}
+
+message NamedIntVector
+{
+required string name = 1;
+repeated int32 entry = 2;
+}
+
+message NamedDoubleVector
+{
+required string name = 1;
+repeated double entry = 2;
+}
+
+message SimpleIntTable
+{
+repeated NamedIntVector columns = 1;
+}
+
+message SimpleStringTable
+{
+repeated NamedStringVector columns = 1;
+}
+
+message SimpleDoubleTable
+{
+repeated NamedDoubleVector columns = 1;
+}
+
+message ComplexTable
+{
+optional SimpleIntTable    intTable = 1;
+optional SimpleDoubleTable doubleTable = 2;
+optional SimpleStringTable stringTable = 3;
+optional ComplexTable nestTable = 4;
+}
+
+message StringResponse
+{
+required string Value = 1;
+required int32 EOF = 2;
+}
+
+message IntResponse
+{
+required int32  Value = 1;
+required int32 EOF = 2;
+}
+
+message DoubleResponse
+{
+required double Value = 1;
+required int32 EOF = 2;
+}

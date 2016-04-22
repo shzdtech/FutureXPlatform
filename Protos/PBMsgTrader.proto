@@ -1,0 +1,788 @@
+package PBMsgTrader;
+option java_package = "ProtoBufMessage";
+option java_outer_classname = "PBMsgTrader";
+// 订单状态
+enum OrderStatus{
+	TTIS_ORDER_INSERT_SUCCESS = 1;
+	TTIS_ORDER_INSERT_FAILED = 2;
+	TTIS_ORDER_CANCEL_SUCCESS = 3;
+	TTIS_ORDER_CANCEL_FAILED = 4;
+	TTIS_ORDER_OTHER = 5;
+
+	ALL_FINISHED = 10;
+	PARTLY_FINISHED = 11;
+}
+
+//////////////////////////////////////////////////////////////////////
+// 错误消息定义 start
+//////////////////////////////////////////////////////////////////////
+///响应信息
+message PBMsgError {
+	//Message Header	
+	//optional int32 msg_id = 1;
+	///错误代码
+	optional int32 ErrorID = 2;
+	///错误信息
+	optional bytes ErrorMsg = 3;
+}
+//////////////////////////////////////////////////////////////////////
+// 错误消息定义 end
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+// 登陆消息定义 start
+//////////////////////////////////////////////////////////////////////
+///用户登录请求
+message PBMsgLoginReq {
+	//Message Header	
+	//optional int32 msg_id = 1;
+	///交易日
+	optional string	TradingDay = 2;
+	///经纪公司代码
+	optional string	BrokerID = 3;
+	///用户代码
+	optional string	UserID = 4;
+	///密码
+	optional string	Password = 5;
+	///用户端产品信息
+	optional string	UserProductInfo = 6;
+	///接口端产品信息
+	optional string	InterfaceProductInfo = 7;
+	///协议信息
+	optional string	ProtocolInfo = 8;
+	///Mac地址
+	optional string	MacAddress = 9;
+	///动态密码
+	optional string	OneTimePassword = 10;
+	///终端IP地址
+	optional string	ClientIPAddress = 11;
+}
+
+///用户登录应答
+message PBMsgLoginRsp {
+	//Message Header	
+	//optional int32 msg_id = 1;
+	///交易日
+	optional string	TradingDay = 2;
+	///登录成功时间
+	optional string	LoginTime = 3;
+	///经纪公司代码
+	optional string	BrokerID = 4;
+	///用户代码
+	optional string	UserID = 5;
+	///交易系统名称
+	optional string	SystemName = 6;
+	///前置编号
+	optional int32	FrontID = 7;
+	///会话编号
+	optional int32	SessionID = 8;
+	///最大报单引用
+	optional string	MaxOrderRef = 9;
+	///上期所时间
+	optional string	SHFETime = 10;
+	///大商所时间
+	optional string	DCETime = 11;
+	///郑商所时间
+	optional string	CZCETime = 12;
+	///中金所时间
+	optional string	FFEXTime = 13;
+}
+///用户登出请求(req, rsp使用同一个结构体)
+message PBMsgLogout {
+	//Message Header	
+	//optional int32 msg_id = 1;
+	///经纪公司代码
+	optional string	BrokerID = 2;
+	///用户代码
+	optional string	UserID = 3;
+}
+//////////////////////////////////////////////////////////////////////
+// 登陆消息定义 end
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+// 查询类消息定义 start
+//////////////////////////////////////////////////////////////////////
+
+// 4.3.1	市场基本信息获取 （Market Info Retrieval）
+message PBMsgQueryReqMarketInfo {
+	//Message Header
+	//optional int32 msg_id = 1;
+	optional string ExchangeID = 2;
+}
+message PBMsgQueryRspMarketInfo {
+	//Message Header
+	optional int32 EOF = 1;
+	//交易所代码
+	optional string ExchangeID = 2;
+	//交易所名称
+	optional bytes ExchangeName = 3;
+	//交易所属性
+	optional string ExchangeProperty = 4;
+}
+
+// 4.3.2	合约列表 （Instrument List）
+// 4.3.3	合约信息查询 （Instrument Detail Retrieval）
+message PBMsgQueryReqInstrumentInfo {
+	//Message Header	
+	//optional int32 msg_id = 1;
+	///合约代码
+	optional string InstrumentID = 2;
+	///交易所代码
+	optional string ExchangeID = 3;
+	///合约在交易所的代码
+	optional string ExchangeInstID = 4;
+	///产品代码
+	optional string ProductID = 5;
+}
+message PBMsgQueryRspInstrumentInfo {
+	//Message Header	
+	optional int32 EOF = 1;
+	///合约代码
+	optional string	InstrumentID = 2;
+	///交易所代码
+	optional string	ExchangeID  = 3;
+	///合约名称
+	optional bytes InstrumentName = 4;
+	///合约在交易所的代码
+	optional string	ExchangeInstID = 5;
+	///产品代码
+	optional string	ProductID = 6;
+	///产品类型
+	optional bytes ProductClass = 7;
+	///交割年份
+	optional int32 DeliveryYear = 8;
+	///交割月
+	optional int32 DeliveryMonth = 9;
+	///市价单最大下单量
+	optional int32	MaxMarketOrderVolume = 10;
+	///市价单最小下单量
+	optional int32	MinMarketOrderVolume = 11;
+	///限价单最大下单量
+	optional int32 MaxLimitOrderVolume = 12;
+	///限价单最小下单量
+	optional int32 MinLimitOrderVolume = 13;
+	///合约数量乘数
+	optional int32 VolumeMultiple = 14;
+	///最小变动价位
+	optional int32 PriceTick = 15;
+	///创建日
+	optional string	CreateDate = 16;
+	///上市日
+	optional string	OpenDate = 17;
+	///到期日
+	optional string	ExpireDate = 18;
+	///开始交割日
+	optional string	StartDelivDate = 19;
+	///结束交割日
+	optional string	EndDelivDate = 20;
+	///合约生命周期状态
+	optional string InstLifePhase = 21;
+	///当前是否交易
+	optional int32 IsTrading = 22;
+	///持仓类型
+	optional string PositionType = 23;
+	///持仓日期类型
+	optional string PositionDateType = 24;
+	///多头保证金率
+	optional double	LongMarginRatio = 25;
+	///空头保证金率
+	optional double	ShortMarginRatio = 26;
+	///是否使用大额单边保证金算法
+	optional string MaxMarginSideAlgorithm = 27;
+}
+
+// 4.4.1	报单查询 （Query Order）
+message PBMsgQueryReqOrder {
+	//Message Header	
+	//optional int32 msg_id = 1;
+	///经纪公司代码
+	optional string	BrokerID = 2;
+	///投资者代码
+	optional string	InvestorID = 3;
+	///合约代码
+	optional string	InstrumentID = 4;
+	///交易所代码
+	optional string	ExchangeID = 5;
+	///报单编号
+	optional string	OrderSysID = 6;
+	///开始时间
+	optional string	InsertTimeStart = 7;
+	///结束时间
+	optional string	InsertTimeEnd = 8;
+	///交易日
+	optional string	TradingDay = 9;
+	///结算编号
+	optional int32 SettlementID = 10;
+}
+			
+
+// 4.4.2	成交查询 (Query Trade)
+message PBMsgQueryReqTrade {
+	//Message Header	
+	//optional int32 msg_id = 1;
+	///经纪公司代码
+	optional string	BrokerID = 2;
+	///投资者代码
+	optional string	InvestorID = 3;
+	///合约代码
+	optional string	InstrumentID = 4;
+	///交易所代码
+	optional string	ExchangeID = 5;
+	///成交编号
+	optional string	TradeID = 6;
+	///开始时间
+	optional string	TradeTimeStart = 7;
+	///结束时间
+	optional string	TradeTimeEnd = 8;
+}
+ 
+// 4.4.3	持仓查询（Query Position）
+message PBMsgQueryReqPosition {
+	//Message Header	
+	//optional int32 msg_id = 1;
+	///经纪公司代码
+	optional string	BrokerID = 2;
+	///投资者代码
+	optional string	InvestorID = 3;
+	///合约代码
+	optional string	InstrumentID = 4;
+}
+message PBMsgQueryRspPosition {
+	//Message Header	
+	optional int32 EOF = 1;
+	///合约代码
+	optional string	InstrumentID = 2;
+	///经纪公司代码
+	optional string	BrokerID = 3;
+	///投资者代码
+	optional string	InvestorID = 4;
+	///持仓多空方向
+	optional string	PosiDirection = 5;
+	///投机套保标志
+	optional string	HedgeFlag = 6;
+	///持仓日期
+	optional string	PositionDate = 7;
+	///上日持仓
+	optional int32	YdPosition = 8;
+	///今日持仓
+	optional int32	Position = 9;
+	///多头冻结
+	optional int32	LongFrozen = 10;
+	///空头冻结
+	optional int32	ShortFrozen = 11;
+	///开仓冻结金额
+	optional double	LongFrozenAmount = 12;
+	///开仓冻结金额
+	optional double	ShortFrozenAmount = 13;
+	///开仓量
+	optional int32	OpenVolume = 14;
+	///平仓量
+	optional int32	CloseVolume = 15;
+	///开仓金额
+	optional double	OpenAmount = 16;
+	///平仓金额
+	optional double	CloseAmount = 17;
+	///持仓成本
+	optional double	PositionCost = 18;
+	///上次占用的保证金
+	optional double	PreMargin = 19;
+	///占用的保证金
+	optional double	UseMargin = 20;
+	///冻结的保证金
+	optional double	FrozenMargin = 21;
+	///冻结的资金
+	optional double	FrozenCash = 22;
+	///冻结的手续费
+	optional double	FrozenCommission = 23;
+	///资金差额
+	optional double	CashIn = 24;
+	///手续费
+	optional double	Commission = 25;
+	///平仓盈亏
+	optional double	CloseProfit = 26;
+	///持仓盈亏
+	optional double	PositionProfit = 27;
+	///上次结算价
+	optional double	PreSettlementPrice = 28;
+	///本次结算价
+	optional double	SettlementPrice = 29;
+	///交易日
+	optional string	TradingDay = 30;
+	///结算编号
+	optional int32	SettlementID = 31;
+	///开仓成本
+	optional double	OpenCost = 32;
+	///交易所保证金
+	optional double	ExchangeMargin = 33;
+	///组合成交形成的持仓
+	optional int32	CombPosition = 34;
+	///组合多头冻结
+	optional int32	CombLongFrozen = 35;
+	///组合空头冻结
+	optional int32	CombShortFrozen = 36;
+	///逐日盯市平仓盈亏
+	optional double	CloseProfitByDate = 37;
+	///逐笔对冲平仓盈亏
+	optional double	CloseProfitByTrade = 38;
+	///今日持仓
+	optional int32	TodayPosition = 39;
+	///保证金率
+	optional double	MarginRateByMoney = 40;
+	///保证金率(按手数)
+	optional double	MarginRateByVolume = 41;
+}
+
+
+// 5.5.5	资金查询 （Funding Query）
+message PBMsgQueryReqFund {
+	//Message Header	
+	//optional int32 msg_id = 1;
+	///经纪公司代码
+	optional string	BrokerID = 2;
+	///投资者代码
+	optional string	InvestorID = 3;
+}
+message PBMsgQueryRspFund {
+	//Message Header	
+	optional int32 EOF = 1;
+	///经纪公司代码
+	optional string	BrokerID = 2;
+	///投资者帐号
+	optional string	AccountID = 3;
+	///上次质押金额
+	optional double	PreMortgage = 4;
+	///上次信用额度
+	optional double	PreCredit = 5;
+	///上次存款额
+	optional double	PreDeposit = 6;
+	///上次结算准备金
+	optional double	PreBalance = 7;
+	///上次占用的保证金
+	optional double	PreMargin = 8;
+	///利息基数
+	optional double	InterestBase = 9;
+	///利息收入
+	optional double	Interest = 10;
+	///入金金额
+	optional double	Deposit = 11;
+	///出金金额
+	optional double	Withdraw = 12;
+	///冻结的保证金
+	optional double	FrozenMargin = 13;
+	///冻结的资金
+	optional double	FrozenCash = 14;
+	///冻结的手续费
+	optional double	FrozenCommission = 15;
+	///当前保证金总额
+	optional double	CurrMargin = 16;
+	///资金差额
+	optional double	CashIn = 17;
+	///手续费
+	optional double	Commission = 18;
+	///平仓盈亏
+	optional double	CloseProfit = 19;
+	///持仓盈亏
+	optional double	PositionProfit = 20;
+	///期货结算准备金
+	optional double	Balance = 21;
+	///可用资金
+	optional double	Available = 22;
+	///可取资金
+	optional double	WithdrawQuota = 23;
+	///基本准备金
+	optional double	Reserve = 24;
+	///交易日
+	optional string	TradingDay = 25;
+	///结算编号
+	optional int32	SettlementID = 26;
+	///信用额度
+	optional double	Credit = 27;
+	///质押金额
+	optional double	Mortgage = 28;
+	///交易所保证金
+	optional double	ExchangeMargin = 29;
+	///投资者交割保证金
+	optional double	DeliveryMargin = 30;
+	///交易所交割保证金
+	optional double	ExchangeDeliveryMargin = 31;
+	///保底期货结算准备金
+	optional double	ReserveBalance = 32;
+}
+//////////////////////////////////////////////////////////////////////
+// 查询类消息定义 end
+//////////////////////////////////////////////////////////////////////
+	
+//////////////////////////////////////////////////////////////////////
+// 交易类消息定义 start
+//////////////////////////////////////////////////////////////////////
+/// 订单委托(req，rsp用同一个结构体)
+message PBMsgOrderInsert {
+	//Message Header	
+	//optional int32 msg_id = 1 ;
+	///经纪公司代码
+	optional string	BrokerID = 2;
+	///投资者代码
+	optional string	InvestorID = 3;
+	///合约代码
+	optional string	InstrumentID = 4;
+	///报单引用
+	optional string	OrderRef = 5;
+	///用户代码
+	optional string	UserID = 6;
+	///报单价格条件
+	optional string	OrderPriceType = 7;
+	///买卖方向
+	optional string	Direction = 8;
+	///组合开平标志
+	optional string	CombOffsetFlag = 9;
+	///组合投机套保标志
+	optional string	CombHedgeFlag = 10;
+	///价格
+	optional double	LimitPrice = 11;
+	///数量
+	optional int32	VolumeTotalOriginal = 12;
+	///有效期类型
+	optional string	TimeCondition = 13;
+	///GTD日期
+	optional string	GTDDate = 14;
+	///成交量类型
+	optional string	VolumeCondition = 15;
+	///最小成交量
+	optional int32	MinVolume = 16;
+	///触发条件
+	optional string	ContingentCondition = 17;
+	///止损价
+	optional double	StopPrice = 18;
+	///强平原因
+	optional string	ForceCloseReason = 19;
+	///自动挂起标志
+	optional int32	IsAutoSuspend = 20;
+	///业务单元
+	optional string	BusinessUnit = 21;
+	///请求编号
+	optional int32	RequestID = 22;
+	///用户强评标志
+	optional int32	UserForceClose = 23;
+	///互换单标志
+	optional int32	IsSwapOrder = 24;
+}
+
+///报单操作(req，rsp用同一个结构体)
+message PBMsgOrderAction {
+	//Message Header	
+	//optional int32 msg_id = 1;
+	///经纪公司代码
+	optional string	BrokerID = 2;
+	///投资者代码
+	optional string	InvestorID = 3;
+	///报单操作引用
+	optional int32 OrderActionRef = 4;
+	///报单引用
+	optional string	OrderRef = 5;
+	///请求编号
+	optional int32 RequestID = 6;
+	///前置编号
+	optional int32	FrontID = 7;
+	///会话编号
+	optional int32	SessionID = 8;
+	///交易所代码
+	optional string	ExchangeID = 9;
+	///报单编号
+	optional string	OrderSysID = 10;
+	///操作标志
+	optional string	ActionFlag = 11;
+	///价格
+	optional double	LimitPrice = 12;
+	///数量变化
+	optional int32	VolumeChange = 13;
+	///操作日期
+	optional string	ActionDate = 14;
+	///操作时间
+	optional string	ActionTime = 15;
+	///交易所交易员代码
+	optional string	TraderID = 16;
+	///安装编号
+	optional int32	InstallID = 17;
+	///本地报单编号
+	optional string	OrderLocalID = 18;
+	///操作本地编号
+	optional string	ActionLocalID = 19;
+	///会员代码
+	optional string	ParticipantID = 20;
+	///客户代码
+	optional string	ClientID = 21;
+	///业务单元
+	optional string	BusinessUnit = 22;
+	///报单操作状态
+	optional string	OrderActionStatus = 23;
+	///用户代码
+	optional string	UserID = 24;
+	///状态信息
+	optional bytes	StatusMsg = 25;
+	///合约代码
+	optional string	InstrumentID = 26;
+}
+///报单
+message PBMsgOrderRtn {
+	//Message Header	
+	optional int32 EOF = 1;
+	///经纪公司代码
+	optional string	BrokerID = 2;
+	///投资者代码
+	optional string	InvestorID = 3;
+	///合约代码
+	optional string	InstrumentID = 4;
+	///报单引用
+	optional string	OrderRef = 5;
+	///用户代码
+	optional string	UserID = 6;
+	///报单价格条件
+	optional string	OrderPriceType = 7;
+	///买卖方向
+	optional string	Direction = 8;
+	///组合开平标志
+	optional string	CombOffsetFlag = 9;
+	///组合投机套保标志
+	optional string	CombHedgeFlag = 10;
+	///价格
+	optional double	LimitPrice = 11;
+	///数量
+	optional int32	VolumeTotalOriginal = 12;
+	///有效期类型
+	optional string	TimeCondition = 13;
+	///GTD日期
+	optional string	GTDDate = 14;
+	///成交量类型
+	optional string	VolumeCondition = 15;
+	///最小成交量
+	optional int32	MinVolume = 16;
+	///触发条件
+	optional string	ContingentCondition = 17;
+	///止损价
+	optional double	StopPrice = 18;
+	///强平原因
+	optional string	ForceCloseReason = 19;
+	///自动挂起标志
+	optional int32	IsAutoSuspend = 20;
+	///业务单元
+	optional string	BusinessUnit = 21;
+	///请求编号
+	optional int32	RequestID = 22;
+	///本地报单编号
+	optional string	OrderLocalID = 23;
+	///交易所代码
+	optional string	ExchangeID = 24;
+	///会员代码
+	optional string	ParticipantID = 25;
+	///客户代码
+	optional string	ClientID = 26;
+	///合约在交易所的代码
+	optional string	ExchangeInstID = 27;
+	///交易所交易员代码
+	optional string	TraderID = 28;
+	///安装编号
+	optional int32	InstallID = 29;
+	///报单提交状态
+	optional string	OrderSubmitStatus = 30;
+	///报单提示序号
+	optional int32	NotifySequence = 31;
+	///交易日
+	optional string	TradingDay = 32;
+	///结算编号
+	optional int32	SettlementID = 33;
+	///报单编号
+	optional string	OrderSysID = 34;
+	///报单来源
+	optional string	OrderSource = 35;
+	///报单状态
+	optional string	OrderStatus = 36;
+	///报单类型
+	optional string	OrderType = 37;
+	///今成交数量
+	optional int32	VolumeTraded = 38;
+	///剩余数量
+	optional int32	VolumeTotal = 39;
+	///报单日期
+	optional string	InsertDate = 40;
+	///委托时间
+	optional string	InsertTime = 41;
+	///激活时间
+	optional string	ActiveTime = 42;
+	///挂起时间
+	optional string	SuspendTime = 43;
+	///最后修改时间
+	optional string	UpdateTime = 44;
+	///撤销时间
+	optional string	CancelTime = 45;
+	///最后修改交易所交易员代码
+	optional string	ActiveTraderID = 46;
+	///结算会员编号
+	optional string	ClearingPartID = 47;
+	///序号
+	optional int32	SequenceNo = 48;
+	///前置编号
+	optional int32	FrontID = 49;
+	///会话编号
+	optional int32	SessionID = 50;
+	///用户端产品信息
+	optional string	UserProductInfo = 51;
+	///状态信息
+	optional bytes	StatusMsg = 52;
+	///用户强评标志
+	optional int32	UserForceClose = 53;
+	///操作用户代码
+	optional string	ActiveUserID = 54;
+	///经纪公司报单编号
+	optional int32	BrokerOrderSeq = 55;
+	///相关报单
+	optional string	RelativeOrderSysID = 56;
+	///郑商所成交数量
+	optional int32	ZCETotalTradedVolume = 57;
+	///互换单标志
+	optional int32	IsSwapOrder = 58;
+	/// 本系统自定义订单状态
+	optional int32	IOrderStatus = 59;
+}
+///成交
+message PBMsgTradeRtn {
+	//Message Header	
+	optional int32 EOF = 1;
+	///经纪公司代码
+	optional string	BrokerID = 2;
+	///投资者代码
+	optional string	InvestorID = 3;
+	///合约代码
+	optional string	InstrumentID = 4;
+	///报单引用
+	optional string	OrderRef = 5;
+	///用户代码
+	optional string	UserID = 6;
+	///交易所代码
+	optional string	ExchangeID = 7;
+	///成交编号
+	optional string	TradeID = 8;
+	///买卖方向
+	optional string	Direction = 9;
+	///报单编号
+	optional string	OrderSysID = 10;
+	///会员代码
+	optional string	ParticipantID = 11;
+	///客户代码
+	optional string	ClientID = 12;
+	///交易角色
+	optional string	TradingRole = 13;
+	///合约在交易所的代码
+	optional string	ExchangeInstID = 14;
+	///开平标志
+	optional string	OffsetFlag = 15;
+	///投机套保标志
+	optional string	HedgeFlag = 16;
+	///价格
+	optional double	Price = 17;
+	///数量
+	optional int32	Volume = 18;
+	///成交时期
+	optional string	TradeDate = 19;
+	///成交时间
+	optional string	TradeTime = 20;
+	///成交类型
+	optional string	TradeType = 21;
+	///成交价来源
+	optional string	PriceSource = 22;
+	///交易所交易员代码
+	optional string	TraderID = 23;
+	///本地报单编号
+	optional string	OrderLocalID = 24;
+	///结算会员编号
+	optional string	ClearingPartID = 25;
+	///业务单元
+	optional string	BusinessUnit = 26;
+	///序号
+	optional int32	SequenceNo = 27;
+	///交易日
+	optional string	TradingDay = 28;
+	///结算编号
+	optional int32	SettlementID = 29;
+	///经纪公司报单编号
+	optional int32	BrokerOrderSeq = 30;
+	///成交来源
+	optional string	TradeSource = 31;
+}
+//////////////////////////////////////////////////////////////////////
+// 交易类消息定义 end
+//////////////////////////////////////////////////////////////////////	
+//////////////////////////////////////////////////////////////////////
+// 其他消息 start
+//////////////////////////////////////////////////////////////////////
+
+message PBMsgSettlementInfoConfirm {
+	//Message Header	
+	//optional int32 msg_id = 1;
+	///经纪公司代码
+	optional string	BrokerID = 2;
+	///投资者代码
+	optional string	InvestorID = 3;
+	///确认日期
+	optional string	ConfirmDate = 4;
+	///确认时间
+	optional string	ConfirmTime = 5;
+}
+message PBMsgReqConnect {
+	//Message Header	
+	//optional int32 msg_id = 1;
+	///经纪公司代码
+	optional string	BrokerID = 2;
+	///投资者代码
+	optional string	InvestorID = 3;
+	///前置地址
+	optional string	TradeFront = 4;
+}
+message PBMsgRspConnect {
+	//Message Header	
+	//optional int32 msg_id = 1;
+	///经纪公司代码
+	optional string	BrokerID = 2;
+	///投资者代码
+	optional string	InvestorID = 3;
+	///前置地址
+	optional string	TradeFront = 4;
+	///该用户的请求URI
+	optional string	ReqURI = 5;
+	///该用户的响应URI
+	optional string	RspURI = 6;
+}
+//////////////////////////////////////////////////////////////////////
+// 其他消息 end
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+// 协议包定义 start
+//////////////////////////////////////////////////////////////////////	
+/*
+message PBMsgTrader {
+	//Message Header	
+	optional int32 msg_id = 1;
+	optional PBMsgLoginReq msgLoginReq = 2;
+	optional PBMsgLoginRsp msgLoginRsp = 3;
+	optional PBMsgLogout msgLogout = 4;
+	optional PBMsgQueryReqMarketInfo msgQueryReqMarketInfo = 5;
+	repeated PBMsgQueryRspMarketInfo msgQueryRspMarketInfo = 6;
+	optional PBMsgQueryReqInstrumentInfo msgQueryReqInstrumentInfo = 7;
+	repeated PBMsgQueryRspInstrumentInfo msgQueryRspInstrumentInfo = 8;
+	optional PBMsgQueryReqOrder msgQueryReqOrder = 9;
+	optional PBMsgQueryReqTrade msgQueryReqTrade = 10;
+	optional PBMsgQueryReqPosition msgQueryReqPosition = 11;
+	repeated PBMsgQueryRspPosition msgQueryRspPosition = 12;
+	optional PBMsgQueryReqFund msgQueryReqFund = 13;
+	optional PBMsgQueryRspFund msgQueryRspFund = 14;
+	optional PBMsgOrderInsert msgOrderInsert = 15;
+	optional PBMsgOrderAction msgOrderAction = 16;
+	repeated PBMsgOrderRtn msgOrderRtn = 17;
+	repeated PBMsgTradeRtn msgTradeRtn = 18;
+	optional PBMsgError msgError = 19;
+	optional PBMsgSettlementInfoConfirm msgSettlementInfoConfirm = 20;
+	optional PBMsgReqConnect msgReqConnect = 21;
+	optional PBMsgRspConnect msgRspConnect = 22;
+}
+*/
+//////////////////////////////////////////////////////////////////////
+// 协议包定义 end
+//////////////////////////////////////////////////////////////////////	

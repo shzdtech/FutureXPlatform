@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CTPOTCCancelOrder" Collapsed="true">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CTPOTCCancelOrder.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTPOTCClientServiceFactory" Collapsed="true">
+    <Position X="4.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAEAAABAAAAA=</HashCode>
+      <FileName>CTPOTCClientServiceFactory.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTPOTCDepthMarketData" Collapsed="true">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CTPOTCDepthMarketData.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTPOTCLogin" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAABAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>CTPOTCLogin.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTPOTCNewOrder" Collapsed="true">
+    <Position X="8.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CTPOTCNewOrder.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTPOTCQueryContractParam" Collapsed="true">
+    <Position X="3" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CTPOTCQueryContractParam.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTPOTCQueryOrder" Collapsed="true">
+    <Position X="4.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CTPOTCQueryOrder.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTPOTCQueryStrategy" Collapsed="true">
+    <Position X="6.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CTPOTCQueryStrategy.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTPOTCQueryTradingDesks" Collapsed="true">
+    <Position X="8.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CTPOTCQueryTradingDesks.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTPOTCReturnPricingData" Collapsed="true">
+    <Position X="3" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CTPOTCReturnPricingData.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTPOTCSubMarketData" Collapsed="true">
+    <Position X="4.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CTPOTCSubMarketData.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTPOTCTradingDeskLogin" Collapsed="true">
+    <Position X="0.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CTPOTCTradingDeskLogin.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTPOTCTradingDeskServiceFactory" Collapsed="true">
+    <Position X="6.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAQIAAAAAAAAAAAAAAAEAAABAAAAA=</HashCode>
+      <FileName>CTPOTCTradingDeskServiceFactory.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTPOTCUpdateContractParam" Collapsed="true">
+    <Position X="8.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CTPOTCUpdateContractParam.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTPOTCUpdateStrategy" Collapsed="true">
+    <Position X="3" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CTPOTCUpdateStrategy.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTPOTCUpdateUserParam" Collapsed="true">
+    <Position X="4.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CTPOTCUpdateUserParam.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTPOTCWorkerProcessor" Collapsed="true">
+    <Position X="6.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAIFEAAAAAoIAAAAQAAAAABkQABhAAAAUACAIAAAA=</HashCode>
+      <FileName>CTPOTCWorkerProcessor.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="CTPWorkProcessorID" Collapsed="true">
+    <Position X="3" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>CTPWorkerProcessorID.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="微软雅黑" Size="9" />
+</ClassDiagram>

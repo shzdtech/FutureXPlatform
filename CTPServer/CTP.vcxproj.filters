@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="头文件\CTPHandler">
+      <UniqueIdentifier>{1488c1b8-c23f-4f65-8462-1257ffcabdd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\CTPHandler\MarketData">
+      <UniqueIdentifier>{c29745b3-6aee-404a-9c19-7a382a782e9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\CTPHandler\Trader">
+      <UniqueIdentifier>{82ea0278-71f7-471d-84ee-23b382691aa0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\CTPHandler">
+      <UniqueIdentifier>{59fb1386-dbb5-453f-9eae-c446d216e8dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\CTPHandler\Trader">
+      <UniqueIdentifier>{c9b9e29a-6cbe-4e0b-b28d-75bdd2c576c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\CTPHandler\MarketData">
+      <UniqueIdentifier>{1d20a9e3-101b-4839-8cde-8258c7ad7b3a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ctpexport.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPLoginHandler.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPProcessor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ctp_bizhandlers.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPUtility.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPDepthMarketData.h">
+      <Filter>头文件\CTPHandler\MarketData</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPMarketDataProcessor.h">
+      <Filter>头文件\CTPHandler\MarketData</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPMDLoginHandler.h">
+      <Filter>头文件\CTPHandler\MarketData</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPMDServiceFactory.h">
+      <Filter>头文件\CTPHandler\MarketData</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPQueryAccountInfo.h">
+      <Filter>头文件\CTPHandler\Trader</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPQueryExchange.h">
+      <Filter>头文件\CTPHandler\Trader</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPQueryInstrument.h">
+      <Filter>头文件\CTPHandler\Trader</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPQueryOrder.h">
+      <Filter>头文件\CTPHandler\Trader</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPQueryPosition.h">
+      <Filter>头文件\CTPHandler\Trader</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPQuerySettlementInfoCfm.h">
+      <Filter>头文件\CTPHandler\Trader</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPQueryTrade.h">
+      <Filter>头文件\CTPHandler\Trader</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPTradeLoginHandler.h">
+      <Filter>头文件\CTPHandler\Trader</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPTradeProcessor.h">
+      <Filter>头文件\CTPHandler\Trader</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPTradeServiceFactory.h">
+      <Filter>头文件\CTPHandler\Trader</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPSubMarketData.h">
+      <Filter>头文件\CTPHandler\MarketData</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPUnsubMarketData.h">
+      <Filter>头文件\CTPHandler\MarketData</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPAppContext.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPRawAPI.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPMapping.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPNewOrder.h">
+      <Filter>头文件\CTPHandler\Trader</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPConstant.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPMDTraderProcessor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPCancelOrder.h">
+      <Filter>头文件\CTPHandler\Trader</Filter>
+    </ClInclude>
+    <ClInclude Include="Attribute_Key.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ctpexport.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPLoginHandler.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPProcessor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPUtility.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPDepthMarketData.cpp">
+      <Filter>源文件\CTPHandler\MarketData</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPMarketDataProcessor.cpp">
+      <Filter>源文件\CTPHandler\MarketData</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPMDLoginHandler.cpp">
+      <Filter>源文件\CTPHandler\MarketData</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPMDServiceFactory.cpp">
+      <Filter>源文件\CTPHandler\MarketData</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPSubMarketData.cpp">
+      <Filter>源文件\CTPHandler\MarketData</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPUnsubMarketData.cpp">
+      <Filter>源文件\CTPHandler\MarketData</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPQueryAccountInfo.cpp">
+      <Filter>源文件\CTPHandler\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPQueryExchange.cpp">
+      <Filter>源文件\CTPHandler\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPQueryInstrument.cpp">
+      <Filter>源文件\CTPHandler\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPQueryOrder.cpp">
+      <Filter>源文件\CTPHandler\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPQuerySettlementInfoCfm.cpp">
+      <Filter>源文件\CTPHandler\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPQueryPosition.cpp">
+      <Filter>源文件\CTPHandler\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPQueryTrade.cpp">
+      <Filter>源文件\CTPHandler\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPTradeLoginHandler.cpp">
+      <Filter>源文件\CTPHandler\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPTradeProcessor.cpp">
+      <Filter>源文件\CTPHandler\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPTradeServiceFactory.cpp">
+      <Filter>源文件\CTPHandler\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPAppContext.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPNewOrder.cpp">
+      <Filter>源文件\CTPHandler\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPMDTraderProcessor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPCancelOrder.cpp">
+      <Filter>源文件\CTPHandler\Trader</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

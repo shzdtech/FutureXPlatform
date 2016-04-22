@@ -1,0 +1,197 @@
+package PBWrapMsgMDA;
+
+option java_package = "ProtoBufMessage";
+option java_outer_classname = "PBWrapMsgMDA";
+
+enum DataType {
+	EQUITY = 1;
+	INDEX = 2;
+	INDEX_FUTURE = 3;
+	COMMODITY_FUTURE = 4;
+	INDEX_FORCASTER = 5;
+}
+
+enum MessageType {
+//行情更新
+	INFORMATION = 1;
+	//订阅行情标识
+	REQUEST = 2;
+	//最新的行情，非更新
+	IMAGE = 3;
+	//数据库相关，比如wind
+	DATABASE = 4;
+}
+enum StatusDB {
+//正常
+	NORMAL = 1;
+	//停牌
+	SUSPENDED = 2;
+}
+
+message PBMsgEqtMD {
+	//Message Header
+	required int32 EOF = 1;
+	//required string messageService = 2;
+
+	//Message Body
+	//深圳、上海等
+	required string source = 3;
+	//现货、股指期货等
+	required DataType dataType = 4;
+	//现货期货代码
+	required string symbol = 5;
+	//时间戳
+	required string timeStamp = 6;
+
+	//Multiplied by 10,000
+	//昨日收盘
+	required int64 preCloseValue = 7;
+	//开盘价
+	required int64 openValue = 8;
+	//最高成交价
+	required int64 highValue = 11;
+	//最低成交价
+	required int64 lowValue = 12;
+	//？暂时未用
+	optional int64 latestIndex = 13;
+	//最近成交价
+	optional int64 matchPrice = 14;
+	//卖5
+	optional int64 askPrice5 = 15;
+	optional int64 askPrice4 = 17;
+	optional int64 askPrice3 = 19;
+	optional int64 askPrice2 = 21;
+	optional int64 askPrice1 = 23;
+	//买1
+	optional int64 bidPrice1 = 25;
+	optional int64 bidPrice2 = 27;
+	optional int64 bidPrice3 = 29;
+	optional int64 bidPrice4 = 31;
+	optional int64 bidPrice5 = 33;
+
+	//NOT Multiplied by 10,000
+	//成交金额
+	required int64 turnover = 9;
+	//成交量
+	required int64 volume = 10;
+	//卖数量5
+	optional int64 askSize5 = 16;
+	optional int64 askSize4 = 18;
+	optional int64 askSize3 = 20;
+	optional int64 askSize2 = 22;
+	optional int64 askSize1 = 24;
+	optional int64 bidSize1 = 26;
+	optional int64 bidSize2 = 28;
+	optional int64 bidSize3 = 30;
+	optional int64 bidSize4 = 32;
+	optional int64 bidSize5 = 34;
+}
+
+message PBMsgFutMD {
+	//Message Header
+	required int32 EOF = 1;
+	//required string messageService = 2;
+
+	//Message Body
+	//required string source = 3;
+	//required DataType dataType = 4;
+
+	required string symbol = 5;
+	required string timeStamp = 6;
+
+	//Multiplied by 10,000
+	//申报卖出
+	required int64 askPrice1 = 7;
+	//申报买入
+	required int64 bidPrice1 = 9;
+	//昨收盘
+	required int64 preClosePrice = 11;
+	//昨结算价
+	required int64 preSettlePrice = 12;
+	//今开盘
+	required int64 openPrice = 13;
+	//当日最高
+	required int64 highPrice = 14;
+	//当日最低
+	required int64 lowPrice = 15;
+	//最新成交价
+	required int64 matchPrice = 16;
+	//涨跌(最新价－昨收盘)
+	required int64 priceChange = 17;
+	//今结算价
+	required int64 settlePrice = 20;
+	//涨停版
+	required int64 highLimit = 21;
+	//跌停版
+	required int64 lowLimit = 22;
+
+	//NOT Multiplied by 10,000
+	//申报卖出量
+	required int64 askSize1 = 8;
+	//申报买入量
+	required int64 bidSize1 = 10;
+	//总成交量
+	required int64 volume = 18;
+	//成交金额
+	required int64 turnover = 19;
+}
+
+message PBMsgMDAMD {
+	//Message Header
+	required int32 EOF = 1;
+	//required string messageService = 2;
+
+	//Message Body
+	//required MessageType messageType = 3;
+	//required string service = 4;	//which service is this message from/to
+
+	//MD Request Data
+	//订阅行情代码列表
+	repeated string requestSymbolList = 5;
+
+	//MD Common Data
+	optional DataType dataType = 6;
+	optional string symbol = 7;
+	optional string timeStamp = 8;
+	optional int64 preCloseValue = 9;
+	optional int64 openValue = 10;
+	optional int64 turnover = 11;
+	optional int64 volume = 12;
+	optional int64 highValue = 13;
+	optional int64 lowValue = 14;
+
+	//Index Data
+	//？暂时未用
+	optional int64 latestIndex = 15;
+
+	//Equity Data
+	optional int64 matchPrice = 16;
+	optional int64 askPrice5 = 17;
+	optional int64 askSize5 = 18;
+	optional int64 askPrice4 = 19;
+	optional int64 askSize4 = 20;
+	optional int64 askPrice3 = 21;
+	optional int64 askSize3 = 22;
+	optional int64 askPrice2 = 23;
+	optional int64 askSize2 = 24;
+	optional int64 askPrice1 = 25;
+	optional int64 askSize1 = 26;
+	optional int64 bidPrice1 = 27;
+	optional int64 bidSize1 = 28;
+	optional int64 bidPrice2 = 29;
+	optional int64 bidSize2 = 30;
+	optional int64 bidPrice3 = 31;
+	optional int64 bidSize3 = 32;
+	optional int64 bidPrice4 = 33;
+	optional int64 bidSize4 = 34;
+	optional int64 bidPrice5 = 35;
+	optional int64 bidSize5 = 36;
+	
+	//Index Data
+	optional int64 preSettlePrice = 37;
+	optional int64 priceChange = 38;
+	optional int64 settlePrice = 39;
+	optional int64 highLimit = 40;
+	optional int64 lowLimit = 41;
+	
+}
