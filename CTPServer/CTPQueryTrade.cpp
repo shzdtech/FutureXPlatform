@@ -78,8 +78,9 @@ dataobj_ptr CTPQueryTrade::HandleResponse(ParamVector& rawRespParams, IRawAPI* r
 
 		pDO->OrderID = std::strtoull(pData->OrderRef, nullptr, 0);
 		pDO->OrderSysID = std::strtoull(pData->OrderSysID, nullptr, 0);
-		pDO->Direction = pData->Direction;
-		pDO->OpenClose = pData->OffsetFlag - OrderOpenCloseType::OPEN;
+		pDO->Direction = pData->Direction == THOST_FTDC_D_Buy ?
+			DirectionType::BUY : DirectionType::SELL;
+		pDO->OpenClose = pData->OffsetFlag - THOST_FTDC_OF_Open;
 		pDO->Price = pData->Price;
 		pDO->Volume = pData->Volume;
 		pDO->TradeDate = pData->TradeDate;

@@ -7,6 +7,15 @@ enum DirectionType
 	BUY = 1
 };
 
+enum PositionDirectionType
+{
+	PD_NET = 0,
+	///∂‡Õ∑
+	PD_LONG = 1,
+	///ø’Õ∑
+	PD_SHORT = 2
+};
+
 enum TradingType
 {
 	TRADINGTYPE_MANUAL = 0,

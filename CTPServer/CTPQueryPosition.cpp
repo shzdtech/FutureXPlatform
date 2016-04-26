@@ -67,7 +67,7 @@ dataobj_ptr CTPQueryPosition::HandleResponse(ParamVector& rawRespParams, IRawAPI
 		auto pDO = new UserPositionExDO(EXCHANGE_CTP, pData->InstrumentID);
 		ret.reset(pDO);
 
-		pDO->Direction = pData->PosiDirection;
+		pDO->Direction = pData->PosiDirection - THOST_FTDC_PD_Net;
 		pDO->HedgeFlag = pData->HedgeFlag - THOST_FTDC_HF_Speculation;
 		pDO->PositionDate = pData->PositionDate;
 		pDO->LastdayPosition = pData->YdPosition;

@@ -20,7 +20,7 @@
 
 data_buffer PBTradeRecordSerializer::Serialize(const dataobj_ptr abstractDO)
 {
-	Micro::Future::Message::Business::PBTradeNotification PB;
+	Micro::Future::Message::Business::PBTradeInfo PB;
 	auto pDO = (TradeRecordDO*)abstractDO.get();
 
 	PB.set_exchange(pDO->ExchangeID().data());
@@ -29,6 +29,7 @@ data_buffer PBTradeRecordSerializer::Serialize(const dataobj_ptr abstractDO)
 	PB.set_orderid(pDO->OrderID);
 	PB.set_tradeid(pDO->TradeID);
 	PB.set_direction(pDO->Direction);
+	PB.set_openclose(pDO->OpenClose);
 	PB.set_price(pDO->Price);
 	PB.set_volume(pDO->Volume);
 	PB.set_tradedate(pDO->TradeDate);

@@ -7,8 +7,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "configuration", "configurat
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dataobject", "dataobject\dataobject.vcxproj", "{6257959C-C51C-47BA-9B4C-B40E83F8453A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "message", "message\message.vcxproj", "{E9ADAA2B-1CCB-4111-9AC3-BDDB3DC114F2}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dynamicloader", "dynamicloader\dynamicloader.vcxproj", "{8C2B597D-93EE-47EC-82EE-515B999A1FEB}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "communication", "communication\communication.vcxproj", "{895A8AF4-0A3D-41AB-B86D-380CC92A9974}"
@@ -37,6 +35,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CTSServer", "CTSServer\CTSS
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CTPServer", "CTPServer\CTP.vcxproj", "{5CD2BAA7-91FE-4A63-80CF-7B25C5597C0F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "message", "message\message.vcxproj", "{E9ADAA2B-1CCB-4111-9AC3-BDDB3DC114F2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -61,14 +61,6 @@ Global
 		{6257959C-C51C-47BA-9B4C-B40E83F8453A}.Release|Win32.Build.0 = Release|Win32
 		{6257959C-C51C-47BA-9B4C-B40E83F8453A}.Release|x64.ActiveCfg = Release|x64
 		{6257959C-C51C-47BA-9B4C-B40E83F8453A}.Release|x64.Build.0 = Release|x64
-		{E9ADAA2B-1CCB-4111-9AC3-BDDB3DC114F2}.Debug|Win32.ActiveCfg = Debug|Win32
-		{E9ADAA2B-1CCB-4111-9AC3-BDDB3DC114F2}.Debug|Win32.Build.0 = Debug|Win32
-		{E9ADAA2B-1CCB-4111-9AC3-BDDB3DC114F2}.Debug|x64.ActiveCfg = Debug|x64
-		{E9ADAA2B-1CCB-4111-9AC3-BDDB3DC114F2}.Debug|x64.Build.0 = Debug|x64
-		{E9ADAA2B-1CCB-4111-9AC3-BDDB3DC114F2}.Release|Win32.ActiveCfg = Release|Win32
-		{E9ADAA2B-1CCB-4111-9AC3-BDDB3DC114F2}.Release|Win32.Build.0 = Release|Win32
-		{E9ADAA2B-1CCB-4111-9AC3-BDDB3DC114F2}.Release|x64.ActiveCfg = Release|x64
-		{E9ADAA2B-1CCB-4111-9AC3-BDDB3DC114F2}.Release|x64.Build.0 = Release|x64
 		{8C2B597D-93EE-47EC-82EE-515B999A1FEB}.Debug|Win32.ActiveCfg = Debug|Win32
 		{8C2B597D-93EE-47EC-82EE-515B999A1FEB}.Debug|Win32.Build.0 = Debug|Win32
 		{8C2B597D-93EE-47EC-82EE-515B999A1FEB}.Debug|x64.ActiveCfg = Debug|x64
@@ -179,65 +171,16 @@ Global
 		{5CD2BAA7-91FE-4A63-80CF-7B25C5597C0F}.Release|Win32.Build.0 = Release|Win32
 		{5CD2BAA7-91FE-4A63-80CF-7B25C5597C0F}.Release|x64.ActiveCfg = Release|x64
 		{5CD2BAA7-91FE-4A63-80CF-7B25C5597C0F}.Release|x64.Build.0 = Release|x64
+		{E9ADAA2B-1CCB-4111-9AC3-BDDB3DC114F2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E9ADAA2B-1CCB-4111-9AC3-BDDB3DC114F2}.Debug|Win32.Build.0 = Debug|Win32
+		{E9ADAA2B-1CCB-4111-9AC3-BDDB3DC114F2}.Debug|x64.ActiveCfg = Debug|x64
+		{E9ADAA2B-1CCB-4111-9AC3-BDDB3DC114F2}.Debug|x64.Build.0 = Debug|x64
+		{E9ADAA2B-1CCB-4111-9AC3-BDDB3DC114F2}.Release|Win32.ActiveCfg = Release|Win32
+		{E9ADAA2B-1CCB-4111-9AC3-BDDB3DC114F2}.Release|Win32.Build.0 = Release|Win32
+		{E9ADAA2B-1CCB-4111-9AC3-BDDB3DC114F2}.Release|x64.ActiveCfg = Release|x64
+		{E9ADAA2B-1CCB-4111-9AC3-BDDB3DC114F2}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 18
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://microfuture.visualstudio.com/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = communication\\communication.vcxproj
-		SccProjectName1 = communication
-		SccLocalPath1 = communication
-		SccProjectUniqueName2 = configuration\\configuration.vcxproj
-		SccProjectName2 = configuration
-		SccLocalPath2 = configuration
-		SccProjectUniqueName3 = dataobject\\dataobject.vcxproj
-		SccProjectName3 = dataobject
-		SccLocalPath3 = dataobject
-		SccProjectUniqueName4 = dynamicloader\\dynamicloader.vcxproj
-		SccProjectName4 = dynamicloader
-		SccLocalPath4 = dynamicloader
-		SccProjectUniqueName5 = message\\message.vcxproj
-		SccProjectName5 = message
-		SccLocalPath5 = message
-		SccProjectUniqueName6 = pbserializer\\pbserializer.vcxproj
-		SccProjectName6 = pbserializer
-		SccLocalPath6 = pbserializer
-		SccProjectUniqueName7 = server\\server.vcxproj
-		SccProjectName7 = server
-		SccLocalPath7 = server
-		SccProjectUniqueName8 = utility\\utility.vcxproj
-		SccProjectName8 = utility
-		SccLocalPath8 = utility
-		SccProjectUniqueName9 = databaseop\\databaseop.vcxproj
-		SccProjectName9 = databaseop
-		SccLocalPath9 = databaseop
-		SccProjectUniqueName10 = TestCases\\TestCases.vcxproj
-		SccProjectName10 = TestCases
-		SccLocalPath10 = TestCases
-		SccProjectUniqueName11 = system\\system.vcxproj
-		SccProjectName11 = system
-		SccLocalPath11 = system
-		SccProjectUniqueName12 = strategy\\strategy.vcxproj
-		SccProjectName12 = strategy
-		SccLocalPath12 = strategy
-		SccProjectUniqueName13 = mfwinserver\\mfwinserver.vcxproj
-		SccProjectName13 = mfwinserver
-		SccLocalPath13 = mfwinserver
-		SccProjectUniqueName14 = CTPOTCServer\\CTPOTCServer.vcxproj
-		SccProjectName14 = CTPOTCServer
-		SccLocalPath14 = CTPOTCServer
-		SccProjectUniqueName15 = ordermanager\\ordermanager.vcxproj
-		SccProjectName15 = ordermanager
-		SccLocalPath15 = ordermanager
-		SccProjectUniqueName16 = CTSServer\\CTSServer.vcxproj
-		SccProjectName16 = CTSServer
-		SccLocalPath16 = CTSServer
-		SccProjectUniqueName17 = CTPServer\\CTP.vcxproj
-		SccProjectName17 = CTPServer
-		SccLocalPath17 = CTPServer
 	EndGlobalSection
 EndGlobal

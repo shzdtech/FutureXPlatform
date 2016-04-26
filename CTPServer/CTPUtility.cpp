@@ -190,6 +190,7 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(CThostFtdcOrderField *pOrder)
 
 	pDO->Direction = (pOrder->Direction == THOST_FTDC_D_Buy) ? 
 		DirectionType::BUY : DirectionType::SELL;
+	pDO->OpenClose = pOrder->CombOffsetFlag[0] -THOST_FTDC_OF_Open;
 	pDO->LimitPrice = pOrder->LimitPrice;
 	pDO->Volume = pOrder->VolumeTotalOriginal;
 	pDO->StopPrice = pOrder->StopPrice;
@@ -198,8 +199,8 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(CThostFtdcOrderField *pOrder)
 	pDO->OrderStatus = CheckOrderStatus(pOrder->OrderStatus, pOrder->OrderSubmitStatus);
 	pDO->VolumeTraded = pOrder->VolumeTraded;
 	pDO->VolumeRemain = pOrder->VolumeTotal;
-	pDO->TIF = pOrder->TimeCondition == THOST_FTDC_TC_IOC ? OrderTIFType::IOC : OrderTIFType::GFD;
-	pDO->OpenClose = pOrder->CombOffsetFlag[0] - OrderOpenCloseType::OPEN;
+	pDO->TIF = pOrder->TimeCondition == THOST_FTDC_TC_IOC ? 
+		OrderTIFType::IOC : OrderTIFType::GFD;
 	char timebuf[20];
 	sprintf(timebuf, "%s %s", pOrder->InsertDate, pOrder->InsertTime);
 	pDO->InsertTime = timebuf;

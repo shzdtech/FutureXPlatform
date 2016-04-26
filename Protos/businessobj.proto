@@ -177,35 +177,41 @@ message PBOrderInfo {
 }
 
 ///成交
-message PBTradeNotification {
-	///报单引用
-	required uint64 orderID = 1;
-	///经纪公司代码
-	optional string	brokerID = 2;
-	///投资者代码
-	optional string	investorID = 3;
-	///交易所代码
-	optional string	exchange = 4;
-	///合约代码
-	optional string	contract = 5;
-	///用户代码
-	optional string	userID = 6;
+message PBTradeInfo {
 	///成交编号
-	optional uint64	tradeID = 7;
+	required uint64	tradeID = 1;
 	///买卖方向
-	optional int32 direction = 8;
+	required int32 direction = 2;
+	///开平标志
+	required int32 openclose = 3;
 	///报单编号
-	required uint64	orderSysID = 9;
+	required uint64	orderSysID = 4;
+	///报单引用
+	required uint64 orderID = 5;
 	///价格
-	required double	price = 10;
+	required double	price = 6;
 	///数量
-	required int32	volume = 11;
+	required int32	volume = 7;
+	///经纪公司代码
+	optional string	brokerID = 8;
+	///投资者代码
+	optional string	investorID = 9;
+	///交易所代码
+	optional string	exchange = 10;
+	///合约代码
+	optional string	contract = 11;
+	///用户代码
+	optional string	userID = 12;
 	///成交时期
-	optional string	tradeDate = 12;
+	optional string	tradeDate = 13;
 	///成交时间
-	optional string	tradeTime = 13;
+	optional string	tradeTime = 14;
 	///成交类型
-	optional int32 tradeType = 14;
+	optional int32 tradeType = 15;
+	///投机套保标志
+	optional int32 hedgeFlag = 16;
+	///手续费
+	optional double	commission = 17;
 }
 
 message PBPosition {
@@ -245,65 +251,65 @@ message PBPosition {
 
 message PBAccountInfo {
 	///经纪公司代码
-	optional string	BrokerID = 2;
+	optional string	brokerID = 2;
 	///投资者帐号
-	optional string	AccountID = 3;
+	optional string	accountID = 3;
 	///上次质押金额
-	optional double	PreMortgage = 4;
+	optional double	preMortgage = 4;
 	///上次信用额度
-	optional double	PreCredit = 5;
+	optional double	preCredit = 5;
 	///上次存款额
-	optional double	PreDeposit = 6;
+	optional double	preDeposit = 6;
 	///上次结算准备金
-	optional double	PreBalance = 7;
+	optional double	preBalance = 7;
 	///上次占用的保证金
-	optional double	PreMargin = 8;
+	optional double	preMargin = 8;
 	///利息基数
-	optional double	InterestBase = 9;
+	optional double	interestBase = 9;
 	///利息收入
-	optional double	Interest = 10;
+	optional double	interest = 10;
 	///入金金额
-	optional double	Deposit = 11;
+	optional double	deposit = 11;
 	///出金金额
-	optional double	Withdraw = 12;
+	optional double	withdraw = 12;
 	///冻结的保证金
-	optional double	FrozenMargin = 13;
+	optional double	frozenMargin = 13;
 	///冻结的资金
-	optional double	FrozenCash = 14;
+	optional double	frozenCash = 14;
 	///冻结的手续费
-	optional double	FrozenCommission = 15;
+	optional double	frozenCommission = 15;
 	///当前保证金总额
-	optional double	CurrMargin = 16;
+	optional double	currMargin = 16;
 	///资金差额
-	optional double	CashIn = 17;
+	optional double	cashIn = 17;
 	///手续费
-	optional double	Commission = 18;
+	optional double	commission = 18;
 	///平仓盈亏
-	optional double	CloseProfit = 19;
+	optional double	closeProfit = 19;
 	///持仓盈亏
-	optional double	PositionProfit = 20;
+	optional double	positionProfit = 20;
 	///期货结算准备金
-	optional double	Balance = 21;
+	optional double	balance = 21;
 	///可用资金
-	optional double	Available = 22;
+	optional double	available = 22;
 	///可取资金
-	optional double	WithdrawQuota = 23;
+	optional double	withdrawQuota = 23;
 	///基本准备金
-	optional double	Reserve = 24;
+	optional double	reserve = 24;
 	///交易日
-	optional string	TradingDay = 25;
+	optional string	tradingDay = 25;
 	///结算编号
-	optional int32	SettlementID = 26;
+	optional int32	settlementID = 26;
 	///信用额度
-	optional double	Credit = 27;
+	optional double	credit = 27;
 	///质押金额
-	optional double	Mortgage = 28;
+	optional double	mortgage = 28;
 	///交易所保证金
-	optional double	ExchangeMargin = 29;
+	optional double	exchangeMargin = 29;
 	///投资者交割保证金
-	optional double	DeliveryMargin = 30;
+	optional double	deliveryMargin = 30;
 	///交易所交割保证金
-	optional double	ExchangeDeliveryMargin = 31;
+	optional double	exchangeDeliveryMargin = 31;
 	///保底期货结算准备金
-	optional double	ReserveBalance = 32;
+	optional double	reserveBalance = 32;
 }
