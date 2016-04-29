@@ -20,11 +20,15 @@ public:
 	uint64_t OrderID = 0;
 	uint64_t TradeID = 0;
 	uint64_t OrderSysID = 0;
+
 	double Price = 0;
+	double Commission = 0;
+
 	int Volume = 0;
 	int Direction = 0;
 	int TradeType = 0;
 	int OpenClose = 0;
+	int HedgeFlag = 0;
 
 	std::string TradeDate;
 	std::string TradeTime;

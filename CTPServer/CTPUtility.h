@@ -25,8 +25,8 @@ public:
 	static bool IsOrderActive(const int status);
 	static OrderStatus CheckOrderStatus(const int status, const int submitStatus);
 	static OrderDO_Ptr ParseRawOrder(CThostFtdcOrderField *pOrder);
-	static OrderDO_Ptr ParseRawOrderAction(CThostFtdcInputOrderActionField *pOrder, OrderStatus orderstatus);
-	static OrderDO_Ptr ParseRawOrderInput(CThostFtdcInputOrderField *pOrder, OrderStatus orderstatus);
+	static OrderDO_Ptr ParseRawOrderAction(CThostFtdcInputOrderActionField *pOrder, CThostFtdcRspInfoField *pRsp, OrderStatus orderstatus);
+	static OrderDO_Ptr ParseRawOrderInput(CThostFtdcInputOrderField *pOrder, CThostFtdcRspInfoField *pRsp, OrderStatus orderstatus);
 
 protected:
 private:

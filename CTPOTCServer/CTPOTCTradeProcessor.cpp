@@ -227,7 +227,7 @@ int CTPOTCTradeProcessor::CancelOrder(const OrderDO& orderInfo, OrderStatus& cur
 ///登录请求响应
 void CTPOTCTradeProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	if (!CTPUtility::HasError(pRspInfo))
+	if (pRspUserLogin && !CTPUtility::HasError(pRspInfo))
 	{
 		auto pUser = getSession()->getUserInfo();
 		pUser->setSessionId(pRspUserLogin->SessionID);
@@ -239,22 +239,26 @@ void CTPOTCTradeProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserL
 ///报单录入请求响应
 void CTPOTCTradeProcessor::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	auto orderptr = CTPUtility::ParseRawOrderInput(pInputOrder, OrderStatus::OPEN_REJECTED);
-	orderptr->ErrorCode = pRspInfo->ErrorID;
+	if (pInputOrder)
+	{
+		auto orderptr = CTPUtility::ParseRawOrderInput(pInputOrder, pRspInfo, OrderStatus::OPEN_REJECTED);
 
-	int ret = _autoOrderMgr.OnOrderUpdated(*orderptr);
+		int ret = _autoOrderMgr.OnOrderUpdated(*orderptr);
 
-	DispatchMessage(MSG_ID_ORDER_CANCEL, orderptr.get());
+		DispatchMessage(MSG_ID_ORDER_CANCEL, orderptr.get());
+	}
 }
 
 void CTPOTCTradeProcessor::OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	auto orderptr = CTPUtility::ParseRawOrderAction(pInputOrderAction, OrderStatus::CANCEL_REJECTED);
-	orderptr->ErrorCode = pRspInfo->ErrorID;
+	if (pInputOrderAction)
+	{
+		auto orderptr = CTPUtility::ParseRawOrderAction(pInputOrderAction, pRspInfo, OrderStatus::CANCEL_REJECTED);
 
-	int ret = _autoOrderMgr.OnOrderUpdated(*orderptr);
+		int ret = _autoOrderMgr.OnOrderUpdated(*orderptr);
 
-	DispatchMessage(MSG_ID_ORDER_CANCEL, orderptr.get());
+		DispatchMessage(MSG_ID_ORDER_CANCEL, orderptr.get());
+	}
 }
 
 void CTPOTCTradeProcessor::OnRtnOrder(CThostFtdcOrderField *pOrder)

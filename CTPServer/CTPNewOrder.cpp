@@ -99,28 +99,13 @@ dataobj_ptr CTPNewOrder::HandleResponse(ParamVector& rawRespParams, IRawAPI* raw
 	{
 		auto pRsp = (CThostFtdcRspInfoField*)rawRespParams[1];
 		auto pData = (CThostFtdcInputOrderField*)rawRespParams[0];
-		auto pDO = new OrderDO(std::strtoull(pData->OrderRef, nullptr, 0),
-			EXCHANGE_EMPTY, pData->InstrumentID, pData->UserID);
-		ret.reset(pDO);
-		pDO->Direction = (pData->Direction == THOST_FTDC_D_Buy) ? DirectionType::BUY : DirectionType::SELL;
-		pDO->LimitPrice = pData->LimitPrice;
-		pDO->Volume = pData->VolumeTotalOriginal;
-		pDO->StopPrice = pData->StopPrice;
-		pDO->ErrorCode = pRsp->ErrorID;
-		pDO->OrderStatus = OrderStatus::OPEN_REJECTED;
+		ret = CTPUtility::ParseRawOrderInput(pData, pRsp, OrderStatus::OPEN_REJECTED);
 	}
 	else
 	{
 		auto pData = (CThostFtdcOrderField*)rawRespParams[0];
-		auto pDO = new OrderDO(std::strtoull(pData->OrderRef, nullptr, 0),
-			pData->ExchangeID, pData->InstrumentID, pData->UserID);
-		ret.reset(pDO);
-		pDO->Direction = (pData->Direction == THOST_FTDC_D_Buy) ? DirectionType::BUY : DirectionType::SELL;
-		pDO->LimitPrice = pData->LimitPrice;
-		pDO->Volume = pData->VolumeTotalOriginal;
-		pDO->StopPrice = pData->StopPrice;
-		pDO->TradingDay = std::strtoull(pData->TradingDay, nullptr, 0);
-		pDO->OrderStatus = CTPUtility::CheckOrderStatus(pData->OrderStatus, pData->OrderSubmitStatus);
+		ret = CTPUtility::ParseRawOrder(pData);
+
 	}
 
 	return ret;

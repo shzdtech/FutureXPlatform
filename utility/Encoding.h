@@ -18,6 +18,7 @@ public:
    static std::string FromUTF8(const std::string& utf8Str, const std::string& charset);
    static std::string FromUTF8(const char* begin, const char* end, const std::string& charset);
 
+   static const std::string CHARSET_GB2312;
 protected:
 private:
 

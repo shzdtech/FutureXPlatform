@@ -11,6 +11,9 @@
 using boost::locale::conv::to_utf;
 using boost::locale::conv::from_utf;
 
+
+const std::string Encoding::CHARSET_GB2312 = "gb2312";
+
 ////////////////////////////////////////////////////////////////////////
 // Name:       Encoding::ToUTF8(const std::string& srcStr, const std::string& charset)
 // Purpose:    Implementation of Encoding::ToUTF8()

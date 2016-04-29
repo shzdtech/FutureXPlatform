@@ -35,6 +35,7 @@ data_buffer PBTradeRecordSerializer::Serialize(const dataobj_ptr abstractDO)
 	PB.set_tradedate(pDO->TradeDate);
 	PB.set_tradetime(pDO->TradeTime);
 	PB.set_tradetype(pDO->TradeType);
+	PB.set_hedgeflag(pDO->HedgeFlag);
 
 	int bufSz = PB.ByteSize();
 	uint8_t* buff = new uint8_t[bufSz];

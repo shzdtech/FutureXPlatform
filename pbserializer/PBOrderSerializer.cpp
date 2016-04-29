@@ -44,6 +44,7 @@ data_buffer PBOrderSerializer::Serialize(const dataobj_ptr abstractDO)
 	PB.set_canceltime(pDO->CancelTime);
 	PB.set_tradingday(pDO->TradingDay);
 	PB.set_openclose(pDO->OpenClose);
+	PB.set_message(pDO->Message);
 	
 
 	int bufSz = PB.ByteSize();

@@ -56,6 +56,7 @@ OrderDO_Ptr CTSUtility::ParseRawOrder(T4::API::Order^ pOrder)
 	ret->VolumeRemain = pOrder->WorkingVolume;
 	CTSConvertor::MarshalString(pOrder->SubmitTime.ToString(), ret->InsertTime);
 	CTSConvertor::MarshalString(pOrder->Time.ToString(), ret->UpdateTime);
+	CTSConvertor::MarshalString(pOrder->StatusDetail, ret->Message);
 
 	return ret;
 }

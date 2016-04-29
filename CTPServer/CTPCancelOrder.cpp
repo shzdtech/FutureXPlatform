@@ -76,26 +76,12 @@ dataobj_ptr CTPCancelOrder::HandleResponse(ParamVector& rawRespParams, IRawAPI* 
 		auto pRsp = (CThostFtdcRspInfoField*)rawRespParams[1];
 		auto pData = (CThostFtdcInputOrderActionField*)rawRespParams[0];
 
-		auto pDO = new OrderDO(std::strtoull(pData->OrderRef, nullptr, 0),
-			pData->ExchangeID, pData->InstrumentID, pData->UserID);
-		ret.reset(pDO);
-		pDO->OrderSysID = std::strtoull(pData->OrderSysID, nullptr, 0);
-		pDO->OrderStatus = OrderStatus::CANCEL_REJECTED;
-		pDO->Active = false;
-		pDO->ErrorCode = pRsp->ErrorID;
+		ret = CTPUtility::ParseRawOrderAction(pData, pRsp, OrderStatus::CANCEL_REJECTED);
 	}
 	else
 	{
 		auto pData = (CThostFtdcOrderField*)rawRespParams[0];
-
-		auto pDO = new OrderDO(std::strtoull(pData->OrderRef, nullptr, 0),
-			pData->ExchangeID, pData->InstrumentID, pData->UserID);
-		ret.reset(pDO);
-		pDO->OrderSysID = std::strtoull(pData->OrderSysID, nullptr, 0);
-		pDO->VolumeRemain = pData->VolumeTotal;
-		pDO->VolumeTraded = pData->VolumeTraded;
-		pDO->OrderStatus = CTPUtility::CheckOrderStatus(pData->OrderStatus, pData->OrderSubmitStatus);
-		pDO->Active = false;
+		ret = CTPUtility::ParseRawOrder(pData);
 	}
 
 	return ret;

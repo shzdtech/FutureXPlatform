@@ -86,6 +86,7 @@ dataobj_ptr CTPQueryTrade::HandleResponse(ParamVector& rawRespParams, IRawAPI* r
 		pDO->TradeDate = pData->TradeDate;
 		pDO->TradeTime = pData->TradeTime;
 		pDO->TradeType = pData->TradeType;
+		pDO->HedgeFlag = pData->HedgeFlag - THOST_FTDC_HF_Speculation;
 	}
 
 	return ret;

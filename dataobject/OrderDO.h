@@ -79,6 +79,7 @@ public:
 	std::string InsertTime;
 	std::string UpdateTime;
 	std::string CancelTime;
+	std::string Message;
 
 protected:
 

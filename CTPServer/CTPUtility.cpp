@@ -10,11 +10,11 @@
 #include "../message/BizError.h"
 #include "../utility/Encoding.h"
 
-////////////////////////////////////////////////////////////////////////
-// Name:       CTPUtility::CheckError()
-// Purpose:    Implementation of CTPUtility::CheckError()
-// Return:     void
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       CTPUtility::CheckError()
+ // Purpose:    Implementation of CTPUtility::CheckError()
+ // Return:     void
+ ////////////////////////////////////////////////////////////////////////
 
 void CTPUtility::CheckError(const void* pRspInfo)
 {
@@ -22,7 +22,7 @@ void CTPUtility::CheckError(const void* pRspInfo)
 	{
 		auto pRsp = (CThostFtdcRspInfoField*)pRspInfo;
 		throw BizError(API_INNER_ERROR,
-			Encoding::ToUTF8(pRsp->ErrorMsg, "gb2312"),
+			std::move(Encoding::ToUTF8(pRsp->ErrorMsg, Encoding::CHARSET_GB2312)),
 			pRsp->ErrorID);
 	}
 }
@@ -188,9 +188,9 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(CThostFtdcOrderField *pOrder)
 		pOrder->ExchangeID, pOrder->InstrumentID, pOrder->UserID);
 	OrderDO_Ptr ret(pDO);
 
-	pDO->Direction = (pOrder->Direction == THOST_FTDC_D_Buy) ? 
+	pDO->Direction = (pOrder->Direction == THOST_FTDC_D_Buy) ?
 		DirectionType::BUY : DirectionType::SELL;
-	pDO->OpenClose = pOrder->CombOffsetFlag[0] -THOST_FTDC_OF_Open;
+	pDO->OpenClose = pOrder->CombOffsetFlag[0] - THOST_FTDC_OF_Open;
 	pDO->LimitPrice = pOrder->LimitPrice;
 	pDO->Volume = pOrder->VolumeTotalOriginal;
 	pDO->StopPrice = pOrder->StopPrice;
@@ -199,7 +199,7 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(CThostFtdcOrderField *pOrder)
 	pDO->OrderStatus = CheckOrderStatus(pOrder->OrderStatus, pOrder->OrderSubmitStatus);
 	pDO->VolumeTraded = pOrder->VolumeTraded;
 	pDO->VolumeRemain = pOrder->VolumeTotal;
-	pDO->TIF = pOrder->TimeCondition == THOST_FTDC_TC_IOC ? 
+	pDO->TIF = pOrder->TimeCondition == THOST_FTDC_TC_IOC ?
 		OrderTIFType::IOC : OrderTIFType::GFD;
 	char timebuf[20];
 	sprintf(timebuf, "%s %s", pOrder->InsertDate, pOrder->InsertTime);
@@ -207,11 +207,14 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(CThostFtdcOrderField *pOrder)
 	pDO->UpdateTime = pOrder->UpdateTime;
 	pDO->CancelTime = pOrder->CancelTime;
 	pDO->TradingDay = std::strtoull(pOrder->TradingDay, nullptr, 0);
+	pDO->Message = std::move(Encoding::ToUTF8(pOrder->StatusMsg, Encoding::CHARSET_GB2312));
 
 	return ret;
 }
 
-OrderDO_Ptr CTPUtility::ParseRawOrderAction(CThostFtdcInputOrderActionField *pOrderAction, 
+OrderDO_Ptr CTPUtility::ParseRawOrderAction(
+	CThostFtdcInputOrderActionField *pOrderAction,
+	CThostFtdcRspInfoField *pRsp,
 	OrderStatus orderstatus)
 {
 	auto pDO = new OrderDO(std::strtoull(pOrderAction->OrderRef, nullptr, 0),
@@ -219,19 +222,37 @@ OrderDO_Ptr CTPUtility::ParseRawOrderAction(CThostFtdcInputOrderActionField *pOr
 	OrderDO_Ptr ret(pDO);
 	pDO->OrderSysID = std::strtoull(pOrderAction->OrderSysID, nullptr, 0);
 	pDO->OrderStatus = orderstatus;
+	pDO->LimitPrice = pOrderAction->LimitPrice;
 	pDO->Active = false;
+
+	if (pRsp) {
+		pDO->ErrorCode = pRsp->ErrorID;
+		pDO->Message = std::move(Encoding::ToUTF8(pRsp->ErrorMsg, Encoding::CHARSET_GB2312));
+	}
 
 	return ret;
 }
 
-OrderDO_Ptr CTPUtility::ParseRawOrderInput(CThostFtdcInputOrderField *pOrderInput,
+OrderDO_Ptr CTPUtility::ParseRawOrderInput(
+	CThostFtdcInputOrderField *pOrderInput,
+	CThostFtdcRspInfoField *pRsp,
 	OrderStatus orderstatus)
 {
 	auto pDO = new OrderDO(std::strtoull(pOrderInput->OrderRef, nullptr, 0),
 		"", pOrderInput->InstrumentID, pOrderInput->UserID);
 	OrderDO_Ptr ret(pDO);
+
+	pDO->Direction = (pOrderInput->Direction == THOST_FTDC_D_Buy) ? DirectionType::BUY : DirectionType::SELL;
+	pDO->LimitPrice = pOrderInput->LimitPrice;
+	pDO->Volume = pOrderInput->VolumeTotalOriginal;
+	pDO->StopPrice = pOrderInput->StopPrice;
 	pDO->OrderStatus = orderstatus;
 	pDO->Active = false;
+
+	if (pRsp) {
+		pDO->ErrorCode = pRsp->ErrorID;
+		pDO->Message = std::move(Encoding::ToUTF8(pRsp->ErrorMsg, Encoding::CHARSET_GB2312));
+	}
 
 	return ret;
 }
