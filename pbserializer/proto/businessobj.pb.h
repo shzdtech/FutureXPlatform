@@ -2222,6 +2222,18 @@ class PBOrderInfo : public ::google::protobuf::Message {
   ::google::protobuf::int32 openclose() const;
   void set_openclose(::google::protobuf::int32 value);
 
+  // optional bytes message = 26;
+  bool has_message() const;
+  void clear_message();
+  static const int kMessageFieldNumber = 26;
+  const ::std::string& message() const;
+  void set_message(const ::std::string& value);
+  void set_message(const char* value);
+  void set_message(const void* value, size_t size);
+  ::std::string* mutable_message();
+  ::std::string* release_message();
+  void set_allocated_message(::std::string* message);
+
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.PBOrderInfo)
  private:
   inline void set_has_orderid();
@@ -2272,6 +2284,8 @@ class PBOrderInfo : public ::google::protobuf::Message {
   inline void clear_has_active();
   inline void set_has_openclose();
   inline void clear_has_openclose();
+  inline void set_has_message();
+  inline void clear_has_message();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::uint32 _has_bits_[1];
@@ -2299,6 +2313,7 @@ class PBOrderInfo : public ::google::protobuf::Message {
   ::google::protobuf::int32 volumecondition_;
   ::google::protobuf::int32 tradingday_;
   bool active_;
+  ::google::protobuf::internal::ArenaStringPtr message_;
   ::google::protobuf::int32 openclose_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
@@ -6323,6 +6338,59 @@ inline void PBOrderInfo::set_openclose(::google::protobuf::int32 value) {
   set_has_openclose();
   openclose_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOrderInfo.openclose)
+}
+
+// optional bytes message = 26;
+inline bool PBOrderInfo::has_message() const {
+  return (_has_bits_[0] & 0x01000000u) != 0;
+}
+inline void PBOrderInfo::set_has_message() {
+  _has_bits_[0] |= 0x01000000u;
+}
+inline void PBOrderInfo::clear_has_message() {
+  _has_bits_[0] &= ~0x01000000u;
+}
+inline void PBOrderInfo::clear_message() {
+  message_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  clear_has_message();
+}
+inline const ::std::string& PBOrderInfo::message() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOrderInfo.message)
+  return message_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void PBOrderInfo::set_message(const ::std::string& value) {
+  set_has_message();
+  message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOrderInfo.message)
+}
+inline void PBOrderInfo::set_message(const char* value) {
+  set_has_message();
+  message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBOrderInfo.message)
+}
+inline void PBOrderInfo::set_message(const void* value, size_t size) {
+  set_has_message();
+  message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBOrderInfo.message)
+}
+inline ::std::string* PBOrderInfo::mutable_message() {
+  set_has_message();
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBOrderInfo.message)
+  return message_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* PBOrderInfo::release_message() {
+  clear_has_message();
+  return message_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void PBOrderInfo::set_allocated_message(::std::string* message) {
+  if (message != NULL) {
+    set_has_message();
+  } else {
+    clear_has_message();
+  }
+  message_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), message);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBOrderInfo.message)
 }
 
 // -------------------------------------------------------------------

@@ -346,7 +346,7 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBOTCUserParamList, _internal_metadata_),
       -1);
   PBOrderInfo_descriptor_ = file->message_type(14);
-  static const int PBOrderInfo_offsets_[24] = {
+  static const int PBOrderInfo_offsets_[25] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBOrderInfo, orderid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBOrderInfo, ordersysid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBOrderInfo, brokerid_),
@@ -371,6 +371,7 @@ void protobuf_AssignDesc_businessobj_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBOrderInfo, tradingday_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBOrderInfo, active_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBOrderInfo, openclose_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBOrderInfo, message_),
   };
   PBOrderInfo_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
@@ -631,7 +632,7 @@ void protobuf_AddDesc_businessobj_2eproto() {
     "\010exchange\030\001 \002(\t\022\020\n\010contract\030\002 \002(\t\022\020\n\010qua"
     "ntity\030\003 \002(\002\"S\n\022PBOTCUserParamList\022=\n\006par"
     "ams\030\001 \003(\0132-.Micro.Future.Message.Busines"
-    "s.PBOTCUserParam\"\332\003\n\013PBOrderInfo\022\017\n\007orde"
+    "s.PBOTCUserParam\"\353\003\n\013PBOrderInfo\022\017\n\007orde"
     "rID\030\001 \001(\004\022\022\n\norderSysID\030\002 \001(\004\022\020\n\010brokerI"
     "D\030\003 \001(\t\022\022\n\ninvestorID\030\004 \001(\t\022\020\n\010exchange\030"
     "\005 \001(\t\022\020\n\010contract\030\006 \001(\t\022\020\n\010execType\030\007 \001("
@@ -643,39 +644,40 @@ void protobuf_AddDesc_businessobj_2eproto() {
     "ime\030\023 \001(\t\022\024\n\014volumeTraded\030\024 \001(\005\022\024\n\014volum"
     "eRemain\030\025 \001(\005\022\027\n\017volumeCondition\030\026 \001(\005\022\022"
     "\n\ntradingDay\030\027 \001(\005\022\016\n\006active\030\030 \001(\010\022\021\n\top"
-    "enclose\030\031 \001(\005\"\302\002\n\013PBTradeInfo\022\017\n\007tradeID"
-    "\030\001 \002(\004\022\021\n\tdirection\030\002 \002(\005\022\021\n\topenclose\030\003"
-    " \002(\005\022\022\n\norderSysID\030\004 \002(\004\022\017\n\007orderID\030\005 \002("
-    "\004\022\r\n\005price\030\006 \002(\001\022\016\n\006volume\030\007 \002(\005\022\020\n\010brok"
-    "erID\030\010 \001(\t\022\022\n\ninvestorID\030\t \001(\t\022\020\n\010exchan"
-    "ge\030\n \001(\t\022\020\n\010contract\030\013 \001(\t\022\016\n\006userID\030\014 \001"
-    "(\t\022\021\n\ttradeDate\030\r \001(\t\022\021\n\ttradeTime\030\016 \001(\t"
-    "\022\021\n\ttradeType\030\017 \001(\005\022\021\n\thedgeFlag\030\020 \001(\005\022\022"
-    "\n\ncommission\030\021 \001(\001\"\274\002\n\nPBPosition\022\020\n\010exc"
-    "hange\030\001 \002(\t\022\020\n\010contract\030\002 \002(\t\022\021\n\tdirecti"
-    "on\030\003 \002(\005\022\020\n\010position\030\005 \002(\005\022\022\n\nydPosition"
-    "\030\004 \001(\005\022\024\n\014positionDate\030\006 \001(\t\022\022\n\nopenVolu"
-    "me\030\007 \001(\005\022\023\n\013closeVolume\030\010 \001(\005\022\022\n\nopenAmo"
-    "unt\030\t \001(\001\022\023\n\013closeAmount\030\n \001(\001\022\014\n\004cost\030\013"
-    " \001(\001\022\020\n\010openCost\030\014 \001(\001\022\016\n\006profit\030\r \001(\001\022\023"
-    "\n\013closeProfit\030\016 \001(\001\022\021\n\tuseMargin\030\017 \001(\001\022\021"
-    "\n\thedgeFlag\030\020 \001(\005\"\213\005\n\rPBAccountInfo\022\020\n\010b"
-    "rokerID\030\002 \001(\t\022\021\n\taccountID\030\003 \001(\t\022\023\n\013preM"
-    "ortgage\030\004 \001(\001\022\021\n\tpreCredit\030\005 \001(\001\022\022\n\npreD"
-    "eposit\030\006 \001(\001\022\022\n\npreBalance\030\007 \001(\001\022\021\n\tpreM"
-    "argin\030\010 \001(\001\022\024\n\014interestBase\030\t \001(\001\022\020\n\010int"
-    "erest\030\n \001(\001\022\017\n\007deposit\030\013 \001(\001\022\020\n\010withdraw"
-    "\030\014 \001(\001\022\024\n\014frozenMargin\030\r \001(\001\022\022\n\nfrozenCa"
-    "sh\030\016 \001(\001\022\030\n\020frozenCommission\030\017 \001(\001\022\022\n\ncu"
-    "rrMargin\030\020 \001(\001\022\016\n\006cashIn\030\021 \001(\001\022\022\n\ncommis"
-    "sion\030\022 \001(\001\022\023\n\013closeProfit\030\023 \001(\001\022\026\n\016posit"
-    "ionProfit\030\024 \001(\001\022\017\n\007balance\030\025 \001(\001\022\021\n\tavai"
-    "lable\030\026 \001(\001\022\025\n\rwithdrawQuota\030\027 \001(\001\022\017\n\007re"
-    "serve\030\030 \001(\001\022\022\n\ntradingDay\030\031 \001(\t\022\024\n\014settl"
-    "ementID\030\032 \001(\005\022\016\n\006credit\030\033 \001(\001\022\020\n\010mortgag"
-    "e\030\034 \001(\001\022\026\n\016exchangeMargin\030\035 \001(\001\022\026\n\016deliv"
-    "eryMargin\030\036 \001(\001\022\036\n\026exchangeDeliveryMargi"
-    "n\030\037 \001(\001\022\026\n\016reserveBalance\030  \001(\001", 3551);
+    "enclose\030\031 \001(\005\022\017\n\007message\030\032 \001(\014\"\302\002\n\013PBTra"
+    "deInfo\022\017\n\007tradeID\030\001 \002(\004\022\021\n\tdirection\030\002 \002"
+    "(\005\022\021\n\topenclose\030\003 \002(\005\022\022\n\norderSysID\030\004 \002("
+    "\004\022\017\n\007orderID\030\005 \002(\004\022\r\n\005price\030\006 \002(\001\022\016\n\006vol"
+    "ume\030\007 \002(\005\022\020\n\010brokerID\030\010 \001(\t\022\022\n\ninvestorI"
+    "D\030\t \001(\t\022\020\n\010exchange\030\n \001(\t\022\020\n\010contract\030\013 "
+    "\001(\t\022\016\n\006userID\030\014 \001(\t\022\021\n\ttradeDate\030\r \001(\t\022\021"
+    "\n\ttradeTime\030\016 \001(\t\022\021\n\ttradeType\030\017 \001(\005\022\021\n\t"
+    "hedgeFlag\030\020 \001(\005\022\022\n\ncommission\030\021 \001(\001\"\274\002\n\n"
+    "PBPosition\022\020\n\010exchange\030\001 \002(\t\022\020\n\010contract"
+    "\030\002 \002(\t\022\021\n\tdirection\030\003 \002(\005\022\020\n\010position\030\005 "
+    "\002(\005\022\022\n\nydPosition\030\004 \001(\005\022\024\n\014positionDate\030"
+    "\006 \001(\t\022\022\n\nopenVolume\030\007 \001(\005\022\023\n\013closeVolume"
+    "\030\010 \001(\005\022\022\n\nopenAmount\030\t \001(\001\022\023\n\013closeAmoun"
+    "t\030\n \001(\001\022\014\n\004cost\030\013 \001(\001\022\020\n\010openCost\030\014 \001(\001\022"
+    "\016\n\006profit\030\r \001(\001\022\023\n\013closeProfit\030\016 \001(\001\022\021\n\t"
+    "useMargin\030\017 \001(\001\022\021\n\thedgeFlag\030\020 \001(\005\"\213\005\n\rP"
+    "BAccountInfo\022\020\n\010brokerID\030\002 \001(\t\022\021\n\taccoun"
+    "tID\030\003 \001(\t\022\023\n\013preMortgage\030\004 \001(\001\022\021\n\tpreCre"
+    "dit\030\005 \001(\001\022\022\n\npreDeposit\030\006 \001(\001\022\022\n\npreBala"
+    "nce\030\007 \001(\001\022\021\n\tpreMargin\030\010 \001(\001\022\024\n\014interest"
+    "Base\030\t \001(\001\022\020\n\010interest\030\n \001(\001\022\017\n\007deposit\030"
+    "\013 \001(\001\022\020\n\010withdraw\030\014 \001(\001\022\024\n\014frozenMargin\030"
+    "\r \001(\001\022\022\n\nfrozenCash\030\016 \001(\001\022\030\n\020frozenCommi"
+    "ssion\030\017 \001(\001\022\022\n\ncurrMargin\030\020 \001(\001\022\016\n\006cashI"
+    "n\030\021 \001(\001\022\022\n\ncommission\030\022 \001(\001\022\023\n\013closeProf"
+    "it\030\023 \001(\001\022\026\n\016positionProfit\030\024 \001(\001\022\017\n\007bala"
+    "nce\030\025 \001(\001\022\021\n\tavailable\030\026 \001(\001\022\025\n\rwithdraw"
+    "Quota\030\027 \001(\001\022\017\n\007reserve\030\030 \001(\001\022\022\n\ntradingD"
+    "ay\030\031 \001(\t\022\024\n\014settlementID\030\032 \001(\005\022\016\n\006credit"
+    "\030\033 \001(\001\022\020\n\010mortgage\030\034 \001(\001\022\026\n\016exchangeMarg"
+    "in\030\035 \001(\001\022\026\n\016deliveryMargin\030\036 \001(\001\022\036\n\026exch"
+    "angeDeliveryMargin\030\037 \001(\001\022\026\n\016reserveBalan"
+    "ce\030  \001(\001", 3568);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "businessobj.proto", &protobuf_RegisterTypes);
   PBUserInfo::default_instance_ = new PBUserInfo();
@@ -8759,6 +8761,7 @@ const int PBOrderInfo::kVolumeConditionFieldNumber;
 const int PBOrderInfo::kTradingDayFieldNumber;
 const int PBOrderInfo::kActiveFieldNumber;
 const int PBOrderInfo::kOpencloseFieldNumber;
+const int PBOrderInfo::kMessageFieldNumber;
 #endif  // !_MSC_VER
 
 PBOrderInfo::PBOrderInfo()
@@ -8805,6 +8808,7 @@ void PBOrderInfo::SharedCtor() {
   tradingday_ = 0;
   active_ = false;
   openclose_ = 0;
+  message_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -8821,6 +8825,7 @@ void PBOrderInfo::SharedDtor() {
   inserttime_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   updatetime_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   canceltime_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  message_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != default_instance_) {
   }
 }
@@ -8883,7 +8888,7 @@ void PBOrderInfo::Clear() {
     }
   }
   if (_has_bits_[16 / 32] & 16711680u) {
-    ZR_(volumeremain_, openclose_);
+    ZR_(volumeremain_, active_);
     if (has_updatetime()) {
       updatetime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
     }
@@ -8891,6 +8896,10 @@ void PBOrderInfo::Clear() {
       canceltime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
     }
     volumetraded_ = 0;
+    openclose_ = 0;
+  }
+  if (has_message()) {
+    message_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   }
 
 #undef ZR_HELPER_
@@ -9281,6 +9290,19 @@ bool PBOrderInfo::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
+        if (input->ExpectTag(210)) goto parse_message;
+        break;
+      }
+
+      // optional bytes message = 26;
+      case 26: {
+        if (tag == 210) {
+         parse_message:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_message()));
+        } else {
+          goto handle_unusual;
+        }
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -9465,6 +9487,12 @@ void PBOrderInfo::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(25, this->openclose(), output);
   }
 
+  // optional bytes message = 26;
+  if (has_message()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
+      26, this->message(), output);
+  }
+
   if (_internal_metadata_.have_unknown_fields()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -9635,6 +9663,13 @@ void PBOrderInfo::SerializeWithCachedSizes(
   // optional int32 openclose = 25;
   if (has_openclose()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(25, this->openclose(), target);
+  }
+
+  // optional bytes message = 26;
+  if (has_message()) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        26, this->message(), target);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -9816,6 +9851,13 @@ int PBOrderInfo::ByteSize() const {
     }
 
   }
+  // optional bytes message = 26;
+  if (has_message()) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::BytesSize(
+        this->message());
+  }
+
   if (_internal_metadata_.have_unknown_fields()) {
     total_size +=
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
@@ -9926,6 +9968,12 @@ void PBOrderInfo::MergeFrom(const PBOrderInfo& from) {
       set_openclose(from.openclose());
     }
   }
+  if (from._has_bits_[24 / 32] & (0xffu << (24 % 32))) {
+    if (from.has_message()) {
+      set_has_message();
+      message_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.message_);
+    }
+  }
   if (from._internal_metadata_.have_unknown_fields()) {
     mutable_unknown_fields()->MergeFrom(from.unknown_fields());
   }
@@ -9977,6 +10025,7 @@ void PBOrderInfo::InternalSwap(PBOrderInfo* other) {
   std::swap(tradingday_, other->tradingday_);
   std::swap(active_, other->active_);
   std::swap(openclose_, other->openclose_);
+  message_.Swap(&other->message_);
   std::swap(_has_bits_[0], other->_has_bits_[0]);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
@@ -10770,6 +10819,59 @@ void PBOrderInfo::clear_openclose() {
   set_has_openclose();
   openclose_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOrderInfo.openclose)
+}
+
+// optional bytes message = 26;
+bool PBOrderInfo::has_message() const {
+  return (_has_bits_[0] & 0x01000000u) != 0;
+}
+void PBOrderInfo::set_has_message() {
+  _has_bits_[0] |= 0x01000000u;
+}
+void PBOrderInfo::clear_has_message() {
+  _has_bits_[0] &= ~0x01000000u;
+}
+void PBOrderInfo::clear_message() {
+  message_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  clear_has_message();
+}
+ const ::std::string& PBOrderInfo::message() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOrderInfo.message)
+  return message_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBOrderInfo::set_message(const ::std::string& value) {
+  set_has_message();
+  message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOrderInfo.message)
+}
+ void PBOrderInfo::set_message(const char* value) {
+  set_has_message();
+  message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBOrderInfo.message)
+}
+ void PBOrderInfo::set_message(const void* value, size_t size) {
+  set_has_message();
+  message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBOrderInfo.message)
+}
+ ::std::string* PBOrderInfo::mutable_message() {
+  set_has_message();
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBOrderInfo.message)
+  return message_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBOrderInfo::release_message() {
+  clear_has_message();
+  return message_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBOrderInfo::set_allocated_message(::std::string* message) {
+  if (message != NULL) {
+    set_has_message();
+  } else {
+    clear_has_message();
+  }
+  message_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), message);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBOrderInfo.message)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
