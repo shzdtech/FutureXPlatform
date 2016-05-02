@@ -9,6 +9,7 @@
 #define __dataobject_ContractKey_h
 
 #include <string>
+#include "../utility/stringutility.h"
 
 static const char* EXCHANGE_OTC = "otc";
 
@@ -28,9 +29,10 @@ public:
 
 	inline int compare(const ContractKey& contractKey) const
 	{
-		int cmp = _stricmp(_instrumentID.data(), contractKey._instrumentID.data());
+		int cmp = stringutility::compare(_instrumentID.data(), contractKey._instrumentID.data());
 
-		return cmp != 0 ? cmp : _stricmp(_exchangeID.data(), contractKey._exchangeID.data());
+		return cmp != 0 ? cmp : 
+			stringutility::compare(_exchangeID.data(), contractKey._exchangeID.data());
 	}
 
 	bool operator< (const ContractKey& contractKey) const

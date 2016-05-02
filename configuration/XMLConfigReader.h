@@ -8,22 +8,17 @@
 #if !defined(__configuration_XMLConfigReader_h)
 #define __configuration_XMLConfigReader_h
 
-#include "IConfigReader.h"
+#include "AbstractConfigReader.h"
 #include "configuration_exp.h"
 #include <boost/property_tree/ptree.hpp>
 
-class CONFIGURATION_CLASS_EXPORT XMLConfigReader : public IConfigReader
+class CONFIGURATION_CLASS_EXPORT XMLConfigReader : public AbstractConfigReader
 {
 public:
    bool LoadFromStream(std::istream& is);
    bool LoadFromFile(const std::string& configPath);
-   std::string getValue(const std::string& expression);
-   int getVector(const std::string& expression, std::vector<std::string>& values);
-   int getMap(const std::string& expression, std::map<std::string, std::string>& values);
-   bool Close(void);
 
 protected:
-   boost::property_tree::ptree _current;
 
 private:
 

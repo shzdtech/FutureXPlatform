@@ -13,9 +13,9 @@
     <server.module.uuid>com.micro.future.asio.dll</server.module.uuid>
     <server.module.path>communication.dll</server.module.path>
     <server.class.uuid>server.asiotcp.lite</server.class.uuid>
-    <server.config>server.cfg</server.config>
+    <server.config>server.xml</server.config>
     <server.config.section>server.ctp.marketdata</server.config.section>
-    <factory.config>factory.cfg</factory.config>
+    <factory.config>factory.xml</factory.config>
     <factory.config.section>factory.ctp.marketdata</factory.config.section>
   </ctp_md>
   <ctp_trade>
@@ -23,9 +23,9 @@
     <server.module.uuid>com.micro.future.asio.dll</server.module.uuid>
     <server.module.path>communication.dll</server.module.path>
     <server.class.uuid>server.asiotcp.lite</server.class.uuid>
-    <server.config>server.cfg</server.config>
+    <server.config>server.xml</server.config>
     <server.config.section>server.ctp.trade</server.config.section>
-    <factory.config>factory.cfg</factory.config>
+    <factory.config>factory.xml</factory.config>
     <factory.config.section>factory.ctp.trade</factory.config.section>
   </ctp_trade>
   <otc_client>
@@ -33,9 +33,9 @@
     <server.module.uuid>com.micro.future.asio.dll</server.module.uuid>
     <server.module.path>communication.dll</server.module.path>
     <server.class.uuid>server.asiotcp.lite</server.class.uuid>
-    <server.config>server.cfg</server.config>
+    <server.config>server.xml</server.config>
     <server.config.section>server.otc.client</server.config.section>
-    <factory.config>factory.cfg</factory.config>
+    <factory.config>factory.xml</factory.config>
     <factory.config.section>factory.otc.client</factory.config.section>
   </otc_client>
   <otc_tradingdesk>
@@ -43,9 +43,9 @@
     <server.module.uuid>com.micro.future.asio.dll</server.module.uuid>
     <server.module.path>communication.dll</server.module.path>
     <server.class.uuid>server.asiotcp.lite</server.class.uuid>
-    <server.config>server.cfg</server.config>
+    <server.config>server.xml</server.config>
     <server.config.section>server.otc.tradingdesk</server.config.section>
-    <factory.config>factory.cfg</factory.config>
+    <factory.config>factory.xml</factory.config>
     <factory.config.section>factory.otc.tradingdesk</factory.config.section>
   </otc_tradingdesk>
   <cts>
@@ -53,9 +53,9 @@
     <server.module.uuid>com.micro.future.asio.dll</server.module.uuid>
     <server.module.path>communication.dll</server.module.path>
     <server.class.uuid>server.asiotcp.lite</server.class.uuid>
-    <server.config>server.cfg</server.config>
+    <server.config>server.xml</server.config>
     <server.config.section>server.cts.client</server.config.section>
-    <factory.config>factory.cfg</factory.config>
+    <factory.config>factory.xml</factory.config>
     <factory.config.section>factory.cts.client</factory.config.section>
   </cts>
   <testing>
@@ -63,9 +63,9 @@
     <server.module.uuid>com.micro.future.asio.dll</server.module.uuid>
     <server.module.path>communication.dll</server.module.path>
     <server.class.uuid>server.asiotcp.lite</server.class.uuid>
-    <server.config>server.cfg</server.config>
+    <server.config>server.xml</server.config>
     <server.config.section>server.testing.sim</server.config.section>
-    <factory.config>factory.cfg</factory.config>
+    <factory.config>factory.xml</factory.config>
     <factory.config.section>factory.testing.sim</factory.config.section>
   </testing>
 </service>

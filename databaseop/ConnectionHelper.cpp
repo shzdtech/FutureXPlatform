@@ -17,7 +17,7 @@
 std::once_flag ConnectionHelper::_instance_flag;
 std::shared_ptr<ConnectionHelper> ConnectionHelper::_instance;
 
-
+ConnectionConfig ConnectionHelper::DEFAULT_CONFIG;
 ////////////////////////////////////////////////////////////////////////
 // Name:       ConnectionHelper::LoadConfig(std::string& config)
 // Purpose:    Implementation of ConnectionHelper::LoadConfig()
@@ -28,28 +28,33 @@ std::shared_ptr<ConnectionHelper> ConnectionHelper::_instance;
 
 void ConnectionHelper::LoadConfig(const std::string& config)
 {
-	IConfigReader_Ptr cfgReader = AbstractConfigReaderFactory::CreateConfigReader();
-	if (cfgReader->LoadFromFile(config)) {
+	if (auto cfgReader = AbstractConfigReaderFactory::OpenConfigReader(config)) {
 		std::map<std::string, std::string> cfgMap;
 		if (cfgReader->getMap("system.database", cfgMap)) {
-			_url = cfgMap["url"];
-			_user = cfgMap["user"];
-			_password = cfgMap["password"];
+			_connCfg.DB_URL = cfgMap["url"];
+			_connCfg.DB_USER = cfgMap["user"];
+			_connCfg.DB_PASSWORD = cfgMap["password"];
 
 			std::string empty;
 			auto& autocommit = TUtil::FirstNamedEntry("timeout", cfgMap, empty);
-			_autocommit = autocommit.length() > 0 ? std::stoi(autocommit, nullptr, 0) : _autocommit;
+			if (autocommit.length() > 0)
+				_connCfg.DB_AUTOCOMMIT = std::stoi(autocommit, nullptr, 0);
 
 			auto& timeout = TUtil::FirstNamedEntry("timeout", cfgMap, empty);
-			_timeout = timeout.length() > 0 ? std::stoul(timeout, nullptr, 0) : _timeout;
+			if (timeout.length() > 0)
+				_connCfg.DB_CONNECT_TIMEOUT = std::stoul(timeout, nullptr, 0);
 
 			auto& spoolsz = TUtil::FirstNamedEntry("pool_size", cfgMap, empty);
-			_pool_sz = spoolsz.length() > 0 ? std::stoi(spoolsz, nullptr, 0) : _pool_sz;
+			if (spoolsz.length() > 0)
+				_connCfg.DB_POOL_SIZE = std::stoi(spoolsz, nullptr, 0);
 
-			_check_sql = TUtil::FirstNamedEntry("checksql", cfgMap, ConnectionConfig::DB_CHECKSQL);
+			auto& checksql = TUtil::FirstNamedEntry("checksql", cfgMap, empty);
+			if (checksql.length() > 0)
+				_connCfg.DB_CHECKSQL = checksql;
 
 			auto& shb = TUtil::FirstNamedEntry("heartbeat", cfgMap, empty);
-			_heartbeat = shb.length() > 0 ? std::stoi(shb, nullptr, 0) : _heartbeat;
+			if (shb.length())
+				_connCfg.DB_HEARTBEAT = std::stoi(shb, nullptr, 0);
 		}
 	}
 }
@@ -66,7 +71,8 @@ void ConnectionHelper::LoadConfig(const std::string& config)
 
 Connection_Ptr ConnectionHelper::CreateConnection(void)
 {
-	return Connection_Ptr(get_driver_instance()->connect(_url, _user, _password));
+	return Connection_Ptr(get_driver_instance()->
+		connect(_connCfg.DB_URL, _connCfg.DB_USER, _connCfg.DB_PASSWORD));
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -77,7 +83,8 @@ Connection_Ptr ConnectionHelper::CreateConnection(void)
 
 ManagedSession_Ptr ConnectionHelper::LeaseOrCreate(void)
 {
-	ManagedSession_Ptr ret(_connpool_ptr->lease(std::chrono::milliseconds(_timeout)));
+	ManagedSession_Ptr ret(_connpool_ptr->lease(
+		std::chrono::milliseconds(_connCfg.DB_CONNECT_TIMEOUT)));
 	if (!ret->getConnection())
 	{
 		ret = std::make_shared<ManagedSession>(CreateConnection());
@@ -96,13 +103,7 @@ ConnectionHelper::ConnectionHelper()
 {
 	_runing = false;
 	_connpool_ptr = nullptr;
-	_url = ConnectionConfig::DB_URL;
-	_user = ConnectionConfig::DB_USER;
-	_password = ConnectionConfig::DB_PASSWORD;
-	_autocommit = ConnectionConfig::DB_AUTOCOMMIT;
-	_timeout = ConnectionConfig::DB_CONNECT_TIMEOUT;
-	_pool_sz = ConnectionConfig::DB_POOL_SIZE;
-	_heartbeat = ConnectionConfig::DB_HEARTBEAT;
+	_connCfg = DEFAULT_CONFIG;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -126,10 +127,8 @@ ConnectionHelper::~ConnectionHelper()
 // Return:     
 ////////////////////////////////////////////////////////////////////////
 
-ConnectionHelper::ConnectionHelper(const std::string& url, const std::string& user, const std::string& password,
-	const int pool_sz, const int heartbeat, const std::string& checksql)
-	: _url(url), _user(user), _password(password),
-	_pool_sz(pool_sz), _heartbeat(heartbeat), _check_sql(checksql)
+ConnectionHelper::ConnectionHelper(const ConnectionConfig& connCfg)
+	: _connCfg(connCfg)
 {
 	_runing = false;
 	initalPool();
@@ -139,11 +138,11 @@ void ConnectionHelper::Initialize()
 {
 	if (!_connpool_ptr)
 	{
-		if (ConnectionConfig::DB_URL.length() == 0 ||
-			ConnectionConfig::DB_USER.length() == 0 ||
-			ConnectionConfig::DB_PASSWORD.length() == 0)
+		if (_connCfg.DB_URL.length() == 0 ||
+			_connCfg.DB_USER.length() == 0 ||
+			_connCfg.DB_PASSWORD.length() == 0)
 		{
-			LoadConfig(ConnectionConfig::DB_CONFIG_FILE);
+			LoadConfig(_connCfg.DB_CONFIG_FILE);
 		}
 
 		initalPool();
@@ -153,15 +152,16 @@ void ConnectionHelper::Initialize()
 
 void ConnectionHelper::initalPool()
 {
-	std::vector<Connection_Ptr> connvec(_pool_sz);
+	std::vector<Connection_Ptr> connvec(_connCfg.DB_POOL_SIZE);
 
 	try
 	{
 		auto driver = get_driver_instance();
-		for (int i = 0; i < _pool_sz; i++)
+		for (int i = 0; i < _connCfg.DB_POOL_SIZE; i++)
 		{
-			auto conn = Connection_Ptr(driver->connect(_url, _user, _password));
-			conn->setAutoCommit(_autocommit);
+			auto conn = Connection_Ptr(
+				driver->connect(_connCfg.DB_URL, _connCfg.DB_USER, _connCfg.DB_PASSWORD));
+			conn->setAutoCommit(_connCfg.DB_AUTOCOMMIT);
 			connvec[i] = conn;
 		}
 		_connpool_ptr = std::make_shared<connection_pool<sql::Connection>>(connvec);
@@ -179,9 +179,9 @@ void ConnectionHelper::checkstatus()
 {
 	if (_runing)
 	{
-		std::string& checksql = _check_sql;
-		std::this_thread::sleep_for(std::chrono::milliseconds(_heartbeat));
-		for (int i = 0; i < _pool_sz; i++)
+		std::string& checksql = _connCfg.DB_CHECKSQL;
+		std::this_thread::sleep_for(std::chrono::milliseconds(_connCfg.DB_HEARTBEAT));
+		for (int i = 0; i < _connCfg.DB_POOL_SIZE; i++)
 		{
 			auto mgdsession = _connpool_ptr->lease_at(i);
 			if (auto connptr = mgdsession->getConnection())
@@ -196,7 +196,7 @@ void ConnectionHelper::checkstatus()
 					{
 						connptr->reconnect();
 					}
-					catch (...){}
+					catch (...) {}
 				}
 			};
 		}

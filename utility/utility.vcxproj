@@ -150,6 +150,7 @@
     <ClInclude Include="semaphore.h" />
     <ClInclude Include="singleton_templ.h" />
     <ClInclude Include="singleton_templ_mt.h" />
+    <ClInclude Include="stringutility.h" />
     <ClInclude Include="TUtil.h" />
     <ClInclude Include="utility_exp.h" />
   </ItemGroup>

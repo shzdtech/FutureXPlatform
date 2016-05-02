@@ -14,14 +14,16 @@
 #include "../message/IMessageServer.h"
 #include "../utility/singleton_templ.h"
 
+static const char* MICROFUTURE_DEFAULT_CONFIG_NAME = "system";
+
 class SYSTEM_CLASS_EXPORT MicroFurtureSystem : public ISystem, public singleton_ptr < MicroFurtureSystem >
 {
 public:
 	MicroFurtureSystem();
 	~MicroFurtureSystem();
 
-	bool Load(const char* config);
-	bool Load(const std::string& config);
+	bool Load(const char* config = MICROFUTURE_DEFAULT_CONFIG_NAME);
+	bool Load(const std::string& config = MICROFUTURE_DEFAULT_CONFIG_NAME);
 	bool IsRunning(void);
 	bool Run(void);
 	bool Stop(void);

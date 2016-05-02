@@ -17,6 +17,14 @@
       <UniqueIdentifier>{d21e2edc-d1f0-47fc-99b6-75ff25d6326e}</UniqueIdentifier>
       <Extensions>cfg;</Extensions>
     </Filter>
+    <Filter Include="config\json">
+      <UniqueIdentifier>{c7ed24ef-4e72-4b51-b720-ff8e815de3e8}</UniqueIdentifier>
+      <Extensions>json</Extensions>
+    </Filter>
+    <Filter Include="config\xml">
+      <UniqueIdentifier>{e73cfaf1-0e63-4627-847d-e5a0c1b915e8}</UniqueIdentifier>
+      <Extensions>cfg</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="system_exp.h">
@@ -35,17 +43,31 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="factory.cfg">
-      <Filter>config</Filter>
+    <Xml Include="factory.xml">
+      <Filter>config\xml</Filter>
     </Xml>
-    <Xml Include="server.cfg">
-      <Filter>config</Filter>
+    <Xml Include="server.xml">
+      <Filter>config\xml</Filter>
     </Xml>
-    <Xml Include="service.cfg">
-      <Filter>config</Filter>
+    <Xml Include="service.xml">
+      <Filter>config\xml</Filter>
     </Xml>
-    <Xml Include="system.cfg">
-      <Filter>config</Filter>
+    <Xml Include="system.xml">
+      <Filter>config\xml</Filter>
     </Xml>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="factory.json">
+      <Filter>config\json</Filter>
+    </None>
+    <None Include="server.json">
+      <Filter>config\json</Filter>
+    </None>
+    <None Include="service.json">
+      <Filter>config\json</Filter>
+    </None>
+    <None Include="system.json">
+      <Filter>config\json</Filter>
+    </None>
   </ItemGroup>
 </Project>

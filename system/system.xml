@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <system>
   <service>
-    <cfg>service.cfg</cfg>
+    <cfg>service.xml</cfg>
   </service>
   <database>
     <url>tcp://116.255.156.152:3306/otc_db</url>

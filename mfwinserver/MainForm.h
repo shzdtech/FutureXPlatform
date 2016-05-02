@@ -72,7 +72,7 @@ namespace Micro
 		protected:
 		private: System::ComponentModel::IContainer^  components;
 
-		public: static const char* CONFIG_FILE = "system.cfg";
+		public: static const char* CONFIG_FILE = "system";
 				/// <summary>
 				/// 必需的设计器变量。
 				/// </summary>

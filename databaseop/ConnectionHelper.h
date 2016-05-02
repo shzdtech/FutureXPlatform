@@ -14,6 +14,7 @@
 #include <cppconn/resultset.h>
 #include <cppconn/statement.h>
 #include <cppconn/prepared_statement.h>
+#include "db_config.h"
 
 #include <string>
 #include <memory>
@@ -24,6 +25,7 @@
 #include "../utility/singleton_templ_mt.h"
 
 #include "databaseop_exp.h"
+
 
 template <typename P>
 class DBAutoClosePtr
@@ -76,15 +78,14 @@ public:
 class DATABASEOP_CLASS_EXPORTS ConnectionHelper : public singleton_mt_ptr < ConnectionHelper >
 {
 public:
-	static std::string DEFAULT_CONFIG;
+	static ConnectionConfig DEFAULT_CONFIG;
 
 	void LoadConfig(const std::string& config);
 	Connection_Ptr CreateConnection(void);
 	ManagedSession_Ptr LeaseOrCreate(void);
 	ConnectionHelper();
 	~ConnectionHelper();
-	ConnectionHelper(const std::string& url, const std::string& user, const std::string& password,
-		const int pool_sz, const int heartbeat, const std::string& checksql);
+	ConnectionHelper(const ConnectionConfig& connCfg);
 	virtual void Initialize();
 
 	void checkstatus();
@@ -95,14 +96,7 @@ private:
 	void initalPool();
 
 	std::shared_ptr<connection_pool<sql::Connection>> _connpool_ptr;
-	std::string _url;
-	std::string _user;
-	std::string _password;
-	bool _autocommit;
-	unsigned long _timeout;
-	std::string _check_sql;
-	int _heartbeat;
-	int _pool_sz;
+	ConnectionConfig _connCfg;
 	bool _runing;
 	std::future<void> _heartbeatTask;
 

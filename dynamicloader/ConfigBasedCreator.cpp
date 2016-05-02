@@ -12,7 +12,7 @@
 #include "../configuration/AbstractConfigReaderFactory.h"
 
 
-std::string ConfigBasedCreator::DEFAULT_CFG_PATH = "instance.cfg";
+std::string ConfigBasedCreator::DEFAULT_CFG_PATH = "instance";
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       ConfigBasedCreator::CreateInstance(const std::string& moduleUUID, const std::string& modulePath, const std::string& classUUID)
@@ -51,17 +51,13 @@ std::shared_ptr<void> ConfigBasedCreator::CreateInstance(const std::string& modu
 
 std::shared_ptr<void> ConfigBasedCreator::CreateInstance(const std::string& configFile, const std::string& sectionPath) {
 	std::shared_ptr<void> instancePtr;
-	auto configReader = AbstractConfigReaderFactory::CreateConfigReader();
-	if (configReader) {
-		std::shared_ptr<IConfigReader> cr_ptr(configReader);
-		if (cr_ptr->LoadFromFile(configFile)) {
-			std::map<std::string, std::string> facMap;
-			if (cr_ptr->getMap(sectionPath, facMap)) {
-				std::string mPath = facMap["module.path"];
-				std::string mUUID = facMap["module.uuid"];
-				std::string cUUID = facMap["class.uuid"];
-				instancePtr = CreateInstance(mUUID, mPath, cUUID);
-			}
+	if (auto cfgReader = AbstractConfigReaderFactory::OpenConfigReader(configFile)) {
+		std::map<std::string, std::string> facMap;
+		if (cfgReader->getMap(sectionPath, facMap)) {
+			std::string mPath = facMap["module.path"];
+			std::string mUUID = facMap["module.uuid"];
+			std::string cUUID = facMap["class.uuid"];
+			instancePtr = CreateInstance(mUUID, mPath, cUUID);
 		}
 	}
 

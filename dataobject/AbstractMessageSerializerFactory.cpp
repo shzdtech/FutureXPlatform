@@ -6,8 +6,9 @@
  ***********************************************************************/
 
 #include "AbstractMessageSerializerFactory.h"
-#include "databoject_config.h"
 #include "../dynamicloader/ConfigBasedCreator.h"
+
+MessageSerializerConfig AbstractMessageSerializerFactory::DefaultMessageSerializerConfig;
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       AbstractMessageSerializerFactory::Instance()
@@ -20,8 +21,8 @@ std::shared_ptr<AbstractMessageSerializerFactory> AbstractMessageSerializerFacto
 	static std::shared_ptr<AbstractMessageSerializerFactory> instance(
 		std::static_pointer_cast<AbstractMessageSerializerFactory>
 		(ConfigBasedCreator::CreateInstance(
-		MessageSerializer::MODULE_UUID,
-		MessageSerializer::MODULE_PATH,
+			DefaultMessageSerializerConfig.MODULE_UUID,
+			DefaultMessageSerializerConfig.MODULE_PATH,
 		CLASS_UUID_MSG_SERIALIZER_FACTORY)));
 
 	return instance;

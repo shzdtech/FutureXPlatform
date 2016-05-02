@@ -10,7 +10,7 @@
 
 std::once_flag SysConfig::_instance_flag;
 SysConfig* SysConfig::_instance = nullptr;
-std::string SysConfig::DEFAULT_CONFIG = "system.cfg";
+std::string SysConfig::DEFAULT_CONFIG = "system";
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       SysConfig::instance()

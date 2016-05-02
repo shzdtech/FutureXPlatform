@@ -15,13 +15,13 @@
 #include "../configuration/AbstractConfigReaderFactory.h"
 
 ASIOTCPServer::ASIOTCPServer() :
-_running(false),
-_port(0),
-_nthread(DEFAULT_ASYC_THREAD),
-_sessiontimeout(SESSION_TIMEOUT),
-_max_msg_size(MAX_MSG_SIZE),
-_socket(_iosrv),
-_acceptor(new tcp::acceptor(_iosrv))
+	_running(false),
+	_port(0),
+	_nthread(DEFAULT_ASYC_THREAD),
+	_sessiontimeout(SESSION_TIMEOUT),
+	_max_msg_size(MAX_MSG_SIZE),
+	_socket(_iosrv),
+	_acceptor(new tcp::acceptor(_iosrv))
 {
 	_manager_ptr = std::make_shared<ASIOSessionManager>(this);
 
@@ -47,30 +47,27 @@ bool ASIOTCPServer::Initialize(const std::string& uri, const std::string& config
 	bool ret = false;
 
 	_uri = uri;
-	std::size_t pos = uri.find_last_of(':');
+	std::size_t pos = uri.rfind(':');
 	if (pos != std::string::npos) {
 		_uri = uri.substr(0, pos);
 		_port = std::stoi(uri.substr(pos + 1));
 	}
 
-	if (!config.empty()) {
-		auto cfgReader = AbstractConfigReaderFactory::CreateConfigReader();
-		if (cfgReader->LoadFromFile(config)) {
-			std::map<std::string, std::string> valMap;
-			cfgReader->getMap("server." + _uri, valMap);
-			if (!_port)
-				_port = std::stoi(valMap["port"]);
-			int nthread = std::stoi(valMap["workerthread"], nullptr, 0);
-			if (nthread)
-				_nthread = nthread;
-			std::string& timeout = valMap["timeout"];
-			if (!timeout.empty())
-				_sessiontimeout = std::stoi(timeout, nullptr, 0);
-			auto it = valMap.find("max_msg_size");
-			if ((it != valMap.end()))
-				if (long outsize = std::stol(it->second, nullptr, 0))
-					_max_msg_size = outsize;
-		}
+	if (auto cfgReader = AbstractConfigReaderFactory::OpenConfigReader(config)) {
+		std::map<std::string, std::string> valMap;
+		cfgReader->getMap("server." + _uri, valMap);
+		if (!_port)
+			_port = std::stoi(valMap["port"]);
+		int nthread = std::stoi(valMap["workerthread"], nullptr, 0);
+		if (nthread)
+			_nthread = nthread;
+		std::string& timeout = valMap["timeout"];
+		if (!timeout.empty())
+			_sessiontimeout = std::stoi(timeout, nullptr, 0);
+		auto it = valMap.find("max_msg_size");
+		if ((it != valMap.end()))
+			if (long outsize = std::stol(it->second, nullptr, 0))
+				_max_msg_size = outsize;
 	}
 
 	ret = true;
@@ -131,7 +128,7 @@ bool ASIOTCPServer::Start(void) {
 								std::make_shared<std::thread>
 								(&ASIOTCPServer::work_thread, this));
 						}
-						
+
 						_running = true;
 					}
 				}

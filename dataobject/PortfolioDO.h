@@ -25,9 +25,10 @@ public:
 
 	inline int compare(const PortfolioKey& portfolioKey) const
 	{
-		int cmp = _stricmp(_portfolioID.data(), portfolioKey._portfolioID.data());
+		int cmp = stringutility::compare(_portfolioID.data(), portfolioKey._portfolioID.data());
 
-		return cmp != 0 ? cmp : _stricmp(_userID.data(), portfolioKey._userID.data());
+		return cmp != 0 ? cmp : 
+			stringutility::compare(_userID.data(), portfolioKey._userID.data());
 	}
 
 	bool operator< (const PortfolioKey& portfolioKey) const

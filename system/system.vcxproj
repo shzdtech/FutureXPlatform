@@ -174,6 +174,9 @@
     <ProjectReference Include="..\databaseop\databaseop.vcxproj">
       <Project>{dc2aae7b-2f79-42fc-94c2-bc3c9c1108c9}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\dataobject\dataobject.vcxproj">
+      <Project>{6257959c-c51c-47ba-9b4c-b40e83f8453a}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\dynamicloader\dynamicloader.vcxproj">
       <Project>{8c2b597d-93ee-47ec-82ee-515b999a1feb}</Project>
     </ProjectReference>
@@ -182,32 +185,38 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="factory.cfg">
+    <Xml Include="factory.xml">
       <DeploymentContent>true</DeploymentContent>
       <FileType>XML</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </Xml>
-    <Xml Include="server.cfg">
-      <DeploymentContent>true</DeploymentContent>
-      <FileType>XML</FileType>
-      <SubType>Designer</SubType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-    </Xml>
-    <Xml Include="service.cfg">
-      <DeploymentContent>true</DeploymentContent>
-      <FileType>XML</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-    </Xml>
-    <Xml Include="system.cfg">
+    <Xml Include="server.xml">
       <DeploymentContent>true</DeploymentContent>
       <FileType>XML</FileType>
       <SubType>Designer</SubType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </Xml>
+    <Xml Include="service.xml">
+      <DeploymentContent>true</DeploymentContent>
+      <FileType>XML</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </Xml>
+    <Xml Include="system.xml">
+      <DeploymentContent>true</DeploymentContent>
+      <FileType>XML</FileType>
+      <SubType>Designer</SubType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </Xml>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="factory.json" />
+    <None Include="server.json" />
+    <None Include="service.json" />
+    <None Include="system.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -64,8 +64,7 @@ IMessageProcessor_Ptr MessageServiceFactory::CreateMessageProcessor(void)
 bool MessageServiceFactory::Load(const std::string& configFile, const std::string& param)
 {
 	bool ret = false;
-	auto reader = AbstractConfigReaderFactory::CreateConfigReader();
-	if (reader->LoadFromFile(configFile)) {
+	if (auto reader = AbstractConfigReaderFactory::OpenConfigReader(configFile)) {
 		std::map<std::string, std::string> cfgMap;
 		if (reader->getMap(param, cfgMap)) {
 			_configMap = cfgMap;

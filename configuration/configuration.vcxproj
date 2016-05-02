@@ -143,16 +143,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AbstractConfigReader.h" />
     <ClInclude Include="AbstractConfigReaderFactory.h" />
     <ClInclude Include="IConfigReader.h" />
     <ClInclude Include="configuration_exp.h" />
+    <ClInclude Include="JsonConfigReader.h" />
     <ClInclude Include="SysConfig.h" />
     <ClInclude Include="SysConfigConst.h" />
     <ClInclude Include="SysConfigImpl.h" />
     <ClInclude Include="XMLConfigReader.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AbstractConfigReader.cpp" />
     <ClCompile Include="AbstractConfigReaderFactory.cpp" />
+    <ClCompile Include="JsonConfigReader.cpp" />
     <ClCompile Include="SysConfig.cpp" />
     <ClCompile Include="SysConfigImpl.cpp" />
     <ClCompile Include="XMLConfigReader.cpp" />

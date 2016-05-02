@@ -13,30 +13,23 @@
 #include "../message/SysParam.h"
 
 #include "../databaseop/SysParamsDAO.h"
-#include "../databaseop/db_config.h"
-#include "../dataobject/databoject_config.h"
+#include "../dataobject/AbstractMessageSerializerFactory.h"
 
-////////////////////////////////////////////////////////////////////////
-// Name:       MicroFurtureSystem::Load(const std::string& config)
-// Purpose:    Implementation of MicroFurtureSystem::Load()
-// Parameters:
-// - config
-// Return:     void
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       MicroFurtureSystem::Load(const std::string& config)
+ // Purpose:    Implementation of MicroFurtureSystem::Load()
+ // Parameters:
+ // - config
+ // Return:     void
+ ////////////////////////////////////////////////////////////////////////
 
 bool MicroFurtureSystem::Load(const std::string& config)
 {
 	bool ret = false;
 	LOG(INFO) << "Initializing Application:" << std::endl;
-	
 
-	auto cfgReader = AbstractConfigReaderFactory::CreateConfigReader();
-	if (cfgReader) {
+	if (auto cfgReader = AbstractConfigReaderFactory::OpenConfigReader(config)) {
 		LOG(INFO) << "  Loading System Config: " << config << std::endl;
-
-		cfgReader->LoadFromFile(config);
-
-		ConnectionConfig::DB_CONFIG_FILE = config;
 
 		// Initialize SysParam
 		std::map<std::string, std::string> cfgMap;
@@ -52,51 +45,54 @@ bool MicroFurtureSystem::Load(const std::string& config)
 		cfgReader->getMap("system.serializer", cfgMap);
 		auto it = cfgMap.find("module.uuid");
 		if (it != cfgMap.end())
-			MessageSerializer::MODULE_UUID = it->second;
+			AbstractMessageSerializerFactory::DefaultMessageSerializerConfig.MODULE_UUID =
+			it->second;
 		it = cfgMap.find("module.path");
 		if (it != cfgMap.end())
-			MessageSerializer::MODULE_PATH = it->second;
+			AbstractMessageSerializerFactory::DefaultMessageSerializerConfig.MODULE_PATH =
+			it->second;
 
 		// Initialize Services
 		std::string serve_cfg = cfgReader->getValue("system.service.cfg");
-		cfgReader->LoadFromFile(serve_cfg);
-		LOG(INFO) << "  Loading Service Config: " << serve_cfg << std::endl;
-		std::vector<std::string> sections;
-		cfgReader->getVector("service.servercfg", sections);
+		if (cfgReader = AbstractConfigReaderFactory::OpenConfigReader(serve_cfg)) {
+			LOG(INFO) << "  Loading Service Config: " << serve_cfg << std::endl;
+			std::vector<std::string> sections;
+			cfgReader->getVector("service.servercfg", sections);
 
-		ret = true;
-		for (auto& sec : sections) {
-			bool initserver = false;
+			ret = true;
+			for (auto& sec : sections) {
+				bool initserver = false;
 
-			// Initialize Handler Factory
-			cfgReader->getMap(sec, cfgMap);
-			std::string facCfg = cfgMap["factory.config"];
-			std::string facCfgSec = cfgMap["factory.config.section"];
-			if (auto msgfac = ConfigBasedCreator::CreateInstance(facCfg, facCfgSec)) {
-				auto msgsvcfactory = std::static_pointer_cast<IMessageServiceFactory>(msgfac);
-				if (msgsvcfactory->Load(facCfg, facCfgSec)) {
-					
-					std::string svrUUID = cfgMap["server.module.uuid"];
-					std::string svrModule = cfgMap["server.module.path"];
-					std::string svrClass = cfgMap["server.class.uuid"];
-					std::string svrCfg = cfgMap["server.config"];
-					std::string svrCfgSec = cfgMap["server.config.section"];
+				// Initialize Handler Factory
+				cfgReader->getMap(sec, cfgMap);
+				std::string facCfg = cfgMap["factory.config"];
+				std::string facCfgSec = cfgMap["factory.config.section"];
+				if (auto msgfac = ConfigBasedCreator::CreateInstance(facCfg, facCfgSec)) {
+					auto msgsvcfactory = std::static_pointer_cast<IMessageServiceFactory>(msgfac);
+					if (msgsvcfactory->Load(facCfg, facCfgSec)) {
 
-					// Initialize Server
-					if (auto srvPtr = ConfigBasedCreator::CreateInstance(svrUUID, svrModule, svrClass)) {
-						auto server = std::static_pointer_cast<IMessageServer>(srvPtr);
-						server->RegisterServiceFactory(msgsvcfactory);
-						std::string svruri = cfgMap["server.uri"];
-						if (server->Initialize(svruri, svrCfg)){
-							this->_servers.push_back(server);
-							initserver = true;
-							LOG(INFO) << "  Server " << server->getUri() << " initialized." << std::endl;
+						std::string svrUUID = cfgMap["server.module.uuid"];
+						std::string svrModule = cfgMap["server.module.path"];
+						std::string svrClass = cfgMap["server.class.uuid"];
+						std::string svrCfg = cfgMap["server.config"];
+						std::string svrCfgSec = cfgMap["server.config.section"];
+
+						// Initialize Server
+						if (auto srvPtr = ConfigBasedCreator::CreateInstance(svrUUID, svrModule, svrClass)) {
+							auto server = std::static_pointer_cast<IMessageServer>(srvPtr);
+							server->RegisterServiceFactory(msgsvcfactory);
+							std::string svruri = cfgMap["server.uri"];
+							if (server->Initialize(svruri, svrCfg)) {
+								this->_servers.push_back(server);
+								initserver = true;
+								LOG(INFO) << "  Server " << server->getUri() << " initialized." << std::endl;
+							}
 						}
 					}
 				}
-			}
 
-			ret = ret && initserver;
+				ret = ret && initserver;
+			}
 		}
 	}
 	if (ret)
@@ -138,7 +134,7 @@ bool MicroFurtureSystem::Run(void)
 			}
 		}
 		LOG(INFO) << i << " servers started running." << std::endl;
-		
+
 		_running = true;
 
 		ret = i == _servers.size();
@@ -176,7 +172,7 @@ bool MicroFurtureSystem::Stop(void)
 
 	ret = i == _servers.size();
 
-	LOG(INFO) << i <<" servers have stopped." << std::endl;
+	LOG(INFO) << i << " servers have stopped." << std::endl;
 
 	return ret;
 }

@@ -58,7 +58,7 @@ int main(int argc, char** argv) {
 #ifndef _DEBUG
 		InitLogger(argv[0]);
 #endif
-		std::string configFile("system.cfg");
+		std::string configFile("system");
 		if (argc > 1)
 		{
 			configFile = argv[1];

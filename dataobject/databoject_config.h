@@ -3,10 +3,10 @@
 
 #include <string>
 
-namespace MessageSerializer
+struct MessageSerializerConfig
 {
-	static std::string MODULE_UUID("module.message.serializer");
-	static std::string MODULE_PATH("pbserializer.dll");
-}
+	std::string MODULE_UUID = "module.message.serializer";
+	std::string MODULE_PATH = "pbserializer.dll";
+};
 
 #endif

@@ -10,15 +10,27 @@
 
 #include "IConfigReader.h"
 #include "configuration_exp.h"
+#include <vector>
+
+
+static const char* XMLCONFIG_FORMAT = "xml";
+static const char* JSONCONFIG_FORMAT = "json";
 
 class CONFIGURATION_CLASS_EXPORT AbstractConfigReaderFactory
 {
 public:
-   static IConfigReader_Ptr CreateConfigReader(void);
+	static const std::vector<std::string>& SupportConfigFormats();
+	static IConfigReader_Ptr CreateConfigReader(const std::string& type);
+	static IConfigReader_Ptr CreateConfigReader();
+	static IConfigReader_Ptr OpenConfigReader(const std::string& configPath);
+
+	static std::string DEFAULT_CONFIG_FORMAT;
 
 protected:
+
 private:
 
 };
+
 
 #endif

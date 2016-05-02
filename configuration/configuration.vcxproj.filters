@@ -36,6 +36,12 @@
     <ClInclude Include="configuration_exp.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="JsonConfigReader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractConfigReader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AbstractConfigReaderFactory.cpp">
@@ -48,6 +54,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="XMLConfigReader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="JsonConfigReader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AbstractConfigReader.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

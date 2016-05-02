@@ -16,11 +16,11 @@
 #include "../dataobject/MarketDataDO.h"
 #include "../dataobject/TypedefDO.h"
 
-////////////////////////////////////////////////////////////////////////
-// Name:       TestingServerMessageProcessor::TestingServerMessageProcessor()
-// Purpose:    Implementation of TestingServerMessageProcessor::TestingServerMessageProcessor()
-// Return:     
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       TestingServerMessageProcessor::TestingServerMessageProcessor()
+ // Purpose:    Implementation of TestingServerMessageProcessor::TestingServerMessageProcessor()
+ // Return:     
+ ////////////////////////////////////////////////////////////////////////
 
 TestingServerMessageProcessor::TestingServerMessageProcessor(const std::map<std::string, std::string>& configMap)
 {
@@ -62,16 +62,19 @@ void TestingServerMessageProcessor::_mdGenerator()
 
 			for (auto it = mdMapPtr->begin(); it != mdMapPtr->end(); it++)
 			{
-				auto& marketDataDO = it->second;
-				marketDataDO.BidPrice = std::rand();
-				marketDataDO.BidVolume = 1 + std::rand() % 100;
-				marketDataDO.AskPrice = marketDataDO.BidPrice + std::rand() % 100;
-				marketDataDO.AskVolume = 1 + std::rand() % 100;
+				if (std::rand() > std::rand())
+				{
+					auto& marketDataDO = it->second;
+					marketDataDO.BidPrice = std::rand();
+					marketDataDO.BidVolume = 1 + std::rand() % 100;
+					marketDataDO.AskPrice = marketDataDO.BidPrice + std::rand() % 100;
+					marketDataDO.AskVolume = 1 + std::rand() % 100;
 
-				marketDataDO.UpperLimitPrice = marketDataDO.AskPrice * 1.1;
-				marketDataDO.LowerLimitPrice = marketDataDO.BidVolume * 0.9;
+					marketDataDO.UpperLimitPrice = marketDataDO.AskPrice * 1.1;
+					marketDataDO.LowerLimitPrice = marketDataDO.BidVolume * 0.9;
 
-				OnResponseMarco(MSG_ID_RET_MARKETDATA, &marketDataDO);
+					OnResponseMarco(MSG_ID_RET_MARKETDATA, &marketDataDO);
+				}
 			}
 		}
 	}
