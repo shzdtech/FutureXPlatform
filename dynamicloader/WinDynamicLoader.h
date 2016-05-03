@@ -13,11 +13,9 @@
 class WinDynamicLoader : public AbstractDynamicLoader
 {
 public:
-   void* LoadModule(const std::string& moduleUUID, const std::string& modulePath);
-   bool CreateInstance(const void* handle, const std::string& classUUID, void** instance);
-   void* FindModule(const std::string& moduleUUID);
-   void* FindFunction(const void* handle, const std::string& funcName);
-   bool UnloadModule(const std::string& moduleUUID);
+	virtual void* FindFunction(const void* module, const std::string& funcName);
+	virtual void* LoadModule(const std::string& modulePath);
+	virtual bool UnloadModule(const void* module);
 
 protected:
 private:

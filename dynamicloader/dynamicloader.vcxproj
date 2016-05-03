@@ -138,11 +138,13 @@
     <ClInclude Include="AbstractDynamicLoader.h" />
     <ClInclude Include="ConfigBasedCreator.h" />
     <ClInclude Include="dynamicloader_exp.h" />
+    <ClInclude Include="SODynamicLoader.h" />
     <ClInclude Include="WinDynamicLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AbstractDynamicLoader.cpp" />
     <ClCompile Include="ConfigBasedCreator.cpp" />
+    <ClCompile Include="SODynamicLoader.cpp" />
     <ClCompile Include="WinDynamicLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
