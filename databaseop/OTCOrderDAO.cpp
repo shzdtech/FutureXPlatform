@@ -48,7 +48,7 @@ OrderDO_Ptr OTCOrderDAO::CreateOrder(const OrderDO& orderDO, const PricingDO& pr
 		{
 			ret->OrderID = rsout->getUInt64(1);
 			ret->OrderSysID = rsout->getUInt64(2);
-			ret->OrderStatus = rsout->getInt(3);
+			ret->OrderStatus = (OrderStatus)rsout->getInt(3);
 		}
 	}
 	catch (std::exception& ex)
@@ -239,11 +239,11 @@ OrderDOVec_Ptr OTCOrderDAO::QueryTodayOrder(const std::string& userId, const Con
 			OrderDO obDO(rs->getUInt64(1), rs->getString(2), rs->getString(3), rs->getString(4));
 			obDO.OrderSysID = rs->isNull(5) ? 0 : rs->getUInt64(5);
 			obDO.LimitPrice = rs->getDouble(6);
-			obDO.Volume = rs->getDouble(7);
-			obDO.VolumeTraded = rs->getDouble(8);
+			obDO.Volume = rs->getInt(7);
+			obDO.VolumeTraded = rs->getInt(8);
 			obDO.VolumeRemain = obDO.Volume - obDO.VolumeTraded;
 			obDO.Direction = rs->getInt(9) != 0 ? DirectionType::BUY : DirectionType::SELL;
-			obDO.OrderStatus = rs->getInt(10);
+			obDO.OrderStatus = (OrderStatus)rs->getInt(10);
 			obDO.InsertTime = rs->getString(11);
 			ret->push_back(std::move(obDO));
 		}

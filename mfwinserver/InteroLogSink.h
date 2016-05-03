@@ -7,7 +7,7 @@ using namespace System::Text;
 using namespace System::IO;
 using namespace System::Windows::Forms;
 
-delegate void DelegateMessageRecv(System::String^ message);
+public delegate void DelegateMessageRecv(System::String^ message);
 
 public ref class InteroLogCallBack
 {

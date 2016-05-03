@@ -19,7 +19,7 @@
 #include "../dataobject/OrderDO.h"
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       CTPQueryOrder::HandleRequest(dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       CTPQueryOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
  // Purpose:    Implementation of CTPQueryOrder::HandleRequest()
  // Parameters:
  // - reqDO
@@ -28,7 +28,7 @@
  // Return:     void
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryOrder::HandleRequest(dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	auto stdo = (StringTableDO*)reqDO.get();
 	auto& data = stdo->Data;

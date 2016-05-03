@@ -18,7 +18,7 @@
 #include "CTPUtility.h"
 #include "CTPConstant.h"
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPQueryPosition::HandleRequest(dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPQueryPosition::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPQueryPosition::HandleRequest()
 // Parameters:
 // - reqDO
@@ -27,7 +27,7 @@
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryPosition::HandleRequest(dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryPosition::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	auto stdo = (StringTableDO*)reqDO.get();
 	auto& data = stdo->Data;
@@ -67,8 +67,8 @@ dataobj_ptr CTPQueryPosition::HandleResponse(ParamVector& rawRespParams, IRawAPI
 		auto pDO = new UserPositionExDO(EXCHANGE_CTP, pData->InstrumentID);
 		ret.reset(pDO);
 
-		pDO->Direction = pData->PosiDirection - THOST_FTDC_PD_Net;
-		pDO->HedgeFlag = pData->HedgeFlag - THOST_FTDC_HF_Speculation;
+		pDO->Direction = (PositionDirectionType)(pData->PosiDirection - THOST_FTDC_PD_Net);
+		pDO->HedgeFlag = (HedgeType)(pData->HedgeFlag - THOST_FTDC_HF_Speculation);
 		pDO->PositionDate = pData->PositionDate;
 		pDO->LastdayPosition = pData->YdPosition;
 		pDO->Position = pData->Position;

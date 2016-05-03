@@ -44,11 +44,11 @@ public:
 	OrderBaseDO(const uint64_t orderID) : OrderID(orderID){}
 	uint64_t OrderID = 0;
 	uint64_t OrderSysID = 0;
-	int Direction = 0;
+	DirectionType Direction = DirectionType::SELL;
 	double LimitPrice = 0;
 	int Volume = 0;
 	bool Active = false;
-	int OrderStatus = 0;
+	OrderStatus OrderStatus = OrderStatus::UNDEFINED;
 	int ErrorCode = 0;
 };
 
@@ -68,10 +68,10 @@ public:
 
 	OrderDO(const uint64_t orderID) : OrderDO(orderID, "", "", ""){}
 
-	int OpenClose = 0;
-	int TIF = 0;
-	int TradingType = 0;
-	int ExecType = 0;
+	OrderOpenCloseType OpenClose = OrderOpenCloseType::OPEN;
+	OrderTIFType TIF = OrderTIFType::GFD;
+	TradingType TradingType = TradingType::TRADINGTYPE_MANUAL;
+	OrderExecType ExecType = OrderExecType::LIMIT;
 	int VolumeTraded = 0;
 	int VolumeRemain = 0;
 	int TradingDay = 0;

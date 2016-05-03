@@ -10,7 +10,7 @@
 #include "../message/BizError.h"
 #include "ExceptionDef.h"
 #include <google/protobuf/message.h>
-#include "proto/simpletable.pb.h";
+#include "proto/simpletable.pb.h"
 
 using namespace Micro::Future::Message::Business;
 

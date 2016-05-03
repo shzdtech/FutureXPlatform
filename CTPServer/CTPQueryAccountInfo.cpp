@@ -18,7 +18,7 @@
 
 #include "CTPUtility.h"
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPQueryAccountInfo::HandleRequest(dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPQueryAccountInfo::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPQueryAccountInfo::HandleRequest()
 // Parameters:
 // - reqDO
@@ -27,7 +27,7 @@
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryAccountInfo::HandleRequest(dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryAccountInfo::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	auto stdo = (StringTableDO*)reqDO.get();
 	auto& data = stdo->Data;

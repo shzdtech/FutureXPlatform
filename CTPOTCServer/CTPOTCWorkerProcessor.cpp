@@ -142,13 +142,13 @@ void CTPOTCWorkerProcessor::UnRegisterPricingListener(const ContractKey & contra
 	_pricingNotifers->remove(contractId, pMsgSession);
 }
 
-void CTPOTCWorkerProcessor::RegisterOTCOrderListener(const int orderID,
+void CTPOTCWorkerProcessor::RegisterOTCOrderListener(const uint64_t orderID,
 	IMessageSession* pMsgSession)
 {
 	_otcOrderNotifers->add(orderID, pMsgSession);
 }
 
-void CTPOTCWorkerProcessor::RegisterOrderListener(const int orderID,
+void CTPOTCWorkerProcessor::RegisterOrderListener(const uint64_t orderID,
 	IMessageSession* pMsgSession)
 {
 	_otcTradeProcessor.RegisterOrderListener(orderID, pMsgSession);
@@ -164,7 +164,7 @@ void CTPOTCWorkerProcessor::TriggerPricing(const StrategyContractDO& strategyDO)
 		{
 			for (auto pSession : *pNotiferSet)
 			{
-				OnResponseProcMarco(pSession->getProcessor(), MSG_ID_OTC_RET_MARKETDATA,
+				OnResponseProcMarco(pSession->getProcessor(), MSG_ID_RTN_PRICING,
 					&strategyDO);
 			}
 		}

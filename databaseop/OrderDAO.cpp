@@ -32,7 +32,7 @@ OrderDO_Ptr OrderDAO::CreateOrder(const OrderDO& orderDO)
 		prestmt->setString(1, orderDO.UserID());
 		prestmt->setString(2, orderDO.ExchangeID());
 		prestmt->setString(3, orderDO.InstrumentID());
-		prestmt->setInt(4, orderDO.LimitPrice);
+		prestmt->setDouble(4, orderDO.LimitPrice);
 		prestmt->setInt(5, orderDO.Volume);
 		prestmt->setInt(6, orderDO.Direction);
 

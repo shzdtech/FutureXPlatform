@@ -26,7 +26,7 @@
 
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCQueryStrategy::HandleRequest(dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPOTCQueryStrategy::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPOTCQueryStrategy::HandleRequest()
 // Parameters:
 // - reqDO
@@ -35,7 +35,7 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCQueryStrategy::HandleRequest(dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOTCQueryStrategy::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	CTPUtility::CheckLogin(session);
 

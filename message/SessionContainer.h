@@ -48,7 +48,7 @@ public:
 		if (pSession)
 		{
 			_reverseMap.getorfill(pSession).insert(key);
-			auto& elmutex = _sessionMap.getorinitfn(key,
+			auto& elmutex = _sessionMap.getorfillfunc(key,
 				[](){ return std::make_shared<ElementMutex<std::set<IMessageSession*>>>(); });
 			if (elmutex->Element.find(pSession) == elmutex->Element.end())
 			{

@@ -37,9 +37,9 @@ public:
 	int MaxLimitOrderVolume = 0;
 	int MinLimitOrderVolume = 0;
 	int VolumeMultiple = 0;
-	int PriceTick = 0;
 	int IsTrading = 0;
-	
+
+	double PriceTick = 0;
 	double LongMarginRatio = 0;
 	double ShortMarginRatio = 0;
 	

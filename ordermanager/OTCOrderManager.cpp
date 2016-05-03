@@ -186,7 +186,7 @@ int OTCOrderManager::Reset()
 	return 0;
 }
 
-void OTCOrderManager::Hedge(const const PortfolioKey& portfolioKey)
+void OTCOrderManager::Hedge(const PortfolioKey& portfolioKey)
 {
 	auto& portfolio = PricingContext::GetPortfolioDOMap()->at(portfolioKey);
 	auto now = std::chrono::steady_clock::now();
@@ -209,7 +209,7 @@ HedgeOrderManager_Ptr OTCOrderManager::FindHedgeManager(const PortfolioKey& port
 {
 	auto it = _hedgeMgr.find(portfolioKey);
 
-	return (it != _hedgeMgr.end()) ? it->second : _hedgeMgr.getorinitfn
+	return (it != _hedgeMgr.end()) ? it->second : _hedgeMgr.getorfillfunc
 		(portfolioKey,
 		&OTCOrderManager::initHedgeOrderMgr,
 		this, portfolioKey.UserID());

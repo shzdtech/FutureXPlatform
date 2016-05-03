@@ -2,7 +2,7 @@
 #define __CTP_OTC_BIZHANDLERS_H
 
 //OTC
-#include "CTPOTCLogin.h";
+#include "CTPOTCLogin.h"
 #include "CTPOTCTradingDeskLogin.h"
 #include "CTPOTCSubMarketData.h"
 #include "CTPOTCQueryContractParam.h"

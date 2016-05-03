@@ -26,7 +26,7 @@ public:
 	int OnOrderUpdated(OrderDO& orderInfo);
 	OrderDOVec_Ptr UpdateByStrategy(const StrategyContractDO& strategyDO);
 
-	void Hedge(const const PortfolioKey& portfolioKey);
+	void Hedge(const PortfolioKey& portfolioKey);
 
 protected:
 	HedgeOrderManager_Ptr FindHedgeManager(const PortfolioKey& portfolioKey);

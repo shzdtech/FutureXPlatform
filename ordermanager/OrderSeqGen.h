@@ -14,8 +14,8 @@ class ORDERMGR_CLASS_EXPORT OrderSeqGen
 {
 public:
 	static void SetStartSeq(uint64_t value);
-	inline static uint64_t GetNextSeq(void);
-	inline static uint64_t GetCurrentSeq(void);
+	static uint64_t GetNextSeq(void);
+	static uint64_t GetCurrentSeq(void);
 
 protected:
 private:

@@ -19,7 +19,7 @@
 #include "../dataobject/ResultDO.h"
 #include "../dataobject/UserContractParam.h"
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCUpdateStrategy::HandleRequest(dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPOTCUpdateStrategy::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPOTCUpdateStrategy::HandleRequest()
 // Parameters:
 // - reqDO
@@ -28,7 +28,7 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCUpdateStrategy::HandleRequest(dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOTCUpdateStrategy::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	CTPUtility::CheckLogin(session);
 

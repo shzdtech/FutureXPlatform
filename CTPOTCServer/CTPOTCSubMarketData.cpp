@@ -21,14 +21,14 @@
 
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/PricingDO.h"
-#include "../dataobject/UserContractParam.h";
+#include "../dataobject/UserContractParam.h"
 #include "../dataobject/MarketDataDO.h"
 
 #include "../databaseop/BaseContractDAO.h"
 #include "../databaseop/ContractDAO.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCSubMarketData::HandleRequest(dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPOTCSubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPOTCSubMarketData::HandleRequest()
 // Parameters:
 // - reqDO

@@ -30,7 +30,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	mmap.emplace(1, 2);
 	mmap.emplace(1, 1);
 
-	auto& vec = autoMap.getorinitfn(1, testInit, 123);
+	auto& vec = autoMap.getorfillfunc(1, testInit, 123);
 	SessionContainer<int> sc;
 	ScopeLockContext ptr;
 	sc.getwithlock(1, ptr);

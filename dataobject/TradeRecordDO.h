@@ -10,6 +10,7 @@
 
 #include "ContractKey.h"
 #include "AbstractDataObj.h"
+#include "OrderDO.h"
 
 class TradeRecordDO : public ContractKey, public AbstractDataObj
 {
@@ -25,10 +26,10 @@ public:
 	double Commission = 0;
 
 	int Volume = 0;
-	int Direction = 0;
-	int TradeType = 0;
-	int OpenClose = 0;
-	int HedgeFlag = 0;
+	DirectionType Direction = DirectionType::SELL;
+	TradingType TradeType = TradingType::TRADINGTYPE_MANUAL;
+	OrderOpenCloseType OpenClose = OrderOpenCloseType::OPEN;
+	HedgeType HedgeFlag = HedgeType::HEDGETYPE_SPECULATION;
 
 	std::string TradeDate;
 	std::string TradeTime;

@@ -38,7 +38,7 @@ void ConnectionHelper::LoadConfig(const std::string& config)
 			std::string empty;
 			auto& autocommit = TUtil::FirstNamedEntry("timeout", cfgMap, empty);
 			if (autocommit.length() > 0)
-				_connCfg.DB_AUTOCOMMIT = std::stoi(autocommit, nullptr, 0);
+				_connCfg.DB_AUTOCOMMIT = std::stoi(autocommit, nullptr, 0) != 0;
 
 			auto& timeout = TUtil::FirstNamedEntry("timeout", cfgMap, empty);
 			if (timeout.length() > 0)

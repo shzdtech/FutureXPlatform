@@ -18,12 +18,12 @@ public:
 	UserPositionDO(const std::string& exchangeID, const std::string& instrumentID)
 		: ContractKey(exchangeID, instrumentID)	{}
 
-	int Direction = 0;
+	PositionDirectionType Direction = PositionDirectionType::PD_NET;
 	int Position = 0;
 	int LastdayPosition = 0;
 	int OpenVolume = 0;
 	int CloseVolume = 0;
-	int HedgeFlag = 0;
+	HedgeType HedgeFlag = HedgeType::HEDGETYPE_SPECULATION;
 
 	double OpenAmount = 0;
 	double CloseAmount = 0;

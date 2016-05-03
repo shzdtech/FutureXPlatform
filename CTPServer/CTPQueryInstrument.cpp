@@ -19,7 +19,7 @@
 #include "../dataobject/InstrumentDO.h"
 #include "CTPUtility.h"
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPQueryInstrument::HandleRequest(dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPQueryInstrument::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPQueryInstrument::HandleRequest()
 // Parameters:
 // - reqDO
@@ -28,7 +28,7 @@
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryInstrument::HandleRequest(dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryInstrument::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	auto stdo = (StringTableDO*)reqDO.get();
 	auto& data = stdo->Data;

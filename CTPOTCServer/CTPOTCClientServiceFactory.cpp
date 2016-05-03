@@ -32,11 +32,11 @@ std::map<uint, IMessageHandler_Ptr> CTPOTCClientServiceFactory::CreateMessageHan
 
 	msg_hdl_map[MSG_ID_LOGIN] = std::make_shared<CTPOTCLogin>();
 
-	msg_hdl_map[MSG_ID_OTC_SUB_MARKETDATA] = std::make_shared<CTPOTCSubMarketData>();
+	msg_hdl_map[MSG_ID_SUB_PRICING] = std::make_shared<CTPOTCSubMarketData>();
 
 	msg_hdl_map[MSG_ID_UNSUB_MARKETDATA] = std::make_shared<CTPOTCReturnPricingData>();
 
-	msg_hdl_map[MSG_ID_OTC_RET_MARKETDATA] = std::make_shared<CTPOTCReturnPricingData>();
+	msg_hdl_map[MSG_ID_RTN_PRICING] = std::make_shared<CTPOTCReturnPricingData>();
 
 	msg_hdl_map[MSG_ID_MODIFY_USER_PARAM] = std::make_shared<CTPOTCUpdateUserParam>();
 

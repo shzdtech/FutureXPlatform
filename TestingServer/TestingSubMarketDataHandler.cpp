@@ -12,7 +12,7 @@
 #include "../CTPServer/Attribute_Key.h"
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       TestingSubMarketDataHandler::HandleRequest(dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       TestingSubMarketDataHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
  // Purpose:    Implementation of TestingSubMarketDataHandler::HandleRequest()
  // Parameters:
  // - reqDO
@@ -21,7 +21,7 @@
  // Return:     dataobj_ptr
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr TestingSubMarketDataHandler::HandleRequest(dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr TestingSubMarketDataHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	auto stdo = (StringTableDO*)reqDO.get();
 

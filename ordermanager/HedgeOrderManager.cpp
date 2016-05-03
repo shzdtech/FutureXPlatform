@@ -39,7 +39,6 @@ int HedgeOrderManager::CreateOrder(OrderDO& orderInfo)
 		int pos = _mktPosCtx.GetBuyPosition(orderInfo);
 		if (pos >= orderInfo.Volume)
 		{
-			orderInfo.Direction = DirectionType::BUY;
 			orderInfo.OpenClose = CLOSE;
 		}
 	}
@@ -50,7 +49,6 @@ int HedgeOrderManager::CreateOrder(OrderDO& orderInfo)
 		int pos = _mktPosCtx.GetSellPosition(orderInfo);
 		if (pos >= orderInfo.Volume)
 		{
-			orderInfo.Direction = DirectionType::SELL;
 			orderInfo.OpenClose = CLOSE;
 		}
 	}
@@ -102,7 +100,7 @@ int HedgeOrderManager::OnOrderUpdated(OrderDO& orderInfo)
 					delta = -delta;
 
 				double zero = 0;
-				auto& position = _contractPosition.getorinitval(orderInfo, zero);
+				auto& position = _contractPosition.getorfill(orderInfo, zero);
 				double remain = atomicutil::atomic_fetch_add(position, (double)delta);
 				if (remain <= -1 || remain >= 1)
 				{
@@ -180,7 +178,7 @@ void HedgeOrderManager::FillPosition(ContractMap<double>& position)
 	for (auto& it : position)
 	{
 		double zero = 0;
-		auto& position = _contractPosition.getorinitval(it.first, zero);
+		auto& position = _contractPosition.getorfill(it.first, zero);
 		atomicutil::atomic_fetch_add(position, it.second);
 	}
 }

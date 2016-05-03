@@ -39,9 +39,9 @@ public:
 	   IMessageSession* pMsgSession);
    void UnRegisterPricingListener(const ContractKey& contractId,
 	   IMessageSession* pMsgSession);
-   void RegisterOTCOrderListener(const int orderID,
+   void RegisterOTCOrderListener(const uint64_t orderID,
 	   IMessageSession* pMsgSession);
-   void RegisterOrderListener(const int orderID,
+   void RegisterOrderListener(const uint64_t orderID,
 	   IMessageSession* pMsgSession);
 
    void CancelAutoOrder(const UserContractKey& userContractKey);

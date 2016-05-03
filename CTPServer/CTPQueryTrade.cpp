@@ -18,7 +18,7 @@
 #include "CTPUtility.h"
 #include "CTPConstant.h"
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPQueryTrade::HandleRequest(dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPQueryTrade::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPQueryTrade::HandleRequest()
 // Parameters:
 // - reqDO
@@ -27,7 +27,7 @@
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryTrade::HandleRequest(dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryTrade::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	auto stdo = (StringTableDO*)reqDO.get();
 	auto data = stdo->Data;
@@ -80,13 +80,13 @@ dataobj_ptr CTPQueryTrade::HandleResponse(ParamVector& rawRespParams, IRawAPI* r
 		pDO->OrderSysID = std::strtoull(pData->OrderSysID, nullptr, 0);
 		pDO->Direction = pData->Direction == THOST_FTDC_D_Buy ?
 			DirectionType::BUY : DirectionType::SELL;
-		pDO->OpenClose = pData->OffsetFlag - THOST_FTDC_OF_Open;
+		pDO->OpenClose = (OrderOpenCloseType)(pData->OffsetFlag - THOST_FTDC_OF_Open);
 		pDO->Price = pData->Price;
 		pDO->Volume = pData->Volume;
 		pDO->TradeDate = pData->TradeDate;
 		pDO->TradeTime = pData->TradeTime;
-		pDO->TradeType = pData->TradeType;
-		pDO->HedgeFlag = pData->HedgeFlag - THOST_FTDC_HF_Speculation;
+		pDO->TradeType = (TradingType)pData->TradeType;
+		pDO->HedgeFlag = (HedgeType)(pData->HedgeFlag - THOST_FTDC_HF_Speculation);
 	}
 
 	return ret;

@@ -16,7 +16,7 @@
 #include <algorithm>
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPUnsubMarketData::HandleRequest(dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPUnsubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPUnsubMarketData::HandleRequest()
 // Parameters:
 // - reqDO
@@ -25,7 +25,7 @@
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPUnsubMarketData::HandleRequest(dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPUnsubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	auto stdo = (StringTableDO*)reqDO.get();
 	int ret = 0;

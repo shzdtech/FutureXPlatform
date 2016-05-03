@@ -10,8 +10,9 @@
 
 #include "IConfigReader.h"
 #include <boost/property_tree/ptree.hpp>
+#include "configuration_exp.h"
 
-class AbstractConfigReader : public IConfigReader
+class CONFIGURATION_CLASS_EXPORT AbstractConfigReader : public IConfigReader
 {
 public:
    std::string getValue(const std::string& expression);

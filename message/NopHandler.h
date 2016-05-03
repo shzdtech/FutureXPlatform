@@ -10,10 +10,10 @@
 
 #include "MessageHandler.h"
 
-class NopHandler : public MessageHandler
+class MESSAGE_CLASS_EXPORT NopHandler : public MessageHandler
 {
 public:
-	dataobj_ptr HandleRequest(dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session){ return nullptr; };
+	dataobj_ptr HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session){ return nullptr; };
 	dataobj_ptr HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session){ return nullptr; }
 
 protected:

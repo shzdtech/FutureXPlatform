@@ -15,7 +15,7 @@
 #include <glog/logging.h>
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOCTUnSubMarketData::HandleRequest(dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPOCTUnSubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPOCTUnSubMarketData::HandleRequest()
 // Parameters:
 // - reqDO

@@ -19,7 +19,7 @@
 #include "../dataobject/ResultDO.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCUpdateUserParam::HandleRequest(dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPOTCUpdateUserParam::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPOTCUpdateUserParam::HandleRequest()
 // Parameters:
 // - reqDO
@@ -28,7 +28,7 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCUpdateUserParam::HandleRequest(dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOTCUpdateUserParam::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	CTPUtility::CheckLogin(session);
 
@@ -49,7 +49,7 @@ dataobj_ptr CTPOTCUpdateUserParam::HandleRequest(dataobj_ptr reqDO, IRawAPI* raw
 		{
 			OnResponseProcMarco(
 				session->getProcessor(),
-				MSG_ID_OTC_RET_MARKETDATA, &it->second);
+				MSG_ID_RTN_PRICING, &it->second);
 		}
 	}
 

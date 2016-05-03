@@ -42,8 +42,8 @@ PBMessageSerializerFactory::PBMessageSerializerFactory()
 	_serializer_map[MSG_ID_SETTLEMENT_INFO_CONFIRM] = PBStringTableSerializer::Instance();
 
 	//OTC
-	_serializer_map[MSG_ID_OTC_SUB_MARKETDATA] = std::make_shared<PBCombineSerializer>(PBPricingDataSerializer::Instance(), PBStringTableSerializer::Instance());
-	_serializer_map[MSG_ID_OTC_RET_MARKETDATA] = PBPricingDataSerializer::Instance();
+	_serializer_map[MSG_ID_SUB_PRICING] = std::make_shared<PBCombineSerializer>(PBPricingDataSerializer::Instance(), PBStringTableSerializer::Instance());
+	_serializer_map[MSG_ID_RTN_PRICING] = PBPricingDataSerializer::Instance();
 	_serializer_map[MSG_ID_MODIFY_USER_PARAM] = std::make_shared<PBCombineSerializer>(PBResultSerializer::Instance(), PBUserParamSerializer::Instance());
 	_serializer_map[MSG_ID_QUERY_TRADINGDESK] = std::make_shared<PBCombineSerializer>(PBUserInfoListSerializer::Instance(), PBStringTableSerializer::Instance());
 	_serializer_map[MSG_ID_QUERY_STRATEGY] = std::make_shared<PBCombineSerializer>(PBStrategySerializer::Instance(), PBStringTableSerializer::Instance());

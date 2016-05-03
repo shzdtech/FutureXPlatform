@@ -41,7 +41,7 @@ public:
 		}
 	}
 
-	V& getorinitval(const K& key, V&& value)
+	V& getorfill(const K& key, V&& value)
 	{
 		auto it = find(key);
 		if (it != end())
@@ -54,7 +54,7 @@ public:
 	}
 
 	template <class T>
-	V& getorinitval(const K& key, T& value)
+	V& getorfill(const K& key, T& value)
 	{
 		auto it = find(key);
 		if (it != end())
@@ -67,7 +67,7 @@ public:
 	}
 
 	template <class Fn, class... Args>
-	V& getorinitfn(const K& key, Fn&& fn, Args&&... args)
+	V& getorfillfunc(const K& key, Fn&& fn, Args&&... args)
 	{
 		auto it = find(key);
 		if (it != end())

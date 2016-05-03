@@ -70,14 +70,14 @@ dataobj_ptr PBOrderSerializer::Deserialize(const data_buffer& rawdata)
 
 	auto ret = std::make_shared<OrderDO>(PB.orderid(), PB.exchange(), PB.contract(), "");
 	if (PB.has_ordersysid()) ret->OrderSysID = PB.ordersysid();
-	if (PB.has_direction()) ret->Direction = PB.direction();
+	if (PB.has_direction()) ret->Direction = (DirectionType)PB.direction();
 	if (PB.has_limitprice()) ret->LimitPrice = PB.limitprice();
 	if (PB.has_volume()) ret->Volume = PB.volume();
 	if (PB.has_stopprice()) ret->StopPrice = PB.stopprice();
-	if (PB.has_tif()) ret->TIF = PB.tif();
-	if (PB.has_tradingtype()) ret->TradingType = PB.tradingtype();
-	if (PB.has_exectype()) ret->ExecType = PB.exectype();
-	if (PB.has_openclose()) ret->OpenClose = PB.openclose();
+	if (PB.has_tif()) ret->TIF = (OrderTIFType)PB.tif();
+	if (PB.has_tradingtype()) ret->TradingType = (TradingType)PB.tradingtype();
+	if (PB.has_exectype()) ret->ExecType = (OrderExecType)PB.exectype();
+	if (PB.has_openclose()) ret->OpenClose = (OrderOpenCloseType)PB.openclose();
 
 	return ret;
 }

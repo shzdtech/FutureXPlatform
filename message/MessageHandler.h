@@ -12,8 +12,9 @@
 #include "IMessageHandler.h"
 #include "AppContext.h"
 #include "SysParam.h"
+#include "message_exp.h"
 
-class MessageHandler : public IMessageHandler
+class MESSAGE_CLASS_EXPORT MessageHandler : public IMessageHandler
 {
 public:
 	virtual dataobj_ptr HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session) = 0;
