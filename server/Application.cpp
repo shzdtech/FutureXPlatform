@@ -38,8 +38,7 @@ void Application::Run(void) {
 ////////////////////////////////////////////////////////////////////////
 
 int Application::Exit(void) {
-	MicroFurtureSystem::Instance()->Stop();
-	return 0;
+	return MicroFurtureSystem::Instance()->Stop() ? 0 : -1;
 }
 
 void Application::Join(long seconds) {

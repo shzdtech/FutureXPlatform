@@ -177,23 +177,38 @@ void ConnectionHelper::initalPool()
 
 void ConnectionHelper::checkstatus()
 {
-	if (_runing)
+	std::string checkSql = _connCfg.DB_CHECKSQL;
+
+	while (_runing)
 	{
-		std::string& checksql = _connCfg.DB_CHECKSQL;
 		std::this_thread::sleep_for(std::chrono::milliseconds(_connCfg.DB_HEARTBEAT));
+
 		for (int i = 0; i < _connCfg.DB_POOL_SIZE; i++)
 		{
 			auto mgdsession = _connpool_ptr->lease_at(i);
 			if (auto connptr = mgdsession->getConnection())
 			{
+				bool hasErr = false;
 				try
 				{
-					connptr->reconnect();
+					AutoCloseStatement_Ptr checkStmt(connptr->createStatement());
+					AutoCloseResultSet_Ptr rs(checkStmt->executeQuery(checkSql));
+				}
+				catch (std::exception& ex)
+				{
+					hasErr = true;
+					LOG(ERROR) << "Error occurs when checking DB alive: " << ex.what();
 				}
 				catch (...)
 				{
+					hasErr = true;
+				}
+
+				if (hasErr)
+				{
 					try
 					{
+						connptr->close();
 						connptr->reconnect();
 					}
 					catch (...) {}
@@ -202,5 +217,5 @@ void ConnectionHelper::checkstatus()
 		}
 	}
 
-	_heartbeatTask = std::async(std::launch::async, &ConnectionHelper::checkstatus, this);
+	// _heartbeatTask = std::async(std::launch::async, &ConnectionHelper::checkstatus, this);
 }

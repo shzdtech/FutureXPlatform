@@ -19,8 +19,7 @@ Application app;
 
 void sigtermhandler(int code)
 {
-	app.Exit();
-	std::exit(code);
+	std::exit(app.Exit());
 }
 
 void siginthandler(int code)
@@ -29,10 +28,9 @@ void siginthandler(int code)
 	std::string instr;
 	std::getline(std::cin, instr);
 	if (instr == "Y") {
-		app.Exit();
-		std::cout << "Press 'Enter' to exit...";
-		int ch = std::getchar();
-		std::exit(code);
+		int retcode = app.Exit();
+		std::cout << "Server has exited.";
+		std::exit(retcode);
 	}
 	else {
 		std::cout << "Server will continue running..." << std::endl;

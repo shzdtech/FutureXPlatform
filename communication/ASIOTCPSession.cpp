@@ -128,10 +128,13 @@ bool ASIOTCPSession::Start(void)
 bool ASIOTCPSession::Close(void) {
 	std::lock_guard<std::mutex> lock(_clsmutex);
 	if (!_closed) {
-		DLOG(INFO) << "Session on " << _socket.remote_endpoint().address().to_string()
-			<< " is closing..." << std::endl;
-		_socket.shutdown(tcp::socket::shutdown_both);
-		_socket.close();
+		if (_socket.is_open())
+		{
+			DLOG(INFO) << "Session on " << _socket.remote_endpoint().address().to_string()
+				<< " is closing..." << std::endl;
+			_socket.shutdown(tcp::socket::shutdown_both);
+			_socket.close();
+		}
 		MessageSession::Close();
 	}
 	return true;
