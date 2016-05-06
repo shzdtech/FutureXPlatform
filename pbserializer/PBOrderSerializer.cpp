@@ -69,15 +69,15 @@ dataobj_ptr PBOrderSerializer::Deserialize(const data_buffer& rawdata)
 		throw BizError(INVALID_DATAFORMAT_CODE, INVALID_DATAFORMAT_DESC);
 
 	auto ret = std::make_shared<OrderDO>(PB.orderid(), PB.exchange(), PB.contract(), "");
-	if (PB.has_ordersysid()) ret->OrderSysID = PB.ordersysid();
-	if (PB.has_direction()) ret->Direction = (DirectionType)PB.direction();
-	if (PB.has_limitprice()) ret->LimitPrice = PB.limitprice();
-	if (PB.has_volume()) ret->Volume = PB.volume();
-	if (PB.has_stopprice()) ret->StopPrice = PB.stopprice();
-	if (PB.has_tif()) ret->TIF = (OrderTIFType)PB.tif();
-	if (PB.has_tradingtype()) ret->TradingType = (TradingType)PB.tradingtype();
-	if (PB.has_exectype()) ret->ExecType = (OrderExecType)PB.exectype();
-	if (PB.has_openclose()) ret->OpenClose = (OrderOpenCloseType)PB.openclose();
+	ret->OrderSysID = PB.ordersysid();
+	ret->Direction = (DirectionType)PB.direction();
+	ret->LimitPrice = PB.limitprice();
+	ret->Volume = PB.volume();
+	ret->StopPrice = PB.stopprice();
+	ret->TIF = (OrderTIFType)PB.tif();
+	ret->TradingType = (TradingType)PB.tradingtype();
+	ret->ExecType = (OrderExecType)PB.exectype();
+	ret->OpenClose = (OrderOpenCloseType)PB.openclose();
 
 	return ret;
 }

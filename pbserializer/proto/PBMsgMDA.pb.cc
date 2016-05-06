@@ -7,6 +7,7 @@
 #include <algorithm>
 
 #include <google/protobuf/stubs/common.h>
+#include <google/protobuf/stubs/port.h>
 #include <google/protobuf/stubs/once.h>
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/wire_format_lite_inl.h>
@@ -83,12 +84,12 @@ void protobuf_AssignDesc_PBMsgMDA_2eproto() {
       PBMsgEqtMD_descriptor_,
       PBMsgEqtMD::default_instance_,
       PBMsgEqtMD_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMsgEqtMD, _has_bits_[0]),
+      -1,
       -1,
       -1,
       sizeof(PBMsgEqtMD),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMsgEqtMD, _internal_metadata_),
-      -1);
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMsgEqtMD, _is_default_instance_));
   PBMsgFutMD_descriptor_ = file->message_type(1);
   static const int PBMsgFutMD_offsets_[19] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMsgFutMD, eof_),
@@ -116,12 +117,12 @@ void protobuf_AssignDesc_PBMsgMDA_2eproto() {
       PBMsgFutMD_descriptor_,
       PBMsgFutMD::default_instance_,
       PBMsgFutMD_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMsgFutMD, _has_bits_[0]),
+      -1,
       -1,
       -1,
       sizeof(PBMsgFutMD),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMsgFutMD, _internal_metadata_),
-      -1);
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMsgFutMD, _is_default_instance_));
   PBMsgMDAMD_descriptor_ = file->message_type(2);
   static const int PBMsgMDAMD_offsets_[38] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMsgMDAMD, eof_),
@@ -168,12 +169,12 @@ void protobuf_AssignDesc_PBMsgMDA_2eproto() {
       PBMsgMDAMD_descriptor_,
       PBMsgMDAMD::default_instance_,
       PBMsgMDAMD_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMsgMDAMD, _has_bits_[0]),
+      -1,
       -1,
       -1,
       sizeof(PBMsgMDAMD),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMsgMDAMD, _internal_metadata_),
-      -1);
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMsgMDAMD, _is_default_instance_));
   DataType_descriptor_ = file->enum_type(0);
   MessageType_descriptor_ = file->enum_type(1);
   StatusDB_descriptor_ = file->enum_type(2);
@@ -216,32 +217,32 @@ void protobuf_AddDesc_PBMsgMDA_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\016PBMsgMDA.proto\022\014PBWrapMsgMDA\"\202\005\n\nPBMsg"
-    "EqtMD\022\013\n\003EOF\030\001 \002(\005\022\016\n\006source\030\003 \002(\t\022(\n\010da"
-    "taType\030\004 \002(\0162\026.PBWrapMsgMDA.DataType\022\016\n\006"
-    "symbol\030\005 \002(\t\022\021\n\ttimeStamp\030\006 \002(\t\022\025\n\rpreCl"
-    "oseValue\030\007 \002(\003\022\021\n\topenValue\030\010 \002(\003\022\021\n\thig"
-    "hValue\030\013 \002(\003\022\020\n\010lowValue\030\014 \002(\003\022\023\n\013latest"
+    "EqtMD\022\013\n\003EOF\030\001 \001(\005\022\016\n\006source\030\003 \001(\t\022(\n\010da"
+    "taType\030\004 \001(\0162\026.PBWrapMsgMDA.DataType\022\016\n\006"
+    "symbol\030\005 \001(\t\022\021\n\ttimeStamp\030\006 \001(\t\022\025\n\rpreCl"
+    "oseValue\030\007 \001(\003\022\021\n\topenValue\030\010 \001(\003\022\021\n\thig"
+    "hValue\030\013 \001(\003\022\020\n\010lowValue\030\014 \001(\003\022\023\n\013latest"
     "Index\030\r \001(\003\022\022\n\nmatchPrice\030\016 \001(\003\022\021\n\taskPr"
     "ice5\030\017 \001(\003\022\021\n\taskPrice4\030\021 \001(\003\022\021\n\taskPric"
     "e3\030\023 \001(\003\022\021\n\taskPrice2\030\025 \001(\003\022\021\n\taskPrice1"
     "\030\027 \001(\003\022\021\n\tbidPrice1\030\031 \001(\003\022\021\n\tbidPrice2\030\033"
     " \001(\003\022\021\n\tbidPrice3\030\035 \001(\003\022\021\n\tbidPrice4\030\037 \001"
-    "(\003\022\021\n\tbidPrice5\030! \001(\003\022\020\n\010turnover\030\t \002(\003\022"
-    "\016\n\006volume\030\n \002(\003\022\020\n\010askSize5\030\020 \001(\003\022\020\n\010ask"
+    "(\003\022\021\n\tbidPrice5\030! \001(\003\022\020\n\010turnover\030\t \001(\003\022"
+    "\016\n\006volume\030\n \001(\003\022\020\n\010askSize5\030\020 \001(\003\022\020\n\010ask"
     "Size4\030\022 \001(\003\022\020\n\010askSize3\030\024 \001(\003\022\020\n\010askSize"
     "2\030\026 \001(\003\022\020\n\010askSize1\030\030 \001(\003\022\020\n\010bidSize1\030\032 "
     "\001(\003\022\020\n\010bidSize2\030\034 \001(\003\022\020\n\010bidSize3\030\036 \001(\003\022"
     "\020\n\010bidSize4\030  \001(\003\022\020\n\010bidSize5\030\" \001(\003\"\362\002\n\n"
-    "PBMsgFutMD\022\013\n\003EOF\030\001 \002(\005\022\016\n\006symbol\030\005 \002(\t\022"
-    "\021\n\ttimeStamp\030\006 \002(\t\022\021\n\taskPrice1\030\007 \002(\003\022\021\n"
-    "\tbidPrice1\030\t \002(\003\022\025\n\rpreClosePrice\030\013 \002(\003\022"
-    "\026\n\016preSettlePrice\030\014 \002(\003\022\021\n\topenPrice\030\r \002"
-    "(\003\022\021\n\thighPrice\030\016 \002(\003\022\020\n\010lowPrice\030\017 \002(\003\022"
-    "\022\n\nmatchPrice\030\020 \002(\003\022\023\n\013priceChange\030\021 \002(\003"
-    "\022\023\n\013settlePrice\030\024 \002(\003\022\021\n\thighLimit\030\025 \002(\003"
-    "\022\020\n\010lowLimit\030\026 \002(\003\022\020\n\010askSize1\030\010 \002(\003\022\020\n\010"
-    "bidSize1\030\n \002(\003\022\016\n\006volume\030\022 \002(\003\022\020\n\010turnov"
-    "er\030\023 \002(\003\"\364\005\n\nPBMsgMDAMD\022\013\n\003EOF\030\001 \002(\005\022\031\n\021"
+    "PBMsgFutMD\022\013\n\003EOF\030\001 \001(\005\022\016\n\006symbol\030\005 \001(\t\022"
+    "\021\n\ttimeStamp\030\006 \001(\t\022\021\n\taskPrice1\030\007 \001(\003\022\021\n"
+    "\tbidPrice1\030\t \001(\003\022\025\n\rpreClosePrice\030\013 \001(\003\022"
+    "\026\n\016preSettlePrice\030\014 \001(\003\022\021\n\topenPrice\030\r \001"
+    "(\003\022\021\n\thighPrice\030\016 \001(\003\022\020\n\010lowPrice\030\017 \001(\003\022"
+    "\022\n\nmatchPrice\030\020 \001(\003\022\023\n\013priceChange\030\021 \001(\003"
+    "\022\023\n\013settlePrice\030\024 \001(\003\022\021\n\thighLimit\030\025 \001(\003"
+    "\022\020\n\010lowLimit\030\026 \001(\003\022\020\n\010askSize1\030\010 \001(\003\022\020\n\010"
+    "bidSize1\030\n \001(\003\022\016\n\006volume\030\022 \001(\003\022\020\n\010turnov"
+    "er\030\023 \001(\003\"\364\005\n\nPBMsgMDAMD\022\013\n\003EOF\030\001 \001(\005\022\031\n\021"
     "requestSymbolList\030\005 \003(\t\022(\n\010dataType\030\006 \001("
     "\0162\026.PBWrapMsgMDA.DataType\022\016\n\006symbol\030\007 \001("
     "\t\022\021\n\ttimeStamp\030\010 \001(\t\022\025\n\rpreCloseValue\030\t "
@@ -260,13 +261,14 @@ void protobuf_AddDesc_PBMsgMDA_2eproto() {
     "\030# \001(\003\022\020\n\010bidSize5\030$ \001(\003\022\026\n\016preSettlePri"
     "ce\030% \001(\003\022\023\n\013priceChange\030& \001(\003\022\023\n\013settleP"
     "rice\030\' \001(\003\022\021\n\thighLimit\030( \001(\003\022\020\n\010lowLimi"
-    "t\030) \001(\003*^\n\010DataType\022\n\n\006EQUITY\020\001\022\t\n\005INDEX"
-    "\020\002\022\020\n\014INDEX_FUTURE\020\003\022\024\n\020COMMODITY_FUTURE"
-    "\020\004\022\023\n\017INDEX_FORCASTER\020\005*D\n\013MessageType\022\017"
-    "\n\013INFORMATION\020\001\022\013\n\007REQUEST\020\002\022\t\n\005IMAGE\020\003\022"
-    "\014\n\010DATABASE\020\004*%\n\010StatusDB\022\n\n\006NORMAL\020\001\022\r\n"
-    "\tSUSPENDED\020\002B\037\n\017ProtoBufMessageB\014PBWrapM"
-    "sgMDA", 2045);
+    "t\030) \001(\003*n\n\010DataType\022\016\n\nDataType_0\020\000\022\n\n\006E"
+    "QUITY\020\001\022\t\n\005INDEX\020\002\022\020\n\014INDEX_FUTURE\020\003\022\024\n\020"
+    "COMMODITY_FUTURE\020\004\022\023\n\017INDEX_FORCASTER\020\005*"
+    "W\n\013MessageType\022\021\n\rMessageType_0\020\000\022\017\n\013INF"
+    "ORMATION\020\001\022\013\n\007REQUEST\020\002\022\t\n\005IMAGE\020\003\022\014\n\010DA"
+    "TABASE\020\004*5\n\010StatusDB\022\016\n\nStatusDB_0\020\000\022\n\n\006"
+    "NORMAL\020\001\022\r\n\tSUSPENDED\020\002B\037\n\017ProtoBufMessa"
+    "geB\014PBWrapMsgMDAb\006proto3", 2104);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "PBMsgMDA.proto", &protobuf_RegisterTypes);
   PBMsgEqtMD::default_instance_ = new PBMsgEqtMD();
@@ -290,6 +292,7 @@ const ::google::protobuf::EnumDescriptor* DataType_descriptor() {
 }
 bool DataType_IsValid(int value) {
   switch(value) {
+    case 0:
     case 1:
     case 2:
     case 3:
@@ -307,6 +310,7 @@ const ::google::protobuf::EnumDescriptor* MessageType_descriptor() {
 }
 bool MessageType_IsValid(int value) {
   switch(value) {
+    case 0:
     case 1:
     case 2:
     case 3:
@@ -323,6 +327,7 @@ const ::google::protobuf::EnumDescriptor* StatusDB_descriptor() {
 }
 bool StatusDB_IsValid(int value) {
   switch(value) {
+    case 0:
     case 1:
     case 2:
       return true;
@@ -344,7 +349,7 @@ static void MergeFromFail(int line) {
 
 // ===================================================================
 
-#ifndef _MSC_VER
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int PBMsgEqtMD::kEOFFieldNumber;
 const int PBMsgEqtMD::kSourceFieldNumber;
 const int PBMsgEqtMD::kDataTypeFieldNumber;
@@ -378,7 +383,7 @@ const int PBMsgEqtMD::kBidSize2FieldNumber;
 const int PBMsgEqtMD::kBidSize3FieldNumber;
 const int PBMsgEqtMD::kBidSize4FieldNumber;
 const int PBMsgEqtMD::kBidSize5FieldNumber;
-#endif  // !_MSC_VER
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 PBMsgEqtMD::PBMsgEqtMD()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
@@ -387,6 +392,7 @@ PBMsgEqtMD::PBMsgEqtMD()
 }
 
 void PBMsgEqtMD::InitAsDefaultInstance() {
+  _is_default_instance_ = true;
 }
 
 PBMsgEqtMD::PBMsgEqtMD(const PBMsgEqtMD& from)
@@ -398,11 +404,12 @@ PBMsgEqtMD::PBMsgEqtMD(const PBMsgEqtMD& from)
 }
 
 void PBMsgEqtMD::SharedCtor() {
+    _is_default_instance_ = false;
   ::google::protobuf::internal::GetEmptyString();
   _cached_size_ = 0;
   eof_ = 0;
   source_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  datatype_ = 1;
+  datatype_ = 0;
   symbol_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   timestamp_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   preclosevalue_ = GOOGLE_LONGLONG(0);
@@ -433,7 +440,6 @@ void PBMsgEqtMD::SharedCtor() {
   bidsize3_ = GOOGLE_LONGLONG(0);
   bidsize4_ = GOOGLE_LONGLONG(0);
   bidsize5_ = GOOGLE_LONGLONG(0);
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
 PBMsgEqtMD::~PBMsgEqtMD() {
@@ -483,38 +489,19 @@ void PBMsgEqtMD::Clear() {
            ZR_HELPER_(last) - ZR_HELPER_(first) + sizeof(last));\
 } while (0)
 
-  if (_has_bits_[0 / 32] & 255u) {
-    ZR_(preclosevalue_, highvalue_);
-    eof_ = 0;
-    if (has_source()) {
-      source_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-    }
-    datatype_ = 1;
-    if (has_symbol()) {
-      symbol_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-    }
-    if (has_timestamp()) {
-      timestamp_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-    }
-  }
-  if (_has_bits_[8 / 32] & 65280u) {
-    ZR_(lowvalue_, askprice1_);
-  }
-  if (_has_bits_[16 / 32] & 16711680u) {
-    ZR_(bidprice1_, asksize5_);
-  }
-  if (_has_bits_[24 / 32] & 4278190080u) {
-    ZR_(asksize4_, bidsize4_);
-  }
+  ZR_(eof_, datatype_);
+  ZR_(preclosevalue_, highvalue_);
+  source_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  symbol_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  timestamp_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ZR_(lowvalue_, askprice1_);
+  ZR_(bidprice1_, asksize5_);
+  ZR_(asksize4_, bidsize4_);
   bidsize5_ = GOOGLE_LONGLONG(0);
 
 #undef ZR_HELPER_
 #undef ZR_
 
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-  if (_internal_metadata_.have_unknown_fields()) {
-    mutable_unknown_fields()->Clear();
-  }
 }
 
 bool PBMsgEqtMD::MergePartialFromCodedStream(
@@ -527,13 +514,13 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required int32 EOF = 1;
+      // optional int32 EOF = 1;
       case 1: {
         if (tag == 8) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, &eof_)));
-          set_has_eof();
+
         } else {
           goto handle_unusual;
         }
@@ -541,16 +528,16 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
         break;
       }
 
-      // required string source = 3;
+      // optional string source = 3;
       case 3: {
         if (tag == 26) {
          parse_source:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_source()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             this->source().data(), this->source().length(),
-            ::google::protobuf::internal::WireFormat::PARSE,
-            "PBWrapMsgMDA.PBMsgEqtMD.source");
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "PBWrapMsgMDA.PBMsgEqtMD.source"));
         } else {
           goto handle_unusual;
         }
@@ -558,7 +545,7 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
         break;
       }
 
-      // required .PBWrapMsgMDA.DataType dataType = 4;
+      // optional .PBWrapMsgMDA.DataType dataType = 4;
       case 4: {
         if (tag == 32) {
          parse_dataType:
@@ -566,11 +553,7 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
-          if (::PBWrapMsgMDA::DataType_IsValid(value)) {
-            set_datatype(static_cast< ::PBWrapMsgMDA::DataType >(value));
-          } else {
-            mutable_unknown_fields()->AddVarint(4, value);
-          }
+          set_datatype(static_cast< ::PBWrapMsgMDA::DataType >(value));
         } else {
           goto handle_unusual;
         }
@@ -578,16 +561,16 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
         break;
       }
 
-      // required string symbol = 5;
+      // optional string symbol = 5;
       case 5: {
         if (tag == 42) {
          parse_symbol:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_symbol()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             this->symbol().data(), this->symbol().length(),
-            ::google::protobuf::internal::WireFormat::PARSE,
-            "PBWrapMsgMDA.PBMsgEqtMD.symbol");
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "PBWrapMsgMDA.PBMsgEqtMD.symbol"));
         } else {
           goto handle_unusual;
         }
@@ -595,16 +578,16 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
         break;
       }
 
-      // required string timeStamp = 6;
+      // optional string timeStamp = 6;
       case 6: {
         if (tag == 50) {
          parse_timeStamp:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_timestamp()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             this->timestamp().data(), this->timestamp().length(),
-            ::google::protobuf::internal::WireFormat::PARSE,
-            "PBWrapMsgMDA.PBMsgEqtMD.timeStamp");
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "PBWrapMsgMDA.PBMsgEqtMD.timeStamp"));
         } else {
           goto handle_unusual;
         }
@@ -612,14 +595,14 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
         break;
       }
 
-      // required int64 preCloseValue = 7;
+      // optional int64 preCloseValue = 7;
       case 7: {
         if (tag == 56) {
          parse_preCloseValue:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &preclosevalue_)));
-          set_has_preclosevalue();
+
         } else {
           goto handle_unusual;
         }
@@ -627,14 +610,14 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
         break;
       }
 
-      // required int64 openValue = 8;
+      // optional int64 openValue = 8;
       case 8: {
         if (tag == 64) {
          parse_openValue:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &openvalue_)));
-          set_has_openvalue();
+
         } else {
           goto handle_unusual;
         }
@@ -642,14 +625,14 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
         break;
       }
 
-      // required int64 turnover = 9;
+      // optional int64 turnover = 9;
       case 9: {
         if (tag == 72) {
          parse_turnover:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &turnover_)));
-          set_has_turnover();
+
         } else {
           goto handle_unusual;
         }
@@ -657,14 +640,14 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
         break;
       }
 
-      // required int64 volume = 10;
+      // optional int64 volume = 10;
       case 10: {
         if (tag == 80) {
          parse_volume:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &volume_)));
-          set_has_volume();
+
         } else {
           goto handle_unusual;
         }
@@ -672,14 +655,14 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
         break;
       }
 
-      // required int64 highValue = 11;
+      // optional int64 highValue = 11;
       case 11: {
         if (tag == 88) {
          parse_highValue:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &highvalue_)));
-          set_has_highvalue();
+
         } else {
           goto handle_unusual;
         }
@@ -687,14 +670,14 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
         break;
       }
 
-      // required int64 lowValue = 12;
+      // optional int64 lowValue = 12;
       case 12: {
         if (tag == 96) {
          parse_lowValue:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &lowvalue_)));
-          set_has_lowvalue();
+
         } else {
           goto handle_unusual;
         }
@@ -709,7 +692,7 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &latestindex_)));
-          set_has_latestindex();
+
         } else {
           goto handle_unusual;
         }
@@ -724,7 +707,7 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &matchprice_)));
-          set_has_matchprice();
+
         } else {
           goto handle_unusual;
         }
@@ -739,7 +722,7 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &askprice5_)));
-          set_has_askprice5();
+
         } else {
           goto handle_unusual;
         }
@@ -754,7 +737,7 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &asksize5_)));
-          set_has_asksize5();
+
         } else {
           goto handle_unusual;
         }
@@ -769,7 +752,7 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &askprice4_)));
-          set_has_askprice4();
+
         } else {
           goto handle_unusual;
         }
@@ -784,7 +767,7 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &asksize4_)));
-          set_has_asksize4();
+
         } else {
           goto handle_unusual;
         }
@@ -799,7 +782,7 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &askprice3_)));
-          set_has_askprice3();
+
         } else {
           goto handle_unusual;
         }
@@ -814,7 +797,7 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &asksize3_)));
-          set_has_asksize3();
+
         } else {
           goto handle_unusual;
         }
@@ -829,7 +812,7 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &askprice2_)));
-          set_has_askprice2();
+
         } else {
           goto handle_unusual;
         }
@@ -844,7 +827,7 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &asksize2_)));
-          set_has_asksize2();
+
         } else {
           goto handle_unusual;
         }
@@ -859,7 +842,7 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &askprice1_)));
-          set_has_askprice1();
+
         } else {
           goto handle_unusual;
         }
@@ -874,7 +857,7 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &asksize1_)));
-          set_has_asksize1();
+
         } else {
           goto handle_unusual;
         }
@@ -889,7 +872,7 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &bidprice1_)));
-          set_has_bidprice1();
+
         } else {
           goto handle_unusual;
         }
@@ -904,7 +887,7 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &bidsize1_)));
-          set_has_bidsize1();
+
         } else {
           goto handle_unusual;
         }
@@ -919,7 +902,7 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &bidprice2_)));
-          set_has_bidprice2();
+
         } else {
           goto handle_unusual;
         }
@@ -934,7 +917,7 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &bidsize2_)));
-          set_has_bidsize2();
+
         } else {
           goto handle_unusual;
         }
@@ -949,7 +932,7 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &bidprice3_)));
-          set_has_bidprice3();
+
         } else {
           goto handle_unusual;
         }
@@ -964,7 +947,7 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &bidsize3_)));
-          set_has_bidsize3();
+
         } else {
           goto handle_unusual;
         }
@@ -979,7 +962,7 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &bidprice4_)));
-          set_has_bidprice4();
+
         } else {
           goto handle_unusual;
         }
@@ -994,7 +977,7 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &bidsize4_)));
-          set_has_bidsize4();
+
         } else {
           goto handle_unusual;
         }
@@ -1009,7 +992,7 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &bidprice5_)));
-          set_has_bidprice5();
+
         } else {
           goto handle_unusual;
         }
@@ -1024,7 +1007,7 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &bidsize5_)));
-          set_has_bidsize5();
+
         } else {
           goto handle_unusual;
         }
@@ -1039,8 +1022,7 @@ bool PBMsgEqtMD::MergePartialFromCodedStream(
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, mutable_unknown_fields()));
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
         break;
       }
     }
@@ -1057,696 +1039,614 @@ failure:
 void PBMsgEqtMD::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:PBWrapMsgMDA.PBMsgEqtMD)
-  // required int32 EOF = 1;
-  if (has_eof()) {
+  // optional int32 EOF = 1;
+  if (this->eof() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->eof(), output);
   }
 
-  // required string source = 3;
-  if (has_source()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+  // optional string source = 3;
+  if (this->source().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->source().data(), this->source().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "PBWrapMsgMDA.PBMsgEqtMD.source");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       3, this->source(), output);
   }
 
-  // required .PBWrapMsgMDA.DataType dataType = 4;
-  if (has_datatype()) {
+  // optional .PBWrapMsgMDA.DataType dataType = 4;
+  if (this->datatype() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
       4, this->datatype(), output);
   }
 
-  // required string symbol = 5;
-  if (has_symbol()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+  // optional string symbol = 5;
+  if (this->symbol().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->symbol().data(), this->symbol().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "PBWrapMsgMDA.PBMsgEqtMD.symbol");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       5, this->symbol(), output);
   }
 
-  // required string timeStamp = 6;
-  if (has_timestamp()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+  // optional string timeStamp = 6;
+  if (this->timestamp().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->timestamp().data(), this->timestamp().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "PBWrapMsgMDA.PBMsgEqtMD.timeStamp");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       6, this->timestamp(), output);
   }
 
-  // required int64 preCloseValue = 7;
-  if (has_preclosevalue()) {
+  // optional int64 preCloseValue = 7;
+  if (this->preclosevalue() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(7, this->preclosevalue(), output);
   }
 
-  // required int64 openValue = 8;
-  if (has_openvalue()) {
+  // optional int64 openValue = 8;
+  if (this->openvalue() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(8, this->openvalue(), output);
   }
 
-  // required int64 turnover = 9;
-  if (has_turnover()) {
+  // optional int64 turnover = 9;
+  if (this->turnover() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(9, this->turnover(), output);
   }
 
-  // required int64 volume = 10;
-  if (has_volume()) {
+  // optional int64 volume = 10;
+  if (this->volume() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(10, this->volume(), output);
   }
 
-  // required int64 highValue = 11;
-  if (has_highvalue()) {
+  // optional int64 highValue = 11;
+  if (this->highvalue() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(11, this->highvalue(), output);
   }
 
-  // required int64 lowValue = 12;
-  if (has_lowvalue()) {
+  // optional int64 lowValue = 12;
+  if (this->lowvalue() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(12, this->lowvalue(), output);
   }
 
   // optional int64 latestIndex = 13;
-  if (has_latestindex()) {
+  if (this->latestindex() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(13, this->latestindex(), output);
   }
 
   // optional int64 matchPrice = 14;
-  if (has_matchprice()) {
+  if (this->matchprice() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(14, this->matchprice(), output);
   }
 
   // optional int64 askPrice5 = 15;
-  if (has_askprice5()) {
+  if (this->askprice5() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(15, this->askprice5(), output);
   }
 
   // optional int64 askSize5 = 16;
-  if (has_asksize5()) {
+  if (this->asksize5() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(16, this->asksize5(), output);
   }
 
   // optional int64 askPrice4 = 17;
-  if (has_askprice4()) {
+  if (this->askprice4() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(17, this->askprice4(), output);
   }
 
   // optional int64 askSize4 = 18;
-  if (has_asksize4()) {
+  if (this->asksize4() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(18, this->asksize4(), output);
   }
 
   // optional int64 askPrice3 = 19;
-  if (has_askprice3()) {
+  if (this->askprice3() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(19, this->askprice3(), output);
   }
 
   // optional int64 askSize3 = 20;
-  if (has_asksize3()) {
+  if (this->asksize3() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(20, this->asksize3(), output);
   }
 
   // optional int64 askPrice2 = 21;
-  if (has_askprice2()) {
+  if (this->askprice2() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(21, this->askprice2(), output);
   }
 
   // optional int64 askSize2 = 22;
-  if (has_asksize2()) {
+  if (this->asksize2() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(22, this->asksize2(), output);
   }
 
   // optional int64 askPrice1 = 23;
-  if (has_askprice1()) {
+  if (this->askprice1() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(23, this->askprice1(), output);
   }
 
   // optional int64 askSize1 = 24;
-  if (has_asksize1()) {
+  if (this->asksize1() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(24, this->asksize1(), output);
   }
 
   // optional int64 bidPrice1 = 25;
-  if (has_bidprice1()) {
+  if (this->bidprice1() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(25, this->bidprice1(), output);
   }
 
   // optional int64 bidSize1 = 26;
-  if (has_bidsize1()) {
+  if (this->bidsize1() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(26, this->bidsize1(), output);
   }
 
   // optional int64 bidPrice2 = 27;
-  if (has_bidprice2()) {
+  if (this->bidprice2() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(27, this->bidprice2(), output);
   }
 
   // optional int64 bidSize2 = 28;
-  if (has_bidsize2()) {
+  if (this->bidsize2() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(28, this->bidsize2(), output);
   }
 
   // optional int64 bidPrice3 = 29;
-  if (has_bidprice3()) {
+  if (this->bidprice3() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(29, this->bidprice3(), output);
   }
 
   // optional int64 bidSize3 = 30;
-  if (has_bidsize3()) {
+  if (this->bidsize3() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(30, this->bidsize3(), output);
   }
 
   // optional int64 bidPrice4 = 31;
-  if (has_bidprice4()) {
+  if (this->bidprice4() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(31, this->bidprice4(), output);
   }
 
   // optional int64 bidSize4 = 32;
-  if (has_bidsize4()) {
+  if (this->bidsize4() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(32, this->bidsize4(), output);
   }
 
   // optional int64 bidPrice5 = 33;
-  if (has_bidprice5()) {
+  if (this->bidprice5() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(33, this->bidprice5(), output);
   }
 
   // optional int64 bidSize5 = 34;
-  if (has_bidsize5()) {
+  if (this->bidsize5() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(34, this->bidsize5(), output);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        unknown_fields(), output);
-  }
   // @@protoc_insertion_point(serialize_end:PBWrapMsgMDA.PBMsgEqtMD)
 }
 
 ::google::protobuf::uint8* PBMsgEqtMD::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // @@protoc_insertion_point(serialize_to_array_start:PBWrapMsgMDA.PBMsgEqtMD)
-  // required int32 EOF = 1;
-  if (has_eof()) {
+  // optional int32 EOF = 1;
+  if (this->eof() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->eof(), target);
   }
 
-  // required string source = 3;
-  if (has_source()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+  // optional string source = 3;
+  if (this->source().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->source().data(), this->source().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "PBWrapMsgMDA.PBMsgEqtMD.source");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
         3, this->source(), target);
   }
 
-  // required .PBWrapMsgMDA.DataType dataType = 4;
-  if (has_datatype()) {
+  // optional .PBWrapMsgMDA.DataType dataType = 4;
+  if (this->datatype() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       4, this->datatype(), target);
   }
 
-  // required string symbol = 5;
-  if (has_symbol()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+  // optional string symbol = 5;
+  if (this->symbol().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->symbol().data(), this->symbol().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "PBWrapMsgMDA.PBMsgEqtMD.symbol");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
         5, this->symbol(), target);
   }
 
-  // required string timeStamp = 6;
-  if (has_timestamp()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+  // optional string timeStamp = 6;
+  if (this->timestamp().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->timestamp().data(), this->timestamp().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "PBWrapMsgMDA.PBMsgEqtMD.timeStamp");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
         6, this->timestamp(), target);
   }
 
-  // required int64 preCloseValue = 7;
-  if (has_preclosevalue()) {
+  // optional int64 preCloseValue = 7;
+  if (this->preclosevalue() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(7, this->preclosevalue(), target);
   }
 
-  // required int64 openValue = 8;
-  if (has_openvalue()) {
+  // optional int64 openValue = 8;
+  if (this->openvalue() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(8, this->openvalue(), target);
   }
 
-  // required int64 turnover = 9;
-  if (has_turnover()) {
+  // optional int64 turnover = 9;
+  if (this->turnover() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(9, this->turnover(), target);
   }
 
-  // required int64 volume = 10;
-  if (has_volume()) {
+  // optional int64 volume = 10;
+  if (this->volume() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(10, this->volume(), target);
   }
 
-  // required int64 highValue = 11;
-  if (has_highvalue()) {
+  // optional int64 highValue = 11;
+  if (this->highvalue() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(11, this->highvalue(), target);
   }
 
-  // required int64 lowValue = 12;
-  if (has_lowvalue()) {
+  // optional int64 lowValue = 12;
+  if (this->lowvalue() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(12, this->lowvalue(), target);
   }
 
   // optional int64 latestIndex = 13;
-  if (has_latestindex()) {
+  if (this->latestindex() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(13, this->latestindex(), target);
   }
 
   // optional int64 matchPrice = 14;
-  if (has_matchprice()) {
+  if (this->matchprice() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(14, this->matchprice(), target);
   }
 
   // optional int64 askPrice5 = 15;
-  if (has_askprice5()) {
+  if (this->askprice5() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(15, this->askprice5(), target);
   }
 
   // optional int64 askSize5 = 16;
-  if (has_asksize5()) {
+  if (this->asksize5() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(16, this->asksize5(), target);
   }
 
   // optional int64 askPrice4 = 17;
-  if (has_askprice4()) {
+  if (this->askprice4() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(17, this->askprice4(), target);
   }
 
   // optional int64 askSize4 = 18;
-  if (has_asksize4()) {
+  if (this->asksize4() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(18, this->asksize4(), target);
   }
 
   // optional int64 askPrice3 = 19;
-  if (has_askprice3()) {
+  if (this->askprice3() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(19, this->askprice3(), target);
   }
 
   // optional int64 askSize3 = 20;
-  if (has_asksize3()) {
+  if (this->asksize3() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(20, this->asksize3(), target);
   }
 
   // optional int64 askPrice2 = 21;
-  if (has_askprice2()) {
+  if (this->askprice2() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(21, this->askprice2(), target);
   }
 
   // optional int64 askSize2 = 22;
-  if (has_asksize2()) {
+  if (this->asksize2() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(22, this->asksize2(), target);
   }
 
   // optional int64 askPrice1 = 23;
-  if (has_askprice1()) {
+  if (this->askprice1() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(23, this->askprice1(), target);
   }
 
   // optional int64 askSize1 = 24;
-  if (has_asksize1()) {
+  if (this->asksize1() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(24, this->asksize1(), target);
   }
 
   // optional int64 bidPrice1 = 25;
-  if (has_bidprice1()) {
+  if (this->bidprice1() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(25, this->bidprice1(), target);
   }
 
   // optional int64 bidSize1 = 26;
-  if (has_bidsize1()) {
+  if (this->bidsize1() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(26, this->bidsize1(), target);
   }
 
   // optional int64 bidPrice2 = 27;
-  if (has_bidprice2()) {
+  if (this->bidprice2() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(27, this->bidprice2(), target);
   }
 
   // optional int64 bidSize2 = 28;
-  if (has_bidsize2()) {
+  if (this->bidsize2() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(28, this->bidsize2(), target);
   }
 
   // optional int64 bidPrice3 = 29;
-  if (has_bidprice3()) {
+  if (this->bidprice3() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(29, this->bidprice3(), target);
   }
 
   // optional int64 bidSize3 = 30;
-  if (has_bidsize3()) {
+  if (this->bidsize3() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(30, this->bidsize3(), target);
   }
 
   // optional int64 bidPrice4 = 31;
-  if (has_bidprice4()) {
+  if (this->bidprice4() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(31, this->bidprice4(), target);
   }
 
   // optional int64 bidSize4 = 32;
-  if (has_bidsize4()) {
+  if (this->bidsize4() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(32, this->bidsize4(), target);
   }
 
   // optional int64 bidPrice5 = 33;
-  if (has_bidprice5()) {
+  if (this->bidprice5() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(33, this->bidprice5(), target);
   }
 
   // optional int64 bidSize5 = 34;
-  if (has_bidsize5()) {
+  if (this->bidsize5() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(34, this->bidsize5(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        unknown_fields(), target);
-  }
   // @@protoc_insertion_point(serialize_to_array_end:PBWrapMsgMDA.PBMsgEqtMD)
   return target;
 }
 
-int PBMsgEqtMD::RequiredFieldsByteSizeFallback() const {
-  int total_size = 0;
-
-  if (has_eof()) {
-    // required int32 EOF = 1;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->eof());
-  }
-
-  if (has_source()) {
-    // required string source = 3;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->source());
-  }
-
-  if (has_datatype()) {
-    // required .PBWrapMsgMDA.DataType dataType = 4;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::EnumSize(this->datatype());
-  }
-
-  if (has_symbol()) {
-    // required string symbol = 5;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->symbol());
-  }
-
-  if (has_timestamp()) {
-    // required string timeStamp = 6;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->timestamp());
-  }
-
-  if (has_preclosevalue()) {
-    // required int64 preCloseValue = 7;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->preclosevalue());
-  }
-
-  if (has_openvalue()) {
-    // required int64 openValue = 8;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->openvalue());
-  }
-
-  if (has_highvalue()) {
-    // required int64 highValue = 11;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->highvalue());
-  }
-
-  if (has_lowvalue()) {
-    // required int64 lowValue = 12;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->lowvalue());
-  }
-
-  if (has_turnover()) {
-    // required int64 turnover = 9;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->turnover());
-  }
-
-  if (has_volume()) {
-    // required int64 volume = 10;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->volume());
-  }
-
-  return total_size;
-}
 int PBMsgEqtMD::ByteSize() const {
   int total_size = 0;
 
-  if (((_has_bits_[0] & 0x006001ff) ^ 0x006001ff) == 0) {  // All required fields are present.
-    // required int32 EOF = 1;
+  // optional int32 EOF = 1;
+  if (this->eof() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->eof());
+  }
 
-    // required string source = 3;
+  // optional string source = 3;
+  if (this->source().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->source());
+  }
 
-    // required .PBWrapMsgMDA.DataType dataType = 4;
+  // optional .PBWrapMsgMDA.DataType dataType = 4;
+  if (this->datatype() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::EnumSize(this->datatype());
+  }
 
-    // required string symbol = 5;
+  // optional string symbol = 5;
+  if (this->symbol().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->symbol());
+  }
 
-    // required string timeStamp = 6;
+  // optional string timeStamp = 6;
+  if (this->timestamp().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->timestamp());
+  }
 
-    // required int64 preCloseValue = 7;
+  // optional int64 preCloseValue = 7;
+  if (this->preclosevalue() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->preclosevalue());
+  }
 
-    // required int64 openValue = 8;
+  // optional int64 openValue = 8;
+  if (this->openvalue() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->openvalue());
+  }
 
-    // required int64 highValue = 11;
+  // optional int64 highValue = 11;
+  if (this->highvalue() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->highvalue());
+  }
 
-    // required int64 lowValue = 12;
+  // optional int64 lowValue = 12;
+  if (this->lowvalue() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->lowvalue());
+  }
 
-    // required int64 turnover = 9;
+  // optional int64 latestIndex = 13;
+  if (this->latestindex() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->latestindex());
+  }
+
+  // optional int64 matchPrice = 14;
+  if (this->matchprice() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->matchprice());
+  }
+
+  // optional int64 askPrice5 = 15;
+  if (this->askprice5() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->askprice5());
+  }
+
+  // optional int64 askPrice4 = 17;
+  if (this->askprice4() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->askprice4());
+  }
+
+  // optional int64 askPrice3 = 19;
+  if (this->askprice3() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->askprice3());
+  }
+
+  // optional int64 askPrice2 = 21;
+  if (this->askprice2() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->askprice2());
+  }
+
+  // optional int64 askPrice1 = 23;
+  if (this->askprice1() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->askprice1());
+  }
+
+  // optional int64 bidPrice1 = 25;
+  if (this->bidprice1() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->bidprice1());
+  }
+
+  // optional int64 bidPrice2 = 27;
+  if (this->bidprice2() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->bidprice2());
+  }
+
+  // optional int64 bidPrice3 = 29;
+  if (this->bidprice3() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->bidprice3());
+  }
+
+  // optional int64 bidPrice4 = 31;
+  if (this->bidprice4() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->bidprice4());
+  }
+
+  // optional int64 bidPrice5 = 33;
+  if (this->bidprice5() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->bidprice5());
+  }
+
+  // optional int64 turnover = 9;
+  if (this->turnover() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->turnover());
+  }
 
-    // required int64 volume = 10;
+  // optional int64 volume = 10;
+  if (this->volume() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->volume());
-
-  } else {
-    total_size += RequiredFieldsByteSizeFallback();
   }
-  if (_has_bits_[9 / 32] & 65024u) {
-    // optional int64 latestIndex = 13;
-    if (has_latestindex()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->latestindex());
-    }
 
-    // optional int64 matchPrice = 14;
-    if (has_matchprice()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->matchprice());
-    }
-
-    // optional int64 askPrice5 = 15;
-    if (has_askprice5()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->askprice5());
-    }
-
-    // optional int64 askPrice4 = 17;
-    if (has_askprice4()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->askprice4());
-    }
-
-    // optional int64 askPrice3 = 19;
-    if (has_askprice3()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->askprice3());
-    }
-
-    // optional int64 askPrice2 = 21;
-    if (has_askprice2()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->askprice2());
-    }
-
-    // optional int64 askPrice1 = 23;
-    if (has_askprice1()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->askprice1());
-    }
-
+  // optional int64 askSize5 = 16;
+  if (this->asksize5() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->asksize5());
   }
-  if (_has_bits_[16 / 32] & 10420224u) {
-    // optional int64 bidPrice1 = 25;
-    if (has_bidprice1()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->bidprice1());
-    }
 
-    // optional int64 bidPrice2 = 27;
-    if (has_bidprice2()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->bidprice2());
-    }
-
-    // optional int64 bidPrice3 = 29;
-    if (has_bidprice3()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->bidprice3());
-    }
-
-    // optional int64 bidPrice4 = 31;
-    if (has_bidprice4()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->bidprice4());
-    }
-
-    // optional int64 bidPrice5 = 33;
-    if (has_bidprice5()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->bidprice5());
-    }
-
-    // optional int64 askSize5 = 16;
-    if (has_asksize5()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->asksize5());
-    }
-
+  // optional int64 askSize4 = 18;
+  if (this->asksize4() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->asksize4());
   }
-  if (_has_bits_[24 / 32] & 4278190080u) {
-    // optional int64 askSize4 = 18;
-    if (has_asksize4()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->asksize4());
-    }
 
-    // optional int64 askSize3 = 20;
-    if (has_asksize3()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->asksize3());
-    }
-
-    // optional int64 askSize2 = 22;
-    if (has_asksize2()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->asksize2());
-    }
-
-    // optional int64 askSize1 = 24;
-    if (has_asksize1()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->asksize1());
-    }
-
-    // optional int64 bidSize1 = 26;
-    if (has_bidsize1()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->bidsize1());
-    }
-
-    // optional int64 bidSize2 = 28;
-    if (has_bidsize2()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->bidsize2());
-    }
-
-    // optional int64 bidSize3 = 30;
-    if (has_bidsize3()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->bidsize3());
-    }
-
-    // optional int64 bidSize4 = 32;
-    if (has_bidsize4()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->bidsize4());
-    }
-
+  // optional int64 askSize3 = 20;
+  if (this->asksize3() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->asksize3());
   }
+
+  // optional int64 askSize2 = 22;
+  if (this->asksize2() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->asksize2());
+  }
+
+  // optional int64 askSize1 = 24;
+  if (this->asksize1() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->asksize1());
+  }
+
+  // optional int64 bidSize1 = 26;
+  if (this->bidsize1() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->bidsize1());
+  }
+
+  // optional int64 bidSize2 = 28;
+  if (this->bidsize2() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->bidsize2());
+  }
+
+  // optional int64 bidSize3 = 30;
+  if (this->bidsize3() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->bidsize3());
+  }
+
+  // optional int64 bidSize4 = 32;
+  if (this->bidsize4() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->bidsize4());
+  }
+
   // optional int64 bidSize5 = 34;
-  if (has_bidsize5()) {
+  if (this->bidsize5() != 0) {
     total_size += 2 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->bidsize5());
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        unknown_fields());
-  }
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = total_size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
@@ -1767,120 +1667,107 @@ void PBMsgEqtMD::MergeFrom(const ::google::protobuf::Message& from) {
 
 void PBMsgEqtMD::MergeFrom(const PBMsgEqtMD& from) {
   if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
-  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_eof()) {
-      set_eof(from.eof());
-    }
-    if (from.has_source()) {
-      set_has_source();
-      source_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.source_);
-    }
-    if (from.has_datatype()) {
-      set_datatype(from.datatype());
-    }
-    if (from.has_symbol()) {
-      set_has_symbol();
-      symbol_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.symbol_);
-    }
-    if (from.has_timestamp()) {
-      set_has_timestamp();
-      timestamp_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.timestamp_);
-    }
-    if (from.has_preclosevalue()) {
-      set_preclosevalue(from.preclosevalue());
-    }
-    if (from.has_openvalue()) {
-      set_openvalue(from.openvalue());
-    }
-    if (from.has_highvalue()) {
-      set_highvalue(from.highvalue());
-    }
+  if (from.eof() != 0) {
+    set_eof(from.eof());
   }
-  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
-    if (from.has_lowvalue()) {
-      set_lowvalue(from.lowvalue());
-    }
-    if (from.has_latestindex()) {
-      set_latestindex(from.latestindex());
-    }
-    if (from.has_matchprice()) {
-      set_matchprice(from.matchprice());
-    }
-    if (from.has_askprice5()) {
-      set_askprice5(from.askprice5());
-    }
-    if (from.has_askprice4()) {
-      set_askprice4(from.askprice4());
-    }
-    if (from.has_askprice3()) {
-      set_askprice3(from.askprice3());
-    }
-    if (from.has_askprice2()) {
-      set_askprice2(from.askprice2());
-    }
-    if (from.has_askprice1()) {
-      set_askprice1(from.askprice1());
-    }
+  if (from.source().size() > 0) {
+
+    source_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.source_);
   }
-  if (from._has_bits_[16 / 32] & (0xffu << (16 % 32))) {
-    if (from.has_bidprice1()) {
-      set_bidprice1(from.bidprice1());
-    }
-    if (from.has_bidprice2()) {
-      set_bidprice2(from.bidprice2());
-    }
-    if (from.has_bidprice3()) {
-      set_bidprice3(from.bidprice3());
-    }
-    if (from.has_bidprice4()) {
-      set_bidprice4(from.bidprice4());
-    }
-    if (from.has_bidprice5()) {
-      set_bidprice5(from.bidprice5());
-    }
-    if (from.has_turnover()) {
-      set_turnover(from.turnover());
-    }
-    if (from.has_volume()) {
-      set_volume(from.volume());
-    }
-    if (from.has_asksize5()) {
-      set_asksize5(from.asksize5());
-    }
+  if (from.datatype() != 0) {
+    set_datatype(from.datatype());
   }
-  if (from._has_bits_[24 / 32] & (0xffu << (24 % 32))) {
-    if (from.has_asksize4()) {
-      set_asksize4(from.asksize4());
-    }
-    if (from.has_asksize3()) {
-      set_asksize3(from.asksize3());
-    }
-    if (from.has_asksize2()) {
-      set_asksize2(from.asksize2());
-    }
-    if (from.has_asksize1()) {
-      set_asksize1(from.asksize1());
-    }
-    if (from.has_bidsize1()) {
-      set_bidsize1(from.bidsize1());
-    }
-    if (from.has_bidsize2()) {
-      set_bidsize2(from.bidsize2());
-    }
-    if (from.has_bidsize3()) {
-      set_bidsize3(from.bidsize3());
-    }
-    if (from.has_bidsize4()) {
-      set_bidsize4(from.bidsize4());
-    }
+  if (from.symbol().size() > 0) {
+
+    symbol_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.symbol_);
   }
-  if (from._has_bits_[32 / 32] & (0xffu << (32 % 32))) {
-    if (from.has_bidsize5()) {
-      set_bidsize5(from.bidsize5());
-    }
+  if (from.timestamp().size() > 0) {
+
+    timestamp_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.timestamp_);
   }
-  if (from._internal_metadata_.have_unknown_fields()) {
-    mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+  if (from.preclosevalue() != 0) {
+    set_preclosevalue(from.preclosevalue());
+  }
+  if (from.openvalue() != 0) {
+    set_openvalue(from.openvalue());
+  }
+  if (from.highvalue() != 0) {
+    set_highvalue(from.highvalue());
+  }
+  if (from.lowvalue() != 0) {
+    set_lowvalue(from.lowvalue());
+  }
+  if (from.latestindex() != 0) {
+    set_latestindex(from.latestindex());
+  }
+  if (from.matchprice() != 0) {
+    set_matchprice(from.matchprice());
+  }
+  if (from.askprice5() != 0) {
+    set_askprice5(from.askprice5());
+  }
+  if (from.askprice4() != 0) {
+    set_askprice4(from.askprice4());
+  }
+  if (from.askprice3() != 0) {
+    set_askprice3(from.askprice3());
+  }
+  if (from.askprice2() != 0) {
+    set_askprice2(from.askprice2());
+  }
+  if (from.askprice1() != 0) {
+    set_askprice1(from.askprice1());
+  }
+  if (from.bidprice1() != 0) {
+    set_bidprice1(from.bidprice1());
+  }
+  if (from.bidprice2() != 0) {
+    set_bidprice2(from.bidprice2());
+  }
+  if (from.bidprice3() != 0) {
+    set_bidprice3(from.bidprice3());
+  }
+  if (from.bidprice4() != 0) {
+    set_bidprice4(from.bidprice4());
+  }
+  if (from.bidprice5() != 0) {
+    set_bidprice5(from.bidprice5());
+  }
+  if (from.turnover() != 0) {
+    set_turnover(from.turnover());
+  }
+  if (from.volume() != 0) {
+    set_volume(from.volume());
+  }
+  if (from.asksize5() != 0) {
+    set_asksize5(from.asksize5());
+  }
+  if (from.asksize4() != 0) {
+    set_asksize4(from.asksize4());
+  }
+  if (from.asksize3() != 0) {
+    set_asksize3(from.asksize3());
+  }
+  if (from.asksize2() != 0) {
+    set_asksize2(from.asksize2());
+  }
+  if (from.asksize1() != 0) {
+    set_asksize1(from.asksize1());
+  }
+  if (from.bidsize1() != 0) {
+    set_bidsize1(from.bidsize1());
+  }
+  if (from.bidsize2() != 0) {
+    set_bidsize2(from.bidsize2());
+  }
+  if (from.bidsize3() != 0) {
+    set_bidsize3(from.bidsize3());
+  }
+  if (from.bidsize4() != 0) {
+    set_bidsize4(from.bidsize4());
+  }
+  if (from.bidsize5() != 0) {
+    set_bidsize5(from.bidsize5());
   }
 }
 
@@ -1897,7 +1784,6 @@ void PBMsgEqtMD::CopyFrom(const PBMsgEqtMD& from) {
 }
 
 bool PBMsgEqtMD::IsInitialized() const {
-  if ((_has_bits_[0] & 0x006001ff) != 0x006001ff) return false;
 
   return true;
 }
@@ -1940,8 +1826,6 @@ void PBMsgEqtMD::InternalSwap(PBMsgEqtMD* other) {
   std::swap(bidsize3_, other->bidsize3_);
   std::swap(bidsize4_, other->bidsize4_);
   std::swap(bidsize5_, other->bidsize5_);
-  std::swap(_has_bits_[0], other->_has_bits_[0]);
-  std::swap(_has_bits_[1], other->_has_bits_[1]);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -1957,882 +1841,551 @@ void PBMsgEqtMD::InternalSwap(PBMsgEqtMD* other) {
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
 // PBMsgEqtMD
 
-// required int32 EOF = 1;
-bool PBMsgEqtMD::has_eof() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-void PBMsgEqtMD::set_has_eof() {
-  _has_bits_[0] |= 0x00000001u;
-}
-void PBMsgEqtMD::clear_has_eof() {
-  _has_bits_[0] &= ~0x00000001u;
-}
+// optional int32 EOF = 1;
 void PBMsgEqtMD::clear_eof() {
   eof_ = 0;
-  clear_has_eof();
 }
  ::google::protobuf::int32 PBMsgEqtMD::eof() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.EOF)
   return eof_;
 }
  void PBMsgEqtMD::set_eof(::google::protobuf::int32 value) {
-  set_has_eof();
+  
   eof_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.EOF)
 }
 
-// required string source = 3;
-bool PBMsgEqtMD::has_source() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-void PBMsgEqtMD::set_has_source() {
-  _has_bits_[0] |= 0x00000002u;
-}
-void PBMsgEqtMD::clear_has_source() {
-  _has_bits_[0] &= ~0x00000002u;
-}
+// optional string source = 3;
 void PBMsgEqtMD::clear_source() {
   source_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_source();
 }
  const ::std::string& PBMsgEqtMD::source() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.source)
   return source_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  void PBMsgEqtMD::set_source(const ::std::string& value) {
-  set_has_source();
+  
   source_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.source)
 }
  void PBMsgEqtMD::set_source(const char* value) {
-  set_has_source();
+  
   source_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBWrapMsgMDA.PBMsgEqtMD.source)
 }
  void PBMsgEqtMD::set_source(const char* value, size_t size) {
-  set_has_source();
+  
   source_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBWrapMsgMDA.PBMsgEqtMD.source)
 }
  ::std::string* PBMsgEqtMD::mutable_source() {
-  set_has_source();
+  
   // @@protoc_insertion_point(field_mutable:PBWrapMsgMDA.PBMsgEqtMD.source)
   return source_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  ::std::string* PBMsgEqtMD::release_source() {
-  clear_has_source();
+  
   return source_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  void PBMsgEqtMD::set_allocated_source(::std::string* source) {
   if (source != NULL) {
-    set_has_source();
+    
   } else {
-    clear_has_source();
+    
   }
   source_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), source);
   // @@protoc_insertion_point(field_set_allocated:PBWrapMsgMDA.PBMsgEqtMD.source)
 }
 
-// required .PBWrapMsgMDA.DataType dataType = 4;
-bool PBMsgEqtMD::has_datatype() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-void PBMsgEqtMD::set_has_datatype() {
-  _has_bits_[0] |= 0x00000004u;
-}
-void PBMsgEqtMD::clear_has_datatype() {
-  _has_bits_[0] &= ~0x00000004u;
-}
+// optional .PBWrapMsgMDA.DataType dataType = 4;
 void PBMsgEqtMD::clear_datatype() {
-  datatype_ = 1;
-  clear_has_datatype();
+  datatype_ = 0;
 }
  ::PBWrapMsgMDA::DataType PBMsgEqtMD::datatype() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.dataType)
   return static_cast< ::PBWrapMsgMDA::DataType >(datatype_);
 }
  void PBMsgEqtMD::set_datatype(::PBWrapMsgMDA::DataType value) {
-  assert(::PBWrapMsgMDA::DataType_IsValid(value));
-  set_has_datatype();
+  
   datatype_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.dataType)
 }
 
-// required string symbol = 5;
-bool PBMsgEqtMD::has_symbol() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-void PBMsgEqtMD::set_has_symbol() {
-  _has_bits_[0] |= 0x00000008u;
-}
-void PBMsgEqtMD::clear_has_symbol() {
-  _has_bits_[0] &= ~0x00000008u;
-}
+// optional string symbol = 5;
 void PBMsgEqtMD::clear_symbol() {
   symbol_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_symbol();
 }
  const ::std::string& PBMsgEqtMD::symbol() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.symbol)
   return symbol_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  void PBMsgEqtMD::set_symbol(const ::std::string& value) {
-  set_has_symbol();
+  
   symbol_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.symbol)
 }
  void PBMsgEqtMD::set_symbol(const char* value) {
-  set_has_symbol();
+  
   symbol_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBWrapMsgMDA.PBMsgEqtMD.symbol)
 }
  void PBMsgEqtMD::set_symbol(const char* value, size_t size) {
-  set_has_symbol();
+  
   symbol_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBWrapMsgMDA.PBMsgEqtMD.symbol)
 }
  ::std::string* PBMsgEqtMD::mutable_symbol() {
-  set_has_symbol();
+  
   // @@protoc_insertion_point(field_mutable:PBWrapMsgMDA.PBMsgEqtMD.symbol)
   return symbol_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  ::std::string* PBMsgEqtMD::release_symbol() {
-  clear_has_symbol();
+  
   return symbol_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  void PBMsgEqtMD::set_allocated_symbol(::std::string* symbol) {
   if (symbol != NULL) {
-    set_has_symbol();
+    
   } else {
-    clear_has_symbol();
+    
   }
   symbol_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), symbol);
   // @@protoc_insertion_point(field_set_allocated:PBWrapMsgMDA.PBMsgEqtMD.symbol)
 }
 
-// required string timeStamp = 6;
-bool PBMsgEqtMD::has_timestamp() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-void PBMsgEqtMD::set_has_timestamp() {
-  _has_bits_[0] |= 0x00000010u;
-}
-void PBMsgEqtMD::clear_has_timestamp() {
-  _has_bits_[0] &= ~0x00000010u;
-}
+// optional string timeStamp = 6;
 void PBMsgEqtMD::clear_timestamp() {
   timestamp_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_timestamp();
 }
  const ::std::string& PBMsgEqtMD::timestamp() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.timeStamp)
   return timestamp_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  void PBMsgEqtMD::set_timestamp(const ::std::string& value) {
-  set_has_timestamp();
+  
   timestamp_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.timeStamp)
 }
  void PBMsgEqtMD::set_timestamp(const char* value) {
-  set_has_timestamp();
+  
   timestamp_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBWrapMsgMDA.PBMsgEqtMD.timeStamp)
 }
  void PBMsgEqtMD::set_timestamp(const char* value, size_t size) {
-  set_has_timestamp();
+  
   timestamp_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBWrapMsgMDA.PBMsgEqtMD.timeStamp)
 }
  ::std::string* PBMsgEqtMD::mutable_timestamp() {
-  set_has_timestamp();
+  
   // @@protoc_insertion_point(field_mutable:PBWrapMsgMDA.PBMsgEqtMD.timeStamp)
   return timestamp_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  ::std::string* PBMsgEqtMD::release_timestamp() {
-  clear_has_timestamp();
+  
   return timestamp_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  void PBMsgEqtMD::set_allocated_timestamp(::std::string* timestamp) {
   if (timestamp != NULL) {
-    set_has_timestamp();
+    
   } else {
-    clear_has_timestamp();
+    
   }
   timestamp_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), timestamp);
   // @@protoc_insertion_point(field_set_allocated:PBWrapMsgMDA.PBMsgEqtMD.timeStamp)
 }
 
-// required int64 preCloseValue = 7;
-bool PBMsgEqtMD::has_preclosevalue() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
-}
-void PBMsgEqtMD::set_has_preclosevalue() {
-  _has_bits_[0] |= 0x00000020u;
-}
-void PBMsgEqtMD::clear_has_preclosevalue() {
-  _has_bits_[0] &= ~0x00000020u;
-}
+// optional int64 preCloseValue = 7;
 void PBMsgEqtMD::clear_preclosevalue() {
   preclosevalue_ = GOOGLE_LONGLONG(0);
-  clear_has_preclosevalue();
 }
  ::google::protobuf::int64 PBMsgEqtMD::preclosevalue() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.preCloseValue)
   return preclosevalue_;
 }
  void PBMsgEqtMD::set_preclosevalue(::google::protobuf::int64 value) {
-  set_has_preclosevalue();
+  
   preclosevalue_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.preCloseValue)
 }
 
-// required int64 openValue = 8;
-bool PBMsgEqtMD::has_openvalue() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
-}
-void PBMsgEqtMD::set_has_openvalue() {
-  _has_bits_[0] |= 0x00000040u;
-}
-void PBMsgEqtMD::clear_has_openvalue() {
-  _has_bits_[0] &= ~0x00000040u;
-}
+// optional int64 openValue = 8;
 void PBMsgEqtMD::clear_openvalue() {
   openvalue_ = GOOGLE_LONGLONG(0);
-  clear_has_openvalue();
 }
  ::google::protobuf::int64 PBMsgEqtMD::openvalue() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.openValue)
   return openvalue_;
 }
  void PBMsgEqtMD::set_openvalue(::google::protobuf::int64 value) {
-  set_has_openvalue();
+  
   openvalue_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.openValue)
 }
 
-// required int64 highValue = 11;
-bool PBMsgEqtMD::has_highvalue() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
-}
-void PBMsgEqtMD::set_has_highvalue() {
-  _has_bits_[0] |= 0x00000080u;
-}
-void PBMsgEqtMD::clear_has_highvalue() {
-  _has_bits_[0] &= ~0x00000080u;
-}
+// optional int64 highValue = 11;
 void PBMsgEqtMD::clear_highvalue() {
   highvalue_ = GOOGLE_LONGLONG(0);
-  clear_has_highvalue();
 }
  ::google::protobuf::int64 PBMsgEqtMD::highvalue() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.highValue)
   return highvalue_;
 }
  void PBMsgEqtMD::set_highvalue(::google::protobuf::int64 value) {
-  set_has_highvalue();
+  
   highvalue_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.highValue)
 }
 
-// required int64 lowValue = 12;
-bool PBMsgEqtMD::has_lowvalue() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
-}
-void PBMsgEqtMD::set_has_lowvalue() {
-  _has_bits_[0] |= 0x00000100u;
-}
-void PBMsgEqtMD::clear_has_lowvalue() {
-  _has_bits_[0] &= ~0x00000100u;
-}
+// optional int64 lowValue = 12;
 void PBMsgEqtMD::clear_lowvalue() {
   lowvalue_ = GOOGLE_LONGLONG(0);
-  clear_has_lowvalue();
 }
  ::google::protobuf::int64 PBMsgEqtMD::lowvalue() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.lowValue)
   return lowvalue_;
 }
  void PBMsgEqtMD::set_lowvalue(::google::protobuf::int64 value) {
-  set_has_lowvalue();
+  
   lowvalue_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.lowValue)
 }
 
 // optional int64 latestIndex = 13;
-bool PBMsgEqtMD::has_latestindex() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
-}
-void PBMsgEqtMD::set_has_latestindex() {
-  _has_bits_[0] |= 0x00000200u;
-}
-void PBMsgEqtMD::clear_has_latestindex() {
-  _has_bits_[0] &= ~0x00000200u;
-}
 void PBMsgEqtMD::clear_latestindex() {
   latestindex_ = GOOGLE_LONGLONG(0);
-  clear_has_latestindex();
 }
  ::google::protobuf::int64 PBMsgEqtMD::latestindex() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.latestIndex)
   return latestindex_;
 }
  void PBMsgEqtMD::set_latestindex(::google::protobuf::int64 value) {
-  set_has_latestindex();
+  
   latestindex_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.latestIndex)
 }
 
 // optional int64 matchPrice = 14;
-bool PBMsgEqtMD::has_matchprice() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
-}
-void PBMsgEqtMD::set_has_matchprice() {
-  _has_bits_[0] |= 0x00000400u;
-}
-void PBMsgEqtMD::clear_has_matchprice() {
-  _has_bits_[0] &= ~0x00000400u;
-}
 void PBMsgEqtMD::clear_matchprice() {
   matchprice_ = GOOGLE_LONGLONG(0);
-  clear_has_matchprice();
 }
  ::google::protobuf::int64 PBMsgEqtMD::matchprice() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.matchPrice)
   return matchprice_;
 }
  void PBMsgEqtMD::set_matchprice(::google::protobuf::int64 value) {
-  set_has_matchprice();
+  
   matchprice_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.matchPrice)
 }
 
 // optional int64 askPrice5 = 15;
-bool PBMsgEqtMD::has_askprice5() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
-}
-void PBMsgEqtMD::set_has_askprice5() {
-  _has_bits_[0] |= 0x00000800u;
-}
-void PBMsgEqtMD::clear_has_askprice5() {
-  _has_bits_[0] &= ~0x00000800u;
-}
 void PBMsgEqtMD::clear_askprice5() {
   askprice5_ = GOOGLE_LONGLONG(0);
-  clear_has_askprice5();
 }
  ::google::protobuf::int64 PBMsgEqtMD::askprice5() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.askPrice5)
   return askprice5_;
 }
  void PBMsgEqtMD::set_askprice5(::google::protobuf::int64 value) {
-  set_has_askprice5();
+  
   askprice5_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.askPrice5)
 }
 
 // optional int64 askPrice4 = 17;
-bool PBMsgEqtMD::has_askprice4() const {
-  return (_has_bits_[0] & 0x00001000u) != 0;
-}
-void PBMsgEqtMD::set_has_askprice4() {
-  _has_bits_[0] |= 0x00001000u;
-}
-void PBMsgEqtMD::clear_has_askprice4() {
-  _has_bits_[0] &= ~0x00001000u;
-}
 void PBMsgEqtMD::clear_askprice4() {
   askprice4_ = GOOGLE_LONGLONG(0);
-  clear_has_askprice4();
 }
  ::google::protobuf::int64 PBMsgEqtMD::askprice4() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.askPrice4)
   return askprice4_;
 }
  void PBMsgEqtMD::set_askprice4(::google::protobuf::int64 value) {
-  set_has_askprice4();
+  
   askprice4_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.askPrice4)
 }
 
 // optional int64 askPrice3 = 19;
-bool PBMsgEqtMD::has_askprice3() const {
-  return (_has_bits_[0] & 0x00002000u) != 0;
-}
-void PBMsgEqtMD::set_has_askprice3() {
-  _has_bits_[0] |= 0x00002000u;
-}
-void PBMsgEqtMD::clear_has_askprice3() {
-  _has_bits_[0] &= ~0x00002000u;
-}
 void PBMsgEqtMD::clear_askprice3() {
   askprice3_ = GOOGLE_LONGLONG(0);
-  clear_has_askprice3();
 }
  ::google::protobuf::int64 PBMsgEqtMD::askprice3() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.askPrice3)
   return askprice3_;
 }
  void PBMsgEqtMD::set_askprice3(::google::protobuf::int64 value) {
-  set_has_askprice3();
+  
   askprice3_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.askPrice3)
 }
 
 // optional int64 askPrice2 = 21;
-bool PBMsgEqtMD::has_askprice2() const {
-  return (_has_bits_[0] & 0x00004000u) != 0;
-}
-void PBMsgEqtMD::set_has_askprice2() {
-  _has_bits_[0] |= 0x00004000u;
-}
-void PBMsgEqtMD::clear_has_askprice2() {
-  _has_bits_[0] &= ~0x00004000u;
-}
 void PBMsgEqtMD::clear_askprice2() {
   askprice2_ = GOOGLE_LONGLONG(0);
-  clear_has_askprice2();
 }
  ::google::protobuf::int64 PBMsgEqtMD::askprice2() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.askPrice2)
   return askprice2_;
 }
  void PBMsgEqtMD::set_askprice2(::google::protobuf::int64 value) {
-  set_has_askprice2();
+  
   askprice2_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.askPrice2)
 }
 
 // optional int64 askPrice1 = 23;
-bool PBMsgEqtMD::has_askprice1() const {
-  return (_has_bits_[0] & 0x00008000u) != 0;
-}
-void PBMsgEqtMD::set_has_askprice1() {
-  _has_bits_[0] |= 0x00008000u;
-}
-void PBMsgEqtMD::clear_has_askprice1() {
-  _has_bits_[0] &= ~0x00008000u;
-}
 void PBMsgEqtMD::clear_askprice1() {
   askprice1_ = GOOGLE_LONGLONG(0);
-  clear_has_askprice1();
 }
  ::google::protobuf::int64 PBMsgEqtMD::askprice1() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.askPrice1)
   return askprice1_;
 }
  void PBMsgEqtMD::set_askprice1(::google::protobuf::int64 value) {
-  set_has_askprice1();
+  
   askprice1_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.askPrice1)
 }
 
 // optional int64 bidPrice1 = 25;
-bool PBMsgEqtMD::has_bidprice1() const {
-  return (_has_bits_[0] & 0x00010000u) != 0;
-}
-void PBMsgEqtMD::set_has_bidprice1() {
-  _has_bits_[0] |= 0x00010000u;
-}
-void PBMsgEqtMD::clear_has_bidprice1() {
-  _has_bits_[0] &= ~0x00010000u;
-}
 void PBMsgEqtMD::clear_bidprice1() {
   bidprice1_ = GOOGLE_LONGLONG(0);
-  clear_has_bidprice1();
 }
  ::google::protobuf::int64 PBMsgEqtMD::bidprice1() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.bidPrice1)
   return bidprice1_;
 }
  void PBMsgEqtMD::set_bidprice1(::google::protobuf::int64 value) {
-  set_has_bidprice1();
+  
   bidprice1_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.bidPrice1)
 }
 
 // optional int64 bidPrice2 = 27;
-bool PBMsgEqtMD::has_bidprice2() const {
-  return (_has_bits_[0] & 0x00020000u) != 0;
-}
-void PBMsgEqtMD::set_has_bidprice2() {
-  _has_bits_[0] |= 0x00020000u;
-}
-void PBMsgEqtMD::clear_has_bidprice2() {
-  _has_bits_[0] &= ~0x00020000u;
-}
 void PBMsgEqtMD::clear_bidprice2() {
   bidprice2_ = GOOGLE_LONGLONG(0);
-  clear_has_bidprice2();
 }
  ::google::protobuf::int64 PBMsgEqtMD::bidprice2() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.bidPrice2)
   return bidprice2_;
 }
  void PBMsgEqtMD::set_bidprice2(::google::protobuf::int64 value) {
-  set_has_bidprice2();
+  
   bidprice2_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.bidPrice2)
 }
 
 // optional int64 bidPrice3 = 29;
-bool PBMsgEqtMD::has_bidprice3() const {
-  return (_has_bits_[0] & 0x00040000u) != 0;
-}
-void PBMsgEqtMD::set_has_bidprice3() {
-  _has_bits_[0] |= 0x00040000u;
-}
-void PBMsgEqtMD::clear_has_bidprice3() {
-  _has_bits_[0] &= ~0x00040000u;
-}
 void PBMsgEqtMD::clear_bidprice3() {
   bidprice3_ = GOOGLE_LONGLONG(0);
-  clear_has_bidprice3();
 }
  ::google::protobuf::int64 PBMsgEqtMD::bidprice3() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.bidPrice3)
   return bidprice3_;
 }
  void PBMsgEqtMD::set_bidprice3(::google::protobuf::int64 value) {
-  set_has_bidprice3();
+  
   bidprice3_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.bidPrice3)
 }
 
 // optional int64 bidPrice4 = 31;
-bool PBMsgEqtMD::has_bidprice4() const {
-  return (_has_bits_[0] & 0x00080000u) != 0;
-}
-void PBMsgEqtMD::set_has_bidprice4() {
-  _has_bits_[0] |= 0x00080000u;
-}
-void PBMsgEqtMD::clear_has_bidprice4() {
-  _has_bits_[0] &= ~0x00080000u;
-}
 void PBMsgEqtMD::clear_bidprice4() {
   bidprice4_ = GOOGLE_LONGLONG(0);
-  clear_has_bidprice4();
 }
  ::google::protobuf::int64 PBMsgEqtMD::bidprice4() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.bidPrice4)
   return bidprice4_;
 }
  void PBMsgEqtMD::set_bidprice4(::google::protobuf::int64 value) {
-  set_has_bidprice4();
+  
   bidprice4_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.bidPrice4)
 }
 
 // optional int64 bidPrice5 = 33;
-bool PBMsgEqtMD::has_bidprice5() const {
-  return (_has_bits_[0] & 0x00100000u) != 0;
-}
-void PBMsgEqtMD::set_has_bidprice5() {
-  _has_bits_[0] |= 0x00100000u;
-}
-void PBMsgEqtMD::clear_has_bidprice5() {
-  _has_bits_[0] &= ~0x00100000u;
-}
 void PBMsgEqtMD::clear_bidprice5() {
   bidprice5_ = GOOGLE_LONGLONG(0);
-  clear_has_bidprice5();
 }
  ::google::protobuf::int64 PBMsgEqtMD::bidprice5() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.bidPrice5)
   return bidprice5_;
 }
  void PBMsgEqtMD::set_bidprice5(::google::protobuf::int64 value) {
-  set_has_bidprice5();
+  
   bidprice5_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.bidPrice5)
 }
 
-// required int64 turnover = 9;
-bool PBMsgEqtMD::has_turnover() const {
-  return (_has_bits_[0] & 0x00200000u) != 0;
-}
-void PBMsgEqtMD::set_has_turnover() {
-  _has_bits_[0] |= 0x00200000u;
-}
-void PBMsgEqtMD::clear_has_turnover() {
-  _has_bits_[0] &= ~0x00200000u;
-}
+// optional int64 turnover = 9;
 void PBMsgEqtMD::clear_turnover() {
   turnover_ = GOOGLE_LONGLONG(0);
-  clear_has_turnover();
 }
  ::google::protobuf::int64 PBMsgEqtMD::turnover() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.turnover)
   return turnover_;
 }
  void PBMsgEqtMD::set_turnover(::google::protobuf::int64 value) {
-  set_has_turnover();
+  
   turnover_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.turnover)
 }
 
-// required int64 volume = 10;
-bool PBMsgEqtMD::has_volume() const {
-  return (_has_bits_[0] & 0x00400000u) != 0;
-}
-void PBMsgEqtMD::set_has_volume() {
-  _has_bits_[0] |= 0x00400000u;
-}
-void PBMsgEqtMD::clear_has_volume() {
-  _has_bits_[0] &= ~0x00400000u;
-}
+// optional int64 volume = 10;
 void PBMsgEqtMD::clear_volume() {
   volume_ = GOOGLE_LONGLONG(0);
-  clear_has_volume();
 }
  ::google::protobuf::int64 PBMsgEqtMD::volume() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.volume)
   return volume_;
 }
  void PBMsgEqtMD::set_volume(::google::protobuf::int64 value) {
-  set_has_volume();
+  
   volume_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.volume)
 }
 
 // optional int64 askSize5 = 16;
-bool PBMsgEqtMD::has_asksize5() const {
-  return (_has_bits_[0] & 0x00800000u) != 0;
-}
-void PBMsgEqtMD::set_has_asksize5() {
-  _has_bits_[0] |= 0x00800000u;
-}
-void PBMsgEqtMD::clear_has_asksize5() {
-  _has_bits_[0] &= ~0x00800000u;
-}
 void PBMsgEqtMD::clear_asksize5() {
   asksize5_ = GOOGLE_LONGLONG(0);
-  clear_has_asksize5();
 }
  ::google::protobuf::int64 PBMsgEqtMD::asksize5() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.askSize5)
   return asksize5_;
 }
  void PBMsgEqtMD::set_asksize5(::google::protobuf::int64 value) {
-  set_has_asksize5();
+  
   asksize5_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.askSize5)
 }
 
 // optional int64 askSize4 = 18;
-bool PBMsgEqtMD::has_asksize4() const {
-  return (_has_bits_[0] & 0x01000000u) != 0;
-}
-void PBMsgEqtMD::set_has_asksize4() {
-  _has_bits_[0] |= 0x01000000u;
-}
-void PBMsgEqtMD::clear_has_asksize4() {
-  _has_bits_[0] &= ~0x01000000u;
-}
 void PBMsgEqtMD::clear_asksize4() {
   asksize4_ = GOOGLE_LONGLONG(0);
-  clear_has_asksize4();
 }
  ::google::protobuf::int64 PBMsgEqtMD::asksize4() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.askSize4)
   return asksize4_;
 }
  void PBMsgEqtMD::set_asksize4(::google::protobuf::int64 value) {
-  set_has_asksize4();
+  
   asksize4_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.askSize4)
 }
 
 // optional int64 askSize3 = 20;
-bool PBMsgEqtMD::has_asksize3() const {
-  return (_has_bits_[0] & 0x02000000u) != 0;
-}
-void PBMsgEqtMD::set_has_asksize3() {
-  _has_bits_[0] |= 0x02000000u;
-}
-void PBMsgEqtMD::clear_has_asksize3() {
-  _has_bits_[0] &= ~0x02000000u;
-}
 void PBMsgEqtMD::clear_asksize3() {
   asksize3_ = GOOGLE_LONGLONG(0);
-  clear_has_asksize3();
 }
  ::google::protobuf::int64 PBMsgEqtMD::asksize3() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.askSize3)
   return asksize3_;
 }
  void PBMsgEqtMD::set_asksize3(::google::protobuf::int64 value) {
-  set_has_asksize3();
+  
   asksize3_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.askSize3)
 }
 
 // optional int64 askSize2 = 22;
-bool PBMsgEqtMD::has_asksize2() const {
-  return (_has_bits_[0] & 0x04000000u) != 0;
-}
-void PBMsgEqtMD::set_has_asksize2() {
-  _has_bits_[0] |= 0x04000000u;
-}
-void PBMsgEqtMD::clear_has_asksize2() {
-  _has_bits_[0] &= ~0x04000000u;
-}
 void PBMsgEqtMD::clear_asksize2() {
   asksize2_ = GOOGLE_LONGLONG(0);
-  clear_has_asksize2();
 }
  ::google::protobuf::int64 PBMsgEqtMD::asksize2() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.askSize2)
   return asksize2_;
 }
  void PBMsgEqtMD::set_asksize2(::google::protobuf::int64 value) {
-  set_has_asksize2();
+  
   asksize2_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.askSize2)
 }
 
 // optional int64 askSize1 = 24;
-bool PBMsgEqtMD::has_asksize1() const {
-  return (_has_bits_[0] & 0x08000000u) != 0;
-}
-void PBMsgEqtMD::set_has_asksize1() {
-  _has_bits_[0] |= 0x08000000u;
-}
-void PBMsgEqtMD::clear_has_asksize1() {
-  _has_bits_[0] &= ~0x08000000u;
-}
 void PBMsgEqtMD::clear_asksize1() {
   asksize1_ = GOOGLE_LONGLONG(0);
-  clear_has_asksize1();
 }
  ::google::protobuf::int64 PBMsgEqtMD::asksize1() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.askSize1)
   return asksize1_;
 }
  void PBMsgEqtMD::set_asksize1(::google::protobuf::int64 value) {
-  set_has_asksize1();
+  
   asksize1_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.askSize1)
 }
 
 // optional int64 bidSize1 = 26;
-bool PBMsgEqtMD::has_bidsize1() const {
-  return (_has_bits_[0] & 0x10000000u) != 0;
-}
-void PBMsgEqtMD::set_has_bidsize1() {
-  _has_bits_[0] |= 0x10000000u;
-}
-void PBMsgEqtMD::clear_has_bidsize1() {
-  _has_bits_[0] &= ~0x10000000u;
-}
 void PBMsgEqtMD::clear_bidsize1() {
   bidsize1_ = GOOGLE_LONGLONG(0);
-  clear_has_bidsize1();
 }
  ::google::protobuf::int64 PBMsgEqtMD::bidsize1() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.bidSize1)
   return bidsize1_;
 }
  void PBMsgEqtMD::set_bidsize1(::google::protobuf::int64 value) {
-  set_has_bidsize1();
+  
   bidsize1_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.bidSize1)
 }
 
 // optional int64 bidSize2 = 28;
-bool PBMsgEqtMD::has_bidsize2() const {
-  return (_has_bits_[0] & 0x20000000u) != 0;
-}
-void PBMsgEqtMD::set_has_bidsize2() {
-  _has_bits_[0] |= 0x20000000u;
-}
-void PBMsgEqtMD::clear_has_bidsize2() {
-  _has_bits_[0] &= ~0x20000000u;
-}
 void PBMsgEqtMD::clear_bidsize2() {
   bidsize2_ = GOOGLE_LONGLONG(0);
-  clear_has_bidsize2();
 }
  ::google::protobuf::int64 PBMsgEqtMD::bidsize2() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.bidSize2)
   return bidsize2_;
 }
  void PBMsgEqtMD::set_bidsize2(::google::protobuf::int64 value) {
-  set_has_bidsize2();
+  
   bidsize2_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.bidSize2)
 }
 
 // optional int64 bidSize3 = 30;
-bool PBMsgEqtMD::has_bidsize3() const {
-  return (_has_bits_[0] & 0x40000000u) != 0;
-}
-void PBMsgEqtMD::set_has_bidsize3() {
-  _has_bits_[0] |= 0x40000000u;
-}
-void PBMsgEqtMD::clear_has_bidsize3() {
-  _has_bits_[0] &= ~0x40000000u;
-}
 void PBMsgEqtMD::clear_bidsize3() {
   bidsize3_ = GOOGLE_LONGLONG(0);
-  clear_has_bidsize3();
 }
  ::google::protobuf::int64 PBMsgEqtMD::bidsize3() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.bidSize3)
   return bidsize3_;
 }
  void PBMsgEqtMD::set_bidsize3(::google::protobuf::int64 value) {
-  set_has_bidsize3();
+  
   bidsize3_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.bidSize3)
 }
 
 // optional int64 bidSize4 = 32;
-bool PBMsgEqtMD::has_bidsize4() const {
-  return (_has_bits_[0] & 0x80000000u) != 0;
-}
-void PBMsgEqtMD::set_has_bidsize4() {
-  _has_bits_[0] |= 0x80000000u;
-}
-void PBMsgEqtMD::clear_has_bidsize4() {
-  _has_bits_[0] &= ~0x80000000u;
-}
 void PBMsgEqtMD::clear_bidsize4() {
   bidsize4_ = GOOGLE_LONGLONG(0);
-  clear_has_bidsize4();
 }
  ::google::protobuf::int64 PBMsgEqtMD::bidsize4() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.bidSize4)
   return bidsize4_;
 }
  void PBMsgEqtMD::set_bidsize4(::google::protobuf::int64 value) {
-  set_has_bidsize4();
+  
   bidsize4_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.bidSize4)
 }
 
 // optional int64 bidSize5 = 34;
-bool PBMsgEqtMD::has_bidsize5() const {
-  return (_has_bits_[1] & 0x00000001u) != 0;
-}
-void PBMsgEqtMD::set_has_bidsize5() {
-  _has_bits_[1] |= 0x00000001u;
-}
-void PBMsgEqtMD::clear_has_bidsize5() {
-  _has_bits_[1] &= ~0x00000001u;
-}
 void PBMsgEqtMD::clear_bidsize5() {
   bidsize5_ = GOOGLE_LONGLONG(0);
-  clear_has_bidsize5();
 }
  ::google::protobuf::int64 PBMsgEqtMD::bidsize5() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.bidSize5)
   return bidsize5_;
 }
  void PBMsgEqtMD::set_bidsize5(::google::protobuf::int64 value) {
-  set_has_bidsize5();
+  
   bidsize5_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.bidSize5)
 }
@@ -2841,7 +2394,7 @@ void PBMsgEqtMD::clear_bidsize5() {
 
 // ===================================================================
 
-#ifndef _MSC_VER
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int PBMsgFutMD::kEOFFieldNumber;
 const int PBMsgFutMD::kSymbolFieldNumber;
 const int PBMsgFutMD::kTimeStampFieldNumber;
@@ -2861,7 +2414,7 @@ const int PBMsgFutMD::kAskSize1FieldNumber;
 const int PBMsgFutMD::kBidSize1FieldNumber;
 const int PBMsgFutMD::kVolumeFieldNumber;
 const int PBMsgFutMD::kTurnoverFieldNumber;
-#endif  // !_MSC_VER
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 PBMsgFutMD::PBMsgFutMD()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
@@ -2870,6 +2423,7 @@ PBMsgFutMD::PBMsgFutMD()
 }
 
 void PBMsgFutMD::InitAsDefaultInstance() {
+  _is_default_instance_ = true;
 }
 
 PBMsgFutMD::PBMsgFutMD(const PBMsgFutMD& from)
@@ -2881,6 +2435,7 @@ PBMsgFutMD::PBMsgFutMD(const PBMsgFutMD& from)
 }
 
 void PBMsgFutMD::SharedCtor() {
+    _is_default_instance_ = false;
   ::google::protobuf::internal::GetEmptyString();
   _cached_size_ = 0;
   eof_ = 0;
@@ -2902,7 +2457,6 @@ void PBMsgFutMD::SharedCtor() {
   bidsize1_ = GOOGLE_LONGLONG(0);
   volume_ = GOOGLE_LONGLONG(0);
   turnover_ = GOOGLE_LONGLONG(0);
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
 PBMsgFutMD::~PBMsgFutMD() {
@@ -2951,28 +2505,16 @@ void PBMsgFutMD::Clear() {
            ZR_HELPER_(last) - ZR_HELPER_(first) + sizeof(last));\
 } while (0)
 
-  if (_has_bits_[0 / 32] & 255u) {
-    ZR_(askprice1_, openprice_);
-    eof_ = 0;
-    if (has_symbol()) {
-      symbol_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-    }
-    if (has_timestamp()) {
-      timestamp_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-    }
-  }
-  if (_has_bits_[8 / 32] & 65280u) {
-    ZR_(highprice_, asksize1_);
-  }
+  ZR_(askprice1_, openprice_);
+  eof_ = 0;
+  symbol_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  timestamp_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ZR_(highprice_, asksize1_);
   ZR_(bidsize1_, turnover_);
 
 #undef ZR_HELPER_
 #undef ZR_
 
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-  if (_internal_metadata_.have_unknown_fields()) {
-    mutable_unknown_fields()->Clear();
-  }
 }
 
 bool PBMsgFutMD::MergePartialFromCodedStream(
@@ -2985,13 +2527,13 @@ bool PBMsgFutMD::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required int32 EOF = 1;
+      // optional int32 EOF = 1;
       case 1: {
         if (tag == 8) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, &eof_)));
-          set_has_eof();
+
         } else {
           goto handle_unusual;
         }
@@ -2999,16 +2541,16 @@ bool PBMsgFutMD::MergePartialFromCodedStream(
         break;
       }
 
-      // required string symbol = 5;
+      // optional string symbol = 5;
       case 5: {
         if (tag == 42) {
          parse_symbol:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_symbol()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             this->symbol().data(), this->symbol().length(),
-            ::google::protobuf::internal::WireFormat::PARSE,
-            "PBWrapMsgMDA.PBMsgFutMD.symbol");
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "PBWrapMsgMDA.PBMsgFutMD.symbol"));
         } else {
           goto handle_unusual;
         }
@@ -3016,16 +2558,16 @@ bool PBMsgFutMD::MergePartialFromCodedStream(
         break;
       }
 
-      // required string timeStamp = 6;
+      // optional string timeStamp = 6;
       case 6: {
         if (tag == 50) {
          parse_timeStamp:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_timestamp()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             this->timestamp().data(), this->timestamp().length(),
-            ::google::protobuf::internal::WireFormat::PARSE,
-            "PBWrapMsgMDA.PBMsgFutMD.timeStamp");
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "PBWrapMsgMDA.PBMsgFutMD.timeStamp"));
         } else {
           goto handle_unusual;
         }
@@ -3033,14 +2575,14 @@ bool PBMsgFutMD::MergePartialFromCodedStream(
         break;
       }
 
-      // required int64 askPrice1 = 7;
+      // optional int64 askPrice1 = 7;
       case 7: {
         if (tag == 56) {
          parse_askPrice1:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &askprice1_)));
-          set_has_askprice1();
+
         } else {
           goto handle_unusual;
         }
@@ -3048,14 +2590,14 @@ bool PBMsgFutMD::MergePartialFromCodedStream(
         break;
       }
 
-      // required int64 askSize1 = 8;
+      // optional int64 askSize1 = 8;
       case 8: {
         if (tag == 64) {
          parse_askSize1:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &asksize1_)));
-          set_has_asksize1();
+
         } else {
           goto handle_unusual;
         }
@@ -3063,14 +2605,14 @@ bool PBMsgFutMD::MergePartialFromCodedStream(
         break;
       }
 
-      // required int64 bidPrice1 = 9;
+      // optional int64 bidPrice1 = 9;
       case 9: {
         if (tag == 72) {
          parse_bidPrice1:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &bidprice1_)));
-          set_has_bidprice1();
+
         } else {
           goto handle_unusual;
         }
@@ -3078,14 +2620,14 @@ bool PBMsgFutMD::MergePartialFromCodedStream(
         break;
       }
 
-      // required int64 bidSize1 = 10;
+      // optional int64 bidSize1 = 10;
       case 10: {
         if (tag == 80) {
          parse_bidSize1:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &bidsize1_)));
-          set_has_bidsize1();
+
         } else {
           goto handle_unusual;
         }
@@ -3093,14 +2635,14 @@ bool PBMsgFutMD::MergePartialFromCodedStream(
         break;
       }
 
-      // required int64 preClosePrice = 11;
+      // optional int64 preClosePrice = 11;
       case 11: {
         if (tag == 88) {
          parse_preClosePrice:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &precloseprice_)));
-          set_has_precloseprice();
+
         } else {
           goto handle_unusual;
         }
@@ -3108,14 +2650,14 @@ bool PBMsgFutMD::MergePartialFromCodedStream(
         break;
       }
 
-      // required int64 preSettlePrice = 12;
+      // optional int64 preSettlePrice = 12;
       case 12: {
         if (tag == 96) {
          parse_preSettlePrice:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &presettleprice_)));
-          set_has_presettleprice();
+
         } else {
           goto handle_unusual;
         }
@@ -3123,14 +2665,14 @@ bool PBMsgFutMD::MergePartialFromCodedStream(
         break;
       }
 
-      // required int64 openPrice = 13;
+      // optional int64 openPrice = 13;
       case 13: {
         if (tag == 104) {
          parse_openPrice:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &openprice_)));
-          set_has_openprice();
+
         } else {
           goto handle_unusual;
         }
@@ -3138,14 +2680,14 @@ bool PBMsgFutMD::MergePartialFromCodedStream(
         break;
       }
 
-      // required int64 highPrice = 14;
+      // optional int64 highPrice = 14;
       case 14: {
         if (tag == 112) {
          parse_highPrice:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &highprice_)));
-          set_has_highprice();
+
         } else {
           goto handle_unusual;
         }
@@ -3153,14 +2695,14 @@ bool PBMsgFutMD::MergePartialFromCodedStream(
         break;
       }
 
-      // required int64 lowPrice = 15;
+      // optional int64 lowPrice = 15;
       case 15: {
         if (tag == 120) {
          parse_lowPrice:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &lowprice_)));
-          set_has_lowprice();
+
         } else {
           goto handle_unusual;
         }
@@ -3168,14 +2710,14 @@ bool PBMsgFutMD::MergePartialFromCodedStream(
         break;
       }
 
-      // required int64 matchPrice = 16;
+      // optional int64 matchPrice = 16;
       case 16: {
         if (tag == 128) {
          parse_matchPrice:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &matchprice_)));
-          set_has_matchprice();
+
         } else {
           goto handle_unusual;
         }
@@ -3183,14 +2725,14 @@ bool PBMsgFutMD::MergePartialFromCodedStream(
         break;
       }
 
-      // required int64 priceChange = 17;
+      // optional int64 priceChange = 17;
       case 17: {
         if (tag == 136) {
          parse_priceChange:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &pricechange_)));
-          set_has_pricechange();
+
         } else {
           goto handle_unusual;
         }
@@ -3198,14 +2740,14 @@ bool PBMsgFutMD::MergePartialFromCodedStream(
         break;
       }
 
-      // required int64 volume = 18;
+      // optional int64 volume = 18;
       case 18: {
         if (tag == 144) {
          parse_volume:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &volume_)));
-          set_has_volume();
+
         } else {
           goto handle_unusual;
         }
@@ -3213,14 +2755,14 @@ bool PBMsgFutMD::MergePartialFromCodedStream(
         break;
       }
 
-      // required int64 turnover = 19;
+      // optional int64 turnover = 19;
       case 19: {
         if (tag == 152) {
          parse_turnover:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &turnover_)));
-          set_has_turnover();
+
         } else {
           goto handle_unusual;
         }
@@ -3228,14 +2770,14 @@ bool PBMsgFutMD::MergePartialFromCodedStream(
         break;
       }
 
-      // required int64 settlePrice = 20;
+      // optional int64 settlePrice = 20;
       case 20: {
         if (tag == 160) {
          parse_settlePrice:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &settleprice_)));
-          set_has_settleprice();
+
         } else {
           goto handle_unusual;
         }
@@ -3243,14 +2785,14 @@ bool PBMsgFutMD::MergePartialFromCodedStream(
         break;
       }
 
-      // required int64 highLimit = 21;
+      // optional int64 highLimit = 21;
       case 21: {
         if (tag == 168) {
          parse_highLimit:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &highlimit_)));
-          set_has_highlimit();
+
         } else {
           goto handle_unusual;
         }
@@ -3258,14 +2800,14 @@ bool PBMsgFutMD::MergePartialFromCodedStream(
         break;
       }
 
-      // required int64 lowLimit = 22;
+      // optional int64 lowLimit = 22;
       case 22: {
         if (tag == 176) {
          parse_lowLimit:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &lowlimit_)));
-          set_has_lowlimit();
+
         } else {
           goto handle_unusual;
         }
@@ -3280,8 +2822,7 @@ bool PBMsgFutMD::MergePartialFromCodedStream(
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, mutable_unknown_fields()));
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
         break;
       }
     }
@@ -3298,481 +2839,364 @@ failure:
 void PBMsgFutMD::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:PBWrapMsgMDA.PBMsgFutMD)
-  // required int32 EOF = 1;
-  if (has_eof()) {
+  // optional int32 EOF = 1;
+  if (this->eof() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->eof(), output);
   }
 
-  // required string symbol = 5;
-  if (has_symbol()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+  // optional string symbol = 5;
+  if (this->symbol().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->symbol().data(), this->symbol().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "PBWrapMsgMDA.PBMsgFutMD.symbol");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       5, this->symbol(), output);
   }
 
-  // required string timeStamp = 6;
-  if (has_timestamp()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+  // optional string timeStamp = 6;
+  if (this->timestamp().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->timestamp().data(), this->timestamp().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "PBWrapMsgMDA.PBMsgFutMD.timeStamp");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       6, this->timestamp(), output);
   }
 
-  // required int64 askPrice1 = 7;
-  if (has_askprice1()) {
+  // optional int64 askPrice1 = 7;
+  if (this->askprice1() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(7, this->askprice1(), output);
   }
 
-  // required int64 askSize1 = 8;
-  if (has_asksize1()) {
+  // optional int64 askSize1 = 8;
+  if (this->asksize1() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(8, this->asksize1(), output);
   }
 
-  // required int64 bidPrice1 = 9;
-  if (has_bidprice1()) {
+  // optional int64 bidPrice1 = 9;
+  if (this->bidprice1() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(9, this->bidprice1(), output);
   }
 
-  // required int64 bidSize1 = 10;
-  if (has_bidsize1()) {
+  // optional int64 bidSize1 = 10;
+  if (this->bidsize1() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(10, this->bidsize1(), output);
   }
 
-  // required int64 preClosePrice = 11;
-  if (has_precloseprice()) {
+  // optional int64 preClosePrice = 11;
+  if (this->precloseprice() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(11, this->precloseprice(), output);
   }
 
-  // required int64 preSettlePrice = 12;
-  if (has_presettleprice()) {
+  // optional int64 preSettlePrice = 12;
+  if (this->presettleprice() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(12, this->presettleprice(), output);
   }
 
-  // required int64 openPrice = 13;
-  if (has_openprice()) {
+  // optional int64 openPrice = 13;
+  if (this->openprice() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(13, this->openprice(), output);
   }
 
-  // required int64 highPrice = 14;
-  if (has_highprice()) {
+  // optional int64 highPrice = 14;
+  if (this->highprice() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(14, this->highprice(), output);
   }
 
-  // required int64 lowPrice = 15;
-  if (has_lowprice()) {
+  // optional int64 lowPrice = 15;
+  if (this->lowprice() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(15, this->lowprice(), output);
   }
 
-  // required int64 matchPrice = 16;
-  if (has_matchprice()) {
+  // optional int64 matchPrice = 16;
+  if (this->matchprice() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(16, this->matchprice(), output);
   }
 
-  // required int64 priceChange = 17;
-  if (has_pricechange()) {
+  // optional int64 priceChange = 17;
+  if (this->pricechange() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(17, this->pricechange(), output);
   }
 
-  // required int64 volume = 18;
-  if (has_volume()) {
+  // optional int64 volume = 18;
+  if (this->volume() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(18, this->volume(), output);
   }
 
-  // required int64 turnover = 19;
-  if (has_turnover()) {
+  // optional int64 turnover = 19;
+  if (this->turnover() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(19, this->turnover(), output);
   }
 
-  // required int64 settlePrice = 20;
-  if (has_settleprice()) {
+  // optional int64 settlePrice = 20;
+  if (this->settleprice() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(20, this->settleprice(), output);
   }
 
-  // required int64 highLimit = 21;
-  if (has_highlimit()) {
+  // optional int64 highLimit = 21;
+  if (this->highlimit() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(21, this->highlimit(), output);
   }
 
-  // required int64 lowLimit = 22;
-  if (has_lowlimit()) {
+  // optional int64 lowLimit = 22;
+  if (this->lowlimit() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(22, this->lowlimit(), output);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        unknown_fields(), output);
-  }
   // @@protoc_insertion_point(serialize_end:PBWrapMsgMDA.PBMsgFutMD)
 }
 
 ::google::protobuf::uint8* PBMsgFutMD::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // @@protoc_insertion_point(serialize_to_array_start:PBWrapMsgMDA.PBMsgFutMD)
-  // required int32 EOF = 1;
-  if (has_eof()) {
+  // optional int32 EOF = 1;
+  if (this->eof() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->eof(), target);
   }
 
-  // required string symbol = 5;
-  if (has_symbol()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+  // optional string symbol = 5;
+  if (this->symbol().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->symbol().data(), this->symbol().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "PBWrapMsgMDA.PBMsgFutMD.symbol");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
         5, this->symbol(), target);
   }
 
-  // required string timeStamp = 6;
-  if (has_timestamp()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+  // optional string timeStamp = 6;
+  if (this->timestamp().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->timestamp().data(), this->timestamp().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "PBWrapMsgMDA.PBMsgFutMD.timeStamp");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
         6, this->timestamp(), target);
   }
 
-  // required int64 askPrice1 = 7;
-  if (has_askprice1()) {
+  // optional int64 askPrice1 = 7;
+  if (this->askprice1() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(7, this->askprice1(), target);
   }
 
-  // required int64 askSize1 = 8;
-  if (has_asksize1()) {
+  // optional int64 askSize1 = 8;
+  if (this->asksize1() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(8, this->asksize1(), target);
   }
 
-  // required int64 bidPrice1 = 9;
-  if (has_bidprice1()) {
+  // optional int64 bidPrice1 = 9;
+  if (this->bidprice1() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(9, this->bidprice1(), target);
   }
 
-  // required int64 bidSize1 = 10;
-  if (has_bidsize1()) {
+  // optional int64 bidSize1 = 10;
+  if (this->bidsize1() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(10, this->bidsize1(), target);
   }
 
-  // required int64 preClosePrice = 11;
-  if (has_precloseprice()) {
+  // optional int64 preClosePrice = 11;
+  if (this->precloseprice() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(11, this->precloseprice(), target);
   }
 
-  // required int64 preSettlePrice = 12;
-  if (has_presettleprice()) {
+  // optional int64 preSettlePrice = 12;
+  if (this->presettleprice() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(12, this->presettleprice(), target);
   }
 
-  // required int64 openPrice = 13;
-  if (has_openprice()) {
+  // optional int64 openPrice = 13;
+  if (this->openprice() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(13, this->openprice(), target);
   }
 
-  // required int64 highPrice = 14;
-  if (has_highprice()) {
+  // optional int64 highPrice = 14;
+  if (this->highprice() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(14, this->highprice(), target);
   }
 
-  // required int64 lowPrice = 15;
-  if (has_lowprice()) {
+  // optional int64 lowPrice = 15;
+  if (this->lowprice() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(15, this->lowprice(), target);
   }
 
-  // required int64 matchPrice = 16;
-  if (has_matchprice()) {
+  // optional int64 matchPrice = 16;
+  if (this->matchprice() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(16, this->matchprice(), target);
   }
 
-  // required int64 priceChange = 17;
-  if (has_pricechange()) {
+  // optional int64 priceChange = 17;
+  if (this->pricechange() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(17, this->pricechange(), target);
   }
 
-  // required int64 volume = 18;
-  if (has_volume()) {
+  // optional int64 volume = 18;
+  if (this->volume() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(18, this->volume(), target);
   }
 
-  // required int64 turnover = 19;
-  if (has_turnover()) {
+  // optional int64 turnover = 19;
+  if (this->turnover() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(19, this->turnover(), target);
   }
 
-  // required int64 settlePrice = 20;
-  if (has_settleprice()) {
+  // optional int64 settlePrice = 20;
+  if (this->settleprice() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(20, this->settleprice(), target);
   }
 
-  // required int64 highLimit = 21;
-  if (has_highlimit()) {
+  // optional int64 highLimit = 21;
+  if (this->highlimit() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(21, this->highlimit(), target);
   }
 
-  // required int64 lowLimit = 22;
-  if (has_lowlimit()) {
+  // optional int64 lowLimit = 22;
+  if (this->lowlimit() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(22, this->lowlimit(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        unknown_fields(), target);
-  }
   // @@protoc_insertion_point(serialize_to_array_end:PBWrapMsgMDA.PBMsgFutMD)
   return target;
 }
 
-int PBMsgFutMD::RequiredFieldsByteSizeFallback() const {
-  int total_size = 0;
-
-  if (has_eof()) {
-    // required int32 EOF = 1;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->eof());
-  }
-
-  if (has_symbol()) {
-    // required string symbol = 5;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->symbol());
-  }
-
-  if (has_timestamp()) {
-    // required string timeStamp = 6;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->timestamp());
-  }
-
-  if (has_askprice1()) {
-    // required int64 askPrice1 = 7;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->askprice1());
-  }
-
-  if (has_bidprice1()) {
-    // required int64 bidPrice1 = 9;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->bidprice1());
-  }
-
-  if (has_precloseprice()) {
-    // required int64 preClosePrice = 11;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->precloseprice());
-  }
-
-  if (has_presettleprice()) {
-    // required int64 preSettlePrice = 12;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->presettleprice());
-  }
-
-  if (has_openprice()) {
-    // required int64 openPrice = 13;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->openprice());
-  }
-
-  if (has_highprice()) {
-    // required int64 highPrice = 14;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->highprice());
-  }
-
-  if (has_lowprice()) {
-    // required int64 lowPrice = 15;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->lowprice());
-  }
-
-  if (has_matchprice()) {
-    // required int64 matchPrice = 16;
-    total_size += 2 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->matchprice());
-  }
-
-  if (has_pricechange()) {
-    // required int64 priceChange = 17;
-    total_size += 2 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->pricechange());
-  }
-
-  if (has_settleprice()) {
-    // required int64 settlePrice = 20;
-    total_size += 2 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->settleprice());
-  }
-
-  if (has_highlimit()) {
-    // required int64 highLimit = 21;
-    total_size += 2 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->highlimit());
-  }
-
-  if (has_lowlimit()) {
-    // required int64 lowLimit = 22;
-    total_size += 2 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->lowlimit());
-  }
-
-  if (has_asksize1()) {
-    // required int64 askSize1 = 8;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->asksize1());
-  }
-
-  if (has_bidsize1()) {
-    // required int64 bidSize1 = 10;
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->bidsize1());
-  }
-
-  if (has_volume()) {
-    // required int64 volume = 18;
-    total_size += 2 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->volume());
-  }
-
-  if (has_turnover()) {
-    // required int64 turnover = 19;
-    total_size += 2 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->turnover());
-  }
-
-  return total_size;
-}
 int PBMsgFutMD::ByteSize() const {
   int total_size = 0;
 
-  if (((_has_bits_[0] & 0x0007ffff) ^ 0x0007ffff) == 0) {  // All required fields are present.
-    // required int32 EOF = 1;
+  // optional int32 EOF = 1;
+  if (this->eof() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->eof());
+  }
 
-    // required string symbol = 5;
+  // optional string symbol = 5;
+  if (this->symbol().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->symbol());
+  }
 
-    // required string timeStamp = 6;
+  // optional string timeStamp = 6;
+  if (this->timestamp().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->timestamp());
+  }
 
-    // required int64 askPrice1 = 7;
+  // optional int64 askPrice1 = 7;
+  if (this->askprice1() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->askprice1());
+  }
 
-    // required int64 bidPrice1 = 9;
+  // optional int64 bidPrice1 = 9;
+  if (this->bidprice1() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->bidprice1());
+  }
 
-    // required int64 preClosePrice = 11;
+  // optional int64 preClosePrice = 11;
+  if (this->precloseprice() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->precloseprice());
+  }
 
-    // required int64 preSettlePrice = 12;
+  // optional int64 preSettlePrice = 12;
+  if (this->presettleprice() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->presettleprice());
+  }
 
-    // required int64 openPrice = 13;
+  // optional int64 openPrice = 13;
+  if (this->openprice() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->openprice());
+  }
 
-    // required int64 highPrice = 14;
+  // optional int64 highPrice = 14;
+  if (this->highprice() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->highprice());
+  }
 
-    // required int64 lowPrice = 15;
+  // optional int64 lowPrice = 15;
+  if (this->lowprice() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->lowprice());
+  }
 
-    // required int64 matchPrice = 16;
+  // optional int64 matchPrice = 16;
+  if (this->matchprice() != 0) {
     total_size += 2 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->matchprice());
+  }
 
-    // required int64 priceChange = 17;
+  // optional int64 priceChange = 17;
+  if (this->pricechange() != 0) {
     total_size += 2 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->pricechange());
+  }
 
-    // required int64 settlePrice = 20;
+  // optional int64 settlePrice = 20;
+  if (this->settleprice() != 0) {
     total_size += 2 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->settleprice());
+  }
 
-    // required int64 highLimit = 21;
+  // optional int64 highLimit = 21;
+  if (this->highlimit() != 0) {
     total_size += 2 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->highlimit());
+  }
 
-    // required int64 lowLimit = 22;
+  // optional int64 lowLimit = 22;
+  if (this->lowlimit() != 0) {
     total_size += 2 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->lowlimit());
+  }
 
-    // required int64 askSize1 = 8;
+  // optional int64 askSize1 = 8;
+  if (this->asksize1() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->asksize1());
+  }
 
-    // required int64 bidSize1 = 10;
+  // optional int64 bidSize1 = 10;
+  if (this->bidsize1() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->bidsize1());
+  }
 
-    // required int64 volume = 18;
+  // optional int64 volume = 18;
+  if (this->volume() != 0) {
     total_size += 2 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->volume());
+  }
 
-    // required int64 turnover = 19;
+  // optional int64 turnover = 19;
+  if (this->turnover() != 0) {
     total_size += 2 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
         this->turnover());
+  }
 
-  } else {
-    total_size += RequiredFieldsByteSizeFallback();
-  }
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        unknown_fields());
-  }
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = total_size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
@@ -3793,73 +3217,64 @@ void PBMsgFutMD::MergeFrom(const ::google::protobuf::Message& from) {
 
 void PBMsgFutMD::MergeFrom(const PBMsgFutMD& from) {
   if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
-  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_eof()) {
-      set_eof(from.eof());
-    }
-    if (from.has_symbol()) {
-      set_has_symbol();
-      symbol_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.symbol_);
-    }
-    if (from.has_timestamp()) {
-      set_has_timestamp();
-      timestamp_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.timestamp_);
-    }
-    if (from.has_askprice1()) {
-      set_askprice1(from.askprice1());
-    }
-    if (from.has_bidprice1()) {
-      set_bidprice1(from.bidprice1());
-    }
-    if (from.has_precloseprice()) {
-      set_precloseprice(from.precloseprice());
-    }
-    if (from.has_presettleprice()) {
-      set_presettleprice(from.presettleprice());
-    }
-    if (from.has_openprice()) {
-      set_openprice(from.openprice());
-    }
+  if (from.eof() != 0) {
+    set_eof(from.eof());
   }
-  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
-    if (from.has_highprice()) {
-      set_highprice(from.highprice());
-    }
-    if (from.has_lowprice()) {
-      set_lowprice(from.lowprice());
-    }
-    if (from.has_matchprice()) {
-      set_matchprice(from.matchprice());
-    }
-    if (from.has_pricechange()) {
-      set_pricechange(from.pricechange());
-    }
-    if (from.has_settleprice()) {
-      set_settleprice(from.settleprice());
-    }
-    if (from.has_highlimit()) {
-      set_highlimit(from.highlimit());
-    }
-    if (from.has_lowlimit()) {
-      set_lowlimit(from.lowlimit());
-    }
-    if (from.has_asksize1()) {
-      set_asksize1(from.asksize1());
-    }
+  if (from.symbol().size() > 0) {
+
+    symbol_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.symbol_);
   }
-  if (from._has_bits_[16 / 32] & (0xffu << (16 % 32))) {
-    if (from.has_bidsize1()) {
-      set_bidsize1(from.bidsize1());
-    }
-    if (from.has_volume()) {
-      set_volume(from.volume());
-    }
-    if (from.has_turnover()) {
-      set_turnover(from.turnover());
-    }
+  if (from.timestamp().size() > 0) {
+
+    timestamp_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.timestamp_);
   }
-  if (from._internal_metadata_.have_unknown_fields()) {
-    mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+  if (from.askprice1() != 0) {
+    set_askprice1(from.askprice1());
+  }
+  if (from.bidprice1() != 0) {
+    set_bidprice1(from.bidprice1());
+  }
+  if (from.precloseprice() != 0) {
+    set_precloseprice(from.precloseprice());
+  }
+  if (from.presettleprice() != 0) {
+    set_presettleprice(from.presettleprice());
+  }
+  if (from.openprice() != 0) {
+    set_openprice(from.openprice());
+  }
+  if (from.highprice() != 0) {
+    set_highprice(from.highprice());
+  }
+  if (from.lowprice() != 0) {
+    set_lowprice(from.lowprice());
+  }
+  if (from.matchprice() != 0) {
+    set_matchprice(from.matchprice());
+  }
+  if (from.pricechange() != 0) {
+    set_pricechange(from.pricechange());
+  }
+  if (from.settleprice() != 0) {
+    set_settleprice(from.settleprice());
+  }
+  if (from.highlimit() != 0) {
+    set_highlimit(from.highlimit());
+  }
+  if (from.lowlimit() != 0) {
+    set_lowlimit(from.lowlimit());
+  }
+  if (from.asksize1() != 0) {
+    set_asksize1(from.asksize1());
+  }
+  if (from.bidsize1() != 0) {
+    set_bidsize1(from.bidsize1());
+  }
+  if (from.volume() != 0) {
+    set_volume(from.volume());
+  }
+  if (from.turnover() != 0) {
+    set_turnover(from.turnover());
   }
 }
 
@@ -3876,7 +3291,6 @@ void PBMsgFutMD::CopyFrom(const PBMsgFutMD& from) {
 }
 
 bool PBMsgFutMD::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0007ffff) != 0x0007ffff) return false;
 
   return true;
 }
@@ -3905,7 +3319,6 @@ void PBMsgFutMD::InternalSwap(PBMsgFutMD* other) {
   std::swap(bidsize1_, other->bidsize1_);
   std::swap(volume_, other->volume_);
   std::swap(turnover_, other->turnover_);
-  std::swap(_has_bits_[0], other->_has_bits_[0]);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -3921,516 +3334,326 @@ void PBMsgFutMD::InternalSwap(PBMsgFutMD* other) {
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
 // PBMsgFutMD
 
-// required int32 EOF = 1;
-bool PBMsgFutMD::has_eof() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-void PBMsgFutMD::set_has_eof() {
-  _has_bits_[0] |= 0x00000001u;
-}
-void PBMsgFutMD::clear_has_eof() {
-  _has_bits_[0] &= ~0x00000001u;
-}
+// optional int32 EOF = 1;
 void PBMsgFutMD::clear_eof() {
   eof_ = 0;
-  clear_has_eof();
 }
  ::google::protobuf::int32 PBMsgFutMD::eof() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.EOF)
   return eof_;
 }
  void PBMsgFutMD::set_eof(::google::protobuf::int32 value) {
-  set_has_eof();
+  
   eof_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.EOF)
 }
 
-// required string symbol = 5;
-bool PBMsgFutMD::has_symbol() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-void PBMsgFutMD::set_has_symbol() {
-  _has_bits_[0] |= 0x00000002u;
-}
-void PBMsgFutMD::clear_has_symbol() {
-  _has_bits_[0] &= ~0x00000002u;
-}
+// optional string symbol = 5;
 void PBMsgFutMD::clear_symbol() {
   symbol_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_symbol();
 }
  const ::std::string& PBMsgFutMD::symbol() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.symbol)
   return symbol_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  void PBMsgFutMD::set_symbol(const ::std::string& value) {
-  set_has_symbol();
+  
   symbol_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.symbol)
 }
  void PBMsgFutMD::set_symbol(const char* value) {
-  set_has_symbol();
+  
   symbol_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBWrapMsgMDA.PBMsgFutMD.symbol)
 }
  void PBMsgFutMD::set_symbol(const char* value, size_t size) {
-  set_has_symbol();
+  
   symbol_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBWrapMsgMDA.PBMsgFutMD.symbol)
 }
  ::std::string* PBMsgFutMD::mutable_symbol() {
-  set_has_symbol();
+  
   // @@protoc_insertion_point(field_mutable:PBWrapMsgMDA.PBMsgFutMD.symbol)
   return symbol_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  ::std::string* PBMsgFutMD::release_symbol() {
-  clear_has_symbol();
+  
   return symbol_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  void PBMsgFutMD::set_allocated_symbol(::std::string* symbol) {
   if (symbol != NULL) {
-    set_has_symbol();
+    
   } else {
-    clear_has_symbol();
+    
   }
   symbol_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), symbol);
   // @@protoc_insertion_point(field_set_allocated:PBWrapMsgMDA.PBMsgFutMD.symbol)
 }
 
-// required string timeStamp = 6;
-bool PBMsgFutMD::has_timestamp() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-void PBMsgFutMD::set_has_timestamp() {
-  _has_bits_[0] |= 0x00000004u;
-}
-void PBMsgFutMD::clear_has_timestamp() {
-  _has_bits_[0] &= ~0x00000004u;
-}
+// optional string timeStamp = 6;
 void PBMsgFutMD::clear_timestamp() {
   timestamp_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_timestamp();
 }
  const ::std::string& PBMsgFutMD::timestamp() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.timeStamp)
   return timestamp_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  void PBMsgFutMD::set_timestamp(const ::std::string& value) {
-  set_has_timestamp();
+  
   timestamp_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.timeStamp)
 }
  void PBMsgFutMD::set_timestamp(const char* value) {
-  set_has_timestamp();
+  
   timestamp_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBWrapMsgMDA.PBMsgFutMD.timeStamp)
 }
  void PBMsgFutMD::set_timestamp(const char* value, size_t size) {
-  set_has_timestamp();
+  
   timestamp_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBWrapMsgMDA.PBMsgFutMD.timeStamp)
 }
  ::std::string* PBMsgFutMD::mutable_timestamp() {
-  set_has_timestamp();
+  
   // @@protoc_insertion_point(field_mutable:PBWrapMsgMDA.PBMsgFutMD.timeStamp)
   return timestamp_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  ::std::string* PBMsgFutMD::release_timestamp() {
-  clear_has_timestamp();
+  
   return timestamp_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  void PBMsgFutMD::set_allocated_timestamp(::std::string* timestamp) {
   if (timestamp != NULL) {
-    set_has_timestamp();
+    
   } else {
-    clear_has_timestamp();
+    
   }
   timestamp_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), timestamp);
   // @@protoc_insertion_point(field_set_allocated:PBWrapMsgMDA.PBMsgFutMD.timeStamp)
 }
 
-// required int64 askPrice1 = 7;
-bool PBMsgFutMD::has_askprice1() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-void PBMsgFutMD::set_has_askprice1() {
-  _has_bits_[0] |= 0x00000008u;
-}
-void PBMsgFutMD::clear_has_askprice1() {
-  _has_bits_[0] &= ~0x00000008u;
-}
+// optional int64 askPrice1 = 7;
 void PBMsgFutMD::clear_askprice1() {
   askprice1_ = GOOGLE_LONGLONG(0);
-  clear_has_askprice1();
 }
  ::google::protobuf::int64 PBMsgFutMD::askprice1() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.askPrice1)
   return askprice1_;
 }
  void PBMsgFutMD::set_askprice1(::google::protobuf::int64 value) {
-  set_has_askprice1();
+  
   askprice1_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.askPrice1)
 }
 
-// required int64 bidPrice1 = 9;
-bool PBMsgFutMD::has_bidprice1() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-void PBMsgFutMD::set_has_bidprice1() {
-  _has_bits_[0] |= 0x00000010u;
-}
-void PBMsgFutMD::clear_has_bidprice1() {
-  _has_bits_[0] &= ~0x00000010u;
-}
+// optional int64 bidPrice1 = 9;
 void PBMsgFutMD::clear_bidprice1() {
   bidprice1_ = GOOGLE_LONGLONG(0);
-  clear_has_bidprice1();
 }
  ::google::protobuf::int64 PBMsgFutMD::bidprice1() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.bidPrice1)
   return bidprice1_;
 }
  void PBMsgFutMD::set_bidprice1(::google::protobuf::int64 value) {
-  set_has_bidprice1();
+  
   bidprice1_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.bidPrice1)
 }
 
-// required int64 preClosePrice = 11;
-bool PBMsgFutMD::has_precloseprice() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
-}
-void PBMsgFutMD::set_has_precloseprice() {
-  _has_bits_[0] |= 0x00000020u;
-}
-void PBMsgFutMD::clear_has_precloseprice() {
-  _has_bits_[0] &= ~0x00000020u;
-}
+// optional int64 preClosePrice = 11;
 void PBMsgFutMD::clear_precloseprice() {
   precloseprice_ = GOOGLE_LONGLONG(0);
-  clear_has_precloseprice();
 }
  ::google::protobuf::int64 PBMsgFutMD::precloseprice() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.preClosePrice)
   return precloseprice_;
 }
  void PBMsgFutMD::set_precloseprice(::google::protobuf::int64 value) {
-  set_has_precloseprice();
+  
   precloseprice_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.preClosePrice)
 }
 
-// required int64 preSettlePrice = 12;
-bool PBMsgFutMD::has_presettleprice() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
-}
-void PBMsgFutMD::set_has_presettleprice() {
-  _has_bits_[0] |= 0x00000040u;
-}
-void PBMsgFutMD::clear_has_presettleprice() {
-  _has_bits_[0] &= ~0x00000040u;
-}
+// optional int64 preSettlePrice = 12;
 void PBMsgFutMD::clear_presettleprice() {
   presettleprice_ = GOOGLE_LONGLONG(0);
-  clear_has_presettleprice();
 }
  ::google::protobuf::int64 PBMsgFutMD::presettleprice() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.preSettlePrice)
   return presettleprice_;
 }
  void PBMsgFutMD::set_presettleprice(::google::protobuf::int64 value) {
-  set_has_presettleprice();
+  
   presettleprice_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.preSettlePrice)
 }
 
-// required int64 openPrice = 13;
-bool PBMsgFutMD::has_openprice() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
-}
-void PBMsgFutMD::set_has_openprice() {
-  _has_bits_[0] |= 0x00000080u;
-}
-void PBMsgFutMD::clear_has_openprice() {
-  _has_bits_[0] &= ~0x00000080u;
-}
+// optional int64 openPrice = 13;
 void PBMsgFutMD::clear_openprice() {
   openprice_ = GOOGLE_LONGLONG(0);
-  clear_has_openprice();
 }
  ::google::protobuf::int64 PBMsgFutMD::openprice() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.openPrice)
   return openprice_;
 }
  void PBMsgFutMD::set_openprice(::google::protobuf::int64 value) {
-  set_has_openprice();
+  
   openprice_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.openPrice)
 }
 
-// required int64 highPrice = 14;
-bool PBMsgFutMD::has_highprice() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
-}
-void PBMsgFutMD::set_has_highprice() {
-  _has_bits_[0] |= 0x00000100u;
-}
-void PBMsgFutMD::clear_has_highprice() {
-  _has_bits_[0] &= ~0x00000100u;
-}
+// optional int64 highPrice = 14;
 void PBMsgFutMD::clear_highprice() {
   highprice_ = GOOGLE_LONGLONG(0);
-  clear_has_highprice();
 }
  ::google::protobuf::int64 PBMsgFutMD::highprice() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.highPrice)
   return highprice_;
 }
  void PBMsgFutMD::set_highprice(::google::protobuf::int64 value) {
-  set_has_highprice();
+  
   highprice_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.highPrice)
 }
 
-// required int64 lowPrice = 15;
-bool PBMsgFutMD::has_lowprice() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
-}
-void PBMsgFutMD::set_has_lowprice() {
-  _has_bits_[0] |= 0x00000200u;
-}
-void PBMsgFutMD::clear_has_lowprice() {
-  _has_bits_[0] &= ~0x00000200u;
-}
+// optional int64 lowPrice = 15;
 void PBMsgFutMD::clear_lowprice() {
   lowprice_ = GOOGLE_LONGLONG(0);
-  clear_has_lowprice();
 }
  ::google::protobuf::int64 PBMsgFutMD::lowprice() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.lowPrice)
   return lowprice_;
 }
  void PBMsgFutMD::set_lowprice(::google::protobuf::int64 value) {
-  set_has_lowprice();
+  
   lowprice_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.lowPrice)
 }
 
-// required int64 matchPrice = 16;
-bool PBMsgFutMD::has_matchprice() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
-}
-void PBMsgFutMD::set_has_matchprice() {
-  _has_bits_[0] |= 0x00000400u;
-}
-void PBMsgFutMD::clear_has_matchprice() {
-  _has_bits_[0] &= ~0x00000400u;
-}
+// optional int64 matchPrice = 16;
 void PBMsgFutMD::clear_matchprice() {
   matchprice_ = GOOGLE_LONGLONG(0);
-  clear_has_matchprice();
 }
  ::google::protobuf::int64 PBMsgFutMD::matchprice() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.matchPrice)
   return matchprice_;
 }
  void PBMsgFutMD::set_matchprice(::google::protobuf::int64 value) {
-  set_has_matchprice();
+  
   matchprice_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.matchPrice)
 }
 
-// required int64 priceChange = 17;
-bool PBMsgFutMD::has_pricechange() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
-}
-void PBMsgFutMD::set_has_pricechange() {
-  _has_bits_[0] |= 0x00000800u;
-}
-void PBMsgFutMD::clear_has_pricechange() {
-  _has_bits_[0] &= ~0x00000800u;
-}
+// optional int64 priceChange = 17;
 void PBMsgFutMD::clear_pricechange() {
   pricechange_ = GOOGLE_LONGLONG(0);
-  clear_has_pricechange();
 }
  ::google::protobuf::int64 PBMsgFutMD::pricechange() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.priceChange)
   return pricechange_;
 }
  void PBMsgFutMD::set_pricechange(::google::protobuf::int64 value) {
-  set_has_pricechange();
+  
   pricechange_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.priceChange)
 }
 
-// required int64 settlePrice = 20;
-bool PBMsgFutMD::has_settleprice() const {
-  return (_has_bits_[0] & 0x00001000u) != 0;
-}
-void PBMsgFutMD::set_has_settleprice() {
-  _has_bits_[0] |= 0x00001000u;
-}
-void PBMsgFutMD::clear_has_settleprice() {
-  _has_bits_[0] &= ~0x00001000u;
-}
+// optional int64 settlePrice = 20;
 void PBMsgFutMD::clear_settleprice() {
   settleprice_ = GOOGLE_LONGLONG(0);
-  clear_has_settleprice();
 }
  ::google::protobuf::int64 PBMsgFutMD::settleprice() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.settlePrice)
   return settleprice_;
 }
  void PBMsgFutMD::set_settleprice(::google::protobuf::int64 value) {
-  set_has_settleprice();
+  
   settleprice_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.settlePrice)
 }
 
-// required int64 highLimit = 21;
-bool PBMsgFutMD::has_highlimit() const {
-  return (_has_bits_[0] & 0x00002000u) != 0;
-}
-void PBMsgFutMD::set_has_highlimit() {
-  _has_bits_[0] |= 0x00002000u;
-}
-void PBMsgFutMD::clear_has_highlimit() {
-  _has_bits_[0] &= ~0x00002000u;
-}
+// optional int64 highLimit = 21;
 void PBMsgFutMD::clear_highlimit() {
   highlimit_ = GOOGLE_LONGLONG(0);
-  clear_has_highlimit();
 }
  ::google::protobuf::int64 PBMsgFutMD::highlimit() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.highLimit)
   return highlimit_;
 }
  void PBMsgFutMD::set_highlimit(::google::protobuf::int64 value) {
-  set_has_highlimit();
+  
   highlimit_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.highLimit)
 }
 
-// required int64 lowLimit = 22;
-bool PBMsgFutMD::has_lowlimit() const {
-  return (_has_bits_[0] & 0x00004000u) != 0;
-}
-void PBMsgFutMD::set_has_lowlimit() {
-  _has_bits_[0] |= 0x00004000u;
-}
-void PBMsgFutMD::clear_has_lowlimit() {
-  _has_bits_[0] &= ~0x00004000u;
-}
+// optional int64 lowLimit = 22;
 void PBMsgFutMD::clear_lowlimit() {
   lowlimit_ = GOOGLE_LONGLONG(0);
-  clear_has_lowlimit();
 }
  ::google::protobuf::int64 PBMsgFutMD::lowlimit() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.lowLimit)
   return lowlimit_;
 }
  void PBMsgFutMD::set_lowlimit(::google::protobuf::int64 value) {
-  set_has_lowlimit();
+  
   lowlimit_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.lowLimit)
 }
 
-// required int64 askSize1 = 8;
-bool PBMsgFutMD::has_asksize1() const {
-  return (_has_bits_[0] & 0x00008000u) != 0;
-}
-void PBMsgFutMD::set_has_asksize1() {
-  _has_bits_[0] |= 0x00008000u;
-}
-void PBMsgFutMD::clear_has_asksize1() {
-  _has_bits_[0] &= ~0x00008000u;
-}
+// optional int64 askSize1 = 8;
 void PBMsgFutMD::clear_asksize1() {
   asksize1_ = GOOGLE_LONGLONG(0);
-  clear_has_asksize1();
 }
  ::google::protobuf::int64 PBMsgFutMD::asksize1() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.askSize1)
   return asksize1_;
 }
  void PBMsgFutMD::set_asksize1(::google::protobuf::int64 value) {
-  set_has_asksize1();
+  
   asksize1_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.askSize1)
 }
 
-// required int64 bidSize1 = 10;
-bool PBMsgFutMD::has_bidsize1() const {
-  return (_has_bits_[0] & 0x00010000u) != 0;
-}
-void PBMsgFutMD::set_has_bidsize1() {
-  _has_bits_[0] |= 0x00010000u;
-}
-void PBMsgFutMD::clear_has_bidsize1() {
-  _has_bits_[0] &= ~0x00010000u;
-}
+// optional int64 bidSize1 = 10;
 void PBMsgFutMD::clear_bidsize1() {
   bidsize1_ = GOOGLE_LONGLONG(0);
-  clear_has_bidsize1();
 }
  ::google::protobuf::int64 PBMsgFutMD::bidsize1() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.bidSize1)
   return bidsize1_;
 }
  void PBMsgFutMD::set_bidsize1(::google::protobuf::int64 value) {
-  set_has_bidsize1();
+  
   bidsize1_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.bidSize1)
 }
 
-// required int64 volume = 18;
-bool PBMsgFutMD::has_volume() const {
-  return (_has_bits_[0] & 0x00020000u) != 0;
-}
-void PBMsgFutMD::set_has_volume() {
-  _has_bits_[0] |= 0x00020000u;
-}
-void PBMsgFutMD::clear_has_volume() {
-  _has_bits_[0] &= ~0x00020000u;
-}
+// optional int64 volume = 18;
 void PBMsgFutMD::clear_volume() {
   volume_ = GOOGLE_LONGLONG(0);
-  clear_has_volume();
 }
  ::google::protobuf::int64 PBMsgFutMD::volume() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.volume)
   return volume_;
 }
  void PBMsgFutMD::set_volume(::google::protobuf::int64 value) {
-  set_has_volume();
+  
   volume_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.volume)
 }
 
-// required int64 turnover = 19;
-bool PBMsgFutMD::has_turnover() const {
-  return (_has_bits_[0] & 0x00040000u) != 0;
-}
-void PBMsgFutMD::set_has_turnover() {
-  _has_bits_[0] |= 0x00040000u;
-}
-void PBMsgFutMD::clear_has_turnover() {
-  _has_bits_[0] &= ~0x00040000u;
-}
+// optional int64 turnover = 19;
 void PBMsgFutMD::clear_turnover() {
   turnover_ = GOOGLE_LONGLONG(0);
-  clear_has_turnover();
 }
  ::google::protobuf::int64 PBMsgFutMD::turnover() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.turnover)
   return turnover_;
 }
  void PBMsgFutMD::set_turnover(::google::protobuf::int64 value) {
-  set_has_turnover();
+  
   turnover_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.turnover)
 }
@@ -4439,7 +3662,7 @@ void PBMsgFutMD::clear_turnover() {
 
 // ===================================================================
 
-#ifndef _MSC_VER
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int PBMsgMDAMD::kEOFFieldNumber;
 const int PBMsgMDAMD::kRequestSymbolListFieldNumber;
 const int PBMsgMDAMD::kDataTypeFieldNumber;
@@ -4478,7 +3701,7 @@ const int PBMsgMDAMD::kPriceChangeFieldNumber;
 const int PBMsgMDAMD::kSettlePriceFieldNumber;
 const int PBMsgMDAMD::kHighLimitFieldNumber;
 const int PBMsgMDAMD::kLowLimitFieldNumber;
-#endif  // !_MSC_VER
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 PBMsgMDAMD::PBMsgMDAMD()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
@@ -4487,6 +3710,7 @@ PBMsgMDAMD::PBMsgMDAMD()
 }
 
 void PBMsgMDAMD::InitAsDefaultInstance() {
+  _is_default_instance_ = true;
 }
 
 PBMsgMDAMD::PBMsgMDAMD(const PBMsgMDAMD& from)
@@ -4498,10 +3722,11 @@ PBMsgMDAMD::PBMsgMDAMD(const PBMsgMDAMD& from)
 }
 
 void PBMsgMDAMD::SharedCtor() {
+    _is_default_instance_ = false;
   ::google::protobuf::internal::GetEmptyString();
   _cached_size_ = 0;
   eof_ = 0;
-  datatype_ = 1;
+  datatype_ = 0;
   symbol_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   timestamp_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   preclosevalue_ = GOOGLE_LONGLONG(0);
@@ -4537,7 +3762,6 @@ void PBMsgMDAMD::SharedCtor() {
   settleprice_ = GOOGLE_LONGLONG(0);
   highlimit_ = GOOGLE_LONGLONG(0);
   lowlimit_ = GOOGLE_LONGLONG(0);
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
 PBMsgMDAMD::~PBMsgMDAMD() {
@@ -4586,38 +3810,19 @@ void PBMsgMDAMD::Clear() {
            ZR_HELPER_(last) - ZR_HELPER_(first) + sizeof(last));\
 } while (0)
 
-  if (_has_bits_[0 / 32] & 253u) {
-    ZR_(preclosevalue_, turnover_);
-    eof_ = 0;
-    datatype_ = 1;
-    if (has_symbol()) {
-      symbol_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-    }
-    if (has_timestamp()) {
-      timestamp_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-    }
-  }
-  if (_has_bits_[8 / 32] & 65280u) {
-    ZR_(volume_, askprice4_);
-  }
-  if (_has_bits_[16 / 32] & 16711680u) {
-    ZR_(asksize4_, bidprice1_);
-  }
-  if (_has_bits_[24 / 32] & 4278190080u) {
-    ZR_(bidsize1_, bidprice5_);
-  }
-  if (_has_bits_[32 / 32] & 63u) {
-    ZR_(bidsize5_, lowlimit_);
-  }
+  ZR_(eof_, datatype_);
+  ZR_(preclosevalue_, turnover_);
+  symbol_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  timestamp_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ZR_(volume_, askprice4_);
+  ZR_(asksize4_, bidprice1_);
+  ZR_(bidsize1_, bidprice5_);
+  ZR_(bidsize5_, lowlimit_);
 
 #undef ZR_HELPER_
 #undef ZR_
 
   requestsymbollist_.Clear();
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-  if (_internal_metadata_.have_unknown_fields()) {
-    mutable_unknown_fields()->Clear();
-  }
 }
 
 bool PBMsgMDAMD::MergePartialFromCodedStream(
@@ -4630,13 +3835,13 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required int32 EOF = 1;
+      // optional int32 EOF = 1;
       case 1: {
         if (tag == 8) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, &eof_)));
-          set_has_eof();
+
         } else {
           goto handle_unusual;
         }
@@ -4650,11 +3855,11 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
          parse_requestSymbolList:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->add_requestsymbollist()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             this->requestsymbollist(this->requestsymbollist_size() - 1).data(),
             this->requestsymbollist(this->requestsymbollist_size() - 1).length(),
-            ::google::protobuf::internal::WireFormat::PARSE,
-            "PBWrapMsgMDA.PBMsgMDAMD.requestSymbolList");
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "PBWrapMsgMDA.PBMsgMDAMD.requestSymbolList"));
         } else {
           goto handle_unusual;
         }
@@ -4671,11 +3876,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
-          if (::PBWrapMsgMDA::DataType_IsValid(value)) {
-            set_datatype(static_cast< ::PBWrapMsgMDA::DataType >(value));
-          } else {
-            mutable_unknown_fields()->AddVarint(6, value);
-          }
+          set_datatype(static_cast< ::PBWrapMsgMDA::DataType >(value));
         } else {
           goto handle_unusual;
         }
@@ -4689,10 +3890,10 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
          parse_symbol:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_symbol()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             this->symbol().data(), this->symbol().length(),
-            ::google::protobuf::internal::WireFormat::PARSE,
-            "PBWrapMsgMDA.PBMsgMDAMD.symbol");
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "PBWrapMsgMDA.PBMsgMDAMD.symbol"));
         } else {
           goto handle_unusual;
         }
@@ -4706,10 +3907,10 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
          parse_timeStamp:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_timestamp()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             this->timestamp().data(), this->timestamp().length(),
-            ::google::protobuf::internal::WireFormat::PARSE,
-            "PBWrapMsgMDA.PBMsgMDAMD.timeStamp");
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "PBWrapMsgMDA.PBMsgMDAMD.timeStamp"));
         } else {
           goto handle_unusual;
         }
@@ -4724,7 +3925,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &preclosevalue_)));
-          set_has_preclosevalue();
+
         } else {
           goto handle_unusual;
         }
@@ -4739,7 +3940,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &openvalue_)));
-          set_has_openvalue();
+
         } else {
           goto handle_unusual;
         }
@@ -4754,7 +3955,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &turnover_)));
-          set_has_turnover();
+
         } else {
           goto handle_unusual;
         }
@@ -4769,7 +3970,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &volume_)));
-          set_has_volume();
+
         } else {
           goto handle_unusual;
         }
@@ -4784,7 +3985,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &highvalue_)));
-          set_has_highvalue();
+
         } else {
           goto handle_unusual;
         }
@@ -4799,7 +4000,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &lowvalue_)));
-          set_has_lowvalue();
+
         } else {
           goto handle_unusual;
         }
@@ -4814,7 +4015,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &latestindex_)));
-          set_has_latestindex();
+
         } else {
           goto handle_unusual;
         }
@@ -4829,7 +4030,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &matchprice_)));
-          set_has_matchprice();
+
         } else {
           goto handle_unusual;
         }
@@ -4844,7 +4045,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &askprice5_)));
-          set_has_askprice5();
+
         } else {
           goto handle_unusual;
         }
@@ -4859,7 +4060,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &asksize5_)));
-          set_has_asksize5();
+
         } else {
           goto handle_unusual;
         }
@@ -4874,7 +4075,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &askprice4_)));
-          set_has_askprice4();
+
         } else {
           goto handle_unusual;
         }
@@ -4889,7 +4090,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &asksize4_)));
-          set_has_asksize4();
+
         } else {
           goto handle_unusual;
         }
@@ -4904,7 +4105,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &askprice3_)));
-          set_has_askprice3();
+
         } else {
           goto handle_unusual;
         }
@@ -4919,7 +4120,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &asksize3_)));
-          set_has_asksize3();
+
         } else {
           goto handle_unusual;
         }
@@ -4934,7 +4135,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &askprice2_)));
-          set_has_askprice2();
+
         } else {
           goto handle_unusual;
         }
@@ -4949,7 +4150,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &asksize2_)));
-          set_has_asksize2();
+
         } else {
           goto handle_unusual;
         }
@@ -4964,7 +4165,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &askprice1_)));
-          set_has_askprice1();
+
         } else {
           goto handle_unusual;
         }
@@ -4979,7 +4180,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &asksize1_)));
-          set_has_asksize1();
+
         } else {
           goto handle_unusual;
         }
@@ -4994,7 +4195,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &bidprice1_)));
-          set_has_bidprice1();
+
         } else {
           goto handle_unusual;
         }
@@ -5009,7 +4210,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &bidsize1_)));
-          set_has_bidsize1();
+
         } else {
           goto handle_unusual;
         }
@@ -5024,7 +4225,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &bidprice2_)));
-          set_has_bidprice2();
+
         } else {
           goto handle_unusual;
         }
@@ -5039,7 +4240,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &bidsize2_)));
-          set_has_bidsize2();
+
         } else {
           goto handle_unusual;
         }
@@ -5054,7 +4255,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &bidprice3_)));
-          set_has_bidprice3();
+
         } else {
           goto handle_unusual;
         }
@@ -5069,7 +4270,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &bidsize3_)));
-          set_has_bidsize3();
+
         } else {
           goto handle_unusual;
         }
@@ -5084,7 +4285,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &bidprice4_)));
-          set_has_bidprice4();
+
         } else {
           goto handle_unusual;
         }
@@ -5099,7 +4300,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &bidsize4_)));
-          set_has_bidsize4();
+
         } else {
           goto handle_unusual;
         }
@@ -5114,7 +4315,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &bidprice5_)));
-          set_has_bidprice5();
+
         } else {
           goto handle_unusual;
         }
@@ -5129,7 +4330,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &bidsize5_)));
-          set_has_bidsize5();
+
         } else {
           goto handle_unusual;
         }
@@ -5144,7 +4345,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &presettleprice_)));
-          set_has_presettleprice();
+
         } else {
           goto handle_unusual;
         }
@@ -5159,7 +4360,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &pricechange_)));
-          set_has_pricechange();
+
         } else {
           goto handle_unusual;
         }
@@ -5174,7 +4375,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &settleprice_)));
-          set_has_settleprice();
+
         } else {
           goto handle_unusual;
         }
@@ -5189,7 +4390,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &highlimit_)));
-          set_has_highlimit();
+
         } else {
           goto handle_unusual;
         }
@@ -5204,7 +4405,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
                  input, &lowlimit_)));
-          set_has_lowlimit();
+
         } else {
           goto handle_unusual;
         }
@@ -5219,8 +4420,7 @@ bool PBMsgMDAMD::MergePartialFromCodedStream(
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, mutable_unknown_fields()));
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
         break;
       }
     }
@@ -5237,248 +4437,244 @@ failure:
 void PBMsgMDAMD::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:PBWrapMsgMDA.PBMsgMDAMD)
-  // required int32 EOF = 1;
-  if (has_eof()) {
+  // optional int32 EOF = 1;
+  if (this->eof() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->eof(), output);
   }
 
   // repeated string requestSymbolList = 5;
   for (int i = 0; i < this->requestsymbollist_size(); i++) {
-  ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
-    this->requestsymbollist(i).data(), this->requestsymbollist(i).length(),
-    ::google::protobuf::internal::WireFormat::SERIALIZE,
-    "PBWrapMsgMDA.PBMsgMDAMD.requestSymbolList");
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->requestsymbollist(i).data(), this->requestsymbollist(i).length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "PBWrapMsgMDA.PBMsgMDAMD.requestSymbolList");
     ::google::protobuf::internal::WireFormatLite::WriteString(
       5, this->requestsymbollist(i), output);
   }
 
   // optional .PBWrapMsgMDA.DataType dataType = 6;
-  if (has_datatype()) {
+  if (this->datatype() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
       6, this->datatype(), output);
   }
 
   // optional string symbol = 7;
-  if (has_symbol()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+  if (this->symbol().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->symbol().data(), this->symbol().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "PBWrapMsgMDA.PBMsgMDAMD.symbol");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       7, this->symbol(), output);
   }
 
   // optional string timeStamp = 8;
-  if (has_timestamp()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+  if (this->timestamp().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->timestamp().data(), this->timestamp().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "PBWrapMsgMDA.PBMsgMDAMD.timeStamp");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       8, this->timestamp(), output);
   }
 
   // optional int64 preCloseValue = 9;
-  if (has_preclosevalue()) {
+  if (this->preclosevalue() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(9, this->preclosevalue(), output);
   }
 
   // optional int64 openValue = 10;
-  if (has_openvalue()) {
+  if (this->openvalue() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(10, this->openvalue(), output);
   }
 
   // optional int64 turnover = 11;
-  if (has_turnover()) {
+  if (this->turnover() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(11, this->turnover(), output);
   }
 
   // optional int64 volume = 12;
-  if (has_volume()) {
+  if (this->volume() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(12, this->volume(), output);
   }
 
   // optional int64 highValue = 13;
-  if (has_highvalue()) {
+  if (this->highvalue() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(13, this->highvalue(), output);
   }
 
   // optional int64 lowValue = 14;
-  if (has_lowvalue()) {
+  if (this->lowvalue() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(14, this->lowvalue(), output);
   }
 
   // optional int64 latestIndex = 15;
-  if (has_latestindex()) {
+  if (this->latestindex() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(15, this->latestindex(), output);
   }
 
   // optional int64 matchPrice = 16;
-  if (has_matchprice()) {
+  if (this->matchprice() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(16, this->matchprice(), output);
   }
 
   // optional int64 askPrice5 = 17;
-  if (has_askprice5()) {
+  if (this->askprice5() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(17, this->askprice5(), output);
   }
 
   // optional int64 askSize5 = 18;
-  if (has_asksize5()) {
+  if (this->asksize5() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(18, this->asksize5(), output);
   }
 
   // optional int64 askPrice4 = 19;
-  if (has_askprice4()) {
+  if (this->askprice4() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(19, this->askprice4(), output);
   }
 
   // optional int64 askSize4 = 20;
-  if (has_asksize4()) {
+  if (this->asksize4() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(20, this->asksize4(), output);
   }
 
   // optional int64 askPrice3 = 21;
-  if (has_askprice3()) {
+  if (this->askprice3() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(21, this->askprice3(), output);
   }
 
   // optional int64 askSize3 = 22;
-  if (has_asksize3()) {
+  if (this->asksize3() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(22, this->asksize3(), output);
   }
 
   // optional int64 askPrice2 = 23;
-  if (has_askprice2()) {
+  if (this->askprice2() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(23, this->askprice2(), output);
   }
 
   // optional int64 askSize2 = 24;
-  if (has_asksize2()) {
+  if (this->asksize2() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(24, this->asksize2(), output);
   }
 
   // optional int64 askPrice1 = 25;
-  if (has_askprice1()) {
+  if (this->askprice1() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(25, this->askprice1(), output);
   }
 
   // optional int64 askSize1 = 26;
-  if (has_asksize1()) {
+  if (this->asksize1() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(26, this->asksize1(), output);
   }
 
   // optional int64 bidPrice1 = 27;
-  if (has_bidprice1()) {
+  if (this->bidprice1() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(27, this->bidprice1(), output);
   }
 
   // optional int64 bidSize1 = 28;
-  if (has_bidsize1()) {
+  if (this->bidsize1() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(28, this->bidsize1(), output);
   }
 
   // optional int64 bidPrice2 = 29;
-  if (has_bidprice2()) {
+  if (this->bidprice2() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(29, this->bidprice2(), output);
   }
 
   // optional int64 bidSize2 = 30;
-  if (has_bidsize2()) {
+  if (this->bidsize2() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(30, this->bidsize2(), output);
   }
 
   // optional int64 bidPrice3 = 31;
-  if (has_bidprice3()) {
+  if (this->bidprice3() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(31, this->bidprice3(), output);
   }
 
   // optional int64 bidSize3 = 32;
-  if (has_bidsize3()) {
+  if (this->bidsize3() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(32, this->bidsize3(), output);
   }
 
   // optional int64 bidPrice4 = 33;
-  if (has_bidprice4()) {
+  if (this->bidprice4() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(33, this->bidprice4(), output);
   }
 
   // optional int64 bidSize4 = 34;
-  if (has_bidsize4()) {
+  if (this->bidsize4() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(34, this->bidsize4(), output);
   }
 
   // optional int64 bidPrice5 = 35;
-  if (has_bidprice5()) {
+  if (this->bidprice5() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(35, this->bidprice5(), output);
   }
 
   // optional int64 bidSize5 = 36;
-  if (has_bidsize5()) {
+  if (this->bidsize5() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(36, this->bidsize5(), output);
   }
 
   // optional int64 preSettlePrice = 37;
-  if (has_presettleprice()) {
+  if (this->presettleprice() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(37, this->presettleprice(), output);
   }
 
   // optional int64 priceChange = 38;
-  if (has_pricechange()) {
+  if (this->pricechange() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(38, this->pricechange(), output);
   }
 
   // optional int64 settlePrice = 39;
-  if (has_settleprice()) {
+  if (this->settleprice() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(39, this->settleprice(), output);
   }
 
   // optional int64 highLimit = 40;
-  if (has_highlimit()) {
+  if (this->highlimit() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(40, this->highlimit(), output);
   }
 
   // optional int64 lowLimit = 41;
-  if (has_lowlimit()) {
+  if (this->lowlimit() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteInt64(41, this->lowlimit(), output);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        unknown_fields(), output);
-  }
   // @@protoc_insertion_point(serialize_end:PBWrapMsgMDA.PBMsgMDAMD)
 }
 
 ::google::protobuf::uint8* PBMsgMDAMD::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // @@protoc_insertion_point(serialize_to_array_start:PBWrapMsgMDA.PBMsgMDAMD)
-  // required int32 EOF = 1;
-  if (has_eof()) {
+  // optional int32 EOF = 1;
+  if (this->eof() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->eof(), target);
   }
 
   // repeated string requestSymbolList = 5;
   for (int i = 0; i < this->requestsymbollist_size(); i++) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->requestsymbollist(i).data(), this->requestsymbollist(i).length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "PBWrapMsgMDA.PBMsgMDAMD.requestSymbolList");
     target = ::google::protobuf::internal::WireFormatLite::
       WriteStringToArray(5, this->requestsymbollist(i), target);
   }
 
   // optional .PBWrapMsgMDA.DataType dataType = 6;
-  if (has_datatype()) {
+  if (this->datatype() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       6, this->datatype(), target);
   }
 
   // optional string symbol = 7;
-  if (has_symbol()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+  if (this->symbol().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->symbol().data(), this->symbol().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "PBWrapMsgMDA.PBMsgMDAMD.symbol");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
@@ -5486,10 +4682,10 @@ void PBMsgMDAMD::SerializeWithCachedSizes(
   }
 
   // optional string timeStamp = 8;
-  if (has_timestamp()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+  if (this->timestamp().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->timestamp().data(), this->timestamp().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "PBWrapMsgMDA.PBMsgMDAMD.timeStamp");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
@@ -5497,174 +4693,170 @@ void PBMsgMDAMD::SerializeWithCachedSizes(
   }
 
   // optional int64 preCloseValue = 9;
-  if (has_preclosevalue()) {
+  if (this->preclosevalue() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(9, this->preclosevalue(), target);
   }
 
   // optional int64 openValue = 10;
-  if (has_openvalue()) {
+  if (this->openvalue() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(10, this->openvalue(), target);
   }
 
   // optional int64 turnover = 11;
-  if (has_turnover()) {
+  if (this->turnover() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(11, this->turnover(), target);
   }
 
   // optional int64 volume = 12;
-  if (has_volume()) {
+  if (this->volume() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(12, this->volume(), target);
   }
 
   // optional int64 highValue = 13;
-  if (has_highvalue()) {
+  if (this->highvalue() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(13, this->highvalue(), target);
   }
 
   // optional int64 lowValue = 14;
-  if (has_lowvalue()) {
+  if (this->lowvalue() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(14, this->lowvalue(), target);
   }
 
   // optional int64 latestIndex = 15;
-  if (has_latestindex()) {
+  if (this->latestindex() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(15, this->latestindex(), target);
   }
 
   // optional int64 matchPrice = 16;
-  if (has_matchprice()) {
+  if (this->matchprice() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(16, this->matchprice(), target);
   }
 
   // optional int64 askPrice5 = 17;
-  if (has_askprice5()) {
+  if (this->askprice5() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(17, this->askprice5(), target);
   }
 
   // optional int64 askSize5 = 18;
-  if (has_asksize5()) {
+  if (this->asksize5() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(18, this->asksize5(), target);
   }
 
   // optional int64 askPrice4 = 19;
-  if (has_askprice4()) {
+  if (this->askprice4() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(19, this->askprice4(), target);
   }
 
   // optional int64 askSize4 = 20;
-  if (has_asksize4()) {
+  if (this->asksize4() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(20, this->asksize4(), target);
   }
 
   // optional int64 askPrice3 = 21;
-  if (has_askprice3()) {
+  if (this->askprice3() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(21, this->askprice3(), target);
   }
 
   // optional int64 askSize3 = 22;
-  if (has_asksize3()) {
+  if (this->asksize3() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(22, this->asksize3(), target);
   }
 
   // optional int64 askPrice2 = 23;
-  if (has_askprice2()) {
+  if (this->askprice2() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(23, this->askprice2(), target);
   }
 
   // optional int64 askSize2 = 24;
-  if (has_asksize2()) {
+  if (this->asksize2() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(24, this->asksize2(), target);
   }
 
   // optional int64 askPrice1 = 25;
-  if (has_askprice1()) {
+  if (this->askprice1() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(25, this->askprice1(), target);
   }
 
   // optional int64 askSize1 = 26;
-  if (has_asksize1()) {
+  if (this->asksize1() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(26, this->asksize1(), target);
   }
 
   // optional int64 bidPrice1 = 27;
-  if (has_bidprice1()) {
+  if (this->bidprice1() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(27, this->bidprice1(), target);
   }
 
   // optional int64 bidSize1 = 28;
-  if (has_bidsize1()) {
+  if (this->bidsize1() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(28, this->bidsize1(), target);
   }
 
   // optional int64 bidPrice2 = 29;
-  if (has_bidprice2()) {
+  if (this->bidprice2() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(29, this->bidprice2(), target);
   }
 
   // optional int64 bidSize2 = 30;
-  if (has_bidsize2()) {
+  if (this->bidsize2() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(30, this->bidsize2(), target);
   }
 
   // optional int64 bidPrice3 = 31;
-  if (has_bidprice3()) {
+  if (this->bidprice3() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(31, this->bidprice3(), target);
   }
 
   // optional int64 bidSize3 = 32;
-  if (has_bidsize3()) {
+  if (this->bidsize3() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(32, this->bidsize3(), target);
   }
 
   // optional int64 bidPrice4 = 33;
-  if (has_bidprice4()) {
+  if (this->bidprice4() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(33, this->bidprice4(), target);
   }
 
   // optional int64 bidSize4 = 34;
-  if (has_bidsize4()) {
+  if (this->bidsize4() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(34, this->bidsize4(), target);
   }
 
   // optional int64 bidPrice5 = 35;
-  if (has_bidprice5()) {
+  if (this->bidprice5() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(35, this->bidprice5(), target);
   }
 
   // optional int64 bidSize5 = 36;
-  if (has_bidsize5()) {
+  if (this->bidsize5() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(36, this->bidsize5(), target);
   }
 
   // optional int64 preSettlePrice = 37;
-  if (has_presettleprice()) {
+  if (this->presettleprice() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(37, this->presettleprice(), target);
   }
 
   // optional int64 priceChange = 38;
-  if (has_pricechange()) {
+  if (this->pricechange() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(38, this->pricechange(), target);
   }
 
   // optional int64 settlePrice = 39;
-  if (has_settleprice()) {
+  if (this->settleprice() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(39, this->settleprice(), target);
   }
 
   // optional int64 highLimit = 40;
-  if (has_highlimit()) {
+  if (this->highlimit() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(40, this->highlimit(), target);
   }
 
   // optional int64 lowLimit = 41;
-  if (has_lowlimit()) {
+  if (this->lowlimit() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(41, this->lowlimit(), target);
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        unknown_fields(), target);
-  }
   // @@protoc_insertion_point(serialize_to_array_end:PBWrapMsgMDA.PBMsgMDAMD)
   return target;
 }
@@ -5672,273 +4864,264 @@ void PBMsgMDAMD::SerializeWithCachedSizes(
 int PBMsgMDAMD::ByteSize() const {
   int total_size = 0;
 
-  // required int32 EOF = 1;
-  if (has_eof()) {
+  // optional int32 EOF = 1;
+  if (this->eof() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->eof());
   }
-  if (_has_bits_[2 / 32] & 252u) {
-    // optional .PBWrapMsgMDA.DataType dataType = 6;
-    if (has_datatype()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::EnumSize(this->datatype());
-    }
 
-    // optional string symbol = 7;
-    if (has_symbol()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->symbol());
-    }
-
-    // optional string timeStamp = 8;
-    if (has_timestamp()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->timestamp());
-    }
-
-    // optional int64 preCloseValue = 9;
-    if (has_preclosevalue()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->preclosevalue());
-    }
-
-    // optional int64 openValue = 10;
-    if (has_openvalue()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->openvalue());
-    }
-
-    // optional int64 turnover = 11;
-    if (has_turnover()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->turnover());
-    }
-
+  // optional .PBWrapMsgMDA.DataType dataType = 6;
+  if (this->datatype() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::EnumSize(this->datatype());
   }
-  if (_has_bits_[8 / 32] & 65280u) {
-    // optional int64 volume = 12;
-    if (has_volume()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->volume());
-    }
 
-    // optional int64 highValue = 13;
-    if (has_highvalue()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->highvalue());
-    }
-
-    // optional int64 lowValue = 14;
-    if (has_lowvalue()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->lowvalue());
-    }
-
-    // optional int64 latestIndex = 15;
-    if (has_latestindex()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->latestindex());
-    }
-
-    // optional int64 matchPrice = 16;
-    if (has_matchprice()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->matchprice());
-    }
-
-    // optional int64 askPrice5 = 17;
-    if (has_askprice5()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->askprice5());
-    }
-
-    // optional int64 askSize5 = 18;
-    if (has_asksize5()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->asksize5());
-    }
-
-    // optional int64 askPrice4 = 19;
-    if (has_askprice4()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->askprice4());
-    }
-
+  // optional string symbol = 7;
+  if (this->symbol().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->symbol());
   }
-  if (_has_bits_[16 / 32] & 16711680u) {
-    // optional int64 askSize4 = 20;
-    if (has_asksize4()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->asksize4());
-    }
 
-    // optional int64 askPrice3 = 21;
-    if (has_askprice3()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->askprice3());
-    }
-
-    // optional int64 askSize3 = 22;
-    if (has_asksize3()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->asksize3());
-    }
-
-    // optional int64 askPrice2 = 23;
-    if (has_askprice2()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->askprice2());
-    }
-
-    // optional int64 askSize2 = 24;
-    if (has_asksize2()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->asksize2());
-    }
-
-    // optional int64 askPrice1 = 25;
-    if (has_askprice1()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->askprice1());
-    }
-
-    // optional int64 askSize1 = 26;
-    if (has_asksize1()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->asksize1());
-    }
-
-    // optional int64 bidPrice1 = 27;
-    if (has_bidprice1()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->bidprice1());
-    }
-
+  // optional string timeStamp = 8;
+  if (this->timestamp().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->timestamp());
   }
-  if (_has_bits_[24 / 32] & 4278190080u) {
-    // optional int64 bidSize1 = 28;
-    if (has_bidsize1()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->bidsize1());
-    }
 
-    // optional int64 bidPrice2 = 29;
-    if (has_bidprice2()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->bidprice2());
-    }
-
-    // optional int64 bidSize2 = 30;
-    if (has_bidsize2()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->bidsize2());
-    }
-
-    // optional int64 bidPrice3 = 31;
-    if (has_bidprice3()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->bidprice3());
-    }
-
-    // optional int64 bidSize3 = 32;
-    if (has_bidsize3()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->bidsize3());
-    }
-
-    // optional int64 bidPrice4 = 33;
-    if (has_bidprice4()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->bidprice4());
-    }
-
-    // optional int64 bidSize4 = 34;
-    if (has_bidsize4()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->bidsize4());
-    }
-
-    // optional int64 bidPrice5 = 35;
-    if (has_bidprice5()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->bidprice5());
-    }
-
+  // optional int64 preCloseValue = 9;
+  if (this->preclosevalue() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->preclosevalue());
   }
-  if (_has_bits_[32 / 32] & 63u) {
-    // optional int64 bidSize5 = 36;
-    if (has_bidsize5()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->bidsize5());
-    }
 
-    // optional int64 preSettlePrice = 37;
-    if (has_presettleprice()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->presettleprice());
-    }
-
-    // optional int64 priceChange = 38;
-    if (has_pricechange()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->pricechange());
-    }
-
-    // optional int64 settlePrice = 39;
-    if (has_settleprice()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->settleprice());
-    }
-
-    // optional int64 highLimit = 40;
-    if (has_highlimit()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->highlimit());
-    }
-
-    // optional int64 lowLimit = 41;
-    if (has_lowlimit()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
-          this->lowlimit());
-    }
-
+  // optional int64 openValue = 10;
+  if (this->openvalue() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->openvalue());
   }
+
+  // optional int64 turnover = 11;
+  if (this->turnover() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->turnover());
+  }
+
+  // optional int64 volume = 12;
+  if (this->volume() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->volume());
+  }
+
+  // optional int64 highValue = 13;
+  if (this->highvalue() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->highvalue());
+  }
+
+  // optional int64 lowValue = 14;
+  if (this->lowvalue() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->lowvalue());
+  }
+
+  // optional int64 latestIndex = 15;
+  if (this->latestindex() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->latestindex());
+  }
+
+  // optional int64 matchPrice = 16;
+  if (this->matchprice() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->matchprice());
+  }
+
+  // optional int64 askPrice5 = 17;
+  if (this->askprice5() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->askprice5());
+  }
+
+  // optional int64 askSize5 = 18;
+  if (this->asksize5() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->asksize5());
+  }
+
+  // optional int64 askPrice4 = 19;
+  if (this->askprice4() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->askprice4());
+  }
+
+  // optional int64 askSize4 = 20;
+  if (this->asksize4() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->asksize4());
+  }
+
+  // optional int64 askPrice3 = 21;
+  if (this->askprice3() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->askprice3());
+  }
+
+  // optional int64 askSize3 = 22;
+  if (this->asksize3() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->asksize3());
+  }
+
+  // optional int64 askPrice2 = 23;
+  if (this->askprice2() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->askprice2());
+  }
+
+  // optional int64 askSize2 = 24;
+  if (this->asksize2() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->asksize2());
+  }
+
+  // optional int64 askPrice1 = 25;
+  if (this->askprice1() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->askprice1());
+  }
+
+  // optional int64 askSize1 = 26;
+  if (this->asksize1() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->asksize1());
+  }
+
+  // optional int64 bidPrice1 = 27;
+  if (this->bidprice1() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->bidprice1());
+  }
+
+  // optional int64 bidSize1 = 28;
+  if (this->bidsize1() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->bidsize1());
+  }
+
+  // optional int64 bidPrice2 = 29;
+  if (this->bidprice2() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->bidprice2());
+  }
+
+  // optional int64 bidSize2 = 30;
+  if (this->bidsize2() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->bidsize2());
+  }
+
+  // optional int64 bidPrice3 = 31;
+  if (this->bidprice3() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->bidprice3());
+  }
+
+  // optional int64 bidSize3 = 32;
+  if (this->bidsize3() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->bidsize3());
+  }
+
+  // optional int64 bidPrice4 = 33;
+  if (this->bidprice4() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->bidprice4());
+  }
+
+  // optional int64 bidSize4 = 34;
+  if (this->bidsize4() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->bidsize4());
+  }
+
+  // optional int64 bidPrice5 = 35;
+  if (this->bidprice5() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->bidprice5());
+  }
+
+  // optional int64 bidSize5 = 36;
+  if (this->bidsize5() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->bidsize5());
+  }
+
+  // optional int64 preSettlePrice = 37;
+  if (this->presettleprice() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->presettleprice());
+  }
+
+  // optional int64 priceChange = 38;
+  if (this->pricechange() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->pricechange());
+  }
+
+  // optional int64 settlePrice = 39;
+  if (this->settleprice() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->settleprice());
+  }
+
+  // optional int64 highLimit = 40;
+  if (this->highlimit() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->highlimit());
+  }
+
+  // optional int64 lowLimit = 41;
+  if (this->lowlimit() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->lowlimit());
+  }
+
   // repeated string requestSymbolList = 5;
   total_size += 1 * this->requestsymbollist_size();
   for (int i = 0; i < this->requestsymbollist_size(); i++) {
@@ -5946,11 +5129,6 @@ int PBMsgMDAMD::ByteSize() const {
       this->requestsymbollist(i));
   }
 
-  if (_internal_metadata_.have_unknown_fields()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        unknown_fields());
-  }
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = total_size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
@@ -5972,131 +5150,118 @@ void PBMsgMDAMD::MergeFrom(const ::google::protobuf::Message& from) {
 void PBMsgMDAMD::MergeFrom(const PBMsgMDAMD& from) {
   if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
   requestsymbollist_.MergeFrom(from.requestsymbollist_);
-  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_eof()) {
-      set_eof(from.eof());
-    }
-    if (from.has_datatype()) {
-      set_datatype(from.datatype());
-    }
-    if (from.has_symbol()) {
-      set_has_symbol();
-      symbol_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.symbol_);
-    }
-    if (from.has_timestamp()) {
-      set_has_timestamp();
-      timestamp_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.timestamp_);
-    }
-    if (from.has_preclosevalue()) {
-      set_preclosevalue(from.preclosevalue());
-    }
-    if (from.has_openvalue()) {
-      set_openvalue(from.openvalue());
-    }
-    if (from.has_turnover()) {
-      set_turnover(from.turnover());
-    }
+  if (from.eof() != 0) {
+    set_eof(from.eof());
   }
-  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
-    if (from.has_volume()) {
-      set_volume(from.volume());
-    }
-    if (from.has_highvalue()) {
-      set_highvalue(from.highvalue());
-    }
-    if (from.has_lowvalue()) {
-      set_lowvalue(from.lowvalue());
-    }
-    if (from.has_latestindex()) {
-      set_latestindex(from.latestindex());
-    }
-    if (from.has_matchprice()) {
-      set_matchprice(from.matchprice());
-    }
-    if (from.has_askprice5()) {
-      set_askprice5(from.askprice5());
-    }
-    if (from.has_asksize5()) {
-      set_asksize5(from.asksize5());
-    }
-    if (from.has_askprice4()) {
-      set_askprice4(from.askprice4());
-    }
+  if (from.datatype() != 0) {
+    set_datatype(from.datatype());
   }
-  if (from._has_bits_[16 / 32] & (0xffu << (16 % 32))) {
-    if (from.has_asksize4()) {
-      set_asksize4(from.asksize4());
-    }
-    if (from.has_askprice3()) {
-      set_askprice3(from.askprice3());
-    }
-    if (from.has_asksize3()) {
-      set_asksize3(from.asksize3());
-    }
-    if (from.has_askprice2()) {
-      set_askprice2(from.askprice2());
-    }
-    if (from.has_asksize2()) {
-      set_asksize2(from.asksize2());
-    }
-    if (from.has_askprice1()) {
-      set_askprice1(from.askprice1());
-    }
-    if (from.has_asksize1()) {
-      set_asksize1(from.asksize1());
-    }
-    if (from.has_bidprice1()) {
-      set_bidprice1(from.bidprice1());
-    }
+  if (from.symbol().size() > 0) {
+
+    symbol_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.symbol_);
   }
-  if (from._has_bits_[24 / 32] & (0xffu << (24 % 32))) {
-    if (from.has_bidsize1()) {
-      set_bidsize1(from.bidsize1());
-    }
-    if (from.has_bidprice2()) {
-      set_bidprice2(from.bidprice2());
-    }
-    if (from.has_bidsize2()) {
-      set_bidsize2(from.bidsize2());
-    }
-    if (from.has_bidprice3()) {
-      set_bidprice3(from.bidprice3());
-    }
-    if (from.has_bidsize3()) {
-      set_bidsize3(from.bidsize3());
-    }
-    if (from.has_bidprice4()) {
-      set_bidprice4(from.bidprice4());
-    }
-    if (from.has_bidsize4()) {
-      set_bidsize4(from.bidsize4());
-    }
-    if (from.has_bidprice5()) {
-      set_bidprice5(from.bidprice5());
-    }
+  if (from.timestamp().size() > 0) {
+
+    timestamp_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.timestamp_);
   }
-  if (from._has_bits_[32 / 32] & (0xffu << (32 % 32))) {
-    if (from.has_bidsize5()) {
-      set_bidsize5(from.bidsize5());
-    }
-    if (from.has_presettleprice()) {
-      set_presettleprice(from.presettleprice());
-    }
-    if (from.has_pricechange()) {
-      set_pricechange(from.pricechange());
-    }
-    if (from.has_settleprice()) {
-      set_settleprice(from.settleprice());
-    }
-    if (from.has_highlimit()) {
-      set_highlimit(from.highlimit());
-    }
-    if (from.has_lowlimit()) {
-      set_lowlimit(from.lowlimit());
-    }
+  if (from.preclosevalue() != 0) {
+    set_preclosevalue(from.preclosevalue());
   }
-  if (from._internal_metadata_.have_unknown_fields()) {
-    mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+  if (from.openvalue() != 0) {
+    set_openvalue(from.openvalue());
+  }
+  if (from.turnover() != 0) {
+    set_turnover(from.turnover());
+  }
+  if (from.volume() != 0) {
+    set_volume(from.volume());
+  }
+  if (from.highvalue() != 0) {
+    set_highvalue(from.highvalue());
+  }
+  if (from.lowvalue() != 0) {
+    set_lowvalue(from.lowvalue());
+  }
+  if (from.latestindex() != 0) {
+    set_latestindex(from.latestindex());
+  }
+  if (from.matchprice() != 0) {
+    set_matchprice(from.matchprice());
+  }
+  if (from.askprice5() != 0) {
+    set_askprice5(from.askprice5());
+  }
+  if (from.asksize5() != 0) {
+    set_asksize5(from.asksize5());
+  }
+  if (from.askprice4() != 0) {
+    set_askprice4(from.askprice4());
+  }
+  if (from.asksize4() != 0) {
+    set_asksize4(from.asksize4());
+  }
+  if (from.askprice3() != 0) {
+    set_askprice3(from.askprice3());
+  }
+  if (from.asksize3() != 0) {
+    set_asksize3(from.asksize3());
+  }
+  if (from.askprice2() != 0) {
+    set_askprice2(from.askprice2());
+  }
+  if (from.asksize2() != 0) {
+    set_asksize2(from.asksize2());
+  }
+  if (from.askprice1() != 0) {
+    set_askprice1(from.askprice1());
+  }
+  if (from.asksize1() != 0) {
+    set_asksize1(from.asksize1());
+  }
+  if (from.bidprice1() != 0) {
+    set_bidprice1(from.bidprice1());
+  }
+  if (from.bidsize1() != 0) {
+    set_bidsize1(from.bidsize1());
+  }
+  if (from.bidprice2() != 0) {
+    set_bidprice2(from.bidprice2());
+  }
+  if (from.bidsize2() != 0) {
+    set_bidsize2(from.bidsize2());
+  }
+  if (from.bidprice3() != 0) {
+    set_bidprice3(from.bidprice3());
+  }
+  if (from.bidsize3() != 0) {
+    set_bidsize3(from.bidsize3());
+  }
+  if (from.bidprice4() != 0) {
+    set_bidprice4(from.bidprice4());
+  }
+  if (from.bidsize4() != 0) {
+    set_bidsize4(from.bidsize4());
+  }
+  if (from.bidprice5() != 0) {
+    set_bidprice5(from.bidprice5());
+  }
+  if (from.bidsize5() != 0) {
+    set_bidsize5(from.bidsize5());
+  }
+  if (from.presettleprice() != 0) {
+    set_presettleprice(from.presettleprice());
+  }
+  if (from.pricechange() != 0) {
+    set_pricechange(from.pricechange());
+  }
+  if (from.settleprice() != 0) {
+    set_settleprice(from.settleprice());
+  }
+  if (from.highlimit() != 0) {
+    set_highlimit(from.highlimit());
+  }
+  if (from.lowlimit() != 0) {
+    set_lowlimit(from.lowlimit());
   }
 }
 
@@ -6113,7 +5278,6 @@ void PBMsgMDAMD::CopyFrom(const PBMsgMDAMD& from) {
 }
 
 bool PBMsgMDAMD::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
 
   return true;
 }
@@ -6161,8 +5325,6 @@ void PBMsgMDAMD::InternalSwap(PBMsgMDAMD* other) {
   std::swap(settleprice_, other->settleprice_);
   std::swap(highlimit_, other->highlimit_);
   std::swap(lowlimit_, other->lowlimit_);
-  std::swap(_has_bits_[0], other->_has_bits_[0]);
-  std::swap(_has_bits_[1], other->_has_bits_[1]);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -6178,26 +5340,16 @@ void PBMsgMDAMD::InternalSwap(PBMsgMDAMD* other) {
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
 // PBMsgMDAMD
 
-// required int32 EOF = 1;
-bool PBMsgMDAMD::has_eof() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-void PBMsgMDAMD::set_has_eof() {
-  _has_bits_[0] |= 0x00000001u;
-}
-void PBMsgMDAMD::clear_has_eof() {
-  _has_bits_[0] &= ~0x00000001u;
-}
+// optional int32 EOF = 1;
 void PBMsgMDAMD::clear_eof() {
   eof_ = 0;
-  clear_has_eof();
 }
  ::google::protobuf::int32 PBMsgMDAMD::eof() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.EOF)
   return eof_;
 }
  void PBMsgMDAMD::set_eof(::google::protobuf::int32 value) {
-  set_has_eof();
+  
   eof_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.EOF)
 }
@@ -6257,924 +5409,563 @@ PBMsgMDAMD::mutable_requestsymbollist() {
 }
 
 // optional .PBWrapMsgMDA.DataType dataType = 6;
-bool PBMsgMDAMD::has_datatype() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-void PBMsgMDAMD::set_has_datatype() {
-  _has_bits_[0] |= 0x00000004u;
-}
-void PBMsgMDAMD::clear_has_datatype() {
-  _has_bits_[0] &= ~0x00000004u;
-}
 void PBMsgMDAMD::clear_datatype() {
-  datatype_ = 1;
-  clear_has_datatype();
+  datatype_ = 0;
 }
  ::PBWrapMsgMDA::DataType PBMsgMDAMD::datatype() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.dataType)
   return static_cast< ::PBWrapMsgMDA::DataType >(datatype_);
 }
  void PBMsgMDAMD::set_datatype(::PBWrapMsgMDA::DataType value) {
-  assert(::PBWrapMsgMDA::DataType_IsValid(value));
-  set_has_datatype();
+  
   datatype_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.dataType)
 }
 
 // optional string symbol = 7;
-bool PBMsgMDAMD::has_symbol() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-void PBMsgMDAMD::set_has_symbol() {
-  _has_bits_[0] |= 0x00000008u;
-}
-void PBMsgMDAMD::clear_has_symbol() {
-  _has_bits_[0] &= ~0x00000008u;
-}
 void PBMsgMDAMD::clear_symbol() {
   symbol_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_symbol();
 }
  const ::std::string& PBMsgMDAMD::symbol() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.symbol)
   return symbol_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  void PBMsgMDAMD::set_symbol(const ::std::string& value) {
-  set_has_symbol();
+  
   symbol_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.symbol)
 }
  void PBMsgMDAMD::set_symbol(const char* value) {
-  set_has_symbol();
+  
   symbol_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBWrapMsgMDA.PBMsgMDAMD.symbol)
 }
  void PBMsgMDAMD::set_symbol(const char* value, size_t size) {
-  set_has_symbol();
+  
   symbol_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBWrapMsgMDA.PBMsgMDAMD.symbol)
 }
  ::std::string* PBMsgMDAMD::mutable_symbol() {
-  set_has_symbol();
+  
   // @@protoc_insertion_point(field_mutable:PBWrapMsgMDA.PBMsgMDAMD.symbol)
   return symbol_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  ::std::string* PBMsgMDAMD::release_symbol() {
-  clear_has_symbol();
+  
   return symbol_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  void PBMsgMDAMD::set_allocated_symbol(::std::string* symbol) {
   if (symbol != NULL) {
-    set_has_symbol();
+    
   } else {
-    clear_has_symbol();
+    
   }
   symbol_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), symbol);
   // @@protoc_insertion_point(field_set_allocated:PBWrapMsgMDA.PBMsgMDAMD.symbol)
 }
 
 // optional string timeStamp = 8;
-bool PBMsgMDAMD::has_timestamp() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-void PBMsgMDAMD::set_has_timestamp() {
-  _has_bits_[0] |= 0x00000010u;
-}
-void PBMsgMDAMD::clear_has_timestamp() {
-  _has_bits_[0] &= ~0x00000010u;
-}
 void PBMsgMDAMD::clear_timestamp() {
   timestamp_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_timestamp();
 }
  const ::std::string& PBMsgMDAMD::timestamp() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.timeStamp)
   return timestamp_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  void PBMsgMDAMD::set_timestamp(const ::std::string& value) {
-  set_has_timestamp();
+  
   timestamp_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.timeStamp)
 }
  void PBMsgMDAMD::set_timestamp(const char* value) {
-  set_has_timestamp();
+  
   timestamp_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBWrapMsgMDA.PBMsgMDAMD.timeStamp)
 }
  void PBMsgMDAMD::set_timestamp(const char* value, size_t size) {
-  set_has_timestamp();
+  
   timestamp_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBWrapMsgMDA.PBMsgMDAMD.timeStamp)
 }
  ::std::string* PBMsgMDAMD::mutable_timestamp() {
-  set_has_timestamp();
+  
   // @@protoc_insertion_point(field_mutable:PBWrapMsgMDA.PBMsgMDAMD.timeStamp)
   return timestamp_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  ::std::string* PBMsgMDAMD::release_timestamp() {
-  clear_has_timestamp();
+  
   return timestamp_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  void PBMsgMDAMD::set_allocated_timestamp(::std::string* timestamp) {
   if (timestamp != NULL) {
-    set_has_timestamp();
+    
   } else {
-    clear_has_timestamp();
+    
   }
   timestamp_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), timestamp);
   // @@protoc_insertion_point(field_set_allocated:PBWrapMsgMDA.PBMsgMDAMD.timeStamp)
 }
 
 // optional int64 preCloseValue = 9;
-bool PBMsgMDAMD::has_preclosevalue() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
-}
-void PBMsgMDAMD::set_has_preclosevalue() {
-  _has_bits_[0] |= 0x00000020u;
-}
-void PBMsgMDAMD::clear_has_preclosevalue() {
-  _has_bits_[0] &= ~0x00000020u;
-}
 void PBMsgMDAMD::clear_preclosevalue() {
   preclosevalue_ = GOOGLE_LONGLONG(0);
-  clear_has_preclosevalue();
 }
  ::google::protobuf::int64 PBMsgMDAMD::preclosevalue() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.preCloseValue)
   return preclosevalue_;
 }
  void PBMsgMDAMD::set_preclosevalue(::google::protobuf::int64 value) {
-  set_has_preclosevalue();
+  
   preclosevalue_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.preCloseValue)
 }
 
 // optional int64 openValue = 10;
-bool PBMsgMDAMD::has_openvalue() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
-}
-void PBMsgMDAMD::set_has_openvalue() {
-  _has_bits_[0] |= 0x00000040u;
-}
-void PBMsgMDAMD::clear_has_openvalue() {
-  _has_bits_[0] &= ~0x00000040u;
-}
 void PBMsgMDAMD::clear_openvalue() {
   openvalue_ = GOOGLE_LONGLONG(0);
-  clear_has_openvalue();
 }
  ::google::protobuf::int64 PBMsgMDAMD::openvalue() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.openValue)
   return openvalue_;
 }
  void PBMsgMDAMD::set_openvalue(::google::protobuf::int64 value) {
-  set_has_openvalue();
+  
   openvalue_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.openValue)
 }
 
 // optional int64 turnover = 11;
-bool PBMsgMDAMD::has_turnover() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
-}
-void PBMsgMDAMD::set_has_turnover() {
-  _has_bits_[0] |= 0x00000080u;
-}
-void PBMsgMDAMD::clear_has_turnover() {
-  _has_bits_[0] &= ~0x00000080u;
-}
 void PBMsgMDAMD::clear_turnover() {
   turnover_ = GOOGLE_LONGLONG(0);
-  clear_has_turnover();
 }
  ::google::protobuf::int64 PBMsgMDAMD::turnover() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.turnover)
   return turnover_;
 }
  void PBMsgMDAMD::set_turnover(::google::protobuf::int64 value) {
-  set_has_turnover();
+  
   turnover_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.turnover)
 }
 
 // optional int64 volume = 12;
-bool PBMsgMDAMD::has_volume() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
-}
-void PBMsgMDAMD::set_has_volume() {
-  _has_bits_[0] |= 0x00000100u;
-}
-void PBMsgMDAMD::clear_has_volume() {
-  _has_bits_[0] &= ~0x00000100u;
-}
 void PBMsgMDAMD::clear_volume() {
   volume_ = GOOGLE_LONGLONG(0);
-  clear_has_volume();
 }
  ::google::protobuf::int64 PBMsgMDAMD::volume() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.volume)
   return volume_;
 }
  void PBMsgMDAMD::set_volume(::google::protobuf::int64 value) {
-  set_has_volume();
+  
   volume_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.volume)
 }
 
 // optional int64 highValue = 13;
-bool PBMsgMDAMD::has_highvalue() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
-}
-void PBMsgMDAMD::set_has_highvalue() {
-  _has_bits_[0] |= 0x00000200u;
-}
-void PBMsgMDAMD::clear_has_highvalue() {
-  _has_bits_[0] &= ~0x00000200u;
-}
 void PBMsgMDAMD::clear_highvalue() {
   highvalue_ = GOOGLE_LONGLONG(0);
-  clear_has_highvalue();
 }
  ::google::protobuf::int64 PBMsgMDAMD::highvalue() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.highValue)
   return highvalue_;
 }
  void PBMsgMDAMD::set_highvalue(::google::protobuf::int64 value) {
-  set_has_highvalue();
+  
   highvalue_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.highValue)
 }
 
 // optional int64 lowValue = 14;
-bool PBMsgMDAMD::has_lowvalue() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
-}
-void PBMsgMDAMD::set_has_lowvalue() {
-  _has_bits_[0] |= 0x00000400u;
-}
-void PBMsgMDAMD::clear_has_lowvalue() {
-  _has_bits_[0] &= ~0x00000400u;
-}
 void PBMsgMDAMD::clear_lowvalue() {
   lowvalue_ = GOOGLE_LONGLONG(0);
-  clear_has_lowvalue();
 }
  ::google::protobuf::int64 PBMsgMDAMD::lowvalue() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.lowValue)
   return lowvalue_;
 }
  void PBMsgMDAMD::set_lowvalue(::google::protobuf::int64 value) {
-  set_has_lowvalue();
+  
   lowvalue_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.lowValue)
 }
 
 // optional int64 latestIndex = 15;
-bool PBMsgMDAMD::has_latestindex() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
-}
-void PBMsgMDAMD::set_has_latestindex() {
-  _has_bits_[0] |= 0x00000800u;
-}
-void PBMsgMDAMD::clear_has_latestindex() {
-  _has_bits_[0] &= ~0x00000800u;
-}
 void PBMsgMDAMD::clear_latestindex() {
   latestindex_ = GOOGLE_LONGLONG(0);
-  clear_has_latestindex();
 }
  ::google::protobuf::int64 PBMsgMDAMD::latestindex() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.latestIndex)
   return latestindex_;
 }
  void PBMsgMDAMD::set_latestindex(::google::protobuf::int64 value) {
-  set_has_latestindex();
+  
   latestindex_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.latestIndex)
 }
 
 // optional int64 matchPrice = 16;
-bool PBMsgMDAMD::has_matchprice() const {
-  return (_has_bits_[0] & 0x00001000u) != 0;
-}
-void PBMsgMDAMD::set_has_matchprice() {
-  _has_bits_[0] |= 0x00001000u;
-}
-void PBMsgMDAMD::clear_has_matchprice() {
-  _has_bits_[0] &= ~0x00001000u;
-}
 void PBMsgMDAMD::clear_matchprice() {
   matchprice_ = GOOGLE_LONGLONG(0);
-  clear_has_matchprice();
 }
  ::google::protobuf::int64 PBMsgMDAMD::matchprice() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.matchPrice)
   return matchprice_;
 }
  void PBMsgMDAMD::set_matchprice(::google::protobuf::int64 value) {
-  set_has_matchprice();
+  
   matchprice_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.matchPrice)
 }
 
 // optional int64 askPrice5 = 17;
-bool PBMsgMDAMD::has_askprice5() const {
-  return (_has_bits_[0] & 0x00002000u) != 0;
-}
-void PBMsgMDAMD::set_has_askprice5() {
-  _has_bits_[0] |= 0x00002000u;
-}
-void PBMsgMDAMD::clear_has_askprice5() {
-  _has_bits_[0] &= ~0x00002000u;
-}
 void PBMsgMDAMD::clear_askprice5() {
   askprice5_ = GOOGLE_LONGLONG(0);
-  clear_has_askprice5();
 }
  ::google::protobuf::int64 PBMsgMDAMD::askprice5() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.askPrice5)
   return askprice5_;
 }
  void PBMsgMDAMD::set_askprice5(::google::protobuf::int64 value) {
-  set_has_askprice5();
+  
   askprice5_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.askPrice5)
 }
 
 // optional int64 askSize5 = 18;
-bool PBMsgMDAMD::has_asksize5() const {
-  return (_has_bits_[0] & 0x00004000u) != 0;
-}
-void PBMsgMDAMD::set_has_asksize5() {
-  _has_bits_[0] |= 0x00004000u;
-}
-void PBMsgMDAMD::clear_has_asksize5() {
-  _has_bits_[0] &= ~0x00004000u;
-}
 void PBMsgMDAMD::clear_asksize5() {
   asksize5_ = GOOGLE_LONGLONG(0);
-  clear_has_asksize5();
 }
  ::google::protobuf::int64 PBMsgMDAMD::asksize5() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.askSize5)
   return asksize5_;
 }
  void PBMsgMDAMD::set_asksize5(::google::protobuf::int64 value) {
-  set_has_asksize5();
+  
   asksize5_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.askSize5)
 }
 
 // optional int64 askPrice4 = 19;
-bool PBMsgMDAMD::has_askprice4() const {
-  return (_has_bits_[0] & 0x00008000u) != 0;
-}
-void PBMsgMDAMD::set_has_askprice4() {
-  _has_bits_[0] |= 0x00008000u;
-}
-void PBMsgMDAMD::clear_has_askprice4() {
-  _has_bits_[0] &= ~0x00008000u;
-}
 void PBMsgMDAMD::clear_askprice4() {
   askprice4_ = GOOGLE_LONGLONG(0);
-  clear_has_askprice4();
 }
  ::google::protobuf::int64 PBMsgMDAMD::askprice4() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.askPrice4)
   return askprice4_;
 }
  void PBMsgMDAMD::set_askprice4(::google::protobuf::int64 value) {
-  set_has_askprice4();
+  
   askprice4_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.askPrice4)
 }
 
 // optional int64 askSize4 = 20;
-bool PBMsgMDAMD::has_asksize4() const {
-  return (_has_bits_[0] & 0x00010000u) != 0;
-}
-void PBMsgMDAMD::set_has_asksize4() {
-  _has_bits_[0] |= 0x00010000u;
-}
-void PBMsgMDAMD::clear_has_asksize4() {
-  _has_bits_[0] &= ~0x00010000u;
-}
 void PBMsgMDAMD::clear_asksize4() {
   asksize4_ = GOOGLE_LONGLONG(0);
-  clear_has_asksize4();
 }
  ::google::protobuf::int64 PBMsgMDAMD::asksize4() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.askSize4)
   return asksize4_;
 }
  void PBMsgMDAMD::set_asksize4(::google::protobuf::int64 value) {
-  set_has_asksize4();
+  
   asksize4_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.askSize4)
 }
 
 // optional int64 askPrice3 = 21;
-bool PBMsgMDAMD::has_askprice3() const {
-  return (_has_bits_[0] & 0x00020000u) != 0;
-}
-void PBMsgMDAMD::set_has_askprice3() {
-  _has_bits_[0] |= 0x00020000u;
-}
-void PBMsgMDAMD::clear_has_askprice3() {
-  _has_bits_[0] &= ~0x00020000u;
-}
 void PBMsgMDAMD::clear_askprice3() {
   askprice3_ = GOOGLE_LONGLONG(0);
-  clear_has_askprice3();
 }
  ::google::protobuf::int64 PBMsgMDAMD::askprice3() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.askPrice3)
   return askprice3_;
 }
  void PBMsgMDAMD::set_askprice3(::google::protobuf::int64 value) {
-  set_has_askprice3();
+  
   askprice3_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.askPrice3)
 }
 
 // optional int64 askSize3 = 22;
-bool PBMsgMDAMD::has_asksize3() const {
-  return (_has_bits_[0] & 0x00040000u) != 0;
-}
-void PBMsgMDAMD::set_has_asksize3() {
-  _has_bits_[0] |= 0x00040000u;
-}
-void PBMsgMDAMD::clear_has_asksize3() {
-  _has_bits_[0] &= ~0x00040000u;
-}
 void PBMsgMDAMD::clear_asksize3() {
   asksize3_ = GOOGLE_LONGLONG(0);
-  clear_has_asksize3();
 }
  ::google::protobuf::int64 PBMsgMDAMD::asksize3() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.askSize3)
   return asksize3_;
 }
  void PBMsgMDAMD::set_asksize3(::google::protobuf::int64 value) {
-  set_has_asksize3();
+  
   asksize3_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.askSize3)
 }
 
 // optional int64 askPrice2 = 23;
-bool PBMsgMDAMD::has_askprice2() const {
-  return (_has_bits_[0] & 0x00080000u) != 0;
-}
-void PBMsgMDAMD::set_has_askprice2() {
-  _has_bits_[0] |= 0x00080000u;
-}
-void PBMsgMDAMD::clear_has_askprice2() {
-  _has_bits_[0] &= ~0x00080000u;
-}
 void PBMsgMDAMD::clear_askprice2() {
   askprice2_ = GOOGLE_LONGLONG(0);
-  clear_has_askprice2();
 }
  ::google::protobuf::int64 PBMsgMDAMD::askprice2() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.askPrice2)
   return askprice2_;
 }
  void PBMsgMDAMD::set_askprice2(::google::protobuf::int64 value) {
-  set_has_askprice2();
+  
   askprice2_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.askPrice2)
 }
 
 // optional int64 askSize2 = 24;
-bool PBMsgMDAMD::has_asksize2() const {
-  return (_has_bits_[0] & 0x00100000u) != 0;
-}
-void PBMsgMDAMD::set_has_asksize2() {
-  _has_bits_[0] |= 0x00100000u;
-}
-void PBMsgMDAMD::clear_has_asksize2() {
-  _has_bits_[0] &= ~0x00100000u;
-}
 void PBMsgMDAMD::clear_asksize2() {
   asksize2_ = GOOGLE_LONGLONG(0);
-  clear_has_asksize2();
 }
  ::google::protobuf::int64 PBMsgMDAMD::asksize2() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.askSize2)
   return asksize2_;
 }
  void PBMsgMDAMD::set_asksize2(::google::protobuf::int64 value) {
-  set_has_asksize2();
+  
   asksize2_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.askSize2)
 }
 
 // optional int64 askPrice1 = 25;
-bool PBMsgMDAMD::has_askprice1() const {
-  return (_has_bits_[0] & 0x00200000u) != 0;
-}
-void PBMsgMDAMD::set_has_askprice1() {
-  _has_bits_[0] |= 0x00200000u;
-}
-void PBMsgMDAMD::clear_has_askprice1() {
-  _has_bits_[0] &= ~0x00200000u;
-}
 void PBMsgMDAMD::clear_askprice1() {
   askprice1_ = GOOGLE_LONGLONG(0);
-  clear_has_askprice1();
 }
  ::google::protobuf::int64 PBMsgMDAMD::askprice1() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.askPrice1)
   return askprice1_;
 }
  void PBMsgMDAMD::set_askprice1(::google::protobuf::int64 value) {
-  set_has_askprice1();
+  
   askprice1_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.askPrice1)
 }
 
 // optional int64 askSize1 = 26;
-bool PBMsgMDAMD::has_asksize1() const {
-  return (_has_bits_[0] & 0x00400000u) != 0;
-}
-void PBMsgMDAMD::set_has_asksize1() {
-  _has_bits_[0] |= 0x00400000u;
-}
-void PBMsgMDAMD::clear_has_asksize1() {
-  _has_bits_[0] &= ~0x00400000u;
-}
 void PBMsgMDAMD::clear_asksize1() {
   asksize1_ = GOOGLE_LONGLONG(0);
-  clear_has_asksize1();
 }
  ::google::protobuf::int64 PBMsgMDAMD::asksize1() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.askSize1)
   return asksize1_;
 }
  void PBMsgMDAMD::set_asksize1(::google::protobuf::int64 value) {
-  set_has_asksize1();
+  
   asksize1_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.askSize1)
 }
 
 // optional int64 bidPrice1 = 27;
-bool PBMsgMDAMD::has_bidprice1() const {
-  return (_has_bits_[0] & 0x00800000u) != 0;
-}
-void PBMsgMDAMD::set_has_bidprice1() {
-  _has_bits_[0] |= 0x00800000u;
-}
-void PBMsgMDAMD::clear_has_bidprice1() {
-  _has_bits_[0] &= ~0x00800000u;
-}
 void PBMsgMDAMD::clear_bidprice1() {
   bidprice1_ = GOOGLE_LONGLONG(0);
-  clear_has_bidprice1();
 }
  ::google::protobuf::int64 PBMsgMDAMD::bidprice1() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.bidPrice1)
   return bidprice1_;
 }
  void PBMsgMDAMD::set_bidprice1(::google::protobuf::int64 value) {
-  set_has_bidprice1();
+  
   bidprice1_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.bidPrice1)
 }
 
 // optional int64 bidSize1 = 28;
-bool PBMsgMDAMD::has_bidsize1() const {
-  return (_has_bits_[0] & 0x01000000u) != 0;
-}
-void PBMsgMDAMD::set_has_bidsize1() {
-  _has_bits_[0] |= 0x01000000u;
-}
-void PBMsgMDAMD::clear_has_bidsize1() {
-  _has_bits_[0] &= ~0x01000000u;
-}
 void PBMsgMDAMD::clear_bidsize1() {
   bidsize1_ = GOOGLE_LONGLONG(0);
-  clear_has_bidsize1();
 }
  ::google::protobuf::int64 PBMsgMDAMD::bidsize1() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.bidSize1)
   return bidsize1_;
 }
  void PBMsgMDAMD::set_bidsize1(::google::protobuf::int64 value) {
-  set_has_bidsize1();
+  
   bidsize1_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.bidSize1)
 }
 
 // optional int64 bidPrice2 = 29;
-bool PBMsgMDAMD::has_bidprice2() const {
-  return (_has_bits_[0] & 0x02000000u) != 0;
-}
-void PBMsgMDAMD::set_has_bidprice2() {
-  _has_bits_[0] |= 0x02000000u;
-}
-void PBMsgMDAMD::clear_has_bidprice2() {
-  _has_bits_[0] &= ~0x02000000u;
-}
 void PBMsgMDAMD::clear_bidprice2() {
   bidprice2_ = GOOGLE_LONGLONG(0);
-  clear_has_bidprice2();
 }
  ::google::protobuf::int64 PBMsgMDAMD::bidprice2() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.bidPrice2)
   return bidprice2_;
 }
  void PBMsgMDAMD::set_bidprice2(::google::protobuf::int64 value) {
-  set_has_bidprice2();
+  
   bidprice2_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.bidPrice2)
 }
 
 // optional int64 bidSize2 = 30;
-bool PBMsgMDAMD::has_bidsize2() const {
-  return (_has_bits_[0] & 0x04000000u) != 0;
-}
-void PBMsgMDAMD::set_has_bidsize2() {
-  _has_bits_[0] |= 0x04000000u;
-}
-void PBMsgMDAMD::clear_has_bidsize2() {
-  _has_bits_[0] &= ~0x04000000u;
-}
 void PBMsgMDAMD::clear_bidsize2() {
   bidsize2_ = GOOGLE_LONGLONG(0);
-  clear_has_bidsize2();
 }
  ::google::protobuf::int64 PBMsgMDAMD::bidsize2() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.bidSize2)
   return bidsize2_;
 }
  void PBMsgMDAMD::set_bidsize2(::google::protobuf::int64 value) {
-  set_has_bidsize2();
+  
   bidsize2_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.bidSize2)
 }
 
 // optional int64 bidPrice3 = 31;
-bool PBMsgMDAMD::has_bidprice3() const {
-  return (_has_bits_[0] & 0x08000000u) != 0;
-}
-void PBMsgMDAMD::set_has_bidprice3() {
-  _has_bits_[0] |= 0x08000000u;
-}
-void PBMsgMDAMD::clear_has_bidprice3() {
-  _has_bits_[0] &= ~0x08000000u;
-}
 void PBMsgMDAMD::clear_bidprice3() {
   bidprice3_ = GOOGLE_LONGLONG(0);
-  clear_has_bidprice3();
 }
  ::google::protobuf::int64 PBMsgMDAMD::bidprice3() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.bidPrice3)
   return bidprice3_;
 }
  void PBMsgMDAMD::set_bidprice3(::google::protobuf::int64 value) {
-  set_has_bidprice3();
+  
   bidprice3_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.bidPrice3)
 }
 
 // optional int64 bidSize3 = 32;
-bool PBMsgMDAMD::has_bidsize3() const {
-  return (_has_bits_[0] & 0x10000000u) != 0;
-}
-void PBMsgMDAMD::set_has_bidsize3() {
-  _has_bits_[0] |= 0x10000000u;
-}
-void PBMsgMDAMD::clear_has_bidsize3() {
-  _has_bits_[0] &= ~0x10000000u;
-}
 void PBMsgMDAMD::clear_bidsize3() {
   bidsize3_ = GOOGLE_LONGLONG(0);
-  clear_has_bidsize3();
 }
  ::google::protobuf::int64 PBMsgMDAMD::bidsize3() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.bidSize3)
   return bidsize3_;
 }
  void PBMsgMDAMD::set_bidsize3(::google::protobuf::int64 value) {
-  set_has_bidsize3();
+  
   bidsize3_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.bidSize3)
 }
 
 // optional int64 bidPrice4 = 33;
-bool PBMsgMDAMD::has_bidprice4() const {
-  return (_has_bits_[0] & 0x20000000u) != 0;
-}
-void PBMsgMDAMD::set_has_bidprice4() {
-  _has_bits_[0] |= 0x20000000u;
-}
-void PBMsgMDAMD::clear_has_bidprice4() {
-  _has_bits_[0] &= ~0x20000000u;
-}
 void PBMsgMDAMD::clear_bidprice4() {
   bidprice4_ = GOOGLE_LONGLONG(0);
-  clear_has_bidprice4();
 }
  ::google::protobuf::int64 PBMsgMDAMD::bidprice4() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.bidPrice4)
   return bidprice4_;
 }
  void PBMsgMDAMD::set_bidprice4(::google::protobuf::int64 value) {
-  set_has_bidprice4();
+  
   bidprice4_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.bidPrice4)
 }
 
 // optional int64 bidSize4 = 34;
-bool PBMsgMDAMD::has_bidsize4() const {
-  return (_has_bits_[0] & 0x40000000u) != 0;
-}
-void PBMsgMDAMD::set_has_bidsize4() {
-  _has_bits_[0] |= 0x40000000u;
-}
-void PBMsgMDAMD::clear_has_bidsize4() {
-  _has_bits_[0] &= ~0x40000000u;
-}
 void PBMsgMDAMD::clear_bidsize4() {
   bidsize4_ = GOOGLE_LONGLONG(0);
-  clear_has_bidsize4();
 }
  ::google::protobuf::int64 PBMsgMDAMD::bidsize4() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.bidSize4)
   return bidsize4_;
 }
  void PBMsgMDAMD::set_bidsize4(::google::protobuf::int64 value) {
-  set_has_bidsize4();
+  
   bidsize4_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.bidSize4)
 }
 
 // optional int64 bidPrice5 = 35;
-bool PBMsgMDAMD::has_bidprice5() const {
-  return (_has_bits_[0] & 0x80000000u) != 0;
-}
-void PBMsgMDAMD::set_has_bidprice5() {
-  _has_bits_[0] |= 0x80000000u;
-}
-void PBMsgMDAMD::clear_has_bidprice5() {
-  _has_bits_[0] &= ~0x80000000u;
-}
 void PBMsgMDAMD::clear_bidprice5() {
   bidprice5_ = GOOGLE_LONGLONG(0);
-  clear_has_bidprice5();
 }
  ::google::protobuf::int64 PBMsgMDAMD::bidprice5() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.bidPrice5)
   return bidprice5_;
 }
  void PBMsgMDAMD::set_bidprice5(::google::protobuf::int64 value) {
-  set_has_bidprice5();
+  
   bidprice5_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.bidPrice5)
 }
 
 // optional int64 bidSize5 = 36;
-bool PBMsgMDAMD::has_bidsize5() const {
-  return (_has_bits_[1] & 0x00000001u) != 0;
-}
-void PBMsgMDAMD::set_has_bidsize5() {
-  _has_bits_[1] |= 0x00000001u;
-}
-void PBMsgMDAMD::clear_has_bidsize5() {
-  _has_bits_[1] &= ~0x00000001u;
-}
 void PBMsgMDAMD::clear_bidsize5() {
   bidsize5_ = GOOGLE_LONGLONG(0);
-  clear_has_bidsize5();
 }
  ::google::protobuf::int64 PBMsgMDAMD::bidsize5() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.bidSize5)
   return bidsize5_;
 }
  void PBMsgMDAMD::set_bidsize5(::google::protobuf::int64 value) {
-  set_has_bidsize5();
+  
   bidsize5_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.bidSize5)
 }
 
 // optional int64 preSettlePrice = 37;
-bool PBMsgMDAMD::has_presettleprice() const {
-  return (_has_bits_[1] & 0x00000002u) != 0;
-}
-void PBMsgMDAMD::set_has_presettleprice() {
-  _has_bits_[1] |= 0x00000002u;
-}
-void PBMsgMDAMD::clear_has_presettleprice() {
-  _has_bits_[1] &= ~0x00000002u;
-}
 void PBMsgMDAMD::clear_presettleprice() {
   presettleprice_ = GOOGLE_LONGLONG(0);
-  clear_has_presettleprice();
 }
  ::google::protobuf::int64 PBMsgMDAMD::presettleprice() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.preSettlePrice)
   return presettleprice_;
 }
  void PBMsgMDAMD::set_presettleprice(::google::protobuf::int64 value) {
-  set_has_presettleprice();
+  
   presettleprice_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.preSettlePrice)
 }
 
 // optional int64 priceChange = 38;
-bool PBMsgMDAMD::has_pricechange() const {
-  return (_has_bits_[1] & 0x00000004u) != 0;
-}
-void PBMsgMDAMD::set_has_pricechange() {
-  _has_bits_[1] |= 0x00000004u;
-}
-void PBMsgMDAMD::clear_has_pricechange() {
-  _has_bits_[1] &= ~0x00000004u;
-}
 void PBMsgMDAMD::clear_pricechange() {
   pricechange_ = GOOGLE_LONGLONG(0);
-  clear_has_pricechange();
 }
  ::google::protobuf::int64 PBMsgMDAMD::pricechange() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.priceChange)
   return pricechange_;
 }
  void PBMsgMDAMD::set_pricechange(::google::protobuf::int64 value) {
-  set_has_pricechange();
+  
   pricechange_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.priceChange)
 }
 
 // optional int64 settlePrice = 39;
-bool PBMsgMDAMD::has_settleprice() const {
-  return (_has_bits_[1] & 0x00000008u) != 0;
-}
-void PBMsgMDAMD::set_has_settleprice() {
-  _has_bits_[1] |= 0x00000008u;
-}
-void PBMsgMDAMD::clear_has_settleprice() {
-  _has_bits_[1] &= ~0x00000008u;
-}
 void PBMsgMDAMD::clear_settleprice() {
   settleprice_ = GOOGLE_LONGLONG(0);
-  clear_has_settleprice();
 }
  ::google::protobuf::int64 PBMsgMDAMD::settleprice() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.settlePrice)
   return settleprice_;
 }
  void PBMsgMDAMD::set_settleprice(::google::protobuf::int64 value) {
-  set_has_settleprice();
+  
   settleprice_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.settlePrice)
 }
 
 // optional int64 highLimit = 40;
-bool PBMsgMDAMD::has_highlimit() const {
-  return (_has_bits_[1] & 0x00000010u) != 0;
-}
-void PBMsgMDAMD::set_has_highlimit() {
-  _has_bits_[1] |= 0x00000010u;
-}
-void PBMsgMDAMD::clear_has_highlimit() {
-  _has_bits_[1] &= ~0x00000010u;
-}
 void PBMsgMDAMD::clear_highlimit() {
   highlimit_ = GOOGLE_LONGLONG(0);
-  clear_has_highlimit();
 }
  ::google::protobuf::int64 PBMsgMDAMD::highlimit() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.highLimit)
   return highlimit_;
 }
  void PBMsgMDAMD::set_highlimit(::google::protobuf::int64 value) {
-  set_has_highlimit();
+  
   highlimit_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.highLimit)
 }
 
 // optional int64 lowLimit = 41;
-bool PBMsgMDAMD::has_lowlimit() const {
-  return (_has_bits_[1] & 0x00000020u) != 0;
-}
-void PBMsgMDAMD::set_has_lowlimit() {
-  _has_bits_[1] |= 0x00000020u;
-}
-void PBMsgMDAMD::clear_has_lowlimit() {
-  _has_bits_[1] &= ~0x00000020u;
-}
 void PBMsgMDAMD::clear_lowlimit() {
   lowlimit_ = GOOGLE_LONGLONG(0);
-  clear_has_lowlimit();
 }
  ::google::protobuf::int64 PBMsgMDAMD::lowlimit() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.lowLimit)
   return lowlimit_;
 }
  void PBMsgMDAMD::set_lowlimit(::google::protobuf::int64 value) {
-  set_has_lowlimit();
+  
   lowlimit_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.lowLimit)
 }

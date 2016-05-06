@@ -39,16 +39,16 @@ void protobuf_AddDesc_simpletable_2eproto();
 void protobuf_AssignDesc_simpletable_2eproto();
 void protobuf_ShutdownFile_simpletable_2eproto();
 
-class NamedStringVector;
-class NamedIntVector;
+class ComplexTable;
+class DoubleResponse;
+class IntResponse;
 class NamedDoubleVector;
+class NamedIntVector;
+class NamedStringVector;
+class SimpleDoubleTable;
 class SimpleIntTable;
 class SimpleStringTable;
-class SimpleDoubleTable;
-class ComplexTable;
 class StringResponse;
-class IntResponse;
-class DoubleResponse;
 
 // ===================================================================
 
@@ -62,14 +62,6 @@ class NamedStringVector : public ::google::protobuf::Message {
   inline NamedStringVector& operator=(const NamedStringVector& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -116,8 +108,7 @@ class NamedStringVector : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required string name = 1;
-  bool has_name() const;
+  // optional string name = 1;
   void clear_name();
   static const int kNameFieldNumber = 1;
   const ::std::string& name() const;
@@ -146,14 +137,12 @@ class NamedStringVector : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.NamedStringVector)
  private:
-  inline void set_has_name();
-  inline void clear_has_name();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr name_;
   ::google::protobuf::RepeatedPtrField< ::std::string> entry_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_simpletable_2eproto();
   friend void protobuf_AssignDesc_simpletable_2eproto();
   friend void protobuf_ShutdownFile_simpletable_2eproto();
@@ -173,14 +162,6 @@ class NamedIntVector : public ::google::protobuf::Message {
   inline NamedIntVector& operator=(const NamedIntVector& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -227,8 +208,7 @@ class NamedIntVector : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required string name = 1;
-  bool has_name() const;
+  // optional string name = 1;
   void clear_name();
   static const int kNameFieldNumber = 1;
   const ::std::string& name() const;
@@ -253,14 +233,13 @@ class NamedIntVector : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.NamedIntVector)
  private:
-  inline void set_has_name();
-  inline void clear_has_name();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr name_;
   ::google::protobuf::RepeatedField< ::google::protobuf::int32 > entry_;
+  mutable int _entry_cached_byte_size_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_simpletable_2eproto();
   friend void protobuf_AssignDesc_simpletable_2eproto();
   friend void protobuf_ShutdownFile_simpletable_2eproto();
@@ -280,14 +259,6 @@ class NamedDoubleVector : public ::google::protobuf::Message {
   inline NamedDoubleVector& operator=(const NamedDoubleVector& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -334,8 +305,7 @@ class NamedDoubleVector : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required string name = 1;
-  bool has_name() const;
+  // optional string name = 1;
   void clear_name();
   static const int kNameFieldNumber = 1;
   const ::std::string& name() const;
@@ -360,14 +330,13 @@ class NamedDoubleVector : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.NamedDoubleVector)
  private:
-  inline void set_has_name();
-  inline void clear_has_name();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr name_;
   ::google::protobuf::RepeatedField< double > entry_;
+  mutable int _entry_cached_byte_size_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_simpletable_2eproto();
   friend void protobuf_AssignDesc_simpletable_2eproto();
   friend void protobuf_ShutdownFile_simpletable_2eproto();
@@ -387,14 +356,6 @@ class SimpleIntTable : public ::google::protobuf::Message {
   inline SimpleIntTable& operator=(const SimpleIntTable& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -448,18 +409,18 @@ class SimpleIntTable : public ::google::protobuf::Message {
   const ::Micro::Future::Message::Business::NamedIntVector& columns(int index) const;
   ::Micro::Future::Message::Business::NamedIntVector* mutable_columns(int index);
   ::Micro::Future::Message::Business::NamedIntVector* add_columns();
-  const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::NamedIntVector >&
-      columns() const;
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::NamedIntVector >*
       mutable_columns();
+  const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::NamedIntVector >&
+      columns() const;
 
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.SimpleIntTable)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::NamedIntVector > columns_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_simpletable_2eproto();
   friend void protobuf_AssignDesc_simpletable_2eproto();
   friend void protobuf_ShutdownFile_simpletable_2eproto();
@@ -479,14 +440,6 @@ class SimpleStringTable : public ::google::protobuf::Message {
   inline SimpleStringTable& operator=(const SimpleStringTable& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -540,18 +493,18 @@ class SimpleStringTable : public ::google::protobuf::Message {
   const ::Micro::Future::Message::Business::NamedStringVector& columns(int index) const;
   ::Micro::Future::Message::Business::NamedStringVector* mutable_columns(int index);
   ::Micro::Future::Message::Business::NamedStringVector* add_columns();
-  const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::NamedStringVector >&
-      columns() const;
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::NamedStringVector >*
       mutable_columns();
+  const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::NamedStringVector >&
+      columns() const;
 
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.SimpleStringTable)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::NamedStringVector > columns_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_simpletable_2eproto();
   friend void protobuf_AssignDesc_simpletable_2eproto();
   friend void protobuf_ShutdownFile_simpletable_2eproto();
@@ -571,14 +524,6 @@ class SimpleDoubleTable : public ::google::protobuf::Message {
   inline SimpleDoubleTable& operator=(const SimpleDoubleTable& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -632,18 +577,18 @@ class SimpleDoubleTable : public ::google::protobuf::Message {
   const ::Micro::Future::Message::Business::NamedDoubleVector& columns(int index) const;
   ::Micro::Future::Message::Business::NamedDoubleVector* mutable_columns(int index);
   ::Micro::Future::Message::Business::NamedDoubleVector* add_columns();
-  const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::NamedDoubleVector >&
-      columns() const;
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::NamedDoubleVector >*
       mutable_columns();
+  const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::NamedDoubleVector >&
+      columns() const;
 
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.SimpleDoubleTable)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::NamedDoubleVector > columns_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_simpletable_2eproto();
   friend void protobuf_AssignDesc_simpletable_2eproto();
   friend void protobuf_ShutdownFile_simpletable_2eproto();
@@ -663,14 +608,6 @@ class ComplexTable : public ::google::protobuf::Message {
   inline ComplexTable& operator=(const ComplexTable& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -755,22 +692,14 @@ class ComplexTable : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.ComplexTable)
  private:
-  inline void set_has_inttable();
-  inline void clear_has_inttable();
-  inline void set_has_doubletable();
-  inline void clear_has_doubletable();
-  inline void set_has_stringtable();
-  inline void clear_has_stringtable();
-  inline void set_has_nesttable();
-  inline void clear_has_nesttable();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::Micro::Future::Message::Business::SimpleIntTable* inttable_;
   ::Micro::Future::Message::Business::SimpleDoubleTable* doubletable_;
   ::Micro::Future::Message::Business::SimpleStringTable* stringtable_;
   ::Micro::Future::Message::Business::ComplexTable* nesttable_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_simpletable_2eproto();
   friend void protobuf_AssignDesc_simpletable_2eproto();
   friend void protobuf_ShutdownFile_simpletable_2eproto();
@@ -790,14 +719,6 @@ class StringResponse : public ::google::protobuf::Message {
   inline StringResponse& operator=(const StringResponse& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -844,8 +765,7 @@ class StringResponse : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required string Value = 1;
-  bool has_value() const;
+  // optional string Value = 1;
   void clear_value();
   static const int kValueFieldNumber = 1;
   const ::std::string& value() const;
@@ -856,8 +776,7 @@ class StringResponse : public ::google::protobuf::Message {
   ::std::string* release_value();
   void set_allocated_value(::std::string* value);
 
-  // required int32 EOF = 2;
-  bool has_eof() const;
+  // optional int32 EOF = 2;
   void clear_eof();
   static const int kEOFFieldNumber = 2;
   ::google::protobuf::int32 eof() const;
@@ -865,19 +784,12 @@ class StringResponse : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.StringResponse)
  private:
-  inline void set_has_value();
-  inline void clear_has_value();
-  inline void set_has_eof();
-  inline void clear_has_eof();
-
-  // helper for ByteSize()
-  int RequiredFieldsByteSizeFallback() const;
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr value_;
   ::google::protobuf::int32 eof_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_simpletable_2eproto();
   friend void protobuf_AssignDesc_simpletable_2eproto();
   friend void protobuf_ShutdownFile_simpletable_2eproto();
@@ -897,14 +809,6 @@ class IntResponse : public ::google::protobuf::Message {
   inline IntResponse& operator=(const IntResponse& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -951,15 +855,13 @@ class IntResponse : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required int32 Value = 1;
-  bool has_value() const;
+  // optional int32 Value = 1;
   void clear_value();
   static const int kValueFieldNumber = 1;
   ::google::protobuf::int32 value() const;
   void set_value(::google::protobuf::int32 value);
 
-  // required int32 EOF = 2;
-  bool has_eof() const;
+  // optional int32 EOF = 2;
   void clear_eof();
   static const int kEOFFieldNumber = 2;
   ::google::protobuf::int32 eof() const;
@@ -967,19 +869,12 @@ class IntResponse : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.IntResponse)
  private:
-  inline void set_has_value();
-  inline void clear_has_value();
-  inline void set_has_eof();
-  inline void clear_has_eof();
-
-  // helper for ByteSize()
-  int RequiredFieldsByteSizeFallback() const;
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::int32 value_;
   ::google::protobuf::int32 eof_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_simpletable_2eproto();
   friend void protobuf_AssignDesc_simpletable_2eproto();
   friend void protobuf_ShutdownFile_simpletable_2eproto();
@@ -999,14 +894,6 @@ class DoubleResponse : public ::google::protobuf::Message {
   inline DoubleResponse& operator=(const DoubleResponse& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -1053,15 +940,13 @@ class DoubleResponse : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required double Value = 1;
-  bool has_value() const;
+  // optional double Value = 1;
   void clear_value();
   static const int kValueFieldNumber = 1;
   double value() const;
   void set_value(double value);
 
-  // required int32 EOF = 2;
-  bool has_eof() const;
+  // optional int32 EOF = 2;
   void clear_eof();
   static const int kEOFFieldNumber = 2;
   ::google::protobuf::int32 eof() const;
@@ -1069,19 +954,12 @@ class DoubleResponse : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.DoubleResponse)
  private:
-  inline void set_has_value();
-  inline void clear_has_value();
-  inline void set_has_eof();
-  inline void clear_has_eof();
-
-  // helper for ByteSize()
-  int RequiredFieldsByteSizeFallback() const;
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   double value_;
   ::google::protobuf::int32 eof_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_simpletable_2eproto();
   friend void protobuf_AssignDesc_simpletable_2eproto();
   friend void protobuf_ShutdownFile_simpletable_2eproto();
@@ -1097,54 +975,44 @@ class DoubleResponse : public ::google::protobuf::Message {
 #if !PROTOBUF_INLINE_NOT_IN_HEADERS
 // NamedStringVector
 
-// required string name = 1;
-inline bool NamedStringVector::has_name() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void NamedStringVector::set_has_name() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void NamedStringVector::clear_has_name() {
-  _has_bits_[0] &= ~0x00000001u;
-}
+// optional string name = 1;
 inline void NamedStringVector::clear_name() {
   name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_name();
 }
 inline const ::std::string& NamedStringVector::name() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.NamedStringVector.name)
   return name_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void NamedStringVector::set_name(const ::std::string& value) {
-  set_has_name();
+  
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.NamedStringVector.name)
 }
 inline void NamedStringVector::set_name(const char* value) {
-  set_has_name();
+  
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.NamedStringVector.name)
 }
 inline void NamedStringVector::set_name(const char* value, size_t size) {
-  set_has_name();
+  
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.NamedStringVector.name)
 }
 inline ::std::string* NamedStringVector::mutable_name() {
-  set_has_name();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.NamedStringVector.name)
   return name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* NamedStringVector::release_name() {
-  clear_has_name();
+  
   return name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void NamedStringVector::set_allocated_name(::std::string* name) {
   if (name != NULL) {
-    set_has_name();
+    
   } else {
-    clear_has_name();
+    
   }
   name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), name);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.NamedStringVector.name)
@@ -1208,54 +1076,44 @@ NamedStringVector::mutable_entry() {
 
 // NamedIntVector
 
-// required string name = 1;
-inline bool NamedIntVector::has_name() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void NamedIntVector::set_has_name() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void NamedIntVector::clear_has_name() {
-  _has_bits_[0] &= ~0x00000001u;
-}
+// optional string name = 1;
 inline void NamedIntVector::clear_name() {
   name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_name();
 }
 inline const ::std::string& NamedIntVector::name() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.NamedIntVector.name)
   return name_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void NamedIntVector::set_name(const ::std::string& value) {
-  set_has_name();
+  
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.NamedIntVector.name)
 }
 inline void NamedIntVector::set_name(const char* value) {
-  set_has_name();
+  
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.NamedIntVector.name)
 }
 inline void NamedIntVector::set_name(const char* value, size_t size) {
-  set_has_name();
+  
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.NamedIntVector.name)
 }
 inline ::std::string* NamedIntVector::mutable_name() {
-  set_has_name();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.NamedIntVector.name)
   return name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* NamedIntVector::release_name() {
-  clear_has_name();
+  
   return name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void NamedIntVector::set_allocated_name(::std::string* name) {
   if (name != NULL) {
-    set_has_name();
+    
   } else {
-    clear_has_name();
+    
   }
   name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), name);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.NamedIntVector.name)
@@ -1295,54 +1153,44 @@ NamedIntVector::mutable_entry() {
 
 // NamedDoubleVector
 
-// required string name = 1;
-inline bool NamedDoubleVector::has_name() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void NamedDoubleVector::set_has_name() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void NamedDoubleVector::clear_has_name() {
-  _has_bits_[0] &= ~0x00000001u;
-}
+// optional string name = 1;
 inline void NamedDoubleVector::clear_name() {
   name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_name();
 }
 inline const ::std::string& NamedDoubleVector::name() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.NamedDoubleVector.name)
   return name_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void NamedDoubleVector::set_name(const ::std::string& value) {
-  set_has_name();
+  
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.NamedDoubleVector.name)
 }
 inline void NamedDoubleVector::set_name(const char* value) {
-  set_has_name();
+  
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.NamedDoubleVector.name)
 }
 inline void NamedDoubleVector::set_name(const char* value, size_t size) {
-  set_has_name();
+  
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.NamedDoubleVector.name)
 }
 inline ::std::string* NamedDoubleVector::mutable_name() {
-  set_has_name();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.NamedDoubleVector.name)
   return name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* NamedDoubleVector::release_name() {
-  clear_has_name();
+  
   return name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void NamedDoubleVector::set_allocated_name(::std::string* name) {
   if (name != NULL) {
-    set_has_name();
+    
   } else {
-    clear_has_name();
+    
   }
   name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), name);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.NamedDoubleVector.name)
@@ -1401,15 +1249,15 @@ inline ::Micro::Future::Message::Business::NamedIntVector* SimpleIntTable::add_c
   // @@protoc_insertion_point(field_add:Micro.Future.Message.Business.SimpleIntTable.columns)
   return columns_.Add();
 }
-inline const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::NamedIntVector >&
-SimpleIntTable::columns() const {
-  // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.SimpleIntTable.columns)
-  return columns_;
-}
 inline ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::NamedIntVector >*
 SimpleIntTable::mutable_columns() {
   // @@protoc_insertion_point(field_mutable_list:Micro.Future.Message.Business.SimpleIntTable.columns)
   return &columns_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::NamedIntVector >&
+SimpleIntTable::columns() const {
+  // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.SimpleIntTable.columns)
+  return columns_;
 }
 
 // -------------------------------------------------------------------
@@ -1435,15 +1283,15 @@ inline ::Micro::Future::Message::Business::NamedStringVector* SimpleStringTable:
   // @@protoc_insertion_point(field_add:Micro.Future.Message.Business.SimpleStringTable.columns)
   return columns_.Add();
 }
-inline const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::NamedStringVector >&
-SimpleStringTable::columns() const {
-  // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.SimpleStringTable.columns)
-  return columns_;
-}
 inline ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::NamedStringVector >*
 SimpleStringTable::mutable_columns() {
   // @@protoc_insertion_point(field_mutable_list:Micro.Future.Message.Business.SimpleStringTable.columns)
   return &columns_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::NamedStringVector >&
+SimpleStringTable::columns() const {
+  // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.SimpleStringTable.columns)
+  return columns_;
 }
 
 // -------------------------------------------------------------------
@@ -1469,15 +1317,15 @@ inline ::Micro::Future::Message::Business::NamedDoubleVector* SimpleDoubleTable:
   // @@protoc_insertion_point(field_add:Micro.Future.Message.Business.SimpleDoubleTable.columns)
   return columns_.Add();
 }
-inline const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::NamedDoubleVector >&
-SimpleDoubleTable::columns() const {
-  // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.SimpleDoubleTable.columns)
-  return columns_;
-}
 inline ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::NamedDoubleVector >*
 SimpleDoubleTable::mutable_columns() {
   // @@protoc_insertion_point(field_mutable_list:Micro.Future.Message.Business.SimpleDoubleTable.columns)
   return &columns_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::NamedDoubleVector >&
+SimpleDoubleTable::columns() const {
+  // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.SimpleDoubleTable.columns)
+  return columns_;
 }
 
 // -------------------------------------------------------------------
@@ -1486,24 +1334,18 @@ SimpleDoubleTable::mutable_columns() {
 
 // optional .Micro.Future.Message.Business.SimpleIntTable intTable = 1;
 inline bool ComplexTable::has_inttable() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void ComplexTable::set_has_inttable() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void ComplexTable::clear_has_inttable() {
-  _has_bits_[0] &= ~0x00000001u;
+  return !_is_default_instance_ && inttable_ != NULL;
 }
 inline void ComplexTable::clear_inttable() {
-  if (inttable_ != NULL) inttable_->::Micro::Future::Message::Business::SimpleIntTable::Clear();
-  clear_has_inttable();
+  if (GetArenaNoVirtual() == NULL && inttable_ != NULL) delete inttable_;
+  inttable_ = NULL;
 }
 inline const ::Micro::Future::Message::Business::SimpleIntTable& ComplexTable::inttable() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.ComplexTable.intTable)
   return inttable_ != NULL ? *inttable_ : *default_instance_->inttable_;
 }
 inline ::Micro::Future::Message::Business::SimpleIntTable* ComplexTable::mutable_inttable() {
-  set_has_inttable();
+  
   if (inttable_ == NULL) {
     inttable_ = new ::Micro::Future::Message::Business::SimpleIntTable;
   }
@@ -1511,7 +1353,7 @@ inline ::Micro::Future::Message::Business::SimpleIntTable* ComplexTable::mutable
   return inttable_;
 }
 inline ::Micro::Future::Message::Business::SimpleIntTable* ComplexTable::release_inttable() {
-  clear_has_inttable();
+  
   ::Micro::Future::Message::Business::SimpleIntTable* temp = inttable_;
   inttable_ = NULL;
   return temp;
@@ -1520,33 +1362,27 @@ inline void ComplexTable::set_allocated_inttable(::Micro::Future::Message::Busin
   delete inttable_;
   inttable_ = inttable;
   if (inttable) {
-    set_has_inttable();
+    
   } else {
-    clear_has_inttable();
+    
   }
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.ComplexTable.intTable)
 }
 
 // optional .Micro.Future.Message.Business.SimpleDoubleTable doubleTable = 2;
 inline bool ComplexTable::has_doubletable() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void ComplexTable::set_has_doubletable() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void ComplexTable::clear_has_doubletable() {
-  _has_bits_[0] &= ~0x00000002u;
+  return !_is_default_instance_ && doubletable_ != NULL;
 }
 inline void ComplexTable::clear_doubletable() {
-  if (doubletable_ != NULL) doubletable_->::Micro::Future::Message::Business::SimpleDoubleTable::Clear();
-  clear_has_doubletable();
+  if (GetArenaNoVirtual() == NULL && doubletable_ != NULL) delete doubletable_;
+  doubletable_ = NULL;
 }
 inline const ::Micro::Future::Message::Business::SimpleDoubleTable& ComplexTable::doubletable() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.ComplexTable.doubleTable)
   return doubletable_ != NULL ? *doubletable_ : *default_instance_->doubletable_;
 }
 inline ::Micro::Future::Message::Business::SimpleDoubleTable* ComplexTable::mutable_doubletable() {
-  set_has_doubletable();
+  
   if (doubletable_ == NULL) {
     doubletable_ = new ::Micro::Future::Message::Business::SimpleDoubleTable;
   }
@@ -1554,7 +1390,7 @@ inline ::Micro::Future::Message::Business::SimpleDoubleTable* ComplexTable::muta
   return doubletable_;
 }
 inline ::Micro::Future::Message::Business::SimpleDoubleTable* ComplexTable::release_doubletable() {
-  clear_has_doubletable();
+  
   ::Micro::Future::Message::Business::SimpleDoubleTable* temp = doubletable_;
   doubletable_ = NULL;
   return temp;
@@ -1563,33 +1399,27 @@ inline void ComplexTable::set_allocated_doubletable(::Micro::Future::Message::Bu
   delete doubletable_;
   doubletable_ = doubletable;
   if (doubletable) {
-    set_has_doubletable();
+    
   } else {
-    clear_has_doubletable();
+    
   }
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.ComplexTable.doubleTable)
 }
 
 // optional .Micro.Future.Message.Business.SimpleStringTable stringTable = 3;
 inline bool ComplexTable::has_stringtable() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void ComplexTable::set_has_stringtable() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void ComplexTable::clear_has_stringtable() {
-  _has_bits_[0] &= ~0x00000004u;
+  return !_is_default_instance_ && stringtable_ != NULL;
 }
 inline void ComplexTable::clear_stringtable() {
-  if (stringtable_ != NULL) stringtable_->::Micro::Future::Message::Business::SimpleStringTable::Clear();
-  clear_has_stringtable();
+  if (GetArenaNoVirtual() == NULL && stringtable_ != NULL) delete stringtable_;
+  stringtable_ = NULL;
 }
 inline const ::Micro::Future::Message::Business::SimpleStringTable& ComplexTable::stringtable() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.ComplexTable.stringTable)
   return stringtable_ != NULL ? *stringtable_ : *default_instance_->stringtable_;
 }
 inline ::Micro::Future::Message::Business::SimpleStringTable* ComplexTable::mutable_stringtable() {
-  set_has_stringtable();
+  
   if (stringtable_ == NULL) {
     stringtable_ = new ::Micro::Future::Message::Business::SimpleStringTable;
   }
@@ -1597,7 +1427,7 @@ inline ::Micro::Future::Message::Business::SimpleStringTable* ComplexTable::muta
   return stringtable_;
 }
 inline ::Micro::Future::Message::Business::SimpleStringTable* ComplexTable::release_stringtable() {
-  clear_has_stringtable();
+  
   ::Micro::Future::Message::Business::SimpleStringTable* temp = stringtable_;
   stringtable_ = NULL;
   return temp;
@@ -1606,33 +1436,27 @@ inline void ComplexTable::set_allocated_stringtable(::Micro::Future::Message::Bu
   delete stringtable_;
   stringtable_ = stringtable;
   if (stringtable) {
-    set_has_stringtable();
+    
   } else {
-    clear_has_stringtable();
+    
   }
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.ComplexTable.stringTable)
 }
 
 // optional .Micro.Future.Message.Business.ComplexTable nestTable = 4;
 inline bool ComplexTable::has_nesttable() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void ComplexTable::set_has_nesttable() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void ComplexTable::clear_has_nesttable() {
-  _has_bits_[0] &= ~0x00000008u;
+  return !_is_default_instance_ && nesttable_ != NULL;
 }
 inline void ComplexTable::clear_nesttable() {
-  if (nesttable_ != NULL) nesttable_->::Micro::Future::Message::Business::ComplexTable::Clear();
-  clear_has_nesttable();
+  if (GetArenaNoVirtual() == NULL && nesttable_ != NULL) delete nesttable_;
+  nesttable_ = NULL;
 }
 inline const ::Micro::Future::Message::Business::ComplexTable& ComplexTable::nesttable() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.ComplexTable.nestTable)
   return nesttable_ != NULL ? *nesttable_ : *default_instance_->nesttable_;
 }
 inline ::Micro::Future::Message::Business::ComplexTable* ComplexTable::mutable_nesttable() {
-  set_has_nesttable();
+  
   if (nesttable_ == NULL) {
     nesttable_ = new ::Micro::Future::Message::Business::ComplexTable;
   }
@@ -1640,7 +1464,7 @@ inline ::Micro::Future::Message::Business::ComplexTable* ComplexTable::mutable_n
   return nesttable_;
 }
 inline ::Micro::Future::Message::Business::ComplexTable* ComplexTable::release_nesttable() {
-  clear_has_nesttable();
+  
   ::Micro::Future::Message::Business::ComplexTable* temp = nesttable_;
   nesttable_ = NULL;
   return temp;
@@ -1649,9 +1473,9 @@ inline void ComplexTable::set_allocated_nesttable(::Micro::Future::Message::Busi
   delete nesttable_;
   nesttable_ = nesttable;
   if (nesttable) {
-    set_has_nesttable();
+    
   } else {
-    clear_has_nesttable();
+    
   }
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.ComplexTable.nestTable)
 }
@@ -1660,79 +1484,59 @@ inline void ComplexTable::set_allocated_nesttable(::Micro::Future::Message::Busi
 
 // StringResponse
 
-// required string Value = 1;
-inline bool StringResponse::has_value() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void StringResponse::set_has_value() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void StringResponse::clear_has_value() {
-  _has_bits_[0] &= ~0x00000001u;
-}
+// optional string Value = 1;
 inline void StringResponse::clear_value() {
   value_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_value();
 }
 inline const ::std::string& StringResponse::value() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.StringResponse.Value)
   return value_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void StringResponse::set_value(const ::std::string& value) {
-  set_has_value();
+  
   value_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.StringResponse.Value)
 }
 inline void StringResponse::set_value(const char* value) {
-  set_has_value();
+  
   value_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.StringResponse.Value)
 }
 inline void StringResponse::set_value(const char* value, size_t size) {
-  set_has_value();
+  
   value_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.StringResponse.Value)
 }
 inline ::std::string* StringResponse::mutable_value() {
-  set_has_value();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.StringResponse.Value)
   return value_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* StringResponse::release_value() {
-  clear_has_value();
+  
   return value_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void StringResponse::set_allocated_value(::std::string* value) {
   if (value != NULL) {
-    set_has_value();
+    
   } else {
-    clear_has_value();
+    
   }
   value_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.StringResponse.Value)
 }
 
-// required int32 EOF = 2;
-inline bool StringResponse::has_eof() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void StringResponse::set_has_eof() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void StringResponse::clear_has_eof() {
-  _has_bits_[0] &= ~0x00000002u;
-}
+// optional int32 EOF = 2;
 inline void StringResponse::clear_eof() {
   eof_ = 0;
-  clear_has_eof();
 }
 inline ::google::protobuf::int32 StringResponse::eof() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.StringResponse.EOF)
   return eof_;
 }
 inline void StringResponse::set_eof(::google::protobuf::int32 value) {
-  set_has_eof();
+  
   eof_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.StringResponse.EOF)
 }
@@ -1741,50 +1545,30 @@ inline void StringResponse::set_eof(::google::protobuf::int32 value) {
 
 // IntResponse
 
-// required int32 Value = 1;
-inline bool IntResponse::has_value() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void IntResponse::set_has_value() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void IntResponse::clear_has_value() {
-  _has_bits_[0] &= ~0x00000001u;
-}
+// optional int32 Value = 1;
 inline void IntResponse::clear_value() {
   value_ = 0;
-  clear_has_value();
 }
 inline ::google::protobuf::int32 IntResponse::value() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.IntResponse.Value)
   return value_;
 }
 inline void IntResponse::set_value(::google::protobuf::int32 value) {
-  set_has_value();
+  
   value_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.IntResponse.Value)
 }
 
-// required int32 EOF = 2;
-inline bool IntResponse::has_eof() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void IntResponse::set_has_eof() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void IntResponse::clear_has_eof() {
-  _has_bits_[0] &= ~0x00000002u;
-}
+// optional int32 EOF = 2;
 inline void IntResponse::clear_eof() {
   eof_ = 0;
-  clear_has_eof();
 }
 inline ::google::protobuf::int32 IntResponse::eof() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.IntResponse.EOF)
   return eof_;
 }
 inline void IntResponse::set_eof(::google::protobuf::int32 value) {
-  set_has_eof();
+  
   eof_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.IntResponse.EOF)
 }
@@ -1793,50 +1577,30 @@ inline void IntResponse::set_eof(::google::protobuf::int32 value) {
 
 // DoubleResponse
 
-// required double Value = 1;
-inline bool DoubleResponse::has_value() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void DoubleResponse::set_has_value() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void DoubleResponse::clear_has_value() {
-  _has_bits_[0] &= ~0x00000001u;
-}
+// optional double Value = 1;
 inline void DoubleResponse::clear_value() {
   value_ = 0;
-  clear_has_value();
 }
 inline double DoubleResponse::value() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.DoubleResponse.Value)
   return value_;
 }
 inline void DoubleResponse::set_value(double value) {
-  set_has_value();
+  
   value_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.DoubleResponse.Value)
 }
 
-// required int32 EOF = 2;
-inline bool DoubleResponse::has_eof() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void DoubleResponse::set_has_eof() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void DoubleResponse::clear_has_eof() {
-  _has_bits_[0] &= ~0x00000002u;
-}
+// optional int32 EOF = 2;
 inline void DoubleResponse::clear_eof() {
   eof_ = 0;
-  clear_has_eof();
 }
 inline ::google::protobuf::int32 DoubleResponse::eof() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.DoubleResponse.EOF)
   return eof_;
 }
 inline void DoubleResponse::set_eof(::google::protobuf::int32 value) {
-  set_has_eof();
+  
   eof_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.DoubleResponse.EOF)
 }

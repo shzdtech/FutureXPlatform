@@ -39,24 +39,24 @@ void protobuf_AddDesc_businessobj_2eproto();
 void protobuf_AssignDesc_businessobj_2eproto();
 void protobuf_ShutdownFile_businessobj_2eproto();
 
-class PBUserInfo;
-class PBUserInfoList;
-class PBParam;
-class PBMarketData;
-class PBMarketDataList;
-class PBPricingData;
-class PBPricingDataList;
-class PBStrategyWeight;
-class PBStrategy;
-class PBStrategyList;
+class PBAccountInfo;
 class PBContractParam;
 class PBContractParamList;
+class PBMarketData;
+class PBMarketDataList;
 class PBOTCUserParam;
 class PBOTCUserParamList;
 class PBOrderInfo;
-class PBTradeInfo;
+class PBParam;
 class PBPosition;
-class PBAccountInfo;
+class PBPricingData;
+class PBPricingDataList;
+class PBStrategy;
+class PBStrategyList;
+class PBStrategyWeight;
+class PBTradeInfo;
+class PBUserInfo;
+class PBUserInfoList;
 
 // ===================================================================
 
@@ -70,14 +70,6 @@ class PBUserInfo : public ::google::protobuf::Message {
   inline PBUserInfo& operator=(const PBUserInfo& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -124,8 +116,7 @@ class PBUserInfo : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required string userId = 1;
-  bool has_userid() const;
+  // optional string userId = 1;
   void clear_userid();
   static const int kUserIdFieldNumber = 1;
   const ::std::string& userid() const;
@@ -137,7 +128,6 @@ class PBUserInfo : public ::google::protobuf::Message {
   void set_allocated_userid(::std::string* userid);
 
   // optional string password = 2;
-  bool has_password() const;
   void clear_password();
   static const int kPasswordFieldNumber = 2;
   const ::std::string& password() const;
@@ -149,7 +139,6 @@ class PBUserInfo : public ::google::protobuf::Message {
   void set_allocated_password(::std::string* password);
 
   // optional string brokerId = 3;
-  bool has_brokerid() const;
   void clear_brokerid();
   static const int kBrokerIdFieldNumber = 3;
   const ::std::string& brokerid() const;
@@ -161,7 +150,6 @@ class PBUserInfo : public ::google::protobuf::Message {
   void set_allocated_brokerid(::std::string* brokerid);
 
   // optional string name = 4;
-  bool has_name() const;
   void clear_name();
   static const int kNameFieldNumber = 4;
   const ::std::string& name() const;
@@ -173,7 +161,6 @@ class PBUserInfo : public ::google::protobuf::Message {
   void set_allocated_name(::std::string* name);
 
   // optional string company = 5;
-  bool has_company() const;
   void clear_company();
   static const int kCompanyFieldNumber = 5;
   const ::std::string& company() const;
@@ -185,7 +172,6 @@ class PBUserInfo : public ::google::protobuf::Message {
   void set_allocated_company(::std::string* company);
 
   // optional string email = 6;
-  bool has_email() const;
   void clear_email();
   static const int kEmailFieldNumber = 6;
   const ::std::string& email() const;
@@ -197,7 +183,6 @@ class PBUserInfo : public ::google::protobuf::Message {
   void set_allocated_email(::std::string* email);
 
   // optional string contactNum = 7;
-  bool has_contactnum() const;
   void clear_contactnum();
   static const int kContactNumFieldNumber = 7;
   const ::std::string& contactnum() const;
@@ -209,14 +194,12 @@ class PBUserInfo : public ::google::protobuf::Message {
   void set_allocated_contactnum(::std::string* contactnum);
 
   // optional int32 role = 8;
-  bool has_role() const;
   void clear_role();
   static const int kRoleFieldNumber = 8;
   ::google::protobuf::int32 role() const;
   void set_role(::google::protobuf::int32 value);
 
   // optional int32 permission = 9;
-  bool has_permission() const;
   void clear_permission();
   static const int kPermissionFieldNumber = 9;
   ::google::protobuf::int32 permission() const;
@@ -224,28 +207,9 @@ class PBUserInfo : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.PBUserInfo)
  private:
-  inline void set_has_userid();
-  inline void clear_has_userid();
-  inline void set_has_password();
-  inline void clear_has_password();
-  inline void set_has_brokerid();
-  inline void clear_has_brokerid();
-  inline void set_has_name();
-  inline void clear_has_name();
-  inline void set_has_company();
-  inline void clear_has_company();
-  inline void set_has_email();
-  inline void clear_has_email();
-  inline void set_has_contactnum();
-  inline void clear_has_contactnum();
-  inline void set_has_role();
-  inline void clear_has_role();
-  inline void set_has_permission();
-  inline void clear_has_permission();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr userid_;
   ::google::protobuf::internal::ArenaStringPtr password_;
   ::google::protobuf::internal::ArenaStringPtr brokerid_;
@@ -255,6 +219,7 @@ class PBUserInfo : public ::google::protobuf::Message {
   ::google::protobuf::internal::ArenaStringPtr contactnum_;
   ::google::protobuf::int32 role_;
   ::google::protobuf::int32 permission_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
   friend void protobuf_ShutdownFile_businessobj_2eproto();
@@ -274,14 +239,6 @@ class PBUserInfoList : public ::google::protobuf::Message {
   inline PBUserInfoList& operator=(const PBUserInfoList& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -335,18 +292,18 @@ class PBUserInfoList : public ::google::protobuf::Message {
   const ::Micro::Future::Message::Business::PBUserInfo& userinfo(int index) const;
   ::Micro::Future::Message::Business::PBUserInfo* mutable_userinfo(int index);
   ::Micro::Future::Message::Business::PBUserInfo* add_userinfo();
-  const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBUserInfo >&
-      userinfo() const;
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBUserInfo >*
       mutable_userinfo();
+  const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBUserInfo >&
+      userinfo() const;
 
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.PBUserInfoList)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBUserInfo > userinfo_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
   friend void protobuf_ShutdownFile_businessobj_2eproto();
@@ -366,14 +323,6 @@ class PBParam : public ::google::protobuf::Message {
   inline PBParam& operator=(const PBParam& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -420,8 +369,7 @@ class PBParam : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required string name = 1;
-  bool has_name() const;
+  // optional string name = 1;
   void clear_name();
   static const int kNameFieldNumber = 1;
   const ::std::string& name() const;
@@ -432,8 +380,7 @@ class PBParam : public ::google::protobuf::Message {
   ::std::string* release_name();
   void set_allocated_name(::std::string* name);
 
-  // required double value = 2;
-  bool has_value() const;
+  // optional double value = 2;
   void clear_value();
   static const int kValueFieldNumber = 2;
   double value() const;
@@ -441,19 +388,12 @@ class PBParam : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.PBParam)
  private:
-  inline void set_has_name();
-  inline void clear_has_name();
-  inline void set_has_value();
-  inline void clear_has_value();
-
-  // helper for ByteSize()
-  int RequiredFieldsByteSizeFallback() const;
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr name_;
   double value_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
   friend void protobuf_ShutdownFile_businessobj_2eproto();
@@ -473,14 +413,6 @@ class PBMarketData : public ::google::protobuf::Message {
   inline PBMarketData& operator=(const PBMarketData& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -527,8 +459,7 @@ class PBMarketData : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required string symbol = 1;
-  bool has_symbol() const;
+  // optional string symbol = 1;
   void clear_symbol();
   static const int kSymbolFieldNumber = 1;
   const ::std::string& symbol() const;
@@ -540,7 +471,6 @@ class PBMarketData : public ::google::protobuf::Message {
   void set_allocated_symbol(::std::string* symbol);
 
   // optional string timeStamp = 2;
-  bool has_timestamp() const;
   void clear_timestamp();
   static const int kTimeStampFieldNumber = 2;
   const ::std::string& timestamp() const;
@@ -552,49 +482,42 @@ class PBMarketData : public ::google::protobuf::Message {
   void set_allocated_timestamp(::std::string* timestamp);
 
   // optional double preCloseValue = 3;
-  bool has_preclosevalue() const;
   void clear_preclosevalue();
   static const int kPreCloseValueFieldNumber = 3;
   double preclosevalue() const;
   void set_preclosevalue(double value);
 
   // optional double openValue = 4;
-  bool has_openvalue() const;
   void clear_openvalue();
   static const int kOpenValueFieldNumber = 4;
   double openvalue() const;
   void set_openvalue(double value);
 
   // optional double turnover = 5;
-  bool has_turnover() const;
   void clear_turnover();
   static const int kTurnoverFieldNumber = 5;
   double turnover() const;
   void set_turnover(double value);
 
   // optional int32 volume = 6;
-  bool has_volume() const;
   void clear_volume();
   static const int kVolumeFieldNumber = 6;
   ::google::protobuf::int32 volume() const;
   void set_volume(::google::protobuf::int32 value);
 
   // optional double highValue = 7;
-  bool has_highvalue() const;
   void clear_highvalue();
   static const int kHighValueFieldNumber = 7;
   double highvalue() const;
   void set_highvalue(double value);
 
   // optional double lowValue = 8;
-  bool has_lowvalue() const;
   void clear_lowvalue();
   static const int kLowValueFieldNumber = 8;
   double lowvalue() const;
   void set_lowvalue(double value);
 
   // optional double matchPrice = 9;
-  bool has_matchprice() const;
   void clear_matchprice();
   static const int kMatchPriceFieldNumber = 9;
   double matchprice() const;
@@ -649,35 +572,30 @@ class PBMarketData : public ::google::protobuf::Message {
       mutable_bidvolume();
 
   // optional double preSettlePrice = 14;
-  bool has_presettleprice() const;
   void clear_presettleprice();
   static const int kPreSettlePriceFieldNumber = 14;
   double presettleprice() const;
   void set_presettleprice(double value);
 
   // optional double priceChange = 15;
-  bool has_pricechange() const;
   void clear_pricechange();
   static const int kPriceChangeFieldNumber = 15;
   double pricechange() const;
   void set_pricechange(double value);
 
   // optional double settlePrice = 16;
-  bool has_settleprice() const;
   void clear_settleprice();
   static const int kSettlePriceFieldNumber = 16;
   double settleprice() const;
   void set_settleprice(double value);
 
   // optional int32 highLimit = 17;
-  bool has_highlimit() const;
   void clear_highlimit();
   static const int kHighLimitFieldNumber = 17;
   ::google::protobuf::int32 highlimit() const;
   void set_highlimit(::google::protobuf::int32 value);
 
   // optional int32 lowLimit = 18;
-  bool has_lowlimit() const;
   void clear_lowlimit();
   static const int kLowLimitFieldNumber = 18;
   ::google::protobuf::int32 lowlimit() const;
@@ -685,38 +603,9 @@ class PBMarketData : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.PBMarketData)
  private:
-  inline void set_has_symbol();
-  inline void clear_has_symbol();
-  inline void set_has_timestamp();
-  inline void clear_has_timestamp();
-  inline void set_has_preclosevalue();
-  inline void clear_has_preclosevalue();
-  inline void set_has_openvalue();
-  inline void clear_has_openvalue();
-  inline void set_has_turnover();
-  inline void clear_has_turnover();
-  inline void set_has_volume();
-  inline void clear_has_volume();
-  inline void set_has_highvalue();
-  inline void clear_has_highvalue();
-  inline void set_has_lowvalue();
-  inline void clear_has_lowvalue();
-  inline void set_has_matchprice();
-  inline void clear_has_matchprice();
-  inline void set_has_presettleprice();
-  inline void clear_has_presettleprice();
-  inline void set_has_pricechange();
-  inline void clear_has_pricechange();
-  inline void set_has_settleprice();
-  inline void clear_has_settleprice();
-  inline void set_has_highlimit();
-  inline void clear_has_highlimit();
-  inline void set_has_lowlimit();
-  inline void clear_has_lowlimit();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr symbol_;
   ::google::protobuf::internal::ArenaStringPtr timestamp_;
   double preclosevalue_;
@@ -726,15 +615,20 @@ class PBMarketData : public ::google::protobuf::Message {
   double lowvalue_;
   double matchprice_;
   ::google::protobuf::RepeatedField< double > askprice_;
+  mutable int _askprice_cached_byte_size_;
   ::google::protobuf::RepeatedField< ::google::protobuf::int32 > askvolume_;
+  mutable int _askvolume_cached_byte_size_;
   ::google::protobuf::int32 volume_;
   ::google::protobuf::int32 highlimit_;
   ::google::protobuf::RepeatedField< double > bidprice_;
+  mutable int _bidprice_cached_byte_size_;
   ::google::protobuf::RepeatedField< ::google::protobuf::int32 > bidvolume_;
+  mutable int _bidvolume_cached_byte_size_;
   double presettleprice_;
   double pricechange_;
   double settleprice_;
   ::google::protobuf::int32 lowlimit_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
   friend void protobuf_ShutdownFile_businessobj_2eproto();
@@ -754,14 +648,6 @@ class PBMarketDataList : public ::google::protobuf::Message {
   inline PBMarketDataList& operator=(const PBMarketDataList& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -815,18 +701,18 @@ class PBMarketDataList : public ::google::protobuf::Message {
   const ::Micro::Future::Message::Business::PBMarketData& mdlist(int index) const;
   ::Micro::Future::Message::Business::PBMarketData* mutable_mdlist(int index);
   ::Micro::Future::Message::Business::PBMarketData* add_mdlist();
-  const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBMarketData >&
-      mdlist() const;
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBMarketData >*
       mutable_mdlist();
+  const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBMarketData >&
+      mdlist() const;
 
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.PBMarketDataList)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBMarketData > mdlist_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
   friend void protobuf_ShutdownFile_businessobj_2eproto();
@@ -846,14 +732,6 @@ class PBPricingData : public ::google::protobuf::Message {
   inline PBPricingData& operator=(const PBPricingData& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -900,8 +778,7 @@ class PBPricingData : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required string exchange = 1;
-  bool has_exchange() const;
+  // optional string exchange = 1;
   void clear_exchange();
   static const int kExchangeFieldNumber = 1;
   const ::std::string& exchange() const;
@@ -912,8 +789,7 @@ class PBPricingData : public ::google::protobuf::Message {
   ::std::string* release_exchange();
   void set_allocated_exchange(::std::string* exchange);
 
-  // required string contract = 2;
-  bool has_contract() const;
+  // optional string contract = 2;
   void clear_contract();
   static const int kContractFieldNumber = 2;
   const ::std::string& contract() const;
@@ -924,15 +800,13 @@ class PBPricingData : public ::google::protobuf::Message {
   ::std::string* release_contract();
   void set_allocated_contract(::std::string* contract);
 
-  // required double askPrice = 3;
-  bool has_askprice() const;
+  // optional double askPrice = 3;
   void clear_askprice();
   static const int kAskPriceFieldNumber = 3;
   double askprice() const;
   void set_askprice(double value);
 
-  // required double bidPrice = 4;
-  bool has_bidprice() const;
+  // optional double bidPrice = 4;
   void clear_bidprice();
   static const int kBidPriceFieldNumber = 4;
   double bidprice() const;
@@ -940,25 +814,14 @@ class PBPricingData : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.PBPricingData)
  private:
-  inline void set_has_exchange();
-  inline void clear_has_exchange();
-  inline void set_has_contract();
-  inline void clear_has_contract();
-  inline void set_has_askprice();
-  inline void clear_has_askprice();
-  inline void set_has_bidprice();
-  inline void clear_has_bidprice();
-
-  // helper for ByteSize()
-  int RequiredFieldsByteSizeFallback() const;
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr exchange_;
   ::google::protobuf::internal::ArenaStringPtr contract_;
   double askprice_;
   double bidprice_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
   friend void protobuf_ShutdownFile_businessobj_2eproto();
@@ -978,14 +841,6 @@ class PBPricingDataList : public ::google::protobuf::Message {
   inline PBPricingDataList& operator=(const PBPricingDataList& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -1039,18 +894,18 @@ class PBPricingDataList : public ::google::protobuf::Message {
   const ::Micro::Future::Message::Business::PBPricingData& pricing(int index) const;
   ::Micro::Future::Message::Business::PBPricingData* mutable_pricing(int index);
   ::Micro::Future::Message::Business::PBPricingData* add_pricing();
-  const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBPricingData >&
-      pricing() const;
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBPricingData >*
       mutable_pricing();
+  const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBPricingData >&
+      pricing() const;
 
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.PBPricingDataList)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBPricingData > pricing_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
   friend void protobuf_ShutdownFile_businessobj_2eproto();
@@ -1070,14 +925,6 @@ class PBStrategyWeight : public ::google::protobuf::Message {
   inline PBStrategyWeight& operator=(const PBStrategyWeight& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -1124,8 +971,7 @@ class PBStrategyWeight : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required string exchange = 3;
-  bool has_exchange() const;
+  // optional string exchange = 3;
   void clear_exchange();
   static const int kExchangeFieldNumber = 3;
   const ::std::string& exchange() const;
@@ -1136,8 +982,7 @@ class PBStrategyWeight : public ::google::protobuf::Message {
   ::std::string* release_exchange();
   void set_allocated_exchange(::std::string* exchange);
 
-  // required string contract = 4;
-  bool has_contract() const;
+  // optional string contract = 4;
   void clear_contract();
   static const int kContractFieldNumber = 4;
   const ::std::string& contract() const;
@@ -1148,8 +993,7 @@ class PBStrategyWeight : public ::google::protobuf::Message {
   ::std::string* release_contract();
   void set_allocated_contract(::std::string* contract);
 
-  // required float weight = 6;
-  bool has_weight() const;
+  // optional float weight = 6;
   void clear_weight();
   static const int kWeightFieldNumber = 6;
   float weight() const;
@@ -1157,22 +1001,13 @@ class PBStrategyWeight : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.PBStrategyWeight)
  private:
-  inline void set_has_exchange();
-  inline void clear_has_exchange();
-  inline void set_has_contract();
-  inline void clear_has_contract();
-  inline void set_has_weight();
-  inline void clear_has_weight();
-
-  // helper for ByteSize()
-  int RequiredFieldsByteSizeFallback() const;
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr exchange_;
   ::google::protobuf::internal::ArenaStringPtr contract_;
   float weight_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
   friend void protobuf_ShutdownFile_businessobj_2eproto();
@@ -1192,14 +1027,6 @@ class PBStrategy : public ::google::protobuf::Message {
   inline PBStrategy& operator=(const PBStrategy& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -1246,8 +1073,7 @@ class PBStrategy : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required string exchange = 1;
-  bool has_exchange() const;
+  // optional string exchange = 1;
   void clear_exchange();
   static const int kExchangeFieldNumber = 1;
   const ::std::string& exchange() const;
@@ -1258,8 +1084,7 @@ class PBStrategy : public ::google::protobuf::Message {
   ::std::string* release_exchange();
   void set_allocated_exchange(::std::string* exchange);
 
-  // required string contract = 2;
-  bool has_contract() const;
+  // optional string contract = 2;
   void clear_contract();
   static const int kContractFieldNumber = 2;
   const ::std::string& contract() const;
@@ -1271,7 +1096,6 @@ class PBStrategy : public ::google::protobuf::Message {
   void set_allocated_contract(::std::string* contract);
 
   // optional string underlying = 3;
-  bool has_underlying() const;
   void clear_underlying();
   static const int kUnderlyingFieldNumber = 3;
   const ::std::string& underlying() const;
@@ -1283,7 +1107,6 @@ class PBStrategy : public ::google::protobuf::Message {
   void set_allocated_underlying(::std::string* underlying);
 
   // optional string symbol = 4;
-  bool has_symbol() const;
   void clear_symbol();
   static const int kSymbolFieldNumber = 4;
   const ::std::string& symbol() const;
@@ -1295,7 +1118,6 @@ class PBStrategy : public ::google::protobuf::Message {
   void set_allocated_symbol(::std::string* symbol);
 
   // optional string description = 5;
-  bool has_description() const;
   void clear_description();
   static const int kDescriptionFieldNumber = 5;
   const ::std::string& description() const;
@@ -1307,42 +1129,36 @@ class PBStrategy : public ::google::protobuf::Message {
   void set_allocated_description(::std::string* description);
 
   // optional bool allowTrading = 6;
-  bool has_allowtrading() const;
   void clear_allowtrading();
   static const int kAllowTradingFieldNumber = 6;
   bool allowtrading() const;
   void set_allowtrading(bool value);
 
   // optional int32 quantity = 7;
-  bool has_quantity() const;
   void clear_quantity();
   static const int kQuantityFieldNumber = 7;
   ::google::protobuf::int32 quantity() const;
   void set_quantity(::google::protobuf::int32 value);
 
   // optional int32 depth = 8;
-  bool has_depth() const;
   void clear_depth();
   static const int kDepthFieldNumber = 8;
   ::google::protobuf::int32 depth() const;
   void set_depth(::google::protobuf::int32 value);
 
   // optional float spread = 9;
-  bool has_spread() const;
   void clear_spread();
   static const int kSpreadFieldNumber = 9;
   float spread() const;
   void set_spread(float value);
 
   // optional float offset = 10;
-  bool has_offset() const;
   void clear_offset();
   static const int kOffsetFieldNumber = 10;
   float offset() const;
   void set_offset(float value);
 
   // optional bool enabled = 11;
-  bool has_enabled() const;
   void clear_enabled();
   static const int kEnabledFieldNumber = 11;
   bool enabled() const;
@@ -1355,10 +1171,10 @@ class PBStrategy : public ::google::protobuf::Message {
   const ::Micro::Future::Message::Business::PBStrategyWeight& weightcontract(int index) const;
   ::Micro::Future::Message::Business::PBStrategyWeight* mutable_weightcontract(int index);
   ::Micro::Future::Message::Business::PBStrategyWeight* add_weightcontract();
-  const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBStrategyWeight >&
-      weightcontract() const;
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBStrategyWeight >*
       mutable_weightcontract();
+  const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBStrategyWeight >&
+      weightcontract() const;
 
   // repeated .Micro.Future.Message.Business.PBParam params = 13;
   int params_size() const;
@@ -1367,42 +1183,16 @@ class PBStrategy : public ::google::protobuf::Message {
   const ::Micro::Future::Message::Business::PBParam& params(int index) const;
   ::Micro::Future::Message::Business::PBParam* mutable_params(int index);
   ::Micro::Future::Message::Business::PBParam* add_params();
-  const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBParam >&
-      params() const;
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBParam >*
       mutable_params();
+  const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBParam >&
+      params() const;
 
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.PBStrategy)
  private:
-  inline void set_has_exchange();
-  inline void clear_has_exchange();
-  inline void set_has_contract();
-  inline void clear_has_contract();
-  inline void set_has_underlying();
-  inline void clear_has_underlying();
-  inline void set_has_symbol();
-  inline void clear_has_symbol();
-  inline void set_has_description();
-  inline void clear_has_description();
-  inline void set_has_allowtrading();
-  inline void clear_has_allowtrading();
-  inline void set_has_quantity();
-  inline void clear_has_quantity();
-  inline void set_has_depth();
-  inline void clear_has_depth();
-  inline void set_has_spread();
-  inline void clear_has_spread();
-  inline void set_has_offset();
-  inline void clear_has_offset();
-  inline void set_has_enabled();
-  inline void clear_has_enabled();
-
-  // helper for ByteSize()
-  int RequiredFieldsByteSizeFallback() const;
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr exchange_;
   ::google::protobuf::internal::ArenaStringPtr contract_;
   ::google::protobuf::internal::ArenaStringPtr underlying_;
@@ -1416,6 +1206,7 @@ class PBStrategy : public ::google::protobuf::Message {
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBStrategyWeight > weightcontract_;
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBParam > params_;
   float offset_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
   friend void protobuf_ShutdownFile_businessobj_2eproto();
@@ -1435,14 +1226,6 @@ class PBStrategyList : public ::google::protobuf::Message {
   inline PBStrategyList& operator=(const PBStrategyList& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -1496,18 +1279,18 @@ class PBStrategyList : public ::google::protobuf::Message {
   const ::Micro::Future::Message::Business::PBStrategy& strategy(int index) const;
   ::Micro::Future::Message::Business::PBStrategy* mutable_strategy(int index);
   ::Micro::Future::Message::Business::PBStrategy* add_strategy();
-  const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBStrategy >&
-      strategy() const;
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBStrategy >*
       mutable_strategy();
+  const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBStrategy >&
+      strategy() const;
 
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.PBStrategyList)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBStrategy > strategy_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
   friend void protobuf_ShutdownFile_businessobj_2eproto();
@@ -1527,14 +1310,6 @@ class PBContractParam : public ::google::protobuf::Message {
   inline PBContractParam& operator=(const PBContractParam& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -1581,8 +1356,7 @@ class PBContractParam : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required string exchange = 1;
-  bool has_exchange() const;
+  // optional string exchange = 1;
   void clear_exchange();
   static const int kExchangeFieldNumber = 1;
   const ::std::string& exchange() const;
@@ -1593,8 +1367,7 @@ class PBContractParam : public ::google::protobuf::Message {
   ::std::string* release_exchange();
   void set_allocated_exchange(::std::string* exchange);
 
-  // required string contract = 2;
-  bool has_contract() const;
+  // optional string contract = 2;
   void clear_contract();
   static const int kContractFieldNumber = 2;
   const ::std::string& contract() const;
@@ -1606,14 +1379,12 @@ class PBContractParam : public ::google::protobuf::Message {
   void set_allocated_contract(::std::string* contract);
 
   // optional int32 depthVol = 3;
-  bool has_depthvol() const;
   void clear_depthvol();
   static const int kDepthVolFieldNumber = 3;
   ::google::protobuf::int32 depthvol() const;
   void set_depthvol(::google::protobuf::int32 value);
 
   // optional float gamma = 4;
-  bool has_gamma() const;
   void clear_gamma();
   static const int kGammaFieldNumber = 4;
   float gamma() const;
@@ -1621,25 +1392,14 @@ class PBContractParam : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.PBContractParam)
  private:
-  inline void set_has_exchange();
-  inline void clear_has_exchange();
-  inline void set_has_contract();
-  inline void clear_has_contract();
-  inline void set_has_depthvol();
-  inline void clear_has_depthvol();
-  inline void set_has_gamma();
-  inline void clear_has_gamma();
-
-  // helper for ByteSize()
-  int RequiredFieldsByteSizeFallback() const;
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr exchange_;
   ::google::protobuf::internal::ArenaStringPtr contract_;
   ::google::protobuf::int32 depthvol_;
   float gamma_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
   friend void protobuf_ShutdownFile_businessobj_2eproto();
@@ -1659,14 +1419,6 @@ class PBContractParamList : public ::google::protobuf::Message {
   inline PBContractParamList& operator=(const PBContractParamList& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -1720,18 +1472,18 @@ class PBContractParamList : public ::google::protobuf::Message {
   const ::Micro::Future::Message::Business::PBContractParam& params(int index) const;
   ::Micro::Future::Message::Business::PBContractParam* mutable_params(int index);
   ::Micro::Future::Message::Business::PBContractParam* add_params();
-  const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBContractParam >&
-      params() const;
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBContractParam >*
       mutable_params();
+  const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBContractParam >&
+      params() const;
 
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.PBContractParamList)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBContractParam > params_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
   friend void protobuf_ShutdownFile_businessobj_2eproto();
@@ -1751,14 +1503,6 @@ class PBOTCUserParam : public ::google::protobuf::Message {
   inline PBOTCUserParam& operator=(const PBOTCUserParam& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -1805,8 +1549,7 @@ class PBOTCUserParam : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required string exchange = 1;
-  bool has_exchange() const;
+  // optional string exchange = 1;
   void clear_exchange();
   static const int kExchangeFieldNumber = 1;
   const ::std::string& exchange() const;
@@ -1817,8 +1560,7 @@ class PBOTCUserParam : public ::google::protobuf::Message {
   ::std::string* release_exchange();
   void set_allocated_exchange(::std::string* exchange);
 
-  // required string contract = 2;
-  bool has_contract() const;
+  // optional string contract = 2;
   void clear_contract();
   static const int kContractFieldNumber = 2;
   const ::std::string& contract() const;
@@ -1829,8 +1571,7 @@ class PBOTCUserParam : public ::google::protobuf::Message {
   ::std::string* release_contract();
   void set_allocated_contract(::std::string* contract);
 
-  // required float quantity = 3;
-  bool has_quantity() const;
+  // optional float quantity = 3;
   void clear_quantity();
   static const int kQuantityFieldNumber = 3;
   float quantity() const;
@@ -1838,22 +1579,13 @@ class PBOTCUserParam : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.PBOTCUserParam)
  private:
-  inline void set_has_exchange();
-  inline void clear_has_exchange();
-  inline void set_has_contract();
-  inline void clear_has_contract();
-  inline void set_has_quantity();
-  inline void clear_has_quantity();
-
-  // helper for ByteSize()
-  int RequiredFieldsByteSizeFallback() const;
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr exchange_;
   ::google::protobuf::internal::ArenaStringPtr contract_;
   float quantity_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
   friend void protobuf_ShutdownFile_businessobj_2eproto();
@@ -1873,14 +1605,6 @@ class PBOTCUserParamList : public ::google::protobuf::Message {
   inline PBOTCUserParamList& operator=(const PBOTCUserParamList& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -1934,18 +1658,18 @@ class PBOTCUserParamList : public ::google::protobuf::Message {
   const ::Micro::Future::Message::Business::PBOTCUserParam& params(int index) const;
   ::Micro::Future::Message::Business::PBOTCUserParam* mutable_params(int index);
   ::Micro::Future::Message::Business::PBOTCUserParam* add_params();
-  const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBOTCUserParam >&
-      params() const;
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBOTCUserParam >*
       mutable_params();
+  const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBOTCUserParam >&
+      params() const;
 
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.PBOTCUserParamList)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBOTCUserParam > params_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
   friend void protobuf_ShutdownFile_businessobj_2eproto();
@@ -1965,14 +1689,6 @@ class PBOrderInfo : public ::google::protobuf::Message {
   inline PBOrderInfo& operator=(const PBOrderInfo& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -2020,21 +1736,18 @@ class PBOrderInfo : public ::google::protobuf::Message {
   // accessors -------------------------------------------------------
 
   // optional uint64 orderID = 1;
-  bool has_orderid() const;
   void clear_orderid();
   static const int kOrderIDFieldNumber = 1;
   ::google::protobuf::uint64 orderid() const;
   void set_orderid(::google::protobuf::uint64 value);
 
   // optional uint64 orderSysID = 2;
-  bool has_ordersysid() const;
   void clear_ordersysid();
   static const int kOrderSysIDFieldNumber = 2;
   ::google::protobuf::uint64 ordersysid() const;
   void set_ordersysid(::google::protobuf::uint64 value);
 
   // optional string brokerID = 3;
-  bool has_brokerid() const;
   void clear_brokerid();
   static const int kBrokerIDFieldNumber = 3;
   const ::std::string& brokerid() const;
@@ -2046,7 +1759,6 @@ class PBOrderInfo : public ::google::protobuf::Message {
   void set_allocated_brokerid(::std::string* brokerid);
 
   // optional string investorID = 4;
-  bool has_investorid() const;
   void clear_investorid();
   static const int kInvestorIDFieldNumber = 4;
   const ::std::string& investorid() const;
@@ -2058,7 +1770,6 @@ class PBOrderInfo : public ::google::protobuf::Message {
   void set_allocated_investorid(::std::string* investorid);
 
   // optional string exchange = 5;
-  bool has_exchange() const;
   void clear_exchange();
   static const int kExchangeFieldNumber = 5;
   const ::std::string& exchange() const;
@@ -2070,7 +1781,6 @@ class PBOrderInfo : public ::google::protobuf::Message {
   void set_allocated_exchange(::std::string* exchange);
 
   // optional string contract = 6;
-  bool has_contract() const;
   void clear_contract();
   static const int kContractFieldNumber = 6;
   const ::std::string& contract() const;
@@ -2082,70 +1792,60 @@ class PBOrderInfo : public ::google::protobuf::Message {
   void set_allocated_contract(::std::string* contract);
 
   // optional int32 execType = 7;
-  bool has_exectype() const;
   void clear_exectype();
   static const int kExecTypeFieldNumber = 7;
   ::google::protobuf::int32 exectype() const;
   void set_exectype(::google::protobuf::int32 value);
 
   // optional int32 tif = 8;
-  bool has_tif() const;
   void clear_tif();
   static const int kTifFieldNumber = 8;
   ::google::protobuf::int32 tif() const;
   void set_tif(::google::protobuf::int32 value);
 
   // optional int32 tradingType = 9;
-  bool has_tradingtype() const;
   void clear_tradingtype();
   static const int kTradingTypeFieldNumber = 9;
   ::google::protobuf::int32 tradingtype() const;
   void set_tradingtype(::google::protobuf::int32 value);
 
   // optional int32 direction = 10;
-  bool has_direction() const;
   void clear_direction();
   static const int kDirectionFieldNumber = 10;
   ::google::protobuf::int32 direction() const;
   void set_direction(::google::protobuf::int32 value);
 
   // optional double limitPrice = 11;
-  bool has_limitprice() const;
   void clear_limitprice();
   static const int kLimitPriceFieldNumber = 11;
   double limitprice() const;
   void set_limitprice(double value);
 
   // optional double stopPrice = 12;
-  bool has_stopprice() const;
   void clear_stopprice();
   static const int kStopPriceFieldNumber = 12;
   double stopprice() const;
   void set_stopprice(double value);
 
   // optional int32 orderStatus = 13;
-  bool has_orderstatus() const;
   void clear_orderstatus();
   static const int kOrderStatusFieldNumber = 13;
   ::google::protobuf::int32 orderstatus() const;
   void set_orderstatus(::google::protobuf::int32 value);
 
   // optional int32 orderType = 14;
-  bool has_ordertype() const;
   void clear_ordertype();
   static const int kOrderTypeFieldNumber = 14;
   ::google::protobuf::int32 ordertype() const;
   void set_ordertype(::google::protobuf::int32 value);
 
   // optional int32 volume = 15;
-  bool has_volume() const;
   void clear_volume();
   static const int kVolumeFieldNumber = 15;
   ::google::protobuf::int32 volume() const;
   void set_volume(::google::protobuf::int32 value);
 
   // optional string insertTime = 17;
-  bool has_inserttime() const;
   void clear_inserttime();
   static const int kInsertTimeFieldNumber = 17;
   const ::std::string& inserttime() const;
@@ -2157,7 +1857,6 @@ class PBOrderInfo : public ::google::protobuf::Message {
   void set_allocated_inserttime(::std::string* inserttime);
 
   // optional string updateTime = 18;
-  bool has_updatetime() const;
   void clear_updatetime();
   static const int kUpdateTimeFieldNumber = 18;
   const ::std::string& updatetime() const;
@@ -2169,7 +1868,6 @@ class PBOrderInfo : public ::google::protobuf::Message {
   void set_allocated_updatetime(::std::string* updatetime);
 
   // optional string cancelTime = 19;
-  bool has_canceltime() const;
   void clear_canceltime();
   static const int kCancelTimeFieldNumber = 19;
   const ::std::string& canceltime() const;
@@ -2181,49 +1879,42 @@ class PBOrderInfo : public ::google::protobuf::Message {
   void set_allocated_canceltime(::std::string* canceltime);
 
   // optional int32 volumeTraded = 20;
-  bool has_volumetraded() const;
   void clear_volumetraded();
   static const int kVolumeTradedFieldNumber = 20;
   ::google::protobuf::int32 volumetraded() const;
   void set_volumetraded(::google::protobuf::int32 value);
 
   // optional int32 volumeRemain = 21;
-  bool has_volumeremain() const;
   void clear_volumeremain();
   static const int kVolumeRemainFieldNumber = 21;
   ::google::protobuf::int32 volumeremain() const;
   void set_volumeremain(::google::protobuf::int32 value);
 
   // optional int32 volumeCondition = 22;
-  bool has_volumecondition() const;
   void clear_volumecondition();
   static const int kVolumeConditionFieldNumber = 22;
   ::google::protobuf::int32 volumecondition() const;
   void set_volumecondition(::google::protobuf::int32 value);
 
   // optional int32 tradingDay = 23;
-  bool has_tradingday() const;
   void clear_tradingday();
   static const int kTradingDayFieldNumber = 23;
   ::google::protobuf::int32 tradingday() const;
   void set_tradingday(::google::protobuf::int32 value);
 
   // optional bool active = 24;
-  bool has_active() const;
   void clear_active();
   static const int kActiveFieldNumber = 24;
   bool active() const;
   void set_active(bool value);
 
   // optional int32 openclose = 25;
-  bool has_openclose() const;
   void clear_openclose();
   static const int kOpencloseFieldNumber = 25;
   ::google::protobuf::int32 openclose() const;
   void set_openclose(::google::protobuf::int32 value);
 
   // optional bytes message = 26;
-  bool has_message() const;
   void clear_message();
   static const int kMessageFieldNumber = 26;
   const ::std::string& message() const;
@@ -2236,60 +1927,9 @@ class PBOrderInfo : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.PBOrderInfo)
  private:
-  inline void set_has_orderid();
-  inline void clear_has_orderid();
-  inline void set_has_ordersysid();
-  inline void clear_has_ordersysid();
-  inline void set_has_brokerid();
-  inline void clear_has_brokerid();
-  inline void set_has_investorid();
-  inline void clear_has_investorid();
-  inline void set_has_exchange();
-  inline void clear_has_exchange();
-  inline void set_has_contract();
-  inline void clear_has_contract();
-  inline void set_has_exectype();
-  inline void clear_has_exectype();
-  inline void set_has_tif();
-  inline void clear_has_tif();
-  inline void set_has_tradingtype();
-  inline void clear_has_tradingtype();
-  inline void set_has_direction();
-  inline void clear_has_direction();
-  inline void set_has_limitprice();
-  inline void clear_has_limitprice();
-  inline void set_has_stopprice();
-  inline void clear_has_stopprice();
-  inline void set_has_orderstatus();
-  inline void clear_has_orderstatus();
-  inline void set_has_ordertype();
-  inline void clear_has_ordertype();
-  inline void set_has_volume();
-  inline void clear_has_volume();
-  inline void set_has_inserttime();
-  inline void clear_has_inserttime();
-  inline void set_has_updatetime();
-  inline void clear_has_updatetime();
-  inline void set_has_canceltime();
-  inline void clear_has_canceltime();
-  inline void set_has_volumetraded();
-  inline void clear_has_volumetraded();
-  inline void set_has_volumeremain();
-  inline void clear_has_volumeremain();
-  inline void set_has_volumecondition();
-  inline void clear_has_volumecondition();
-  inline void set_has_tradingday();
-  inline void clear_has_tradingday();
-  inline void set_has_active();
-  inline void clear_has_active();
-  inline void set_has_openclose();
-  inline void clear_has_openclose();
-  inline void set_has_message();
-  inline void clear_has_message();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::uint64 orderid_;
   ::google::protobuf::uint64 ordersysid_;
   ::google::protobuf::internal::ArenaStringPtr brokerid_;
@@ -2315,6 +1955,7 @@ class PBOrderInfo : public ::google::protobuf::Message {
   bool active_;
   ::google::protobuf::internal::ArenaStringPtr message_;
   ::google::protobuf::int32 openclose_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
   friend void protobuf_ShutdownFile_businessobj_2eproto();
@@ -2334,14 +1975,6 @@ class PBTradeInfo : public ::google::protobuf::Message {
   inline PBTradeInfo& operator=(const PBTradeInfo& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -2388,57 +2021,49 @@ class PBTradeInfo : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required uint64 tradeID = 1;
-  bool has_tradeid() const;
+  // optional uint64 tradeID = 1;
   void clear_tradeid();
   static const int kTradeIDFieldNumber = 1;
   ::google::protobuf::uint64 tradeid() const;
   void set_tradeid(::google::protobuf::uint64 value);
 
-  // required int32 direction = 2;
-  bool has_direction() const;
+  // optional int32 direction = 2;
   void clear_direction();
   static const int kDirectionFieldNumber = 2;
   ::google::protobuf::int32 direction() const;
   void set_direction(::google::protobuf::int32 value);
 
-  // required int32 openclose = 3;
-  bool has_openclose() const;
+  // optional int32 openclose = 3;
   void clear_openclose();
   static const int kOpencloseFieldNumber = 3;
   ::google::protobuf::int32 openclose() const;
   void set_openclose(::google::protobuf::int32 value);
 
-  // required uint64 orderSysID = 4;
-  bool has_ordersysid() const;
+  // optional uint64 orderSysID = 4;
   void clear_ordersysid();
   static const int kOrderSysIDFieldNumber = 4;
   ::google::protobuf::uint64 ordersysid() const;
   void set_ordersysid(::google::protobuf::uint64 value);
 
-  // required uint64 orderID = 5;
-  bool has_orderid() const;
+  // optional uint64 orderID = 5;
   void clear_orderid();
   static const int kOrderIDFieldNumber = 5;
   ::google::protobuf::uint64 orderid() const;
   void set_orderid(::google::protobuf::uint64 value);
 
-  // required double price = 6;
-  bool has_price() const;
+  // optional double price = 6;
   void clear_price();
   static const int kPriceFieldNumber = 6;
   double price() const;
   void set_price(double value);
 
-  // required int32 volume = 7;
-  bool has_volume() const;
+  // optional int32 volume = 7;
   void clear_volume();
   static const int kVolumeFieldNumber = 7;
   ::google::protobuf::int32 volume() const;
   void set_volume(::google::protobuf::int32 value);
 
   // optional string brokerID = 8;
-  bool has_brokerid() const;
   void clear_brokerid();
   static const int kBrokerIDFieldNumber = 8;
   const ::std::string& brokerid() const;
@@ -2450,7 +2075,6 @@ class PBTradeInfo : public ::google::protobuf::Message {
   void set_allocated_brokerid(::std::string* brokerid);
 
   // optional string investorID = 9;
-  bool has_investorid() const;
   void clear_investorid();
   static const int kInvestorIDFieldNumber = 9;
   const ::std::string& investorid() const;
@@ -2462,7 +2086,6 @@ class PBTradeInfo : public ::google::protobuf::Message {
   void set_allocated_investorid(::std::string* investorid);
 
   // optional string exchange = 10;
-  bool has_exchange() const;
   void clear_exchange();
   static const int kExchangeFieldNumber = 10;
   const ::std::string& exchange() const;
@@ -2474,7 +2097,6 @@ class PBTradeInfo : public ::google::protobuf::Message {
   void set_allocated_exchange(::std::string* exchange);
 
   // optional string contract = 11;
-  bool has_contract() const;
   void clear_contract();
   static const int kContractFieldNumber = 11;
   const ::std::string& contract() const;
@@ -2486,7 +2108,6 @@ class PBTradeInfo : public ::google::protobuf::Message {
   void set_allocated_contract(::std::string* contract);
 
   // optional string userID = 12;
-  bool has_userid() const;
   void clear_userid();
   static const int kUserIDFieldNumber = 12;
   const ::std::string& userid() const;
@@ -2498,7 +2119,6 @@ class PBTradeInfo : public ::google::protobuf::Message {
   void set_allocated_userid(::std::string* userid);
 
   // optional string tradeDate = 13;
-  bool has_tradedate() const;
   void clear_tradedate();
   static const int kTradeDateFieldNumber = 13;
   const ::std::string& tradedate() const;
@@ -2510,7 +2130,6 @@ class PBTradeInfo : public ::google::protobuf::Message {
   void set_allocated_tradedate(::std::string* tradedate);
 
   // optional string tradeTime = 14;
-  bool has_tradetime() const;
   void clear_tradetime();
   static const int kTradeTimeFieldNumber = 14;
   const ::std::string& tradetime() const;
@@ -2522,21 +2141,18 @@ class PBTradeInfo : public ::google::protobuf::Message {
   void set_allocated_tradetime(::std::string* tradetime);
 
   // optional int32 tradeType = 15;
-  bool has_tradetype() const;
   void clear_tradetype();
   static const int kTradeTypeFieldNumber = 15;
   ::google::protobuf::int32 tradetype() const;
   void set_tradetype(::google::protobuf::int32 value);
 
   // optional int32 hedgeFlag = 16;
-  bool has_hedgeflag() const;
   void clear_hedgeflag();
   static const int kHedgeFlagFieldNumber = 16;
   ::google::protobuf::int32 hedgeflag() const;
   void set_hedgeflag(::google::protobuf::int32 value);
 
   // optional double commission = 17;
-  bool has_commission() const;
   void clear_commission();
   static const int kCommissionFieldNumber = 17;
   double commission() const;
@@ -2544,47 +2160,9 @@ class PBTradeInfo : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.PBTradeInfo)
  private:
-  inline void set_has_tradeid();
-  inline void clear_has_tradeid();
-  inline void set_has_direction();
-  inline void clear_has_direction();
-  inline void set_has_openclose();
-  inline void clear_has_openclose();
-  inline void set_has_ordersysid();
-  inline void clear_has_ordersysid();
-  inline void set_has_orderid();
-  inline void clear_has_orderid();
-  inline void set_has_price();
-  inline void clear_has_price();
-  inline void set_has_volume();
-  inline void clear_has_volume();
-  inline void set_has_brokerid();
-  inline void clear_has_brokerid();
-  inline void set_has_investorid();
-  inline void clear_has_investorid();
-  inline void set_has_exchange();
-  inline void clear_has_exchange();
-  inline void set_has_contract();
-  inline void clear_has_contract();
-  inline void set_has_userid();
-  inline void clear_has_userid();
-  inline void set_has_tradedate();
-  inline void clear_has_tradedate();
-  inline void set_has_tradetime();
-  inline void clear_has_tradetime();
-  inline void set_has_tradetype();
-  inline void clear_has_tradetype();
-  inline void set_has_hedgeflag();
-  inline void clear_has_hedgeflag();
-  inline void set_has_commission();
-  inline void clear_has_commission();
-
-  // helper for ByteSize()
-  int RequiredFieldsByteSizeFallback() const;
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::uint64 tradeid_;
   ::google::protobuf::int32 direction_;
   ::google::protobuf::int32 openclose_;
@@ -2602,6 +2180,7 @@ class PBTradeInfo : public ::google::protobuf::Message {
   ::google::protobuf::internal::ArenaStringPtr tradetime_;
   double commission_;
   ::google::protobuf::int32 hedgeflag_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
   friend void protobuf_ShutdownFile_businessobj_2eproto();
@@ -2621,14 +2200,6 @@ class PBPosition : public ::google::protobuf::Message {
   inline PBPosition& operator=(const PBPosition& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -2675,8 +2246,7 @@ class PBPosition : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required string exchange = 1;
-  bool has_exchange() const;
+  // optional string exchange = 1;
   void clear_exchange();
   static const int kExchangeFieldNumber = 1;
   const ::std::string& exchange() const;
@@ -2687,8 +2257,7 @@ class PBPosition : public ::google::protobuf::Message {
   ::std::string* release_exchange();
   void set_allocated_exchange(::std::string* exchange);
 
-  // required string contract = 2;
-  bool has_contract() const;
+  // optional string contract = 2;
   void clear_contract();
   static const int kContractFieldNumber = 2;
   const ::std::string& contract() const;
@@ -2699,29 +2268,25 @@ class PBPosition : public ::google::protobuf::Message {
   ::std::string* release_contract();
   void set_allocated_contract(::std::string* contract);
 
-  // required int32 direction = 3;
-  bool has_direction() const;
+  // optional int32 direction = 3;
   void clear_direction();
   static const int kDirectionFieldNumber = 3;
   ::google::protobuf::int32 direction() const;
   void set_direction(::google::protobuf::int32 value);
 
-  // required int32 position = 5;
-  bool has_position() const;
+  // optional int32 position = 5;
   void clear_position();
   static const int kPositionFieldNumber = 5;
   ::google::protobuf::int32 position() const;
   void set_position(::google::protobuf::int32 value);
 
   // optional int32 ydPosition = 4;
-  bool has_ydposition() const;
   void clear_ydposition();
   static const int kYdPositionFieldNumber = 4;
   ::google::protobuf::int32 ydposition() const;
   void set_ydposition(::google::protobuf::int32 value);
 
   // optional string positionDate = 6;
-  bool has_positiondate() const;
   void clear_positiondate();
   static const int kPositionDateFieldNumber = 6;
   const ::std::string& positiondate() const;
@@ -2733,70 +2298,60 @@ class PBPosition : public ::google::protobuf::Message {
   void set_allocated_positiondate(::std::string* positiondate);
 
   // optional int32 openVolume = 7;
-  bool has_openvolume() const;
   void clear_openvolume();
   static const int kOpenVolumeFieldNumber = 7;
   ::google::protobuf::int32 openvolume() const;
   void set_openvolume(::google::protobuf::int32 value);
 
   // optional int32 closeVolume = 8;
-  bool has_closevolume() const;
   void clear_closevolume();
   static const int kCloseVolumeFieldNumber = 8;
   ::google::protobuf::int32 closevolume() const;
   void set_closevolume(::google::protobuf::int32 value);
 
   // optional double openAmount = 9;
-  bool has_openamount() const;
   void clear_openamount();
   static const int kOpenAmountFieldNumber = 9;
   double openamount() const;
   void set_openamount(double value);
 
   // optional double closeAmount = 10;
-  bool has_closeamount() const;
   void clear_closeamount();
   static const int kCloseAmountFieldNumber = 10;
   double closeamount() const;
   void set_closeamount(double value);
 
   // optional double cost = 11;
-  bool has_cost() const;
   void clear_cost();
   static const int kCostFieldNumber = 11;
   double cost() const;
   void set_cost(double value);
 
   // optional double openCost = 12;
-  bool has_opencost() const;
   void clear_opencost();
   static const int kOpenCostFieldNumber = 12;
   double opencost() const;
   void set_opencost(double value);
 
   // optional double profit = 13;
-  bool has_profit() const;
   void clear_profit();
   static const int kProfitFieldNumber = 13;
   double profit() const;
   void set_profit(double value);
 
   // optional double closeProfit = 14;
-  bool has_closeprofit() const;
   void clear_closeprofit();
   static const int kCloseProfitFieldNumber = 14;
   double closeprofit() const;
   void set_closeprofit(double value);
 
   // optional double useMargin = 15;
-  bool has_usemargin() const;
   void clear_usemargin();
   static const int kUseMarginFieldNumber = 15;
   double usemargin() const;
   void set_usemargin(double value);
 
   // optional int32 hedgeFlag = 16;
-  bool has_hedgeflag() const;
   void clear_hedgeflag();
   static const int kHedgeFlagFieldNumber = 16;
   ::google::protobuf::int32 hedgeflag() const;
@@ -2804,45 +2359,9 @@ class PBPosition : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.PBPosition)
  private:
-  inline void set_has_exchange();
-  inline void clear_has_exchange();
-  inline void set_has_contract();
-  inline void clear_has_contract();
-  inline void set_has_direction();
-  inline void clear_has_direction();
-  inline void set_has_position();
-  inline void clear_has_position();
-  inline void set_has_ydposition();
-  inline void clear_has_ydposition();
-  inline void set_has_positiondate();
-  inline void clear_has_positiondate();
-  inline void set_has_openvolume();
-  inline void clear_has_openvolume();
-  inline void set_has_closevolume();
-  inline void clear_has_closevolume();
-  inline void set_has_openamount();
-  inline void clear_has_openamount();
-  inline void set_has_closeamount();
-  inline void clear_has_closeamount();
-  inline void set_has_cost();
-  inline void clear_has_cost();
-  inline void set_has_opencost();
-  inline void clear_has_opencost();
-  inline void set_has_profit();
-  inline void clear_has_profit();
-  inline void set_has_closeprofit();
-  inline void clear_has_closeprofit();
-  inline void set_has_usemargin();
-  inline void clear_has_usemargin();
-  inline void set_has_hedgeflag();
-  inline void clear_has_hedgeflag();
-
-  // helper for ByteSize()
-  int RequiredFieldsByteSizeFallback() const;
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr exchange_;
   ::google::protobuf::internal::ArenaStringPtr contract_;
   ::google::protobuf::int32 direction_;
@@ -2859,6 +2378,7 @@ class PBPosition : public ::google::protobuf::Message {
   double profit_;
   double closeprofit_;
   double usemargin_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
   friend void protobuf_ShutdownFile_businessobj_2eproto();
@@ -2878,14 +2398,6 @@ class PBAccountInfo : public ::google::protobuf::Message {
   inline PBAccountInfo& operator=(const PBAccountInfo& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -2933,7 +2445,6 @@ class PBAccountInfo : public ::google::protobuf::Message {
   // accessors -------------------------------------------------------
 
   // optional string brokerID = 2;
-  bool has_brokerid() const;
   void clear_brokerid();
   static const int kBrokerIDFieldNumber = 2;
   const ::std::string& brokerid() const;
@@ -2945,7 +2456,6 @@ class PBAccountInfo : public ::google::protobuf::Message {
   void set_allocated_brokerid(::std::string* brokerid);
 
   // optional string accountID = 3;
-  bool has_accountid() const;
   void clear_accountid();
   static const int kAccountIDFieldNumber = 3;
   const ::std::string& accountid() const;
@@ -2957,154 +2467,132 @@ class PBAccountInfo : public ::google::protobuf::Message {
   void set_allocated_accountid(::std::string* accountid);
 
   // optional double preMortgage = 4;
-  bool has_premortgage() const;
   void clear_premortgage();
   static const int kPreMortgageFieldNumber = 4;
   double premortgage() const;
   void set_premortgage(double value);
 
   // optional double preCredit = 5;
-  bool has_precredit() const;
   void clear_precredit();
   static const int kPreCreditFieldNumber = 5;
   double precredit() const;
   void set_precredit(double value);
 
   // optional double preDeposit = 6;
-  bool has_predeposit() const;
   void clear_predeposit();
   static const int kPreDepositFieldNumber = 6;
   double predeposit() const;
   void set_predeposit(double value);
 
   // optional double preBalance = 7;
-  bool has_prebalance() const;
   void clear_prebalance();
   static const int kPreBalanceFieldNumber = 7;
   double prebalance() const;
   void set_prebalance(double value);
 
   // optional double preMargin = 8;
-  bool has_premargin() const;
   void clear_premargin();
   static const int kPreMarginFieldNumber = 8;
   double premargin() const;
   void set_premargin(double value);
 
   // optional double interestBase = 9;
-  bool has_interestbase() const;
   void clear_interestbase();
   static const int kInterestBaseFieldNumber = 9;
   double interestbase() const;
   void set_interestbase(double value);
 
   // optional double interest = 10;
-  bool has_interest() const;
   void clear_interest();
   static const int kInterestFieldNumber = 10;
   double interest() const;
   void set_interest(double value);
 
   // optional double deposit = 11;
-  bool has_deposit() const;
   void clear_deposit();
   static const int kDepositFieldNumber = 11;
   double deposit() const;
   void set_deposit(double value);
 
   // optional double withdraw = 12;
-  bool has_withdraw() const;
   void clear_withdraw();
   static const int kWithdrawFieldNumber = 12;
   double withdraw() const;
   void set_withdraw(double value);
 
   // optional double frozenMargin = 13;
-  bool has_frozenmargin() const;
   void clear_frozenmargin();
   static const int kFrozenMarginFieldNumber = 13;
   double frozenmargin() const;
   void set_frozenmargin(double value);
 
   // optional double frozenCash = 14;
-  bool has_frozencash() const;
   void clear_frozencash();
   static const int kFrozenCashFieldNumber = 14;
   double frozencash() const;
   void set_frozencash(double value);
 
   // optional double frozenCommission = 15;
-  bool has_frozencommission() const;
   void clear_frozencommission();
   static const int kFrozenCommissionFieldNumber = 15;
   double frozencommission() const;
   void set_frozencommission(double value);
 
   // optional double currMargin = 16;
-  bool has_currmargin() const;
   void clear_currmargin();
   static const int kCurrMarginFieldNumber = 16;
   double currmargin() const;
   void set_currmargin(double value);
 
   // optional double cashIn = 17;
-  bool has_cashin() const;
   void clear_cashin();
   static const int kCashInFieldNumber = 17;
   double cashin() const;
   void set_cashin(double value);
 
   // optional double commission = 18;
-  bool has_commission() const;
   void clear_commission();
   static const int kCommissionFieldNumber = 18;
   double commission() const;
   void set_commission(double value);
 
   // optional double closeProfit = 19;
-  bool has_closeprofit() const;
   void clear_closeprofit();
   static const int kCloseProfitFieldNumber = 19;
   double closeprofit() const;
   void set_closeprofit(double value);
 
   // optional double positionProfit = 20;
-  bool has_positionprofit() const;
   void clear_positionprofit();
   static const int kPositionProfitFieldNumber = 20;
   double positionprofit() const;
   void set_positionprofit(double value);
 
   // optional double balance = 21;
-  bool has_balance() const;
   void clear_balance();
   static const int kBalanceFieldNumber = 21;
   double balance() const;
   void set_balance(double value);
 
   // optional double available = 22;
-  bool has_available() const;
   void clear_available();
   static const int kAvailableFieldNumber = 22;
   double available() const;
   void set_available(double value);
 
   // optional double withdrawQuota = 23;
-  bool has_withdrawquota() const;
   void clear_withdrawquota();
   static const int kWithdrawQuotaFieldNumber = 23;
   double withdrawquota() const;
   void set_withdrawquota(double value);
 
   // optional double reserve = 24;
-  bool has_reserve() const;
   void clear_reserve();
   static const int kReserveFieldNumber = 24;
   double reserve() const;
   void set_reserve(double value);
 
   // optional string tradingDay = 25;
-  bool has_tradingday() const;
   void clear_tradingday();
   static const int kTradingDayFieldNumber = 25;
   const ::std::string& tradingday() const;
@@ -3116,49 +2604,42 @@ class PBAccountInfo : public ::google::protobuf::Message {
   void set_allocated_tradingday(::std::string* tradingday);
 
   // optional int32 settlementID = 26;
-  bool has_settlementid() const;
   void clear_settlementid();
   static const int kSettlementIDFieldNumber = 26;
   ::google::protobuf::int32 settlementid() const;
   void set_settlementid(::google::protobuf::int32 value);
 
   // optional double credit = 27;
-  bool has_credit() const;
   void clear_credit();
   static const int kCreditFieldNumber = 27;
   double credit() const;
   void set_credit(double value);
 
   // optional double mortgage = 28;
-  bool has_mortgage() const;
   void clear_mortgage();
   static const int kMortgageFieldNumber = 28;
   double mortgage() const;
   void set_mortgage(double value);
 
   // optional double exchangeMargin = 29;
-  bool has_exchangemargin() const;
   void clear_exchangemargin();
   static const int kExchangeMarginFieldNumber = 29;
   double exchangemargin() const;
   void set_exchangemargin(double value);
 
   // optional double deliveryMargin = 30;
-  bool has_deliverymargin() const;
   void clear_deliverymargin();
   static const int kDeliveryMarginFieldNumber = 30;
   double deliverymargin() const;
   void set_deliverymargin(double value);
 
   // optional double exchangeDeliveryMargin = 31;
-  bool has_exchangedeliverymargin() const;
   void clear_exchangedeliverymargin();
   static const int kExchangeDeliveryMarginFieldNumber = 31;
   double exchangedeliverymargin() const;
   void set_exchangedeliverymargin(double value);
 
   // optional double reserveBalance = 32;
-  bool has_reservebalance() const;
   void clear_reservebalance();
   static const int kReserveBalanceFieldNumber = 32;
   double reservebalance() const;
@@ -3166,72 +2647,9 @@ class PBAccountInfo : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.PBAccountInfo)
  private:
-  inline void set_has_brokerid();
-  inline void clear_has_brokerid();
-  inline void set_has_accountid();
-  inline void clear_has_accountid();
-  inline void set_has_premortgage();
-  inline void clear_has_premortgage();
-  inline void set_has_precredit();
-  inline void clear_has_precredit();
-  inline void set_has_predeposit();
-  inline void clear_has_predeposit();
-  inline void set_has_prebalance();
-  inline void clear_has_prebalance();
-  inline void set_has_premargin();
-  inline void clear_has_premargin();
-  inline void set_has_interestbase();
-  inline void clear_has_interestbase();
-  inline void set_has_interest();
-  inline void clear_has_interest();
-  inline void set_has_deposit();
-  inline void clear_has_deposit();
-  inline void set_has_withdraw();
-  inline void clear_has_withdraw();
-  inline void set_has_frozenmargin();
-  inline void clear_has_frozenmargin();
-  inline void set_has_frozencash();
-  inline void clear_has_frozencash();
-  inline void set_has_frozencommission();
-  inline void clear_has_frozencommission();
-  inline void set_has_currmargin();
-  inline void clear_has_currmargin();
-  inline void set_has_cashin();
-  inline void clear_has_cashin();
-  inline void set_has_commission();
-  inline void clear_has_commission();
-  inline void set_has_closeprofit();
-  inline void clear_has_closeprofit();
-  inline void set_has_positionprofit();
-  inline void clear_has_positionprofit();
-  inline void set_has_balance();
-  inline void clear_has_balance();
-  inline void set_has_available();
-  inline void clear_has_available();
-  inline void set_has_withdrawquota();
-  inline void clear_has_withdrawquota();
-  inline void set_has_reserve();
-  inline void clear_has_reserve();
-  inline void set_has_tradingday();
-  inline void clear_has_tradingday();
-  inline void set_has_settlementid();
-  inline void clear_has_settlementid();
-  inline void set_has_credit();
-  inline void clear_has_credit();
-  inline void set_has_mortgage();
-  inline void clear_has_mortgage();
-  inline void set_has_exchangemargin();
-  inline void clear_has_exchangemargin();
-  inline void set_has_deliverymargin();
-  inline void clear_has_deliverymargin();
-  inline void set_has_exchangedeliverymargin();
-  inline void clear_has_exchangedeliverymargin();
-  inline void set_has_reservebalance();
-  inline void clear_has_reservebalance();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr brokerid_;
   ::google::protobuf::internal::ArenaStringPtr accountid_;
   double premortgage_;
@@ -3263,6 +2681,7 @@ class PBAccountInfo : public ::google::protobuf::Message {
   double exchangedeliverymargin_;
   double reservebalance_;
   ::google::protobuf::int32 settlementid_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
   friend void protobuf_ShutdownFile_businessobj_2eproto();
@@ -3278,421 +2697,331 @@ class PBAccountInfo : public ::google::protobuf::Message {
 #if !PROTOBUF_INLINE_NOT_IN_HEADERS
 // PBUserInfo
 
-// required string userId = 1;
-inline bool PBUserInfo::has_userid() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBUserInfo::set_has_userid() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBUserInfo::clear_has_userid() {
-  _has_bits_[0] &= ~0x00000001u;
-}
+// optional string userId = 1;
 inline void PBUserInfo::clear_userid() {
   userid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_userid();
 }
 inline const ::std::string& PBUserInfo::userid() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBUserInfo.userId)
   return userid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBUserInfo::set_userid(const ::std::string& value) {
-  set_has_userid();
+  
   userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBUserInfo.userId)
 }
 inline void PBUserInfo::set_userid(const char* value) {
-  set_has_userid();
+  
   userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBUserInfo.userId)
 }
 inline void PBUserInfo::set_userid(const char* value, size_t size) {
-  set_has_userid();
+  
   userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBUserInfo.userId)
 }
 inline ::std::string* PBUserInfo::mutable_userid() {
-  set_has_userid();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBUserInfo.userId)
   return userid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBUserInfo::release_userid() {
-  clear_has_userid();
+  
   return userid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBUserInfo::set_allocated_userid(::std::string* userid) {
   if (userid != NULL) {
-    set_has_userid();
+    
   } else {
-    clear_has_userid();
+    
   }
   userid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), userid);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBUserInfo.userId)
 }
 
 // optional string password = 2;
-inline bool PBUserInfo::has_password() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBUserInfo::set_has_password() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBUserInfo::clear_has_password() {
-  _has_bits_[0] &= ~0x00000002u;
-}
 inline void PBUserInfo::clear_password() {
   password_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_password();
 }
 inline const ::std::string& PBUserInfo::password() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBUserInfo.password)
   return password_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBUserInfo::set_password(const ::std::string& value) {
-  set_has_password();
+  
   password_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBUserInfo.password)
 }
 inline void PBUserInfo::set_password(const char* value) {
-  set_has_password();
+  
   password_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBUserInfo.password)
 }
 inline void PBUserInfo::set_password(const char* value, size_t size) {
-  set_has_password();
+  
   password_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBUserInfo.password)
 }
 inline ::std::string* PBUserInfo::mutable_password() {
-  set_has_password();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBUserInfo.password)
   return password_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBUserInfo::release_password() {
-  clear_has_password();
+  
   return password_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBUserInfo::set_allocated_password(::std::string* password) {
   if (password != NULL) {
-    set_has_password();
+    
   } else {
-    clear_has_password();
+    
   }
   password_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), password);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBUserInfo.password)
 }
 
 // optional string brokerId = 3;
-inline bool PBUserInfo::has_brokerid() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBUserInfo::set_has_brokerid() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBUserInfo::clear_has_brokerid() {
-  _has_bits_[0] &= ~0x00000004u;
-}
 inline void PBUserInfo::clear_brokerid() {
   brokerid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_brokerid();
 }
 inline const ::std::string& PBUserInfo::brokerid() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBUserInfo.brokerId)
   return brokerid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBUserInfo::set_brokerid(const ::std::string& value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBUserInfo.brokerId)
 }
 inline void PBUserInfo::set_brokerid(const char* value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBUserInfo.brokerId)
 }
 inline void PBUserInfo::set_brokerid(const char* value, size_t size) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBUserInfo.brokerId)
 }
 inline ::std::string* PBUserInfo::mutable_brokerid() {
-  set_has_brokerid();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBUserInfo.brokerId)
   return brokerid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBUserInfo::release_brokerid() {
-  clear_has_brokerid();
+  
   return brokerid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBUserInfo::set_allocated_brokerid(::std::string* brokerid) {
   if (brokerid != NULL) {
-    set_has_brokerid();
+    
   } else {
-    clear_has_brokerid();
+    
   }
   brokerid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), brokerid);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBUserInfo.brokerId)
 }
 
 // optional string name = 4;
-inline bool PBUserInfo::has_name() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void PBUserInfo::set_has_name() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void PBUserInfo::clear_has_name() {
-  _has_bits_[0] &= ~0x00000008u;
-}
 inline void PBUserInfo::clear_name() {
   name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_name();
 }
 inline const ::std::string& PBUserInfo::name() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBUserInfo.name)
   return name_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBUserInfo::set_name(const ::std::string& value) {
-  set_has_name();
+  
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBUserInfo.name)
 }
 inline void PBUserInfo::set_name(const char* value) {
-  set_has_name();
+  
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBUserInfo.name)
 }
 inline void PBUserInfo::set_name(const char* value, size_t size) {
-  set_has_name();
+  
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBUserInfo.name)
 }
 inline ::std::string* PBUserInfo::mutable_name() {
-  set_has_name();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBUserInfo.name)
   return name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBUserInfo::release_name() {
-  clear_has_name();
+  
   return name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBUserInfo::set_allocated_name(::std::string* name) {
   if (name != NULL) {
-    set_has_name();
+    
   } else {
-    clear_has_name();
+    
   }
   name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), name);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBUserInfo.name)
 }
 
 // optional string company = 5;
-inline bool PBUserInfo::has_company() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void PBUserInfo::set_has_company() {
-  _has_bits_[0] |= 0x00000010u;
-}
-inline void PBUserInfo::clear_has_company() {
-  _has_bits_[0] &= ~0x00000010u;
-}
 inline void PBUserInfo::clear_company() {
   company_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_company();
 }
 inline const ::std::string& PBUserInfo::company() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBUserInfo.company)
   return company_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBUserInfo::set_company(const ::std::string& value) {
-  set_has_company();
+  
   company_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBUserInfo.company)
 }
 inline void PBUserInfo::set_company(const char* value) {
-  set_has_company();
+  
   company_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBUserInfo.company)
 }
 inline void PBUserInfo::set_company(const char* value, size_t size) {
-  set_has_company();
+  
   company_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBUserInfo.company)
 }
 inline ::std::string* PBUserInfo::mutable_company() {
-  set_has_company();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBUserInfo.company)
   return company_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBUserInfo::release_company() {
-  clear_has_company();
+  
   return company_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBUserInfo::set_allocated_company(::std::string* company) {
   if (company != NULL) {
-    set_has_company();
+    
   } else {
-    clear_has_company();
+    
   }
   company_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), company);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBUserInfo.company)
 }
 
 // optional string email = 6;
-inline bool PBUserInfo::has_email() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
-}
-inline void PBUserInfo::set_has_email() {
-  _has_bits_[0] |= 0x00000020u;
-}
-inline void PBUserInfo::clear_has_email() {
-  _has_bits_[0] &= ~0x00000020u;
-}
 inline void PBUserInfo::clear_email() {
   email_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_email();
 }
 inline const ::std::string& PBUserInfo::email() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBUserInfo.email)
   return email_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBUserInfo::set_email(const ::std::string& value) {
-  set_has_email();
+  
   email_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBUserInfo.email)
 }
 inline void PBUserInfo::set_email(const char* value) {
-  set_has_email();
+  
   email_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBUserInfo.email)
 }
 inline void PBUserInfo::set_email(const char* value, size_t size) {
-  set_has_email();
+  
   email_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBUserInfo.email)
 }
 inline ::std::string* PBUserInfo::mutable_email() {
-  set_has_email();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBUserInfo.email)
   return email_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBUserInfo::release_email() {
-  clear_has_email();
+  
   return email_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBUserInfo::set_allocated_email(::std::string* email) {
   if (email != NULL) {
-    set_has_email();
+    
   } else {
-    clear_has_email();
+    
   }
   email_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), email);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBUserInfo.email)
 }
 
 // optional string contactNum = 7;
-inline bool PBUserInfo::has_contactnum() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
-}
-inline void PBUserInfo::set_has_contactnum() {
-  _has_bits_[0] |= 0x00000040u;
-}
-inline void PBUserInfo::clear_has_contactnum() {
-  _has_bits_[0] &= ~0x00000040u;
-}
 inline void PBUserInfo::clear_contactnum() {
   contactnum_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_contactnum();
 }
 inline const ::std::string& PBUserInfo::contactnum() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBUserInfo.contactNum)
   return contactnum_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBUserInfo::set_contactnum(const ::std::string& value) {
-  set_has_contactnum();
+  
   contactnum_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBUserInfo.contactNum)
 }
 inline void PBUserInfo::set_contactnum(const char* value) {
-  set_has_contactnum();
+  
   contactnum_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBUserInfo.contactNum)
 }
 inline void PBUserInfo::set_contactnum(const char* value, size_t size) {
-  set_has_contactnum();
+  
   contactnum_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBUserInfo.contactNum)
 }
 inline ::std::string* PBUserInfo::mutable_contactnum() {
-  set_has_contactnum();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBUserInfo.contactNum)
   return contactnum_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBUserInfo::release_contactnum() {
-  clear_has_contactnum();
+  
   return contactnum_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBUserInfo::set_allocated_contactnum(::std::string* contactnum) {
   if (contactnum != NULL) {
-    set_has_contactnum();
+    
   } else {
-    clear_has_contactnum();
+    
   }
   contactnum_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), contactnum);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBUserInfo.contactNum)
 }
 
 // optional int32 role = 8;
-inline bool PBUserInfo::has_role() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
-}
-inline void PBUserInfo::set_has_role() {
-  _has_bits_[0] |= 0x00000080u;
-}
-inline void PBUserInfo::clear_has_role() {
-  _has_bits_[0] &= ~0x00000080u;
-}
 inline void PBUserInfo::clear_role() {
   role_ = 0;
-  clear_has_role();
 }
 inline ::google::protobuf::int32 PBUserInfo::role() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBUserInfo.role)
   return role_;
 }
 inline void PBUserInfo::set_role(::google::protobuf::int32 value) {
-  set_has_role();
+  
   role_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBUserInfo.role)
 }
 
 // optional int32 permission = 9;
-inline bool PBUserInfo::has_permission() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
-}
-inline void PBUserInfo::set_has_permission() {
-  _has_bits_[0] |= 0x00000100u;
-}
-inline void PBUserInfo::clear_has_permission() {
-  _has_bits_[0] &= ~0x00000100u;
-}
 inline void PBUserInfo::clear_permission() {
   permission_ = 0;
-  clear_has_permission();
 }
 inline ::google::protobuf::int32 PBUserInfo::permission() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBUserInfo.permission)
   return permission_;
 }
 inline void PBUserInfo::set_permission(::google::protobuf::int32 value) {
-  set_has_permission();
+  
   permission_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBUserInfo.permission)
 }
@@ -3720,94 +3049,74 @@ inline ::Micro::Future::Message::Business::PBUserInfo* PBUserInfoList::add_useri
   // @@protoc_insertion_point(field_add:Micro.Future.Message.Business.PBUserInfoList.userInfo)
   return userinfo_.Add();
 }
-inline const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBUserInfo >&
-PBUserInfoList::userinfo() const {
-  // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBUserInfoList.userInfo)
-  return userinfo_;
-}
 inline ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBUserInfo >*
 PBUserInfoList::mutable_userinfo() {
   // @@protoc_insertion_point(field_mutable_list:Micro.Future.Message.Business.PBUserInfoList.userInfo)
   return &userinfo_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBUserInfo >&
+PBUserInfoList::userinfo() const {
+  // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBUserInfoList.userInfo)
+  return userinfo_;
 }
 
 // -------------------------------------------------------------------
 
 // PBParam
 
-// required string name = 1;
-inline bool PBParam::has_name() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBParam::set_has_name() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBParam::clear_has_name() {
-  _has_bits_[0] &= ~0x00000001u;
-}
+// optional string name = 1;
 inline void PBParam::clear_name() {
   name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_name();
 }
 inline const ::std::string& PBParam::name() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBParam.name)
   return name_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBParam::set_name(const ::std::string& value) {
-  set_has_name();
+  
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBParam.name)
 }
 inline void PBParam::set_name(const char* value) {
-  set_has_name();
+  
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBParam.name)
 }
 inline void PBParam::set_name(const char* value, size_t size) {
-  set_has_name();
+  
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBParam.name)
 }
 inline ::std::string* PBParam::mutable_name() {
-  set_has_name();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBParam.name)
   return name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBParam::release_name() {
-  clear_has_name();
+  
   return name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBParam::set_allocated_name(::std::string* name) {
   if (name != NULL) {
-    set_has_name();
+    
   } else {
-    clear_has_name();
+    
   }
   name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), name);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBParam.name)
 }
 
-// required double value = 2;
-inline bool PBParam::has_value() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBParam::set_has_value() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBParam::clear_has_value() {
-  _has_bits_[0] &= ~0x00000002u;
-}
+// optional double value = 2;
 inline void PBParam::clear_value() {
   value_ = 0;
-  clear_has_value();
 }
 inline double PBParam::value() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBParam.value)
   return value_;
 }
 inline void PBParam::set_value(double value) {
-  set_has_value();
+  
   value_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBParam.value)
 }
@@ -3816,276 +3125,186 @@ inline void PBParam::set_value(double value) {
 
 // PBMarketData
 
-// required string symbol = 1;
-inline bool PBMarketData::has_symbol() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBMarketData::set_has_symbol() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBMarketData::clear_has_symbol() {
-  _has_bits_[0] &= ~0x00000001u;
-}
+// optional string symbol = 1;
 inline void PBMarketData::clear_symbol() {
   symbol_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_symbol();
 }
 inline const ::std::string& PBMarketData::symbol() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketData.symbol)
   return symbol_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMarketData::set_symbol(const ::std::string& value) {
-  set_has_symbol();
+  
   symbol_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.symbol)
 }
 inline void PBMarketData::set_symbol(const char* value) {
-  set_has_symbol();
+  
   symbol_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBMarketData.symbol)
 }
 inline void PBMarketData::set_symbol(const char* value, size_t size) {
-  set_has_symbol();
+  
   symbol_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBMarketData.symbol)
 }
 inline ::std::string* PBMarketData::mutable_symbol() {
-  set_has_symbol();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBMarketData.symbol)
   return symbol_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMarketData::release_symbol() {
-  clear_has_symbol();
+  
   return symbol_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMarketData::set_allocated_symbol(::std::string* symbol) {
   if (symbol != NULL) {
-    set_has_symbol();
+    
   } else {
-    clear_has_symbol();
+    
   }
   symbol_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), symbol);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBMarketData.symbol)
 }
 
 // optional string timeStamp = 2;
-inline bool PBMarketData::has_timestamp() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBMarketData::set_has_timestamp() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBMarketData::clear_has_timestamp() {
-  _has_bits_[0] &= ~0x00000002u;
-}
 inline void PBMarketData::clear_timestamp() {
   timestamp_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_timestamp();
 }
 inline const ::std::string& PBMarketData::timestamp() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketData.timeStamp)
   return timestamp_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMarketData::set_timestamp(const ::std::string& value) {
-  set_has_timestamp();
+  
   timestamp_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.timeStamp)
 }
 inline void PBMarketData::set_timestamp(const char* value) {
-  set_has_timestamp();
+  
   timestamp_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBMarketData.timeStamp)
 }
 inline void PBMarketData::set_timestamp(const char* value, size_t size) {
-  set_has_timestamp();
+  
   timestamp_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBMarketData.timeStamp)
 }
 inline ::std::string* PBMarketData::mutable_timestamp() {
-  set_has_timestamp();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBMarketData.timeStamp)
   return timestamp_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMarketData::release_timestamp() {
-  clear_has_timestamp();
+  
   return timestamp_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMarketData::set_allocated_timestamp(::std::string* timestamp) {
   if (timestamp != NULL) {
-    set_has_timestamp();
+    
   } else {
-    clear_has_timestamp();
+    
   }
   timestamp_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), timestamp);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBMarketData.timeStamp)
 }
 
 // optional double preCloseValue = 3;
-inline bool PBMarketData::has_preclosevalue() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBMarketData::set_has_preclosevalue() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBMarketData::clear_has_preclosevalue() {
-  _has_bits_[0] &= ~0x00000004u;
-}
 inline void PBMarketData::clear_preclosevalue() {
   preclosevalue_ = 0;
-  clear_has_preclosevalue();
 }
 inline double PBMarketData::preclosevalue() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketData.preCloseValue)
   return preclosevalue_;
 }
 inline void PBMarketData::set_preclosevalue(double value) {
-  set_has_preclosevalue();
+  
   preclosevalue_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.preCloseValue)
 }
 
 // optional double openValue = 4;
-inline bool PBMarketData::has_openvalue() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void PBMarketData::set_has_openvalue() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void PBMarketData::clear_has_openvalue() {
-  _has_bits_[0] &= ~0x00000008u;
-}
 inline void PBMarketData::clear_openvalue() {
   openvalue_ = 0;
-  clear_has_openvalue();
 }
 inline double PBMarketData::openvalue() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketData.openValue)
   return openvalue_;
 }
 inline void PBMarketData::set_openvalue(double value) {
-  set_has_openvalue();
+  
   openvalue_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.openValue)
 }
 
 // optional double turnover = 5;
-inline bool PBMarketData::has_turnover() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void PBMarketData::set_has_turnover() {
-  _has_bits_[0] |= 0x00000010u;
-}
-inline void PBMarketData::clear_has_turnover() {
-  _has_bits_[0] &= ~0x00000010u;
-}
 inline void PBMarketData::clear_turnover() {
   turnover_ = 0;
-  clear_has_turnover();
 }
 inline double PBMarketData::turnover() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketData.turnover)
   return turnover_;
 }
 inline void PBMarketData::set_turnover(double value) {
-  set_has_turnover();
+  
   turnover_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.turnover)
 }
 
 // optional int32 volume = 6;
-inline bool PBMarketData::has_volume() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
-}
-inline void PBMarketData::set_has_volume() {
-  _has_bits_[0] |= 0x00000020u;
-}
-inline void PBMarketData::clear_has_volume() {
-  _has_bits_[0] &= ~0x00000020u;
-}
 inline void PBMarketData::clear_volume() {
   volume_ = 0;
-  clear_has_volume();
 }
 inline ::google::protobuf::int32 PBMarketData::volume() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketData.volume)
   return volume_;
 }
 inline void PBMarketData::set_volume(::google::protobuf::int32 value) {
-  set_has_volume();
+  
   volume_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.volume)
 }
 
 // optional double highValue = 7;
-inline bool PBMarketData::has_highvalue() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
-}
-inline void PBMarketData::set_has_highvalue() {
-  _has_bits_[0] |= 0x00000040u;
-}
-inline void PBMarketData::clear_has_highvalue() {
-  _has_bits_[0] &= ~0x00000040u;
-}
 inline void PBMarketData::clear_highvalue() {
   highvalue_ = 0;
-  clear_has_highvalue();
 }
 inline double PBMarketData::highvalue() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketData.highValue)
   return highvalue_;
 }
 inline void PBMarketData::set_highvalue(double value) {
-  set_has_highvalue();
+  
   highvalue_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.highValue)
 }
 
 // optional double lowValue = 8;
-inline bool PBMarketData::has_lowvalue() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
-}
-inline void PBMarketData::set_has_lowvalue() {
-  _has_bits_[0] |= 0x00000080u;
-}
-inline void PBMarketData::clear_has_lowvalue() {
-  _has_bits_[0] &= ~0x00000080u;
-}
 inline void PBMarketData::clear_lowvalue() {
   lowvalue_ = 0;
-  clear_has_lowvalue();
 }
 inline double PBMarketData::lowvalue() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketData.lowValue)
   return lowvalue_;
 }
 inline void PBMarketData::set_lowvalue(double value) {
-  set_has_lowvalue();
+  
   lowvalue_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.lowValue)
 }
 
 // optional double matchPrice = 9;
-inline bool PBMarketData::has_matchprice() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
-}
-inline void PBMarketData::set_has_matchprice() {
-  _has_bits_[0] |= 0x00000100u;
-}
-inline void PBMarketData::clear_has_matchprice() {
-  _has_bits_[0] &= ~0x00000100u;
-}
 inline void PBMarketData::clear_matchprice() {
   matchprice_ = 0;
-  clear_has_matchprice();
 }
 inline double PBMarketData::matchprice() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketData.matchPrice)
   return matchprice_;
 }
 inline void PBMarketData::set_matchprice(double value) {
-  set_has_matchprice();
+  
   matchprice_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.matchPrice)
 }
@@ -4211,121 +3430,71 @@ PBMarketData::mutable_bidvolume() {
 }
 
 // optional double preSettlePrice = 14;
-inline bool PBMarketData::has_presettleprice() const {
-  return (_has_bits_[0] & 0x00002000u) != 0;
-}
-inline void PBMarketData::set_has_presettleprice() {
-  _has_bits_[0] |= 0x00002000u;
-}
-inline void PBMarketData::clear_has_presettleprice() {
-  _has_bits_[0] &= ~0x00002000u;
-}
 inline void PBMarketData::clear_presettleprice() {
   presettleprice_ = 0;
-  clear_has_presettleprice();
 }
 inline double PBMarketData::presettleprice() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketData.preSettlePrice)
   return presettleprice_;
 }
 inline void PBMarketData::set_presettleprice(double value) {
-  set_has_presettleprice();
+  
   presettleprice_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.preSettlePrice)
 }
 
 // optional double priceChange = 15;
-inline bool PBMarketData::has_pricechange() const {
-  return (_has_bits_[0] & 0x00004000u) != 0;
-}
-inline void PBMarketData::set_has_pricechange() {
-  _has_bits_[0] |= 0x00004000u;
-}
-inline void PBMarketData::clear_has_pricechange() {
-  _has_bits_[0] &= ~0x00004000u;
-}
 inline void PBMarketData::clear_pricechange() {
   pricechange_ = 0;
-  clear_has_pricechange();
 }
 inline double PBMarketData::pricechange() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketData.priceChange)
   return pricechange_;
 }
 inline void PBMarketData::set_pricechange(double value) {
-  set_has_pricechange();
+  
   pricechange_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.priceChange)
 }
 
 // optional double settlePrice = 16;
-inline bool PBMarketData::has_settleprice() const {
-  return (_has_bits_[0] & 0x00008000u) != 0;
-}
-inline void PBMarketData::set_has_settleprice() {
-  _has_bits_[0] |= 0x00008000u;
-}
-inline void PBMarketData::clear_has_settleprice() {
-  _has_bits_[0] &= ~0x00008000u;
-}
 inline void PBMarketData::clear_settleprice() {
   settleprice_ = 0;
-  clear_has_settleprice();
 }
 inline double PBMarketData::settleprice() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketData.settlePrice)
   return settleprice_;
 }
 inline void PBMarketData::set_settleprice(double value) {
-  set_has_settleprice();
+  
   settleprice_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.settlePrice)
 }
 
 // optional int32 highLimit = 17;
-inline bool PBMarketData::has_highlimit() const {
-  return (_has_bits_[0] & 0x00010000u) != 0;
-}
-inline void PBMarketData::set_has_highlimit() {
-  _has_bits_[0] |= 0x00010000u;
-}
-inline void PBMarketData::clear_has_highlimit() {
-  _has_bits_[0] &= ~0x00010000u;
-}
 inline void PBMarketData::clear_highlimit() {
   highlimit_ = 0;
-  clear_has_highlimit();
 }
 inline ::google::protobuf::int32 PBMarketData::highlimit() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketData.highLimit)
   return highlimit_;
 }
 inline void PBMarketData::set_highlimit(::google::protobuf::int32 value) {
-  set_has_highlimit();
+  
   highlimit_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.highLimit)
 }
 
 // optional int32 lowLimit = 18;
-inline bool PBMarketData::has_lowlimit() const {
-  return (_has_bits_[0] & 0x00020000u) != 0;
-}
-inline void PBMarketData::set_has_lowlimit() {
-  _has_bits_[0] |= 0x00020000u;
-}
-inline void PBMarketData::clear_has_lowlimit() {
-  _has_bits_[0] &= ~0x00020000u;
-}
 inline void PBMarketData::clear_lowlimit() {
   lowlimit_ = 0;
-  clear_has_lowlimit();
 }
 inline ::google::protobuf::int32 PBMarketData::lowlimit() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketData.lowLimit)
   return lowlimit_;
 }
 inline void PBMarketData::set_lowlimit(::google::protobuf::int32 value) {
-  set_has_lowlimit();
+  
   lowlimit_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.lowLimit)
 }
@@ -4353,171 +3522,131 @@ inline ::Micro::Future::Message::Business::PBMarketData* PBMarketDataList::add_m
   // @@protoc_insertion_point(field_add:Micro.Future.Message.Business.PBMarketDataList.mdList)
   return mdlist_.Add();
 }
-inline const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBMarketData >&
-PBMarketDataList::mdlist() const {
-  // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBMarketDataList.mdList)
-  return mdlist_;
-}
 inline ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBMarketData >*
 PBMarketDataList::mutable_mdlist() {
   // @@protoc_insertion_point(field_mutable_list:Micro.Future.Message.Business.PBMarketDataList.mdList)
   return &mdlist_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBMarketData >&
+PBMarketDataList::mdlist() const {
+  // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBMarketDataList.mdList)
+  return mdlist_;
 }
 
 // -------------------------------------------------------------------
 
 // PBPricingData
 
-// required string exchange = 1;
-inline bool PBPricingData::has_exchange() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBPricingData::set_has_exchange() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBPricingData::clear_has_exchange() {
-  _has_bits_[0] &= ~0x00000001u;
-}
+// optional string exchange = 1;
 inline void PBPricingData::clear_exchange() {
   exchange_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_exchange();
 }
 inline const ::std::string& PBPricingData::exchange() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPricingData.exchange)
   return exchange_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBPricingData::set_exchange(const ::std::string& value) {
-  set_has_exchange();
+  
   exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPricingData.exchange)
 }
 inline void PBPricingData::set_exchange(const char* value) {
-  set_has_exchange();
+  
   exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBPricingData.exchange)
 }
 inline void PBPricingData::set_exchange(const char* value, size_t size) {
-  set_has_exchange();
+  
   exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBPricingData.exchange)
 }
 inline ::std::string* PBPricingData::mutable_exchange() {
-  set_has_exchange();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBPricingData.exchange)
   return exchange_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBPricingData::release_exchange() {
-  clear_has_exchange();
+  
   return exchange_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBPricingData::set_allocated_exchange(::std::string* exchange) {
   if (exchange != NULL) {
-    set_has_exchange();
+    
   } else {
-    clear_has_exchange();
+    
   }
   exchange_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), exchange);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBPricingData.exchange)
 }
 
-// required string contract = 2;
-inline bool PBPricingData::has_contract() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBPricingData::set_has_contract() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBPricingData::clear_has_contract() {
-  _has_bits_[0] &= ~0x00000002u;
-}
+// optional string contract = 2;
 inline void PBPricingData::clear_contract() {
   contract_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_contract();
 }
 inline const ::std::string& PBPricingData::contract() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPricingData.contract)
   return contract_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBPricingData::set_contract(const ::std::string& value) {
-  set_has_contract();
+  
   contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPricingData.contract)
 }
 inline void PBPricingData::set_contract(const char* value) {
-  set_has_contract();
+  
   contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBPricingData.contract)
 }
 inline void PBPricingData::set_contract(const char* value, size_t size) {
-  set_has_contract();
+  
   contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBPricingData.contract)
 }
 inline ::std::string* PBPricingData::mutable_contract() {
-  set_has_contract();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBPricingData.contract)
   return contract_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBPricingData::release_contract() {
-  clear_has_contract();
+  
   return contract_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBPricingData::set_allocated_contract(::std::string* contract) {
   if (contract != NULL) {
-    set_has_contract();
+    
   } else {
-    clear_has_contract();
+    
   }
   contract_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), contract);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBPricingData.contract)
 }
 
-// required double askPrice = 3;
-inline bool PBPricingData::has_askprice() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBPricingData::set_has_askprice() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBPricingData::clear_has_askprice() {
-  _has_bits_[0] &= ~0x00000004u;
-}
+// optional double askPrice = 3;
 inline void PBPricingData::clear_askprice() {
   askprice_ = 0;
-  clear_has_askprice();
 }
 inline double PBPricingData::askprice() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPricingData.askPrice)
   return askprice_;
 }
 inline void PBPricingData::set_askprice(double value) {
-  set_has_askprice();
+  
   askprice_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPricingData.askPrice)
 }
 
-// required double bidPrice = 4;
-inline bool PBPricingData::has_bidprice() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void PBPricingData::set_has_bidprice() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void PBPricingData::clear_has_bidprice() {
-  _has_bits_[0] &= ~0x00000008u;
-}
+// optional double bidPrice = 4;
 inline void PBPricingData::clear_bidprice() {
   bidprice_ = 0;
-  clear_has_bidprice();
 }
 inline double PBPricingData::bidprice() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPricingData.bidPrice)
   return bidprice_;
 }
 inline void PBPricingData::set_bidprice(double value) {
-  set_has_bidprice();
+  
   bidprice_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPricingData.bidPrice)
 }
@@ -4545,147 +3674,117 @@ inline ::Micro::Future::Message::Business::PBPricingData* PBPricingDataList::add
   // @@protoc_insertion_point(field_add:Micro.Future.Message.Business.PBPricingDataList.pricing)
   return pricing_.Add();
 }
-inline const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBPricingData >&
-PBPricingDataList::pricing() const {
-  // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBPricingDataList.pricing)
-  return pricing_;
-}
 inline ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBPricingData >*
 PBPricingDataList::mutable_pricing() {
   // @@protoc_insertion_point(field_mutable_list:Micro.Future.Message.Business.PBPricingDataList.pricing)
   return &pricing_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBPricingData >&
+PBPricingDataList::pricing() const {
+  // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBPricingDataList.pricing)
+  return pricing_;
 }
 
 // -------------------------------------------------------------------
 
 // PBStrategyWeight
 
-// required string exchange = 3;
-inline bool PBStrategyWeight::has_exchange() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBStrategyWeight::set_has_exchange() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBStrategyWeight::clear_has_exchange() {
-  _has_bits_[0] &= ~0x00000001u;
-}
+// optional string exchange = 3;
 inline void PBStrategyWeight::clear_exchange() {
   exchange_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_exchange();
 }
 inline const ::std::string& PBStrategyWeight::exchange() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategyWeight.exchange)
   return exchange_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBStrategyWeight::set_exchange(const ::std::string& value) {
-  set_has_exchange();
+  
   exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategyWeight.exchange)
 }
 inline void PBStrategyWeight::set_exchange(const char* value) {
-  set_has_exchange();
+  
   exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBStrategyWeight.exchange)
 }
 inline void PBStrategyWeight::set_exchange(const char* value, size_t size) {
-  set_has_exchange();
+  
   exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBStrategyWeight.exchange)
 }
 inline ::std::string* PBStrategyWeight::mutable_exchange() {
-  set_has_exchange();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBStrategyWeight.exchange)
   return exchange_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBStrategyWeight::release_exchange() {
-  clear_has_exchange();
+  
   return exchange_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBStrategyWeight::set_allocated_exchange(::std::string* exchange) {
   if (exchange != NULL) {
-    set_has_exchange();
+    
   } else {
-    clear_has_exchange();
+    
   }
   exchange_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), exchange);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBStrategyWeight.exchange)
 }
 
-// required string contract = 4;
-inline bool PBStrategyWeight::has_contract() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBStrategyWeight::set_has_contract() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBStrategyWeight::clear_has_contract() {
-  _has_bits_[0] &= ~0x00000002u;
-}
+// optional string contract = 4;
 inline void PBStrategyWeight::clear_contract() {
   contract_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_contract();
 }
 inline const ::std::string& PBStrategyWeight::contract() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategyWeight.contract)
   return contract_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBStrategyWeight::set_contract(const ::std::string& value) {
-  set_has_contract();
+  
   contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategyWeight.contract)
 }
 inline void PBStrategyWeight::set_contract(const char* value) {
-  set_has_contract();
+  
   contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBStrategyWeight.contract)
 }
 inline void PBStrategyWeight::set_contract(const char* value, size_t size) {
-  set_has_contract();
+  
   contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBStrategyWeight.contract)
 }
 inline ::std::string* PBStrategyWeight::mutable_contract() {
-  set_has_contract();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBStrategyWeight.contract)
   return contract_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBStrategyWeight::release_contract() {
-  clear_has_contract();
+  
   return contract_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBStrategyWeight::set_allocated_contract(::std::string* contract) {
   if (contract != NULL) {
-    set_has_contract();
+    
   } else {
-    clear_has_contract();
+    
   }
   contract_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), contract);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBStrategyWeight.contract)
 }
 
-// required float weight = 6;
-inline bool PBStrategyWeight::has_weight() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBStrategyWeight::set_has_weight() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBStrategyWeight::clear_has_weight() {
-  _has_bits_[0] &= ~0x00000004u;
-}
+// optional float weight = 6;
 inline void PBStrategyWeight::clear_weight() {
   weight_ = 0;
-  clear_has_weight();
 }
 inline float PBStrategyWeight::weight() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategyWeight.weight)
   return weight_;
 }
 inline void PBStrategyWeight::set_weight(float value) {
-  set_has_weight();
+  
   weight_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategyWeight.weight)
 }
@@ -4694,411 +3793,301 @@ inline void PBStrategyWeight::set_weight(float value) {
 
 // PBStrategy
 
-// required string exchange = 1;
-inline bool PBStrategy::has_exchange() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBStrategy::set_has_exchange() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBStrategy::clear_has_exchange() {
-  _has_bits_[0] &= ~0x00000001u;
-}
+// optional string exchange = 1;
 inline void PBStrategy::clear_exchange() {
   exchange_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_exchange();
 }
 inline const ::std::string& PBStrategy::exchange() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.exchange)
   return exchange_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBStrategy::set_exchange(const ::std::string& value) {
-  set_has_exchange();
+  
   exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.exchange)
 }
 inline void PBStrategy::set_exchange(const char* value) {
-  set_has_exchange();
+  
   exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBStrategy.exchange)
 }
 inline void PBStrategy::set_exchange(const char* value, size_t size) {
-  set_has_exchange();
+  
   exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBStrategy.exchange)
 }
 inline ::std::string* PBStrategy::mutable_exchange() {
-  set_has_exchange();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBStrategy.exchange)
   return exchange_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBStrategy::release_exchange() {
-  clear_has_exchange();
+  
   return exchange_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBStrategy::set_allocated_exchange(::std::string* exchange) {
   if (exchange != NULL) {
-    set_has_exchange();
+    
   } else {
-    clear_has_exchange();
+    
   }
   exchange_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), exchange);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBStrategy.exchange)
 }
 
-// required string contract = 2;
-inline bool PBStrategy::has_contract() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBStrategy::set_has_contract() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBStrategy::clear_has_contract() {
-  _has_bits_[0] &= ~0x00000002u;
-}
+// optional string contract = 2;
 inline void PBStrategy::clear_contract() {
   contract_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_contract();
 }
 inline const ::std::string& PBStrategy::contract() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.contract)
   return contract_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBStrategy::set_contract(const ::std::string& value) {
-  set_has_contract();
+  
   contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.contract)
 }
 inline void PBStrategy::set_contract(const char* value) {
-  set_has_contract();
+  
   contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBStrategy.contract)
 }
 inline void PBStrategy::set_contract(const char* value, size_t size) {
-  set_has_contract();
+  
   contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBStrategy.contract)
 }
 inline ::std::string* PBStrategy::mutable_contract() {
-  set_has_contract();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBStrategy.contract)
   return contract_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBStrategy::release_contract() {
-  clear_has_contract();
+  
   return contract_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBStrategy::set_allocated_contract(::std::string* contract) {
   if (contract != NULL) {
-    set_has_contract();
+    
   } else {
-    clear_has_contract();
+    
   }
   contract_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), contract);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBStrategy.contract)
 }
 
 // optional string underlying = 3;
-inline bool PBStrategy::has_underlying() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBStrategy::set_has_underlying() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBStrategy::clear_has_underlying() {
-  _has_bits_[0] &= ~0x00000004u;
-}
 inline void PBStrategy::clear_underlying() {
   underlying_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_underlying();
 }
 inline const ::std::string& PBStrategy::underlying() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.underlying)
   return underlying_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBStrategy::set_underlying(const ::std::string& value) {
-  set_has_underlying();
+  
   underlying_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.underlying)
 }
 inline void PBStrategy::set_underlying(const char* value) {
-  set_has_underlying();
+  
   underlying_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBStrategy.underlying)
 }
 inline void PBStrategy::set_underlying(const char* value, size_t size) {
-  set_has_underlying();
+  
   underlying_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBStrategy.underlying)
 }
 inline ::std::string* PBStrategy::mutable_underlying() {
-  set_has_underlying();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBStrategy.underlying)
   return underlying_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBStrategy::release_underlying() {
-  clear_has_underlying();
+  
   return underlying_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBStrategy::set_allocated_underlying(::std::string* underlying) {
   if (underlying != NULL) {
-    set_has_underlying();
+    
   } else {
-    clear_has_underlying();
+    
   }
   underlying_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), underlying);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBStrategy.underlying)
 }
 
 // optional string symbol = 4;
-inline bool PBStrategy::has_symbol() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void PBStrategy::set_has_symbol() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void PBStrategy::clear_has_symbol() {
-  _has_bits_[0] &= ~0x00000008u;
-}
 inline void PBStrategy::clear_symbol() {
   symbol_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_symbol();
 }
 inline const ::std::string& PBStrategy::symbol() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.symbol)
   return symbol_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBStrategy::set_symbol(const ::std::string& value) {
-  set_has_symbol();
+  
   symbol_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.symbol)
 }
 inline void PBStrategy::set_symbol(const char* value) {
-  set_has_symbol();
+  
   symbol_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBStrategy.symbol)
 }
 inline void PBStrategy::set_symbol(const char* value, size_t size) {
-  set_has_symbol();
+  
   symbol_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBStrategy.symbol)
 }
 inline ::std::string* PBStrategy::mutable_symbol() {
-  set_has_symbol();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBStrategy.symbol)
   return symbol_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBStrategy::release_symbol() {
-  clear_has_symbol();
+  
   return symbol_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBStrategy::set_allocated_symbol(::std::string* symbol) {
   if (symbol != NULL) {
-    set_has_symbol();
+    
   } else {
-    clear_has_symbol();
+    
   }
   symbol_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), symbol);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBStrategy.symbol)
 }
 
 // optional string description = 5;
-inline bool PBStrategy::has_description() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void PBStrategy::set_has_description() {
-  _has_bits_[0] |= 0x00000010u;
-}
-inline void PBStrategy::clear_has_description() {
-  _has_bits_[0] &= ~0x00000010u;
-}
 inline void PBStrategy::clear_description() {
   description_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_description();
 }
 inline const ::std::string& PBStrategy::description() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.description)
   return description_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBStrategy::set_description(const ::std::string& value) {
-  set_has_description();
+  
   description_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.description)
 }
 inline void PBStrategy::set_description(const char* value) {
-  set_has_description();
+  
   description_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBStrategy.description)
 }
 inline void PBStrategy::set_description(const char* value, size_t size) {
-  set_has_description();
+  
   description_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBStrategy.description)
 }
 inline ::std::string* PBStrategy::mutable_description() {
-  set_has_description();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBStrategy.description)
   return description_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBStrategy::release_description() {
-  clear_has_description();
+  
   return description_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBStrategy::set_allocated_description(::std::string* description) {
   if (description != NULL) {
-    set_has_description();
+    
   } else {
-    clear_has_description();
+    
   }
   description_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), description);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBStrategy.description)
 }
 
 // optional bool allowTrading = 6;
-inline bool PBStrategy::has_allowtrading() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
-}
-inline void PBStrategy::set_has_allowtrading() {
-  _has_bits_[0] |= 0x00000020u;
-}
-inline void PBStrategy::clear_has_allowtrading() {
-  _has_bits_[0] &= ~0x00000020u;
-}
 inline void PBStrategy::clear_allowtrading() {
   allowtrading_ = false;
-  clear_has_allowtrading();
 }
 inline bool PBStrategy::allowtrading() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.allowTrading)
   return allowtrading_;
 }
 inline void PBStrategy::set_allowtrading(bool value) {
-  set_has_allowtrading();
+  
   allowtrading_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.allowTrading)
 }
 
 // optional int32 quantity = 7;
-inline bool PBStrategy::has_quantity() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
-}
-inline void PBStrategy::set_has_quantity() {
-  _has_bits_[0] |= 0x00000040u;
-}
-inline void PBStrategy::clear_has_quantity() {
-  _has_bits_[0] &= ~0x00000040u;
-}
 inline void PBStrategy::clear_quantity() {
   quantity_ = 0;
-  clear_has_quantity();
 }
 inline ::google::protobuf::int32 PBStrategy::quantity() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.quantity)
   return quantity_;
 }
 inline void PBStrategy::set_quantity(::google::protobuf::int32 value) {
-  set_has_quantity();
+  
   quantity_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.quantity)
 }
 
 // optional int32 depth = 8;
-inline bool PBStrategy::has_depth() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
-}
-inline void PBStrategy::set_has_depth() {
-  _has_bits_[0] |= 0x00000080u;
-}
-inline void PBStrategy::clear_has_depth() {
-  _has_bits_[0] &= ~0x00000080u;
-}
 inline void PBStrategy::clear_depth() {
   depth_ = 0;
-  clear_has_depth();
 }
 inline ::google::protobuf::int32 PBStrategy::depth() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.depth)
   return depth_;
 }
 inline void PBStrategy::set_depth(::google::protobuf::int32 value) {
-  set_has_depth();
+  
   depth_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.depth)
 }
 
 // optional float spread = 9;
-inline bool PBStrategy::has_spread() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
-}
-inline void PBStrategy::set_has_spread() {
-  _has_bits_[0] |= 0x00000100u;
-}
-inline void PBStrategy::clear_has_spread() {
-  _has_bits_[0] &= ~0x00000100u;
-}
 inline void PBStrategy::clear_spread() {
   spread_ = 0;
-  clear_has_spread();
 }
 inline float PBStrategy::spread() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.spread)
   return spread_;
 }
 inline void PBStrategy::set_spread(float value) {
-  set_has_spread();
+  
   spread_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.spread)
 }
 
 // optional float offset = 10;
-inline bool PBStrategy::has_offset() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
-}
-inline void PBStrategy::set_has_offset() {
-  _has_bits_[0] |= 0x00000200u;
-}
-inline void PBStrategy::clear_has_offset() {
-  _has_bits_[0] &= ~0x00000200u;
-}
 inline void PBStrategy::clear_offset() {
   offset_ = 0;
-  clear_has_offset();
 }
 inline float PBStrategy::offset() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.offset)
   return offset_;
 }
 inline void PBStrategy::set_offset(float value) {
-  set_has_offset();
+  
   offset_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.offset)
 }
 
 // optional bool enabled = 11;
-inline bool PBStrategy::has_enabled() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
-}
-inline void PBStrategy::set_has_enabled() {
-  _has_bits_[0] |= 0x00000400u;
-}
-inline void PBStrategy::clear_has_enabled() {
-  _has_bits_[0] &= ~0x00000400u;
-}
 inline void PBStrategy::clear_enabled() {
   enabled_ = false;
-  clear_has_enabled();
 }
 inline bool PBStrategy::enabled() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.enabled)
   return enabled_;
 }
 inline void PBStrategy::set_enabled(bool value) {
-  set_has_enabled();
+  
   enabled_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.enabled)
 }
@@ -5122,15 +4111,15 @@ inline ::Micro::Future::Message::Business::PBStrategyWeight* PBStrategy::add_wei
   // @@protoc_insertion_point(field_add:Micro.Future.Message.Business.PBStrategy.weightContract)
   return weightcontract_.Add();
 }
-inline const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBStrategyWeight >&
-PBStrategy::weightcontract() const {
-  // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBStrategy.weightContract)
-  return weightcontract_;
-}
 inline ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBStrategyWeight >*
 PBStrategy::mutable_weightcontract() {
   // @@protoc_insertion_point(field_mutable_list:Micro.Future.Message.Business.PBStrategy.weightContract)
   return &weightcontract_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBStrategyWeight >&
+PBStrategy::weightcontract() const {
+  // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBStrategy.weightContract)
+  return weightcontract_;
 }
 
 // repeated .Micro.Future.Message.Business.PBParam params = 13;
@@ -5152,15 +4141,15 @@ inline ::Micro::Future::Message::Business::PBParam* PBStrategy::add_params() {
   // @@protoc_insertion_point(field_add:Micro.Future.Message.Business.PBStrategy.params)
   return params_.Add();
 }
-inline const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBParam >&
-PBStrategy::params() const {
-  // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBStrategy.params)
-  return params_;
-}
 inline ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBParam >*
 PBStrategy::mutable_params() {
   // @@protoc_insertion_point(field_mutable_list:Micro.Future.Message.Business.PBStrategy.params)
   return &params_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBParam >&
+PBStrategy::params() const {
+  // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBStrategy.params)
+  return params_;
 }
 
 // -------------------------------------------------------------------
@@ -5186,171 +4175,131 @@ inline ::Micro::Future::Message::Business::PBStrategy* PBStrategyList::add_strat
   // @@protoc_insertion_point(field_add:Micro.Future.Message.Business.PBStrategyList.strategy)
   return strategy_.Add();
 }
-inline const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBStrategy >&
-PBStrategyList::strategy() const {
-  // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBStrategyList.strategy)
-  return strategy_;
-}
 inline ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBStrategy >*
 PBStrategyList::mutable_strategy() {
   // @@protoc_insertion_point(field_mutable_list:Micro.Future.Message.Business.PBStrategyList.strategy)
   return &strategy_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBStrategy >&
+PBStrategyList::strategy() const {
+  // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBStrategyList.strategy)
+  return strategy_;
 }
 
 // -------------------------------------------------------------------
 
 // PBContractParam
 
-// required string exchange = 1;
-inline bool PBContractParam::has_exchange() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBContractParam::set_has_exchange() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBContractParam::clear_has_exchange() {
-  _has_bits_[0] &= ~0x00000001u;
-}
+// optional string exchange = 1;
 inline void PBContractParam::clear_exchange() {
   exchange_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_exchange();
 }
 inline const ::std::string& PBContractParam::exchange() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBContractParam.exchange)
   return exchange_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBContractParam::set_exchange(const ::std::string& value) {
-  set_has_exchange();
+  
   exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBContractParam.exchange)
 }
 inline void PBContractParam::set_exchange(const char* value) {
-  set_has_exchange();
+  
   exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBContractParam.exchange)
 }
 inline void PBContractParam::set_exchange(const char* value, size_t size) {
-  set_has_exchange();
+  
   exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBContractParam.exchange)
 }
 inline ::std::string* PBContractParam::mutable_exchange() {
-  set_has_exchange();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBContractParam.exchange)
   return exchange_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBContractParam::release_exchange() {
-  clear_has_exchange();
+  
   return exchange_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBContractParam::set_allocated_exchange(::std::string* exchange) {
   if (exchange != NULL) {
-    set_has_exchange();
+    
   } else {
-    clear_has_exchange();
+    
   }
   exchange_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), exchange);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBContractParam.exchange)
 }
 
-// required string contract = 2;
-inline bool PBContractParam::has_contract() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBContractParam::set_has_contract() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBContractParam::clear_has_contract() {
-  _has_bits_[0] &= ~0x00000002u;
-}
+// optional string contract = 2;
 inline void PBContractParam::clear_contract() {
   contract_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_contract();
 }
 inline const ::std::string& PBContractParam::contract() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBContractParam.contract)
   return contract_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBContractParam::set_contract(const ::std::string& value) {
-  set_has_contract();
+  
   contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBContractParam.contract)
 }
 inline void PBContractParam::set_contract(const char* value) {
-  set_has_contract();
+  
   contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBContractParam.contract)
 }
 inline void PBContractParam::set_contract(const char* value, size_t size) {
-  set_has_contract();
+  
   contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBContractParam.contract)
 }
 inline ::std::string* PBContractParam::mutable_contract() {
-  set_has_contract();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBContractParam.contract)
   return contract_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBContractParam::release_contract() {
-  clear_has_contract();
+  
   return contract_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBContractParam::set_allocated_contract(::std::string* contract) {
   if (contract != NULL) {
-    set_has_contract();
+    
   } else {
-    clear_has_contract();
+    
   }
   contract_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), contract);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBContractParam.contract)
 }
 
 // optional int32 depthVol = 3;
-inline bool PBContractParam::has_depthvol() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBContractParam::set_has_depthvol() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBContractParam::clear_has_depthvol() {
-  _has_bits_[0] &= ~0x00000004u;
-}
 inline void PBContractParam::clear_depthvol() {
   depthvol_ = 0;
-  clear_has_depthvol();
 }
 inline ::google::protobuf::int32 PBContractParam::depthvol() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBContractParam.depthVol)
   return depthvol_;
 }
 inline void PBContractParam::set_depthvol(::google::protobuf::int32 value) {
-  set_has_depthvol();
+  
   depthvol_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBContractParam.depthVol)
 }
 
 // optional float gamma = 4;
-inline bool PBContractParam::has_gamma() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void PBContractParam::set_has_gamma() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void PBContractParam::clear_has_gamma() {
-  _has_bits_[0] &= ~0x00000008u;
-}
 inline void PBContractParam::clear_gamma() {
   gamma_ = 0;
-  clear_has_gamma();
 }
 inline float PBContractParam::gamma() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBContractParam.gamma)
   return gamma_;
 }
 inline void PBContractParam::set_gamma(float value) {
-  set_has_gamma();
+  
   gamma_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBContractParam.gamma)
 }
@@ -5378,147 +4327,117 @@ inline ::Micro::Future::Message::Business::PBContractParam* PBContractParamList:
   // @@protoc_insertion_point(field_add:Micro.Future.Message.Business.PBContractParamList.params)
   return params_.Add();
 }
-inline const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBContractParam >&
-PBContractParamList::params() const {
-  // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBContractParamList.params)
-  return params_;
-}
 inline ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBContractParam >*
 PBContractParamList::mutable_params() {
   // @@protoc_insertion_point(field_mutable_list:Micro.Future.Message.Business.PBContractParamList.params)
   return &params_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBContractParam >&
+PBContractParamList::params() const {
+  // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBContractParamList.params)
+  return params_;
 }
 
 // -------------------------------------------------------------------
 
 // PBOTCUserParam
 
-// required string exchange = 1;
-inline bool PBOTCUserParam::has_exchange() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBOTCUserParam::set_has_exchange() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBOTCUserParam::clear_has_exchange() {
-  _has_bits_[0] &= ~0x00000001u;
-}
+// optional string exchange = 1;
 inline void PBOTCUserParam::clear_exchange() {
   exchange_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_exchange();
 }
 inline const ::std::string& PBOTCUserParam::exchange() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOTCUserParam.exchange)
   return exchange_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBOTCUserParam::set_exchange(const ::std::string& value) {
-  set_has_exchange();
+  
   exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOTCUserParam.exchange)
 }
 inline void PBOTCUserParam::set_exchange(const char* value) {
-  set_has_exchange();
+  
   exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBOTCUserParam.exchange)
 }
 inline void PBOTCUserParam::set_exchange(const char* value, size_t size) {
-  set_has_exchange();
+  
   exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBOTCUserParam.exchange)
 }
 inline ::std::string* PBOTCUserParam::mutable_exchange() {
-  set_has_exchange();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBOTCUserParam.exchange)
   return exchange_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBOTCUserParam::release_exchange() {
-  clear_has_exchange();
+  
   return exchange_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBOTCUserParam::set_allocated_exchange(::std::string* exchange) {
   if (exchange != NULL) {
-    set_has_exchange();
+    
   } else {
-    clear_has_exchange();
+    
   }
   exchange_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), exchange);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBOTCUserParam.exchange)
 }
 
-// required string contract = 2;
-inline bool PBOTCUserParam::has_contract() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBOTCUserParam::set_has_contract() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBOTCUserParam::clear_has_contract() {
-  _has_bits_[0] &= ~0x00000002u;
-}
+// optional string contract = 2;
 inline void PBOTCUserParam::clear_contract() {
   contract_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_contract();
 }
 inline const ::std::string& PBOTCUserParam::contract() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOTCUserParam.contract)
   return contract_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBOTCUserParam::set_contract(const ::std::string& value) {
-  set_has_contract();
+  
   contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOTCUserParam.contract)
 }
 inline void PBOTCUserParam::set_contract(const char* value) {
-  set_has_contract();
+  
   contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBOTCUserParam.contract)
 }
 inline void PBOTCUserParam::set_contract(const char* value, size_t size) {
-  set_has_contract();
+  
   contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBOTCUserParam.contract)
 }
 inline ::std::string* PBOTCUserParam::mutable_contract() {
-  set_has_contract();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBOTCUserParam.contract)
   return contract_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBOTCUserParam::release_contract() {
-  clear_has_contract();
+  
   return contract_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBOTCUserParam::set_allocated_contract(::std::string* contract) {
   if (contract != NULL) {
-    set_has_contract();
+    
   } else {
-    clear_has_contract();
+    
   }
   contract_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), contract);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBOTCUserParam.contract)
 }
 
-// required float quantity = 3;
-inline bool PBOTCUserParam::has_quantity() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBOTCUserParam::set_has_quantity() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBOTCUserParam::clear_has_quantity() {
-  _has_bits_[0] &= ~0x00000004u;
-}
+// optional float quantity = 3;
 inline void PBOTCUserParam::clear_quantity() {
   quantity_ = 0;
-  clear_has_quantity();
 }
 inline float PBOTCUserParam::quantity() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOTCUserParam.quantity)
   return quantity_;
 }
 inline void PBOTCUserParam::set_quantity(float value) {
-  set_has_quantity();
+  
   quantity_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOTCUserParam.quantity)
 }
@@ -5546,15 +4465,15 @@ inline ::Micro::Future::Message::Business::PBOTCUserParam* PBOTCUserParamList::a
   // @@protoc_insertion_point(field_add:Micro.Future.Message.Business.PBOTCUserParamList.params)
   return params_.Add();
 }
-inline const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBOTCUserParam >&
-PBOTCUserParamList::params() const {
-  // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBOTCUserParamList.params)
-  return params_;
-}
 inline ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBOTCUserParam >*
 PBOTCUserParamList::mutable_params() {
   // @@protoc_insertion_point(field_mutable_list:Micro.Future.Message.Business.PBOTCUserParamList.params)
   return &params_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBOTCUserParam >&
+PBOTCUserParamList::params() const {
+  // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBOTCUserParamList.params)
+  return params_;
 }
 
 // -------------------------------------------------------------------
@@ -5562,832 +4481,582 @@ PBOTCUserParamList::mutable_params() {
 // PBOrderInfo
 
 // optional uint64 orderID = 1;
-inline bool PBOrderInfo::has_orderid() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBOrderInfo::set_has_orderid() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBOrderInfo::clear_has_orderid() {
-  _has_bits_[0] &= ~0x00000001u;
-}
 inline void PBOrderInfo::clear_orderid() {
   orderid_ = GOOGLE_ULONGLONG(0);
-  clear_has_orderid();
 }
 inline ::google::protobuf::uint64 PBOrderInfo::orderid() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOrderInfo.orderID)
   return orderid_;
 }
 inline void PBOrderInfo::set_orderid(::google::protobuf::uint64 value) {
-  set_has_orderid();
+  
   orderid_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOrderInfo.orderID)
 }
 
 // optional uint64 orderSysID = 2;
-inline bool PBOrderInfo::has_ordersysid() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBOrderInfo::set_has_ordersysid() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBOrderInfo::clear_has_ordersysid() {
-  _has_bits_[0] &= ~0x00000002u;
-}
 inline void PBOrderInfo::clear_ordersysid() {
   ordersysid_ = GOOGLE_ULONGLONG(0);
-  clear_has_ordersysid();
 }
 inline ::google::protobuf::uint64 PBOrderInfo::ordersysid() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOrderInfo.orderSysID)
   return ordersysid_;
 }
 inline void PBOrderInfo::set_ordersysid(::google::protobuf::uint64 value) {
-  set_has_ordersysid();
+  
   ordersysid_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOrderInfo.orderSysID)
 }
 
 // optional string brokerID = 3;
-inline bool PBOrderInfo::has_brokerid() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBOrderInfo::set_has_brokerid() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBOrderInfo::clear_has_brokerid() {
-  _has_bits_[0] &= ~0x00000004u;
-}
 inline void PBOrderInfo::clear_brokerid() {
   brokerid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_brokerid();
 }
 inline const ::std::string& PBOrderInfo::brokerid() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOrderInfo.brokerID)
   return brokerid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBOrderInfo::set_brokerid(const ::std::string& value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOrderInfo.brokerID)
 }
 inline void PBOrderInfo::set_brokerid(const char* value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBOrderInfo.brokerID)
 }
 inline void PBOrderInfo::set_brokerid(const char* value, size_t size) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBOrderInfo.brokerID)
 }
 inline ::std::string* PBOrderInfo::mutable_brokerid() {
-  set_has_brokerid();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBOrderInfo.brokerID)
   return brokerid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBOrderInfo::release_brokerid() {
-  clear_has_brokerid();
+  
   return brokerid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBOrderInfo::set_allocated_brokerid(::std::string* brokerid) {
   if (brokerid != NULL) {
-    set_has_brokerid();
+    
   } else {
-    clear_has_brokerid();
+    
   }
   brokerid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), brokerid);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBOrderInfo.brokerID)
 }
 
 // optional string investorID = 4;
-inline bool PBOrderInfo::has_investorid() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void PBOrderInfo::set_has_investorid() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void PBOrderInfo::clear_has_investorid() {
-  _has_bits_[0] &= ~0x00000008u;
-}
 inline void PBOrderInfo::clear_investorid() {
   investorid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_investorid();
 }
 inline const ::std::string& PBOrderInfo::investorid() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOrderInfo.investorID)
   return investorid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBOrderInfo::set_investorid(const ::std::string& value) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOrderInfo.investorID)
 }
 inline void PBOrderInfo::set_investorid(const char* value) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBOrderInfo.investorID)
 }
 inline void PBOrderInfo::set_investorid(const char* value, size_t size) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBOrderInfo.investorID)
 }
 inline ::std::string* PBOrderInfo::mutable_investorid() {
-  set_has_investorid();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBOrderInfo.investorID)
   return investorid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBOrderInfo::release_investorid() {
-  clear_has_investorid();
+  
   return investorid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBOrderInfo::set_allocated_investorid(::std::string* investorid) {
   if (investorid != NULL) {
-    set_has_investorid();
+    
   } else {
-    clear_has_investorid();
+    
   }
   investorid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), investorid);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBOrderInfo.investorID)
 }
 
 // optional string exchange = 5;
-inline bool PBOrderInfo::has_exchange() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void PBOrderInfo::set_has_exchange() {
-  _has_bits_[0] |= 0x00000010u;
-}
-inline void PBOrderInfo::clear_has_exchange() {
-  _has_bits_[0] &= ~0x00000010u;
-}
 inline void PBOrderInfo::clear_exchange() {
   exchange_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_exchange();
 }
 inline const ::std::string& PBOrderInfo::exchange() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOrderInfo.exchange)
   return exchange_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBOrderInfo::set_exchange(const ::std::string& value) {
-  set_has_exchange();
+  
   exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOrderInfo.exchange)
 }
 inline void PBOrderInfo::set_exchange(const char* value) {
-  set_has_exchange();
+  
   exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBOrderInfo.exchange)
 }
 inline void PBOrderInfo::set_exchange(const char* value, size_t size) {
-  set_has_exchange();
+  
   exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBOrderInfo.exchange)
 }
 inline ::std::string* PBOrderInfo::mutable_exchange() {
-  set_has_exchange();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBOrderInfo.exchange)
   return exchange_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBOrderInfo::release_exchange() {
-  clear_has_exchange();
+  
   return exchange_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBOrderInfo::set_allocated_exchange(::std::string* exchange) {
   if (exchange != NULL) {
-    set_has_exchange();
+    
   } else {
-    clear_has_exchange();
+    
   }
   exchange_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), exchange);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBOrderInfo.exchange)
 }
 
 // optional string contract = 6;
-inline bool PBOrderInfo::has_contract() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
-}
-inline void PBOrderInfo::set_has_contract() {
-  _has_bits_[0] |= 0x00000020u;
-}
-inline void PBOrderInfo::clear_has_contract() {
-  _has_bits_[0] &= ~0x00000020u;
-}
 inline void PBOrderInfo::clear_contract() {
   contract_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_contract();
 }
 inline const ::std::string& PBOrderInfo::contract() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOrderInfo.contract)
   return contract_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBOrderInfo::set_contract(const ::std::string& value) {
-  set_has_contract();
+  
   contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOrderInfo.contract)
 }
 inline void PBOrderInfo::set_contract(const char* value) {
-  set_has_contract();
+  
   contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBOrderInfo.contract)
 }
 inline void PBOrderInfo::set_contract(const char* value, size_t size) {
-  set_has_contract();
+  
   contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBOrderInfo.contract)
 }
 inline ::std::string* PBOrderInfo::mutable_contract() {
-  set_has_contract();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBOrderInfo.contract)
   return contract_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBOrderInfo::release_contract() {
-  clear_has_contract();
+  
   return contract_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBOrderInfo::set_allocated_contract(::std::string* contract) {
   if (contract != NULL) {
-    set_has_contract();
+    
   } else {
-    clear_has_contract();
+    
   }
   contract_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), contract);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBOrderInfo.contract)
 }
 
 // optional int32 execType = 7;
-inline bool PBOrderInfo::has_exectype() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
-}
-inline void PBOrderInfo::set_has_exectype() {
-  _has_bits_[0] |= 0x00000040u;
-}
-inline void PBOrderInfo::clear_has_exectype() {
-  _has_bits_[0] &= ~0x00000040u;
-}
 inline void PBOrderInfo::clear_exectype() {
   exectype_ = 0;
-  clear_has_exectype();
 }
 inline ::google::protobuf::int32 PBOrderInfo::exectype() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOrderInfo.execType)
   return exectype_;
 }
 inline void PBOrderInfo::set_exectype(::google::protobuf::int32 value) {
-  set_has_exectype();
+  
   exectype_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOrderInfo.execType)
 }
 
 // optional int32 tif = 8;
-inline bool PBOrderInfo::has_tif() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
-}
-inline void PBOrderInfo::set_has_tif() {
-  _has_bits_[0] |= 0x00000080u;
-}
-inline void PBOrderInfo::clear_has_tif() {
-  _has_bits_[0] &= ~0x00000080u;
-}
 inline void PBOrderInfo::clear_tif() {
   tif_ = 0;
-  clear_has_tif();
 }
 inline ::google::protobuf::int32 PBOrderInfo::tif() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOrderInfo.tif)
   return tif_;
 }
 inline void PBOrderInfo::set_tif(::google::protobuf::int32 value) {
-  set_has_tif();
+  
   tif_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOrderInfo.tif)
 }
 
 // optional int32 tradingType = 9;
-inline bool PBOrderInfo::has_tradingtype() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
-}
-inline void PBOrderInfo::set_has_tradingtype() {
-  _has_bits_[0] |= 0x00000100u;
-}
-inline void PBOrderInfo::clear_has_tradingtype() {
-  _has_bits_[0] &= ~0x00000100u;
-}
 inline void PBOrderInfo::clear_tradingtype() {
   tradingtype_ = 0;
-  clear_has_tradingtype();
 }
 inline ::google::protobuf::int32 PBOrderInfo::tradingtype() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOrderInfo.tradingType)
   return tradingtype_;
 }
 inline void PBOrderInfo::set_tradingtype(::google::protobuf::int32 value) {
-  set_has_tradingtype();
+  
   tradingtype_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOrderInfo.tradingType)
 }
 
 // optional int32 direction = 10;
-inline bool PBOrderInfo::has_direction() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
-}
-inline void PBOrderInfo::set_has_direction() {
-  _has_bits_[0] |= 0x00000200u;
-}
-inline void PBOrderInfo::clear_has_direction() {
-  _has_bits_[0] &= ~0x00000200u;
-}
 inline void PBOrderInfo::clear_direction() {
   direction_ = 0;
-  clear_has_direction();
 }
 inline ::google::protobuf::int32 PBOrderInfo::direction() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOrderInfo.direction)
   return direction_;
 }
 inline void PBOrderInfo::set_direction(::google::protobuf::int32 value) {
-  set_has_direction();
+  
   direction_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOrderInfo.direction)
 }
 
 // optional double limitPrice = 11;
-inline bool PBOrderInfo::has_limitprice() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
-}
-inline void PBOrderInfo::set_has_limitprice() {
-  _has_bits_[0] |= 0x00000400u;
-}
-inline void PBOrderInfo::clear_has_limitprice() {
-  _has_bits_[0] &= ~0x00000400u;
-}
 inline void PBOrderInfo::clear_limitprice() {
   limitprice_ = 0;
-  clear_has_limitprice();
 }
 inline double PBOrderInfo::limitprice() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOrderInfo.limitPrice)
   return limitprice_;
 }
 inline void PBOrderInfo::set_limitprice(double value) {
-  set_has_limitprice();
+  
   limitprice_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOrderInfo.limitPrice)
 }
 
 // optional double stopPrice = 12;
-inline bool PBOrderInfo::has_stopprice() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
-}
-inline void PBOrderInfo::set_has_stopprice() {
-  _has_bits_[0] |= 0x00000800u;
-}
-inline void PBOrderInfo::clear_has_stopprice() {
-  _has_bits_[0] &= ~0x00000800u;
-}
 inline void PBOrderInfo::clear_stopprice() {
   stopprice_ = 0;
-  clear_has_stopprice();
 }
 inline double PBOrderInfo::stopprice() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOrderInfo.stopPrice)
   return stopprice_;
 }
 inline void PBOrderInfo::set_stopprice(double value) {
-  set_has_stopprice();
+  
   stopprice_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOrderInfo.stopPrice)
 }
 
 // optional int32 orderStatus = 13;
-inline bool PBOrderInfo::has_orderstatus() const {
-  return (_has_bits_[0] & 0x00001000u) != 0;
-}
-inline void PBOrderInfo::set_has_orderstatus() {
-  _has_bits_[0] |= 0x00001000u;
-}
-inline void PBOrderInfo::clear_has_orderstatus() {
-  _has_bits_[0] &= ~0x00001000u;
-}
 inline void PBOrderInfo::clear_orderstatus() {
   orderstatus_ = 0;
-  clear_has_orderstatus();
 }
 inline ::google::protobuf::int32 PBOrderInfo::orderstatus() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOrderInfo.orderStatus)
   return orderstatus_;
 }
 inline void PBOrderInfo::set_orderstatus(::google::protobuf::int32 value) {
-  set_has_orderstatus();
+  
   orderstatus_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOrderInfo.orderStatus)
 }
 
 // optional int32 orderType = 14;
-inline bool PBOrderInfo::has_ordertype() const {
-  return (_has_bits_[0] & 0x00002000u) != 0;
-}
-inline void PBOrderInfo::set_has_ordertype() {
-  _has_bits_[0] |= 0x00002000u;
-}
-inline void PBOrderInfo::clear_has_ordertype() {
-  _has_bits_[0] &= ~0x00002000u;
-}
 inline void PBOrderInfo::clear_ordertype() {
   ordertype_ = 0;
-  clear_has_ordertype();
 }
 inline ::google::protobuf::int32 PBOrderInfo::ordertype() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOrderInfo.orderType)
   return ordertype_;
 }
 inline void PBOrderInfo::set_ordertype(::google::protobuf::int32 value) {
-  set_has_ordertype();
+  
   ordertype_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOrderInfo.orderType)
 }
 
 // optional int32 volume = 15;
-inline bool PBOrderInfo::has_volume() const {
-  return (_has_bits_[0] & 0x00004000u) != 0;
-}
-inline void PBOrderInfo::set_has_volume() {
-  _has_bits_[0] |= 0x00004000u;
-}
-inline void PBOrderInfo::clear_has_volume() {
-  _has_bits_[0] &= ~0x00004000u;
-}
 inline void PBOrderInfo::clear_volume() {
   volume_ = 0;
-  clear_has_volume();
 }
 inline ::google::protobuf::int32 PBOrderInfo::volume() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOrderInfo.volume)
   return volume_;
 }
 inline void PBOrderInfo::set_volume(::google::protobuf::int32 value) {
-  set_has_volume();
+  
   volume_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOrderInfo.volume)
 }
 
 // optional string insertTime = 17;
-inline bool PBOrderInfo::has_inserttime() const {
-  return (_has_bits_[0] & 0x00008000u) != 0;
-}
-inline void PBOrderInfo::set_has_inserttime() {
-  _has_bits_[0] |= 0x00008000u;
-}
-inline void PBOrderInfo::clear_has_inserttime() {
-  _has_bits_[0] &= ~0x00008000u;
-}
 inline void PBOrderInfo::clear_inserttime() {
   inserttime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_inserttime();
 }
 inline const ::std::string& PBOrderInfo::inserttime() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOrderInfo.insertTime)
   return inserttime_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBOrderInfo::set_inserttime(const ::std::string& value) {
-  set_has_inserttime();
+  
   inserttime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOrderInfo.insertTime)
 }
 inline void PBOrderInfo::set_inserttime(const char* value) {
-  set_has_inserttime();
+  
   inserttime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBOrderInfo.insertTime)
 }
 inline void PBOrderInfo::set_inserttime(const char* value, size_t size) {
-  set_has_inserttime();
+  
   inserttime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBOrderInfo.insertTime)
 }
 inline ::std::string* PBOrderInfo::mutable_inserttime() {
-  set_has_inserttime();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBOrderInfo.insertTime)
   return inserttime_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBOrderInfo::release_inserttime() {
-  clear_has_inserttime();
+  
   return inserttime_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBOrderInfo::set_allocated_inserttime(::std::string* inserttime) {
   if (inserttime != NULL) {
-    set_has_inserttime();
+    
   } else {
-    clear_has_inserttime();
+    
   }
   inserttime_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), inserttime);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBOrderInfo.insertTime)
 }
 
 // optional string updateTime = 18;
-inline bool PBOrderInfo::has_updatetime() const {
-  return (_has_bits_[0] & 0x00010000u) != 0;
-}
-inline void PBOrderInfo::set_has_updatetime() {
-  _has_bits_[0] |= 0x00010000u;
-}
-inline void PBOrderInfo::clear_has_updatetime() {
-  _has_bits_[0] &= ~0x00010000u;
-}
 inline void PBOrderInfo::clear_updatetime() {
   updatetime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_updatetime();
 }
 inline const ::std::string& PBOrderInfo::updatetime() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOrderInfo.updateTime)
   return updatetime_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBOrderInfo::set_updatetime(const ::std::string& value) {
-  set_has_updatetime();
+  
   updatetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOrderInfo.updateTime)
 }
 inline void PBOrderInfo::set_updatetime(const char* value) {
-  set_has_updatetime();
+  
   updatetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBOrderInfo.updateTime)
 }
 inline void PBOrderInfo::set_updatetime(const char* value, size_t size) {
-  set_has_updatetime();
+  
   updatetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBOrderInfo.updateTime)
 }
 inline ::std::string* PBOrderInfo::mutable_updatetime() {
-  set_has_updatetime();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBOrderInfo.updateTime)
   return updatetime_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBOrderInfo::release_updatetime() {
-  clear_has_updatetime();
+  
   return updatetime_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBOrderInfo::set_allocated_updatetime(::std::string* updatetime) {
   if (updatetime != NULL) {
-    set_has_updatetime();
+    
   } else {
-    clear_has_updatetime();
+    
   }
   updatetime_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), updatetime);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBOrderInfo.updateTime)
 }
 
 // optional string cancelTime = 19;
-inline bool PBOrderInfo::has_canceltime() const {
-  return (_has_bits_[0] & 0x00020000u) != 0;
-}
-inline void PBOrderInfo::set_has_canceltime() {
-  _has_bits_[0] |= 0x00020000u;
-}
-inline void PBOrderInfo::clear_has_canceltime() {
-  _has_bits_[0] &= ~0x00020000u;
-}
 inline void PBOrderInfo::clear_canceltime() {
   canceltime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_canceltime();
 }
 inline const ::std::string& PBOrderInfo::canceltime() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOrderInfo.cancelTime)
   return canceltime_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBOrderInfo::set_canceltime(const ::std::string& value) {
-  set_has_canceltime();
+  
   canceltime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOrderInfo.cancelTime)
 }
 inline void PBOrderInfo::set_canceltime(const char* value) {
-  set_has_canceltime();
+  
   canceltime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBOrderInfo.cancelTime)
 }
 inline void PBOrderInfo::set_canceltime(const char* value, size_t size) {
-  set_has_canceltime();
+  
   canceltime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBOrderInfo.cancelTime)
 }
 inline ::std::string* PBOrderInfo::mutable_canceltime() {
-  set_has_canceltime();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBOrderInfo.cancelTime)
   return canceltime_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBOrderInfo::release_canceltime() {
-  clear_has_canceltime();
+  
   return canceltime_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBOrderInfo::set_allocated_canceltime(::std::string* canceltime) {
   if (canceltime != NULL) {
-    set_has_canceltime();
+    
   } else {
-    clear_has_canceltime();
+    
   }
   canceltime_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), canceltime);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBOrderInfo.cancelTime)
 }
 
 // optional int32 volumeTraded = 20;
-inline bool PBOrderInfo::has_volumetraded() const {
-  return (_has_bits_[0] & 0x00040000u) != 0;
-}
-inline void PBOrderInfo::set_has_volumetraded() {
-  _has_bits_[0] |= 0x00040000u;
-}
-inline void PBOrderInfo::clear_has_volumetraded() {
-  _has_bits_[0] &= ~0x00040000u;
-}
 inline void PBOrderInfo::clear_volumetraded() {
   volumetraded_ = 0;
-  clear_has_volumetraded();
 }
 inline ::google::protobuf::int32 PBOrderInfo::volumetraded() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOrderInfo.volumeTraded)
   return volumetraded_;
 }
 inline void PBOrderInfo::set_volumetraded(::google::protobuf::int32 value) {
-  set_has_volumetraded();
+  
   volumetraded_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOrderInfo.volumeTraded)
 }
 
 // optional int32 volumeRemain = 21;
-inline bool PBOrderInfo::has_volumeremain() const {
-  return (_has_bits_[0] & 0x00080000u) != 0;
-}
-inline void PBOrderInfo::set_has_volumeremain() {
-  _has_bits_[0] |= 0x00080000u;
-}
-inline void PBOrderInfo::clear_has_volumeremain() {
-  _has_bits_[0] &= ~0x00080000u;
-}
 inline void PBOrderInfo::clear_volumeremain() {
   volumeremain_ = 0;
-  clear_has_volumeremain();
 }
 inline ::google::protobuf::int32 PBOrderInfo::volumeremain() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOrderInfo.volumeRemain)
   return volumeremain_;
 }
 inline void PBOrderInfo::set_volumeremain(::google::protobuf::int32 value) {
-  set_has_volumeremain();
+  
   volumeremain_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOrderInfo.volumeRemain)
 }
 
 // optional int32 volumeCondition = 22;
-inline bool PBOrderInfo::has_volumecondition() const {
-  return (_has_bits_[0] & 0x00100000u) != 0;
-}
-inline void PBOrderInfo::set_has_volumecondition() {
-  _has_bits_[0] |= 0x00100000u;
-}
-inline void PBOrderInfo::clear_has_volumecondition() {
-  _has_bits_[0] &= ~0x00100000u;
-}
 inline void PBOrderInfo::clear_volumecondition() {
   volumecondition_ = 0;
-  clear_has_volumecondition();
 }
 inline ::google::protobuf::int32 PBOrderInfo::volumecondition() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOrderInfo.volumeCondition)
   return volumecondition_;
 }
 inline void PBOrderInfo::set_volumecondition(::google::protobuf::int32 value) {
-  set_has_volumecondition();
+  
   volumecondition_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOrderInfo.volumeCondition)
 }
 
 // optional int32 tradingDay = 23;
-inline bool PBOrderInfo::has_tradingday() const {
-  return (_has_bits_[0] & 0x00200000u) != 0;
-}
-inline void PBOrderInfo::set_has_tradingday() {
-  _has_bits_[0] |= 0x00200000u;
-}
-inline void PBOrderInfo::clear_has_tradingday() {
-  _has_bits_[0] &= ~0x00200000u;
-}
 inline void PBOrderInfo::clear_tradingday() {
   tradingday_ = 0;
-  clear_has_tradingday();
 }
 inline ::google::protobuf::int32 PBOrderInfo::tradingday() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOrderInfo.tradingDay)
   return tradingday_;
 }
 inline void PBOrderInfo::set_tradingday(::google::protobuf::int32 value) {
-  set_has_tradingday();
+  
   tradingday_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOrderInfo.tradingDay)
 }
 
 // optional bool active = 24;
-inline bool PBOrderInfo::has_active() const {
-  return (_has_bits_[0] & 0x00400000u) != 0;
-}
-inline void PBOrderInfo::set_has_active() {
-  _has_bits_[0] |= 0x00400000u;
-}
-inline void PBOrderInfo::clear_has_active() {
-  _has_bits_[0] &= ~0x00400000u;
-}
 inline void PBOrderInfo::clear_active() {
   active_ = false;
-  clear_has_active();
 }
 inline bool PBOrderInfo::active() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOrderInfo.active)
   return active_;
 }
 inline void PBOrderInfo::set_active(bool value) {
-  set_has_active();
+  
   active_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOrderInfo.active)
 }
 
 // optional int32 openclose = 25;
-inline bool PBOrderInfo::has_openclose() const {
-  return (_has_bits_[0] & 0x00800000u) != 0;
-}
-inline void PBOrderInfo::set_has_openclose() {
-  _has_bits_[0] |= 0x00800000u;
-}
-inline void PBOrderInfo::clear_has_openclose() {
-  _has_bits_[0] &= ~0x00800000u;
-}
 inline void PBOrderInfo::clear_openclose() {
   openclose_ = 0;
-  clear_has_openclose();
 }
 inline ::google::protobuf::int32 PBOrderInfo::openclose() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOrderInfo.openclose)
   return openclose_;
 }
 inline void PBOrderInfo::set_openclose(::google::protobuf::int32 value) {
-  set_has_openclose();
+  
   openclose_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOrderInfo.openclose)
 }
 
 // optional bytes message = 26;
-inline bool PBOrderInfo::has_message() const {
-  return (_has_bits_[0] & 0x01000000u) != 0;
-}
-inline void PBOrderInfo::set_has_message() {
-  _has_bits_[0] |= 0x01000000u;
-}
-inline void PBOrderInfo::clear_has_message() {
-  _has_bits_[0] &= ~0x01000000u;
-}
 inline void PBOrderInfo::clear_message() {
   message_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_message();
 }
 inline const ::std::string& PBOrderInfo::message() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOrderInfo.message)
   return message_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBOrderInfo::set_message(const ::std::string& value) {
-  set_has_message();
+  
   message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOrderInfo.message)
 }
 inline void PBOrderInfo::set_message(const char* value) {
-  set_has_message();
+  
   message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBOrderInfo.message)
 }
 inline void PBOrderInfo::set_message(const void* value, size_t size) {
-  set_has_message();
+  
   message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBOrderInfo.message)
 }
 inline ::std::string* PBOrderInfo::mutable_message() {
-  set_has_message();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBOrderInfo.message)
   return message_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBOrderInfo::release_message() {
-  clear_has_message();
+  
   return message_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBOrderInfo::set_allocated_message(::std::string* message) {
   if (message != NULL) {
-    set_has_message();
+    
   } else {
-    clear_has_message();
+    
   }
   message_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), message);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBOrderInfo.message)
@@ -6397,613 +5066,443 @@ inline void PBOrderInfo::set_allocated_message(::std::string* message) {
 
 // PBTradeInfo
 
-// required uint64 tradeID = 1;
-inline bool PBTradeInfo::has_tradeid() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBTradeInfo::set_has_tradeid() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBTradeInfo::clear_has_tradeid() {
-  _has_bits_[0] &= ~0x00000001u;
-}
+// optional uint64 tradeID = 1;
 inline void PBTradeInfo::clear_tradeid() {
   tradeid_ = GOOGLE_ULONGLONG(0);
-  clear_has_tradeid();
 }
 inline ::google::protobuf::uint64 PBTradeInfo::tradeid() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBTradeInfo.tradeID)
   return tradeid_;
 }
 inline void PBTradeInfo::set_tradeid(::google::protobuf::uint64 value) {
-  set_has_tradeid();
+  
   tradeid_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBTradeInfo.tradeID)
 }
 
-// required int32 direction = 2;
-inline bool PBTradeInfo::has_direction() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBTradeInfo::set_has_direction() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBTradeInfo::clear_has_direction() {
-  _has_bits_[0] &= ~0x00000002u;
-}
+// optional int32 direction = 2;
 inline void PBTradeInfo::clear_direction() {
   direction_ = 0;
-  clear_has_direction();
 }
 inline ::google::protobuf::int32 PBTradeInfo::direction() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBTradeInfo.direction)
   return direction_;
 }
 inline void PBTradeInfo::set_direction(::google::protobuf::int32 value) {
-  set_has_direction();
+  
   direction_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBTradeInfo.direction)
 }
 
-// required int32 openclose = 3;
-inline bool PBTradeInfo::has_openclose() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBTradeInfo::set_has_openclose() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBTradeInfo::clear_has_openclose() {
-  _has_bits_[0] &= ~0x00000004u;
-}
+// optional int32 openclose = 3;
 inline void PBTradeInfo::clear_openclose() {
   openclose_ = 0;
-  clear_has_openclose();
 }
 inline ::google::protobuf::int32 PBTradeInfo::openclose() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBTradeInfo.openclose)
   return openclose_;
 }
 inline void PBTradeInfo::set_openclose(::google::protobuf::int32 value) {
-  set_has_openclose();
+  
   openclose_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBTradeInfo.openclose)
 }
 
-// required uint64 orderSysID = 4;
-inline bool PBTradeInfo::has_ordersysid() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void PBTradeInfo::set_has_ordersysid() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void PBTradeInfo::clear_has_ordersysid() {
-  _has_bits_[0] &= ~0x00000008u;
-}
+// optional uint64 orderSysID = 4;
 inline void PBTradeInfo::clear_ordersysid() {
   ordersysid_ = GOOGLE_ULONGLONG(0);
-  clear_has_ordersysid();
 }
 inline ::google::protobuf::uint64 PBTradeInfo::ordersysid() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBTradeInfo.orderSysID)
   return ordersysid_;
 }
 inline void PBTradeInfo::set_ordersysid(::google::protobuf::uint64 value) {
-  set_has_ordersysid();
+  
   ordersysid_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBTradeInfo.orderSysID)
 }
 
-// required uint64 orderID = 5;
-inline bool PBTradeInfo::has_orderid() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void PBTradeInfo::set_has_orderid() {
-  _has_bits_[0] |= 0x00000010u;
-}
-inline void PBTradeInfo::clear_has_orderid() {
-  _has_bits_[0] &= ~0x00000010u;
-}
+// optional uint64 orderID = 5;
 inline void PBTradeInfo::clear_orderid() {
   orderid_ = GOOGLE_ULONGLONG(0);
-  clear_has_orderid();
 }
 inline ::google::protobuf::uint64 PBTradeInfo::orderid() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBTradeInfo.orderID)
   return orderid_;
 }
 inline void PBTradeInfo::set_orderid(::google::protobuf::uint64 value) {
-  set_has_orderid();
+  
   orderid_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBTradeInfo.orderID)
 }
 
-// required double price = 6;
-inline bool PBTradeInfo::has_price() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
-}
-inline void PBTradeInfo::set_has_price() {
-  _has_bits_[0] |= 0x00000020u;
-}
-inline void PBTradeInfo::clear_has_price() {
-  _has_bits_[0] &= ~0x00000020u;
-}
+// optional double price = 6;
 inline void PBTradeInfo::clear_price() {
   price_ = 0;
-  clear_has_price();
 }
 inline double PBTradeInfo::price() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBTradeInfo.price)
   return price_;
 }
 inline void PBTradeInfo::set_price(double value) {
-  set_has_price();
+  
   price_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBTradeInfo.price)
 }
 
-// required int32 volume = 7;
-inline bool PBTradeInfo::has_volume() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
-}
-inline void PBTradeInfo::set_has_volume() {
-  _has_bits_[0] |= 0x00000040u;
-}
-inline void PBTradeInfo::clear_has_volume() {
-  _has_bits_[0] &= ~0x00000040u;
-}
+// optional int32 volume = 7;
 inline void PBTradeInfo::clear_volume() {
   volume_ = 0;
-  clear_has_volume();
 }
 inline ::google::protobuf::int32 PBTradeInfo::volume() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBTradeInfo.volume)
   return volume_;
 }
 inline void PBTradeInfo::set_volume(::google::protobuf::int32 value) {
-  set_has_volume();
+  
   volume_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBTradeInfo.volume)
 }
 
 // optional string brokerID = 8;
-inline bool PBTradeInfo::has_brokerid() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
-}
-inline void PBTradeInfo::set_has_brokerid() {
-  _has_bits_[0] |= 0x00000080u;
-}
-inline void PBTradeInfo::clear_has_brokerid() {
-  _has_bits_[0] &= ~0x00000080u;
-}
 inline void PBTradeInfo::clear_brokerid() {
   brokerid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_brokerid();
 }
 inline const ::std::string& PBTradeInfo::brokerid() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBTradeInfo.brokerID)
   return brokerid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBTradeInfo::set_brokerid(const ::std::string& value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBTradeInfo.brokerID)
 }
 inline void PBTradeInfo::set_brokerid(const char* value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBTradeInfo.brokerID)
 }
 inline void PBTradeInfo::set_brokerid(const char* value, size_t size) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBTradeInfo.brokerID)
 }
 inline ::std::string* PBTradeInfo::mutable_brokerid() {
-  set_has_brokerid();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBTradeInfo.brokerID)
   return brokerid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBTradeInfo::release_brokerid() {
-  clear_has_brokerid();
+  
   return brokerid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBTradeInfo::set_allocated_brokerid(::std::string* brokerid) {
   if (brokerid != NULL) {
-    set_has_brokerid();
+    
   } else {
-    clear_has_brokerid();
+    
   }
   brokerid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), brokerid);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBTradeInfo.brokerID)
 }
 
 // optional string investorID = 9;
-inline bool PBTradeInfo::has_investorid() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
-}
-inline void PBTradeInfo::set_has_investorid() {
-  _has_bits_[0] |= 0x00000100u;
-}
-inline void PBTradeInfo::clear_has_investorid() {
-  _has_bits_[0] &= ~0x00000100u;
-}
 inline void PBTradeInfo::clear_investorid() {
   investorid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_investorid();
 }
 inline const ::std::string& PBTradeInfo::investorid() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBTradeInfo.investorID)
   return investorid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBTradeInfo::set_investorid(const ::std::string& value) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBTradeInfo.investorID)
 }
 inline void PBTradeInfo::set_investorid(const char* value) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBTradeInfo.investorID)
 }
 inline void PBTradeInfo::set_investorid(const char* value, size_t size) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBTradeInfo.investorID)
 }
 inline ::std::string* PBTradeInfo::mutable_investorid() {
-  set_has_investorid();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBTradeInfo.investorID)
   return investorid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBTradeInfo::release_investorid() {
-  clear_has_investorid();
+  
   return investorid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBTradeInfo::set_allocated_investorid(::std::string* investorid) {
   if (investorid != NULL) {
-    set_has_investorid();
+    
   } else {
-    clear_has_investorid();
+    
   }
   investorid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), investorid);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBTradeInfo.investorID)
 }
 
 // optional string exchange = 10;
-inline bool PBTradeInfo::has_exchange() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
-}
-inline void PBTradeInfo::set_has_exchange() {
-  _has_bits_[0] |= 0x00000200u;
-}
-inline void PBTradeInfo::clear_has_exchange() {
-  _has_bits_[0] &= ~0x00000200u;
-}
 inline void PBTradeInfo::clear_exchange() {
   exchange_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_exchange();
 }
 inline const ::std::string& PBTradeInfo::exchange() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBTradeInfo.exchange)
   return exchange_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBTradeInfo::set_exchange(const ::std::string& value) {
-  set_has_exchange();
+  
   exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBTradeInfo.exchange)
 }
 inline void PBTradeInfo::set_exchange(const char* value) {
-  set_has_exchange();
+  
   exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBTradeInfo.exchange)
 }
 inline void PBTradeInfo::set_exchange(const char* value, size_t size) {
-  set_has_exchange();
+  
   exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBTradeInfo.exchange)
 }
 inline ::std::string* PBTradeInfo::mutable_exchange() {
-  set_has_exchange();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBTradeInfo.exchange)
   return exchange_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBTradeInfo::release_exchange() {
-  clear_has_exchange();
+  
   return exchange_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBTradeInfo::set_allocated_exchange(::std::string* exchange) {
   if (exchange != NULL) {
-    set_has_exchange();
+    
   } else {
-    clear_has_exchange();
+    
   }
   exchange_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), exchange);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBTradeInfo.exchange)
 }
 
 // optional string contract = 11;
-inline bool PBTradeInfo::has_contract() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
-}
-inline void PBTradeInfo::set_has_contract() {
-  _has_bits_[0] |= 0x00000400u;
-}
-inline void PBTradeInfo::clear_has_contract() {
-  _has_bits_[0] &= ~0x00000400u;
-}
 inline void PBTradeInfo::clear_contract() {
   contract_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_contract();
 }
 inline const ::std::string& PBTradeInfo::contract() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBTradeInfo.contract)
   return contract_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBTradeInfo::set_contract(const ::std::string& value) {
-  set_has_contract();
+  
   contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBTradeInfo.contract)
 }
 inline void PBTradeInfo::set_contract(const char* value) {
-  set_has_contract();
+  
   contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBTradeInfo.contract)
 }
 inline void PBTradeInfo::set_contract(const char* value, size_t size) {
-  set_has_contract();
+  
   contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBTradeInfo.contract)
 }
 inline ::std::string* PBTradeInfo::mutable_contract() {
-  set_has_contract();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBTradeInfo.contract)
   return contract_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBTradeInfo::release_contract() {
-  clear_has_contract();
+  
   return contract_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBTradeInfo::set_allocated_contract(::std::string* contract) {
   if (contract != NULL) {
-    set_has_contract();
+    
   } else {
-    clear_has_contract();
+    
   }
   contract_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), contract);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBTradeInfo.contract)
 }
 
 // optional string userID = 12;
-inline bool PBTradeInfo::has_userid() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
-}
-inline void PBTradeInfo::set_has_userid() {
-  _has_bits_[0] |= 0x00000800u;
-}
-inline void PBTradeInfo::clear_has_userid() {
-  _has_bits_[0] &= ~0x00000800u;
-}
 inline void PBTradeInfo::clear_userid() {
   userid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_userid();
 }
 inline const ::std::string& PBTradeInfo::userid() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBTradeInfo.userID)
   return userid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBTradeInfo::set_userid(const ::std::string& value) {
-  set_has_userid();
+  
   userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBTradeInfo.userID)
 }
 inline void PBTradeInfo::set_userid(const char* value) {
-  set_has_userid();
+  
   userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBTradeInfo.userID)
 }
 inline void PBTradeInfo::set_userid(const char* value, size_t size) {
-  set_has_userid();
+  
   userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBTradeInfo.userID)
 }
 inline ::std::string* PBTradeInfo::mutable_userid() {
-  set_has_userid();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBTradeInfo.userID)
   return userid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBTradeInfo::release_userid() {
-  clear_has_userid();
+  
   return userid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBTradeInfo::set_allocated_userid(::std::string* userid) {
   if (userid != NULL) {
-    set_has_userid();
+    
   } else {
-    clear_has_userid();
+    
   }
   userid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), userid);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBTradeInfo.userID)
 }
 
 // optional string tradeDate = 13;
-inline bool PBTradeInfo::has_tradedate() const {
-  return (_has_bits_[0] & 0x00001000u) != 0;
-}
-inline void PBTradeInfo::set_has_tradedate() {
-  _has_bits_[0] |= 0x00001000u;
-}
-inline void PBTradeInfo::clear_has_tradedate() {
-  _has_bits_[0] &= ~0x00001000u;
-}
 inline void PBTradeInfo::clear_tradedate() {
   tradedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_tradedate();
 }
 inline const ::std::string& PBTradeInfo::tradedate() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBTradeInfo.tradeDate)
   return tradedate_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBTradeInfo::set_tradedate(const ::std::string& value) {
-  set_has_tradedate();
+  
   tradedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBTradeInfo.tradeDate)
 }
 inline void PBTradeInfo::set_tradedate(const char* value) {
-  set_has_tradedate();
+  
   tradedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBTradeInfo.tradeDate)
 }
 inline void PBTradeInfo::set_tradedate(const char* value, size_t size) {
-  set_has_tradedate();
+  
   tradedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBTradeInfo.tradeDate)
 }
 inline ::std::string* PBTradeInfo::mutable_tradedate() {
-  set_has_tradedate();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBTradeInfo.tradeDate)
   return tradedate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBTradeInfo::release_tradedate() {
-  clear_has_tradedate();
+  
   return tradedate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBTradeInfo::set_allocated_tradedate(::std::string* tradedate) {
   if (tradedate != NULL) {
-    set_has_tradedate();
+    
   } else {
-    clear_has_tradedate();
+    
   }
   tradedate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), tradedate);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBTradeInfo.tradeDate)
 }
 
 // optional string tradeTime = 14;
-inline bool PBTradeInfo::has_tradetime() const {
-  return (_has_bits_[0] & 0x00002000u) != 0;
-}
-inline void PBTradeInfo::set_has_tradetime() {
-  _has_bits_[0] |= 0x00002000u;
-}
-inline void PBTradeInfo::clear_has_tradetime() {
-  _has_bits_[0] &= ~0x00002000u;
-}
 inline void PBTradeInfo::clear_tradetime() {
   tradetime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_tradetime();
 }
 inline const ::std::string& PBTradeInfo::tradetime() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBTradeInfo.tradeTime)
   return tradetime_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBTradeInfo::set_tradetime(const ::std::string& value) {
-  set_has_tradetime();
+  
   tradetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBTradeInfo.tradeTime)
 }
 inline void PBTradeInfo::set_tradetime(const char* value) {
-  set_has_tradetime();
+  
   tradetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBTradeInfo.tradeTime)
 }
 inline void PBTradeInfo::set_tradetime(const char* value, size_t size) {
-  set_has_tradetime();
+  
   tradetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBTradeInfo.tradeTime)
 }
 inline ::std::string* PBTradeInfo::mutable_tradetime() {
-  set_has_tradetime();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBTradeInfo.tradeTime)
   return tradetime_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBTradeInfo::release_tradetime() {
-  clear_has_tradetime();
+  
   return tradetime_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBTradeInfo::set_allocated_tradetime(::std::string* tradetime) {
   if (tradetime != NULL) {
-    set_has_tradetime();
+    
   } else {
-    clear_has_tradetime();
+    
   }
   tradetime_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), tradetime);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBTradeInfo.tradeTime)
 }
 
 // optional int32 tradeType = 15;
-inline bool PBTradeInfo::has_tradetype() const {
-  return (_has_bits_[0] & 0x00004000u) != 0;
-}
-inline void PBTradeInfo::set_has_tradetype() {
-  _has_bits_[0] |= 0x00004000u;
-}
-inline void PBTradeInfo::clear_has_tradetype() {
-  _has_bits_[0] &= ~0x00004000u;
-}
 inline void PBTradeInfo::clear_tradetype() {
   tradetype_ = 0;
-  clear_has_tradetype();
 }
 inline ::google::protobuf::int32 PBTradeInfo::tradetype() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBTradeInfo.tradeType)
   return tradetype_;
 }
 inline void PBTradeInfo::set_tradetype(::google::protobuf::int32 value) {
-  set_has_tradetype();
+  
   tradetype_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBTradeInfo.tradeType)
 }
 
 // optional int32 hedgeFlag = 16;
-inline bool PBTradeInfo::has_hedgeflag() const {
-  return (_has_bits_[0] & 0x00008000u) != 0;
-}
-inline void PBTradeInfo::set_has_hedgeflag() {
-  _has_bits_[0] |= 0x00008000u;
-}
-inline void PBTradeInfo::clear_has_hedgeflag() {
-  _has_bits_[0] &= ~0x00008000u;
-}
 inline void PBTradeInfo::clear_hedgeflag() {
   hedgeflag_ = 0;
-  clear_has_hedgeflag();
 }
 inline ::google::protobuf::int32 PBTradeInfo::hedgeflag() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBTradeInfo.hedgeFlag)
   return hedgeflag_;
 }
 inline void PBTradeInfo::set_hedgeflag(::google::protobuf::int32 value) {
-  set_has_hedgeflag();
+  
   hedgeflag_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBTradeInfo.hedgeFlag)
 }
 
 // optional double commission = 17;
-inline bool PBTradeInfo::has_commission() const {
-  return (_has_bits_[0] & 0x00010000u) != 0;
-}
-inline void PBTradeInfo::set_has_commission() {
-  _has_bits_[0] |= 0x00010000u;
-}
-inline void PBTradeInfo::clear_has_commission() {
-  _has_bits_[0] &= ~0x00010000u;
-}
 inline void PBTradeInfo::clear_commission() {
   commission_ = 0;
-  clear_has_commission();
 }
 inline double PBTradeInfo::commission() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBTradeInfo.commission)
   return commission_;
 }
 inline void PBTradeInfo::set_commission(double value) {
-  set_has_commission();
+  
   commission_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBTradeInfo.commission)
 }
@@ -7012,473 +5511,313 @@ inline void PBTradeInfo::set_commission(double value) {
 
 // PBPosition
 
-// required string exchange = 1;
-inline bool PBPosition::has_exchange() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBPosition::set_has_exchange() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBPosition::clear_has_exchange() {
-  _has_bits_[0] &= ~0x00000001u;
-}
+// optional string exchange = 1;
 inline void PBPosition::clear_exchange() {
   exchange_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_exchange();
 }
 inline const ::std::string& PBPosition::exchange() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.exchange)
   return exchange_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBPosition::set_exchange(const ::std::string& value) {
-  set_has_exchange();
+  
   exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.exchange)
 }
 inline void PBPosition::set_exchange(const char* value) {
-  set_has_exchange();
+  
   exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBPosition.exchange)
 }
 inline void PBPosition::set_exchange(const char* value, size_t size) {
-  set_has_exchange();
+  
   exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBPosition.exchange)
 }
 inline ::std::string* PBPosition::mutable_exchange() {
-  set_has_exchange();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBPosition.exchange)
   return exchange_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBPosition::release_exchange() {
-  clear_has_exchange();
+  
   return exchange_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBPosition::set_allocated_exchange(::std::string* exchange) {
   if (exchange != NULL) {
-    set_has_exchange();
+    
   } else {
-    clear_has_exchange();
+    
   }
   exchange_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), exchange);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBPosition.exchange)
 }
 
-// required string contract = 2;
-inline bool PBPosition::has_contract() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBPosition::set_has_contract() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBPosition::clear_has_contract() {
-  _has_bits_[0] &= ~0x00000002u;
-}
+// optional string contract = 2;
 inline void PBPosition::clear_contract() {
   contract_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_contract();
 }
 inline const ::std::string& PBPosition::contract() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.contract)
   return contract_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBPosition::set_contract(const ::std::string& value) {
-  set_has_contract();
+  
   contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.contract)
 }
 inline void PBPosition::set_contract(const char* value) {
-  set_has_contract();
+  
   contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBPosition.contract)
 }
 inline void PBPosition::set_contract(const char* value, size_t size) {
-  set_has_contract();
+  
   contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBPosition.contract)
 }
 inline ::std::string* PBPosition::mutable_contract() {
-  set_has_contract();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBPosition.contract)
   return contract_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBPosition::release_contract() {
-  clear_has_contract();
+  
   return contract_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBPosition::set_allocated_contract(::std::string* contract) {
   if (contract != NULL) {
-    set_has_contract();
+    
   } else {
-    clear_has_contract();
+    
   }
   contract_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), contract);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBPosition.contract)
 }
 
-// required int32 direction = 3;
-inline bool PBPosition::has_direction() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBPosition::set_has_direction() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBPosition::clear_has_direction() {
-  _has_bits_[0] &= ~0x00000004u;
-}
+// optional int32 direction = 3;
 inline void PBPosition::clear_direction() {
   direction_ = 0;
-  clear_has_direction();
 }
 inline ::google::protobuf::int32 PBPosition::direction() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.direction)
   return direction_;
 }
 inline void PBPosition::set_direction(::google::protobuf::int32 value) {
-  set_has_direction();
+  
   direction_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.direction)
 }
 
-// required int32 position = 5;
-inline bool PBPosition::has_position() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void PBPosition::set_has_position() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void PBPosition::clear_has_position() {
-  _has_bits_[0] &= ~0x00000008u;
-}
+// optional int32 position = 5;
 inline void PBPosition::clear_position() {
   position_ = 0;
-  clear_has_position();
 }
 inline ::google::protobuf::int32 PBPosition::position() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.position)
   return position_;
 }
 inline void PBPosition::set_position(::google::protobuf::int32 value) {
-  set_has_position();
+  
   position_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.position)
 }
 
 // optional int32 ydPosition = 4;
-inline bool PBPosition::has_ydposition() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void PBPosition::set_has_ydposition() {
-  _has_bits_[0] |= 0x00000010u;
-}
-inline void PBPosition::clear_has_ydposition() {
-  _has_bits_[0] &= ~0x00000010u;
-}
 inline void PBPosition::clear_ydposition() {
   ydposition_ = 0;
-  clear_has_ydposition();
 }
 inline ::google::protobuf::int32 PBPosition::ydposition() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.ydPosition)
   return ydposition_;
 }
 inline void PBPosition::set_ydposition(::google::protobuf::int32 value) {
-  set_has_ydposition();
+  
   ydposition_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.ydPosition)
 }
 
 // optional string positionDate = 6;
-inline bool PBPosition::has_positiondate() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
-}
-inline void PBPosition::set_has_positiondate() {
-  _has_bits_[0] |= 0x00000020u;
-}
-inline void PBPosition::clear_has_positiondate() {
-  _has_bits_[0] &= ~0x00000020u;
-}
 inline void PBPosition::clear_positiondate() {
   positiondate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_positiondate();
 }
 inline const ::std::string& PBPosition::positiondate() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.positionDate)
   return positiondate_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBPosition::set_positiondate(const ::std::string& value) {
-  set_has_positiondate();
+  
   positiondate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.positionDate)
 }
 inline void PBPosition::set_positiondate(const char* value) {
-  set_has_positiondate();
+  
   positiondate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBPosition.positionDate)
 }
 inline void PBPosition::set_positiondate(const char* value, size_t size) {
-  set_has_positiondate();
+  
   positiondate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBPosition.positionDate)
 }
 inline ::std::string* PBPosition::mutable_positiondate() {
-  set_has_positiondate();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBPosition.positionDate)
   return positiondate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBPosition::release_positiondate() {
-  clear_has_positiondate();
+  
   return positiondate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBPosition::set_allocated_positiondate(::std::string* positiondate) {
   if (positiondate != NULL) {
-    set_has_positiondate();
+    
   } else {
-    clear_has_positiondate();
+    
   }
   positiondate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), positiondate);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBPosition.positionDate)
 }
 
 // optional int32 openVolume = 7;
-inline bool PBPosition::has_openvolume() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
-}
-inline void PBPosition::set_has_openvolume() {
-  _has_bits_[0] |= 0x00000040u;
-}
-inline void PBPosition::clear_has_openvolume() {
-  _has_bits_[0] &= ~0x00000040u;
-}
 inline void PBPosition::clear_openvolume() {
   openvolume_ = 0;
-  clear_has_openvolume();
 }
 inline ::google::protobuf::int32 PBPosition::openvolume() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.openVolume)
   return openvolume_;
 }
 inline void PBPosition::set_openvolume(::google::protobuf::int32 value) {
-  set_has_openvolume();
+  
   openvolume_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.openVolume)
 }
 
 // optional int32 closeVolume = 8;
-inline bool PBPosition::has_closevolume() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
-}
-inline void PBPosition::set_has_closevolume() {
-  _has_bits_[0] |= 0x00000080u;
-}
-inline void PBPosition::clear_has_closevolume() {
-  _has_bits_[0] &= ~0x00000080u;
-}
 inline void PBPosition::clear_closevolume() {
   closevolume_ = 0;
-  clear_has_closevolume();
 }
 inline ::google::protobuf::int32 PBPosition::closevolume() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.closeVolume)
   return closevolume_;
 }
 inline void PBPosition::set_closevolume(::google::protobuf::int32 value) {
-  set_has_closevolume();
+  
   closevolume_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.closeVolume)
 }
 
 // optional double openAmount = 9;
-inline bool PBPosition::has_openamount() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
-}
-inline void PBPosition::set_has_openamount() {
-  _has_bits_[0] |= 0x00000100u;
-}
-inline void PBPosition::clear_has_openamount() {
-  _has_bits_[0] &= ~0x00000100u;
-}
 inline void PBPosition::clear_openamount() {
   openamount_ = 0;
-  clear_has_openamount();
 }
 inline double PBPosition::openamount() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.openAmount)
   return openamount_;
 }
 inline void PBPosition::set_openamount(double value) {
-  set_has_openamount();
+  
   openamount_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.openAmount)
 }
 
 // optional double closeAmount = 10;
-inline bool PBPosition::has_closeamount() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
-}
-inline void PBPosition::set_has_closeamount() {
-  _has_bits_[0] |= 0x00000200u;
-}
-inline void PBPosition::clear_has_closeamount() {
-  _has_bits_[0] &= ~0x00000200u;
-}
 inline void PBPosition::clear_closeamount() {
   closeamount_ = 0;
-  clear_has_closeamount();
 }
 inline double PBPosition::closeamount() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.closeAmount)
   return closeamount_;
 }
 inline void PBPosition::set_closeamount(double value) {
-  set_has_closeamount();
+  
   closeamount_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.closeAmount)
 }
 
 // optional double cost = 11;
-inline bool PBPosition::has_cost() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
-}
-inline void PBPosition::set_has_cost() {
-  _has_bits_[0] |= 0x00000400u;
-}
-inline void PBPosition::clear_has_cost() {
-  _has_bits_[0] &= ~0x00000400u;
-}
 inline void PBPosition::clear_cost() {
   cost_ = 0;
-  clear_has_cost();
 }
 inline double PBPosition::cost() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.cost)
   return cost_;
 }
 inline void PBPosition::set_cost(double value) {
-  set_has_cost();
+  
   cost_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.cost)
 }
 
 // optional double openCost = 12;
-inline bool PBPosition::has_opencost() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
-}
-inline void PBPosition::set_has_opencost() {
-  _has_bits_[0] |= 0x00000800u;
-}
-inline void PBPosition::clear_has_opencost() {
-  _has_bits_[0] &= ~0x00000800u;
-}
 inline void PBPosition::clear_opencost() {
   opencost_ = 0;
-  clear_has_opencost();
 }
 inline double PBPosition::opencost() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.openCost)
   return opencost_;
 }
 inline void PBPosition::set_opencost(double value) {
-  set_has_opencost();
+  
   opencost_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.openCost)
 }
 
 // optional double profit = 13;
-inline bool PBPosition::has_profit() const {
-  return (_has_bits_[0] & 0x00001000u) != 0;
-}
-inline void PBPosition::set_has_profit() {
-  _has_bits_[0] |= 0x00001000u;
-}
-inline void PBPosition::clear_has_profit() {
-  _has_bits_[0] &= ~0x00001000u;
-}
 inline void PBPosition::clear_profit() {
   profit_ = 0;
-  clear_has_profit();
 }
 inline double PBPosition::profit() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.profit)
   return profit_;
 }
 inline void PBPosition::set_profit(double value) {
-  set_has_profit();
+  
   profit_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.profit)
 }
 
 // optional double closeProfit = 14;
-inline bool PBPosition::has_closeprofit() const {
-  return (_has_bits_[0] & 0x00002000u) != 0;
-}
-inline void PBPosition::set_has_closeprofit() {
-  _has_bits_[0] |= 0x00002000u;
-}
-inline void PBPosition::clear_has_closeprofit() {
-  _has_bits_[0] &= ~0x00002000u;
-}
 inline void PBPosition::clear_closeprofit() {
   closeprofit_ = 0;
-  clear_has_closeprofit();
 }
 inline double PBPosition::closeprofit() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.closeProfit)
   return closeprofit_;
 }
 inline void PBPosition::set_closeprofit(double value) {
-  set_has_closeprofit();
+  
   closeprofit_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.closeProfit)
 }
 
 // optional double useMargin = 15;
-inline bool PBPosition::has_usemargin() const {
-  return (_has_bits_[0] & 0x00004000u) != 0;
-}
-inline void PBPosition::set_has_usemargin() {
-  _has_bits_[0] |= 0x00004000u;
-}
-inline void PBPosition::clear_has_usemargin() {
-  _has_bits_[0] &= ~0x00004000u;
-}
 inline void PBPosition::clear_usemargin() {
   usemargin_ = 0;
-  clear_has_usemargin();
 }
 inline double PBPosition::usemargin() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.useMargin)
   return usemargin_;
 }
 inline void PBPosition::set_usemargin(double value) {
-  set_has_usemargin();
+  
   usemargin_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.useMargin)
 }
 
 // optional int32 hedgeFlag = 16;
-inline bool PBPosition::has_hedgeflag() const {
-  return (_has_bits_[0] & 0x00008000u) != 0;
-}
-inline void PBPosition::set_has_hedgeflag() {
-  _has_bits_[0] |= 0x00008000u;
-}
-inline void PBPosition::clear_has_hedgeflag() {
-  _has_bits_[0] &= ~0x00008000u;
-}
 inline void PBPosition::clear_hedgeflag() {
   hedgeflag_ = 0;
-  clear_has_hedgeflag();
 }
 inline ::google::protobuf::int32 PBPosition::hedgeflag() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.hedgeFlag)
   return hedgeflag_;
 }
 inline void PBPosition::set_hedgeflag(::google::protobuf::int32 value) {
-  set_has_hedgeflag();
+  
   hedgeflag_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.hedgeFlag)
 }
@@ -7488,832 +5827,522 @@ inline void PBPosition::set_hedgeflag(::google::protobuf::int32 value) {
 // PBAccountInfo
 
 // optional string brokerID = 2;
-inline bool PBAccountInfo::has_brokerid() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBAccountInfo::set_has_brokerid() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBAccountInfo::clear_has_brokerid() {
-  _has_bits_[0] &= ~0x00000001u;
-}
 inline void PBAccountInfo::clear_brokerid() {
   brokerid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_brokerid();
 }
 inline const ::std::string& PBAccountInfo::brokerid() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.brokerID)
   return brokerid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBAccountInfo::set_brokerid(const ::std::string& value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.brokerID)
 }
 inline void PBAccountInfo::set_brokerid(const char* value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBAccountInfo.brokerID)
 }
 inline void PBAccountInfo::set_brokerid(const char* value, size_t size) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBAccountInfo.brokerID)
 }
 inline ::std::string* PBAccountInfo::mutable_brokerid() {
-  set_has_brokerid();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBAccountInfo.brokerID)
   return brokerid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBAccountInfo::release_brokerid() {
-  clear_has_brokerid();
+  
   return brokerid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBAccountInfo::set_allocated_brokerid(::std::string* brokerid) {
   if (brokerid != NULL) {
-    set_has_brokerid();
+    
   } else {
-    clear_has_brokerid();
+    
   }
   brokerid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), brokerid);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBAccountInfo.brokerID)
 }
 
 // optional string accountID = 3;
-inline bool PBAccountInfo::has_accountid() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBAccountInfo::set_has_accountid() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBAccountInfo::clear_has_accountid() {
-  _has_bits_[0] &= ~0x00000002u;
-}
 inline void PBAccountInfo::clear_accountid() {
   accountid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_accountid();
 }
 inline const ::std::string& PBAccountInfo::accountid() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.accountID)
   return accountid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBAccountInfo::set_accountid(const ::std::string& value) {
-  set_has_accountid();
+  
   accountid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.accountID)
 }
 inline void PBAccountInfo::set_accountid(const char* value) {
-  set_has_accountid();
+  
   accountid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBAccountInfo.accountID)
 }
 inline void PBAccountInfo::set_accountid(const char* value, size_t size) {
-  set_has_accountid();
+  
   accountid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBAccountInfo.accountID)
 }
 inline ::std::string* PBAccountInfo::mutable_accountid() {
-  set_has_accountid();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBAccountInfo.accountID)
   return accountid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBAccountInfo::release_accountid() {
-  clear_has_accountid();
+  
   return accountid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBAccountInfo::set_allocated_accountid(::std::string* accountid) {
   if (accountid != NULL) {
-    set_has_accountid();
+    
   } else {
-    clear_has_accountid();
+    
   }
   accountid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), accountid);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBAccountInfo.accountID)
 }
 
 // optional double preMortgage = 4;
-inline bool PBAccountInfo::has_premortgage() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBAccountInfo::set_has_premortgage() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBAccountInfo::clear_has_premortgage() {
-  _has_bits_[0] &= ~0x00000004u;
-}
 inline void PBAccountInfo::clear_premortgage() {
   premortgage_ = 0;
-  clear_has_premortgage();
 }
 inline double PBAccountInfo::premortgage() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.preMortgage)
   return premortgage_;
 }
 inline void PBAccountInfo::set_premortgage(double value) {
-  set_has_premortgage();
+  
   premortgage_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.preMortgage)
 }
 
 // optional double preCredit = 5;
-inline bool PBAccountInfo::has_precredit() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void PBAccountInfo::set_has_precredit() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void PBAccountInfo::clear_has_precredit() {
-  _has_bits_[0] &= ~0x00000008u;
-}
 inline void PBAccountInfo::clear_precredit() {
   precredit_ = 0;
-  clear_has_precredit();
 }
 inline double PBAccountInfo::precredit() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.preCredit)
   return precredit_;
 }
 inline void PBAccountInfo::set_precredit(double value) {
-  set_has_precredit();
+  
   precredit_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.preCredit)
 }
 
 // optional double preDeposit = 6;
-inline bool PBAccountInfo::has_predeposit() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void PBAccountInfo::set_has_predeposit() {
-  _has_bits_[0] |= 0x00000010u;
-}
-inline void PBAccountInfo::clear_has_predeposit() {
-  _has_bits_[0] &= ~0x00000010u;
-}
 inline void PBAccountInfo::clear_predeposit() {
   predeposit_ = 0;
-  clear_has_predeposit();
 }
 inline double PBAccountInfo::predeposit() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.preDeposit)
   return predeposit_;
 }
 inline void PBAccountInfo::set_predeposit(double value) {
-  set_has_predeposit();
+  
   predeposit_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.preDeposit)
 }
 
 // optional double preBalance = 7;
-inline bool PBAccountInfo::has_prebalance() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
-}
-inline void PBAccountInfo::set_has_prebalance() {
-  _has_bits_[0] |= 0x00000020u;
-}
-inline void PBAccountInfo::clear_has_prebalance() {
-  _has_bits_[0] &= ~0x00000020u;
-}
 inline void PBAccountInfo::clear_prebalance() {
   prebalance_ = 0;
-  clear_has_prebalance();
 }
 inline double PBAccountInfo::prebalance() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.preBalance)
   return prebalance_;
 }
 inline void PBAccountInfo::set_prebalance(double value) {
-  set_has_prebalance();
+  
   prebalance_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.preBalance)
 }
 
 // optional double preMargin = 8;
-inline bool PBAccountInfo::has_premargin() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
-}
-inline void PBAccountInfo::set_has_premargin() {
-  _has_bits_[0] |= 0x00000040u;
-}
-inline void PBAccountInfo::clear_has_premargin() {
-  _has_bits_[0] &= ~0x00000040u;
-}
 inline void PBAccountInfo::clear_premargin() {
   premargin_ = 0;
-  clear_has_premargin();
 }
 inline double PBAccountInfo::premargin() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.preMargin)
   return premargin_;
 }
 inline void PBAccountInfo::set_premargin(double value) {
-  set_has_premargin();
+  
   premargin_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.preMargin)
 }
 
 // optional double interestBase = 9;
-inline bool PBAccountInfo::has_interestbase() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
-}
-inline void PBAccountInfo::set_has_interestbase() {
-  _has_bits_[0] |= 0x00000080u;
-}
-inline void PBAccountInfo::clear_has_interestbase() {
-  _has_bits_[0] &= ~0x00000080u;
-}
 inline void PBAccountInfo::clear_interestbase() {
   interestbase_ = 0;
-  clear_has_interestbase();
 }
 inline double PBAccountInfo::interestbase() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.interestBase)
   return interestbase_;
 }
 inline void PBAccountInfo::set_interestbase(double value) {
-  set_has_interestbase();
+  
   interestbase_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.interestBase)
 }
 
 // optional double interest = 10;
-inline bool PBAccountInfo::has_interest() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
-}
-inline void PBAccountInfo::set_has_interest() {
-  _has_bits_[0] |= 0x00000100u;
-}
-inline void PBAccountInfo::clear_has_interest() {
-  _has_bits_[0] &= ~0x00000100u;
-}
 inline void PBAccountInfo::clear_interest() {
   interest_ = 0;
-  clear_has_interest();
 }
 inline double PBAccountInfo::interest() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.interest)
   return interest_;
 }
 inline void PBAccountInfo::set_interest(double value) {
-  set_has_interest();
+  
   interest_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.interest)
 }
 
 // optional double deposit = 11;
-inline bool PBAccountInfo::has_deposit() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
-}
-inline void PBAccountInfo::set_has_deposit() {
-  _has_bits_[0] |= 0x00000200u;
-}
-inline void PBAccountInfo::clear_has_deposit() {
-  _has_bits_[0] &= ~0x00000200u;
-}
 inline void PBAccountInfo::clear_deposit() {
   deposit_ = 0;
-  clear_has_deposit();
 }
 inline double PBAccountInfo::deposit() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.deposit)
   return deposit_;
 }
 inline void PBAccountInfo::set_deposit(double value) {
-  set_has_deposit();
+  
   deposit_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.deposit)
 }
 
 // optional double withdraw = 12;
-inline bool PBAccountInfo::has_withdraw() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
-}
-inline void PBAccountInfo::set_has_withdraw() {
-  _has_bits_[0] |= 0x00000400u;
-}
-inline void PBAccountInfo::clear_has_withdraw() {
-  _has_bits_[0] &= ~0x00000400u;
-}
 inline void PBAccountInfo::clear_withdraw() {
   withdraw_ = 0;
-  clear_has_withdraw();
 }
 inline double PBAccountInfo::withdraw() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.withdraw)
   return withdraw_;
 }
 inline void PBAccountInfo::set_withdraw(double value) {
-  set_has_withdraw();
+  
   withdraw_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.withdraw)
 }
 
 // optional double frozenMargin = 13;
-inline bool PBAccountInfo::has_frozenmargin() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
-}
-inline void PBAccountInfo::set_has_frozenmargin() {
-  _has_bits_[0] |= 0x00000800u;
-}
-inline void PBAccountInfo::clear_has_frozenmargin() {
-  _has_bits_[0] &= ~0x00000800u;
-}
 inline void PBAccountInfo::clear_frozenmargin() {
   frozenmargin_ = 0;
-  clear_has_frozenmargin();
 }
 inline double PBAccountInfo::frozenmargin() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.frozenMargin)
   return frozenmargin_;
 }
 inline void PBAccountInfo::set_frozenmargin(double value) {
-  set_has_frozenmargin();
+  
   frozenmargin_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.frozenMargin)
 }
 
 // optional double frozenCash = 14;
-inline bool PBAccountInfo::has_frozencash() const {
-  return (_has_bits_[0] & 0x00001000u) != 0;
-}
-inline void PBAccountInfo::set_has_frozencash() {
-  _has_bits_[0] |= 0x00001000u;
-}
-inline void PBAccountInfo::clear_has_frozencash() {
-  _has_bits_[0] &= ~0x00001000u;
-}
 inline void PBAccountInfo::clear_frozencash() {
   frozencash_ = 0;
-  clear_has_frozencash();
 }
 inline double PBAccountInfo::frozencash() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.frozenCash)
   return frozencash_;
 }
 inline void PBAccountInfo::set_frozencash(double value) {
-  set_has_frozencash();
+  
   frozencash_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.frozenCash)
 }
 
 // optional double frozenCommission = 15;
-inline bool PBAccountInfo::has_frozencommission() const {
-  return (_has_bits_[0] & 0x00002000u) != 0;
-}
-inline void PBAccountInfo::set_has_frozencommission() {
-  _has_bits_[0] |= 0x00002000u;
-}
-inline void PBAccountInfo::clear_has_frozencommission() {
-  _has_bits_[0] &= ~0x00002000u;
-}
 inline void PBAccountInfo::clear_frozencommission() {
   frozencommission_ = 0;
-  clear_has_frozencommission();
 }
 inline double PBAccountInfo::frozencommission() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.frozenCommission)
   return frozencommission_;
 }
 inline void PBAccountInfo::set_frozencommission(double value) {
-  set_has_frozencommission();
+  
   frozencommission_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.frozenCommission)
 }
 
 // optional double currMargin = 16;
-inline bool PBAccountInfo::has_currmargin() const {
-  return (_has_bits_[0] & 0x00004000u) != 0;
-}
-inline void PBAccountInfo::set_has_currmargin() {
-  _has_bits_[0] |= 0x00004000u;
-}
-inline void PBAccountInfo::clear_has_currmargin() {
-  _has_bits_[0] &= ~0x00004000u;
-}
 inline void PBAccountInfo::clear_currmargin() {
   currmargin_ = 0;
-  clear_has_currmargin();
 }
 inline double PBAccountInfo::currmargin() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.currMargin)
   return currmargin_;
 }
 inline void PBAccountInfo::set_currmargin(double value) {
-  set_has_currmargin();
+  
   currmargin_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.currMargin)
 }
 
 // optional double cashIn = 17;
-inline bool PBAccountInfo::has_cashin() const {
-  return (_has_bits_[0] & 0x00008000u) != 0;
-}
-inline void PBAccountInfo::set_has_cashin() {
-  _has_bits_[0] |= 0x00008000u;
-}
-inline void PBAccountInfo::clear_has_cashin() {
-  _has_bits_[0] &= ~0x00008000u;
-}
 inline void PBAccountInfo::clear_cashin() {
   cashin_ = 0;
-  clear_has_cashin();
 }
 inline double PBAccountInfo::cashin() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.cashIn)
   return cashin_;
 }
 inline void PBAccountInfo::set_cashin(double value) {
-  set_has_cashin();
+  
   cashin_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.cashIn)
 }
 
 // optional double commission = 18;
-inline bool PBAccountInfo::has_commission() const {
-  return (_has_bits_[0] & 0x00010000u) != 0;
-}
-inline void PBAccountInfo::set_has_commission() {
-  _has_bits_[0] |= 0x00010000u;
-}
-inline void PBAccountInfo::clear_has_commission() {
-  _has_bits_[0] &= ~0x00010000u;
-}
 inline void PBAccountInfo::clear_commission() {
   commission_ = 0;
-  clear_has_commission();
 }
 inline double PBAccountInfo::commission() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.commission)
   return commission_;
 }
 inline void PBAccountInfo::set_commission(double value) {
-  set_has_commission();
+  
   commission_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.commission)
 }
 
 // optional double closeProfit = 19;
-inline bool PBAccountInfo::has_closeprofit() const {
-  return (_has_bits_[0] & 0x00020000u) != 0;
-}
-inline void PBAccountInfo::set_has_closeprofit() {
-  _has_bits_[0] |= 0x00020000u;
-}
-inline void PBAccountInfo::clear_has_closeprofit() {
-  _has_bits_[0] &= ~0x00020000u;
-}
 inline void PBAccountInfo::clear_closeprofit() {
   closeprofit_ = 0;
-  clear_has_closeprofit();
 }
 inline double PBAccountInfo::closeprofit() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.closeProfit)
   return closeprofit_;
 }
 inline void PBAccountInfo::set_closeprofit(double value) {
-  set_has_closeprofit();
+  
   closeprofit_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.closeProfit)
 }
 
 // optional double positionProfit = 20;
-inline bool PBAccountInfo::has_positionprofit() const {
-  return (_has_bits_[0] & 0x00040000u) != 0;
-}
-inline void PBAccountInfo::set_has_positionprofit() {
-  _has_bits_[0] |= 0x00040000u;
-}
-inline void PBAccountInfo::clear_has_positionprofit() {
-  _has_bits_[0] &= ~0x00040000u;
-}
 inline void PBAccountInfo::clear_positionprofit() {
   positionprofit_ = 0;
-  clear_has_positionprofit();
 }
 inline double PBAccountInfo::positionprofit() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.positionProfit)
   return positionprofit_;
 }
 inline void PBAccountInfo::set_positionprofit(double value) {
-  set_has_positionprofit();
+  
   positionprofit_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.positionProfit)
 }
 
 // optional double balance = 21;
-inline bool PBAccountInfo::has_balance() const {
-  return (_has_bits_[0] & 0x00080000u) != 0;
-}
-inline void PBAccountInfo::set_has_balance() {
-  _has_bits_[0] |= 0x00080000u;
-}
-inline void PBAccountInfo::clear_has_balance() {
-  _has_bits_[0] &= ~0x00080000u;
-}
 inline void PBAccountInfo::clear_balance() {
   balance_ = 0;
-  clear_has_balance();
 }
 inline double PBAccountInfo::balance() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.balance)
   return balance_;
 }
 inline void PBAccountInfo::set_balance(double value) {
-  set_has_balance();
+  
   balance_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.balance)
 }
 
 // optional double available = 22;
-inline bool PBAccountInfo::has_available() const {
-  return (_has_bits_[0] & 0x00100000u) != 0;
-}
-inline void PBAccountInfo::set_has_available() {
-  _has_bits_[0] |= 0x00100000u;
-}
-inline void PBAccountInfo::clear_has_available() {
-  _has_bits_[0] &= ~0x00100000u;
-}
 inline void PBAccountInfo::clear_available() {
   available_ = 0;
-  clear_has_available();
 }
 inline double PBAccountInfo::available() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.available)
   return available_;
 }
 inline void PBAccountInfo::set_available(double value) {
-  set_has_available();
+  
   available_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.available)
 }
 
 // optional double withdrawQuota = 23;
-inline bool PBAccountInfo::has_withdrawquota() const {
-  return (_has_bits_[0] & 0x00200000u) != 0;
-}
-inline void PBAccountInfo::set_has_withdrawquota() {
-  _has_bits_[0] |= 0x00200000u;
-}
-inline void PBAccountInfo::clear_has_withdrawquota() {
-  _has_bits_[0] &= ~0x00200000u;
-}
 inline void PBAccountInfo::clear_withdrawquota() {
   withdrawquota_ = 0;
-  clear_has_withdrawquota();
 }
 inline double PBAccountInfo::withdrawquota() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.withdrawQuota)
   return withdrawquota_;
 }
 inline void PBAccountInfo::set_withdrawquota(double value) {
-  set_has_withdrawquota();
+  
   withdrawquota_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.withdrawQuota)
 }
 
 // optional double reserve = 24;
-inline bool PBAccountInfo::has_reserve() const {
-  return (_has_bits_[0] & 0x00400000u) != 0;
-}
-inline void PBAccountInfo::set_has_reserve() {
-  _has_bits_[0] |= 0x00400000u;
-}
-inline void PBAccountInfo::clear_has_reserve() {
-  _has_bits_[0] &= ~0x00400000u;
-}
 inline void PBAccountInfo::clear_reserve() {
   reserve_ = 0;
-  clear_has_reserve();
 }
 inline double PBAccountInfo::reserve() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.reserve)
   return reserve_;
 }
 inline void PBAccountInfo::set_reserve(double value) {
-  set_has_reserve();
+  
   reserve_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.reserve)
 }
 
 // optional string tradingDay = 25;
-inline bool PBAccountInfo::has_tradingday() const {
-  return (_has_bits_[0] & 0x00800000u) != 0;
-}
-inline void PBAccountInfo::set_has_tradingday() {
-  _has_bits_[0] |= 0x00800000u;
-}
-inline void PBAccountInfo::clear_has_tradingday() {
-  _has_bits_[0] &= ~0x00800000u;
-}
 inline void PBAccountInfo::clear_tradingday() {
   tradingday_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_tradingday();
 }
 inline const ::std::string& PBAccountInfo::tradingday() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.tradingDay)
   return tradingday_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBAccountInfo::set_tradingday(const ::std::string& value) {
-  set_has_tradingday();
+  
   tradingday_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.tradingDay)
 }
 inline void PBAccountInfo::set_tradingday(const char* value) {
-  set_has_tradingday();
+  
   tradingday_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBAccountInfo.tradingDay)
 }
 inline void PBAccountInfo::set_tradingday(const char* value, size_t size) {
-  set_has_tradingday();
+  
   tradingday_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBAccountInfo.tradingDay)
 }
 inline ::std::string* PBAccountInfo::mutable_tradingday() {
-  set_has_tradingday();
+  
   // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBAccountInfo.tradingDay)
   return tradingday_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBAccountInfo::release_tradingday() {
-  clear_has_tradingday();
+  
   return tradingday_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBAccountInfo::set_allocated_tradingday(::std::string* tradingday) {
   if (tradingday != NULL) {
-    set_has_tradingday();
+    
   } else {
-    clear_has_tradingday();
+    
   }
   tradingday_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), tradingday);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBAccountInfo.tradingDay)
 }
 
 // optional int32 settlementID = 26;
-inline bool PBAccountInfo::has_settlementid() const {
-  return (_has_bits_[0] & 0x01000000u) != 0;
-}
-inline void PBAccountInfo::set_has_settlementid() {
-  _has_bits_[0] |= 0x01000000u;
-}
-inline void PBAccountInfo::clear_has_settlementid() {
-  _has_bits_[0] &= ~0x01000000u;
-}
 inline void PBAccountInfo::clear_settlementid() {
   settlementid_ = 0;
-  clear_has_settlementid();
 }
 inline ::google::protobuf::int32 PBAccountInfo::settlementid() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.settlementID)
   return settlementid_;
 }
 inline void PBAccountInfo::set_settlementid(::google::protobuf::int32 value) {
-  set_has_settlementid();
+  
   settlementid_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.settlementID)
 }
 
 // optional double credit = 27;
-inline bool PBAccountInfo::has_credit() const {
-  return (_has_bits_[0] & 0x02000000u) != 0;
-}
-inline void PBAccountInfo::set_has_credit() {
-  _has_bits_[0] |= 0x02000000u;
-}
-inline void PBAccountInfo::clear_has_credit() {
-  _has_bits_[0] &= ~0x02000000u;
-}
 inline void PBAccountInfo::clear_credit() {
   credit_ = 0;
-  clear_has_credit();
 }
 inline double PBAccountInfo::credit() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.credit)
   return credit_;
 }
 inline void PBAccountInfo::set_credit(double value) {
-  set_has_credit();
+  
   credit_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.credit)
 }
 
 // optional double mortgage = 28;
-inline bool PBAccountInfo::has_mortgage() const {
-  return (_has_bits_[0] & 0x04000000u) != 0;
-}
-inline void PBAccountInfo::set_has_mortgage() {
-  _has_bits_[0] |= 0x04000000u;
-}
-inline void PBAccountInfo::clear_has_mortgage() {
-  _has_bits_[0] &= ~0x04000000u;
-}
 inline void PBAccountInfo::clear_mortgage() {
   mortgage_ = 0;
-  clear_has_mortgage();
 }
 inline double PBAccountInfo::mortgage() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.mortgage)
   return mortgage_;
 }
 inline void PBAccountInfo::set_mortgage(double value) {
-  set_has_mortgage();
+  
   mortgage_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.mortgage)
 }
 
 // optional double exchangeMargin = 29;
-inline bool PBAccountInfo::has_exchangemargin() const {
-  return (_has_bits_[0] & 0x08000000u) != 0;
-}
-inline void PBAccountInfo::set_has_exchangemargin() {
-  _has_bits_[0] |= 0x08000000u;
-}
-inline void PBAccountInfo::clear_has_exchangemargin() {
-  _has_bits_[0] &= ~0x08000000u;
-}
 inline void PBAccountInfo::clear_exchangemargin() {
   exchangemargin_ = 0;
-  clear_has_exchangemargin();
 }
 inline double PBAccountInfo::exchangemargin() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.exchangeMargin)
   return exchangemargin_;
 }
 inline void PBAccountInfo::set_exchangemargin(double value) {
-  set_has_exchangemargin();
+  
   exchangemargin_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.exchangeMargin)
 }
 
 // optional double deliveryMargin = 30;
-inline bool PBAccountInfo::has_deliverymargin() const {
-  return (_has_bits_[0] & 0x10000000u) != 0;
-}
-inline void PBAccountInfo::set_has_deliverymargin() {
-  _has_bits_[0] |= 0x10000000u;
-}
-inline void PBAccountInfo::clear_has_deliverymargin() {
-  _has_bits_[0] &= ~0x10000000u;
-}
 inline void PBAccountInfo::clear_deliverymargin() {
   deliverymargin_ = 0;
-  clear_has_deliverymargin();
 }
 inline double PBAccountInfo::deliverymargin() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.deliveryMargin)
   return deliverymargin_;
 }
 inline void PBAccountInfo::set_deliverymargin(double value) {
-  set_has_deliverymargin();
+  
   deliverymargin_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.deliveryMargin)
 }
 
 // optional double exchangeDeliveryMargin = 31;
-inline bool PBAccountInfo::has_exchangedeliverymargin() const {
-  return (_has_bits_[0] & 0x20000000u) != 0;
-}
-inline void PBAccountInfo::set_has_exchangedeliverymargin() {
-  _has_bits_[0] |= 0x20000000u;
-}
-inline void PBAccountInfo::clear_has_exchangedeliverymargin() {
-  _has_bits_[0] &= ~0x20000000u;
-}
 inline void PBAccountInfo::clear_exchangedeliverymargin() {
   exchangedeliverymargin_ = 0;
-  clear_has_exchangedeliverymargin();
 }
 inline double PBAccountInfo::exchangedeliverymargin() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.exchangeDeliveryMargin)
   return exchangedeliverymargin_;
 }
 inline void PBAccountInfo::set_exchangedeliverymargin(double value) {
-  set_has_exchangedeliverymargin();
+  
   exchangedeliverymargin_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.exchangeDeliveryMargin)
 }
 
 // optional double reserveBalance = 32;
-inline bool PBAccountInfo::has_reservebalance() const {
-  return (_has_bits_[0] & 0x40000000u) != 0;
-}
-inline void PBAccountInfo::set_has_reservebalance() {
-  _has_bits_[0] |= 0x40000000u;
-}
-inline void PBAccountInfo::clear_has_reservebalance() {
-  _has_bits_[0] &= ~0x40000000u;
-}
 inline void PBAccountInfo::clear_reservebalance() {
   reservebalance_ = 0;
-  clear_has_reservebalance();
 }
 inline double PBAccountInfo::reservebalance() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.reserveBalance)
   return reservebalance_;
 }
 inline void PBAccountInfo::set_reservebalance(double value) {
-  set_has_reservebalance();
+  
   reservebalance_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.reserveBalance)
 }

@@ -41,47 +41,50 @@ class PBMsgError;
 class PBMsgLoginReq;
 class PBMsgLoginRsp;
 class PBMsgLogout;
-class PBMsgQueryReqMarketInfo;
-class PBMsgQueryRspMarketInfo;
-class PBMsgQueryReqInstrumentInfo;
-class PBMsgQueryRspInstrumentInfo;
-class PBMsgQueryReqOrder;
-class PBMsgQueryReqTrade;
-class PBMsgQueryReqPosition;
-class PBMsgQueryRspPosition;
-class PBMsgQueryReqFund;
-class PBMsgQueryRspFund;
-class PBMsgOrderInsert;
 class PBMsgOrderAction;
+class PBMsgOrderInsert;
 class PBMsgOrderRtn;
-class PBMsgTradeRtn;
-class PBMsgSettlementInfoConfirm;
+class PBMsgQueryReqFund;
+class PBMsgQueryReqInstrumentInfo;
+class PBMsgQueryReqMarketInfo;
+class PBMsgQueryReqOrder;
+class PBMsgQueryReqPosition;
+class PBMsgQueryReqTrade;
+class PBMsgQueryRspFund;
+class PBMsgQueryRspInstrumentInfo;
+class PBMsgQueryRspMarketInfo;
+class PBMsgQueryRspPosition;
 class PBMsgReqConnect;
 class PBMsgRspConnect;
+class PBMsgSettlementInfoConfirm;
+class PBMsgTradeRtn;
 
-enum OrderStatus {
+enum PBOrderStatus {
+  PBOrderStatus_0 = 0,
   TTIS_ORDER_INSERT_SUCCESS = 1,
   TTIS_ORDER_INSERT_FAILED = 2,
   TTIS_ORDER_CANCEL_SUCCESS = 3,
   TTIS_ORDER_CANCEL_FAILED = 4,
   TTIS_ORDER_OTHER = 5,
   ALL_FINISHED = 10,
-  PARTLY_FINISHED = 11
+  PARTLY_FINISHED = 11,
+  PBOrderStatus_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  PBOrderStatus_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
-bool OrderStatus_IsValid(int value);
-const OrderStatus OrderStatus_MIN = TTIS_ORDER_INSERT_SUCCESS;
-const OrderStatus OrderStatus_MAX = PARTLY_FINISHED;
-const int OrderStatus_ARRAYSIZE = OrderStatus_MAX + 1;
+bool PBOrderStatus_IsValid(int value);
+const PBOrderStatus PBOrderStatus_MIN = PBOrderStatus_0;
+const PBOrderStatus PBOrderStatus_MAX = PARTLY_FINISHED;
+const int PBOrderStatus_ARRAYSIZE = PBOrderStatus_MAX + 1;
 
-const ::google::protobuf::EnumDescriptor* OrderStatus_descriptor();
-inline const ::std::string& OrderStatus_Name(OrderStatus value) {
+const ::google::protobuf::EnumDescriptor* PBOrderStatus_descriptor();
+inline const ::std::string& PBOrderStatus_Name(PBOrderStatus value) {
   return ::google::protobuf::internal::NameOfEnum(
-    OrderStatus_descriptor(), value);
+    PBOrderStatus_descriptor(), value);
 }
-inline bool OrderStatus_Parse(
-    const ::std::string& name, OrderStatus* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<OrderStatus>(
-    OrderStatus_descriptor(), name, value);
+inline bool PBOrderStatus_Parse(
+    const ::std::string& name, PBOrderStatus* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<PBOrderStatus>(
+    PBOrderStatus_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -95,14 +98,6 @@ class PBMsgError : public ::google::protobuf::Message {
   inline PBMsgError& operator=(const PBMsgError& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -150,14 +145,12 @@ class PBMsgError : public ::google::protobuf::Message {
   // accessors -------------------------------------------------------
 
   // optional int32 ErrorID = 2;
-  bool has_errorid() const;
   void clear_errorid();
   static const int kErrorIDFieldNumber = 2;
   ::google::protobuf::int32 errorid() const;
   void set_errorid(::google::protobuf::int32 value);
 
   // optional bytes ErrorMsg = 3;
-  bool has_errormsg() const;
   void clear_errormsg();
   static const int kErrorMsgFieldNumber = 3;
   const ::std::string& errormsg() const;
@@ -170,16 +163,12 @@ class PBMsgError : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:PBMsgTrader.PBMsgError)
  private:
-  inline void set_has_errorid();
-  inline void clear_has_errorid();
-  inline void set_has_errormsg();
-  inline void clear_has_errormsg();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr errormsg_;
   ::google::protobuf::int32 errorid_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_PBMsgTrader_2eproto();
   friend void protobuf_AssignDesc_PBMsgTrader_2eproto();
   friend void protobuf_ShutdownFile_PBMsgTrader_2eproto();
@@ -199,14 +188,6 @@ class PBMsgLoginReq : public ::google::protobuf::Message {
   inline PBMsgLoginReq& operator=(const PBMsgLoginReq& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -254,7 +235,6 @@ class PBMsgLoginReq : public ::google::protobuf::Message {
   // accessors -------------------------------------------------------
 
   // optional string TradingDay = 2;
-  bool has_tradingday() const;
   void clear_tradingday();
   static const int kTradingDayFieldNumber = 2;
   const ::std::string& tradingday() const;
@@ -266,7 +246,6 @@ class PBMsgLoginReq : public ::google::protobuf::Message {
   void set_allocated_tradingday(::std::string* tradingday);
 
   // optional string BrokerID = 3;
-  bool has_brokerid() const;
   void clear_brokerid();
   static const int kBrokerIDFieldNumber = 3;
   const ::std::string& brokerid() const;
@@ -278,7 +257,6 @@ class PBMsgLoginReq : public ::google::protobuf::Message {
   void set_allocated_brokerid(::std::string* brokerid);
 
   // optional string UserID = 4;
-  bool has_userid() const;
   void clear_userid();
   static const int kUserIDFieldNumber = 4;
   const ::std::string& userid() const;
@@ -290,7 +268,6 @@ class PBMsgLoginReq : public ::google::protobuf::Message {
   void set_allocated_userid(::std::string* userid);
 
   // optional string Password = 5;
-  bool has_password() const;
   void clear_password();
   static const int kPasswordFieldNumber = 5;
   const ::std::string& password() const;
@@ -302,7 +279,6 @@ class PBMsgLoginReq : public ::google::protobuf::Message {
   void set_allocated_password(::std::string* password);
 
   // optional string UserProductInfo = 6;
-  bool has_userproductinfo() const;
   void clear_userproductinfo();
   static const int kUserProductInfoFieldNumber = 6;
   const ::std::string& userproductinfo() const;
@@ -314,7 +290,6 @@ class PBMsgLoginReq : public ::google::protobuf::Message {
   void set_allocated_userproductinfo(::std::string* userproductinfo);
 
   // optional string InterfaceProductInfo = 7;
-  bool has_interfaceproductinfo() const;
   void clear_interfaceproductinfo();
   static const int kInterfaceProductInfoFieldNumber = 7;
   const ::std::string& interfaceproductinfo() const;
@@ -326,7 +301,6 @@ class PBMsgLoginReq : public ::google::protobuf::Message {
   void set_allocated_interfaceproductinfo(::std::string* interfaceproductinfo);
 
   // optional string ProtocolInfo = 8;
-  bool has_protocolinfo() const;
   void clear_protocolinfo();
   static const int kProtocolInfoFieldNumber = 8;
   const ::std::string& protocolinfo() const;
@@ -338,7 +312,6 @@ class PBMsgLoginReq : public ::google::protobuf::Message {
   void set_allocated_protocolinfo(::std::string* protocolinfo);
 
   // optional string MacAddress = 9;
-  bool has_macaddress() const;
   void clear_macaddress();
   static const int kMacAddressFieldNumber = 9;
   const ::std::string& macaddress() const;
@@ -350,7 +323,6 @@ class PBMsgLoginReq : public ::google::protobuf::Message {
   void set_allocated_macaddress(::std::string* macaddress);
 
   // optional string OneTimePassword = 10;
-  bool has_onetimepassword() const;
   void clear_onetimepassword();
   static const int kOneTimePasswordFieldNumber = 10;
   const ::std::string& onetimepassword() const;
@@ -362,7 +334,6 @@ class PBMsgLoginReq : public ::google::protobuf::Message {
   void set_allocated_onetimepassword(::std::string* onetimepassword);
 
   // optional string ClientIPAddress = 11;
-  bool has_clientipaddress() const;
   void clear_clientipaddress();
   static const int kClientIPAddressFieldNumber = 11;
   const ::std::string& clientipaddress() const;
@@ -375,30 +346,9 @@ class PBMsgLoginReq : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:PBMsgTrader.PBMsgLoginReq)
  private:
-  inline void set_has_tradingday();
-  inline void clear_has_tradingday();
-  inline void set_has_brokerid();
-  inline void clear_has_brokerid();
-  inline void set_has_userid();
-  inline void clear_has_userid();
-  inline void set_has_password();
-  inline void clear_has_password();
-  inline void set_has_userproductinfo();
-  inline void clear_has_userproductinfo();
-  inline void set_has_interfaceproductinfo();
-  inline void clear_has_interfaceproductinfo();
-  inline void set_has_protocolinfo();
-  inline void clear_has_protocolinfo();
-  inline void set_has_macaddress();
-  inline void clear_has_macaddress();
-  inline void set_has_onetimepassword();
-  inline void clear_has_onetimepassword();
-  inline void set_has_clientipaddress();
-  inline void clear_has_clientipaddress();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr tradingday_;
   ::google::protobuf::internal::ArenaStringPtr brokerid_;
   ::google::protobuf::internal::ArenaStringPtr userid_;
@@ -409,6 +359,7 @@ class PBMsgLoginReq : public ::google::protobuf::Message {
   ::google::protobuf::internal::ArenaStringPtr macaddress_;
   ::google::protobuf::internal::ArenaStringPtr onetimepassword_;
   ::google::protobuf::internal::ArenaStringPtr clientipaddress_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_PBMsgTrader_2eproto();
   friend void protobuf_AssignDesc_PBMsgTrader_2eproto();
   friend void protobuf_ShutdownFile_PBMsgTrader_2eproto();
@@ -428,14 +379,6 @@ class PBMsgLoginRsp : public ::google::protobuf::Message {
   inline PBMsgLoginRsp& operator=(const PBMsgLoginRsp& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -483,7 +426,6 @@ class PBMsgLoginRsp : public ::google::protobuf::Message {
   // accessors -------------------------------------------------------
 
   // optional string TradingDay = 2;
-  bool has_tradingday() const;
   void clear_tradingday();
   static const int kTradingDayFieldNumber = 2;
   const ::std::string& tradingday() const;
@@ -495,7 +437,6 @@ class PBMsgLoginRsp : public ::google::protobuf::Message {
   void set_allocated_tradingday(::std::string* tradingday);
 
   // optional string LoginTime = 3;
-  bool has_logintime() const;
   void clear_logintime();
   static const int kLoginTimeFieldNumber = 3;
   const ::std::string& logintime() const;
@@ -507,7 +448,6 @@ class PBMsgLoginRsp : public ::google::protobuf::Message {
   void set_allocated_logintime(::std::string* logintime);
 
   // optional string BrokerID = 4;
-  bool has_brokerid() const;
   void clear_brokerid();
   static const int kBrokerIDFieldNumber = 4;
   const ::std::string& brokerid() const;
@@ -519,7 +459,6 @@ class PBMsgLoginRsp : public ::google::protobuf::Message {
   void set_allocated_brokerid(::std::string* brokerid);
 
   // optional string UserID = 5;
-  bool has_userid() const;
   void clear_userid();
   static const int kUserIDFieldNumber = 5;
   const ::std::string& userid() const;
@@ -531,7 +470,6 @@ class PBMsgLoginRsp : public ::google::protobuf::Message {
   void set_allocated_userid(::std::string* userid);
 
   // optional string SystemName = 6;
-  bool has_systemname() const;
   void clear_systemname();
   static const int kSystemNameFieldNumber = 6;
   const ::std::string& systemname() const;
@@ -543,21 +481,18 @@ class PBMsgLoginRsp : public ::google::protobuf::Message {
   void set_allocated_systemname(::std::string* systemname);
 
   // optional int32 FrontID = 7;
-  bool has_frontid() const;
   void clear_frontid();
   static const int kFrontIDFieldNumber = 7;
   ::google::protobuf::int32 frontid() const;
   void set_frontid(::google::protobuf::int32 value);
 
   // optional int32 SessionID = 8;
-  bool has_sessionid() const;
   void clear_sessionid();
   static const int kSessionIDFieldNumber = 8;
   ::google::protobuf::int32 sessionid() const;
   void set_sessionid(::google::protobuf::int32 value);
 
   // optional string MaxOrderRef = 9;
-  bool has_maxorderref() const;
   void clear_maxorderref();
   static const int kMaxOrderRefFieldNumber = 9;
   const ::std::string& maxorderref() const;
@@ -569,7 +504,6 @@ class PBMsgLoginRsp : public ::google::protobuf::Message {
   void set_allocated_maxorderref(::std::string* maxorderref);
 
   // optional string SHFETime = 10;
-  bool has_shfetime() const;
   void clear_shfetime();
   static const int kSHFETimeFieldNumber = 10;
   const ::std::string& shfetime() const;
@@ -581,7 +515,6 @@ class PBMsgLoginRsp : public ::google::protobuf::Message {
   void set_allocated_shfetime(::std::string* shfetime);
 
   // optional string DCETime = 11;
-  bool has_dcetime() const;
   void clear_dcetime();
   static const int kDCETimeFieldNumber = 11;
   const ::std::string& dcetime() const;
@@ -593,7 +526,6 @@ class PBMsgLoginRsp : public ::google::protobuf::Message {
   void set_allocated_dcetime(::std::string* dcetime);
 
   // optional string CZCETime = 12;
-  bool has_czcetime() const;
   void clear_czcetime();
   static const int kCZCETimeFieldNumber = 12;
   const ::std::string& czcetime() const;
@@ -605,7 +537,6 @@ class PBMsgLoginRsp : public ::google::protobuf::Message {
   void set_allocated_czcetime(::std::string* czcetime);
 
   // optional string FFEXTime = 13;
-  bool has_ffextime() const;
   void clear_ffextime();
   static const int kFFEXTimeFieldNumber = 13;
   const ::std::string& ffextime() const;
@@ -618,34 +549,9 @@ class PBMsgLoginRsp : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:PBMsgTrader.PBMsgLoginRsp)
  private:
-  inline void set_has_tradingday();
-  inline void clear_has_tradingday();
-  inline void set_has_logintime();
-  inline void clear_has_logintime();
-  inline void set_has_brokerid();
-  inline void clear_has_brokerid();
-  inline void set_has_userid();
-  inline void clear_has_userid();
-  inline void set_has_systemname();
-  inline void clear_has_systemname();
-  inline void set_has_frontid();
-  inline void clear_has_frontid();
-  inline void set_has_sessionid();
-  inline void clear_has_sessionid();
-  inline void set_has_maxorderref();
-  inline void clear_has_maxorderref();
-  inline void set_has_shfetime();
-  inline void clear_has_shfetime();
-  inline void set_has_dcetime();
-  inline void clear_has_dcetime();
-  inline void set_has_czcetime();
-  inline void clear_has_czcetime();
-  inline void set_has_ffextime();
-  inline void clear_has_ffextime();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr tradingday_;
   ::google::protobuf::internal::ArenaStringPtr logintime_;
   ::google::protobuf::internal::ArenaStringPtr brokerid_;
@@ -658,6 +564,7 @@ class PBMsgLoginRsp : public ::google::protobuf::Message {
   ::google::protobuf::internal::ArenaStringPtr dcetime_;
   ::google::protobuf::internal::ArenaStringPtr czcetime_;
   ::google::protobuf::internal::ArenaStringPtr ffextime_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_PBMsgTrader_2eproto();
   friend void protobuf_AssignDesc_PBMsgTrader_2eproto();
   friend void protobuf_ShutdownFile_PBMsgTrader_2eproto();
@@ -677,14 +584,6 @@ class PBMsgLogout : public ::google::protobuf::Message {
   inline PBMsgLogout& operator=(const PBMsgLogout& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -732,7 +631,6 @@ class PBMsgLogout : public ::google::protobuf::Message {
   // accessors -------------------------------------------------------
 
   // optional string BrokerID = 2;
-  bool has_brokerid() const;
   void clear_brokerid();
   static const int kBrokerIDFieldNumber = 2;
   const ::std::string& brokerid() const;
@@ -744,7 +642,6 @@ class PBMsgLogout : public ::google::protobuf::Message {
   void set_allocated_brokerid(::std::string* brokerid);
 
   // optional string UserID = 3;
-  bool has_userid() const;
   void clear_userid();
   static const int kUserIDFieldNumber = 3;
   const ::std::string& userid() const;
@@ -757,16 +654,12 @@ class PBMsgLogout : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:PBMsgTrader.PBMsgLogout)
  private:
-  inline void set_has_brokerid();
-  inline void clear_has_brokerid();
-  inline void set_has_userid();
-  inline void clear_has_userid();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr brokerid_;
   ::google::protobuf::internal::ArenaStringPtr userid_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_PBMsgTrader_2eproto();
   friend void protobuf_AssignDesc_PBMsgTrader_2eproto();
   friend void protobuf_ShutdownFile_PBMsgTrader_2eproto();
@@ -786,14 +679,6 @@ class PBMsgQueryReqMarketInfo : public ::google::protobuf::Message {
   inline PBMsgQueryReqMarketInfo& operator=(const PBMsgQueryReqMarketInfo& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -841,7 +726,6 @@ class PBMsgQueryReqMarketInfo : public ::google::protobuf::Message {
   // accessors -------------------------------------------------------
 
   // optional string ExchangeID = 2;
-  bool has_exchangeid() const;
   void clear_exchangeid();
   static const int kExchangeIDFieldNumber = 2;
   const ::std::string& exchangeid() const;
@@ -854,13 +738,11 @@ class PBMsgQueryReqMarketInfo : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:PBMsgTrader.PBMsgQueryReqMarketInfo)
  private:
-  inline void set_has_exchangeid();
-  inline void clear_has_exchangeid();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr exchangeid_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_PBMsgTrader_2eproto();
   friend void protobuf_AssignDesc_PBMsgTrader_2eproto();
   friend void protobuf_ShutdownFile_PBMsgTrader_2eproto();
@@ -880,14 +762,6 @@ class PBMsgQueryRspMarketInfo : public ::google::protobuf::Message {
   inline PBMsgQueryRspMarketInfo& operator=(const PBMsgQueryRspMarketInfo& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -935,14 +809,12 @@ class PBMsgQueryRspMarketInfo : public ::google::protobuf::Message {
   // accessors -------------------------------------------------------
 
   // optional int32 EOF = 1;
-  bool has_eof() const;
   void clear_eof();
   static const int kEOFFieldNumber = 1;
   ::google::protobuf::int32 eof() const;
   void set_eof(::google::protobuf::int32 value);
 
   // optional string ExchangeID = 2;
-  bool has_exchangeid() const;
   void clear_exchangeid();
   static const int kExchangeIDFieldNumber = 2;
   const ::std::string& exchangeid() const;
@@ -954,7 +826,6 @@ class PBMsgQueryRspMarketInfo : public ::google::protobuf::Message {
   void set_allocated_exchangeid(::std::string* exchangeid);
 
   // optional bytes ExchangeName = 3;
-  bool has_exchangename() const;
   void clear_exchangename();
   static const int kExchangeNameFieldNumber = 3;
   const ::std::string& exchangename() const;
@@ -966,7 +837,6 @@ class PBMsgQueryRspMarketInfo : public ::google::protobuf::Message {
   void set_allocated_exchangename(::std::string* exchangename);
 
   // optional string ExchangeProperty = 4;
-  bool has_exchangeproperty() const;
   void clear_exchangeproperty();
   static const int kExchangePropertyFieldNumber = 4;
   const ::std::string& exchangeproperty() const;
@@ -979,22 +849,14 @@ class PBMsgQueryRspMarketInfo : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:PBMsgTrader.PBMsgQueryRspMarketInfo)
  private:
-  inline void set_has_eof();
-  inline void clear_has_eof();
-  inline void set_has_exchangeid();
-  inline void clear_has_exchangeid();
-  inline void set_has_exchangename();
-  inline void clear_has_exchangename();
-  inline void set_has_exchangeproperty();
-  inline void clear_has_exchangeproperty();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr exchangeid_;
   ::google::protobuf::internal::ArenaStringPtr exchangename_;
   ::google::protobuf::internal::ArenaStringPtr exchangeproperty_;
   ::google::protobuf::int32 eof_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_PBMsgTrader_2eproto();
   friend void protobuf_AssignDesc_PBMsgTrader_2eproto();
   friend void protobuf_ShutdownFile_PBMsgTrader_2eproto();
@@ -1014,14 +876,6 @@ class PBMsgQueryReqInstrumentInfo : public ::google::protobuf::Message {
   inline PBMsgQueryReqInstrumentInfo& operator=(const PBMsgQueryReqInstrumentInfo& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -1069,7 +923,6 @@ class PBMsgQueryReqInstrumentInfo : public ::google::protobuf::Message {
   // accessors -------------------------------------------------------
 
   // optional string InstrumentID = 2;
-  bool has_instrumentid() const;
   void clear_instrumentid();
   static const int kInstrumentIDFieldNumber = 2;
   const ::std::string& instrumentid() const;
@@ -1081,7 +934,6 @@ class PBMsgQueryReqInstrumentInfo : public ::google::protobuf::Message {
   void set_allocated_instrumentid(::std::string* instrumentid);
 
   // optional string ExchangeID = 3;
-  bool has_exchangeid() const;
   void clear_exchangeid();
   static const int kExchangeIDFieldNumber = 3;
   const ::std::string& exchangeid() const;
@@ -1093,7 +945,6 @@ class PBMsgQueryReqInstrumentInfo : public ::google::protobuf::Message {
   void set_allocated_exchangeid(::std::string* exchangeid);
 
   // optional string ExchangeInstID = 4;
-  bool has_exchangeinstid() const;
   void clear_exchangeinstid();
   static const int kExchangeInstIDFieldNumber = 4;
   const ::std::string& exchangeinstid() const;
@@ -1105,7 +956,6 @@ class PBMsgQueryReqInstrumentInfo : public ::google::protobuf::Message {
   void set_allocated_exchangeinstid(::std::string* exchangeinstid);
 
   // optional string ProductID = 5;
-  bool has_productid() const;
   void clear_productid();
   static const int kProductIDFieldNumber = 5;
   const ::std::string& productid() const;
@@ -1118,22 +968,14 @@ class PBMsgQueryReqInstrumentInfo : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:PBMsgTrader.PBMsgQueryReqInstrumentInfo)
  private:
-  inline void set_has_instrumentid();
-  inline void clear_has_instrumentid();
-  inline void set_has_exchangeid();
-  inline void clear_has_exchangeid();
-  inline void set_has_exchangeinstid();
-  inline void clear_has_exchangeinstid();
-  inline void set_has_productid();
-  inline void clear_has_productid();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr instrumentid_;
   ::google::protobuf::internal::ArenaStringPtr exchangeid_;
   ::google::protobuf::internal::ArenaStringPtr exchangeinstid_;
   ::google::protobuf::internal::ArenaStringPtr productid_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_PBMsgTrader_2eproto();
   friend void protobuf_AssignDesc_PBMsgTrader_2eproto();
   friend void protobuf_ShutdownFile_PBMsgTrader_2eproto();
@@ -1153,14 +995,6 @@ class PBMsgQueryRspInstrumentInfo : public ::google::protobuf::Message {
   inline PBMsgQueryRspInstrumentInfo& operator=(const PBMsgQueryRspInstrumentInfo& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -1208,14 +1042,12 @@ class PBMsgQueryRspInstrumentInfo : public ::google::protobuf::Message {
   // accessors -------------------------------------------------------
 
   // optional int32 EOF = 1;
-  bool has_eof() const;
   void clear_eof();
   static const int kEOFFieldNumber = 1;
   ::google::protobuf::int32 eof() const;
   void set_eof(::google::protobuf::int32 value);
 
   // optional string InstrumentID = 2;
-  bool has_instrumentid() const;
   void clear_instrumentid();
   static const int kInstrumentIDFieldNumber = 2;
   const ::std::string& instrumentid() const;
@@ -1227,7 +1059,6 @@ class PBMsgQueryRspInstrumentInfo : public ::google::protobuf::Message {
   void set_allocated_instrumentid(::std::string* instrumentid);
 
   // optional string ExchangeID = 3;
-  bool has_exchangeid() const;
   void clear_exchangeid();
   static const int kExchangeIDFieldNumber = 3;
   const ::std::string& exchangeid() const;
@@ -1239,7 +1070,6 @@ class PBMsgQueryRspInstrumentInfo : public ::google::protobuf::Message {
   void set_allocated_exchangeid(::std::string* exchangeid);
 
   // optional bytes InstrumentName = 4;
-  bool has_instrumentname() const;
   void clear_instrumentname();
   static const int kInstrumentNameFieldNumber = 4;
   const ::std::string& instrumentname() const;
@@ -1251,7 +1081,6 @@ class PBMsgQueryRspInstrumentInfo : public ::google::protobuf::Message {
   void set_allocated_instrumentname(::std::string* instrumentname);
 
   // optional string ExchangeInstID = 5;
-  bool has_exchangeinstid() const;
   void clear_exchangeinstid();
   static const int kExchangeInstIDFieldNumber = 5;
   const ::std::string& exchangeinstid() const;
@@ -1263,7 +1092,6 @@ class PBMsgQueryRspInstrumentInfo : public ::google::protobuf::Message {
   void set_allocated_exchangeinstid(::std::string* exchangeinstid);
 
   // optional string ProductID = 6;
-  bool has_productid() const;
   void clear_productid();
   static const int kProductIDFieldNumber = 6;
   const ::std::string& productid() const;
@@ -1275,7 +1103,6 @@ class PBMsgQueryRspInstrumentInfo : public ::google::protobuf::Message {
   void set_allocated_productid(::std::string* productid);
 
   // optional bytes ProductClass = 7;
-  bool has_productclass() const;
   void clear_productclass();
   static const int kProductClassFieldNumber = 7;
   const ::std::string& productclass() const;
@@ -1287,63 +1114,54 @@ class PBMsgQueryRspInstrumentInfo : public ::google::protobuf::Message {
   void set_allocated_productclass(::std::string* productclass);
 
   // optional int32 DeliveryYear = 8;
-  bool has_deliveryyear() const;
   void clear_deliveryyear();
   static const int kDeliveryYearFieldNumber = 8;
   ::google::protobuf::int32 deliveryyear() const;
   void set_deliveryyear(::google::protobuf::int32 value);
 
   // optional int32 DeliveryMonth = 9;
-  bool has_deliverymonth() const;
   void clear_deliverymonth();
   static const int kDeliveryMonthFieldNumber = 9;
   ::google::protobuf::int32 deliverymonth() const;
   void set_deliverymonth(::google::protobuf::int32 value);
 
   // optional int32 MaxMarketOrderVolume = 10;
-  bool has_maxmarketordervolume() const;
   void clear_maxmarketordervolume();
   static const int kMaxMarketOrderVolumeFieldNumber = 10;
   ::google::protobuf::int32 maxmarketordervolume() const;
   void set_maxmarketordervolume(::google::protobuf::int32 value);
 
   // optional int32 MinMarketOrderVolume = 11;
-  bool has_minmarketordervolume() const;
   void clear_minmarketordervolume();
   static const int kMinMarketOrderVolumeFieldNumber = 11;
   ::google::protobuf::int32 minmarketordervolume() const;
   void set_minmarketordervolume(::google::protobuf::int32 value);
 
   // optional int32 MaxLimitOrderVolume = 12;
-  bool has_maxlimitordervolume() const;
   void clear_maxlimitordervolume();
   static const int kMaxLimitOrderVolumeFieldNumber = 12;
   ::google::protobuf::int32 maxlimitordervolume() const;
   void set_maxlimitordervolume(::google::protobuf::int32 value);
 
   // optional int32 MinLimitOrderVolume = 13;
-  bool has_minlimitordervolume() const;
   void clear_minlimitordervolume();
   static const int kMinLimitOrderVolumeFieldNumber = 13;
   ::google::protobuf::int32 minlimitordervolume() const;
   void set_minlimitordervolume(::google::protobuf::int32 value);
 
   // optional int32 VolumeMultiple = 14;
-  bool has_volumemultiple() const;
   void clear_volumemultiple();
   static const int kVolumeMultipleFieldNumber = 14;
   ::google::protobuf::int32 volumemultiple() const;
   void set_volumemultiple(::google::protobuf::int32 value);
 
   // optional int32 PriceTick = 15;
-  bool has_pricetick() const;
   void clear_pricetick();
   static const int kPriceTickFieldNumber = 15;
   ::google::protobuf::int32 pricetick() const;
   void set_pricetick(::google::protobuf::int32 value);
 
   // optional string CreateDate = 16;
-  bool has_createdate() const;
   void clear_createdate();
   static const int kCreateDateFieldNumber = 16;
   const ::std::string& createdate() const;
@@ -1355,7 +1173,6 @@ class PBMsgQueryRspInstrumentInfo : public ::google::protobuf::Message {
   void set_allocated_createdate(::std::string* createdate);
 
   // optional string OpenDate = 17;
-  bool has_opendate() const;
   void clear_opendate();
   static const int kOpenDateFieldNumber = 17;
   const ::std::string& opendate() const;
@@ -1367,7 +1184,6 @@ class PBMsgQueryRspInstrumentInfo : public ::google::protobuf::Message {
   void set_allocated_opendate(::std::string* opendate);
 
   // optional string ExpireDate = 18;
-  bool has_expiredate() const;
   void clear_expiredate();
   static const int kExpireDateFieldNumber = 18;
   const ::std::string& expiredate() const;
@@ -1379,7 +1195,6 @@ class PBMsgQueryRspInstrumentInfo : public ::google::protobuf::Message {
   void set_allocated_expiredate(::std::string* expiredate);
 
   // optional string StartDelivDate = 19;
-  bool has_startdelivdate() const;
   void clear_startdelivdate();
   static const int kStartDelivDateFieldNumber = 19;
   const ::std::string& startdelivdate() const;
@@ -1391,7 +1206,6 @@ class PBMsgQueryRspInstrumentInfo : public ::google::protobuf::Message {
   void set_allocated_startdelivdate(::std::string* startdelivdate);
 
   // optional string EndDelivDate = 20;
-  bool has_enddelivdate() const;
   void clear_enddelivdate();
   static const int kEndDelivDateFieldNumber = 20;
   const ::std::string& enddelivdate() const;
@@ -1403,7 +1217,6 @@ class PBMsgQueryRspInstrumentInfo : public ::google::protobuf::Message {
   void set_allocated_enddelivdate(::std::string* enddelivdate);
 
   // optional string InstLifePhase = 21;
-  bool has_instlifephase() const;
   void clear_instlifephase();
   static const int kInstLifePhaseFieldNumber = 21;
   const ::std::string& instlifephase() const;
@@ -1415,14 +1228,12 @@ class PBMsgQueryRspInstrumentInfo : public ::google::protobuf::Message {
   void set_allocated_instlifephase(::std::string* instlifephase);
 
   // optional int32 IsTrading = 22;
-  bool has_istrading() const;
   void clear_istrading();
   static const int kIsTradingFieldNumber = 22;
   ::google::protobuf::int32 istrading() const;
   void set_istrading(::google::protobuf::int32 value);
 
   // optional string PositionType = 23;
-  bool has_positiontype() const;
   void clear_positiontype();
   static const int kPositionTypeFieldNumber = 23;
   const ::std::string& positiontype() const;
@@ -1434,7 +1245,6 @@ class PBMsgQueryRspInstrumentInfo : public ::google::protobuf::Message {
   void set_allocated_positiontype(::std::string* positiontype);
 
   // optional string PositionDateType = 24;
-  bool has_positiondatetype() const;
   void clear_positiondatetype();
   static const int kPositionDateTypeFieldNumber = 24;
   const ::std::string& positiondatetype() const;
@@ -1446,21 +1256,18 @@ class PBMsgQueryRspInstrumentInfo : public ::google::protobuf::Message {
   void set_allocated_positiondatetype(::std::string* positiondatetype);
 
   // optional double LongMarginRatio = 25;
-  bool has_longmarginratio() const;
   void clear_longmarginratio();
   static const int kLongMarginRatioFieldNumber = 25;
   double longmarginratio() const;
   void set_longmarginratio(double value);
 
   // optional double ShortMarginRatio = 26;
-  bool has_shortmarginratio() const;
   void clear_shortmarginratio();
   static const int kShortMarginRatioFieldNumber = 26;
   double shortmarginratio() const;
   void set_shortmarginratio(double value);
 
   // optional string MaxMarginSideAlgorithm = 27;
-  bool has_maxmarginsidealgorithm() const;
   void clear_maxmarginsidealgorithm();
   static const int kMaxMarginSideAlgorithmFieldNumber = 27;
   const ::std::string& maxmarginsidealgorithm() const;
@@ -1473,64 +1280,9 @@ class PBMsgQueryRspInstrumentInfo : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:PBMsgTrader.PBMsgQueryRspInstrumentInfo)
  private:
-  inline void set_has_eof();
-  inline void clear_has_eof();
-  inline void set_has_instrumentid();
-  inline void clear_has_instrumentid();
-  inline void set_has_exchangeid();
-  inline void clear_has_exchangeid();
-  inline void set_has_instrumentname();
-  inline void clear_has_instrumentname();
-  inline void set_has_exchangeinstid();
-  inline void clear_has_exchangeinstid();
-  inline void set_has_productid();
-  inline void clear_has_productid();
-  inline void set_has_productclass();
-  inline void clear_has_productclass();
-  inline void set_has_deliveryyear();
-  inline void clear_has_deliveryyear();
-  inline void set_has_deliverymonth();
-  inline void clear_has_deliverymonth();
-  inline void set_has_maxmarketordervolume();
-  inline void clear_has_maxmarketordervolume();
-  inline void set_has_minmarketordervolume();
-  inline void clear_has_minmarketordervolume();
-  inline void set_has_maxlimitordervolume();
-  inline void clear_has_maxlimitordervolume();
-  inline void set_has_minlimitordervolume();
-  inline void clear_has_minlimitordervolume();
-  inline void set_has_volumemultiple();
-  inline void clear_has_volumemultiple();
-  inline void set_has_pricetick();
-  inline void clear_has_pricetick();
-  inline void set_has_createdate();
-  inline void clear_has_createdate();
-  inline void set_has_opendate();
-  inline void clear_has_opendate();
-  inline void set_has_expiredate();
-  inline void clear_has_expiredate();
-  inline void set_has_startdelivdate();
-  inline void clear_has_startdelivdate();
-  inline void set_has_enddelivdate();
-  inline void clear_has_enddelivdate();
-  inline void set_has_instlifephase();
-  inline void clear_has_instlifephase();
-  inline void set_has_istrading();
-  inline void clear_has_istrading();
-  inline void set_has_positiontype();
-  inline void clear_has_positiontype();
-  inline void set_has_positiondatetype();
-  inline void clear_has_positiondatetype();
-  inline void set_has_longmarginratio();
-  inline void clear_has_longmarginratio();
-  inline void set_has_shortmarginratio();
-  inline void clear_has_shortmarginratio();
-  inline void set_has_maxmarginsidealgorithm();
-  inline void clear_has_maxmarginsidealgorithm();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr instrumentid_;
   ::google::protobuf::internal::ArenaStringPtr exchangeid_;
   ::google::protobuf::internal::ArenaStringPtr instrumentname_;
@@ -1558,6 +1310,7 @@ class PBMsgQueryRspInstrumentInfo : public ::google::protobuf::Message {
   double longmarginratio_;
   double shortmarginratio_;
   ::google::protobuf::internal::ArenaStringPtr maxmarginsidealgorithm_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_PBMsgTrader_2eproto();
   friend void protobuf_AssignDesc_PBMsgTrader_2eproto();
   friend void protobuf_ShutdownFile_PBMsgTrader_2eproto();
@@ -1577,14 +1330,6 @@ class PBMsgQueryReqOrder : public ::google::protobuf::Message {
   inline PBMsgQueryReqOrder& operator=(const PBMsgQueryReqOrder& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -1632,7 +1377,6 @@ class PBMsgQueryReqOrder : public ::google::protobuf::Message {
   // accessors -------------------------------------------------------
 
   // optional string BrokerID = 2;
-  bool has_brokerid() const;
   void clear_brokerid();
   static const int kBrokerIDFieldNumber = 2;
   const ::std::string& brokerid() const;
@@ -1644,7 +1388,6 @@ class PBMsgQueryReqOrder : public ::google::protobuf::Message {
   void set_allocated_brokerid(::std::string* brokerid);
 
   // optional string InvestorID = 3;
-  bool has_investorid() const;
   void clear_investorid();
   static const int kInvestorIDFieldNumber = 3;
   const ::std::string& investorid() const;
@@ -1656,7 +1399,6 @@ class PBMsgQueryReqOrder : public ::google::protobuf::Message {
   void set_allocated_investorid(::std::string* investorid);
 
   // optional string InstrumentID = 4;
-  bool has_instrumentid() const;
   void clear_instrumentid();
   static const int kInstrumentIDFieldNumber = 4;
   const ::std::string& instrumentid() const;
@@ -1668,7 +1410,6 @@ class PBMsgQueryReqOrder : public ::google::protobuf::Message {
   void set_allocated_instrumentid(::std::string* instrumentid);
 
   // optional string ExchangeID = 5;
-  bool has_exchangeid() const;
   void clear_exchangeid();
   static const int kExchangeIDFieldNumber = 5;
   const ::std::string& exchangeid() const;
@@ -1680,7 +1421,6 @@ class PBMsgQueryReqOrder : public ::google::protobuf::Message {
   void set_allocated_exchangeid(::std::string* exchangeid);
 
   // optional string OrderSysID = 6;
-  bool has_ordersysid() const;
   void clear_ordersysid();
   static const int kOrderSysIDFieldNumber = 6;
   const ::std::string& ordersysid() const;
@@ -1692,7 +1432,6 @@ class PBMsgQueryReqOrder : public ::google::protobuf::Message {
   void set_allocated_ordersysid(::std::string* ordersysid);
 
   // optional string InsertTimeStart = 7;
-  bool has_inserttimestart() const;
   void clear_inserttimestart();
   static const int kInsertTimeStartFieldNumber = 7;
   const ::std::string& inserttimestart() const;
@@ -1704,7 +1443,6 @@ class PBMsgQueryReqOrder : public ::google::protobuf::Message {
   void set_allocated_inserttimestart(::std::string* inserttimestart);
 
   // optional string InsertTimeEnd = 8;
-  bool has_inserttimeend() const;
   void clear_inserttimeend();
   static const int kInsertTimeEndFieldNumber = 8;
   const ::std::string& inserttimeend() const;
@@ -1716,7 +1454,6 @@ class PBMsgQueryReqOrder : public ::google::protobuf::Message {
   void set_allocated_inserttimeend(::std::string* inserttimeend);
 
   // optional string TradingDay = 9;
-  bool has_tradingday() const;
   void clear_tradingday();
   static const int kTradingDayFieldNumber = 9;
   const ::std::string& tradingday() const;
@@ -1728,7 +1465,6 @@ class PBMsgQueryReqOrder : public ::google::protobuf::Message {
   void set_allocated_tradingday(::std::string* tradingday);
 
   // optional int32 SettlementID = 10;
-  bool has_settlementid() const;
   void clear_settlementid();
   static const int kSettlementIDFieldNumber = 10;
   ::google::protobuf::int32 settlementid() const;
@@ -1736,28 +1472,9 @@ class PBMsgQueryReqOrder : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:PBMsgTrader.PBMsgQueryReqOrder)
  private:
-  inline void set_has_brokerid();
-  inline void clear_has_brokerid();
-  inline void set_has_investorid();
-  inline void clear_has_investorid();
-  inline void set_has_instrumentid();
-  inline void clear_has_instrumentid();
-  inline void set_has_exchangeid();
-  inline void clear_has_exchangeid();
-  inline void set_has_ordersysid();
-  inline void clear_has_ordersysid();
-  inline void set_has_inserttimestart();
-  inline void clear_has_inserttimestart();
-  inline void set_has_inserttimeend();
-  inline void clear_has_inserttimeend();
-  inline void set_has_tradingday();
-  inline void clear_has_tradingday();
-  inline void set_has_settlementid();
-  inline void clear_has_settlementid();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr brokerid_;
   ::google::protobuf::internal::ArenaStringPtr investorid_;
   ::google::protobuf::internal::ArenaStringPtr instrumentid_;
@@ -1767,6 +1484,7 @@ class PBMsgQueryReqOrder : public ::google::protobuf::Message {
   ::google::protobuf::internal::ArenaStringPtr inserttimeend_;
   ::google::protobuf::internal::ArenaStringPtr tradingday_;
   ::google::protobuf::int32 settlementid_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_PBMsgTrader_2eproto();
   friend void protobuf_AssignDesc_PBMsgTrader_2eproto();
   friend void protobuf_ShutdownFile_PBMsgTrader_2eproto();
@@ -1786,14 +1504,6 @@ class PBMsgQueryReqTrade : public ::google::protobuf::Message {
   inline PBMsgQueryReqTrade& operator=(const PBMsgQueryReqTrade& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -1841,7 +1551,6 @@ class PBMsgQueryReqTrade : public ::google::protobuf::Message {
   // accessors -------------------------------------------------------
 
   // optional string BrokerID = 2;
-  bool has_brokerid() const;
   void clear_brokerid();
   static const int kBrokerIDFieldNumber = 2;
   const ::std::string& brokerid() const;
@@ -1853,7 +1562,6 @@ class PBMsgQueryReqTrade : public ::google::protobuf::Message {
   void set_allocated_brokerid(::std::string* brokerid);
 
   // optional string InvestorID = 3;
-  bool has_investorid() const;
   void clear_investorid();
   static const int kInvestorIDFieldNumber = 3;
   const ::std::string& investorid() const;
@@ -1865,7 +1573,6 @@ class PBMsgQueryReqTrade : public ::google::protobuf::Message {
   void set_allocated_investorid(::std::string* investorid);
 
   // optional string InstrumentID = 4;
-  bool has_instrumentid() const;
   void clear_instrumentid();
   static const int kInstrumentIDFieldNumber = 4;
   const ::std::string& instrumentid() const;
@@ -1877,7 +1584,6 @@ class PBMsgQueryReqTrade : public ::google::protobuf::Message {
   void set_allocated_instrumentid(::std::string* instrumentid);
 
   // optional string ExchangeID = 5;
-  bool has_exchangeid() const;
   void clear_exchangeid();
   static const int kExchangeIDFieldNumber = 5;
   const ::std::string& exchangeid() const;
@@ -1889,7 +1595,6 @@ class PBMsgQueryReqTrade : public ::google::protobuf::Message {
   void set_allocated_exchangeid(::std::string* exchangeid);
 
   // optional string TradeID = 6;
-  bool has_tradeid() const;
   void clear_tradeid();
   static const int kTradeIDFieldNumber = 6;
   const ::std::string& tradeid() const;
@@ -1901,7 +1606,6 @@ class PBMsgQueryReqTrade : public ::google::protobuf::Message {
   void set_allocated_tradeid(::std::string* tradeid);
 
   // optional string TradeTimeStart = 7;
-  bool has_tradetimestart() const;
   void clear_tradetimestart();
   static const int kTradeTimeStartFieldNumber = 7;
   const ::std::string& tradetimestart() const;
@@ -1913,7 +1617,6 @@ class PBMsgQueryReqTrade : public ::google::protobuf::Message {
   void set_allocated_tradetimestart(::std::string* tradetimestart);
 
   // optional string TradeTimeEnd = 8;
-  bool has_tradetimeend() const;
   void clear_tradetimeend();
   static const int kTradeTimeEndFieldNumber = 8;
   const ::std::string& tradetimeend() const;
@@ -1926,24 +1629,9 @@ class PBMsgQueryReqTrade : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:PBMsgTrader.PBMsgQueryReqTrade)
  private:
-  inline void set_has_brokerid();
-  inline void clear_has_brokerid();
-  inline void set_has_investorid();
-  inline void clear_has_investorid();
-  inline void set_has_instrumentid();
-  inline void clear_has_instrumentid();
-  inline void set_has_exchangeid();
-  inline void clear_has_exchangeid();
-  inline void set_has_tradeid();
-  inline void clear_has_tradeid();
-  inline void set_has_tradetimestart();
-  inline void clear_has_tradetimestart();
-  inline void set_has_tradetimeend();
-  inline void clear_has_tradetimeend();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr brokerid_;
   ::google::protobuf::internal::ArenaStringPtr investorid_;
   ::google::protobuf::internal::ArenaStringPtr instrumentid_;
@@ -1951,6 +1639,7 @@ class PBMsgQueryReqTrade : public ::google::protobuf::Message {
   ::google::protobuf::internal::ArenaStringPtr tradeid_;
   ::google::protobuf::internal::ArenaStringPtr tradetimestart_;
   ::google::protobuf::internal::ArenaStringPtr tradetimeend_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_PBMsgTrader_2eproto();
   friend void protobuf_AssignDesc_PBMsgTrader_2eproto();
   friend void protobuf_ShutdownFile_PBMsgTrader_2eproto();
@@ -1970,14 +1659,6 @@ class PBMsgQueryReqPosition : public ::google::protobuf::Message {
   inline PBMsgQueryReqPosition& operator=(const PBMsgQueryReqPosition& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -2025,7 +1706,6 @@ class PBMsgQueryReqPosition : public ::google::protobuf::Message {
   // accessors -------------------------------------------------------
 
   // optional string BrokerID = 2;
-  bool has_brokerid() const;
   void clear_brokerid();
   static const int kBrokerIDFieldNumber = 2;
   const ::std::string& brokerid() const;
@@ -2037,7 +1717,6 @@ class PBMsgQueryReqPosition : public ::google::protobuf::Message {
   void set_allocated_brokerid(::std::string* brokerid);
 
   // optional string InvestorID = 3;
-  bool has_investorid() const;
   void clear_investorid();
   static const int kInvestorIDFieldNumber = 3;
   const ::std::string& investorid() const;
@@ -2049,7 +1728,6 @@ class PBMsgQueryReqPosition : public ::google::protobuf::Message {
   void set_allocated_investorid(::std::string* investorid);
 
   // optional string InstrumentID = 4;
-  bool has_instrumentid() const;
   void clear_instrumentid();
   static const int kInstrumentIDFieldNumber = 4;
   const ::std::string& instrumentid() const;
@@ -2062,19 +1740,13 @@ class PBMsgQueryReqPosition : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:PBMsgTrader.PBMsgQueryReqPosition)
  private:
-  inline void set_has_brokerid();
-  inline void clear_has_brokerid();
-  inline void set_has_investorid();
-  inline void clear_has_investorid();
-  inline void set_has_instrumentid();
-  inline void clear_has_instrumentid();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr brokerid_;
   ::google::protobuf::internal::ArenaStringPtr investorid_;
   ::google::protobuf::internal::ArenaStringPtr instrumentid_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_PBMsgTrader_2eproto();
   friend void protobuf_AssignDesc_PBMsgTrader_2eproto();
   friend void protobuf_ShutdownFile_PBMsgTrader_2eproto();
@@ -2094,14 +1766,6 @@ class PBMsgQueryRspPosition : public ::google::protobuf::Message {
   inline PBMsgQueryRspPosition& operator=(const PBMsgQueryRspPosition& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -2149,14 +1813,12 @@ class PBMsgQueryRspPosition : public ::google::protobuf::Message {
   // accessors -------------------------------------------------------
 
   // optional int32 EOF = 1;
-  bool has_eof() const;
   void clear_eof();
   static const int kEOFFieldNumber = 1;
   ::google::protobuf::int32 eof() const;
   void set_eof(::google::protobuf::int32 value);
 
   // optional string InstrumentID = 2;
-  bool has_instrumentid() const;
   void clear_instrumentid();
   static const int kInstrumentIDFieldNumber = 2;
   const ::std::string& instrumentid() const;
@@ -2168,7 +1830,6 @@ class PBMsgQueryRspPosition : public ::google::protobuf::Message {
   void set_allocated_instrumentid(::std::string* instrumentid);
 
   // optional string BrokerID = 3;
-  bool has_brokerid() const;
   void clear_brokerid();
   static const int kBrokerIDFieldNumber = 3;
   const ::std::string& brokerid() const;
@@ -2180,7 +1841,6 @@ class PBMsgQueryRspPosition : public ::google::protobuf::Message {
   void set_allocated_brokerid(::std::string* brokerid);
 
   // optional string InvestorID = 4;
-  bool has_investorid() const;
   void clear_investorid();
   static const int kInvestorIDFieldNumber = 4;
   const ::std::string& investorid() const;
@@ -2192,7 +1852,6 @@ class PBMsgQueryRspPosition : public ::google::protobuf::Message {
   void set_allocated_investorid(::std::string* investorid);
 
   // optional string PosiDirection = 5;
-  bool has_posidirection() const;
   void clear_posidirection();
   static const int kPosiDirectionFieldNumber = 5;
   const ::std::string& posidirection() const;
@@ -2204,7 +1863,6 @@ class PBMsgQueryRspPosition : public ::google::protobuf::Message {
   void set_allocated_posidirection(::std::string* posidirection);
 
   // optional string HedgeFlag = 6;
-  bool has_hedgeflag() const;
   void clear_hedgeflag();
   static const int kHedgeFlagFieldNumber = 6;
   const ::std::string& hedgeflag() const;
@@ -2216,7 +1874,6 @@ class PBMsgQueryRspPosition : public ::google::protobuf::Message {
   void set_allocated_hedgeflag(::std::string* hedgeflag);
 
   // optional string PositionDate = 7;
-  bool has_positiondate() const;
   void clear_positiondate();
   static const int kPositionDateFieldNumber = 7;
   const ::std::string& positiondate() const;
@@ -2228,161 +1885,138 @@ class PBMsgQueryRspPosition : public ::google::protobuf::Message {
   void set_allocated_positiondate(::std::string* positiondate);
 
   // optional int32 YdPosition = 8;
-  bool has_ydposition() const;
   void clear_ydposition();
   static const int kYdPositionFieldNumber = 8;
   ::google::protobuf::int32 ydposition() const;
   void set_ydposition(::google::protobuf::int32 value);
 
   // optional int32 Position = 9;
-  bool has_position() const;
   void clear_position();
   static const int kPositionFieldNumber = 9;
   ::google::protobuf::int32 position() const;
   void set_position(::google::protobuf::int32 value);
 
   // optional int32 LongFrozen = 10;
-  bool has_longfrozen() const;
   void clear_longfrozen();
   static const int kLongFrozenFieldNumber = 10;
   ::google::protobuf::int32 longfrozen() const;
   void set_longfrozen(::google::protobuf::int32 value);
 
   // optional int32 ShortFrozen = 11;
-  bool has_shortfrozen() const;
   void clear_shortfrozen();
   static const int kShortFrozenFieldNumber = 11;
   ::google::protobuf::int32 shortfrozen() const;
   void set_shortfrozen(::google::protobuf::int32 value);
 
   // optional double LongFrozenAmount = 12;
-  bool has_longfrozenamount() const;
   void clear_longfrozenamount();
   static const int kLongFrozenAmountFieldNumber = 12;
   double longfrozenamount() const;
   void set_longfrozenamount(double value);
 
   // optional double ShortFrozenAmount = 13;
-  bool has_shortfrozenamount() const;
   void clear_shortfrozenamount();
   static const int kShortFrozenAmountFieldNumber = 13;
   double shortfrozenamount() const;
   void set_shortfrozenamount(double value);
 
   // optional int32 OpenVolume = 14;
-  bool has_openvolume() const;
   void clear_openvolume();
   static const int kOpenVolumeFieldNumber = 14;
   ::google::protobuf::int32 openvolume() const;
   void set_openvolume(::google::protobuf::int32 value);
 
   // optional int32 CloseVolume = 15;
-  bool has_closevolume() const;
   void clear_closevolume();
   static const int kCloseVolumeFieldNumber = 15;
   ::google::protobuf::int32 closevolume() const;
   void set_closevolume(::google::protobuf::int32 value);
 
   // optional double OpenAmount = 16;
-  bool has_openamount() const;
   void clear_openamount();
   static const int kOpenAmountFieldNumber = 16;
   double openamount() const;
   void set_openamount(double value);
 
   // optional double CloseAmount = 17;
-  bool has_closeamount() const;
   void clear_closeamount();
   static const int kCloseAmountFieldNumber = 17;
   double closeamount() const;
   void set_closeamount(double value);
 
   // optional double PositionCost = 18;
-  bool has_positioncost() const;
   void clear_positioncost();
   static const int kPositionCostFieldNumber = 18;
   double positioncost() const;
   void set_positioncost(double value);
 
   // optional double PreMargin = 19;
-  bool has_premargin() const;
   void clear_premargin();
   static const int kPreMarginFieldNumber = 19;
   double premargin() const;
   void set_premargin(double value);
 
   // optional double UseMargin = 20;
-  bool has_usemargin() const;
   void clear_usemargin();
   static const int kUseMarginFieldNumber = 20;
   double usemargin() const;
   void set_usemargin(double value);
 
   // optional double FrozenMargin = 21;
-  bool has_frozenmargin() const;
   void clear_frozenmargin();
   static const int kFrozenMarginFieldNumber = 21;
   double frozenmargin() const;
   void set_frozenmargin(double value);
 
   // optional double FrozenCash = 22;
-  bool has_frozencash() const;
   void clear_frozencash();
   static const int kFrozenCashFieldNumber = 22;
   double frozencash() const;
   void set_frozencash(double value);
 
   // optional double FrozenCommission = 23;
-  bool has_frozencommission() const;
   void clear_frozencommission();
   static const int kFrozenCommissionFieldNumber = 23;
   double frozencommission() const;
   void set_frozencommission(double value);
 
   // optional double CashIn = 24;
-  bool has_cashin() const;
   void clear_cashin();
   static const int kCashInFieldNumber = 24;
   double cashin() const;
   void set_cashin(double value);
 
   // optional double Commission = 25;
-  bool has_commission() const;
   void clear_commission();
   static const int kCommissionFieldNumber = 25;
   double commission() const;
   void set_commission(double value);
 
   // optional double CloseProfit = 26;
-  bool has_closeprofit() const;
   void clear_closeprofit();
   static const int kCloseProfitFieldNumber = 26;
   double closeprofit() const;
   void set_closeprofit(double value);
 
   // optional double PositionProfit = 27;
-  bool has_positionprofit() const;
   void clear_positionprofit();
   static const int kPositionProfitFieldNumber = 27;
   double positionprofit() const;
   void set_positionprofit(double value);
 
   // optional double PreSettlementPrice = 28;
-  bool has_presettlementprice() const;
   void clear_presettlementprice();
   static const int kPreSettlementPriceFieldNumber = 28;
   double presettlementprice() const;
   void set_presettlementprice(double value);
 
   // optional double SettlementPrice = 29;
-  bool has_settlementprice() const;
   void clear_settlementprice();
   static const int kSettlementPriceFieldNumber = 29;
   double settlementprice() const;
   void set_settlementprice(double value);
 
   // optional string TradingDay = 30;
-  bool has_tradingday() const;
   void clear_tradingday();
   static const int kTradingDayFieldNumber = 30;
   const ::std::string& tradingday() const;
@@ -2394,77 +2028,66 @@ class PBMsgQueryRspPosition : public ::google::protobuf::Message {
   void set_allocated_tradingday(::std::string* tradingday);
 
   // optional int32 SettlementID = 31;
-  bool has_settlementid() const;
   void clear_settlementid();
   static const int kSettlementIDFieldNumber = 31;
   ::google::protobuf::int32 settlementid() const;
   void set_settlementid(::google::protobuf::int32 value);
 
   // optional double OpenCost = 32;
-  bool has_opencost() const;
   void clear_opencost();
   static const int kOpenCostFieldNumber = 32;
   double opencost() const;
   void set_opencost(double value);
 
   // optional double ExchangeMargin = 33;
-  bool has_exchangemargin() const;
   void clear_exchangemargin();
   static const int kExchangeMarginFieldNumber = 33;
   double exchangemargin() const;
   void set_exchangemargin(double value);
 
   // optional int32 CombPosition = 34;
-  bool has_combposition() const;
   void clear_combposition();
   static const int kCombPositionFieldNumber = 34;
   ::google::protobuf::int32 combposition() const;
   void set_combposition(::google::protobuf::int32 value);
 
   // optional int32 CombLongFrozen = 35;
-  bool has_comblongfrozen() const;
   void clear_comblongfrozen();
   static const int kCombLongFrozenFieldNumber = 35;
   ::google::protobuf::int32 comblongfrozen() const;
   void set_comblongfrozen(::google::protobuf::int32 value);
 
   // optional int32 CombShortFrozen = 36;
-  bool has_combshortfrozen() const;
   void clear_combshortfrozen();
   static const int kCombShortFrozenFieldNumber = 36;
   ::google::protobuf::int32 combshortfrozen() const;
   void set_combshortfrozen(::google::protobuf::int32 value);
 
   // optional double CloseProfitByDate = 37;
-  bool has_closeprofitbydate() const;
   void clear_closeprofitbydate();
   static const int kCloseProfitByDateFieldNumber = 37;
   double closeprofitbydate() const;
   void set_closeprofitbydate(double value);
 
   // optional double CloseProfitByTrade = 38;
-  bool has_closeprofitbytrade() const;
   void clear_closeprofitbytrade();
   static const int kCloseProfitByTradeFieldNumber = 38;
   double closeprofitbytrade() const;
   void set_closeprofitbytrade(double value);
 
   // optional int32 TodayPosition = 39;
-  bool has_todayposition() const;
   void clear_todayposition();
   static const int kTodayPositionFieldNumber = 39;
   ::google::protobuf::int32 todayposition() const;
   void set_todayposition(::google::protobuf::int32 value);
 
   // optional double MarginRateByMoney = 40;
-  bool has_marginratebymoney() const;
   void clear_marginratebymoney();
   static const int kMarginRateByMoneyFieldNumber = 40;
   double marginratebymoney() const;
   void set_marginratebymoney(double value);
 
   // optional double MarginRateByVolume = 41;
-  bool has_marginratebyvolume() const;
   void clear_marginratebyvolume();
   static const int kMarginRateByVolumeFieldNumber = 41;
   double marginratebyvolume() const;
@@ -2472,91 +2095,9 @@ class PBMsgQueryRspPosition : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:PBMsgTrader.PBMsgQueryRspPosition)
  private:
-  inline void set_has_eof();
-  inline void clear_has_eof();
-  inline void set_has_instrumentid();
-  inline void clear_has_instrumentid();
-  inline void set_has_brokerid();
-  inline void clear_has_brokerid();
-  inline void set_has_investorid();
-  inline void clear_has_investorid();
-  inline void set_has_posidirection();
-  inline void clear_has_posidirection();
-  inline void set_has_hedgeflag();
-  inline void clear_has_hedgeflag();
-  inline void set_has_positiondate();
-  inline void clear_has_positiondate();
-  inline void set_has_ydposition();
-  inline void clear_has_ydposition();
-  inline void set_has_position();
-  inline void clear_has_position();
-  inline void set_has_longfrozen();
-  inline void clear_has_longfrozen();
-  inline void set_has_shortfrozen();
-  inline void clear_has_shortfrozen();
-  inline void set_has_longfrozenamount();
-  inline void clear_has_longfrozenamount();
-  inline void set_has_shortfrozenamount();
-  inline void clear_has_shortfrozenamount();
-  inline void set_has_openvolume();
-  inline void clear_has_openvolume();
-  inline void set_has_closevolume();
-  inline void clear_has_closevolume();
-  inline void set_has_openamount();
-  inline void clear_has_openamount();
-  inline void set_has_closeamount();
-  inline void clear_has_closeamount();
-  inline void set_has_positioncost();
-  inline void clear_has_positioncost();
-  inline void set_has_premargin();
-  inline void clear_has_premargin();
-  inline void set_has_usemargin();
-  inline void clear_has_usemargin();
-  inline void set_has_frozenmargin();
-  inline void clear_has_frozenmargin();
-  inline void set_has_frozencash();
-  inline void clear_has_frozencash();
-  inline void set_has_frozencommission();
-  inline void clear_has_frozencommission();
-  inline void set_has_cashin();
-  inline void clear_has_cashin();
-  inline void set_has_commission();
-  inline void clear_has_commission();
-  inline void set_has_closeprofit();
-  inline void clear_has_closeprofit();
-  inline void set_has_positionprofit();
-  inline void clear_has_positionprofit();
-  inline void set_has_presettlementprice();
-  inline void clear_has_presettlementprice();
-  inline void set_has_settlementprice();
-  inline void clear_has_settlementprice();
-  inline void set_has_tradingday();
-  inline void clear_has_tradingday();
-  inline void set_has_settlementid();
-  inline void clear_has_settlementid();
-  inline void set_has_opencost();
-  inline void clear_has_opencost();
-  inline void set_has_exchangemargin();
-  inline void clear_has_exchangemargin();
-  inline void set_has_combposition();
-  inline void clear_has_combposition();
-  inline void set_has_comblongfrozen();
-  inline void clear_has_comblongfrozen();
-  inline void set_has_combshortfrozen();
-  inline void clear_has_combshortfrozen();
-  inline void set_has_closeprofitbydate();
-  inline void clear_has_closeprofitbydate();
-  inline void set_has_closeprofitbytrade();
-  inline void clear_has_closeprofitbytrade();
-  inline void set_has_todayposition();
-  inline void clear_has_todayposition();
-  inline void set_has_marginratebymoney();
-  inline void clear_has_marginratebymoney();
-  inline void set_has_marginratebyvolume();
-  inline void clear_has_marginratebyvolume();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[2];
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr instrumentid_;
   ::google::protobuf::internal::ArenaStringPtr brokerid_;
   ::google::protobuf::internal::ArenaStringPtr investorid_;
@@ -2620,14 +2161,6 @@ class PBMsgQueryReqFund : public ::google::protobuf::Message {
     return *this;
   }
 
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
-  }
-
   static const ::google::protobuf::Descriptor* descriptor();
   static const PBMsgQueryReqFund& default_instance();
 
@@ -2673,7 +2206,6 @@ class PBMsgQueryReqFund : public ::google::protobuf::Message {
   // accessors -------------------------------------------------------
 
   // optional string BrokerID = 2;
-  bool has_brokerid() const;
   void clear_brokerid();
   static const int kBrokerIDFieldNumber = 2;
   const ::std::string& brokerid() const;
@@ -2685,7 +2217,6 @@ class PBMsgQueryReqFund : public ::google::protobuf::Message {
   void set_allocated_brokerid(::std::string* brokerid);
 
   // optional string InvestorID = 3;
-  bool has_investorid() const;
   void clear_investorid();
   static const int kInvestorIDFieldNumber = 3;
   const ::std::string& investorid() const;
@@ -2698,16 +2229,12 @@ class PBMsgQueryReqFund : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:PBMsgTrader.PBMsgQueryReqFund)
  private:
-  inline void set_has_brokerid();
-  inline void clear_has_brokerid();
-  inline void set_has_investorid();
-  inline void clear_has_investorid();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr brokerid_;
   ::google::protobuf::internal::ArenaStringPtr investorid_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_PBMsgTrader_2eproto();
   friend void protobuf_AssignDesc_PBMsgTrader_2eproto();
   friend void protobuf_ShutdownFile_PBMsgTrader_2eproto();
@@ -2727,14 +2254,6 @@ class PBMsgQueryRspFund : public ::google::protobuf::Message {
   inline PBMsgQueryRspFund& operator=(const PBMsgQueryRspFund& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -2782,14 +2301,12 @@ class PBMsgQueryRspFund : public ::google::protobuf::Message {
   // accessors -------------------------------------------------------
 
   // optional int32 EOF = 1;
-  bool has_eof() const;
   void clear_eof();
   static const int kEOFFieldNumber = 1;
   ::google::protobuf::int32 eof() const;
   void set_eof(::google::protobuf::int32 value);
 
   // optional string BrokerID = 2;
-  bool has_brokerid() const;
   void clear_brokerid();
   static const int kBrokerIDFieldNumber = 2;
   const ::std::string& brokerid() const;
@@ -2801,7 +2318,6 @@ class PBMsgQueryRspFund : public ::google::protobuf::Message {
   void set_allocated_brokerid(::std::string* brokerid);
 
   // optional string AccountID = 3;
-  bool has_accountid() const;
   void clear_accountid();
   static const int kAccountIDFieldNumber = 3;
   const ::std::string& accountid() const;
@@ -2813,154 +2329,132 @@ class PBMsgQueryRspFund : public ::google::protobuf::Message {
   void set_allocated_accountid(::std::string* accountid);
 
   // optional double PreMortgage = 4;
-  bool has_premortgage() const;
   void clear_premortgage();
   static const int kPreMortgageFieldNumber = 4;
   double premortgage() const;
   void set_premortgage(double value);
 
   // optional double PreCredit = 5;
-  bool has_precredit() const;
   void clear_precredit();
   static const int kPreCreditFieldNumber = 5;
   double precredit() const;
   void set_precredit(double value);
 
   // optional double PreDeposit = 6;
-  bool has_predeposit() const;
   void clear_predeposit();
   static const int kPreDepositFieldNumber = 6;
   double predeposit() const;
   void set_predeposit(double value);
 
   // optional double PreBalance = 7;
-  bool has_prebalance() const;
   void clear_prebalance();
   static const int kPreBalanceFieldNumber = 7;
   double prebalance() const;
   void set_prebalance(double value);
 
   // optional double PreMargin = 8;
-  bool has_premargin() const;
   void clear_premargin();
   static const int kPreMarginFieldNumber = 8;
   double premargin() const;
   void set_premargin(double value);
 
   // optional double InterestBase = 9;
-  bool has_interestbase() const;
   void clear_interestbase();
   static const int kInterestBaseFieldNumber = 9;
   double interestbase() const;
   void set_interestbase(double value);
 
   // optional double Interest = 10;
-  bool has_interest() const;
   void clear_interest();
   static const int kInterestFieldNumber = 10;
   double interest() const;
   void set_interest(double value);
 
   // optional double Deposit = 11;
-  bool has_deposit() const;
   void clear_deposit();
   static const int kDepositFieldNumber = 11;
   double deposit() const;
   void set_deposit(double value);
 
   // optional double Withdraw = 12;
-  bool has_withdraw() const;
   void clear_withdraw();
   static const int kWithdrawFieldNumber = 12;
   double withdraw() const;
   void set_withdraw(double value);
 
   // optional double FrozenMargin = 13;
-  bool has_frozenmargin() const;
   void clear_frozenmargin();
   static const int kFrozenMarginFieldNumber = 13;
   double frozenmargin() const;
   void set_frozenmargin(double value);
 
   // optional double FrozenCash = 14;
-  bool has_frozencash() const;
   void clear_frozencash();
   static const int kFrozenCashFieldNumber = 14;
   double frozencash() const;
   void set_frozencash(double value);
 
   // optional double FrozenCommission = 15;
-  bool has_frozencommission() const;
   void clear_frozencommission();
   static const int kFrozenCommissionFieldNumber = 15;
   double frozencommission() const;
   void set_frozencommission(double value);
 
   // optional double CurrMargin = 16;
-  bool has_currmargin() const;
   void clear_currmargin();
   static const int kCurrMarginFieldNumber = 16;
   double currmargin() const;
   void set_currmargin(double value);
 
   // optional double CashIn = 17;
-  bool has_cashin() const;
   void clear_cashin();
   static const int kCashInFieldNumber = 17;
   double cashin() const;
   void set_cashin(double value);
 
   // optional double Commission = 18;
-  bool has_commission() const;
   void clear_commission();
   static const int kCommissionFieldNumber = 18;
   double commission() const;
   void set_commission(double value);
 
   // optional double CloseProfit = 19;
-  bool has_closeprofit() const;
   void clear_closeprofit();
   static const int kCloseProfitFieldNumber = 19;
   double closeprofit() const;
   void set_closeprofit(double value);
 
   // optional double PositionProfit = 20;
-  bool has_positionprofit() const;
   void clear_positionprofit();
   static const int kPositionProfitFieldNumber = 20;
   double positionprofit() const;
   void set_positionprofit(double value);
 
   // optional double Balance = 21;
-  bool has_balance() const;
   void clear_balance();
   static const int kBalanceFieldNumber = 21;
   double balance() const;
   void set_balance(double value);
 
   // optional double Available = 22;
-  bool has_available() const;
   void clear_available();
   static const int kAvailableFieldNumber = 22;
   double available() const;
   void set_available(double value);
 
   // optional double WithdrawQuota = 23;
-  bool has_withdrawquota() const;
   void clear_withdrawquota();
   static const int kWithdrawQuotaFieldNumber = 23;
   double withdrawquota() const;
   void set_withdrawquota(double value);
 
   // optional double Reserve = 24;
-  bool has_reserve() const;
   void clear_reserve();
   static const int kReserveFieldNumber = 24;
   double reserve() const;
   void set_reserve(double value);
 
   // optional string TradingDay = 25;
-  bool has_tradingday() const;
   void clear_tradingday();
   static const int kTradingDayFieldNumber = 25;
   const ::std::string& tradingday() const;
@@ -2972,49 +2466,42 @@ class PBMsgQueryRspFund : public ::google::protobuf::Message {
   void set_allocated_tradingday(::std::string* tradingday);
 
   // optional int32 SettlementID = 26;
-  bool has_settlementid() const;
   void clear_settlementid();
   static const int kSettlementIDFieldNumber = 26;
   ::google::protobuf::int32 settlementid() const;
   void set_settlementid(::google::protobuf::int32 value);
 
   // optional double Credit = 27;
-  bool has_credit() const;
   void clear_credit();
   static const int kCreditFieldNumber = 27;
   double credit() const;
   void set_credit(double value);
 
   // optional double Mortgage = 28;
-  bool has_mortgage() const;
   void clear_mortgage();
   static const int kMortgageFieldNumber = 28;
   double mortgage() const;
   void set_mortgage(double value);
 
   // optional double ExchangeMargin = 29;
-  bool has_exchangemargin() const;
   void clear_exchangemargin();
   static const int kExchangeMarginFieldNumber = 29;
   double exchangemargin() const;
   void set_exchangemargin(double value);
 
   // optional double DeliveryMargin = 30;
-  bool has_deliverymargin() const;
   void clear_deliverymargin();
   static const int kDeliveryMarginFieldNumber = 30;
   double deliverymargin() const;
   void set_deliverymargin(double value);
 
   // optional double ExchangeDeliveryMargin = 31;
-  bool has_exchangedeliverymargin() const;
   void clear_exchangedeliverymargin();
   static const int kExchangeDeliveryMarginFieldNumber = 31;
   double exchangedeliverymargin() const;
   void set_exchangedeliverymargin(double value);
 
   // optional double ReserveBalance = 32;
-  bool has_reservebalance() const;
   void clear_reservebalance();
   static const int kReserveBalanceFieldNumber = 32;
   double reservebalance() const;
@@ -3022,74 +2509,9 @@ class PBMsgQueryRspFund : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:PBMsgTrader.PBMsgQueryRspFund)
  private:
-  inline void set_has_eof();
-  inline void clear_has_eof();
-  inline void set_has_brokerid();
-  inline void clear_has_brokerid();
-  inline void set_has_accountid();
-  inline void clear_has_accountid();
-  inline void set_has_premortgage();
-  inline void clear_has_premortgage();
-  inline void set_has_precredit();
-  inline void clear_has_precredit();
-  inline void set_has_predeposit();
-  inline void clear_has_predeposit();
-  inline void set_has_prebalance();
-  inline void clear_has_prebalance();
-  inline void set_has_premargin();
-  inline void clear_has_premargin();
-  inline void set_has_interestbase();
-  inline void clear_has_interestbase();
-  inline void set_has_interest();
-  inline void clear_has_interest();
-  inline void set_has_deposit();
-  inline void clear_has_deposit();
-  inline void set_has_withdraw();
-  inline void clear_has_withdraw();
-  inline void set_has_frozenmargin();
-  inline void clear_has_frozenmargin();
-  inline void set_has_frozencash();
-  inline void clear_has_frozencash();
-  inline void set_has_frozencommission();
-  inline void clear_has_frozencommission();
-  inline void set_has_currmargin();
-  inline void clear_has_currmargin();
-  inline void set_has_cashin();
-  inline void clear_has_cashin();
-  inline void set_has_commission();
-  inline void clear_has_commission();
-  inline void set_has_closeprofit();
-  inline void clear_has_closeprofit();
-  inline void set_has_positionprofit();
-  inline void clear_has_positionprofit();
-  inline void set_has_balance();
-  inline void clear_has_balance();
-  inline void set_has_available();
-  inline void clear_has_available();
-  inline void set_has_withdrawquota();
-  inline void clear_has_withdrawquota();
-  inline void set_has_reserve();
-  inline void clear_has_reserve();
-  inline void set_has_tradingday();
-  inline void clear_has_tradingday();
-  inline void set_has_settlementid();
-  inline void clear_has_settlementid();
-  inline void set_has_credit();
-  inline void clear_has_credit();
-  inline void set_has_mortgage();
-  inline void clear_has_mortgage();
-  inline void set_has_exchangemargin();
-  inline void clear_has_exchangemargin();
-  inline void set_has_deliverymargin();
-  inline void clear_has_deliverymargin();
-  inline void set_has_exchangedeliverymargin();
-  inline void clear_has_exchangedeliverymargin();
-  inline void set_has_reservebalance();
-  inline void clear_has_reservebalance();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr brokerid_;
   ::google::protobuf::internal::ArenaStringPtr accountid_;
   double premortgage_;
@@ -3122,6 +2544,7 @@ class PBMsgQueryRspFund : public ::google::protobuf::Message {
   double deliverymargin_;
   double exchangedeliverymargin_;
   double reservebalance_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_PBMsgTrader_2eproto();
   friend void protobuf_AssignDesc_PBMsgTrader_2eproto();
   friend void protobuf_ShutdownFile_PBMsgTrader_2eproto();
@@ -3141,14 +2564,6 @@ class PBMsgOrderInsert : public ::google::protobuf::Message {
   inline PBMsgOrderInsert& operator=(const PBMsgOrderInsert& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -3196,7 +2611,6 @@ class PBMsgOrderInsert : public ::google::protobuf::Message {
   // accessors -------------------------------------------------------
 
   // optional string BrokerID = 2;
-  bool has_brokerid() const;
   void clear_brokerid();
   static const int kBrokerIDFieldNumber = 2;
   const ::std::string& brokerid() const;
@@ -3208,7 +2622,6 @@ class PBMsgOrderInsert : public ::google::protobuf::Message {
   void set_allocated_brokerid(::std::string* brokerid);
 
   // optional string InvestorID = 3;
-  bool has_investorid() const;
   void clear_investorid();
   static const int kInvestorIDFieldNumber = 3;
   const ::std::string& investorid() const;
@@ -3220,7 +2633,6 @@ class PBMsgOrderInsert : public ::google::protobuf::Message {
   void set_allocated_investorid(::std::string* investorid);
 
   // optional string InstrumentID = 4;
-  bool has_instrumentid() const;
   void clear_instrumentid();
   static const int kInstrumentIDFieldNumber = 4;
   const ::std::string& instrumentid() const;
@@ -3232,7 +2644,6 @@ class PBMsgOrderInsert : public ::google::protobuf::Message {
   void set_allocated_instrumentid(::std::string* instrumentid);
 
   // optional string OrderRef = 5;
-  bool has_orderref() const;
   void clear_orderref();
   static const int kOrderRefFieldNumber = 5;
   const ::std::string& orderref() const;
@@ -3244,7 +2655,6 @@ class PBMsgOrderInsert : public ::google::protobuf::Message {
   void set_allocated_orderref(::std::string* orderref);
 
   // optional string UserID = 6;
-  bool has_userid() const;
   void clear_userid();
   static const int kUserIDFieldNumber = 6;
   const ::std::string& userid() const;
@@ -3256,7 +2666,6 @@ class PBMsgOrderInsert : public ::google::protobuf::Message {
   void set_allocated_userid(::std::string* userid);
 
   // optional string OrderPriceType = 7;
-  bool has_orderpricetype() const;
   void clear_orderpricetype();
   static const int kOrderPriceTypeFieldNumber = 7;
   const ::std::string& orderpricetype() const;
@@ -3268,7 +2677,6 @@ class PBMsgOrderInsert : public ::google::protobuf::Message {
   void set_allocated_orderpricetype(::std::string* orderpricetype);
 
   // optional string Direction = 8;
-  bool has_direction() const;
   void clear_direction();
   static const int kDirectionFieldNumber = 8;
   const ::std::string& direction() const;
@@ -3280,7 +2688,6 @@ class PBMsgOrderInsert : public ::google::protobuf::Message {
   void set_allocated_direction(::std::string* direction);
 
   // optional string CombOffsetFlag = 9;
-  bool has_comboffsetflag() const;
   void clear_comboffsetflag();
   static const int kCombOffsetFlagFieldNumber = 9;
   const ::std::string& comboffsetflag() const;
@@ -3292,7 +2699,6 @@ class PBMsgOrderInsert : public ::google::protobuf::Message {
   void set_allocated_comboffsetflag(::std::string* comboffsetflag);
 
   // optional string CombHedgeFlag = 10;
-  bool has_combhedgeflag() const;
   void clear_combhedgeflag();
   static const int kCombHedgeFlagFieldNumber = 10;
   const ::std::string& combhedgeflag() const;
@@ -3304,21 +2710,18 @@ class PBMsgOrderInsert : public ::google::protobuf::Message {
   void set_allocated_combhedgeflag(::std::string* combhedgeflag);
 
   // optional double LimitPrice = 11;
-  bool has_limitprice() const;
   void clear_limitprice();
   static const int kLimitPriceFieldNumber = 11;
   double limitprice() const;
   void set_limitprice(double value);
 
   // optional int32 VolumeTotalOriginal = 12;
-  bool has_volumetotaloriginal() const;
   void clear_volumetotaloriginal();
   static const int kVolumeTotalOriginalFieldNumber = 12;
   ::google::protobuf::int32 volumetotaloriginal() const;
   void set_volumetotaloriginal(::google::protobuf::int32 value);
 
   // optional string TimeCondition = 13;
-  bool has_timecondition() const;
   void clear_timecondition();
   static const int kTimeConditionFieldNumber = 13;
   const ::std::string& timecondition() const;
@@ -3330,7 +2733,6 @@ class PBMsgOrderInsert : public ::google::protobuf::Message {
   void set_allocated_timecondition(::std::string* timecondition);
 
   // optional string GTDDate = 14;
-  bool has_gtddate() const;
   void clear_gtddate();
   static const int kGTDDateFieldNumber = 14;
   const ::std::string& gtddate() const;
@@ -3342,7 +2744,6 @@ class PBMsgOrderInsert : public ::google::protobuf::Message {
   void set_allocated_gtddate(::std::string* gtddate);
 
   // optional string VolumeCondition = 15;
-  bool has_volumecondition() const;
   void clear_volumecondition();
   static const int kVolumeConditionFieldNumber = 15;
   const ::std::string& volumecondition() const;
@@ -3354,14 +2755,12 @@ class PBMsgOrderInsert : public ::google::protobuf::Message {
   void set_allocated_volumecondition(::std::string* volumecondition);
 
   // optional int32 MinVolume = 16;
-  bool has_minvolume() const;
   void clear_minvolume();
   static const int kMinVolumeFieldNumber = 16;
   ::google::protobuf::int32 minvolume() const;
   void set_minvolume(::google::protobuf::int32 value);
 
   // optional string ContingentCondition = 17;
-  bool has_contingentcondition() const;
   void clear_contingentcondition();
   static const int kContingentConditionFieldNumber = 17;
   const ::std::string& contingentcondition() const;
@@ -3373,14 +2772,12 @@ class PBMsgOrderInsert : public ::google::protobuf::Message {
   void set_allocated_contingentcondition(::std::string* contingentcondition);
 
   // optional double StopPrice = 18;
-  bool has_stopprice() const;
   void clear_stopprice();
   static const int kStopPriceFieldNumber = 18;
   double stopprice() const;
   void set_stopprice(double value);
 
   // optional string ForceCloseReason = 19;
-  bool has_forceclosereason() const;
   void clear_forceclosereason();
   static const int kForceCloseReasonFieldNumber = 19;
   const ::std::string& forceclosereason() const;
@@ -3392,14 +2789,12 @@ class PBMsgOrderInsert : public ::google::protobuf::Message {
   void set_allocated_forceclosereason(::std::string* forceclosereason);
 
   // optional int32 IsAutoSuspend = 20;
-  bool has_isautosuspend() const;
   void clear_isautosuspend();
   static const int kIsAutoSuspendFieldNumber = 20;
   ::google::protobuf::int32 isautosuspend() const;
   void set_isautosuspend(::google::protobuf::int32 value);
 
   // optional string BusinessUnit = 21;
-  bool has_businessunit() const;
   void clear_businessunit();
   static const int kBusinessUnitFieldNumber = 21;
   const ::std::string& businessunit() const;
@@ -3411,21 +2806,18 @@ class PBMsgOrderInsert : public ::google::protobuf::Message {
   void set_allocated_businessunit(::std::string* businessunit);
 
   // optional int32 RequestID = 22;
-  bool has_requestid() const;
   void clear_requestid();
   static const int kRequestIDFieldNumber = 22;
   ::google::protobuf::int32 requestid() const;
   void set_requestid(::google::protobuf::int32 value);
 
   // optional int32 UserForceClose = 23;
-  bool has_userforceclose() const;
   void clear_userforceclose();
   static const int kUserForceCloseFieldNumber = 23;
   ::google::protobuf::int32 userforceclose() const;
   void set_userforceclose(::google::protobuf::int32 value);
 
   // optional int32 IsSwapOrder = 24;
-  bool has_isswaporder() const;
   void clear_isswaporder();
   static const int kIsSwapOrderFieldNumber = 24;
   ::google::protobuf::int32 isswaporder() const;
@@ -3433,56 +2825,9 @@ class PBMsgOrderInsert : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:PBMsgTrader.PBMsgOrderInsert)
  private:
-  inline void set_has_brokerid();
-  inline void clear_has_brokerid();
-  inline void set_has_investorid();
-  inline void clear_has_investorid();
-  inline void set_has_instrumentid();
-  inline void clear_has_instrumentid();
-  inline void set_has_orderref();
-  inline void clear_has_orderref();
-  inline void set_has_userid();
-  inline void clear_has_userid();
-  inline void set_has_orderpricetype();
-  inline void clear_has_orderpricetype();
-  inline void set_has_direction();
-  inline void clear_has_direction();
-  inline void set_has_comboffsetflag();
-  inline void clear_has_comboffsetflag();
-  inline void set_has_combhedgeflag();
-  inline void clear_has_combhedgeflag();
-  inline void set_has_limitprice();
-  inline void clear_has_limitprice();
-  inline void set_has_volumetotaloriginal();
-  inline void clear_has_volumetotaloriginal();
-  inline void set_has_timecondition();
-  inline void clear_has_timecondition();
-  inline void set_has_gtddate();
-  inline void clear_has_gtddate();
-  inline void set_has_volumecondition();
-  inline void clear_has_volumecondition();
-  inline void set_has_minvolume();
-  inline void clear_has_minvolume();
-  inline void set_has_contingentcondition();
-  inline void clear_has_contingentcondition();
-  inline void set_has_stopprice();
-  inline void clear_has_stopprice();
-  inline void set_has_forceclosereason();
-  inline void clear_has_forceclosereason();
-  inline void set_has_isautosuspend();
-  inline void clear_has_isautosuspend();
-  inline void set_has_businessunit();
-  inline void clear_has_businessunit();
-  inline void set_has_requestid();
-  inline void clear_has_requestid();
-  inline void set_has_userforceclose();
-  inline void clear_has_userforceclose();
-  inline void set_has_isswaporder();
-  inline void clear_has_isswaporder();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr brokerid_;
   ::google::protobuf::internal::ArenaStringPtr investorid_;
   ::google::protobuf::internal::ArenaStringPtr instrumentid_;
@@ -3506,6 +2851,7 @@ class PBMsgOrderInsert : public ::google::protobuf::Message {
   ::google::protobuf::int32 requestid_;
   ::google::protobuf::int32 userforceclose_;
   ::google::protobuf::int32 isswaporder_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_PBMsgTrader_2eproto();
   friend void protobuf_AssignDesc_PBMsgTrader_2eproto();
   friend void protobuf_ShutdownFile_PBMsgTrader_2eproto();
@@ -3525,14 +2871,6 @@ class PBMsgOrderAction : public ::google::protobuf::Message {
   inline PBMsgOrderAction& operator=(const PBMsgOrderAction& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -3580,7 +2918,6 @@ class PBMsgOrderAction : public ::google::protobuf::Message {
   // accessors -------------------------------------------------------
 
   // optional string BrokerID = 2;
-  bool has_brokerid() const;
   void clear_brokerid();
   static const int kBrokerIDFieldNumber = 2;
   const ::std::string& brokerid() const;
@@ -3592,7 +2929,6 @@ class PBMsgOrderAction : public ::google::protobuf::Message {
   void set_allocated_brokerid(::std::string* brokerid);
 
   // optional string InvestorID = 3;
-  bool has_investorid() const;
   void clear_investorid();
   static const int kInvestorIDFieldNumber = 3;
   const ::std::string& investorid() const;
@@ -3604,14 +2940,12 @@ class PBMsgOrderAction : public ::google::protobuf::Message {
   void set_allocated_investorid(::std::string* investorid);
 
   // optional int32 OrderActionRef = 4;
-  bool has_orderactionref() const;
   void clear_orderactionref();
   static const int kOrderActionRefFieldNumber = 4;
   ::google::protobuf::int32 orderactionref() const;
   void set_orderactionref(::google::protobuf::int32 value);
 
   // optional string OrderRef = 5;
-  bool has_orderref() const;
   void clear_orderref();
   static const int kOrderRefFieldNumber = 5;
   const ::std::string& orderref() const;
@@ -3623,28 +2957,24 @@ class PBMsgOrderAction : public ::google::protobuf::Message {
   void set_allocated_orderref(::std::string* orderref);
 
   // optional int32 RequestID = 6;
-  bool has_requestid() const;
   void clear_requestid();
   static const int kRequestIDFieldNumber = 6;
   ::google::protobuf::int32 requestid() const;
   void set_requestid(::google::protobuf::int32 value);
 
   // optional int32 FrontID = 7;
-  bool has_frontid() const;
   void clear_frontid();
   static const int kFrontIDFieldNumber = 7;
   ::google::protobuf::int32 frontid() const;
   void set_frontid(::google::protobuf::int32 value);
 
   // optional int32 SessionID = 8;
-  bool has_sessionid() const;
   void clear_sessionid();
   static const int kSessionIDFieldNumber = 8;
   ::google::protobuf::int32 sessionid() const;
   void set_sessionid(::google::protobuf::int32 value);
 
   // optional string ExchangeID = 9;
-  bool has_exchangeid() const;
   void clear_exchangeid();
   static const int kExchangeIDFieldNumber = 9;
   const ::std::string& exchangeid() const;
@@ -3656,7 +2986,6 @@ class PBMsgOrderAction : public ::google::protobuf::Message {
   void set_allocated_exchangeid(::std::string* exchangeid);
 
   // optional string OrderSysID = 10;
-  bool has_ordersysid() const;
   void clear_ordersysid();
   static const int kOrderSysIDFieldNumber = 10;
   const ::std::string& ordersysid() const;
@@ -3668,7 +2997,6 @@ class PBMsgOrderAction : public ::google::protobuf::Message {
   void set_allocated_ordersysid(::std::string* ordersysid);
 
   // optional string ActionFlag = 11;
-  bool has_actionflag() const;
   void clear_actionflag();
   static const int kActionFlagFieldNumber = 11;
   const ::std::string& actionflag() const;
@@ -3680,21 +3008,18 @@ class PBMsgOrderAction : public ::google::protobuf::Message {
   void set_allocated_actionflag(::std::string* actionflag);
 
   // optional double LimitPrice = 12;
-  bool has_limitprice() const;
   void clear_limitprice();
   static const int kLimitPriceFieldNumber = 12;
   double limitprice() const;
   void set_limitprice(double value);
 
   // optional int32 VolumeChange = 13;
-  bool has_volumechange() const;
   void clear_volumechange();
   static const int kVolumeChangeFieldNumber = 13;
   ::google::protobuf::int32 volumechange() const;
   void set_volumechange(::google::protobuf::int32 value);
 
   // optional string ActionDate = 14;
-  bool has_actiondate() const;
   void clear_actiondate();
   static const int kActionDateFieldNumber = 14;
   const ::std::string& actiondate() const;
@@ -3706,7 +3031,6 @@ class PBMsgOrderAction : public ::google::protobuf::Message {
   void set_allocated_actiondate(::std::string* actiondate);
 
   // optional string ActionTime = 15;
-  bool has_actiontime() const;
   void clear_actiontime();
   static const int kActionTimeFieldNumber = 15;
   const ::std::string& actiontime() const;
@@ -3718,7 +3042,6 @@ class PBMsgOrderAction : public ::google::protobuf::Message {
   void set_allocated_actiontime(::std::string* actiontime);
 
   // optional string TraderID = 16;
-  bool has_traderid() const;
   void clear_traderid();
   static const int kTraderIDFieldNumber = 16;
   const ::std::string& traderid() const;
@@ -3730,14 +3053,12 @@ class PBMsgOrderAction : public ::google::protobuf::Message {
   void set_allocated_traderid(::std::string* traderid);
 
   // optional int32 InstallID = 17;
-  bool has_installid() const;
   void clear_installid();
   static const int kInstallIDFieldNumber = 17;
   ::google::protobuf::int32 installid() const;
   void set_installid(::google::protobuf::int32 value);
 
   // optional string OrderLocalID = 18;
-  bool has_orderlocalid() const;
   void clear_orderlocalid();
   static const int kOrderLocalIDFieldNumber = 18;
   const ::std::string& orderlocalid() const;
@@ -3749,7 +3070,6 @@ class PBMsgOrderAction : public ::google::protobuf::Message {
   void set_allocated_orderlocalid(::std::string* orderlocalid);
 
   // optional string ActionLocalID = 19;
-  bool has_actionlocalid() const;
   void clear_actionlocalid();
   static const int kActionLocalIDFieldNumber = 19;
   const ::std::string& actionlocalid() const;
@@ -3761,7 +3081,6 @@ class PBMsgOrderAction : public ::google::protobuf::Message {
   void set_allocated_actionlocalid(::std::string* actionlocalid);
 
   // optional string ParticipantID = 20;
-  bool has_participantid() const;
   void clear_participantid();
   static const int kParticipantIDFieldNumber = 20;
   const ::std::string& participantid() const;
@@ -3773,7 +3092,6 @@ class PBMsgOrderAction : public ::google::protobuf::Message {
   void set_allocated_participantid(::std::string* participantid);
 
   // optional string ClientID = 21;
-  bool has_clientid() const;
   void clear_clientid();
   static const int kClientIDFieldNumber = 21;
   const ::std::string& clientid() const;
@@ -3785,7 +3103,6 @@ class PBMsgOrderAction : public ::google::protobuf::Message {
   void set_allocated_clientid(::std::string* clientid);
 
   // optional string BusinessUnit = 22;
-  bool has_businessunit() const;
   void clear_businessunit();
   static const int kBusinessUnitFieldNumber = 22;
   const ::std::string& businessunit() const;
@@ -3797,7 +3114,6 @@ class PBMsgOrderAction : public ::google::protobuf::Message {
   void set_allocated_businessunit(::std::string* businessunit);
 
   // optional string OrderActionStatus = 23;
-  bool has_orderactionstatus() const;
   void clear_orderactionstatus();
   static const int kOrderActionStatusFieldNumber = 23;
   const ::std::string& orderactionstatus() const;
@@ -3809,7 +3125,6 @@ class PBMsgOrderAction : public ::google::protobuf::Message {
   void set_allocated_orderactionstatus(::std::string* orderactionstatus);
 
   // optional string UserID = 24;
-  bool has_userid() const;
   void clear_userid();
   static const int kUserIDFieldNumber = 24;
   const ::std::string& userid() const;
@@ -3821,7 +3136,6 @@ class PBMsgOrderAction : public ::google::protobuf::Message {
   void set_allocated_userid(::std::string* userid);
 
   // optional bytes StatusMsg = 25;
-  bool has_statusmsg() const;
   void clear_statusmsg();
   static const int kStatusMsgFieldNumber = 25;
   const ::std::string& statusmsg() const;
@@ -3833,7 +3147,6 @@ class PBMsgOrderAction : public ::google::protobuf::Message {
   void set_allocated_statusmsg(::std::string* statusmsg);
 
   // optional string InstrumentID = 26;
-  bool has_instrumentid() const;
   void clear_instrumentid();
   static const int kInstrumentIDFieldNumber = 26;
   const ::std::string& instrumentid() const;
@@ -3846,60 +3159,9 @@ class PBMsgOrderAction : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:PBMsgTrader.PBMsgOrderAction)
  private:
-  inline void set_has_brokerid();
-  inline void clear_has_brokerid();
-  inline void set_has_investorid();
-  inline void clear_has_investorid();
-  inline void set_has_orderactionref();
-  inline void clear_has_orderactionref();
-  inline void set_has_orderref();
-  inline void clear_has_orderref();
-  inline void set_has_requestid();
-  inline void clear_has_requestid();
-  inline void set_has_frontid();
-  inline void clear_has_frontid();
-  inline void set_has_sessionid();
-  inline void clear_has_sessionid();
-  inline void set_has_exchangeid();
-  inline void clear_has_exchangeid();
-  inline void set_has_ordersysid();
-  inline void clear_has_ordersysid();
-  inline void set_has_actionflag();
-  inline void clear_has_actionflag();
-  inline void set_has_limitprice();
-  inline void clear_has_limitprice();
-  inline void set_has_volumechange();
-  inline void clear_has_volumechange();
-  inline void set_has_actiondate();
-  inline void clear_has_actiondate();
-  inline void set_has_actiontime();
-  inline void clear_has_actiontime();
-  inline void set_has_traderid();
-  inline void clear_has_traderid();
-  inline void set_has_installid();
-  inline void clear_has_installid();
-  inline void set_has_orderlocalid();
-  inline void clear_has_orderlocalid();
-  inline void set_has_actionlocalid();
-  inline void clear_has_actionlocalid();
-  inline void set_has_participantid();
-  inline void clear_has_participantid();
-  inline void set_has_clientid();
-  inline void clear_has_clientid();
-  inline void set_has_businessunit();
-  inline void clear_has_businessunit();
-  inline void set_has_orderactionstatus();
-  inline void clear_has_orderactionstatus();
-  inline void set_has_userid();
-  inline void clear_has_userid();
-  inline void set_has_statusmsg();
-  inline void clear_has_statusmsg();
-  inline void set_has_instrumentid();
-  inline void clear_has_instrumentid();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr brokerid_;
   ::google::protobuf::internal::ArenaStringPtr investorid_;
   ::google::protobuf::internal::ArenaStringPtr orderref_;
@@ -3925,6 +3187,7 @@ class PBMsgOrderAction : public ::google::protobuf::Message {
   ::google::protobuf::internal::ArenaStringPtr userid_;
   ::google::protobuf::internal::ArenaStringPtr statusmsg_;
   ::google::protobuf::internal::ArenaStringPtr instrumentid_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_PBMsgTrader_2eproto();
   friend void protobuf_AssignDesc_PBMsgTrader_2eproto();
   friend void protobuf_ShutdownFile_PBMsgTrader_2eproto();
@@ -3944,14 +3207,6 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   inline PBMsgOrderRtn& operator=(const PBMsgOrderRtn& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -3999,14 +3254,12 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   // accessors -------------------------------------------------------
 
   // optional int32 EOF = 1;
-  bool has_eof() const;
   void clear_eof();
   static const int kEOFFieldNumber = 1;
   ::google::protobuf::int32 eof() const;
   void set_eof(::google::protobuf::int32 value);
 
   // optional string BrokerID = 2;
-  bool has_brokerid() const;
   void clear_brokerid();
   static const int kBrokerIDFieldNumber = 2;
   const ::std::string& brokerid() const;
@@ -4018,7 +3271,6 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_brokerid(::std::string* brokerid);
 
   // optional string InvestorID = 3;
-  bool has_investorid() const;
   void clear_investorid();
   static const int kInvestorIDFieldNumber = 3;
   const ::std::string& investorid() const;
@@ -4030,7 +3282,6 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_investorid(::std::string* investorid);
 
   // optional string InstrumentID = 4;
-  bool has_instrumentid() const;
   void clear_instrumentid();
   static const int kInstrumentIDFieldNumber = 4;
   const ::std::string& instrumentid() const;
@@ -4042,7 +3293,6 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_instrumentid(::std::string* instrumentid);
 
   // optional string OrderRef = 5;
-  bool has_orderref() const;
   void clear_orderref();
   static const int kOrderRefFieldNumber = 5;
   const ::std::string& orderref() const;
@@ -4054,7 +3304,6 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_orderref(::std::string* orderref);
 
   // optional string UserID = 6;
-  bool has_userid() const;
   void clear_userid();
   static const int kUserIDFieldNumber = 6;
   const ::std::string& userid() const;
@@ -4066,7 +3315,6 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_userid(::std::string* userid);
 
   // optional string OrderPriceType = 7;
-  bool has_orderpricetype() const;
   void clear_orderpricetype();
   static const int kOrderPriceTypeFieldNumber = 7;
   const ::std::string& orderpricetype() const;
@@ -4078,7 +3326,6 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_orderpricetype(::std::string* orderpricetype);
 
   // optional string Direction = 8;
-  bool has_direction() const;
   void clear_direction();
   static const int kDirectionFieldNumber = 8;
   const ::std::string& direction() const;
@@ -4090,7 +3337,6 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_direction(::std::string* direction);
 
   // optional string CombOffsetFlag = 9;
-  bool has_comboffsetflag() const;
   void clear_comboffsetflag();
   static const int kCombOffsetFlagFieldNumber = 9;
   const ::std::string& comboffsetflag() const;
@@ -4102,7 +3348,6 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_comboffsetflag(::std::string* comboffsetflag);
 
   // optional string CombHedgeFlag = 10;
-  bool has_combhedgeflag() const;
   void clear_combhedgeflag();
   static const int kCombHedgeFlagFieldNumber = 10;
   const ::std::string& combhedgeflag() const;
@@ -4114,21 +3359,18 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_combhedgeflag(::std::string* combhedgeflag);
 
   // optional double LimitPrice = 11;
-  bool has_limitprice() const;
   void clear_limitprice();
   static const int kLimitPriceFieldNumber = 11;
   double limitprice() const;
   void set_limitprice(double value);
 
   // optional int32 VolumeTotalOriginal = 12;
-  bool has_volumetotaloriginal() const;
   void clear_volumetotaloriginal();
   static const int kVolumeTotalOriginalFieldNumber = 12;
   ::google::protobuf::int32 volumetotaloriginal() const;
   void set_volumetotaloriginal(::google::protobuf::int32 value);
 
   // optional string TimeCondition = 13;
-  bool has_timecondition() const;
   void clear_timecondition();
   static const int kTimeConditionFieldNumber = 13;
   const ::std::string& timecondition() const;
@@ -4140,7 +3382,6 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_timecondition(::std::string* timecondition);
 
   // optional string GTDDate = 14;
-  bool has_gtddate() const;
   void clear_gtddate();
   static const int kGTDDateFieldNumber = 14;
   const ::std::string& gtddate() const;
@@ -4152,7 +3393,6 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_gtddate(::std::string* gtddate);
 
   // optional string VolumeCondition = 15;
-  bool has_volumecondition() const;
   void clear_volumecondition();
   static const int kVolumeConditionFieldNumber = 15;
   const ::std::string& volumecondition() const;
@@ -4164,14 +3404,12 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_volumecondition(::std::string* volumecondition);
 
   // optional int32 MinVolume = 16;
-  bool has_minvolume() const;
   void clear_minvolume();
   static const int kMinVolumeFieldNumber = 16;
   ::google::protobuf::int32 minvolume() const;
   void set_minvolume(::google::protobuf::int32 value);
 
   // optional string ContingentCondition = 17;
-  bool has_contingentcondition() const;
   void clear_contingentcondition();
   static const int kContingentConditionFieldNumber = 17;
   const ::std::string& contingentcondition() const;
@@ -4183,14 +3421,12 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_contingentcondition(::std::string* contingentcondition);
 
   // optional double StopPrice = 18;
-  bool has_stopprice() const;
   void clear_stopprice();
   static const int kStopPriceFieldNumber = 18;
   double stopprice() const;
   void set_stopprice(double value);
 
   // optional string ForceCloseReason = 19;
-  bool has_forceclosereason() const;
   void clear_forceclosereason();
   static const int kForceCloseReasonFieldNumber = 19;
   const ::std::string& forceclosereason() const;
@@ -4202,14 +3438,12 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_forceclosereason(::std::string* forceclosereason);
 
   // optional int32 IsAutoSuspend = 20;
-  bool has_isautosuspend() const;
   void clear_isautosuspend();
   static const int kIsAutoSuspendFieldNumber = 20;
   ::google::protobuf::int32 isautosuspend() const;
   void set_isautosuspend(::google::protobuf::int32 value);
 
   // optional string BusinessUnit = 21;
-  bool has_businessunit() const;
   void clear_businessunit();
   static const int kBusinessUnitFieldNumber = 21;
   const ::std::string& businessunit() const;
@@ -4221,14 +3455,12 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_businessunit(::std::string* businessunit);
 
   // optional int32 RequestID = 22;
-  bool has_requestid() const;
   void clear_requestid();
   static const int kRequestIDFieldNumber = 22;
   ::google::protobuf::int32 requestid() const;
   void set_requestid(::google::protobuf::int32 value);
 
   // optional string OrderLocalID = 23;
-  bool has_orderlocalid() const;
   void clear_orderlocalid();
   static const int kOrderLocalIDFieldNumber = 23;
   const ::std::string& orderlocalid() const;
@@ -4240,7 +3472,6 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_orderlocalid(::std::string* orderlocalid);
 
   // optional string ExchangeID = 24;
-  bool has_exchangeid() const;
   void clear_exchangeid();
   static const int kExchangeIDFieldNumber = 24;
   const ::std::string& exchangeid() const;
@@ -4252,7 +3483,6 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_exchangeid(::std::string* exchangeid);
 
   // optional string ParticipantID = 25;
-  bool has_participantid() const;
   void clear_participantid();
   static const int kParticipantIDFieldNumber = 25;
   const ::std::string& participantid() const;
@@ -4264,7 +3494,6 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_participantid(::std::string* participantid);
 
   // optional string ClientID = 26;
-  bool has_clientid() const;
   void clear_clientid();
   static const int kClientIDFieldNumber = 26;
   const ::std::string& clientid() const;
@@ -4276,7 +3505,6 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_clientid(::std::string* clientid);
 
   // optional string ExchangeInstID = 27;
-  bool has_exchangeinstid() const;
   void clear_exchangeinstid();
   static const int kExchangeInstIDFieldNumber = 27;
   const ::std::string& exchangeinstid() const;
@@ -4288,7 +3516,6 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_exchangeinstid(::std::string* exchangeinstid);
 
   // optional string TraderID = 28;
-  bool has_traderid() const;
   void clear_traderid();
   static const int kTraderIDFieldNumber = 28;
   const ::std::string& traderid() const;
@@ -4300,14 +3527,12 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_traderid(::std::string* traderid);
 
   // optional int32 InstallID = 29;
-  bool has_installid() const;
   void clear_installid();
   static const int kInstallIDFieldNumber = 29;
   ::google::protobuf::int32 installid() const;
   void set_installid(::google::protobuf::int32 value);
 
   // optional string OrderSubmitStatus = 30;
-  bool has_ordersubmitstatus() const;
   void clear_ordersubmitstatus();
   static const int kOrderSubmitStatusFieldNumber = 30;
   const ::std::string& ordersubmitstatus() const;
@@ -4319,14 +3544,12 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_ordersubmitstatus(::std::string* ordersubmitstatus);
 
   // optional int32 NotifySequence = 31;
-  bool has_notifysequence() const;
   void clear_notifysequence();
   static const int kNotifySequenceFieldNumber = 31;
   ::google::protobuf::int32 notifysequence() const;
   void set_notifysequence(::google::protobuf::int32 value);
 
   // optional string TradingDay = 32;
-  bool has_tradingday() const;
   void clear_tradingday();
   static const int kTradingDayFieldNumber = 32;
   const ::std::string& tradingday() const;
@@ -4338,14 +3561,12 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_tradingday(::std::string* tradingday);
 
   // optional int32 SettlementID = 33;
-  bool has_settlementid() const;
   void clear_settlementid();
   static const int kSettlementIDFieldNumber = 33;
   ::google::protobuf::int32 settlementid() const;
   void set_settlementid(::google::protobuf::int32 value);
 
   // optional string OrderSysID = 34;
-  bool has_ordersysid() const;
   void clear_ordersysid();
   static const int kOrderSysIDFieldNumber = 34;
   const ::std::string& ordersysid() const;
@@ -4357,7 +3578,6 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_ordersysid(::std::string* ordersysid);
 
   // optional string OrderSource = 35;
-  bool has_ordersource() const;
   void clear_ordersource();
   static const int kOrderSourceFieldNumber = 35;
   const ::std::string& ordersource() const;
@@ -4369,7 +3589,6 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_ordersource(::std::string* ordersource);
 
   // optional string OrderStatus = 36;
-  bool has_orderstatus() const;
   void clear_orderstatus();
   static const int kOrderStatusFieldNumber = 36;
   const ::std::string& orderstatus() const;
@@ -4381,7 +3600,6 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_orderstatus(::std::string* orderstatus);
 
   // optional string OrderType = 37;
-  bool has_ordertype() const;
   void clear_ordertype();
   static const int kOrderTypeFieldNumber = 37;
   const ::std::string& ordertype() const;
@@ -4393,21 +3611,18 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_ordertype(::std::string* ordertype);
 
   // optional int32 VolumeTraded = 38;
-  bool has_volumetraded() const;
   void clear_volumetraded();
   static const int kVolumeTradedFieldNumber = 38;
   ::google::protobuf::int32 volumetraded() const;
   void set_volumetraded(::google::protobuf::int32 value);
 
   // optional int32 VolumeTotal = 39;
-  bool has_volumetotal() const;
   void clear_volumetotal();
   static const int kVolumeTotalFieldNumber = 39;
   ::google::protobuf::int32 volumetotal() const;
   void set_volumetotal(::google::protobuf::int32 value);
 
   // optional string InsertDate = 40;
-  bool has_insertdate() const;
   void clear_insertdate();
   static const int kInsertDateFieldNumber = 40;
   const ::std::string& insertdate() const;
@@ -4419,7 +3634,6 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_insertdate(::std::string* insertdate);
 
   // optional string InsertTime = 41;
-  bool has_inserttime() const;
   void clear_inserttime();
   static const int kInsertTimeFieldNumber = 41;
   const ::std::string& inserttime() const;
@@ -4431,7 +3645,6 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_inserttime(::std::string* inserttime);
 
   // optional string ActiveTime = 42;
-  bool has_activetime() const;
   void clear_activetime();
   static const int kActiveTimeFieldNumber = 42;
   const ::std::string& activetime() const;
@@ -4443,7 +3656,6 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_activetime(::std::string* activetime);
 
   // optional string SuspendTime = 43;
-  bool has_suspendtime() const;
   void clear_suspendtime();
   static const int kSuspendTimeFieldNumber = 43;
   const ::std::string& suspendtime() const;
@@ -4455,7 +3667,6 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_suspendtime(::std::string* suspendtime);
 
   // optional string UpdateTime = 44;
-  bool has_updatetime() const;
   void clear_updatetime();
   static const int kUpdateTimeFieldNumber = 44;
   const ::std::string& updatetime() const;
@@ -4467,7 +3678,6 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_updatetime(::std::string* updatetime);
 
   // optional string CancelTime = 45;
-  bool has_canceltime() const;
   void clear_canceltime();
   static const int kCancelTimeFieldNumber = 45;
   const ::std::string& canceltime() const;
@@ -4479,7 +3689,6 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_canceltime(::std::string* canceltime);
 
   // optional string ActiveTraderID = 46;
-  bool has_activetraderid() const;
   void clear_activetraderid();
   static const int kActiveTraderIDFieldNumber = 46;
   const ::std::string& activetraderid() const;
@@ -4491,7 +3700,6 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_activetraderid(::std::string* activetraderid);
 
   // optional string ClearingPartID = 47;
-  bool has_clearingpartid() const;
   void clear_clearingpartid();
   static const int kClearingPartIDFieldNumber = 47;
   const ::std::string& clearingpartid() const;
@@ -4503,28 +3711,24 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_clearingpartid(::std::string* clearingpartid);
 
   // optional int32 SequenceNo = 48;
-  bool has_sequenceno() const;
   void clear_sequenceno();
   static const int kSequenceNoFieldNumber = 48;
   ::google::protobuf::int32 sequenceno() const;
   void set_sequenceno(::google::protobuf::int32 value);
 
   // optional int32 FrontID = 49;
-  bool has_frontid() const;
   void clear_frontid();
   static const int kFrontIDFieldNumber = 49;
   ::google::protobuf::int32 frontid() const;
   void set_frontid(::google::protobuf::int32 value);
 
   // optional int32 SessionID = 50;
-  bool has_sessionid() const;
   void clear_sessionid();
   static const int kSessionIDFieldNumber = 50;
   ::google::protobuf::int32 sessionid() const;
   void set_sessionid(::google::protobuf::int32 value);
 
   // optional string UserProductInfo = 51;
-  bool has_userproductinfo() const;
   void clear_userproductinfo();
   static const int kUserProductInfoFieldNumber = 51;
   const ::std::string& userproductinfo() const;
@@ -4536,7 +3740,6 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_userproductinfo(::std::string* userproductinfo);
 
   // optional bytes StatusMsg = 52;
-  bool has_statusmsg() const;
   void clear_statusmsg();
   static const int kStatusMsgFieldNumber = 52;
   const ::std::string& statusmsg() const;
@@ -4548,14 +3751,12 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_statusmsg(::std::string* statusmsg);
 
   // optional int32 UserForceClose = 53;
-  bool has_userforceclose() const;
   void clear_userforceclose();
   static const int kUserForceCloseFieldNumber = 53;
   ::google::protobuf::int32 userforceclose() const;
   void set_userforceclose(::google::protobuf::int32 value);
 
   // optional string ActiveUserID = 54;
-  bool has_activeuserid() const;
   void clear_activeuserid();
   static const int kActiveUserIDFieldNumber = 54;
   const ::std::string& activeuserid() const;
@@ -4567,14 +3768,12 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_activeuserid(::std::string* activeuserid);
 
   // optional int32 BrokerOrderSeq = 55;
-  bool has_brokerorderseq() const;
   void clear_brokerorderseq();
   static const int kBrokerOrderSeqFieldNumber = 55;
   ::google::protobuf::int32 brokerorderseq() const;
   void set_brokerorderseq(::google::protobuf::int32 value);
 
   // optional string RelativeOrderSysID = 56;
-  bool has_relativeordersysid() const;
   void clear_relativeordersysid();
   static const int kRelativeOrderSysIDFieldNumber = 56;
   const ::std::string& relativeordersysid() const;
@@ -4586,21 +3785,18 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
   void set_allocated_relativeordersysid(::std::string* relativeordersysid);
 
   // optional int32 ZCETotalTradedVolume = 57;
-  bool has_zcetotaltradedvolume() const;
   void clear_zcetotaltradedvolume();
   static const int kZCETotalTradedVolumeFieldNumber = 57;
   ::google::protobuf::int32 zcetotaltradedvolume() const;
   void set_zcetotaltradedvolume(::google::protobuf::int32 value);
 
   // optional int32 IsSwapOrder = 58;
-  bool has_isswaporder() const;
   void clear_isswaporder();
   static const int kIsSwapOrderFieldNumber = 58;
   ::google::protobuf::int32 isswaporder() const;
   void set_isswaporder(::google::protobuf::int32 value);
 
   // optional int32 IOrderStatus = 59;
-  bool has_iorderstatus() const;
   void clear_iorderstatus();
   static const int kIOrderStatusFieldNumber = 59;
   ::google::protobuf::int32 iorderstatus() const;
@@ -4608,127 +3804,9 @@ class PBMsgOrderRtn : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:PBMsgTrader.PBMsgOrderRtn)
  private:
-  inline void set_has_eof();
-  inline void clear_has_eof();
-  inline void set_has_brokerid();
-  inline void clear_has_brokerid();
-  inline void set_has_investorid();
-  inline void clear_has_investorid();
-  inline void set_has_instrumentid();
-  inline void clear_has_instrumentid();
-  inline void set_has_orderref();
-  inline void clear_has_orderref();
-  inline void set_has_userid();
-  inline void clear_has_userid();
-  inline void set_has_orderpricetype();
-  inline void clear_has_orderpricetype();
-  inline void set_has_direction();
-  inline void clear_has_direction();
-  inline void set_has_comboffsetflag();
-  inline void clear_has_comboffsetflag();
-  inline void set_has_combhedgeflag();
-  inline void clear_has_combhedgeflag();
-  inline void set_has_limitprice();
-  inline void clear_has_limitprice();
-  inline void set_has_volumetotaloriginal();
-  inline void clear_has_volumetotaloriginal();
-  inline void set_has_timecondition();
-  inline void clear_has_timecondition();
-  inline void set_has_gtddate();
-  inline void clear_has_gtddate();
-  inline void set_has_volumecondition();
-  inline void clear_has_volumecondition();
-  inline void set_has_minvolume();
-  inline void clear_has_minvolume();
-  inline void set_has_contingentcondition();
-  inline void clear_has_contingentcondition();
-  inline void set_has_stopprice();
-  inline void clear_has_stopprice();
-  inline void set_has_forceclosereason();
-  inline void clear_has_forceclosereason();
-  inline void set_has_isautosuspend();
-  inline void clear_has_isautosuspend();
-  inline void set_has_businessunit();
-  inline void clear_has_businessunit();
-  inline void set_has_requestid();
-  inline void clear_has_requestid();
-  inline void set_has_orderlocalid();
-  inline void clear_has_orderlocalid();
-  inline void set_has_exchangeid();
-  inline void clear_has_exchangeid();
-  inline void set_has_participantid();
-  inline void clear_has_participantid();
-  inline void set_has_clientid();
-  inline void clear_has_clientid();
-  inline void set_has_exchangeinstid();
-  inline void clear_has_exchangeinstid();
-  inline void set_has_traderid();
-  inline void clear_has_traderid();
-  inline void set_has_installid();
-  inline void clear_has_installid();
-  inline void set_has_ordersubmitstatus();
-  inline void clear_has_ordersubmitstatus();
-  inline void set_has_notifysequence();
-  inline void clear_has_notifysequence();
-  inline void set_has_tradingday();
-  inline void clear_has_tradingday();
-  inline void set_has_settlementid();
-  inline void clear_has_settlementid();
-  inline void set_has_ordersysid();
-  inline void clear_has_ordersysid();
-  inline void set_has_ordersource();
-  inline void clear_has_ordersource();
-  inline void set_has_orderstatus();
-  inline void clear_has_orderstatus();
-  inline void set_has_ordertype();
-  inline void clear_has_ordertype();
-  inline void set_has_volumetraded();
-  inline void clear_has_volumetraded();
-  inline void set_has_volumetotal();
-  inline void clear_has_volumetotal();
-  inline void set_has_insertdate();
-  inline void clear_has_insertdate();
-  inline void set_has_inserttime();
-  inline void clear_has_inserttime();
-  inline void set_has_activetime();
-  inline void clear_has_activetime();
-  inline void set_has_suspendtime();
-  inline void clear_has_suspendtime();
-  inline void set_has_updatetime();
-  inline void clear_has_updatetime();
-  inline void set_has_canceltime();
-  inline void clear_has_canceltime();
-  inline void set_has_activetraderid();
-  inline void clear_has_activetraderid();
-  inline void set_has_clearingpartid();
-  inline void clear_has_clearingpartid();
-  inline void set_has_sequenceno();
-  inline void clear_has_sequenceno();
-  inline void set_has_frontid();
-  inline void clear_has_frontid();
-  inline void set_has_sessionid();
-  inline void clear_has_sessionid();
-  inline void set_has_userproductinfo();
-  inline void clear_has_userproductinfo();
-  inline void set_has_statusmsg();
-  inline void clear_has_statusmsg();
-  inline void set_has_userforceclose();
-  inline void clear_has_userforceclose();
-  inline void set_has_activeuserid();
-  inline void clear_has_activeuserid();
-  inline void set_has_brokerorderseq();
-  inline void clear_has_brokerorderseq();
-  inline void set_has_relativeordersysid();
-  inline void clear_has_relativeordersysid();
-  inline void set_has_zcetotaltradedvolume();
-  inline void clear_has_zcetotaltradedvolume();
-  inline void set_has_isswaporder();
-  inline void clear_has_isswaporder();
-  inline void set_has_iorderstatus();
-  inline void clear_has_iorderstatus();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[2];
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr brokerid_;
   ::google::protobuf::internal::ArenaStringPtr investorid_;
   ::google::protobuf::internal::ArenaStringPtr instrumentid_;
@@ -4810,14 +3888,6 @@ class PBMsgTradeRtn : public ::google::protobuf::Message {
     return *this;
   }
 
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
-  }
-
   static const ::google::protobuf::Descriptor* descriptor();
   static const PBMsgTradeRtn& default_instance();
 
@@ -4863,14 +3933,12 @@ class PBMsgTradeRtn : public ::google::protobuf::Message {
   // accessors -------------------------------------------------------
 
   // optional int32 EOF = 1;
-  bool has_eof() const;
   void clear_eof();
   static const int kEOFFieldNumber = 1;
   ::google::protobuf::int32 eof() const;
   void set_eof(::google::protobuf::int32 value);
 
   // optional string BrokerID = 2;
-  bool has_brokerid() const;
   void clear_brokerid();
   static const int kBrokerIDFieldNumber = 2;
   const ::std::string& brokerid() const;
@@ -4882,7 +3950,6 @@ class PBMsgTradeRtn : public ::google::protobuf::Message {
   void set_allocated_brokerid(::std::string* brokerid);
 
   // optional string InvestorID = 3;
-  bool has_investorid() const;
   void clear_investorid();
   static const int kInvestorIDFieldNumber = 3;
   const ::std::string& investorid() const;
@@ -4894,7 +3961,6 @@ class PBMsgTradeRtn : public ::google::protobuf::Message {
   void set_allocated_investorid(::std::string* investorid);
 
   // optional string InstrumentID = 4;
-  bool has_instrumentid() const;
   void clear_instrumentid();
   static const int kInstrumentIDFieldNumber = 4;
   const ::std::string& instrumentid() const;
@@ -4906,7 +3972,6 @@ class PBMsgTradeRtn : public ::google::protobuf::Message {
   void set_allocated_instrumentid(::std::string* instrumentid);
 
   // optional string OrderRef = 5;
-  bool has_orderref() const;
   void clear_orderref();
   static const int kOrderRefFieldNumber = 5;
   const ::std::string& orderref() const;
@@ -4918,7 +3983,6 @@ class PBMsgTradeRtn : public ::google::protobuf::Message {
   void set_allocated_orderref(::std::string* orderref);
 
   // optional string UserID = 6;
-  bool has_userid() const;
   void clear_userid();
   static const int kUserIDFieldNumber = 6;
   const ::std::string& userid() const;
@@ -4930,7 +3994,6 @@ class PBMsgTradeRtn : public ::google::protobuf::Message {
   void set_allocated_userid(::std::string* userid);
 
   // optional string ExchangeID = 7;
-  bool has_exchangeid() const;
   void clear_exchangeid();
   static const int kExchangeIDFieldNumber = 7;
   const ::std::string& exchangeid() const;
@@ -4942,7 +4005,6 @@ class PBMsgTradeRtn : public ::google::protobuf::Message {
   void set_allocated_exchangeid(::std::string* exchangeid);
 
   // optional string TradeID = 8;
-  bool has_tradeid() const;
   void clear_tradeid();
   static const int kTradeIDFieldNumber = 8;
   const ::std::string& tradeid() const;
@@ -4954,7 +4016,6 @@ class PBMsgTradeRtn : public ::google::protobuf::Message {
   void set_allocated_tradeid(::std::string* tradeid);
 
   // optional string Direction = 9;
-  bool has_direction() const;
   void clear_direction();
   static const int kDirectionFieldNumber = 9;
   const ::std::string& direction() const;
@@ -4966,7 +4027,6 @@ class PBMsgTradeRtn : public ::google::protobuf::Message {
   void set_allocated_direction(::std::string* direction);
 
   // optional string OrderSysID = 10;
-  bool has_ordersysid() const;
   void clear_ordersysid();
   static const int kOrderSysIDFieldNumber = 10;
   const ::std::string& ordersysid() const;
@@ -4978,7 +4038,6 @@ class PBMsgTradeRtn : public ::google::protobuf::Message {
   void set_allocated_ordersysid(::std::string* ordersysid);
 
   // optional string ParticipantID = 11;
-  bool has_participantid() const;
   void clear_participantid();
   static const int kParticipantIDFieldNumber = 11;
   const ::std::string& participantid() const;
@@ -4990,7 +4049,6 @@ class PBMsgTradeRtn : public ::google::protobuf::Message {
   void set_allocated_participantid(::std::string* participantid);
 
   // optional string ClientID = 12;
-  bool has_clientid() const;
   void clear_clientid();
   static const int kClientIDFieldNumber = 12;
   const ::std::string& clientid() const;
@@ -5002,7 +4060,6 @@ class PBMsgTradeRtn : public ::google::protobuf::Message {
   void set_allocated_clientid(::std::string* clientid);
 
   // optional string TradingRole = 13;
-  bool has_tradingrole() const;
   void clear_tradingrole();
   static const int kTradingRoleFieldNumber = 13;
   const ::std::string& tradingrole() const;
@@ -5014,7 +4071,6 @@ class PBMsgTradeRtn : public ::google::protobuf::Message {
   void set_allocated_tradingrole(::std::string* tradingrole);
 
   // optional string ExchangeInstID = 14;
-  bool has_exchangeinstid() const;
   void clear_exchangeinstid();
   static const int kExchangeInstIDFieldNumber = 14;
   const ::std::string& exchangeinstid() const;
@@ -5026,7 +4082,6 @@ class PBMsgTradeRtn : public ::google::protobuf::Message {
   void set_allocated_exchangeinstid(::std::string* exchangeinstid);
 
   // optional string OffsetFlag = 15;
-  bool has_offsetflag() const;
   void clear_offsetflag();
   static const int kOffsetFlagFieldNumber = 15;
   const ::std::string& offsetflag() const;
@@ -5038,7 +4093,6 @@ class PBMsgTradeRtn : public ::google::protobuf::Message {
   void set_allocated_offsetflag(::std::string* offsetflag);
 
   // optional string HedgeFlag = 16;
-  bool has_hedgeflag() const;
   void clear_hedgeflag();
   static const int kHedgeFlagFieldNumber = 16;
   const ::std::string& hedgeflag() const;
@@ -5050,21 +4104,18 @@ class PBMsgTradeRtn : public ::google::protobuf::Message {
   void set_allocated_hedgeflag(::std::string* hedgeflag);
 
   // optional double Price = 17;
-  bool has_price() const;
   void clear_price();
   static const int kPriceFieldNumber = 17;
   double price() const;
   void set_price(double value);
 
   // optional int32 Volume = 18;
-  bool has_volume() const;
   void clear_volume();
   static const int kVolumeFieldNumber = 18;
   ::google::protobuf::int32 volume() const;
   void set_volume(::google::protobuf::int32 value);
 
   // optional string TradeDate = 19;
-  bool has_tradedate() const;
   void clear_tradedate();
   static const int kTradeDateFieldNumber = 19;
   const ::std::string& tradedate() const;
@@ -5076,7 +4127,6 @@ class PBMsgTradeRtn : public ::google::protobuf::Message {
   void set_allocated_tradedate(::std::string* tradedate);
 
   // optional string TradeTime = 20;
-  bool has_tradetime() const;
   void clear_tradetime();
   static const int kTradeTimeFieldNumber = 20;
   const ::std::string& tradetime() const;
@@ -5088,7 +4138,6 @@ class PBMsgTradeRtn : public ::google::protobuf::Message {
   void set_allocated_tradetime(::std::string* tradetime);
 
   // optional string TradeType = 21;
-  bool has_tradetype() const;
   void clear_tradetype();
   static const int kTradeTypeFieldNumber = 21;
   const ::std::string& tradetype() const;
@@ -5100,7 +4149,6 @@ class PBMsgTradeRtn : public ::google::protobuf::Message {
   void set_allocated_tradetype(::std::string* tradetype);
 
   // optional string PriceSource = 22;
-  bool has_pricesource() const;
   void clear_pricesource();
   static const int kPriceSourceFieldNumber = 22;
   const ::std::string& pricesource() const;
@@ -5112,7 +4160,6 @@ class PBMsgTradeRtn : public ::google::protobuf::Message {
   void set_allocated_pricesource(::std::string* pricesource);
 
   // optional string TraderID = 23;
-  bool has_traderid() const;
   void clear_traderid();
   static const int kTraderIDFieldNumber = 23;
   const ::std::string& traderid() const;
@@ -5124,7 +4171,6 @@ class PBMsgTradeRtn : public ::google::protobuf::Message {
   void set_allocated_traderid(::std::string* traderid);
 
   // optional string OrderLocalID = 24;
-  bool has_orderlocalid() const;
   void clear_orderlocalid();
   static const int kOrderLocalIDFieldNumber = 24;
   const ::std::string& orderlocalid() const;
@@ -5136,7 +4182,6 @@ class PBMsgTradeRtn : public ::google::protobuf::Message {
   void set_allocated_orderlocalid(::std::string* orderlocalid);
 
   // optional string ClearingPartID = 25;
-  bool has_clearingpartid() const;
   void clear_clearingpartid();
   static const int kClearingPartIDFieldNumber = 25;
   const ::std::string& clearingpartid() const;
@@ -5148,7 +4193,6 @@ class PBMsgTradeRtn : public ::google::protobuf::Message {
   void set_allocated_clearingpartid(::std::string* clearingpartid);
 
   // optional string BusinessUnit = 26;
-  bool has_businessunit() const;
   void clear_businessunit();
   static const int kBusinessUnitFieldNumber = 26;
   const ::std::string& businessunit() const;
@@ -5160,14 +4204,12 @@ class PBMsgTradeRtn : public ::google::protobuf::Message {
   void set_allocated_businessunit(::std::string* businessunit);
 
   // optional int32 SequenceNo = 27;
-  bool has_sequenceno() const;
   void clear_sequenceno();
   static const int kSequenceNoFieldNumber = 27;
   ::google::protobuf::int32 sequenceno() const;
   void set_sequenceno(::google::protobuf::int32 value);
 
   // optional string TradingDay = 28;
-  bool has_tradingday() const;
   void clear_tradingday();
   static const int kTradingDayFieldNumber = 28;
   const ::std::string& tradingday() const;
@@ -5179,21 +4221,18 @@ class PBMsgTradeRtn : public ::google::protobuf::Message {
   void set_allocated_tradingday(::std::string* tradingday);
 
   // optional int32 SettlementID = 29;
-  bool has_settlementid() const;
   void clear_settlementid();
   static const int kSettlementIDFieldNumber = 29;
   ::google::protobuf::int32 settlementid() const;
   void set_settlementid(::google::protobuf::int32 value);
 
   // optional int32 BrokerOrderSeq = 30;
-  bool has_brokerorderseq() const;
   void clear_brokerorderseq();
   static const int kBrokerOrderSeqFieldNumber = 30;
   ::google::protobuf::int32 brokerorderseq() const;
   void set_brokerorderseq(::google::protobuf::int32 value);
 
   // optional string TradeSource = 31;
-  bool has_tradesource() const;
   void clear_tradesource();
   static const int kTradeSourceFieldNumber = 31;
   const ::std::string& tradesource() const;
@@ -5206,72 +4245,9 @@ class PBMsgTradeRtn : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:PBMsgTrader.PBMsgTradeRtn)
  private:
-  inline void set_has_eof();
-  inline void clear_has_eof();
-  inline void set_has_brokerid();
-  inline void clear_has_brokerid();
-  inline void set_has_investorid();
-  inline void clear_has_investorid();
-  inline void set_has_instrumentid();
-  inline void clear_has_instrumentid();
-  inline void set_has_orderref();
-  inline void clear_has_orderref();
-  inline void set_has_userid();
-  inline void clear_has_userid();
-  inline void set_has_exchangeid();
-  inline void clear_has_exchangeid();
-  inline void set_has_tradeid();
-  inline void clear_has_tradeid();
-  inline void set_has_direction();
-  inline void clear_has_direction();
-  inline void set_has_ordersysid();
-  inline void clear_has_ordersysid();
-  inline void set_has_participantid();
-  inline void clear_has_participantid();
-  inline void set_has_clientid();
-  inline void clear_has_clientid();
-  inline void set_has_tradingrole();
-  inline void clear_has_tradingrole();
-  inline void set_has_exchangeinstid();
-  inline void clear_has_exchangeinstid();
-  inline void set_has_offsetflag();
-  inline void clear_has_offsetflag();
-  inline void set_has_hedgeflag();
-  inline void clear_has_hedgeflag();
-  inline void set_has_price();
-  inline void clear_has_price();
-  inline void set_has_volume();
-  inline void clear_has_volume();
-  inline void set_has_tradedate();
-  inline void clear_has_tradedate();
-  inline void set_has_tradetime();
-  inline void clear_has_tradetime();
-  inline void set_has_tradetype();
-  inline void clear_has_tradetype();
-  inline void set_has_pricesource();
-  inline void clear_has_pricesource();
-  inline void set_has_traderid();
-  inline void clear_has_traderid();
-  inline void set_has_orderlocalid();
-  inline void clear_has_orderlocalid();
-  inline void set_has_clearingpartid();
-  inline void clear_has_clearingpartid();
-  inline void set_has_businessunit();
-  inline void clear_has_businessunit();
-  inline void set_has_sequenceno();
-  inline void clear_has_sequenceno();
-  inline void set_has_tradingday();
-  inline void clear_has_tradingday();
-  inline void set_has_settlementid();
-  inline void clear_has_settlementid();
-  inline void set_has_brokerorderseq();
-  inline void clear_has_brokerorderseq();
-  inline void set_has_tradesource();
-  inline void clear_has_tradesource();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr brokerid_;
   ::google::protobuf::internal::ArenaStringPtr investorid_;
   ::google::protobuf::internal::ArenaStringPtr instrumentid_;
@@ -5303,6 +4279,7 @@ class PBMsgTradeRtn : public ::google::protobuf::Message {
   ::google::protobuf::int32 settlementid_;
   ::google::protobuf::internal::ArenaStringPtr tradesource_;
   ::google::protobuf::int32 brokerorderseq_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_PBMsgTrader_2eproto();
   friend void protobuf_AssignDesc_PBMsgTrader_2eproto();
   friend void protobuf_ShutdownFile_PBMsgTrader_2eproto();
@@ -5322,14 +4299,6 @@ class PBMsgSettlementInfoConfirm : public ::google::protobuf::Message {
   inline PBMsgSettlementInfoConfirm& operator=(const PBMsgSettlementInfoConfirm& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -5377,7 +4346,6 @@ class PBMsgSettlementInfoConfirm : public ::google::protobuf::Message {
   // accessors -------------------------------------------------------
 
   // optional string BrokerID = 2;
-  bool has_brokerid() const;
   void clear_brokerid();
   static const int kBrokerIDFieldNumber = 2;
   const ::std::string& brokerid() const;
@@ -5389,7 +4357,6 @@ class PBMsgSettlementInfoConfirm : public ::google::protobuf::Message {
   void set_allocated_brokerid(::std::string* brokerid);
 
   // optional string InvestorID = 3;
-  bool has_investorid() const;
   void clear_investorid();
   static const int kInvestorIDFieldNumber = 3;
   const ::std::string& investorid() const;
@@ -5401,7 +4368,6 @@ class PBMsgSettlementInfoConfirm : public ::google::protobuf::Message {
   void set_allocated_investorid(::std::string* investorid);
 
   // optional string ConfirmDate = 4;
-  bool has_confirmdate() const;
   void clear_confirmdate();
   static const int kConfirmDateFieldNumber = 4;
   const ::std::string& confirmdate() const;
@@ -5413,7 +4379,6 @@ class PBMsgSettlementInfoConfirm : public ::google::protobuf::Message {
   void set_allocated_confirmdate(::std::string* confirmdate);
 
   // optional string ConfirmTime = 5;
-  bool has_confirmtime() const;
   void clear_confirmtime();
   static const int kConfirmTimeFieldNumber = 5;
   const ::std::string& confirmtime() const;
@@ -5426,22 +4391,14 @@ class PBMsgSettlementInfoConfirm : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:PBMsgTrader.PBMsgSettlementInfoConfirm)
  private:
-  inline void set_has_brokerid();
-  inline void clear_has_brokerid();
-  inline void set_has_investorid();
-  inline void clear_has_investorid();
-  inline void set_has_confirmdate();
-  inline void clear_has_confirmdate();
-  inline void set_has_confirmtime();
-  inline void clear_has_confirmtime();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr brokerid_;
   ::google::protobuf::internal::ArenaStringPtr investorid_;
   ::google::protobuf::internal::ArenaStringPtr confirmdate_;
   ::google::protobuf::internal::ArenaStringPtr confirmtime_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_PBMsgTrader_2eproto();
   friend void protobuf_AssignDesc_PBMsgTrader_2eproto();
   friend void protobuf_ShutdownFile_PBMsgTrader_2eproto();
@@ -5461,14 +4418,6 @@ class PBMsgReqConnect : public ::google::protobuf::Message {
   inline PBMsgReqConnect& operator=(const PBMsgReqConnect& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -5516,7 +4465,6 @@ class PBMsgReqConnect : public ::google::protobuf::Message {
   // accessors -------------------------------------------------------
 
   // optional string BrokerID = 2;
-  bool has_brokerid() const;
   void clear_brokerid();
   static const int kBrokerIDFieldNumber = 2;
   const ::std::string& brokerid() const;
@@ -5528,7 +4476,6 @@ class PBMsgReqConnect : public ::google::protobuf::Message {
   void set_allocated_brokerid(::std::string* brokerid);
 
   // optional string InvestorID = 3;
-  bool has_investorid() const;
   void clear_investorid();
   static const int kInvestorIDFieldNumber = 3;
   const ::std::string& investorid() const;
@@ -5540,7 +4487,6 @@ class PBMsgReqConnect : public ::google::protobuf::Message {
   void set_allocated_investorid(::std::string* investorid);
 
   // optional string TradeFront = 4;
-  bool has_tradefront() const;
   void clear_tradefront();
   static const int kTradeFrontFieldNumber = 4;
   const ::std::string& tradefront() const;
@@ -5553,19 +4499,13 @@ class PBMsgReqConnect : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:PBMsgTrader.PBMsgReqConnect)
  private:
-  inline void set_has_brokerid();
-  inline void clear_has_brokerid();
-  inline void set_has_investorid();
-  inline void clear_has_investorid();
-  inline void set_has_tradefront();
-  inline void clear_has_tradefront();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr brokerid_;
   ::google::protobuf::internal::ArenaStringPtr investorid_;
   ::google::protobuf::internal::ArenaStringPtr tradefront_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_PBMsgTrader_2eproto();
   friend void protobuf_AssignDesc_PBMsgTrader_2eproto();
   friend void protobuf_ShutdownFile_PBMsgTrader_2eproto();
@@ -5585,14 +4525,6 @@ class PBMsgRspConnect : public ::google::protobuf::Message {
   inline PBMsgRspConnect& operator=(const PBMsgRspConnect& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -5640,7 +4572,6 @@ class PBMsgRspConnect : public ::google::protobuf::Message {
   // accessors -------------------------------------------------------
 
   // optional string BrokerID = 2;
-  bool has_brokerid() const;
   void clear_brokerid();
   static const int kBrokerIDFieldNumber = 2;
   const ::std::string& brokerid() const;
@@ -5652,7 +4583,6 @@ class PBMsgRspConnect : public ::google::protobuf::Message {
   void set_allocated_brokerid(::std::string* brokerid);
 
   // optional string InvestorID = 3;
-  bool has_investorid() const;
   void clear_investorid();
   static const int kInvestorIDFieldNumber = 3;
   const ::std::string& investorid() const;
@@ -5664,7 +4594,6 @@ class PBMsgRspConnect : public ::google::protobuf::Message {
   void set_allocated_investorid(::std::string* investorid);
 
   // optional string TradeFront = 4;
-  bool has_tradefront() const;
   void clear_tradefront();
   static const int kTradeFrontFieldNumber = 4;
   const ::std::string& tradefront() const;
@@ -5676,7 +4605,6 @@ class PBMsgRspConnect : public ::google::protobuf::Message {
   void set_allocated_tradefront(::std::string* tradefront);
 
   // optional string ReqURI = 5;
-  bool has_requri() const;
   void clear_requri();
   static const int kReqURIFieldNumber = 5;
   const ::std::string& requri() const;
@@ -5688,7 +4616,6 @@ class PBMsgRspConnect : public ::google::protobuf::Message {
   void set_allocated_requri(::std::string* requri);
 
   // optional string RspURI = 6;
-  bool has_rspuri() const;
   void clear_rspuri();
   static const int kRspURIFieldNumber = 6;
   const ::std::string& rspuri() const;
@@ -5701,25 +4628,15 @@ class PBMsgRspConnect : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:PBMsgTrader.PBMsgRspConnect)
  private:
-  inline void set_has_brokerid();
-  inline void clear_has_brokerid();
-  inline void set_has_investorid();
-  inline void clear_has_investorid();
-  inline void set_has_tradefront();
-  inline void clear_has_tradefront();
-  inline void set_has_requri();
-  inline void clear_has_requri();
-  inline void set_has_rspuri();
-  inline void clear_has_rspuri();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr brokerid_;
   ::google::protobuf::internal::ArenaStringPtr investorid_;
   ::google::protobuf::internal::ArenaStringPtr tradefront_;
   ::google::protobuf::internal::ArenaStringPtr requri_;
   ::google::protobuf::internal::ArenaStringPtr rspuri_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_PBMsgTrader_2eproto();
   friend void protobuf_AssignDesc_PBMsgTrader_2eproto();
   friend void protobuf_ShutdownFile_PBMsgTrader_2eproto();
@@ -5736,77 +4653,57 @@ class PBMsgRspConnect : public ::google::protobuf::Message {
 // PBMsgError
 
 // optional int32 ErrorID = 2;
-inline bool PBMsgError::has_errorid() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBMsgError::set_has_errorid() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBMsgError::clear_has_errorid() {
-  _has_bits_[0] &= ~0x00000001u;
-}
 inline void PBMsgError::clear_errorid() {
   errorid_ = 0;
-  clear_has_errorid();
 }
 inline ::google::protobuf::int32 PBMsgError::errorid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgError.ErrorID)
   return errorid_;
 }
 inline void PBMsgError::set_errorid(::google::protobuf::int32 value) {
-  set_has_errorid();
+  
   errorid_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgError.ErrorID)
 }
 
 // optional bytes ErrorMsg = 3;
-inline bool PBMsgError::has_errormsg() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBMsgError::set_has_errormsg() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBMsgError::clear_has_errormsg() {
-  _has_bits_[0] &= ~0x00000002u;
-}
 inline void PBMsgError::clear_errormsg() {
   errormsg_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_errormsg();
 }
 inline const ::std::string& PBMsgError::errormsg() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgError.ErrorMsg)
   return errormsg_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgError::set_errormsg(const ::std::string& value) {
-  set_has_errormsg();
+  
   errormsg_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgError.ErrorMsg)
 }
 inline void PBMsgError::set_errormsg(const char* value) {
-  set_has_errormsg();
+  
   errormsg_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgError.ErrorMsg)
 }
 inline void PBMsgError::set_errormsg(const void* value, size_t size) {
-  set_has_errormsg();
+  
   errormsg_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgError.ErrorMsg)
 }
 inline ::std::string* PBMsgError::mutable_errormsg() {
-  set_has_errormsg();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgError.ErrorMsg)
   return errormsg_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgError::release_errormsg() {
-  clear_has_errormsg();
+  
   return errormsg_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgError::set_allocated_errormsg(::std::string* errormsg) {
   if (errormsg != NULL) {
-    set_has_errormsg();
+    
   } else {
-    clear_has_errormsg();
+    
   }
   errormsg_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), errormsg);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgError.ErrorMsg)
@@ -5817,530 +4714,430 @@ inline void PBMsgError::set_allocated_errormsg(::std::string* errormsg) {
 // PBMsgLoginReq
 
 // optional string TradingDay = 2;
-inline bool PBMsgLoginReq::has_tradingday() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBMsgLoginReq::set_has_tradingday() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBMsgLoginReq::clear_has_tradingday() {
-  _has_bits_[0] &= ~0x00000001u;
-}
 inline void PBMsgLoginReq::clear_tradingday() {
   tradingday_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_tradingday();
 }
 inline const ::std::string& PBMsgLoginReq::tradingday() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgLoginReq.TradingDay)
   return tradingday_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginReq::set_tradingday(const ::std::string& value) {
-  set_has_tradingday();
+  
   tradingday_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgLoginReq.TradingDay)
 }
 inline void PBMsgLoginReq::set_tradingday(const char* value) {
-  set_has_tradingday();
+  
   tradingday_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgLoginReq.TradingDay)
 }
 inline void PBMsgLoginReq::set_tradingday(const char* value, size_t size) {
-  set_has_tradingday();
+  
   tradingday_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgLoginReq.TradingDay)
 }
 inline ::std::string* PBMsgLoginReq::mutable_tradingday() {
-  set_has_tradingday();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgLoginReq.TradingDay)
   return tradingday_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgLoginReq::release_tradingday() {
-  clear_has_tradingday();
+  
   return tradingday_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginReq::set_allocated_tradingday(::std::string* tradingday) {
   if (tradingday != NULL) {
-    set_has_tradingday();
+    
   } else {
-    clear_has_tradingday();
+    
   }
   tradingday_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), tradingday);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgLoginReq.TradingDay)
 }
 
 // optional string BrokerID = 3;
-inline bool PBMsgLoginReq::has_brokerid() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBMsgLoginReq::set_has_brokerid() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBMsgLoginReq::clear_has_brokerid() {
-  _has_bits_[0] &= ~0x00000002u;
-}
 inline void PBMsgLoginReq::clear_brokerid() {
   brokerid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_brokerid();
 }
 inline const ::std::string& PBMsgLoginReq::brokerid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgLoginReq.BrokerID)
   return brokerid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginReq::set_brokerid(const ::std::string& value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgLoginReq.BrokerID)
 }
 inline void PBMsgLoginReq::set_brokerid(const char* value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgLoginReq.BrokerID)
 }
 inline void PBMsgLoginReq::set_brokerid(const char* value, size_t size) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgLoginReq.BrokerID)
 }
 inline ::std::string* PBMsgLoginReq::mutable_brokerid() {
-  set_has_brokerid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgLoginReq.BrokerID)
   return brokerid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgLoginReq::release_brokerid() {
-  clear_has_brokerid();
+  
   return brokerid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginReq::set_allocated_brokerid(::std::string* brokerid) {
   if (brokerid != NULL) {
-    set_has_brokerid();
+    
   } else {
-    clear_has_brokerid();
+    
   }
   brokerid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), brokerid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgLoginReq.BrokerID)
 }
 
 // optional string UserID = 4;
-inline bool PBMsgLoginReq::has_userid() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBMsgLoginReq::set_has_userid() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBMsgLoginReq::clear_has_userid() {
-  _has_bits_[0] &= ~0x00000004u;
-}
 inline void PBMsgLoginReq::clear_userid() {
   userid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_userid();
 }
 inline const ::std::string& PBMsgLoginReq::userid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgLoginReq.UserID)
   return userid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginReq::set_userid(const ::std::string& value) {
-  set_has_userid();
+  
   userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgLoginReq.UserID)
 }
 inline void PBMsgLoginReq::set_userid(const char* value) {
-  set_has_userid();
+  
   userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgLoginReq.UserID)
 }
 inline void PBMsgLoginReq::set_userid(const char* value, size_t size) {
-  set_has_userid();
+  
   userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgLoginReq.UserID)
 }
 inline ::std::string* PBMsgLoginReq::mutable_userid() {
-  set_has_userid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgLoginReq.UserID)
   return userid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgLoginReq::release_userid() {
-  clear_has_userid();
+  
   return userid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginReq::set_allocated_userid(::std::string* userid) {
   if (userid != NULL) {
-    set_has_userid();
+    
   } else {
-    clear_has_userid();
+    
   }
   userid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), userid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgLoginReq.UserID)
 }
 
 // optional string Password = 5;
-inline bool PBMsgLoginReq::has_password() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void PBMsgLoginReq::set_has_password() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void PBMsgLoginReq::clear_has_password() {
-  _has_bits_[0] &= ~0x00000008u;
-}
 inline void PBMsgLoginReq::clear_password() {
   password_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_password();
 }
 inline const ::std::string& PBMsgLoginReq::password() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgLoginReq.Password)
   return password_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginReq::set_password(const ::std::string& value) {
-  set_has_password();
+  
   password_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgLoginReq.Password)
 }
 inline void PBMsgLoginReq::set_password(const char* value) {
-  set_has_password();
+  
   password_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgLoginReq.Password)
 }
 inline void PBMsgLoginReq::set_password(const char* value, size_t size) {
-  set_has_password();
+  
   password_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgLoginReq.Password)
 }
 inline ::std::string* PBMsgLoginReq::mutable_password() {
-  set_has_password();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgLoginReq.Password)
   return password_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgLoginReq::release_password() {
-  clear_has_password();
+  
   return password_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginReq::set_allocated_password(::std::string* password) {
   if (password != NULL) {
-    set_has_password();
+    
   } else {
-    clear_has_password();
+    
   }
   password_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), password);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgLoginReq.Password)
 }
 
 // optional string UserProductInfo = 6;
-inline bool PBMsgLoginReq::has_userproductinfo() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void PBMsgLoginReq::set_has_userproductinfo() {
-  _has_bits_[0] |= 0x00000010u;
-}
-inline void PBMsgLoginReq::clear_has_userproductinfo() {
-  _has_bits_[0] &= ~0x00000010u;
-}
 inline void PBMsgLoginReq::clear_userproductinfo() {
   userproductinfo_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_userproductinfo();
 }
 inline const ::std::string& PBMsgLoginReq::userproductinfo() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgLoginReq.UserProductInfo)
   return userproductinfo_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginReq::set_userproductinfo(const ::std::string& value) {
-  set_has_userproductinfo();
+  
   userproductinfo_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgLoginReq.UserProductInfo)
 }
 inline void PBMsgLoginReq::set_userproductinfo(const char* value) {
-  set_has_userproductinfo();
+  
   userproductinfo_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgLoginReq.UserProductInfo)
 }
 inline void PBMsgLoginReq::set_userproductinfo(const char* value, size_t size) {
-  set_has_userproductinfo();
+  
   userproductinfo_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgLoginReq.UserProductInfo)
 }
 inline ::std::string* PBMsgLoginReq::mutable_userproductinfo() {
-  set_has_userproductinfo();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgLoginReq.UserProductInfo)
   return userproductinfo_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgLoginReq::release_userproductinfo() {
-  clear_has_userproductinfo();
+  
   return userproductinfo_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginReq::set_allocated_userproductinfo(::std::string* userproductinfo) {
   if (userproductinfo != NULL) {
-    set_has_userproductinfo();
+    
   } else {
-    clear_has_userproductinfo();
+    
   }
   userproductinfo_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), userproductinfo);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgLoginReq.UserProductInfo)
 }
 
 // optional string InterfaceProductInfo = 7;
-inline bool PBMsgLoginReq::has_interfaceproductinfo() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
-}
-inline void PBMsgLoginReq::set_has_interfaceproductinfo() {
-  _has_bits_[0] |= 0x00000020u;
-}
-inline void PBMsgLoginReq::clear_has_interfaceproductinfo() {
-  _has_bits_[0] &= ~0x00000020u;
-}
 inline void PBMsgLoginReq::clear_interfaceproductinfo() {
   interfaceproductinfo_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_interfaceproductinfo();
 }
 inline const ::std::string& PBMsgLoginReq::interfaceproductinfo() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgLoginReq.InterfaceProductInfo)
   return interfaceproductinfo_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginReq::set_interfaceproductinfo(const ::std::string& value) {
-  set_has_interfaceproductinfo();
+  
   interfaceproductinfo_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgLoginReq.InterfaceProductInfo)
 }
 inline void PBMsgLoginReq::set_interfaceproductinfo(const char* value) {
-  set_has_interfaceproductinfo();
+  
   interfaceproductinfo_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgLoginReq.InterfaceProductInfo)
 }
 inline void PBMsgLoginReq::set_interfaceproductinfo(const char* value, size_t size) {
-  set_has_interfaceproductinfo();
+  
   interfaceproductinfo_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgLoginReq.InterfaceProductInfo)
 }
 inline ::std::string* PBMsgLoginReq::mutable_interfaceproductinfo() {
-  set_has_interfaceproductinfo();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgLoginReq.InterfaceProductInfo)
   return interfaceproductinfo_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgLoginReq::release_interfaceproductinfo() {
-  clear_has_interfaceproductinfo();
+  
   return interfaceproductinfo_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginReq::set_allocated_interfaceproductinfo(::std::string* interfaceproductinfo) {
   if (interfaceproductinfo != NULL) {
-    set_has_interfaceproductinfo();
+    
   } else {
-    clear_has_interfaceproductinfo();
+    
   }
   interfaceproductinfo_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), interfaceproductinfo);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgLoginReq.InterfaceProductInfo)
 }
 
 // optional string ProtocolInfo = 8;
-inline bool PBMsgLoginReq::has_protocolinfo() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
-}
-inline void PBMsgLoginReq::set_has_protocolinfo() {
-  _has_bits_[0] |= 0x00000040u;
-}
-inline void PBMsgLoginReq::clear_has_protocolinfo() {
-  _has_bits_[0] &= ~0x00000040u;
-}
 inline void PBMsgLoginReq::clear_protocolinfo() {
   protocolinfo_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_protocolinfo();
 }
 inline const ::std::string& PBMsgLoginReq::protocolinfo() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgLoginReq.ProtocolInfo)
   return protocolinfo_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginReq::set_protocolinfo(const ::std::string& value) {
-  set_has_protocolinfo();
+  
   protocolinfo_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgLoginReq.ProtocolInfo)
 }
 inline void PBMsgLoginReq::set_protocolinfo(const char* value) {
-  set_has_protocolinfo();
+  
   protocolinfo_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgLoginReq.ProtocolInfo)
 }
 inline void PBMsgLoginReq::set_protocolinfo(const char* value, size_t size) {
-  set_has_protocolinfo();
+  
   protocolinfo_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgLoginReq.ProtocolInfo)
 }
 inline ::std::string* PBMsgLoginReq::mutable_protocolinfo() {
-  set_has_protocolinfo();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgLoginReq.ProtocolInfo)
   return protocolinfo_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgLoginReq::release_protocolinfo() {
-  clear_has_protocolinfo();
+  
   return protocolinfo_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginReq::set_allocated_protocolinfo(::std::string* protocolinfo) {
   if (protocolinfo != NULL) {
-    set_has_protocolinfo();
+    
   } else {
-    clear_has_protocolinfo();
+    
   }
   protocolinfo_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), protocolinfo);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgLoginReq.ProtocolInfo)
 }
 
 // optional string MacAddress = 9;
-inline bool PBMsgLoginReq::has_macaddress() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
-}
-inline void PBMsgLoginReq::set_has_macaddress() {
-  _has_bits_[0] |= 0x00000080u;
-}
-inline void PBMsgLoginReq::clear_has_macaddress() {
-  _has_bits_[0] &= ~0x00000080u;
-}
 inline void PBMsgLoginReq::clear_macaddress() {
   macaddress_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_macaddress();
 }
 inline const ::std::string& PBMsgLoginReq::macaddress() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgLoginReq.MacAddress)
   return macaddress_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginReq::set_macaddress(const ::std::string& value) {
-  set_has_macaddress();
+  
   macaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgLoginReq.MacAddress)
 }
 inline void PBMsgLoginReq::set_macaddress(const char* value) {
-  set_has_macaddress();
+  
   macaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgLoginReq.MacAddress)
 }
 inline void PBMsgLoginReq::set_macaddress(const char* value, size_t size) {
-  set_has_macaddress();
+  
   macaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgLoginReq.MacAddress)
 }
 inline ::std::string* PBMsgLoginReq::mutable_macaddress() {
-  set_has_macaddress();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgLoginReq.MacAddress)
   return macaddress_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgLoginReq::release_macaddress() {
-  clear_has_macaddress();
+  
   return macaddress_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginReq::set_allocated_macaddress(::std::string* macaddress) {
   if (macaddress != NULL) {
-    set_has_macaddress();
+    
   } else {
-    clear_has_macaddress();
+    
   }
   macaddress_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), macaddress);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgLoginReq.MacAddress)
 }
 
 // optional string OneTimePassword = 10;
-inline bool PBMsgLoginReq::has_onetimepassword() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
-}
-inline void PBMsgLoginReq::set_has_onetimepassword() {
-  _has_bits_[0] |= 0x00000100u;
-}
-inline void PBMsgLoginReq::clear_has_onetimepassword() {
-  _has_bits_[0] &= ~0x00000100u;
-}
 inline void PBMsgLoginReq::clear_onetimepassword() {
   onetimepassword_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_onetimepassword();
 }
 inline const ::std::string& PBMsgLoginReq::onetimepassword() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgLoginReq.OneTimePassword)
   return onetimepassword_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginReq::set_onetimepassword(const ::std::string& value) {
-  set_has_onetimepassword();
+  
   onetimepassword_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgLoginReq.OneTimePassword)
 }
 inline void PBMsgLoginReq::set_onetimepassword(const char* value) {
-  set_has_onetimepassword();
+  
   onetimepassword_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgLoginReq.OneTimePassword)
 }
 inline void PBMsgLoginReq::set_onetimepassword(const char* value, size_t size) {
-  set_has_onetimepassword();
+  
   onetimepassword_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgLoginReq.OneTimePassword)
 }
 inline ::std::string* PBMsgLoginReq::mutable_onetimepassword() {
-  set_has_onetimepassword();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgLoginReq.OneTimePassword)
   return onetimepassword_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgLoginReq::release_onetimepassword() {
-  clear_has_onetimepassword();
+  
   return onetimepassword_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginReq::set_allocated_onetimepassword(::std::string* onetimepassword) {
   if (onetimepassword != NULL) {
-    set_has_onetimepassword();
+    
   } else {
-    clear_has_onetimepassword();
+    
   }
   onetimepassword_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), onetimepassword);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgLoginReq.OneTimePassword)
 }
 
 // optional string ClientIPAddress = 11;
-inline bool PBMsgLoginReq::has_clientipaddress() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
-}
-inline void PBMsgLoginReq::set_has_clientipaddress() {
-  _has_bits_[0] |= 0x00000200u;
-}
-inline void PBMsgLoginReq::clear_has_clientipaddress() {
-  _has_bits_[0] &= ~0x00000200u;
-}
 inline void PBMsgLoginReq::clear_clientipaddress() {
   clientipaddress_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_clientipaddress();
 }
 inline const ::std::string& PBMsgLoginReq::clientipaddress() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgLoginReq.ClientIPAddress)
   return clientipaddress_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginReq::set_clientipaddress(const ::std::string& value) {
-  set_has_clientipaddress();
+  
   clientipaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgLoginReq.ClientIPAddress)
 }
 inline void PBMsgLoginReq::set_clientipaddress(const char* value) {
-  set_has_clientipaddress();
+  
   clientipaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgLoginReq.ClientIPAddress)
 }
 inline void PBMsgLoginReq::set_clientipaddress(const char* value, size_t size) {
-  set_has_clientipaddress();
+  
   clientipaddress_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgLoginReq.ClientIPAddress)
 }
 inline ::std::string* PBMsgLoginReq::mutable_clientipaddress() {
-  set_has_clientipaddress();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgLoginReq.ClientIPAddress)
   return clientipaddress_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgLoginReq::release_clientipaddress() {
-  clear_has_clientipaddress();
+  
   return clientipaddress_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginReq::set_allocated_clientipaddress(::std::string* clientipaddress) {
   if (clientipaddress != NULL) {
-    set_has_clientipaddress();
+    
   } else {
-    clear_has_clientipaddress();
+    
   }
   clientipaddress_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), clientipaddress);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgLoginReq.ClientIPAddress)
@@ -6351,578 +5148,458 @@ inline void PBMsgLoginReq::set_allocated_clientipaddress(::std::string* clientip
 // PBMsgLoginRsp
 
 // optional string TradingDay = 2;
-inline bool PBMsgLoginRsp::has_tradingday() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBMsgLoginRsp::set_has_tradingday() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBMsgLoginRsp::clear_has_tradingday() {
-  _has_bits_[0] &= ~0x00000001u;
-}
 inline void PBMsgLoginRsp::clear_tradingday() {
   tradingday_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_tradingday();
 }
 inline const ::std::string& PBMsgLoginRsp::tradingday() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgLoginRsp.TradingDay)
   return tradingday_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginRsp::set_tradingday(const ::std::string& value) {
-  set_has_tradingday();
+  
   tradingday_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgLoginRsp.TradingDay)
 }
 inline void PBMsgLoginRsp::set_tradingday(const char* value) {
-  set_has_tradingday();
+  
   tradingday_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgLoginRsp.TradingDay)
 }
 inline void PBMsgLoginRsp::set_tradingday(const char* value, size_t size) {
-  set_has_tradingday();
+  
   tradingday_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgLoginRsp.TradingDay)
 }
 inline ::std::string* PBMsgLoginRsp::mutable_tradingday() {
-  set_has_tradingday();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgLoginRsp.TradingDay)
   return tradingday_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgLoginRsp::release_tradingday() {
-  clear_has_tradingday();
+  
   return tradingday_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginRsp::set_allocated_tradingday(::std::string* tradingday) {
   if (tradingday != NULL) {
-    set_has_tradingday();
+    
   } else {
-    clear_has_tradingday();
+    
   }
   tradingday_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), tradingday);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgLoginRsp.TradingDay)
 }
 
 // optional string LoginTime = 3;
-inline bool PBMsgLoginRsp::has_logintime() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBMsgLoginRsp::set_has_logintime() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBMsgLoginRsp::clear_has_logintime() {
-  _has_bits_[0] &= ~0x00000002u;
-}
 inline void PBMsgLoginRsp::clear_logintime() {
   logintime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_logintime();
 }
 inline const ::std::string& PBMsgLoginRsp::logintime() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgLoginRsp.LoginTime)
   return logintime_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginRsp::set_logintime(const ::std::string& value) {
-  set_has_logintime();
+  
   logintime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgLoginRsp.LoginTime)
 }
 inline void PBMsgLoginRsp::set_logintime(const char* value) {
-  set_has_logintime();
+  
   logintime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgLoginRsp.LoginTime)
 }
 inline void PBMsgLoginRsp::set_logintime(const char* value, size_t size) {
-  set_has_logintime();
+  
   logintime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgLoginRsp.LoginTime)
 }
 inline ::std::string* PBMsgLoginRsp::mutable_logintime() {
-  set_has_logintime();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgLoginRsp.LoginTime)
   return logintime_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgLoginRsp::release_logintime() {
-  clear_has_logintime();
+  
   return logintime_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginRsp::set_allocated_logintime(::std::string* logintime) {
   if (logintime != NULL) {
-    set_has_logintime();
+    
   } else {
-    clear_has_logintime();
+    
   }
   logintime_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), logintime);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgLoginRsp.LoginTime)
 }
 
 // optional string BrokerID = 4;
-inline bool PBMsgLoginRsp::has_brokerid() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBMsgLoginRsp::set_has_brokerid() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBMsgLoginRsp::clear_has_brokerid() {
-  _has_bits_[0] &= ~0x00000004u;
-}
 inline void PBMsgLoginRsp::clear_brokerid() {
   brokerid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_brokerid();
 }
 inline const ::std::string& PBMsgLoginRsp::brokerid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgLoginRsp.BrokerID)
   return brokerid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginRsp::set_brokerid(const ::std::string& value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgLoginRsp.BrokerID)
 }
 inline void PBMsgLoginRsp::set_brokerid(const char* value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgLoginRsp.BrokerID)
 }
 inline void PBMsgLoginRsp::set_brokerid(const char* value, size_t size) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgLoginRsp.BrokerID)
 }
 inline ::std::string* PBMsgLoginRsp::mutable_brokerid() {
-  set_has_brokerid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgLoginRsp.BrokerID)
   return brokerid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgLoginRsp::release_brokerid() {
-  clear_has_brokerid();
+  
   return brokerid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginRsp::set_allocated_brokerid(::std::string* brokerid) {
   if (brokerid != NULL) {
-    set_has_brokerid();
+    
   } else {
-    clear_has_brokerid();
+    
   }
   brokerid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), brokerid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgLoginRsp.BrokerID)
 }
 
 // optional string UserID = 5;
-inline bool PBMsgLoginRsp::has_userid() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void PBMsgLoginRsp::set_has_userid() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void PBMsgLoginRsp::clear_has_userid() {
-  _has_bits_[0] &= ~0x00000008u;
-}
 inline void PBMsgLoginRsp::clear_userid() {
   userid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_userid();
 }
 inline const ::std::string& PBMsgLoginRsp::userid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgLoginRsp.UserID)
   return userid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginRsp::set_userid(const ::std::string& value) {
-  set_has_userid();
+  
   userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgLoginRsp.UserID)
 }
 inline void PBMsgLoginRsp::set_userid(const char* value) {
-  set_has_userid();
+  
   userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgLoginRsp.UserID)
 }
 inline void PBMsgLoginRsp::set_userid(const char* value, size_t size) {
-  set_has_userid();
+  
   userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgLoginRsp.UserID)
 }
 inline ::std::string* PBMsgLoginRsp::mutable_userid() {
-  set_has_userid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgLoginRsp.UserID)
   return userid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgLoginRsp::release_userid() {
-  clear_has_userid();
+  
   return userid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginRsp::set_allocated_userid(::std::string* userid) {
   if (userid != NULL) {
-    set_has_userid();
+    
   } else {
-    clear_has_userid();
+    
   }
   userid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), userid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgLoginRsp.UserID)
 }
 
 // optional string SystemName = 6;
-inline bool PBMsgLoginRsp::has_systemname() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void PBMsgLoginRsp::set_has_systemname() {
-  _has_bits_[0] |= 0x00000010u;
-}
-inline void PBMsgLoginRsp::clear_has_systemname() {
-  _has_bits_[0] &= ~0x00000010u;
-}
 inline void PBMsgLoginRsp::clear_systemname() {
   systemname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_systemname();
 }
 inline const ::std::string& PBMsgLoginRsp::systemname() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgLoginRsp.SystemName)
   return systemname_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginRsp::set_systemname(const ::std::string& value) {
-  set_has_systemname();
+  
   systemname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgLoginRsp.SystemName)
 }
 inline void PBMsgLoginRsp::set_systemname(const char* value) {
-  set_has_systemname();
+  
   systemname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgLoginRsp.SystemName)
 }
 inline void PBMsgLoginRsp::set_systemname(const char* value, size_t size) {
-  set_has_systemname();
+  
   systemname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgLoginRsp.SystemName)
 }
 inline ::std::string* PBMsgLoginRsp::mutable_systemname() {
-  set_has_systemname();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgLoginRsp.SystemName)
   return systemname_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgLoginRsp::release_systemname() {
-  clear_has_systemname();
+  
   return systemname_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginRsp::set_allocated_systemname(::std::string* systemname) {
   if (systemname != NULL) {
-    set_has_systemname();
+    
   } else {
-    clear_has_systemname();
+    
   }
   systemname_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), systemname);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgLoginRsp.SystemName)
 }
 
 // optional int32 FrontID = 7;
-inline bool PBMsgLoginRsp::has_frontid() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
-}
-inline void PBMsgLoginRsp::set_has_frontid() {
-  _has_bits_[0] |= 0x00000020u;
-}
-inline void PBMsgLoginRsp::clear_has_frontid() {
-  _has_bits_[0] &= ~0x00000020u;
-}
 inline void PBMsgLoginRsp::clear_frontid() {
   frontid_ = 0;
-  clear_has_frontid();
 }
 inline ::google::protobuf::int32 PBMsgLoginRsp::frontid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgLoginRsp.FrontID)
   return frontid_;
 }
 inline void PBMsgLoginRsp::set_frontid(::google::protobuf::int32 value) {
-  set_has_frontid();
+  
   frontid_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgLoginRsp.FrontID)
 }
 
 // optional int32 SessionID = 8;
-inline bool PBMsgLoginRsp::has_sessionid() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
-}
-inline void PBMsgLoginRsp::set_has_sessionid() {
-  _has_bits_[0] |= 0x00000040u;
-}
-inline void PBMsgLoginRsp::clear_has_sessionid() {
-  _has_bits_[0] &= ~0x00000040u;
-}
 inline void PBMsgLoginRsp::clear_sessionid() {
   sessionid_ = 0;
-  clear_has_sessionid();
 }
 inline ::google::protobuf::int32 PBMsgLoginRsp::sessionid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgLoginRsp.SessionID)
   return sessionid_;
 }
 inline void PBMsgLoginRsp::set_sessionid(::google::protobuf::int32 value) {
-  set_has_sessionid();
+  
   sessionid_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgLoginRsp.SessionID)
 }
 
 // optional string MaxOrderRef = 9;
-inline bool PBMsgLoginRsp::has_maxorderref() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
-}
-inline void PBMsgLoginRsp::set_has_maxorderref() {
-  _has_bits_[0] |= 0x00000080u;
-}
-inline void PBMsgLoginRsp::clear_has_maxorderref() {
-  _has_bits_[0] &= ~0x00000080u;
-}
 inline void PBMsgLoginRsp::clear_maxorderref() {
   maxorderref_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_maxorderref();
 }
 inline const ::std::string& PBMsgLoginRsp::maxorderref() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgLoginRsp.MaxOrderRef)
   return maxorderref_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginRsp::set_maxorderref(const ::std::string& value) {
-  set_has_maxorderref();
+  
   maxorderref_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgLoginRsp.MaxOrderRef)
 }
 inline void PBMsgLoginRsp::set_maxorderref(const char* value) {
-  set_has_maxorderref();
+  
   maxorderref_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgLoginRsp.MaxOrderRef)
 }
 inline void PBMsgLoginRsp::set_maxorderref(const char* value, size_t size) {
-  set_has_maxorderref();
+  
   maxorderref_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgLoginRsp.MaxOrderRef)
 }
 inline ::std::string* PBMsgLoginRsp::mutable_maxorderref() {
-  set_has_maxorderref();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgLoginRsp.MaxOrderRef)
   return maxorderref_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgLoginRsp::release_maxorderref() {
-  clear_has_maxorderref();
+  
   return maxorderref_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginRsp::set_allocated_maxorderref(::std::string* maxorderref) {
   if (maxorderref != NULL) {
-    set_has_maxorderref();
+    
   } else {
-    clear_has_maxorderref();
+    
   }
   maxorderref_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), maxorderref);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgLoginRsp.MaxOrderRef)
 }
 
 // optional string SHFETime = 10;
-inline bool PBMsgLoginRsp::has_shfetime() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
-}
-inline void PBMsgLoginRsp::set_has_shfetime() {
-  _has_bits_[0] |= 0x00000100u;
-}
-inline void PBMsgLoginRsp::clear_has_shfetime() {
-  _has_bits_[0] &= ~0x00000100u;
-}
 inline void PBMsgLoginRsp::clear_shfetime() {
   shfetime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_shfetime();
 }
 inline const ::std::string& PBMsgLoginRsp::shfetime() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgLoginRsp.SHFETime)
   return shfetime_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginRsp::set_shfetime(const ::std::string& value) {
-  set_has_shfetime();
+  
   shfetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgLoginRsp.SHFETime)
 }
 inline void PBMsgLoginRsp::set_shfetime(const char* value) {
-  set_has_shfetime();
+  
   shfetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgLoginRsp.SHFETime)
 }
 inline void PBMsgLoginRsp::set_shfetime(const char* value, size_t size) {
-  set_has_shfetime();
+  
   shfetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgLoginRsp.SHFETime)
 }
 inline ::std::string* PBMsgLoginRsp::mutable_shfetime() {
-  set_has_shfetime();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgLoginRsp.SHFETime)
   return shfetime_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgLoginRsp::release_shfetime() {
-  clear_has_shfetime();
+  
   return shfetime_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginRsp::set_allocated_shfetime(::std::string* shfetime) {
   if (shfetime != NULL) {
-    set_has_shfetime();
+    
   } else {
-    clear_has_shfetime();
+    
   }
   shfetime_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), shfetime);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgLoginRsp.SHFETime)
 }
 
 // optional string DCETime = 11;
-inline bool PBMsgLoginRsp::has_dcetime() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
-}
-inline void PBMsgLoginRsp::set_has_dcetime() {
-  _has_bits_[0] |= 0x00000200u;
-}
-inline void PBMsgLoginRsp::clear_has_dcetime() {
-  _has_bits_[0] &= ~0x00000200u;
-}
 inline void PBMsgLoginRsp::clear_dcetime() {
   dcetime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_dcetime();
 }
 inline const ::std::string& PBMsgLoginRsp::dcetime() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgLoginRsp.DCETime)
   return dcetime_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginRsp::set_dcetime(const ::std::string& value) {
-  set_has_dcetime();
+  
   dcetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgLoginRsp.DCETime)
 }
 inline void PBMsgLoginRsp::set_dcetime(const char* value) {
-  set_has_dcetime();
+  
   dcetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgLoginRsp.DCETime)
 }
 inline void PBMsgLoginRsp::set_dcetime(const char* value, size_t size) {
-  set_has_dcetime();
+  
   dcetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgLoginRsp.DCETime)
 }
 inline ::std::string* PBMsgLoginRsp::mutable_dcetime() {
-  set_has_dcetime();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgLoginRsp.DCETime)
   return dcetime_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgLoginRsp::release_dcetime() {
-  clear_has_dcetime();
+  
   return dcetime_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginRsp::set_allocated_dcetime(::std::string* dcetime) {
   if (dcetime != NULL) {
-    set_has_dcetime();
+    
   } else {
-    clear_has_dcetime();
+    
   }
   dcetime_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), dcetime);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgLoginRsp.DCETime)
 }
 
 // optional string CZCETime = 12;
-inline bool PBMsgLoginRsp::has_czcetime() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
-}
-inline void PBMsgLoginRsp::set_has_czcetime() {
-  _has_bits_[0] |= 0x00000400u;
-}
-inline void PBMsgLoginRsp::clear_has_czcetime() {
-  _has_bits_[0] &= ~0x00000400u;
-}
 inline void PBMsgLoginRsp::clear_czcetime() {
   czcetime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_czcetime();
 }
 inline const ::std::string& PBMsgLoginRsp::czcetime() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgLoginRsp.CZCETime)
   return czcetime_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginRsp::set_czcetime(const ::std::string& value) {
-  set_has_czcetime();
+  
   czcetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgLoginRsp.CZCETime)
 }
 inline void PBMsgLoginRsp::set_czcetime(const char* value) {
-  set_has_czcetime();
+  
   czcetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgLoginRsp.CZCETime)
 }
 inline void PBMsgLoginRsp::set_czcetime(const char* value, size_t size) {
-  set_has_czcetime();
+  
   czcetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgLoginRsp.CZCETime)
 }
 inline ::std::string* PBMsgLoginRsp::mutable_czcetime() {
-  set_has_czcetime();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgLoginRsp.CZCETime)
   return czcetime_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgLoginRsp::release_czcetime() {
-  clear_has_czcetime();
+  
   return czcetime_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginRsp::set_allocated_czcetime(::std::string* czcetime) {
   if (czcetime != NULL) {
-    set_has_czcetime();
+    
   } else {
-    clear_has_czcetime();
+    
   }
   czcetime_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), czcetime);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgLoginRsp.CZCETime)
 }
 
 // optional string FFEXTime = 13;
-inline bool PBMsgLoginRsp::has_ffextime() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
-}
-inline void PBMsgLoginRsp::set_has_ffextime() {
-  _has_bits_[0] |= 0x00000800u;
-}
-inline void PBMsgLoginRsp::clear_has_ffextime() {
-  _has_bits_[0] &= ~0x00000800u;
-}
 inline void PBMsgLoginRsp::clear_ffextime() {
   ffextime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_ffextime();
 }
 inline const ::std::string& PBMsgLoginRsp::ffextime() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgLoginRsp.FFEXTime)
   return ffextime_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginRsp::set_ffextime(const ::std::string& value) {
-  set_has_ffextime();
+  
   ffextime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgLoginRsp.FFEXTime)
 }
 inline void PBMsgLoginRsp::set_ffextime(const char* value) {
-  set_has_ffextime();
+  
   ffextime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgLoginRsp.FFEXTime)
 }
 inline void PBMsgLoginRsp::set_ffextime(const char* value, size_t size) {
-  set_has_ffextime();
+  
   ffextime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgLoginRsp.FFEXTime)
 }
 inline ::std::string* PBMsgLoginRsp::mutable_ffextime() {
-  set_has_ffextime();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgLoginRsp.FFEXTime)
   return ffextime_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgLoginRsp::release_ffextime() {
-  clear_has_ffextime();
+  
   return ffextime_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLoginRsp::set_allocated_ffextime(::std::string* ffextime) {
   if (ffextime != NULL) {
-    set_has_ffextime();
+    
   } else {
-    clear_has_ffextime();
+    
   }
   ffextime_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ffextime);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgLoginRsp.FFEXTime)
@@ -6933,106 +5610,86 @@ inline void PBMsgLoginRsp::set_allocated_ffextime(::std::string* ffextime) {
 // PBMsgLogout
 
 // optional string BrokerID = 2;
-inline bool PBMsgLogout::has_brokerid() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBMsgLogout::set_has_brokerid() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBMsgLogout::clear_has_brokerid() {
-  _has_bits_[0] &= ~0x00000001u;
-}
 inline void PBMsgLogout::clear_brokerid() {
   brokerid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_brokerid();
 }
 inline const ::std::string& PBMsgLogout::brokerid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgLogout.BrokerID)
   return brokerid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLogout::set_brokerid(const ::std::string& value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgLogout.BrokerID)
 }
 inline void PBMsgLogout::set_brokerid(const char* value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgLogout.BrokerID)
 }
 inline void PBMsgLogout::set_brokerid(const char* value, size_t size) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgLogout.BrokerID)
 }
 inline ::std::string* PBMsgLogout::mutable_brokerid() {
-  set_has_brokerid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgLogout.BrokerID)
   return brokerid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgLogout::release_brokerid() {
-  clear_has_brokerid();
+  
   return brokerid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLogout::set_allocated_brokerid(::std::string* brokerid) {
   if (brokerid != NULL) {
-    set_has_brokerid();
+    
   } else {
-    clear_has_brokerid();
+    
   }
   brokerid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), brokerid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgLogout.BrokerID)
 }
 
 // optional string UserID = 3;
-inline bool PBMsgLogout::has_userid() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBMsgLogout::set_has_userid() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBMsgLogout::clear_has_userid() {
-  _has_bits_[0] &= ~0x00000002u;
-}
 inline void PBMsgLogout::clear_userid() {
   userid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_userid();
 }
 inline const ::std::string& PBMsgLogout::userid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgLogout.UserID)
   return userid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLogout::set_userid(const ::std::string& value) {
-  set_has_userid();
+  
   userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgLogout.UserID)
 }
 inline void PBMsgLogout::set_userid(const char* value) {
-  set_has_userid();
+  
   userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgLogout.UserID)
 }
 inline void PBMsgLogout::set_userid(const char* value, size_t size) {
-  set_has_userid();
+  
   userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgLogout.UserID)
 }
 inline ::std::string* PBMsgLogout::mutable_userid() {
-  set_has_userid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgLogout.UserID)
   return userid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgLogout::release_userid() {
-  clear_has_userid();
+  
   return userid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgLogout::set_allocated_userid(::std::string* userid) {
   if (userid != NULL) {
-    set_has_userid();
+    
   } else {
-    clear_has_userid();
+    
   }
   userid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), userid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgLogout.UserID)
@@ -7043,53 +5700,43 @@ inline void PBMsgLogout::set_allocated_userid(::std::string* userid) {
 // PBMsgQueryReqMarketInfo
 
 // optional string ExchangeID = 2;
-inline bool PBMsgQueryReqMarketInfo::has_exchangeid() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBMsgQueryReqMarketInfo::set_has_exchangeid() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBMsgQueryReqMarketInfo::clear_has_exchangeid() {
-  _has_bits_[0] &= ~0x00000001u;
-}
 inline void PBMsgQueryReqMarketInfo::clear_exchangeid() {
   exchangeid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_exchangeid();
 }
 inline const ::std::string& PBMsgQueryReqMarketInfo::exchangeid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryReqMarketInfo.ExchangeID)
   return exchangeid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqMarketInfo::set_exchangeid(const ::std::string& value) {
-  set_has_exchangeid();
+  
   exchangeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryReqMarketInfo.ExchangeID)
 }
 inline void PBMsgQueryReqMarketInfo::set_exchangeid(const char* value) {
-  set_has_exchangeid();
+  
   exchangeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryReqMarketInfo.ExchangeID)
 }
 inline void PBMsgQueryReqMarketInfo::set_exchangeid(const char* value, size_t size) {
-  set_has_exchangeid();
+  
   exchangeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryReqMarketInfo.ExchangeID)
 }
 inline ::std::string* PBMsgQueryReqMarketInfo::mutable_exchangeid() {
-  set_has_exchangeid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryReqMarketInfo.ExchangeID)
   return exchangeid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryReqMarketInfo::release_exchangeid() {
-  clear_has_exchangeid();
+  
   return exchangeid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqMarketInfo::set_allocated_exchangeid(::std::string* exchangeid) {
   if (exchangeid != NULL) {
-    set_has_exchangeid();
+    
   } else {
-    clear_has_exchangeid();
+    
   }
   exchangeid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), exchangeid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryReqMarketInfo.ExchangeID)
@@ -7100,183 +5747,143 @@ inline void PBMsgQueryReqMarketInfo::set_allocated_exchangeid(::std::string* exc
 // PBMsgQueryRspMarketInfo
 
 // optional int32 EOF = 1;
-inline bool PBMsgQueryRspMarketInfo::has_eof() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBMsgQueryRspMarketInfo::set_has_eof() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBMsgQueryRspMarketInfo::clear_has_eof() {
-  _has_bits_[0] &= ~0x00000001u;
-}
 inline void PBMsgQueryRspMarketInfo::clear_eof() {
   eof_ = 0;
-  clear_has_eof();
 }
 inline ::google::protobuf::int32 PBMsgQueryRspMarketInfo::eof() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspMarketInfo.EOF)
   return eof_;
 }
 inline void PBMsgQueryRspMarketInfo::set_eof(::google::protobuf::int32 value) {
-  set_has_eof();
+  
   eof_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspMarketInfo.EOF)
 }
 
 // optional string ExchangeID = 2;
-inline bool PBMsgQueryRspMarketInfo::has_exchangeid() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBMsgQueryRspMarketInfo::set_has_exchangeid() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBMsgQueryRspMarketInfo::clear_has_exchangeid() {
-  _has_bits_[0] &= ~0x00000002u;
-}
 inline void PBMsgQueryRspMarketInfo::clear_exchangeid() {
   exchangeid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_exchangeid();
 }
 inline const ::std::string& PBMsgQueryRspMarketInfo::exchangeid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspMarketInfo.ExchangeID)
   return exchangeid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspMarketInfo::set_exchangeid(const ::std::string& value) {
-  set_has_exchangeid();
+  
   exchangeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspMarketInfo.ExchangeID)
 }
 inline void PBMsgQueryRspMarketInfo::set_exchangeid(const char* value) {
-  set_has_exchangeid();
+  
   exchangeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryRspMarketInfo.ExchangeID)
 }
 inline void PBMsgQueryRspMarketInfo::set_exchangeid(const char* value, size_t size) {
-  set_has_exchangeid();
+  
   exchangeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryRspMarketInfo.ExchangeID)
 }
 inline ::std::string* PBMsgQueryRspMarketInfo::mutable_exchangeid() {
-  set_has_exchangeid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryRspMarketInfo.ExchangeID)
   return exchangeid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryRspMarketInfo::release_exchangeid() {
-  clear_has_exchangeid();
+  
   return exchangeid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspMarketInfo::set_allocated_exchangeid(::std::string* exchangeid) {
   if (exchangeid != NULL) {
-    set_has_exchangeid();
+    
   } else {
-    clear_has_exchangeid();
+    
   }
   exchangeid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), exchangeid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryRspMarketInfo.ExchangeID)
 }
 
 // optional bytes ExchangeName = 3;
-inline bool PBMsgQueryRspMarketInfo::has_exchangename() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBMsgQueryRspMarketInfo::set_has_exchangename() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBMsgQueryRspMarketInfo::clear_has_exchangename() {
-  _has_bits_[0] &= ~0x00000004u;
-}
 inline void PBMsgQueryRspMarketInfo::clear_exchangename() {
   exchangename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_exchangename();
 }
 inline const ::std::string& PBMsgQueryRspMarketInfo::exchangename() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspMarketInfo.ExchangeName)
   return exchangename_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspMarketInfo::set_exchangename(const ::std::string& value) {
-  set_has_exchangename();
+  
   exchangename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspMarketInfo.ExchangeName)
 }
 inline void PBMsgQueryRspMarketInfo::set_exchangename(const char* value) {
-  set_has_exchangename();
+  
   exchangename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryRspMarketInfo.ExchangeName)
 }
 inline void PBMsgQueryRspMarketInfo::set_exchangename(const void* value, size_t size) {
-  set_has_exchangename();
+  
   exchangename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryRspMarketInfo.ExchangeName)
 }
 inline ::std::string* PBMsgQueryRspMarketInfo::mutable_exchangename() {
-  set_has_exchangename();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryRspMarketInfo.ExchangeName)
   return exchangename_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryRspMarketInfo::release_exchangename() {
-  clear_has_exchangename();
+  
   return exchangename_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspMarketInfo::set_allocated_exchangename(::std::string* exchangename) {
   if (exchangename != NULL) {
-    set_has_exchangename();
+    
   } else {
-    clear_has_exchangename();
+    
   }
   exchangename_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), exchangename);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryRspMarketInfo.ExchangeName)
 }
 
 // optional string ExchangeProperty = 4;
-inline bool PBMsgQueryRspMarketInfo::has_exchangeproperty() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void PBMsgQueryRspMarketInfo::set_has_exchangeproperty() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void PBMsgQueryRspMarketInfo::clear_has_exchangeproperty() {
-  _has_bits_[0] &= ~0x00000008u;
-}
 inline void PBMsgQueryRspMarketInfo::clear_exchangeproperty() {
   exchangeproperty_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_exchangeproperty();
 }
 inline const ::std::string& PBMsgQueryRspMarketInfo::exchangeproperty() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspMarketInfo.ExchangeProperty)
   return exchangeproperty_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspMarketInfo::set_exchangeproperty(const ::std::string& value) {
-  set_has_exchangeproperty();
+  
   exchangeproperty_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspMarketInfo.ExchangeProperty)
 }
 inline void PBMsgQueryRspMarketInfo::set_exchangeproperty(const char* value) {
-  set_has_exchangeproperty();
+  
   exchangeproperty_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryRspMarketInfo.ExchangeProperty)
 }
 inline void PBMsgQueryRspMarketInfo::set_exchangeproperty(const char* value, size_t size) {
-  set_has_exchangeproperty();
+  
   exchangeproperty_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryRspMarketInfo.ExchangeProperty)
 }
 inline ::std::string* PBMsgQueryRspMarketInfo::mutable_exchangeproperty() {
-  set_has_exchangeproperty();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryRspMarketInfo.ExchangeProperty)
   return exchangeproperty_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryRspMarketInfo::release_exchangeproperty() {
-  clear_has_exchangeproperty();
+  
   return exchangeproperty_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspMarketInfo::set_allocated_exchangeproperty(::std::string* exchangeproperty) {
   if (exchangeproperty != NULL) {
-    set_has_exchangeproperty();
+    
   } else {
-    clear_has_exchangeproperty();
+    
   }
   exchangeproperty_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), exchangeproperty);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryRspMarketInfo.ExchangeProperty)
@@ -7287,212 +5894,172 @@ inline void PBMsgQueryRspMarketInfo::set_allocated_exchangeproperty(::std::strin
 // PBMsgQueryReqInstrumentInfo
 
 // optional string InstrumentID = 2;
-inline bool PBMsgQueryReqInstrumentInfo::has_instrumentid() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBMsgQueryReqInstrumentInfo::set_has_instrumentid() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBMsgQueryReqInstrumentInfo::clear_has_instrumentid() {
-  _has_bits_[0] &= ~0x00000001u;
-}
 inline void PBMsgQueryReqInstrumentInfo::clear_instrumentid() {
   instrumentid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_instrumentid();
 }
 inline const ::std::string& PBMsgQueryReqInstrumentInfo::instrumentid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryReqInstrumentInfo.InstrumentID)
   return instrumentid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqInstrumentInfo::set_instrumentid(const ::std::string& value) {
-  set_has_instrumentid();
+  
   instrumentid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryReqInstrumentInfo.InstrumentID)
 }
 inline void PBMsgQueryReqInstrumentInfo::set_instrumentid(const char* value) {
-  set_has_instrumentid();
+  
   instrumentid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryReqInstrumentInfo.InstrumentID)
 }
 inline void PBMsgQueryReqInstrumentInfo::set_instrumentid(const char* value, size_t size) {
-  set_has_instrumentid();
+  
   instrumentid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryReqInstrumentInfo.InstrumentID)
 }
 inline ::std::string* PBMsgQueryReqInstrumentInfo::mutable_instrumentid() {
-  set_has_instrumentid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryReqInstrumentInfo.InstrumentID)
   return instrumentid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryReqInstrumentInfo::release_instrumentid() {
-  clear_has_instrumentid();
+  
   return instrumentid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqInstrumentInfo::set_allocated_instrumentid(::std::string* instrumentid) {
   if (instrumentid != NULL) {
-    set_has_instrumentid();
+    
   } else {
-    clear_has_instrumentid();
+    
   }
   instrumentid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), instrumentid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryReqInstrumentInfo.InstrumentID)
 }
 
 // optional string ExchangeID = 3;
-inline bool PBMsgQueryReqInstrumentInfo::has_exchangeid() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBMsgQueryReqInstrumentInfo::set_has_exchangeid() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBMsgQueryReqInstrumentInfo::clear_has_exchangeid() {
-  _has_bits_[0] &= ~0x00000002u;
-}
 inline void PBMsgQueryReqInstrumentInfo::clear_exchangeid() {
   exchangeid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_exchangeid();
 }
 inline const ::std::string& PBMsgQueryReqInstrumentInfo::exchangeid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryReqInstrumentInfo.ExchangeID)
   return exchangeid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqInstrumentInfo::set_exchangeid(const ::std::string& value) {
-  set_has_exchangeid();
+  
   exchangeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryReqInstrumentInfo.ExchangeID)
 }
 inline void PBMsgQueryReqInstrumentInfo::set_exchangeid(const char* value) {
-  set_has_exchangeid();
+  
   exchangeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryReqInstrumentInfo.ExchangeID)
 }
 inline void PBMsgQueryReqInstrumentInfo::set_exchangeid(const char* value, size_t size) {
-  set_has_exchangeid();
+  
   exchangeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryReqInstrumentInfo.ExchangeID)
 }
 inline ::std::string* PBMsgQueryReqInstrumentInfo::mutable_exchangeid() {
-  set_has_exchangeid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryReqInstrumentInfo.ExchangeID)
   return exchangeid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryReqInstrumentInfo::release_exchangeid() {
-  clear_has_exchangeid();
+  
   return exchangeid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqInstrumentInfo::set_allocated_exchangeid(::std::string* exchangeid) {
   if (exchangeid != NULL) {
-    set_has_exchangeid();
+    
   } else {
-    clear_has_exchangeid();
+    
   }
   exchangeid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), exchangeid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryReqInstrumentInfo.ExchangeID)
 }
 
 // optional string ExchangeInstID = 4;
-inline bool PBMsgQueryReqInstrumentInfo::has_exchangeinstid() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBMsgQueryReqInstrumentInfo::set_has_exchangeinstid() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBMsgQueryReqInstrumentInfo::clear_has_exchangeinstid() {
-  _has_bits_[0] &= ~0x00000004u;
-}
 inline void PBMsgQueryReqInstrumentInfo::clear_exchangeinstid() {
   exchangeinstid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_exchangeinstid();
 }
 inline const ::std::string& PBMsgQueryReqInstrumentInfo::exchangeinstid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryReqInstrumentInfo.ExchangeInstID)
   return exchangeinstid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqInstrumentInfo::set_exchangeinstid(const ::std::string& value) {
-  set_has_exchangeinstid();
+  
   exchangeinstid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryReqInstrumentInfo.ExchangeInstID)
 }
 inline void PBMsgQueryReqInstrumentInfo::set_exchangeinstid(const char* value) {
-  set_has_exchangeinstid();
+  
   exchangeinstid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryReqInstrumentInfo.ExchangeInstID)
 }
 inline void PBMsgQueryReqInstrumentInfo::set_exchangeinstid(const char* value, size_t size) {
-  set_has_exchangeinstid();
+  
   exchangeinstid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryReqInstrumentInfo.ExchangeInstID)
 }
 inline ::std::string* PBMsgQueryReqInstrumentInfo::mutable_exchangeinstid() {
-  set_has_exchangeinstid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryReqInstrumentInfo.ExchangeInstID)
   return exchangeinstid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryReqInstrumentInfo::release_exchangeinstid() {
-  clear_has_exchangeinstid();
+  
   return exchangeinstid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqInstrumentInfo::set_allocated_exchangeinstid(::std::string* exchangeinstid) {
   if (exchangeinstid != NULL) {
-    set_has_exchangeinstid();
+    
   } else {
-    clear_has_exchangeinstid();
+    
   }
   exchangeinstid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), exchangeinstid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryReqInstrumentInfo.ExchangeInstID)
 }
 
 // optional string ProductID = 5;
-inline bool PBMsgQueryReqInstrumentInfo::has_productid() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void PBMsgQueryReqInstrumentInfo::set_has_productid() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void PBMsgQueryReqInstrumentInfo::clear_has_productid() {
-  _has_bits_[0] &= ~0x00000008u;
-}
 inline void PBMsgQueryReqInstrumentInfo::clear_productid() {
   productid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_productid();
 }
 inline const ::std::string& PBMsgQueryReqInstrumentInfo::productid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryReqInstrumentInfo.ProductID)
   return productid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqInstrumentInfo::set_productid(const ::std::string& value) {
-  set_has_productid();
+  
   productid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryReqInstrumentInfo.ProductID)
 }
 inline void PBMsgQueryReqInstrumentInfo::set_productid(const char* value) {
-  set_has_productid();
+  
   productid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryReqInstrumentInfo.ProductID)
 }
 inline void PBMsgQueryReqInstrumentInfo::set_productid(const char* value, size_t size) {
-  set_has_productid();
+  
   productid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryReqInstrumentInfo.ProductID)
 }
 inline ::std::string* PBMsgQueryReqInstrumentInfo::mutable_productid() {
-  set_has_productid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryReqInstrumentInfo.ProductID)
   return productid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryReqInstrumentInfo::release_productid() {
-  clear_has_productid();
+  
   return productid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqInstrumentInfo::set_allocated_productid(::std::string* productid) {
   if (productid != NULL) {
-    set_has_productid();
+    
   } else {
-    clear_has_productid();
+    
   }
   productid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), productid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryReqInstrumentInfo.ProductID)
@@ -7503,1083 +6070,813 @@ inline void PBMsgQueryReqInstrumentInfo::set_allocated_productid(::std::string* 
 // PBMsgQueryRspInstrumentInfo
 
 // optional int32 EOF = 1;
-inline bool PBMsgQueryRspInstrumentInfo::has_eof() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBMsgQueryRspInstrumentInfo::set_has_eof() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBMsgQueryRspInstrumentInfo::clear_has_eof() {
-  _has_bits_[0] &= ~0x00000001u;
-}
 inline void PBMsgQueryRspInstrumentInfo::clear_eof() {
   eof_ = 0;
-  clear_has_eof();
 }
 inline ::google::protobuf::int32 PBMsgQueryRspInstrumentInfo::eof() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspInstrumentInfo.EOF)
   return eof_;
 }
 inline void PBMsgQueryRspInstrumentInfo::set_eof(::google::protobuf::int32 value) {
-  set_has_eof();
+  
   eof_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspInstrumentInfo.EOF)
 }
 
 // optional string InstrumentID = 2;
-inline bool PBMsgQueryRspInstrumentInfo::has_instrumentid() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBMsgQueryRspInstrumentInfo::set_has_instrumentid() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBMsgQueryRspInstrumentInfo::clear_has_instrumentid() {
-  _has_bits_[0] &= ~0x00000002u;
-}
 inline void PBMsgQueryRspInstrumentInfo::clear_instrumentid() {
   instrumentid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_instrumentid();
 }
 inline const ::std::string& PBMsgQueryRspInstrumentInfo::instrumentid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspInstrumentInfo.InstrumentID)
   return instrumentid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspInstrumentInfo::set_instrumentid(const ::std::string& value) {
-  set_has_instrumentid();
+  
   instrumentid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspInstrumentInfo.InstrumentID)
 }
 inline void PBMsgQueryRspInstrumentInfo::set_instrumentid(const char* value) {
-  set_has_instrumentid();
+  
   instrumentid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryRspInstrumentInfo.InstrumentID)
 }
 inline void PBMsgQueryRspInstrumentInfo::set_instrumentid(const char* value, size_t size) {
-  set_has_instrumentid();
+  
   instrumentid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryRspInstrumentInfo.InstrumentID)
 }
 inline ::std::string* PBMsgQueryRspInstrumentInfo::mutable_instrumentid() {
-  set_has_instrumentid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryRspInstrumentInfo.InstrumentID)
   return instrumentid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryRspInstrumentInfo::release_instrumentid() {
-  clear_has_instrumentid();
+  
   return instrumentid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspInstrumentInfo::set_allocated_instrumentid(::std::string* instrumentid) {
   if (instrumentid != NULL) {
-    set_has_instrumentid();
+    
   } else {
-    clear_has_instrumentid();
+    
   }
   instrumentid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), instrumentid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryRspInstrumentInfo.InstrumentID)
 }
 
 // optional string ExchangeID = 3;
-inline bool PBMsgQueryRspInstrumentInfo::has_exchangeid() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBMsgQueryRspInstrumentInfo::set_has_exchangeid() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBMsgQueryRspInstrumentInfo::clear_has_exchangeid() {
-  _has_bits_[0] &= ~0x00000004u;
-}
 inline void PBMsgQueryRspInstrumentInfo::clear_exchangeid() {
   exchangeid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_exchangeid();
 }
 inline const ::std::string& PBMsgQueryRspInstrumentInfo::exchangeid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ExchangeID)
   return exchangeid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspInstrumentInfo::set_exchangeid(const ::std::string& value) {
-  set_has_exchangeid();
+  
   exchangeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ExchangeID)
 }
 inline void PBMsgQueryRspInstrumentInfo::set_exchangeid(const char* value) {
-  set_has_exchangeid();
+  
   exchangeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ExchangeID)
 }
 inline void PBMsgQueryRspInstrumentInfo::set_exchangeid(const char* value, size_t size) {
-  set_has_exchangeid();
+  
   exchangeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ExchangeID)
 }
 inline ::std::string* PBMsgQueryRspInstrumentInfo::mutable_exchangeid() {
-  set_has_exchangeid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ExchangeID)
   return exchangeid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryRspInstrumentInfo::release_exchangeid() {
-  clear_has_exchangeid();
+  
   return exchangeid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspInstrumentInfo::set_allocated_exchangeid(::std::string* exchangeid) {
   if (exchangeid != NULL) {
-    set_has_exchangeid();
+    
   } else {
-    clear_has_exchangeid();
+    
   }
   exchangeid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), exchangeid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ExchangeID)
 }
 
 // optional bytes InstrumentName = 4;
-inline bool PBMsgQueryRspInstrumentInfo::has_instrumentname() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void PBMsgQueryRspInstrumentInfo::set_has_instrumentname() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void PBMsgQueryRspInstrumentInfo::clear_has_instrumentname() {
-  _has_bits_[0] &= ~0x00000008u;
-}
 inline void PBMsgQueryRspInstrumentInfo::clear_instrumentname() {
   instrumentname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_instrumentname();
 }
 inline const ::std::string& PBMsgQueryRspInstrumentInfo::instrumentname() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspInstrumentInfo.InstrumentName)
   return instrumentname_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspInstrumentInfo::set_instrumentname(const ::std::string& value) {
-  set_has_instrumentname();
+  
   instrumentname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspInstrumentInfo.InstrumentName)
 }
 inline void PBMsgQueryRspInstrumentInfo::set_instrumentname(const char* value) {
-  set_has_instrumentname();
+  
   instrumentname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryRspInstrumentInfo.InstrumentName)
 }
 inline void PBMsgQueryRspInstrumentInfo::set_instrumentname(const void* value, size_t size) {
-  set_has_instrumentname();
+  
   instrumentname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryRspInstrumentInfo.InstrumentName)
 }
 inline ::std::string* PBMsgQueryRspInstrumentInfo::mutable_instrumentname() {
-  set_has_instrumentname();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryRspInstrumentInfo.InstrumentName)
   return instrumentname_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryRspInstrumentInfo::release_instrumentname() {
-  clear_has_instrumentname();
+  
   return instrumentname_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspInstrumentInfo::set_allocated_instrumentname(::std::string* instrumentname) {
   if (instrumentname != NULL) {
-    set_has_instrumentname();
+    
   } else {
-    clear_has_instrumentname();
+    
   }
   instrumentname_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), instrumentname);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryRspInstrumentInfo.InstrumentName)
 }
 
 // optional string ExchangeInstID = 5;
-inline bool PBMsgQueryRspInstrumentInfo::has_exchangeinstid() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void PBMsgQueryRspInstrumentInfo::set_has_exchangeinstid() {
-  _has_bits_[0] |= 0x00000010u;
-}
-inline void PBMsgQueryRspInstrumentInfo::clear_has_exchangeinstid() {
-  _has_bits_[0] &= ~0x00000010u;
-}
 inline void PBMsgQueryRspInstrumentInfo::clear_exchangeinstid() {
   exchangeinstid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_exchangeinstid();
 }
 inline const ::std::string& PBMsgQueryRspInstrumentInfo::exchangeinstid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ExchangeInstID)
   return exchangeinstid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspInstrumentInfo::set_exchangeinstid(const ::std::string& value) {
-  set_has_exchangeinstid();
+  
   exchangeinstid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ExchangeInstID)
 }
 inline void PBMsgQueryRspInstrumentInfo::set_exchangeinstid(const char* value) {
-  set_has_exchangeinstid();
+  
   exchangeinstid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ExchangeInstID)
 }
 inline void PBMsgQueryRspInstrumentInfo::set_exchangeinstid(const char* value, size_t size) {
-  set_has_exchangeinstid();
+  
   exchangeinstid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ExchangeInstID)
 }
 inline ::std::string* PBMsgQueryRspInstrumentInfo::mutable_exchangeinstid() {
-  set_has_exchangeinstid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ExchangeInstID)
   return exchangeinstid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryRspInstrumentInfo::release_exchangeinstid() {
-  clear_has_exchangeinstid();
+  
   return exchangeinstid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspInstrumentInfo::set_allocated_exchangeinstid(::std::string* exchangeinstid) {
   if (exchangeinstid != NULL) {
-    set_has_exchangeinstid();
+    
   } else {
-    clear_has_exchangeinstid();
+    
   }
   exchangeinstid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), exchangeinstid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ExchangeInstID)
 }
 
 // optional string ProductID = 6;
-inline bool PBMsgQueryRspInstrumentInfo::has_productid() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
-}
-inline void PBMsgQueryRspInstrumentInfo::set_has_productid() {
-  _has_bits_[0] |= 0x00000020u;
-}
-inline void PBMsgQueryRspInstrumentInfo::clear_has_productid() {
-  _has_bits_[0] &= ~0x00000020u;
-}
 inline void PBMsgQueryRspInstrumentInfo::clear_productid() {
   productid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_productid();
 }
 inline const ::std::string& PBMsgQueryRspInstrumentInfo::productid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ProductID)
   return productid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspInstrumentInfo::set_productid(const ::std::string& value) {
-  set_has_productid();
+  
   productid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ProductID)
 }
 inline void PBMsgQueryRspInstrumentInfo::set_productid(const char* value) {
-  set_has_productid();
+  
   productid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ProductID)
 }
 inline void PBMsgQueryRspInstrumentInfo::set_productid(const char* value, size_t size) {
-  set_has_productid();
+  
   productid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ProductID)
 }
 inline ::std::string* PBMsgQueryRspInstrumentInfo::mutable_productid() {
-  set_has_productid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ProductID)
   return productid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryRspInstrumentInfo::release_productid() {
-  clear_has_productid();
+  
   return productid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspInstrumentInfo::set_allocated_productid(::std::string* productid) {
   if (productid != NULL) {
-    set_has_productid();
+    
   } else {
-    clear_has_productid();
+    
   }
   productid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), productid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ProductID)
 }
 
 // optional bytes ProductClass = 7;
-inline bool PBMsgQueryRspInstrumentInfo::has_productclass() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
-}
-inline void PBMsgQueryRspInstrumentInfo::set_has_productclass() {
-  _has_bits_[0] |= 0x00000040u;
-}
-inline void PBMsgQueryRspInstrumentInfo::clear_has_productclass() {
-  _has_bits_[0] &= ~0x00000040u;
-}
 inline void PBMsgQueryRspInstrumentInfo::clear_productclass() {
   productclass_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_productclass();
 }
 inline const ::std::string& PBMsgQueryRspInstrumentInfo::productclass() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ProductClass)
   return productclass_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspInstrumentInfo::set_productclass(const ::std::string& value) {
-  set_has_productclass();
+  
   productclass_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ProductClass)
 }
 inline void PBMsgQueryRspInstrumentInfo::set_productclass(const char* value) {
-  set_has_productclass();
+  
   productclass_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ProductClass)
 }
 inline void PBMsgQueryRspInstrumentInfo::set_productclass(const void* value, size_t size) {
-  set_has_productclass();
+  
   productclass_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ProductClass)
 }
 inline ::std::string* PBMsgQueryRspInstrumentInfo::mutable_productclass() {
-  set_has_productclass();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ProductClass)
   return productclass_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryRspInstrumentInfo::release_productclass() {
-  clear_has_productclass();
+  
   return productclass_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspInstrumentInfo::set_allocated_productclass(::std::string* productclass) {
   if (productclass != NULL) {
-    set_has_productclass();
+    
   } else {
-    clear_has_productclass();
+    
   }
   productclass_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), productclass);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ProductClass)
 }
 
 // optional int32 DeliveryYear = 8;
-inline bool PBMsgQueryRspInstrumentInfo::has_deliveryyear() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
-}
-inline void PBMsgQueryRspInstrumentInfo::set_has_deliveryyear() {
-  _has_bits_[0] |= 0x00000080u;
-}
-inline void PBMsgQueryRspInstrumentInfo::clear_has_deliveryyear() {
-  _has_bits_[0] &= ~0x00000080u;
-}
 inline void PBMsgQueryRspInstrumentInfo::clear_deliveryyear() {
   deliveryyear_ = 0;
-  clear_has_deliveryyear();
 }
 inline ::google::protobuf::int32 PBMsgQueryRspInstrumentInfo::deliveryyear() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspInstrumentInfo.DeliveryYear)
   return deliveryyear_;
 }
 inline void PBMsgQueryRspInstrumentInfo::set_deliveryyear(::google::protobuf::int32 value) {
-  set_has_deliveryyear();
+  
   deliveryyear_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspInstrumentInfo.DeliveryYear)
 }
 
 // optional int32 DeliveryMonth = 9;
-inline bool PBMsgQueryRspInstrumentInfo::has_deliverymonth() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
-}
-inline void PBMsgQueryRspInstrumentInfo::set_has_deliverymonth() {
-  _has_bits_[0] |= 0x00000100u;
-}
-inline void PBMsgQueryRspInstrumentInfo::clear_has_deliverymonth() {
-  _has_bits_[0] &= ~0x00000100u;
-}
 inline void PBMsgQueryRspInstrumentInfo::clear_deliverymonth() {
   deliverymonth_ = 0;
-  clear_has_deliverymonth();
 }
 inline ::google::protobuf::int32 PBMsgQueryRspInstrumentInfo::deliverymonth() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspInstrumentInfo.DeliveryMonth)
   return deliverymonth_;
 }
 inline void PBMsgQueryRspInstrumentInfo::set_deliverymonth(::google::protobuf::int32 value) {
-  set_has_deliverymonth();
+  
   deliverymonth_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspInstrumentInfo.DeliveryMonth)
 }
 
 // optional int32 MaxMarketOrderVolume = 10;
-inline bool PBMsgQueryRspInstrumentInfo::has_maxmarketordervolume() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
-}
-inline void PBMsgQueryRspInstrumentInfo::set_has_maxmarketordervolume() {
-  _has_bits_[0] |= 0x00000200u;
-}
-inline void PBMsgQueryRspInstrumentInfo::clear_has_maxmarketordervolume() {
-  _has_bits_[0] &= ~0x00000200u;
-}
 inline void PBMsgQueryRspInstrumentInfo::clear_maxmarketordervolume() {
   maxmarketordervolume_ = 0;
-  clear_has_maxmarketordervolume();
 }
 inline ::google::protobuf::int32 PBMsgQueryRspInstrumentInfo::maxmarketordervolume() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspInstrumentInfo.MaxMarketOrderVolume)
   return maxmarketordervolume_;
 }
 inline void PBMsgQueryRspInstrumentInfo::set_maxmarketordervolume(::google::protobuf::int32 value) {
-  set_has_maxmarketordervolume();
+  
   maxmarketordervolume_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspInstrumentInfo.MaxMarketOrderVolume)
 }
 
 // optional int32 MinMarketOrderVolume = 11;
-inline bool PBMsgQueryRspInstrumentInfo::has_minmarketordervolume() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
-}
-inline void PBMsgQueryRspInstrumentInfo::set_has_minmarketordervolume() {
-  _has_bits_[0] |= 0x00000400u;
-}
-inline void PBMsgQueryRspInstrumentInfo::clear_has_minmarketordervolume() {
-  _has_bits_[0] &= ~0x00000400u;
-}
 inline void PBMsgQueryRspInstrumentInfo::clear_minmarketordervolume() {
   minmarketordervolume_ = 0;
-  clear_has_minmarketordervolume();
 }
 inline ::google::protobuf::int32 PBMsgQueryRspInstrumentInfo::minmarketordervolume() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspInstrumentInfo.MinMarketOrderVolume)
   return minmarketordervolume_;
 }
 inline void PBMsgQueryRspInstrumentInfo::set_minmarketordervolume(::google::protobuf::int32 value) {
-  set_has_minmarketordervolume();
+  
   minmarketordervolume_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspInstrumentInfo.MinMarketOrderVolume)
 }
 
 // optional int32 MaxLimitOrderVolume = 12;
-inline bool PBMsgQueryRspInstrumentInfo::has_maxlimitordervolume() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
-}
-inline void PBMsgQueryRspInstrumentInfo::set_has_maxlimitordervolume() {
-  _has_bits_[0] |= 0x00000800u;
-}
-inline void PBMsgQueryRspInstrumentInfo::clear_has_maxlimitordervolume() {
-  _has_bits_[0] &= ~0x00000800u;
-}
 inline void PBMsgQueryRspInstrumentInfo::clear_maxlimitordervolume() {
   maxlimitordervolume_ = 0;
-  clear_has_maxlimitordervolume();
 }
 inline ::google::protobuf::int32 PBMsgQueryRspInstrumentInfo::maxlimitordervolume() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspInstrumentInfo.MaxLimitOrderVolume)
   return maxlimitordervolume_;
 }
 inline void PBMsgQueryRspInstrumentInfo::set_maxlimitordervolume(::google::protobuf::int32 value) {
-  set_has_maxlimitordervolume();
+  
   maxlimitordervolume_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspInstrumentInfo.MaxLimitOrderVolume)
 }
 
 // optional int32 MinLimitOrderVolume = 13;
-inline bool PBMsgQueryRspInstrumentInfo::has_minlimitordervolume() const {
-  return (_has_bits_[0] & 0x00001000u) != 0;
-}
-inline void PBMsgQueryRspInstrumentInfo::set_has_minlimitordervolume() {
-  _has_bits_[0] |= 0x00001000u;
-}
-inline void PBMsgQueryRspInstrumentInfo::clear_has_minlimitordervolume() {
-  _has_bits_[0] &= ~0x00001000u;
-}
 inline void PBMsgQueryRspInstrumentInfo::clear_minlimitordervolume() {
   minlimitordervolume_ = 0;
-  clear_has_minlimitordervolume();
 }
 inline ::google::protobuf::int32 PBMsgQueryRspInstrumentInfo::minlimitordervolume() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspInstrumentInfo.MinLimitOrderVolume)
   return minlimitordervolume_;
 }
 inline void PBMsgQueryRspInstrumentInfo::set_minlimitordervolume(::google::protobuf::int32 value) {
-  set_has_minlimitordervolume();
+  
   minlimitordervolume_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspInstrumentInfo.MinLimitOrderVolume)
 }
 
 // optional int32 VolumeMultiple = 14;
-inline bool PBMsgQueryRspInstrumentInfo::has_volumemultiple() const {
-  return (_has_bits_[0] & 0x00002000u) != 0;
-}
-inline void PBMsgQueryRspInstrumentInfo::set_has_volumemultiple() {
-  _has_bits_[0] |= 0x00002000u;
-}
-inline void PBMsgQueryRspInstrumentInfo::clear_has_volumemultiple() {
-  _has_bits_[0] &= ~0x00002000u;
-}
 inline void PBMsgQueryRspInstrumentInfo::clear_volumemultiple() {
   volumemultiple_ = 0;
-  clear_has_volumemultiple();
 }
 inline ::google::protobuf::int32 PBMsgQueryRspInstrumentInfo::volumemultiple() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspInstrumentInfo.VolumeMultiple)
   return volumemultiple_;
 }
 inline void PBMsgQueryRspInstrumentInfo::set_volumemultiple(::google::protobuf::int32 value) {
-  set_has_volumemultiple();
+  
   volumemultiple_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspInstrumentInfo.VolumeMultiple)
 }
 
 // optional int32 PriceTick = 15;
-inline bool PBMsgQueryRspInstrumentInfo::has_pricetick() const {
-  return (_has_bits_[0] & 0x00004000u) != 0;
-}
-inline void PBMsgQueryRspInstrumentInfo::set_has_pricetick() {
-  _has_bits_[0] |= 0x00004000u;
-}
-inline void PBMsgQueryRspInstrumentInfo::clear_has_pricetick() {
-  _has_bits_[0] &= ~0x00004000u;
-}
 inline void PBMsgQueryRspInstrumentInfo::clear_pricetick() {
   pricetick_ = 0;
-  clear_has_pricetick();
 }
 inline ::google::protobuf::int32 PBMsgQueryRspInstrumentInfo::pricetick() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspInstrumentInfo.PriceTick)
   return pricetick_;
 }
 inline void PBMsgQueryRspInstrumentInfo::set_pricetick(::google::protobuf::int32 value) {
-  set_has_pricetick();
+  
   pricetick_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspInstrumentInfo.PriceTick)
 }
 
 // optional string CreateDate = 16;
-inline bool PBMsgQueryRspInstrumentInfo::has_createdate() const {
-  return (_has_bits_[0] & 0x00008000u) != 0;
-}
-inline void PBMsgQueryRspInstrumentInfo::set_has_createdate() {
-  _has_bits_[0] |= 0x00008000u;
-}
-inline void PBMsgQueryRspInstrumentInfo::clear_has_createdate() {
-  _has_bits_[0] &= ~0x00008000u;
-}
 inline void PBMsgQueryRspInstrumentInfo::clear_createdate() {
   createdate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_createdate();
 }
 inline const ::std::string& PBMsgQueryRspInstrumentInfo::createdate() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspInstrumentInfo.CreateDate)
   return createdate_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspInstrumentInfo::set_createdate(const ::std::string& value) {
-  set_has_createdate();
+  
   createdate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspInstrumentInfo.CreateDate)
 }
 inline void PBMsgQueryRspInstrumentInfo::set_createdate(const char* value) {
-  set_has_createdate();
+  
   createdate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryRspInstrumentInfo.CreateDate)
 }
 inline void PBMsgQueryRspInstrumentInfo::set_createdate(const char* value, size_t size) {
-  set_has_createdate();
+  
   createdate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryRspInstrumentInfo.CreateDate)
 }
 inline ::std::string* PBMsgQueryRspInstrumentInfo::mutable_createdate() {
-  set_has_createdate();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryRspInstrumentInfo.CreateDate)
   return createdate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryRspInstrumentInfo::release_createdate() {
-  clear_has_createdate();
+  
   return createdate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspInstrumentInfo::set_allocated_createdate(::std::string* createdate) {
   if (createdate != NULL) {
-    set_has_createdate();
+    
   } else {
-    clear_has_createdate();
+    
   }
   createdate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), createdate);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryRspInstrumentInfo.CreateDate)
 }
 
 // optional string OpenDate = 17;
-inline bool PBMsgQueryRspInstrumentInfo::has_opendate() const {
-  return (_has_bits_[0] & 0x00010000u) != 0;
-}
-inline void PBMsgQueryRspInstrumentInfo::set_has_opendate() {
-  _has_bits_[0] |= 0x00010000u;
-}
-inline void PBMsgQueryRspInstrumentInfo::clear_has_opendate() {
-  _has_bits_[0] &= ~0x00010000u;
-}
 inline void PBMsgQueryRspInstrumentInfo::clear_opendate() {
   opendate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_opendate();
 }
 inline const ::std::string& PBMsgQueryRspInstrumentInfo::opendate() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspInstrumentInfo.OpenDate)
   return opendate_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspInstrumentInfo::set_opendate(const ::std::string& value) {
-  set_has_opendate();
+  
   opendate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspInstrumentInfo.OpenDate)
 }
 inline void PBMsgQueryRspInstrumentInfo::set_opendate(const char* value) {
-  set_has_opendate();
+  
   opendate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryRspInstrumentInfo.OpenDate)
 }
 inline void PBMsgQueryRspInstrumentInfo::set_opendate(const char* value, size_t size) {
-  set_has_opendate();
+  
   opendate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryRspInstrumentInfo.OpenDate)
 }
 inline ::std::string* PBMsgQueryRspInstrumentInfo::mutable_opendate() {
-  set_has_opendate();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryRspInstrumentInfo.OpenDate)
   return opendate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryRspInstrumentInfo::release_opendate() {
-  clear_has_opendate();
+  
   return opendate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspInstrumentInfo::set_allocated_opendate(::std::string* opendate) {
   if (opendate != NULL) {
-    set_has_opendate();
+    
   } else {
-    clear_has_opendate();
+    
   }
   opendate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), opendate);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryRspInstrumentInfo.OpenDate)
 }
 
 // optional string ExpireDate = 18;
-inline bool PBMsgQueryRspInstrumentInfo::has_expiredate() const {
-  return (_has_bits_[0] & 0x00020000u) != 0;
-}
-inline void PBMsgQueryRspInstrumentInfo::set_has_expiredate() {
-  _has_bits_[0] |= 0x00020000u;
-}
-inline void PBMsgQueryRspInstrumentInfo::clear_has_expiredate() {
-  _has_bits_[0] &= ~0x00020000u;
-}
 inline void PBMsgQueryRspInstrumentInfo::clear_expiredate() {
   expiredate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_expiredate();
 }
 inline const ::std::string& PBMsgQueryRspInstrumentInfo::expiredate() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ExpireDate)
   return expiredate_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspInstrumentInfo::set_expiredate(const ::std::string& value) {
-  set_has_expiredate();
+  
   expiredate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ExpireDate)
 }
 inline void PBMsgQueryRspInstrumentInfo::set_expiredate(const char* value) {
-  set_has_expiredate();
+  
   expiredate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ExpireDate)
 }
 inline void PBMsgQueryRspInstrumentInfo::set_expiredate(const char* value, size_t size) {
-  set_has_expiredate();
+  
   expiredate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ExpireDate)
 }
 inline ::std::string* PBMsgQueryRspInstrumentInfo::mutable_expiredate() {
-  set_has_expiredate();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ExpireDate)
   return expiredate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryRspInstrumentInfo::release_expiredate() {
-  clear_has_expiredate();
+  
   return expiredate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspInstrumentInfo::set_allocated_expiredate(::std::string* expiredate) {
   if (expiredate != NULL) {
-    set_has_expiredate();
+    
   } else {
-    clear_has_expiredate();
+    
   }
   expiredate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), expiredate);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ExpireDate)
 }
 
 // optional string StartDelivDate = 19;
-inline bool PBMsgQueryRspInstrumentInfo::has_startdelivdate() const {
-  return (_has_bits_[0] & 0x00040000u) != 0;
-}
-inline void PBMsgQueryRspInstrumentInfo::set_has_startdelivdate() {
-  _has_bits_[0] |= 0x00040000u;
-}
-inline void PBMsgQueryRspInstrumentInfo::clear_has_startdelivdate() {
-  _has_bits_[0] &= ~0x00040000u;
-}
 inline void PBMsgQueryRspInstrumentInfo::clear_startdelivdate() {
   startdelivdate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_startdelivdate();
 }
 inline const ::std::string& PBMsgQueryRspInstrumentInfo::startdelivdate() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspInstrumentInfo.StartDelivDate)
   return startdelivdate_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspInstrumentInfo::set_startdelivdate(const ::std::string& value) {
-  set_has_startdelivdate();
+  
   startdelivdate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspInstrumentInfo.StartDelivDate)
 }
 inline void PBMsgQueryRspInstrumentInfo::set_startdelivdate(const char* value) {
-  set_has_startdelivdate();
+  
   startdelivdate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryRspInstrumentInfo.StartDelivDate)
 }
 inline void PBMsgQueryRspInstrumentInfo::set_startdelivdate(const char* value, size_t size) {
-  set_has_startdelivdate();
+  
   startdelivdate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryRspInstrumentInfo.StartDelivDate)
 }
 inline ::std::string* PBMsgQueryRspInstrumentInfo::mutable_startdelivdate() {
-  set_has_startdelivdate();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryRspInstrumentInfo.StartDelivDate)
   return startdelivdate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryRspInstrumentInfo::release_startdelivdate() {
-  clear_has_startdelivdate();
+  
   return startdelivdate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspInstrumentInfo::set_allocated_startdelivdate(::std::string* startdelivdate) {
   if (startdelivdate != NULL) {
-    set_has_startdelivdate();
+    
   } else {
-    clear_has_startdelivdate();
+    
   }
   startdelivdate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), startdelivdate);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryRspInstrumentInfo.StartDelivDate)
 }
 
 // optional string EndDelivDate = 20;
-inline bool PBMsgQueryRspInstrumentInfo::has_enddelivdate() const {
-  return (_has_bits_[0] & 0x00080000u) != 0;
-}
-inline void PBMsgQueryRspInstrumentInfo::set_has_enddelivdate() {
-  _has_bits_[0] |= 0x00080000u;
-}
-inline void PBMsgQueryRspInstrumentInfo::clear_has_enddelivdate() {
-  _has_bits_[0] &= ~0x00080000u;
-}
 inline void PBMsgQueryRspInstrumentInfo::clear_enddelivdate() {
   enddelivdate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_enddelivdate();
 }
 inline const ::std::string& PBMsgQueryRspInstrumentInfo::enddelivdate() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspInstrumentInfo.EndDelivDate)
   return enddelivdate_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspInstrumentInfo::set_enddelivdate(const ::std::string& value) {
-  set_has_enddelivdate();
+  
   enddelivdate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspInstrumentInfo.EndDelivDate)
 }
 inline void PBMsgQueryRspInstrumentInfo::set_enddelivdate(const char* value) {
-  set_has_enddelivdate();
+  
   enddelivdate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryRspInstrumentInfo.EndDelivDate)
 }
 inline void PBMsgQueryRspInstrumentInfo::set_enddelivdate(const char* value, size_t size) {
-  set_has_enddelivdate();
+  
   enddelivdate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryRspInstrumentInfo.EndDelivDate)
 }
 inline ::std::string* PBMsgQueryRspInstrumentInfo::mutable_enddelivdate() {
-  set_has_enddelivdate();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryRspInstrumentInfo.EndDelivDate)
   return enddelivdate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryRspInstrumentInfo::release_enddelivdate() {
-  clear_has_enddelivdate();
+  
   return enddelivdate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspInstrumentInfo::set_allocated_enddelivdate(::std::string* enddelivdate) {
   if (enddelivdate != NULL) {
-    set_has_enddelivdate();
+    
   } else {
-    clear_has_enddelivdate();
+    
   }
   enddelivdate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), enddelivdate);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryRspInstrumentInfo.EndDelivDate)
 }
 
 // optional string InstLifePhase = 21;
-inline bool PBMsgQueryRspInstrumentInfo::has_instlifephase() const {
-  return (_has_bits_[0] & 0x00100000u) != 0;
-}
-inline void PBMsgQueryRspInstrumentInfo::set_has_instlifephase() {
-  _has_bits_[0] |= 0x00100000u;
-}
-inline void PBMsgQueryRspInstrumentInfo::clear_has_instlifephase() {
-  _has_bits_[0] &= ~0x00100000u;
-}
 inline void PBMsgQueryRspInstrumentInfo::clear_instlifephase() {
   instlifephase_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_instlifephase();
 }
 inline const ::std::string& PBMsgQueryRspInstrumentInfo::instlifephase() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspInstrumentInfo.InstLifePhase)
   return instlifephase_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspInstrumentInfo::set_instlifephase(const ::std::string& value) {
-  set_has_instlifephase();
+  
   instlifephase_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspInstrumentInfo.InstLifePhase)
 }
 inline void PBMsgQueryRspInstrumentInfo::set_instlifephase(const char* value) {
-  set_has_instlifephase();
+  
   instlifephase_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryRspInstrumentInfo.InstLifePhase)
 }
 inline void PBMsgQueryRspInstrumentInfo::set_instlifephase(const char* value, size_t size) {
-  set_has_instlifephase();
+  
   instlifephase_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryRspInstrumentInfo.InstLifePhase)
 }
 inline ::std::string* PBMsgQueryRspInstrumentInfo::mutable_instlifephase() {
-  set_has_instlifephase();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryRspInstrumentInfo.InstLifePhase)
   return instlifephase_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryRspInstrumentInfo::release_instlifephase() {
-  clear_has_instlifephase();
+  
   return instlifephase_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspInstrumentInfo::set_allocated_instlifephase(::std::string* instlifephase) {
   if (instlifephase != NULL) {
-    set_has_instlifephase();
+    
   } else {
-    clear_has_instlifephase();
+    
   }
   instlifephase_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), instlifephase);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryRspInstrumentInfo.InstLifePhase)
 }
 
 // optional int32 IsTrading = 22;
-inline bool PBMsgQueryRspInstrumentInfo::has_istrading() const {
-  return (_has_bits_[0] & 0x00200000u) != 0;
-}
-inline void PBMsgQueryRspInstrumentInfo::set_has_istrading() {
-  _has_bits_[0] |= 0x00200000u;
-}
-inline void PBMsgQueryRspInstrumentInfo::clear_has_istrading() {
-  _has_bits_[0] &= ~0x00200000u;
-}
 inline void PBMsgQueryRspInstrumentInfo::clear_istrading() {
   istrading_ = 0;
-  clear_has_istrading();
 }
 inline ::google::protobuf::int32 PBMsgQueryRspInstrumentInfo::istrading() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspInstrumentInfo.IsTrading)
   return istrading_;
 }
 inline void PBMsgQueryRspInstrumentInfo::set_istrading(::google::protobuf::int32 value) {
-  set_has_istrading();
+  
   istrading_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspInstrumentInfo.IsTrading)
 }
 
 // optional string PositionType = 23;
-inline bool PBMsgQueryRspInstrumentInfo::has_positiontype() const {
-  return (_has_bits_[0] & 0x00400000u) != 0;
-}
-inline void PBMsgQueryRspInstrumentInfo::set_has_positiontype() {
-  _has_bits_[0] |= 0x00400000u;
-}
-inline void PBMsgQueryRspInstrumentInfo::clear_has_positiontype() {
-  _has_bits_[0] &= ~0x00400000u;
-}
 inline void PBMsgQueryRspInstrumentInfo::clear_positiontype() {
   positiontype_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_positiontype();
 }
 inline const ::std::string& PBMsgQueryRspInstrumentInfo::positiontype() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspInstrumentInfo.PositionType)
   return positiontype_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspInstrumentInfo::set_positiontype(const ::std::string& value) {
-  set_has_positiontype();
+  
   positiontype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspInstrumentInfo.PositionType)
 }
 inline void PBMsgQueryRspInstrumentInfo::set_positiontype(const char* value) {
-  set_has_positiontype();
+  
   positiontype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryRspInstrumentInfo.PositionType)
 }
 inline void PBMsgQueryRspInstrumentInfo::set_positiontype(const char* value, size_t size) {
-  set_has_positiontype();
+  
   positiontype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryRspInstrumentInfo.PositionType)
 }
 inline ::std::string* PBMsgQueryRspInstrumentInfo::mutable_positiontype() {
-  set_has_positiontype();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryRspInstrumentInfo.PositionType)
   return positiontype_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryRspInstrumentInfo::release_positiontype() {
-  clear_has_positiontype();
+  
   return positiontype_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspInstrumentInfo::set_allocated_positiontype(::std::string* positiontype) {
   if (positiontype != NULL) {
-    set_has_positiontype();
+    
   } else {
-    clear_has_positiontype();
+    
   }
   positiontype_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), positiontype);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryRspInstrumentInfo.PositionType)
 }
 
 // optional string PositionDateType = 24;
-inline bool PBMsgQueryRspInstrumentInfo::has_positiondatetype() const {
-  return (_has_bits_[0] & 0x00800000u) != 0;
-}
-inline void PBMsgQueryRspInstrumentInfo::set_has_positiondatetype() {
-  _has_bits_[0] |= 0x00800000u;
-}
-inline void PBMsgQueryRspInstrumentInfo::clear_has_positiondatetype() {
-  _has_bits_[0] &= ~0x00800000u;
-}
 inline void PBMsgQueryRspInstrumentInfo::clear_positiondatetype() {
   positiondatetype_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_positiondatetype();
 }
 inline const ::std::string& PBMsgQueryRspInstrumentInfo::positiondatetype() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspInstrumentInfo.PositionDateType)
   return positiondatetype_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspInstrumentInfo::set_positiondatetype(const ::std::string& value) {
-  set_has_positiondatetype();
+  
   positiondatetype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspInstrumentInfo.PositionDateType)
 }
 inline void PBMsgQueryRspInstrumentInfo::set_positiondatetype(const char* value) {
-  set_has_positiondatetype();
+  
   positiondatetype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryRspInstrumentInfo.PositionDateType)
 }
 inline void PBMsgQueryRspInstrumentInfo::set_positiondatetype(const char* value, size_t size) {
-  set_has_positiondatetype();
+  
   positiondatetype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryRspInstrumentInfo.PositionDateType)
 }
 inline ::std::string* PBMsgQueryRspInstrumentInfo::mutable_positiondatetype() {
-  set_has_positiondatetype();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryRspInstrumentInfo.PositionDateType)
   return positiondatetype_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryRspInstrumentInfo::release_positiondatetype() {
-  clear_has_positiondatetype();
+  
   return positiondatetype_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspInstrumentInfo::set_allocated_positiondatetype(::std::string* positiondatetype) {
   if (positiondatetype != NULL) {
-    set_has_positiondatetype();
+    
   } else {
-    clear_has_positiondatetype();
+    
   }
   positiondatetype_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), positiondatetype);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryRspInstrumentInfo.PositionDateType)
 }
 
 // optional double LongMarginRatio = 25;
-inline bool PBMsgQueryRspInstrumentInfo::has_longmarginratio() const {
-  return (_has_bits_[0] & 0x01000000u) != 0;
-}
-inline void PBMsgQueryRspInstrumentInfo::set_has_longmarginratio() {
-  _has_bits_[0] |= 0x01000000u;
-}
-inline void PBMsgQueryRspInstrumentInfo::clear_has_longmarginratio() {
-  _has_bits_[0] &= ~0x01000000u;
-}
 inline void PBMsgQueryRspInstrumentInfo::clear_longmarginratio() {
   longmarginratio_ = 0;
-  clear_has_longmarginratio();
 }
 inline double PBMsgQueryRspInstrumentInfo::longmarginratio() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspInstrumentInfo.LongMarginRatio)
   return longmarginratio_;
 }
 inline void PBMsgQueryRspInstrumentInfo::set_longmarginratio(double value) {
-  set_has_longmarginratio();
+  
   longmarginratio_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspInstrumentInfo.LongMarginRatio)
 }
 
 // optional double ShortMarginRatio = 26;
-inline bool PBMsgQueryRspInstrumentInfo::has_shortmarginratio() const {
-  return (_has_bits_[0] & 0x02000000u) != 0;
-}
-inline void PBMsgQueryRspInstrumentInfo::set_has_shortmarginratio() {
-  _has_bits_[0] |= 0x02000000u;
-}
-inline void PBMsgQueryRspInstrumentInfo::clear_has_shortmarginratio() {
-  _has_bits_[0] &= ~0x02000000u;
-}
 inline void PBMsgQueryRspInstrumentInfo::clear_shortmarginratio() {
   shortmarginratio_ = 0;
-  clear_has_shortmarginratio();
 }
 inline double PBMsgQueryRspInstrumentInfo::shortmarginratio() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ShortMarginRatio)
   return shortmarginratio_;
 }
 inline void PBMsgQueryRspInstrumentInfo::set_shortmarginratio(double value) {
-  set_has_shortmarginratio();
+  
   shortmarginratio_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspInstrumentInfo.ShortMarginRatio)
 }
 
 // optional string MaxMarginSideAlgorithm = 27;
-inline bool PBMsgQueryRspInstrumentInfo::has_maxmarginsidealgorithm() const {
-  return (_has_bits_[0] & 0x04000000u) != 0;
-}
-inline void PBMsgQueryRspInstrumentInfo::set_has_maxmarginsidealgorithm() {
-  _has_bits_[0] |= 0x04000000u;
-}
-inline void PBMsgQueryRspInstrumentInfo::clear_has_maxmarginsidealgorithm() {
-  _has_bits_[0] &= ~0x04000000u;
-}
 inline void PBMsgQueryRspInstrumentInfo::clear_maxmarginsidealgorithm() {
   maxmarginsidealgorithm_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_maxmarginsidealgorithm();
 }
 inline const ::std::string& PBMsgQueryRspInstrumentInfo::maxmarginsidealgorithm() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspInstrumentInfo.MaxMarginSideAlgorithm)
   return maxmarginsidealgorithm_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspInstrumentInfo::set_maxmarginsidealgorithm(const ::std::string& value) {
-  set_has_maxmarginsidealgorithm();
+  
   maxmarginsidealgorithm_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspInstrumentInfo.MaxMarginSideAlgorithm)
 }
 inline void PBMsgQueryRspInstrumentInfo::set_maxmarginsidealgorithm(const char* value) {
-  set_has_maxmarginsidealgorithm();
+  
   maxmarginsidealgorithm_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryRspInstrumentInfo.MaxMarginSideAlgorithm)
 }
 inline void PBMsgQueryRspInstrumentInfo::set_maxmarginsidealgorithm(const char* value, size_t size) {
-  set_has_maxmarginsidealgorithm();
+  
   maxmarginsidealgorithm_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryRspInstrumentInfo.MaxMarginSideAlgorithm)
 }
 inline ::std::string* PBMsgQueryRspInstrumentInfo::mutable_maxmarginsidealgorithm() {
-  set_has_maxmarginsidealgorithm();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryRspInstrumentInfo.MaxMarginSideAlgorithm)
   return maxmarginsidealgorithm_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryRspInstrumentInfo::release_maxmarginsidealgorithm() {
-  clear_has_maxmarginsidealgorithm();
+  
   return maxmarginsidealgorithm_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspInstrumentInfo::set_allocated_maxmarginsidealgorithm(::std::string* maxmarginsidealgorithm) {
   if (maxmarginsidealgorithm != NULL) {
-    set_has_maxmarginsidealgorithm();
+    
   } else {
-    clear_has_maxmarginsidealgorithm();
+    
   }
   maxmarginsidealgorithm_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), maxmarginsidealgorithm);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryRspInstrumentInfo.MaxMarginSideAlgorithm)
@@ -8590,449 +6887,359 @@ inline void PBMsgQueryRspInstrumentInfo::set_allocated_maxmarginsidealgorithm(::
 // PBMsgQueryReqOrder
 
 // optional string BrokerID = 2;
-inline bool PBMsgQueryReqOrder::has_brokerid() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBMsgQueryReqOrder::set_has_brokerid() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBMsgQueryReqOrder::clear_has_brokerid() {
-  _has_bits_[0] &= ~0x00000001u;
-}
 inline void PBMsgQueryReqOrder::clear_brokerid() {
   brokerid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_brokerid();
 }
 inline const ::std::string& PBMsgQueryReqOrder::brokerid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryReqOrder.BrokerID)
   return brokerid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqOrder::set_brokerid(const ::std::string& value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryReqOrder.BrokerID)
 }
 inline void PBMsgQueryReqOrder::set_brokerid(const char* value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryReqOrder.BrokerID)
 }
 inline void PBMsgQueryReqOrder::set_brokerid(const char* value, size_t size) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryReqOrder.BrokerID)
 }
 inline ::std::string* PBMsgQueryReqOrder::mutable_brokerid() {
-  set_has_brokerid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryReqOrder.BrokerID)
   return brokerid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryReqOrder::release_brokerid() {
-  clear_has_brokerid();
+  
   return brokerid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqOrder::set_allocated_brokerid(::std::string* brokerid) {
   if (brokerid != NULL) {
-    set_has_brokerid();
+    
   } else {
-    clear_has_brokerid();
+    
   }
   brokerid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), brokerid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryReqOrder.BrokerID)
 }
 
 // optional string InvestorID = 3;
-inline bool PBMsgQueryReqOrder::has_investorid() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBMsgQueryReqOrder::set_has_investorid() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBMsgQueryReqOrder::clear_has_investorid() {
-  _has_bits_[0] &= ~0x00000002u;
-}
 inline void PBMsgQueryReqOrder::clear_investorid() {
   investorid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_investorid();
 }
 inline const ::std::string& PBMsgQueryReqOrder::investorid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryReqOrder.InvestorID)
   return investorid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqOrder::set_investorid(const ::std::string& value) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryReqOrder.InvestorID)
 }
 inline void PBMsgQueryReqOrder::set_investorid(const char* value) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryReqOrder.InvestorID)
 }
 inline void PBMsgQueryReqOrder::set_investorid(const char* value, size_t size) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryReqOrder.InvestorID)
 }
 inline ::std::string* PBMsgQueryReqOrder::mutable_investorid() {
-  set_has_investorid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryReqOrder.InvestorID)
   return investorid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryReqOrder::release_investorid() {
-  clear_has_investorid();
+  
   return investorid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqOrder::set_allocated_investorid(::std::string* investorid) {
   if (investorid != NULL) {
-    set_has_investorid();
+    
   } else {
-    clear_has_investorid();
+    
   }
   investorid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), investorid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryReqOrder.InvestorID)
 }
 
 // optional string InstrumentID = 4;
-inline bool PBMsgQueryReqOrder::has_instrumentid() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBMsgQueryReqOrder::set_has_instrumentid() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBMsgQueryReqOrder::clear_has_instrumentid() {
-  _has_bits_[0] &= ~0x00000004u;
-}
 inline void PBMsgQueryReqOrder::clear_instrumentid() {
   instrumentid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_instrumentid();
 }
 inline const ::std::string& PBMsgQueryReqOrder::instrumentid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryReqOrder.InstrumentID)
   return instrumentid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqOrder::set_instrumentid(const ::std::string& value) {
-  set_has_instrumentid();
+  
   instrumentid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryReqOrder.InstrumentID)
 }
 inline void PBMsgQueryReqOrder::set_instrumentid(const char* value) {
-  set_has_instrumentid();
+  
   instrumentid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryReqOrder.InstrumentID)
 }
 inline void PBMsgQueryReqOrder::set_instrumentid(const char* value, size_t size) {
-  set_has_instrumentid();
+  
   instrumentid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryReqOrder.InstrumentID)
 }
 inline ::std::string* PBMsgQueryReqOrder::mutable_instrumentid() {
-  set_has_instrumentid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryReqOrder.InstrumentID)
   return instrumentid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryReqOrder::release_instrumentid() {
-  clear_has_instrumentid();
+  
   return instrumentid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqOrder::set_allocated_instrumentid(::std::string* instrumentid) {
   if (instrumentid != NULL) {
-    set_has_instrumentid();
+    
   } else {
-    clear_has_instrumentid();
+    
   }
   instrumentid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), instrumentid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryReqOrder.InstrumentID)
 }
 
 // optional string ExchangeID = 5;
-inline bool PBMsgQueryReqOrder::has_exchangeid() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void PBMsgQueryReqOrder::set_has_exchangeid() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void PBMsgQueryReqOrder::clear_has_exchangeid() {
-  _has_bits_[0] &= ~0x00000008u;
-}
 inline void PBMsgQueryReqOrder::clear_exchangeid() {
   exchangeid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_exchangeid();
 }
 inline const ::std::string& PBMsgQueryReqOrder::exchangeid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryReqOrder.ExchangeID)
   return exchangeid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqOrder::set_exchangeid(const ::std::string& value) {
-  set_has_exchangeid();
+  
   exchangeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryReqOrder.ExchangeID)
 }
 inline void PBMsgQueryReqOrder::set_exchangeid(const char* value) {
-  set_has_exchangeid();
+  
   exchangeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryReqOrder.ExchangeID)
 }
 inline void PBMsgQueryReqOrder::set_exchangeid(const char* value, size_t size) {
-  set_has_exchangeid();
+  
   exchangeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryReqOrder.ExchangeID)
 }
 inline ::std::string* PBMsgQueryReqOrder::mutable_exchangeid() {
-  set_has_exchangeid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryReqOrder.ExchangeID)
   return exchangeid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryReqOrder::release_exchangeid() {
-  clear_has_exchangeid();
+  
   return exchangeid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqOrder::set_allocated_exchangeid(::std::string* exchangeid) {
   if (exchangeid != NULL) {
-    set_has_exchangeid();
+    
   } else {
-    clear_has_exchangeid();
+    
   }
   exchangeid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), exchangeid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryReqOrder.ExchangeID)
 }
 
 // optional string OrderSysID = 6;
-inline bool PBMsgQueryReqOrder::has_ordersysid() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void PBMsgQueryReqOrder::set_has_ordersysid() {
-  _has_bits_[0] |= 0x00000010u;
-}
-inline void PBMsgQueryReqOrder::clear_has_ordersysid() {
-  _has_bits_[0] &= ~0x00000010u;
-}
 inline void PBMsgQueryReqOrder::clear_ordersysid() {
   ordersysid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_ordersysid();
 }
 inline const ::std::string& PBMsgQueryReqOrder::ordersysid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryReqOrder.OrderSysID)
   return ordersysid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqOrder::set_ordersysid(const ::std::string& value) {
-  set_has_ordersysid();
+  
   ordersysid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryReqOrder.OrderSysID)
 }
 inline void PBMsgQueryReqOrder::set_ordersysid(const char* value) {
-  set_has_ordersysid();
+  
   ordersysid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryReqOrder.OrderSysID)
 }
 inline void PBMsgQueryReqOrder::set_ordersysid(const char* value, size_t size) {
-  set_has_ordersysid();
+  
   ordersysid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryReqOrder.OrderSysID)
 }
 inline ::std::string* PBMsgQueryReqOrder::mutable_ordersysid() {
-  set_has_ordersysid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryReqOrder.OrderSysID)
   return ordersysid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryReqOrder::release_ordersysid() {
-  clear_has_ordersysid();
+  
   return ordersysid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqOrder::set_allocated_ordersysid(::std::string* ordersysid) {
   if (ordersysid != NULL) {
-    set_has_ordersysid();
+    
   } else {
-    clear_has_ordersysid();
+    
   }
   ordersysid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ordersysid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryReqOrder.OrderSysID)
 }
 
 // optional string InsertTimeStart = 7;
-inline bool PBMsgQueryReqOrder::has_inserttimestart() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
-}
-inline void PBMsgQueryReqOrder::set_has_inserttimestart() {
-  _has_bits_[0] |= 0x00000020u;
-}
-inline void PBMsgQueryReqOrder::clear_has_inserttimestart() {
-  _has_bits_[0] &= ~0x00000020u;
-}
 inline void PBMsgQueryReqOrder::clear_inserttimestart() {
   inserttimestart_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_inserttimestart();
 }
 inline const ::std::string& PBMsgQueryReqOrder::inserttimestart() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryReqOrder.InsertTimeStart)
   return inserttimestart_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqOrder::set_inserttimestart(const ::std::string& value) {
-  set_has_inserttimestart();
+  
   inserttimestart_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryReqOrder.InsertTimeStart)
 }
 inline void PBMsgQueryReqOrder::set_inserttimestart(const char* value) {
-  set_has_inserttimestart();
+  
   inserttimestart_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryReqOrder.InsertTimeStart)
 }
 inline void PBMsgQueryReqOrder::set_inserttimestart(const char* value, size_t size) {
-  set_has_inserttimestart();
+  
   inserttimestart_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryReqOrder.InsertTimeStart)
 }
 inline ::std::string* PBMsgQueryReqOrder::mutable_inserttimestart() {
-  set_has_inserttimestart();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryReqOrder.InsertTimeStart)
   return inserttimestart_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryReqOrder::release_inserttimestart() {
-  clear_has_inserttimestart();
+  
   return inserttimestart_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqOrder::set_allocated_inserttimestart(::std::string* inserttimestart) {
   if (inserttimestart != NULL) {
-    set_has_inserttimestart();
+    
   } else {
-    clear_has_inserttimestart();
+    
   }
   inserttimestart_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), inserttimestart);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryReqOrder.InsertTimeStart)
 }
 
 // optional string InsertTimeEnd = 8;
-inline bool PBMsgQueryReqOrder::has_inserttimeend() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
-}
-inline void PBMsgQueryReqOrder::set_has_inserttimeend() {
-  _has_bits_[0] |= 0x00000040u;
-}
-inline void PBMsgQueryReqOrder::clear_has_inserttimeend() {
-  _has_bits_[0] &= ~0x00000040u;
-}
 inline void PBMsgQueryReqOrder::clear_inserttimeend() {
   inserttimeend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_inserttimeend();
 }
 inline const ::std::string& PBMsgQueryReqOrder::inserttimeend() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryReqOrder.InsertTimeEnd)
   return inserttimeend_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqOrder::set_inserttimeend(const ::std::string& value) {
-  set_has_inserttimeend();
+  
   inserttimeend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryReqOrder.InsertTimeEnd)
 }
 inline void PBMsgQueryReqOrder::set_inserttimeend(const char* value) {
-  set_has_inserttimeend();
+  
   inserttimeend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryReqOrder.InsertTimeEnd)
 }
 inline void PBMsgQueryReqOrder::set_inserttimeend(const char* value, size_t size) {
-  set_has_inserttimeend();
+  
   inserttimeend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryReqOrder.InsertTimeEnd)
 }
 inline ::std::string* PBMsgQueryReqOrder::mutable_inserttimeend() {
-  set_has_inserttimeend();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryReqOrder.InsertTimeEnd)
   return inserttimeend_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryReqOrder::release_inserttimeend() {
-  clear_has_inserttimeend();
+  
   return inserttimeend_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqOrder::set_allocated_inserttimeend(::std::string* inserttimeend) {
   if (inserttimeend != NULL) {
-    set_has_inserttimeend();
+    
   } else {
-    clear_has_inserttimeend();
+    
   }
   inserttimeend_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), inserttimeend);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryReqOrder.InsertTimeEnd)
 }
 
 // optional string TradingDay = 9;
-inline bool PBMsgQueryReqOrder::has_tradingday() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
-}
-inline void PBMsgQueryReqOrder::set_has_tradingday() {
-  _has_bits_[0] |= 0x00000080u;
-}
-inline void PBMsgQueryReqOrder::clear_has_tradingday() {
-  _has_bits_[0] &= ~0x00000080u;
-}
 inline void PBMsgQueryReqOrder::clear_tradingday() {
   tradingday_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_tradingday();
 }
 inline const ::std::string& PBMsgQueryReqOrder::tradingday() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryReqOrder.TradingDay)
   return tradingday_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqOrder::set_tradingday(const ::std::string& value) {
-  set_has_tradingday();
+  
   tradingday_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryReqOrder.TradingDay)
 }
 inline void PBMsgQueryReqOrder::set_tradingday(const char* value) {
-  set_has_tradingday();
+  
   tradingday_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryReqOrder.TradingDay)
 }
 inline void PBMsgQueryReqOrder::set_tradingday(const char* value, size_t size) {
-  set_has_tradingday();
+  
   tradingday_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryReqOrder.TradingDay)
 }
 inline ::std::string* PBMsgQueryReqOrder::mutable_tradingday() {
-  set_has_tradingday();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryReqOrder.TradingDay)
   return tradingday_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryReqOrder::release_tradingday() {
-  clear_has_tradingday();
+  
   return tradingday_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqOrder::set_allocated_tradingday(::std::string* tradingday) {
   if (tradingday != NULL) {
-    set_has_tradingday();
+    
   } else {
-    clear_has_tradingday();
+    
   }
   tradingday_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), tradingday);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryReqOrder.TradingDay)
 }
 
 // optional int32 SettlementID = 10;
-inline bool PBMsgQueryReqOrder::has_settlementid() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
-}
-inline void PBMsgQueryReqOrder::set_has_settlementid() {
-  _has_bits_[0] |= 0x00000100u;
-}
-inline void PBMsgQueryReqOrder::clear_has_settlementid() {
-  _has_bits_[0] &= ~0x00000100u;
-}
 inline void PBMsgQueryReqOrder::clear_settlementid() {
   settlementid_ = 0;
-  clear_has_settlementid();
 }
 inline ::google::protobuf::int32 PBMsgQueryReqOrder::settlementid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryReqOrder.SettlementID)
   return settlementid_;
 }
 inline void PBMsgQueryReqOrder::set_settlementid(::google::protobuf::int32 value) {
-  set_has_settlementid();
+  
   settlementid_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryReqOrder.SettlementID)
 }
@@ -9042,371 +7249,301 @@ inline void PBMsgQueryReqOrder::set_settlementid(::google::protobuf::int32 value
 // PBMsgQueryReqTrade
 
 // optional string BrokerID = 2;
-inline bool PBMsgQueryReqTrade::has_brokerid() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBMsgQueryReqTrade::set_has_brokerid() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBMsgQueryReqTrade::clear_has_brokerid() {
-  _has_bits_[0] &= ~0x00000001u;
-}
 inline void PBMsgQueryReqTrade::clear_brokerid() {
   brokerid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_brokerid();
 }
 inline const ::std::string& PBMsgQueryReqTrade::brokerid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryReqTrade.BrokerID)
   return brokerid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqTrade::set_brokerid(const ::std::string& value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryReqTrade.BrokerID)
 }
 inline void PBMsgQueryReqTrade::set_brokerid(const char* value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryReqTrade.BrokerID)
 }
 inline void PBMsgQueryReqTrade::set_brokerid(const char* value, size_t size) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryReqTrade.BrokerID)
 }
 inline ::std::string* PBMsgQueryReqTrade::mutable_brokerid() {
-  set_has_brokerid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryReqTrade.BrokerID)
   return brokerid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryReqTrade::release_brokerid() {
-  clear_has_brokerid();
+  
   return brokerid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqTrade::set_allocated_brokerid(::std::string* brokerid) {
   if (brokerid != NULL) {
-    set_has_brokerid();
+    
   } else {
-    clear_has_brokerid();
+    
   }
   brokerid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), brokerid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryReqTrade.BrokerID)
 }
 
 // optional string InvestorID = 3;
-inline bool PBMsgQueryReqTrade::has_investorid() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBMsgQueryReqTrade::set_has_investorid() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBMsgQueryReqTrade::clear_has_investorid() {
-  _has_bits_[0] &= ~0x00000002u;
-}
 inline void PBMsgQueryReqTrade::clear_investorid() {
   investorid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_investorid();
 }
 inline const ::std::string& PBMsgQueryReqTrade::investorid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryReqTrade.InvestorID)
   return investorid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqTrade::set_investorid(const ::std::string& value) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryReqTrade.InvestorID)
 }
 inline void PBMsgQueryReqTrade::set_investorid(const char* value) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryReqTrade.InvestorID)
 }
 inline void PBMsgQueryReqTrade::set_investorid(const char* value, size_t size) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryReqTrade.InvestorID)
 }
 inline ::std::string* PBMsgQueryReqTrade::mutable_investorid() {
-  set_has_investorid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryReqTrade.InvestorID)
   return investorid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryReqTrade::release_investorid() {
-  clear_has_investorid();
+  
   return investorid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqTrade::set_allocated_investorid(::std::string* investorid) {
   if (investorid != NULL) {
-    set_has_investorid();
+    
   } else {
-    clear_has_investorid();
+    
   }
   investorid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), investorid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryReqTrade.InvestorID)
 }
 
 // optional string InstrumentID = 4;
-inline bool PBMsgQueryReqTrade::has_instrumentid() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBMsgQueryReqTrade::set_has_instrumentid() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBMsgQueryReqTrade::clear_has_instrumentid() {
-  _has_bits_[0] &= ~0x00000004u;
-}
 inline void PBMsgQueryReqTrade::clear_instrumentid() {
   instrumentid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_instrumentid();
 }
 inline const ::std::string& PBMsgQueryReqTrade::instrumentid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryReqTrade.InstrumentID)
   return instrumentid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqTrade::set_instrumentid(const ::std::string& value) {
-  set_has_instrumentid();
+  
   instrumentid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryReqTrade.InstrumentID)
 }
 inline void PBMsgQueryReqTrade::set_instrumentid(const char* value) {
-  set_has_instrumentid();
+  
   instrumentid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryReqTrade.InstrumentID)
 }
 inline void PBMsgQueryReqTrade::set_instrumentid(const char* value, size_t size) {
-  set_has_instrumentid();
+  
   instrumentid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryReqTrade.InstrumentID)
 }
 inline ::std::string* PBMsgQueryReqTrade::mutable_instrumentid() {
-  set_has_instrumentid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryReqTrade.InstrumentID)
   return instrumentid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryReqTrade::release_instrumentid() {
-  clear_has_instrumentid();
+  
   return instrumentid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqTrade::set_allocated_instrumentid(::std::string* instrumentid) {
   if (instrumentid != NULL) {
-    set_has_instrumentid();
+    
   } else {
-    clear_has_instrumentid();
+    
   }
   instrumentid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), instrumentid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryReqTrade.InstrumentID)
 }
 
 // optional string ExchangeID = 5;
-inline bool PBMsgQueryReqTrade::has_exchangeid() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void PBMsgQueryReqTrade::set_has_exchangeid() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void PBMsgQueryReqTrade::clear_has_exchangeid() {
-  _has_bits_[0] &= ~0x00000008u;
-}
 inline void PBMsgQueryReqTrade::clear_exchangeid() {
   exchangeid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_exchangeid();
 }
 inline const ::std::string& PBMsgQueryReqTrade::exchangeid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryReqTrade.ExchangeID)
   return exchangeid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqTrade::set_exchangeid(const ::std::string& value) {
-  set_has_exchangeid();
+  
   exchangeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryReqTrade.ExchangeID)
 }
 inline void PBMsgQueryReqTrade::set_exchangeid(const char* value) {
-  set_has_exchangeid();
+  
   exchangeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryReqTrade.ExchangeID)
 }
 inline void PBMsgQueryReqTrade::set_exchangeid(const char* value, size_t size) {
-  set_has_exchangeid();
+  
   exchangeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryReqTrade.ExchangeID)
 }
 inline ::std::string* PBMsgQueryReqTrade::mutable_exchangeid() {
-  set_has_exchangeid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryReqTrade.ExchangeID)
   return exchangeid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryReqTrade::release_exchangeid() {
-  clear_has_exchangeid();
+  
   return exchangeid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqTrade::set_allocated_exchangeid(::std::string* exchangeid) {
   if (exchangeid != NULL) {
-    set_has_exchangeid();
+    
   } else {
-    clear_has_exchangeid();
+    
   }
   exchangeid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), exchangeid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryReqTrade.ExchangeID)
 }
 
 // optional string TradeID = 6;
-inline bool PBMsgQueryReqTrade::has_tradeid() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void PBMsgQueryReqTrade::set_has_tradeid() {
-  _has_bits_[0] |= 0x00000010u;
-}
-inline void PBMsgQueryReqTrade::clear_has_tradeid() {
-  _has_bits_[0] &= ~0x00000010u;
-}
 inline void PBMsgQueryReqTrade::clear_tradeid() {
   tradeid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_tradeid();
 }
 inline const ::std::string& PBMsgQueryReqTrade::tradeid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryReqTrade.TradeID)
   return tradeid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqTrade::set_tradeid(const ::std::string& value) {
-  set_has_tradeid();
+  
   tradeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryReqTrade.TradeID)
 }
 inline void PBMsgQueryReqTrade::set_tradeid(const char* value) {
-  set_has_tradeid();
+  
   tradeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryReqTrade.TradeID)
 }
 inline void PBMsgQueryReqTrade::set_tradeid(const char* value, size_t size) {
-  set_has_tradeid();
+  
   tradeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryReqTrade.TradeID)
 }
 inline ::std::string* PBMsgQueryReqTrade::mutable_tradeid() {
-  set_has_tradeid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryReqTrade.TradeID)
   return tradeid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryReqTrade::release_tradeid() {
-  clear_has_tradeid();
+  
   return tradeid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqTrade::set_allocated_tradeid(::std::string* tradeid) {
   if (tradeid != NULL) {
-    set_has_tradeid();
+    
   } else {
-    clear_has_tradeid();
+    
   }
   tradeid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), tradeid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryReqTrade.TradeID)
 }
 
 // optional string TradeTimeStart = 7;
-inline bool PBMsgQueryReqTrade::has_tradetimestart() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
-}
-inline void PBMsgQueryReqTrade::set_has_tradetimestart() {
-  _has_bits_[0] |= 0x00000020u;
-}
-inline void PBMsgQueryReqTrade::clear_has_tradetimestart() {
-  _has_bits_[0] &= ~0x00000020u;
-}
 inline void PBMsgQueryReqTrade::clear_tradetimestart() {
   tradetimestart_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_tradetimestart();
 }
 inline const ::std::string& PBMsgQueryReqTrade::tradetimestart() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryReqTrade.TradeTimeStart)
   return tradetimestart_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqTrade::set_tradetimestart(const ::std::string& value) {
-  set_has_tradetimestart();
+  
   tradetimestart_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryReqTrade.TradeTimeStart)
 }
 inline void PBMsgQueryReqTrade::set_tradetimestart(const char* value) {
-  set_has_tradetimestart();
+  
   tradetimestart_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryReqTrade.TradeTimeStart)
 }
 inline void PBMsgQueryReqTrade::set_tradetimestart(const char* value, size_t size) {
-  set_has_tradetimestart();
+  
   tradetimestart_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryReqTrade.TradeTimeStart)
 }
 inline ::std::string* PBMsgQueryReqTrade::mutable_tradetimestart() {
-  set_has_tradetimestart();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryReqTrade.TradeTimeStart)
   return tradetimestart_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryReqTrade::release_tradetimestart() {
-  clear_has_tradetimestart();
+  
   return tradetimestart_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqTrade::set_allocated_tradetimestart(::std::string* tradetimestart) {
   if (tradetimestart != NULL) {
-    set_has_tradetimestart();
+    
   } else {
-    clear_has_tradetimestart();
+    
   }
   tradetimestart_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), tradetimestart);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryReqTrade.TradeTimeStart)
 }
 
 // optional string TradeTimeEnd = 8;
-inline bool PBMsgQueryReqTrade::has_tradetimeend() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
-}
-inline void PBMsgQueryReqTrade::set_has_tradetimeend() {
-  _has_bits_[0] |= 0x00000040u;
-}
-inline void PBMsgQueryReqTrade::clear_has_tradetimeend() {
-  _has_bits_[0] &= ~0x00000040u;
-}
 inline void PBMsgQueryReqTrade::clear_tradetimeend() {
   tradetimeend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_tradetimeend();
 }
 inline const ::std::string& PBMsgQueryReqTrade::tradetimeend() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryReqTrade.TradeTimeEnd)
   return tradetimeend_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqTrade::set_tradetimeend(const ::std::string& value) {
-  set_has_tradetimeend();
+  
   tradetimeend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryReqTrade.TradeTimeEnd)
 }
 inline void PBMsgQueryReqTrade::set_tradetimeend(const char* value) {
-  set_has_tradetimeend();
+  
   tradetimeend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryReqTrade.TradeTimeEnd)
 }
 inline void PBMsgQueryReqTrade::set_tradetimeend(const char* value, size_t size) {
-  set_has_tradetimeend();
+  
   tradetimeend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryReqTrade.TradeTimeEnd)
 }
 inline ::std::string* PBMsgQueryReqTrade::mutable_tradetimeend() {
-  set_has_tradetimeend();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryReqTrade.TradeTimeEnd)
   return tradetimeend_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryReqTrade::release_tradetimeend() {
-  clear_has_tradetimeend();
+  
   return tradetimeend_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqTrade::set_allocated_tradetimeend(::std::string* tradetimeend) {
   if (tradetimeend != NULL) {
-    set_has_tradetimeend();
+    
   } else {
-    clear_has_tradetimeend();
+    
   }
   tradetimeend_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), tradetimeend);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryReqTrade.TradeTimeEnd)
@@ -9417,159 +7554,129 @@ inline void PBMsgQueryReqTrade::set_allocated_tradetimeend(::std::string* tradet
 // PBMsgQueryReqPosition
 
 // optional string BrokerID = 2;
-inline bool PBMsgQueryReqPosition::has_brokerid() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBMsgQueryReqPosition::set_has_brokerid() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBMsgQueryReqPosition::clear_has_brokerid() {
-  _has_bits_[0] &= ~0x00000001u;
-}
 inline void PBMsgQueryReqPosition::clear_brokerid() {
   brokerid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_brokerid();
 }
 inline const ::std::string& PBMsgQueryReqPosition::brokerid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryReqPosition.BrokerID)
   return brokerid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqPosition::set_brokerid(const ::std::string& value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryReqPosition.BrokerID)
 }
 inline void PBMsgQueryReqPosition::set_brokerid(const char* value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryReqPosition.BrokerID)
 }
 inline void PBMsgQueryReqPosition::set_brokerid(const char* value, size_t size) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryReqPosition.BrokerID)
 }
 inline ::std::string* PBMsgQueryReqPosition::mutable_brokerid() {
-  set_has_brokerid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryReqPosition.BrokerID)
   return brokerid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryReqPosition::release_brokerid() {
-  clear_has_brokerid();
+  
   return brokerid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqPosition::set_allocated_brokerid(::std::string* brokerid) {
   if (brokerid != NULL) {
-    set_has_brokerid();
+    
   } else {
-    clear_has_brokerid();
+    
   }
   brokerid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), brokerid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryReqPosition.BrokerID)
 }
 
 // optional string InvestorID = 3;
-inline bool PBMsgQueryReqPosition::has_investorid() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBMsgQueryReqPosition::set_has_investorid() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBMsgQueryReqPosition::clear_has_investorid() {
-  _has_bits_[0] &= ~0x00000002u;
-}
 inline void PBMsgQueryReqPosition::clear_investorid() {
   investorid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_investorid();
 }
 inline const ::std::string& PBMsgQueryReqPosition::investorid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryReqPosition.InvestorID)
   return investorid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqPosition::set_investorid(const ::std::string& value) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryReqPosition.InvestorID)
 }
 inline void PBMsgQueryReqPosition::set_investorid(const char* value) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryReqPosition.InvestorID)
 }
 inline void PBMsgQueryReqPosition::set_investorid(const char* value, size_t size) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryReqPosition.InvestorID)
 }
 inline ::std::string* PBMsgQueryReqPosition::mutable_investorid() {
-  set_has_investorid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryReqPosition.InvestorID)
   return investorid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryReqPosition::release_investorid() {
-  clear_has_investorid();
+  
   return investorid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqPosition::set_allocated_investorid(::std::string* investorid) {
   if (investorid != NULL) {
-    set_has_investorid();
+    
   } else {
-    clear_has_investorid();
+    
   }
   investorid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), investorid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryReqPosition.InvestorID)
 }
 
 // optional string InstrumentID = 4;
-inline bool PBMsgQueryReqPosition::has_instrumentid() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBMsgQueryReqPosition::set_has_instrumentid() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBMsgQueryReqPosition::clear_has_instrumentid() {
-  _has_bits_[0] &= ~0x00000004u;
-}
 inline void PBMsgQueryReqPosition::clear_instrumentid() {
   instrumentid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_instrumentid();
 }
 inline const ::std::string& PBMsgQueryReqPosition::instrumentid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryReqPosition.InstrumentID)
   return instrumentid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqPosition::set_instrumentid(const ::std::string& value) {
-  set_has_instrumentid();
+  
   instrumentid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryReqPosition.InstrumentID)
 }
 inline void PBMsgQueryReqPosition::set_instrumentid(const char* value) {
-  set_has_instrumentid();
+  
   instrumentid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryReqPosition.InstrumentID)
 }
 inline void PBMsgQueryReqPosition::set_instrumentid(const char* value, size_t size) {
-  set_has_instrumentid();
+  
   instrumentid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryReqPosition.InstrumentID)
 }
 inline ::std::string* PBMsgQueryReqPosition::mutable_instrumentid() {
-  set_has_instrumentid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryReqPosition.InstrumentID)
   return instrumentid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryReqPosition::release_instrumentid() {
-  clear_has_instrumentid();
+  
   return instrumentid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqPosition::set_allocated_instrumentid(::std::string* instrumentid) {
   if (instrumentid != NULL) {
-    set_has_instrumentid();
+    
   } else {
-    clear_has_instrumentid();
+    
   }
   instrumentid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), instrumentid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryReqPosition.InstrumentID)
@@ -9580,1188 +7687,778 @@ inline void PBMsgQueryReqPosition::set_allocated_instrumentid(::std::string* ins
 // PBMsgQueryRspPosition
 
 // optional int32 EOF = 1;
-inline bool PBMsgQueryRspPosition::has_eof() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_eof() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBMsgQueryRspPosition::clear_has_eof() {
-  _has_bits_[0] &= ~0x00000001u;
-}
 inline void PBMsgQueryRspPosition::clear_eof() {
   eof_ = 0;
-  clear_has_eof();
 }
 inline ::google::protobuf::int32 PBMsgQueryRspPosition::eof() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.EOF)
   return eof_;
 }
 inline void PBMsgQueryRspPosition::set_eof(::google::protobuf::int32 value) {
-  set_has_eof();
+  
   eof_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.EOF)
 }
 
 // optional string InstrumentID = 2;
-inline bool PBMsgQueryRspPosition::has_instrumentid() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_instrumentid() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBMsgQueryRspPosition::clear_has_instrumentid() {
-  _has_bits_[0] &= ~0x00000002u;
-}
 inline void PBMsgQueryRspPosition::clear_instrumentid() {
   instrumentid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_instrumentid();
 }
 inline const ::std::string& PBMsgQueryRspPosition::instrumentid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.InstrumentID)
   return instrumentid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspPosition::set_instrumentid(const ::std::string& value) {
-  set_has_instrumentid();
+  
   instrumentid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.InstrumentID)
 }
 inline void PBMsgQueryRspPosition::set_instrumentid(const char* value) {
-  set_has_instrumentid();
+  
   instrumentid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryRspPosition.InstrumentID)
 }
 inline void PBMsgQueryRspPosition::set_instrumentid(const char* value, size_t size) {
-  set_has_instrumentid();
+  
   instrumentid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryRspPosition.InstrumentID)
 }
 inline ::std::string* PBMsgQueryRspPosition::mutable_instrumentid() {
-  set_has_instrumentid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryRspPosition.InstrumentID)
   return instrumentid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryRspPosition::release_instrumentid() {
-  clear_has_instrumentid();
+  
   return instrumentid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspPosition::set_allocated_instrumentid(::std::string* instrumentid) {
   if (instrumentid != NULL) {
-    set_has_instrumentid();
+    
   } else {
-    clear_has_instrumentid();
+    
   }
   instrumentid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), instrumentid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryRspPosition.InstrumentID)
 }
 
 // optional string BrokerID = 3;
-inline bool PBMsgQueryRspPosition::has_brokerid() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_brokerid() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBMsgQueryRspPosition::clear_has_brokerid() {
-  _has_bits_[0] &= ~0x00000004u;
-}
 inline void PBMsgQueryRspPosition::clear_brokerid() {
   brokerid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_brokerid();
 }
 inline const ::std::string& PBMsgQueryRspPosition::brokerid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.BrokerID)
   return brokerid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspPosition::set_brokerid(const ::std::string& value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.BrokerID)
 }
 inline void PBMsgQueryRspPosition::set_brokerid(const char* value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryRspPosition.BrokerID)
 }
 inline void PBMsgQueryRspPosition::set_brokerid(const char* value, size_t size) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryRspPosition.BrokerID)
 }
 inline ::std::string* PBMsgQueryRspPosition::mutable_brokerid() {
-  set_has_brokerid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryRspPosition.BrokerID)
   return brokerid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryRspPosition::release_brokerid() {
-  clear_has_brokerid();
+  
   return brokerid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspPosition::set_allocated_brokerid(::std::string* brokerid) {
   if (brokerid != NULL) {
-    set_has_brokerid();
+    
   } else {
-    clear_has_brokerid();
+    
   }
   brokerid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), brokerid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryRspPosition.BrokerID)
 }
 
 // optional string InvestorID = 4;
-inline bool PBMsgQueryRspPosition::has_investorid() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_investorid() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void PBMsgQueryRspPosition::clear_has_investorid() {
-  _has_bits_[0] &= ~0x00000008u;
-}
 inline void PBMsgQueryRspPosition::clear_investorid() {
   investorid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_investorid();
 }
 inline const ::std::string& PBMsgQueryRspPosition::investorid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.InvestorID)
   return investorid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspPosition::set_investorid(const ::std::string& value) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.InvestorID)
 }
 inline void PBMsgQueryRspPosition::set_investorid(const char* value) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryRspPosition.InvestorID)
 }
 inline void PBMsgQueryRspPosition::set_investorid(const char* value, size_t size) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryRspPosition.InvestorID)
 }
 inline ::std::string* PBMsgQueryRspPosition::mutable_investorid() {
-  set_has_investorid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryRspPosition.InvestorID)
   return investorid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryRspPosition::release_investorid() {
-  clear_has_investorid();
+  
   return investorid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspPosition::set_allocated_investorid(::std::string* investorid) {
   if (investorid != NULL) {
-    set_has_investorid();
+    
   } else {
-    clear_has_investorid();
+    
   }
   investorid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), investorid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryRspPosition.InvestorID)
 }
 
 // optional string PosiDirection = 5;
-inline bool PBMsgQueryRspPosition::has_posidirection() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_posidirection() {
-  _has_bits_[0] |= 0x00000010u;
-}
-inline void PBMsgQueryRspPosition::clear_has_posidirection() {
-  _has_bits_[0] &= ~0x00000010u;
-}
 inline void PBMsgQueryRspPosition::clear_posidirection() {
   posidirection_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_posidirection();
 }
 inline const ::std::string& PBMsgQueryRspPosition::posidirection() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.PosiDirection)
   return posidirection_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspPosition::set_posidirection(const ::std::string& value) {
-  set_has_posidirection();
+  
   posidirection_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.PosiDirection)
 }
 inline void PBMsgQueryRspPosition::set_posidirection(const char* value) {
-  set_has_posidirection();
+  
   posidirection_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryRspPosition.PosiDirection)
 }
 inline void PBMsgQueryRspPosition::set_posidirection(const char* value, size_t size) {
-  set_has_posidirection();
+  
   posidirection_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryRspPosition.PosiDirection)
 }
 inline ::std::string* PBMsgQueryRspPosition::mutable_posidirection() {
-  set_has_posidirection();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryRspPosition.PosiDirection)
   return posidirection_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryRspPosition::release_posidirection() {
-  clear_has_posidirection();
+  
   return posidirection_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspPosition::set_allocated_posidirection(::std::string* posidirection) {
   if (posidirection != NULL) {
-    set_has_posidirection();
+    
   } else {
-    clear_has_posidirection();
+    
   }
   posidirection_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), posidirection);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryRspPosition.PosiDirection)
 }
 
 // optional string HedgeFlag = 6;
-inline bool PBMsgQueryRspPosition::has_hedgeflag() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_hedgeflag() {
-  _has_bits_[0] |= 0x00000020u;
-}
-inline void PBMsgQueryRspPosition::clear_has_hedgeflag() {
-  _has_bits_[0] &= ~0x00000020u;
-}
 inline void PBMsgQueryRspPosition::clear_hedgeflag() {
   hedgeflag_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_hedgeflag();
 }
 inline const ::std::string& PBMsgQueryRspPosition::hedgeflag() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.HedgeFlag)
   return hedgeflag_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspPosition::set_hedgeflag(const ::std::string& value) {
-  set_has_hedgeflag();
+  
   hedgeflag_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.HedgeFlag)
 }
 inline void PBMsgQueryRspPosition::set_hedgeflag(const char* value) {
-  set_has_hedgeflag();
+  
   hedgeflag_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryRspPosition.HedgeFlag)
 }
 inline void PBMsgQueryRspPosition::set_hedgeflag(const char* value, size_t size) {
-  set_has_hedgeflag();
+  
   hedgeflag_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryRspPosition.HedgeFlag)
 }
 inline ::std::string* PBMsgQueryRspPosition::mutable_hedgeflag() {
-  set_has_hedgeflag();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryRspPosition.HedgeFlag)
   return hedgeflag_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryRspPosition::release_hedgeflag() {
-  clear_has_hedgeflag();
+  
   return hedgeflag_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspPosition::set_allocated_hedgeflag(::std::string* hedgeflag) {
   if (hedgeflag != NULL) {
-    set_has_hedgeflag();
+    
   } else {
-    clear_has_hedgeflag();
+    
   }
   hedgeflag_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), hedgeflag);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryRspPosition.HedgeFlag)
 }
 
 // optional string PositionDate = 7;
-inline bool PBMsgQueryRspPosition::has_positiondate() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_positiondate() {
-  _has_bits_[0] |= 0x00000040u;
-}
-inline void PBMsgQueryRspPosition::clear_has_positiondate() {
-  _has_bits_[0] &= ~0x00000040u;
-}
 inline void PBMsgQueryRspPosition::clear_positiondate() {
   positiondate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_positiondate();
 }
 inline const ::std::string& PBMsgQueryRspPosition::positiondate() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.PositionDate)
   return positiondate_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspPosition::set_positiondate(const ::std::string& value) {
-  set_has_positiondate();
+  
   positiondate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.PositionDate)
 }
 inline void PBMsgQueryRspPosition::set_positiondate(const char* value) {
-  set_has_positiondate();
+  
   positiondate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryRspPosition.PositionDate)
 }
 inline void PBMsgQueryRspPosition::set_positiondate(const char* value, size_t size) {
-  set_has_positiondate();
+  
   positiondate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryRspPosition.PositionDate)
 }
 inline ::std::string* PBMsgQueryRspPosition::mutable_positiondate() {
-  set_has_positiondate();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryRspPosition.PositionDate)
   return positiondate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryRspPosition::release_positiondate() {
-  clear_has_positiondate();
+  
   return positiondate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspPosition::set_allocated_positiondate(::std::string* positiondate) {
   if (positiondate != NULL) {
-    set_has_positiondate();
+    
   } else {
-    clear_has_positiondate();
+    
   }
   positiondate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), positiondate);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryRspPosition.PositionDate)
 }
 
 // optional int32 YdPosition = 8;
-inline bool PBMsgQueryRspPosition::has_ydposition() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_ydposition() {
-  _has_bits_[0] |= 0x00000080u;
-}
-inline void PBMsgQueryRspPosition::clear_has_ydposition() {
-  _has_bits_[0] &= ~0x00000080u;
-}
 inline void PBMsgQueryRspPosition::clear_ydposition() {
   ydposition_ = 0;
-  clear_has_ydposition();
 }
 inline ::google::protobuf::int32 PBMsgQueryRspPosition::ydposition() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.YdPosition)
   return ydposition_;
 }
 inline void PBMsgQueryRspPosition::set_ydposition(::google::protobuf::int32 value) {
-  set_has_ydposition();
+  
   ydposition_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.YdPosition)
 }
 
 // optional int32 Position = 9;
-inline bool PBMsgQueryRspPosition::has_position() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_position() {
-  _has_bits_[0] |= 0x00000100u;
-}
-inline void PBMsgQueryRspPosition::clear_has_position() {
-  _has_bits_[0] &= ~0x00000100u;
-}
 inline void PBMsgQueryRspPosition::clear_position() {
   position_ = 0;
-  clear_has_position();
 }
 inline ::google::protobuf::int32 PBMsgQueryRspPosition::position() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.Position)
   return position_;
 }
 inline void PBMsgQueryRspPosition::set_position(::google::protobuf::int32 value) {
-  set_has_position();
+  
   position_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.Position)
 }
 
 // optional int32 LongFrozen = 10;
-inline bool PBMsgQueryRspPosition::has_longfrozen() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_longfrozen() {
-  _has_bits_[0] |= 0x00000200u;
-}
-inline void PBMsgQueryRspPosition::clear_has_longfrozen() {
-  _has_bits_[0] &= ~0x00000200u;
-}
 inline void PBMsgQueryRspPosition::clear_longfrozen() {
   longfrozen_ = 0;
-  clear_has_longfrozen();
 }
 inline ::google::protobuf::int32 PBMsgQueryRspPosition::longfrozen() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.LongFrozen)
   return longfrozen_;
 }
 inline void PBMsgQueryRspPosition::set_longfrozen(::google::protobuf::int32 value) {
-  set_has_longfrozen();
+  
   longfrozen_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.LongFrozen)
 }
 
 // optional int32 ShortFrozen = 11;
-inline bool PBMsgQueryRspPosition::has_shortfrozen() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_shortfrozen() {
-  _has_bits_[0] |= 0x00000400u;
-}
-inline void PBMsgQueryRspPosition::clear_has_shortfrozen() {
-  _has_bits_[0] &= ~0x00000400u;
-}
 inline void PBMsgQueryRspPosition::clear_shortfrozen() {
   shortfrozen_ = 0;
-  clear_has_shortfrozen();
 }
 inline ::google::protobuf::int32 PBMsgQueryRspPosition::shortfrozen() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.ShortFrozen)
   return shortfrozen_;
 }
 inline void PBMsgQueryRspPosition::set_shortfrozen(::google::protobuf::int32 value) {
-  set_has_shortfrozen();
+  
   shortfrozen_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.ShortFrozen)
 }
 
 // optional double LongFrozenAmount = 12;
-inline bool PBMsgQueryRspPosition::has_longfrozenamount() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_longfrozenamount() {
-  _has_bits_[0] |= 0x00000800u;
-}
-inline void PBMsgQueryRspPosition::clear_has_longfrozenamount() {
-  _has_bits_[0] &= ~0x00000800u;
-}
 inline void PBMsgQueryRspPosition::clear_longfrozenamount() {
   longfrozenamount_ = 0;
-  clear_has_longfrozenamount();
 }
 inline double PBMsgQueryRspPosition::longfrozenamount() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.LongFrozenAmount)
   return longfrozenamount_;
 }
 inline void PBMsgQueryRspPosition::set_longfrozenamount(double value) {
-  set_has_longfrozenamount();
+  
   longfrozenamount_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.LongFrozenAmount)
 }
 
 // optional double ShortFrozenAmount = 13;
-inline bool PBMsgQueryRspPosition::has_shortfrozenamount() const {
-  return (_has_bits_[0] & 0x00001000u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_shortfrozenamount() {
-  _has_bits_[0] |= 0x00001000u;
-}
-inline void PBMsgQueryRspPosition::clear_has_shortfrozenamount() {
-  _has_bits_[0] &= ~0x00001000u;
-}
 inline void PBMsgQueryRspPosition::clear_shortfrozenamount() {
   shortfrozenamount_ = 0;
-  clear_has_shortfrozenamount();
 }
 inline double PBMsgQueryRspPosition::shortfrozenamount() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.ShortFrozenAmount)
   return shortfrozenamount_;
 }
 inline void PBMsgQueryRspPosition::set_shortfrozenamount(double value) {
-  set_has_shortfrozenamount();
+  
   shortfrozenamount_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.ShortFrozenAmount)
 }
 
 // optional int32 OpenVolume = 14;
-inline bool PBMsgQueryRspPosition::has_openvolume() const {
-  return (_has_bits_[0] & 0x00002000u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_openvolume() {
-  _has_bits_[0] |= 0x00002000u;
-}
-inline void PBMsgQueryRspPosition::clear_has_openvolume() {
-  _has_bits_[0] &= ~0x00002000u;
-}
 inline void PBMsgQueryRspPosition::clear_openvolume() {
   openvolume_ = 0;
-  clear_has_openvolume();
 }
 inline ::google::protobuf::int32 PBMsgQueryRspPosition::openvolume() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.OpenVolume)
   return openvolume_;
 }
 inline void PBMsgQueryRspPosition::set_openvolume(::google::protobuf::int32 value) {
-  set_has_openvolume();
+  
   openvolume_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.OpenVolume)
 }
 
 // optional int32 CloseVolume = 15;
-inline bool PBMsgQueryRspPosition::has_closevolume() const {
-  return (_has_bits_[0] & 0x00004000u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_closevolume() {
-  _has_bits_[0] |= 0x00004000u;
-}
-inline void PBMsgQueryRspPosition::clear_has_closevolume() {
-  _has_bits_[0] &= ~0x00004000u;
-}
 inline void PBMsgQueryRspPosition::clear_closevolume() {
   closevolume_ = 0;
-  clear_has_closevolume();
 }
 inline ::google::protobuf::int32 PBMsgQueryRspPosition::closevolume() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.CloseVolume)
   return closevolume_;
 }
 inline void PBMsgQueryRspPosition::set_closevolume(::google::protobuf::int32 value) {
-  set_has_closevolume();
+  
   closevolume_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.CloseVolume)
 }
 
 // optional double OpenAmount = 16;
-inline bool PBMsgQueryRspPosition::has_openamount() const {
-  return (_has_bits_[0] & 0x00008000u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_openamount() {
-  _has_bits_[0] |= 0x00008000u;
-}
-inline void PBMsgQueryRspPosition::clear_has_openamount() {
-  _has_bits_[0] &= ~0x00008000u;
-}
 inline void PBMsgQueryRspPosition::clear_openamount() {
   openamount_ = 0;
-  clear_has_openamount();
 }
 inline double PBMsgQueryRspPosition::openamount() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.OpenAmount)
   return openamount_;
 }
 inline void PBMsgQueryRspPosition::set_openamount(double value) {
-  set_has_openamount();
+  
   openamount_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.OpenAmount)
 }
 
 // optional double CloseAmount = 17;
-inline bool PBMsgQueryRspPosition::has_closeamount() const {
-  return (_has_bits_[0] & 0x00010000u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_closeamount() {
-  _has_bits_[0] |= 0x00010000u;
-}
-inline void PBMsgQueryRspPosition::clear_has_closeamount() {
-  _has_bits_[0] &= ~0x00010000u;
-}
 inline void PBMsgQueryRspPosition::clear_closeamount() {
   closeamount_ = 0;
-  clear_has_closeamount();
 }
 inline double PBMsgQueryRspPosition::closeamount() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.CloseAmount)
   return closeamount_;
 }
 inline void PBMsgQueryRspPosition::set_closeamount(double value) {
-  set_has_closeamount();
+  
   closeamount_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.CloseAmount)
 }
 
 // optional double PositionCost = 18;
-inline bool PBMsgQueryRspPosition::has_positioncost() const {
-  return (_has_bits_[0] & 0x00020000u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_positioncost() {
-  _has_bits_[0] |= 0x00020000u;
-}
-inline void PBMsgQueryRspPosition::clear_has_positioncost() {
-  _has_bits_[0] &= ~0x00020000u;
-}
 inline void PBMsgQueryRspPosition::clear_positioncost() {
   positioncost_ = 0;
-  clear_has_positioncost();
 }
 inline double PBMsgQueryRspPosition::positioncost() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.PositionCost)
   return positioncost_;
 }
 inline void PBMsgQueryRspPosition::set_positioncost(double value) {
-  set_has_positioncost();
+  
   positioncost_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.PositionCost)
 }
 
 // optional double PreMargin = 19;
-inline bool PBMsgQueryRspPosition::has_premargin() const {
-  return (_has_bits_[0] & 0x00040000u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_premargin() {
-  _has_bits_[0] |= 0x00040000u;
-}
-inline void PBMsgQueryRspPosition::clear_has_premargin() {
-  _has_bits_[0] &= ~0x00040000u;
-}
 inline void PBMsgQueryRspPosition::clear_premargin() {
   premargin_ = 0;
-  clear_has_premargin();
 }
 inline double PBMsgQueryRspPosition::premargin() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.PreMargin)
   return premargin_;
 }
 inline void PBMsgQueryRspPosition::set_premargin(double value) {
-  set_has_premargin();
+  
   premargin_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.PreMargin)
 }
 
 // optional double UseMargin = 20;
-inline bool PBMsgQueryRspPosition::has_usemargin() const {
-  return (_has_bits_[0] & 0x00080000u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_usemargin() {
-  _has_bits_[0] |= 0x00080000u;
-}
-inline void PBMsgQueryRspPosition::clear_has_usemargin() {
-  _has_bits_[0] &= ~0x00080000u;
-}
 inline void PBMsgQueryRspPosition::clear_usemargin() {
   usemargin_ = 0;
-  clear_has_usemargin();
 }
 inline double PBMsgQueryRspPosition::usemargin() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.UseMargin)
   return usemargin_;
 }
 inline void PBMsgQueryRspPosition::set_usemargin(double value) {
-  set_has_usemargin();
+  
   usemargin_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.UseMargin)
 }
 
 // optional double FrozenMargin = 21;
-inline bool PBMsgQueryRspPosition::has_frozenmargin() const {
-  return (_has_bits_[0] & 0x00100000u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_frozenmargin() {
-  _has_bits_[0] |= 0x00100000u;
-}
-inline void PBMsgQueryRspPosition::clear_has_frozenmargin() {
-  _has_bits_[0] &= ~0x00100000u;
-}
 inline void PBMsgQueryRspPosition::clear_frozenmargin() {
   frozenmargin_ = 0;
-  clear_has_frozenmargin();
 }
 inline double PBMsgQueryRspPosition::frozenmargin() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.FrozenMargin)
   return frozenmargin_;
 }
 inline void PBMsgQueryRspPosition::set_frozenmargin(double value) {
-  set_has_frozenmargin();
+  
   frozenmargin_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.FrozenMargin)
 }
 
 // optional double FrozenCash = 22;
-inline bool PBMsgQueryRspPosition::has_frozencash() const {
-  return (_has_bits_[0] & 0x00200000u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_frozencash() {
-  _has_bits_[0] |= 0x00200000u;
-}
-inline void PBMsgQueryRspPosition::clear_has_frozencash() {
-  _has_bits_[0] &= ~0x00200000u;
-}
 inline void PBMsgQueryRspPosition::clear_frozencash() {
   frozencash_ = 0;
-  clear_has_frozencash();
 }
 inline double PBMsgQueryRspPosition::frozencash() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.FrozenCash)
   return frozencash_;
 }
 inline void PBMsgQueryRspPosition::set_frozencash(double value) {
-  set_has_frozencash();
+  
   frozencash_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.FrozenCash)
 }
 
 // optional double FrozenCommission = 23;
-inline bool PBMsgQueryRspPosition::has_frozencommission() const {
-  return (_has_bits_[0] & 0x00400000u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_frozencommission() {
-  _has_bits_[0] |= 0x00400000u;
-}
-inline void PBMsgQueryRspPosition::clear_has_frozencommission() {
-  _has_bits_[0] &= ~0x00400000u;
-}
 inline void PBMsgQueryRspPosition::clear_frozencommission() {
   frozencommission_ = 0;
-  clear_has_frozencommission();
 }
 inline double PBMsgQueryRspPosition::frozencommission() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.FrozenCommission)
   return frozencommission_;
 }
 inline void PBMsgQueryRspPosition::set_frozencommission(double value) {
-  set_has_frozencommission();
+  
   frozencommission_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.FrozenCommission)
 }
 
 // optional double CashIn = 24;
-inline bool PBMsgQueryRspPosition::has_cashin() const {
-  return (_has_bits_[0] & 0x00800000u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_cashin() {
-  _has_bits_[0] |= 0x00800000u;
-}
-inline void PBMsgQueryRspPosition::clear_has_cashin() {
-  _has_bits_[0] &= ~0x00800000u;
-}
 inline void PBMsgQueryRspPosition::clear_cashin() {
   cashin_ = 0;
-  clear_has_cashin();
 }
 inline double PBMsgQueryRspPosition::cashin() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.CashIn)
   return cashin_;
 }
 inline void PBMsgQueryRspPosition::set_cashin(double value) {
-  set_has_cashin();
+  
   cashin_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.CashIn)
 }
 
 // optional double Commission = 25;
-inline bool PBMsgQueryRspPosition::has_commission() const {
-  return (_has_bits_[0] & 0x01000000u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_commission() {
-  _has_bits_[0] |= 0x01000000u;
-}
-inline void PBMsgQueryRspPosition::clear_has_commission() {
-  _has_bits_[0] &= ~0x01000000u;
-}
 inline void PBMsgQueryRspPosition::clear_commission() {
   commission_ = 0;
-  clear_has_commission();
 }
 inline double PBMsgQueryRspPosition::commission() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.Commission)
   return commission_;
 }
 inline void PBMsgQueryRspPosition::set_commission(double value) {
-  set_has_commission();
+  
   commission_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.Commission)
 }
 
 // optional double CloseProfit = 26;
-inline bool PBMsgQueryRspPosition::has_closeprofit() const {
-  return (_has_bits_[0] & 0x02000000u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_closeprofit() {
-  _has_bits_[0] |= 0x02000000u;
-}
-inline void PBMsgQueryRspPosition::clear_has_closeprofit() {
-  _has_bits_[0] &= ~0x02000000u;
-}
 inline void PBMsgQueryRspPosition::clear_closeprofit() {
   closeprofit_ = 0;
-  clear_has_closeprofit();
 }
 inline double PBMsgQueryRspPosition::closeprofit() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.CloseProfit)
   return closeprofit_;
 }
 inline void PBMsgQueryRspPosition::set_closeprofit(double value) {
-  set_has_closeprofit();
+  
   closeprofit_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.CloseProfit)
 }
 
 // optional double PositionProfit = 27;
-inline bool PBMsgQueryRspPosition::has_positionprofit() const {
-  return (_has_bits_[0] & 0x04000000u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_positionprofit() {
-  _has_bits_[0] |= 0x04000000u;
-}
-inline void PBMsgQueryRspPosition::clear_has_positionprofit() {
-  _has_bits_[0] &= ~0x04000000u;
-}
 inline void PBMsgQueryRspPosition::clear_positionprofit() {
   positionprofit_ = 0;
-  clear_has_positionprofit();
 }
 inline double PBMsgQueryRspPosition::positionprofit() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.PositionProfit)
   return positionprofit_;
 }
 inline void PBMsgQueryRspPosition::set_positionprofit(double value) {
-  set_has_positionprofit();
+  
   positionprofit_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.PositionProfit)
 }
 
 // optional double PreSettlementPrice = 28;
-inline bool PBMsgQueryRspPosition::has_presettlementprice() const {
-  return (_has_bits_[0] & 0x08000000u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_presettlementprice() {
-  _has_bits_[0] |= 0x08000000u;
-}
-inline void PBMsgQueryRspPosition::clear_has_presettlementprice() {
-  _has_bits_[0] &= ~0x08000000u;
-}
 inline void PBMsgQueryRspPosition::clear_presettlementprice() {
   presettlementprice_ = 0;
-  clear_has_presettlementprice();
 }
 inline double PBMsgQueryRspPosition::presettlementprice() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.PreSettlementPrice)
   return presettlementprice_;
 }
 inline void PBMsgQueryRspPosition::set_presettlementprice(double value) {
-  set_has_presettlementprice();
+  
   presettlementprice_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.PreSettlementPrice)
 }
 
 // optional double SettlementPrice = 29;
-inline bool PBMsgQueryRspPosition::has_settlementprice() const {
-  return (_has_bits_[0] & 0x10000000u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_settlementprice() {
-  _has_bits_[0] |= 0x10000000u;
-}
-inline void PBMsgQueryRspPosition::clear_has_settlementprice() {
-  _has_bits_[0] &= ~0x10000000u;
-}
 inline void PBMsgQueryRspPosition::clear_settlementprice() {
   settlementprice_ = 0;
-  clear_has_settlementprice();
 }
 inline double PBMsgQueryRspPosition::settlementprice() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.SettlementPrice)
   return settlementprice_;
 }
 inline void PBMsgQueryRspPosition::set_settlementprice(double value) {
-  set_has_settlementprice();
+  
   settlementprice_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.SettlementPrice)
 }
 
 // optional string TradingDay = 30;
-inline bool PBMsgQueryRspPosition::has_tradingday() const {
-  return (_has_bits_[0] & 0x20000000u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_tradingday() {
-  _has_bits_[0] |= 0x20000000u;
-}
-inline void PBMsgQueryRspPosition::clear_has_tradingday() {
-  _has_bits_[0] &= ~0x20000000u;
-}
 inline void PBMsgQueryRspPosition::clear_tradingday() {
   tradingday_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_tradingday();
 }
 inline const ::std::string& PBMsgQueryRspPosition::tradingday() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.TradingDay)
   return tradingday_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspPosition::set_tradingday(const ::std::string& value) {
-  set_has_tradingday();
+  
   tradingday_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.TradingDay)
 }
 inline void PBMsgQueryRspPosition::set_tradingday(const char* value) {
-  set_has_tradingday();
+  
   tradingday_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryRspPosition.TradingDay)
 }
 inline void PBMsgQueryRspPosition::set_tradingday(const char* value, size_t size) {
-  set_has_tradingday();
+  
   tradingday_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryRspPosition.TradingDay)
 }
 inline ::std::string* PBMsgQueryRspPosition::mutable_tradingday() {
-  set_has_tradingday();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryRspPosition.TradingDay)
   return tradingday_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryRspPosition::release_tradingday() {
-  clear_has_tradingday();
+  
   return tradingday_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspPosition::set_allocated_tradingday(::std::string* tradingday) {
   if (tradingday != NULL) {
-    set_has_tradingday();
+    
   } else {
-    clear_has_tradingday();
+    
   }
   tradingday_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), tradingday);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryRspPosition.TradingDay)
 }
 
 // optional int32 SettlementID = 31;
-inline bool PBMsgQueryRspPosition::has_settlementid() const {
-  return (_has_bits_[0] & 0x40000000u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_settlementid() {
-  _has_bits_[0] |= 0x40000000u;
-}
-inline void PBMsgQueryRspPosition::clear_has_settlementid() {
-  _has_bits_[0] &= ~0x40000000u;
-}
 inline void PBMsgQueryRspPosition::clear_settlementid() {
   settlementid_ = 0;
-  clear_has_settlementid();
 }
 inline ::google::protobuf::int32 PBMsgQueryRspPosition::settlementid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.SettlementID)
   return settlementid_;
 }
 inline void PBMsgQueryRspPosition::set_settlementid(::google::protobuf::int32 value) {
-  set_has_settlementid();
+  
   settlementid_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.SettlementID)
 }
 
 // optional double OpenCost = 32;
-inline bool PBMsgQueryRspPosition::has_opencost() const {
-  return (_has_bits_[0] & 0x80000000u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_opencost() {
-  _has_bits_[0] |= 0x80000000u;
-}
-inline void PBMsgQueryRspPosition::clear_has_opencost() {
-  _has_bits_[0] &= ~0x80000000u;
-}
 inline void PBMsgQueryRspPosition::clear_opencost() {
   opencost_ = 0;
-  clear_has_opencost();
 }
 inline double PBMsgQueryRspPosition::opencost() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.OpenCost)
   return opencost_;
 }
 inline void PBMsgQueryRspPosition::set_opencost(double value) {
-  set_has_opencost();
+  
   opencost_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.OpenCost)
 }
 
 // optional double ExchangeMargin = 33;
-inline bool PBMsgQueryRspPosition::has_exchangemargin() const {
-  return (_has_bits_[1] & 0x00000001u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_exchangemargin() {
-  _has_bits_[1] |= 0x00000001u;
-}
-inline void PBMsgQueryRspPosition::clear_has_exchangemargin() {
-  _has_bits_[1] &= ~0x00000001u;
-}
 inline void PBMsgQueryRspPosition::clear_exchangemargin() {
   exchangemargin_ = 0;
-  clear_has_exchangemargin();
 }
 inline double PBMsgQueryRspPosition::exchangemargin() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.ExchangeMargin)
   return exchangemargin_;
 }
 inline void PBMsgQueryRspPosition::set_exchangemargin(double value) {
-  set_has_exchangemargin();
+  
   exchangemargin_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.ExchangeMargin)
 }
 
 // optional int32 CombPosition = 34;
-inline bool PBMsgQueryRspPosition::has_combposition() const {
-  return (_has_bits_[1] & 0x00000002u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_combposition() {
-  _has_bits_[1] |= 0x00000002u;
-}
-inline void PBMsgQueryRspPosition::clear_has_combposition() {
-  _has_bits_[1] &= ~0x00000002u;
-}
 inline void PBMsgQueryRspPosition::clear_combposition() {
   combposition_ = 0;
-  clear_has_combposition();
 }
 inline ::google::protobuf::int32 PBMsgQueryRspPosition::combposition() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.CombPosition)
   return combposition_;
 }
 inline void PBMsgQueryRspPosition::set_combposition(::google::protobuf::int32 value) {
-  set_has_combposition();
+  
   combposition_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.CombPosition)
 }
 
 // optional int32 CombLongFrozen = 35;
-inline bool PBMsgQueryRspPosition::has_comblongfrozen() const {
-  return (_has_bits_[1] & 0x00000004u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_comblongfrozen() {
-  _has_bits_[1] |= 0x00000004u;
-}
-inline void PBMsgQueryRspPosition::clear_has_comblongfrozen() {
-  _has_bits_[1] &= ~0x00000004u;
-}
 inline void PBMsgQueryRspPosition::clear_comblongfrozen() {
   comblongfrozen_ = 0;
-  clear_has_comblongfrozen();
 }
 inline ::google::protobuf::int32 PBMsgQueryRspPosition::comblongfrozen() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.CombLongFrozen)
   return comblongfrozen_;
 }
 inline void PBMsgQueryRspPosition::set_comblongfrozen(::google::protobuf::int32 value) {
-  set_has_comblongfrozen();
+  
   comblongfrozen_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.CombLongFrozen)
 }
 
 // optional int32 CombShortFrozen = 36;
-inline bool PBMsgQueryRspPosition::has_combshortfrozen() const {
-  return (_has_bits_[1] & 0x00000008u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_combshortfrozen() {
-  _has_bits_[1] |= 0x00000008u;
-}
-inline void PBMsgQueryRspPosition::clear_has_combshortfrozen() {
-  _has_bits_[1] &= ~0x00000008u;
-}
 inline void PBMsgQueryRspPosition::clear_combshortfrozen() {
   combshortfrozen_ = 0;
-  clear_has_combshortfrozen();
 }
 inline ::google::protobuf::int32 PBMsgQueryRspPosition::combshortfrozen() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.CombShortFrozen)
   return combshortfrozen_;
 }
 inline void PBMsgQueryRspPosition::set_combshortfrozen(::google::protobuf::int32 value) {
-  set_has_combshortfrozen();
+  
   combshortfrozen_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.CombShortFrozen)
 }
 
 // optional double CloseProfitByDate = 37;
-inline bool PBMsgQueryRspPosition::has_closeprofitbydate() const {
-  return (_has_bits_[1] & 0x00000010u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_closeprofitbydate() {
-  _has_bits_[1] |= 0x00000010u;
-}
-inline void PBMsgQueryRspPosition::clear_has_closeprofitbydate() {
-  _has_bits_[1] &= ~0x00000010u;
-}
 inline void PBMsgQueryRspPosition::clear_closeprofitbydate() {
   closeprofitbydate_ = 0;
-  clear_has_closeprofitbydate();
 }
 inline double PBMsgQueryRspPosition::closeprofitbydate() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.CloseProfitByDate)
   return closeprofitbydate_;
 }
 inline void PBMsgQueryRspPosition::set_closeprofitbydate(double value) {
-  set_has_closeprofitbydate();
+  
   closeprofitbydate_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.CloseProfitByDate)
 }
 
 // optional double CloseProfitByTrade = 38;
-inline bool PBMsgQueryRspPosition::has_closeprofitbytrade() const {
-  return (_has_bits_[1] & 0x00000020u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_closeprofitbytrade() {
-  _has_bits_[1] |= 0x00000020u;
-}
-inline void PBMsgQueryRspPosition::clear_has_closeprofitbytrade() {
-  _has_bits_[1] &= ~0x00000020u;
-}
 inline void PBMsgQueryRspPosition::clear_closeprofitbytrade() {
   closeprofitbytrade_ = 0;
-  clear_has_closeprofitbytrade();
 }
 inline double PBMsgQueryRspPosition::closeprofitbytrade() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.CloseProfitByTrade)
   return closeprofitbytrade_;
 }
 inline void PBMsgQueryRspPosition::set_closeprofitbytrade(double value) {
-  set_has_closeprofitbytrade();
+  
   closeprofitbytrade_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.CloseProfitByTrade)
 }
 
 // optional int32 TodayPosition = 39;
-inline bool PBMsgQueryRspPosition::has_todayposition() const {
-  return (_has_bits_[1] & 0x00000040u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_todayposition() {
-  _has_bits_[1] |= 0x00000040u;
-}
-inline void PBMsgQueryRspPosition::clear_has_todayposition() {
-  _has_bits_[1] &= ~0x00000040u;
-}
 inline void PBMsgQueryRspPosition::clear_todayposition() {
   todayposition_ = 0;
-  clear_has_todayposition();
 }
 inline ::google::protobuf::int32 PBMsgQueryRspPosition::todayposition() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.TodayPosition)
   return todayposition_;
 }
 inline void PBMsgQueryRspPosition::set_todayposition(::google::protobuf::int32 value) {
-  set_has_todayposition();
+  
   todayposition_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.TodayPosition)
 }
 
 // optional double MarginRateByMoney = 40;
-inline bool PBMsgQueryRspPosition::has_marginratebymoney() const {
-  return (_has_bits_[1] & 0x00000080u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_marginratebymoney() {
-  _has_bits_[1] |= 0x00000080u;
-}
-inline void PBMsgQueryRspPosition::clear_has_marginratebymoney() {
-  _has_bits_[1] &= ~0x00000080u;
-}
 inline void PBMsgQueryRspPosition::clear_marginratebymoney() {
   marginratebymoney_ = 0;
-  clear_has_marginratebymoney();
 }
 inline double PBMsgQueryRspPosition::marginratebymoney() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.MarginRateByMoney)
   return marginratebymoney_;
 }
 inline void PBMsgQueryRspPosition::set_marginratebymoney(double value) {
-  set_has_marginratebymoney();
+  
   marginratebymoney_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.MarginRateByMoney)
 }
 
 // optional double MarginRateByVolume = 41;
-inline bool PBMsgQueryRspPosition::has_marginratebyvolume() const {
-  return (_has_bits_[1] & 0x00000100u) != 0;
-}
-inline void PBMsgQueryRspPosition::set_has_marginratebyvolume() {
-  _has_bits_[1] |= 0x00000100u;
-}
-inline void PBMsgQueryRspPosition::clear_has_marginratebyvolume() {
-  _has_bits_[1] &= ~0x00000100u;
-}
 inline void PBMsgQueryRspPosition::clear_marginratebyvolume() {
   marginratebyvolume_ = 0;
-  clear_has_marginratebyvolume();
 }
 inline double PBMsgQueryRspPosition::marginratebyvolume() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspPosition.MarginRateByVolume)
   return marginratebyvolume_;
 }
 inline void PBMsgQueryRspPosition::set_marginratebyvolume(double value) {
-  set_has_marginratebyvolume();
+  
   marginratebyvolume_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspPosition.MarginRateByVolume)
 }
@@ -10771,106 +8468,86 @@ inline void PBMsgQueryRspPosition::set_marginratebyvolume(double value) {
 // PBMsgQueryReqFund
 
 // optional string BrokerID = 2;
-inline bool PBMsgQueryReqFund::has_brokerid() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBMsgQueryReqFund::set_has_brokerid() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBMsgQueryReqFund::clear_has_brokerid() {
-  _has_bits_[0] &= ~0x00000001u;
-}
 inline void PBMsgQueryReqFund::clear_brokerid() {
   brokerid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_brokerid();
 }
 inline const ::std::string& PBMsgQueryReqFund::brokerid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryReqFund.BrokerID)
   return brokerid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqFund::set_brokerid(const ::std::string& value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryReqFund.BrokerID)
 }
 inline void PBMsgQueryReqFund::set_brokerid(const char* value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryReqFund.BrokerID)
 }
 inline void PBMsgQueryReqFund::set_brokerid(const char* value, size_t size) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryReqFund.BrokerID)
 }
 inline ::std::string* PBMsgQueryReqFund::mutable_brokerid() {
-  set_has_brokerid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryReqFund.BrokerID)
   return brokerid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryReqFund::release_brokerid() {
-  clear_has_brokerid();
+  
   return brokerid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqFund::set_allocated_brokerid(::std::string* brokerid) {
   if (brokerid != NULL) {
-    set_has_brokerid();
+    
   } else {
-    clear_has_brokerid();
+    
   }
   brokerid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), brokerid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryReqFund.BrokerID)
 }
 
 // optional string InvestorID = 3;
-inline bool PBMsgQueryReqFund::has_investorid() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBMsgQueryReqFund::set_has_investorid() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBMsgQueryReqFund::clear_has_investorid() {
-  _has_bits_[0] &= ~0x00000002u;
-}
 inline void PBMsgQueryReqFund::clear_investorid() {
   investorid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_investorid();
 }
 inline const ::std::string& PBMsgQueryReqFund::investorid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryReqFund.InvestorID)
   return investorid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqFund::set_investorid(const ::std::string& value) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryReqFund.InvestorID)
 }
 inline void PBMsgQueryReqFund::set_investorid(const char* value) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryReqFund.InvestorID)
 }
 inline void PBMsgQueryReqFund::set_investorid(const char* value, size_t size) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryReqFund.InvestorID)
 }
 inline ::std::string* PBMsgQueryReqFund::mutable_investorid() {
-  set_has_investorid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryReqFund.InvestorID)
   return investorid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryReqFund::release_investorid() {
-  clear_has_investorid();
+  
   return investorid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryReqFund::set_allocated_investorid(::std::string* investorid) {
   if (investorid != NULL) {
-    set_has_investorid();
+    
   } else {
-    clear_has_investorid();
+    
   }
   investorid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), investorid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryReqFund.InvestorID)
@@ -10881,856 +8558,536 @@ inline void PBMsgQueryReqFund::set_allocated_investorid(::std::string* investori
 // PBMsgQueryRspFund
 
 // optional int32 EOF = 1;
-inline bool PBMsgQueryRspFund::has_eof() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_eof() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBMsgQueryRspFund::clear_has_eof() {
-  _has_bits_[0] &= ~0x00000001u;
-}
 inline void PBMsgQueryRspFund::clear_eof() {
   eof_ = 0;
-  clear_has_eof();
 }
 inline ::google::protobuf::int32 PBMsgQueryRspFund::eof() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.EOF)
   return eof_;
 }
 inline void PBMsgQueryRspFund::set_eof(::google::protobuf::int32 value) {
-  set_has_eof();
+  
   eof_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.EOF)
 }
 
 // optional string BrokerID = 2;
-inline bool PBMsgQueryRspFund::has_brokerid() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_brokerid() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBMsgQueryRspFund::clear_has_brokerid() {
-  _has_bits_[0] &= ~0x00000002u;
-}
 inline void PBMsgQueryRspFund::clear_brokerid() {
   brokerid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_brokerid();
 }
 inline const ::std::string& PBMsgQueryRspFund::brokerid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.BrokerID)
   return brokerid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspFund::set_brokerid(const ::std::string& value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.BrokerID)
 }
 inline void PBMsgQueryRspFund::set_brokerid(const char* value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryRspFund.BrokerID)
 }
 inline void PBMsgQueryRspFund::set_brokerid(const char* value, size_t size) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryRspFund.BrokerID)
 }
 inline ::std::string* PBMsgQueryRspFund::mutable_brokerid() {
-  set_has_brokerid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryRspFund.BrokerID)
   return brokerid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryRspFund::release_brokerid() {
-  clear_has_brokerid();
+  
   return brokerid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspFund::set_allocated_brokerid(::std::string* brokerid) {
   if (brokerid != NULL) {
-    set_has_brokerid();
+    
   } else {
-    clear_has_brokerid();
+    
   }
   brokerid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), brokerid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryRspFund.BrokerID)
 }
 
 // optional string AccountID = 3;
-inline bool PBMsgQueryRspFund::has_accountid() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_accountid() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBMsgQueryRspFund::clear_has_accountid() {
-  _has_bits_[0] &= ~0x00000004u;
-}
 inline void PBMsgQueryRspFund::clear_accountid() {
   accountid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_accountid();
 }
 inline const ::std::string& PBMsgQueryRspFund::accountid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.AccountID)
   return accountid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspFund::set_accountid(const ::std::string& value) {
-  set_has_accountid();
+  
   accountid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.AccountID)
 }
 inline void PBMsgQueryRspFund::set_accountid(const char* value) {
-  set_has_accountid();
+  
   accountid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryRspFund.AccountID)
 }
 inline void PBMsgQueryRspFund::set_accountid(const char* value, size_t size) {
-  set_has_accountid();
+  
   accountid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryRspFund.AccountID)
 }
 inline ::std::string* PBMsgQueryRspFund::mutable_accountid() {
-  set_has_accountid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryRspFund.AccountID)
   return accountid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryRspFund::release_accountid() {
-  clear_has_accountid();
+  
   return accountid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspFund::set_allocated_accountid(::std::string* accountid) {
   if (accountid != NULL) {
-    set_has_accountid();
+    
   } else {
-    clear_has_accountid();
+    
   }
   accountid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), accountid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryRspFund.AccountID)
 }
 
 // optional double PreMortgage = 4;
-inline bool PBMsgQueryRspFund::has_premortgage() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_premortgage() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void PBMsgQueryRspFund::clear_has_premortgage() {
-  _has_bits_[0] &= ~0x00000008u;
-}
 inline void PBMsgQueryRspFund::clear_premortgage() {
   premortgage_ = 0;
-  clear_has_premortgage();
 }
 inline double PBMsgQueryRspFund::premortgage() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.PreMortgage)
   return premortgage_;
 }
 inline void PBMsgQueryRspFund::set_premortgage(double value) {
-  set_has_premortgage();
+  
   premortgage_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.PreMortgage)
 }
 
 // optional double PreCredit = 5;
-inline bool PBMsgQueryRspFund::has_precredit() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_precredit() {
-  _has_bits_[0] |= 0x00000010u;
-}
-inline void PBMsgQueryRspFund::clear_has_precredit() {
-  _has_bits_[0] &= ~0x00000010u;
-}
 inline void PBMsgQueryRspFund::clear_precredit() {
   precredit_ = 0;
-  clear_has_precredit();
 }
 inline double PBMsgQueryRspFund::precredit() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.PreCredit)
   return precredit_;
 }
 inline void PBMsgQueryRspFund::set_precredit(double value) {
-  set_has_precredit();
+  
   precredit_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.PreCredit)
 }
 
 // optional double PreDeposit = 6;
-inline bool PBMsgQueryRspFund::has_predeposit() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_predeposit() {
-  _has_bits_[0] |= 0x00000020u;
-}
-inline void PBMsgQueryRspFund::clear_has_predeposit() {
-  _has_bits_[0] &= ~0x00000020u;
-}
 inline void PBMsgQueryRspFund::clear_predeposit() {
   predeposit_ = 0;
-  clear_has_predeposit();
 }
 inline double PBMsgQueryRspFund::predeposit() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.PreDeposit)
   return predeposit_;
 }
 inline void PBMsgQueryRspFund::set_predeposit(double value) {
-  set_has_predeposit();
+  
   predeposit_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.PreDeposit)
 }
 
 // optional double PreBalance = 7;
-inline bool PBMsgQueryRspFund::has_prebalance() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_prebalance() {
-  _has_bits_[0] |= 0x00000040u;
-}
-inline void PBMsgQueryRspFund::clear_has_prebalance() {
-  _has_bits_[0] &= ~0x00000040u;
-}
 inline void PBMsgQueryRspFund::clear_prebalance() {
   prebalance_ = 0;
-  clear_has_prebalance();
 }
 inline double PBMsgQueryRspFund::prebalance() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.PreBalance)
   return prebalance_;
 }
 inline void PBMsgQueryRspFund::set_prebalance(double value) {
-  set_has_prebalance();
+  
   prebalance_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.PreBalance)
 }
 
 // optional double PreMargin = 8;
-inline bool PBMsgQueryRspFund::has_premargin() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_premargin() {
-  _has_bits_[0] |= 0x00000080u;
-}
-inline void PBMsgQueryRspFund::clear_has_premargin() {
-  _has_bits_[0] &= ~0x00000080u;
-}
 inline void PBMsgQueryRspFund::clear_premargin() {
   premargin_ = 0;
-  clear_has_premargin();
 }
 inline double PBMsgQueryRspFund::premargin() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.PreMargin)
   return premargin_;
 }
 inline void PBMsgQueryRspFund::set_premargin(double value) {
-  set_has_premargin();
+  
   premargin_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.PreMargin)
 }
 
 // optional double InterestBase = 9;
-inline bool PBMsgQueryRspFund::has_interestbase() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_interestbase() {
-  _has_bits_[0] |= 0x00000100u;
-}
-inline void PBMsgQueryRspFund::clear_has_interestbase() {
-  _has_bits_[0] &= ~0x00000100u;
-}
 inline void PBMsgQueryRspFund::clear_interestbase() {
   interestbase_ = 0;
-  clear_has_interestbase();
 }
 inline double PBMsgQueryRspFund::interestbase() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.InterestBase)
   return interestbase_;
 }
 inline void PBMsgQueryRspFund::set_interestbase(double value) {
-  set_has_interestbase();
+  
   interestbase_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.InterestBase)
 }
 
 // optional double Interest = 10;
-inline bool PBMsgQueryRspFund::has_interest() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_interest() {
-  _has_bits_[0] |= 0x00000200u;
-}
-inline void PBMsgQueryRspFund::clear_has_interest() {
-  _has_bits_[0] &= ~0x00000200u;
-}
 inline void PBMsgQueryRspFund::clear_interest() {
   interest_ = 0;
-  clear_has_interest();
 }
 inline double PBMsgQueryRspFund::interest() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.Interest)
   return interest_;
 }
 inline void PBMsgQueryRspFund::set_interest(double value) {
-  set_has_interest();
+  
   interest_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.Interest)
 }
 
 // optional double Deposit = 11;
-inline bool PBMsgQueryRspFund::has_deposit() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_deposit() {
-  _has_bits_[0] |= 0x00000400u;
-}
-inline void PBMsgQueryRspFund::clear_has_deposit() {
-  _has_bits_[0] &= ~0x00000400u;
-}
 inline void PBMsgQueryRspFund::clear_deposit() {
   deposit_ = 0;
-  clear_has_deposit();
 }
 inline double PBMsgQueryRspFund::deposit() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.Deposit)
   return deposit_;
 }
 inline void PBMsgQueryRspFund::set_deposit(double value) {
-  set_has_deposit();
+  
   deposit_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.Deposit)
 }
 
 // optional double Withdraw = 12;
-inline bool PBMsgQueryRspFund::has_withdraw() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_withdraw() {
-  _has_bits_[0] |= 0x00000800u;
-}
-inline void PBMsgQueryRspFund::clear_has_withdraw() {
-  _has_bits_[0] &= ~0x00000800u;
-}
 inline void PBMsgQueryRspFund::clear_withdraw() {
   withdraw_ = 0;
-  clear_has_withdraw();
 }
 inline double PBMsgQueryRspFund::withdraw() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.Withdraw)
   return withdraw_;
 }
 inline void PBMsgQueryRspFund::set_withdraw(double value) {
-  set_has_withdraw();
+  
   withdraw_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.Withdraw)
 }
 
 // optional double FrozenMargin = 13;
-inline bool PBMsgQueryRspFund::has_frozenmargin() const {
-  return (_has_bits_[0] & 0x00001000u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_frozenmargin() {
-  _has_bits_[0] |= 0x00001000u;
-}
-inline void PBMsgQueryRspFund::clear_has_frozenmargin() {
-  _has_bits_[0] &= ~0x00001000u;
-}
 inline void PBMsgQueryRspFund::clear_frozenmargin() {
   frozenmargin_ = 0;
-  clear_has_frozenmargin();
 }
 inline double PBMsgQueryRspFund::frozenmargin() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.FrozenMargin)
   return frozenmargin_;
 }
 inline void PBMsgQueryRspFund::set_frozenmargin(double value) {
-  set_has_frozenmargin();
+  
   frozenmargin_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.FrozenMargin)
 }
 
 // optional double FrozenCash = 14;
-inline bool PBMsgQueryRspFund::has_frozencash() const {
-  return (_has_bits_[0] & 0x00002000u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_frozencash() {
-  _has_bits_[0] |= 0x00002000u;
-}
-inline void PBMsgQueryRspFund::clear_has_frozencash() {
-  _has_bits_[0] &= ~0x00002000u;
-}
 inline void PBMsgQueryRspFund::clear_frozencash() {
   frozencash_ = 0;
-  clear_has_frozencash();
 }
 inline double PBMsgQueryRspFund::frozencash() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.FrozenCash)
   return frozencash_;
 }
 inline void PBMsgQueryRspFund::set_frozencash(double value) {
-  set_has_frozencash();
+  
   frozencash_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.FrozenCash)
 }
 
 // optional double FrozenCommission = 15;
-inline bool PBMsgQueryRspFund::has_frozencommission() const {
-  return (_has_bits_[0] & 0x00004000u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_frozencommission() {
-  _has_bits_[0] |= 0x00004000u;
-}
-inline void PBMsgQueryRspFund::clear_has_frozencommission() {
-  _has_bits_[0] &= ~0x00004000u;
-}
 inline void PBMsgQueryRspFund::clear_frozencommission() {
   frozencommission_ = 0;
-  clear_has_frozencommission();
 }
 inline double PBMsgQueryRspFund::frozencommission() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.FrozenCommission)
   return frozencommission_;
 }
 inline void PBMsgQueryRspFund::set_frozencommission(double value) {
-  set_has_frozencommission();
+  
   frozencommission_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.FrozenCommission)
 }
 
 // optional double CurrMargin = 16;
-inline bool PBMsgQueryRspFund::has_currmargin() const {
-  return (_has_bits_[0] & 0x00008000u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_currmargin() {
-  _has_bits_[0] |= 0x00008000u;
-}
-inline void PBMsgQueryRspFund::clear_has_currmargin() {
-  _has_bits_[0] &= ~0x00008000u;
-}
 inline void PBMsgQueryRspFund::clear_currmargin() {
   currmargin_ = 0;
-  clear_has_currmargin();
 }
 inline double PBMsgQueryRspFund::currmargin() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.CurrMargin)
   return currmargin_;
 }
 inline void PBMsgQueryRspFund::set_currmargin(double value) {
-  set_has_currmargin();
+  
   currmargin_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.CurrMargin)
 }
 
 // optional double CashIn = 17;
-inline bool PBMsgQueryRspFund::has_cashin() const {
-  return (_has_bits_[0] & 0x00010000u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_cashin() {
-  _has_bits_[0] |= 0x00010000u;
-}
-inline void PBMsgQueryRspFund::clear_has_cashin() {
-  _has_bits_[0] &= ~0x00010000u;
-}
 inline void PBMsgQueryRspFund::clear_cashin() {
   cashin_ = 0;
-  clear_has_cashin();
 }
 inline double PBMsgQueryRspFund::cashin() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.CashIn)
   return cashin_;
 }
 inline void PBMsgQueryRspFund::set_cashin(double value) {
-  set_has_cashin();
+  
   cashin_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.CashIn)
 }
 
 // optional double Commission = 18;
-inline bool PBMsgQueryRspFund::has_commission() const {
-  return (_has_bits_[0] & 0x00020000u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_commission() {
-  _has_bits_[0] |= 0x00020000u;
-}
-inline void PBMsgQueryRspFund::clear_has_commission() {
-  _has_bits_[0] &= ~0x00020000u;
-}
 inline void PBMsgQueryRspFund::clear_commission() {
   commission_ = 0;
-  clear_has_commission();
 }
 inline double PBMsgQueryRspFund::commission() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.Commission)
   return commission_;
 }
 inline void PBMsgQueryRspFund::set_commission(double value) {
-  set_has_commission();
+  
   commission_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.Commission)
 }
 
 // optional double CloseProfit = 19;
-inline bool PBMsgQueryRspFund::has_closeprofit() const {
-  return (_has_bits_[0] & 0x00040000u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_closeprofit() {
-  _has_bits_[0] |= 0x00040000u;
-}
-inline void PBMsgQueryRspFund::clear_has_closeprofit() {
-  _has_bits_[0] &= ~0x00040000u;
-}
 inline void PBMsgQueryRspFund::clear_closeprofit() {
   closeprofit_ = 0;
-  clear_has_closeprofit();
 }
 inline double PBMsgQueryRspFund::closeprofit() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.CloseProfit)
   return closeprofit_;
 }
 inline void PBMsgQueryRspFund::set_closeprofit(double value) {
-  set_has_closeprofit();
+  
   closeprofit_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.CloseProfit)
 }
 
 // optional double PositionProfit = 20;
-inline bool PBMsgQueryRspFund::has_positionprofit() const {
-  return (_has_bits_[0] & 0x00080000u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_positionprofit() {
-  _has_bits_[0] |= 0x00080000u;
-}
-inline void PBMsgQueryRspFund::clear_has_positionprofit() {
-  _has_bits_[0] &= ~0x00080000u;
-}
 inline void PBMsgQueryRspFund::clear_positionprofit() {
   positionprofit_ = 0;
-  clear_has_positionprofit();
 }
 inline double PBMsgQueryRspFund::positionprofit() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.PositionProfit)
   return positionprofit_;
 }
 inline void PBMsgQueryRspFund::set_positionprofit(double value) {
-  set_has_positionprofit();
+  
   positionprofit_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.PositionProfit)
 }
 
 // optional double Balance = 21;
-inline bool PBMsgQueryRspFund::has_balance() const {
-  return (_has_bits_[0] & 0x00100000u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_balance() {
-  _has_bits_[0] |= 0x00100000u;
-}
-inline void PBMsgQueryRspFund::clear_has_balance() {
-  _has_bits_[0] &= ~0x00100000u;
-}
 inline void PBMsgQueryRspFund::clear_balance() {
   balance_ = 0;
-  clear_has_balance();
 }
 inline double PBMsgQueryRspFund::balance() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.Balance)
   return balance_;
 }
 inline void PBMsgQueryRspFund::set_balance(double value) {
-  set_has_balance();
+  
   balance_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.Balance)
 }
 
 // optional double Available = 22;
-inline bool PBMsgQueryRspFund::has_available() const {
-  return (_has_bits_[0] & 0x00200000u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_available() {
-  _has_bits_[0] |= 0x00200000u;
-}
-inline void PBMsgQueryRspFund::clear_has_available() {
-  _has_bits_[0] &= ~0x00200000u;
-}
 inline void PBMsgQueryRspFund::clear_available() {
   available_ = 0;
-  clear_has_available();
 }
 inline double PBMsgQueryRspFund::available() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.Available)
   return available_;
 }
 inline void PBMsgQueryRspFund::set_available(double value) {
-  set_has_available();
+  
   available_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.Available)
 }
 
 // optional double WithdrawQuota = 23;
-inline bool PBMsgQueryRspFund::has_withdrawquota() const {
-  return (_has_bits_[0] & 0x00400000u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_withdrawquota() {
-  _has_bits_[0] |= 0x00400000u;
-}
-inline void PBMsgQueryRspFund::clear_has_withdrawquota() {
-  _has_bits_[0] &= ~0x00400000u;
-}
 inline void PBMsgQueryRspFund::clear_withdrawquota() {
   withdrawquota_ = 0;
-  clear_has_withdrawquota();
 }
 inline double PBMsgQueryRspFund::withdrawquota() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.WithdrawQuota)
   return withdrawquota_;
 }
 inline void PBMsgQueryRspFund::set_withdrawquota(double value) {
-  set_has_withdrawquota();
+  
   withdrawquota_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.WithdrawQuota)
 }
 
 // optional double Reserve = 24;
-inline bool PBMsgQueryRspFund::has_reserve() const {
-  return (_has_bits_[0] & 0x00800000u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_reserve() {
-  _has_bits_[0] |= 0x00800000u;
-}
-inline void PBMsgQueryRspFund::clear_has_reserve() {
-  _has_bits_[0] &= ~0x00800000u;
-}
 inline void PBMsgQueryRspFund::clear_reserve() {
   reserve_ = 0;
-  clear_has_reserve();
 }
 inline double PBMsgQueryRspFund::reserve() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.Reserve)
   return reserve_;
 }
 inline void PBMsgQueryRspFund::set_reserve(double value) {
-  set_has_reserve();
+  
   reserve_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.Reserve)
 }
 
 // optional string TradingDay = 25;
-inline bool PBMsgQueryRspFund::has_tradingday() const {
-  return (_has_bits_[0] & 0x01000000u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_tradingday() {
-  _has_bits_[0] |= 0x01000000u;
-}
-inline void PBMsgQueryRspFund::clear_has_tradingday() {
-  _has_bits_[0] &= ~0x01000000u;
-}
 inline void PBMsgQueryRspFund::clear_tradingday() {
   tradingday_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_tradingday();
 }
 inline const ::std::string& PBMsgQueryRspFund::tradingday() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.TradingDay)
   return tradingday_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspFund::set_tradingday(const ::std::string& value) {
-  set_has_tradingday();
+  
   tradingday_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.TradingDay)
 }
 inline void PBMsgQueryRspFund::set_tradingday(const char* value) {
-  set_has_tradingday();
+  
   tradingday_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgQueryRspFund.TradingDay)
 }
 inline void PBMsgQueryRspFund::set_tradingday(const char* value, size_t size) {
-  set_has_tradingday();
+  
   tradingday_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgQueryRspFund.TradingDay)
 }
 inline ::std::string* PBMsgQueryRspFund::mutable_tradingday() {
-  set_has_tradingday();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgQueryRspFund.TradingDay)
   return tradingday_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgQueryRspFund::release_tradingday() {
-  clear_has_tradingday();
+  
   return tradingday_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgQueryRspFund::set_allocated_tradingday(::std::string* tradingday) {
   if (tradingday != NULL) {
-    set_has_tradingday();
+    
   } else {
-    clear_has_tradingday();
+    
   }
   tradingday_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), tradingday);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgQueryRspFund.TradingDay)
 }
 
 // optional int32 SettlementID = 26;
-inline bool PBMsgQueryRspFund::has_settlementid() const {
-  return (_has_bits_[0] & 0x02000000u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_settlementid() {
-  _has_bits_[0] |= 0x02000000u;
-}
-inline void PBMsgQueryRspFund::clear_has_settlementid() {
-  _has_bits_[0] &= ~0x02000000u;
-}
 inline void PBMsgQueryRspFund::clear_settlementid() {
   settlementid_ = 0;
-  clear_has_settlementid();
 }
 inline ::google::protobuf::int32 PBMsgQueryRspFund::settlementid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.SettlementID)
   return settlementid_;
 }
 inline void PBMsgQueryRspFund::set_settlementid(::google::protobuf::int32 value) {
-  set_has_settlementid();
+  
   settlementid_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.SettlementID)
 }
 
 // optional double Credit = 27;
-inline bool PBMsgQueryRspFund::has_credit() const {
-  return (_has_bits_[0] & 0x04000000u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_credit() {
-  _has_bits_[0] |= 0x04000000u;
-}
-inline void PBMsgQueryRspFund::clear_has_credit() {
-  _has_bits_[0] &= ~0x04000000u;
-}
 inline void PBMsgQueryRspFund::clear_credit() {
   credit_ = 0;
-  clear_has_credit();
 }
 inline double PBMsgQueryRspFund::credit() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.Credit)
   return credit_;
 }
 inline void PBMsgQueryRspFund::set_credit(double value) {
-  set_has_credit();
+  
   credit_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.Credit)
 }
 
 // optional double Mortgage = 28;
-inline bool PBMsgQueryRspFund::has_mortgage() const {
-  return (_has_bits_[0] & 0x08000000u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_mortgage() {
-  _has_bits_[0] |= 0x08000000u;
-}
-inline void PBMsgQueryRspFund::clear_has_mortgage() {
-  _has_bits_[0] &= ~0x08000000u;
-}
 inline void PBMsgQueryRspFund::clear_mortgage() {
   mortgage_ = 0;
-  clear_has_mortgage();
 }
 inline double PBMsgQueryRspFund::mortgage() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.Mortgage)
   return mortgage_;
 }
 inline void PBMsgQueryRspFund::set_mortgage(double value) {
-  set_has_mortgage();
+  
   mortgage_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.Mortgage)
 }
 
 // optional double ExchangeMargin = 29;
-inline bool PBMsgQueryRspFund::has_exchangemargin() const {
-  return (_has_bits_[0] & 0x10000000u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_exchangemargin() {
-  _has_bits_[0] |= 0x10000000u;
-}
-inline void PBMsgQueryRspFund::clear_has_exchangemargin() {
-  _has_bits_[0] &= ~0x10000000u;
-}
 inline void PBMsgQueryRspFund::clear_exchangemargin() {
   exchangemargin_ = 0;
-  clear_has_exchangemargin();
 }
 inline double PBMsgQueryRspFund::exchangemargin() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.ExchangeMargin)
   return exchangemargin_;
 }
 inline void PBMsgQueryRspFund::set_exchangemargin(double value) {
-  set_has_exchangemargin();
+  
   exchangemargin_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.ExchangeMargin)
 }
 
 // optional double DeliveryMargin = 30;
-inline bool PBMsgQueryRspFund::has_deliverymargin() const {
-  return (_has_bits_[0] & 0x20000000u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_deliverymargin() {
-  _has_bits_[0] |= 0x20000000u;
-}
-inline void PBMsgQueryRspFund::clear_has_deliverymargin() {
-  _has_bits_[0] &= ~0x20000000u;
-}
 inline void PBMsgQueryRspFund::clear_deliverymargin() {
   deliverymargin_ = 0;
-  clear_has_deliverymargin();
 }
 inline double PBMsgQueryRspFund::deliverymargin() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.DeliveryMargin)
   return deliverymargin_;
 }
 inline void PBMsgQueryRspFund::set_deliverymargin(double value) {
-  set_has_deliverymargin();
+  
   deliverymargin_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.DeliveryMargin)
 }
 
 // optional double ExchangeDeliveryMargin = 31;
-inline bool PBMsgQueryRspFund::has_exchangedeliverymargin() const {
-  return (_has_bits_[0] & 0x40000000u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_exchangedeliverymargin() {
-  _has_bits_[0] |= 0x40000000u;
-}
-inline void PBMsgQueryRspFund::clear_has_exchangedeliverymargin() {
-  _has_bits_[0] &= ~0x40000000u;
-}
 inline void PBMsgQueryRspFund::clear_exchangedeliverymargin() {
   exchangedeliverymargin_ = 0;
-  clear_has_exchangedeliverymargin();
 }
 inline double PBMsgQueryRspFund::exchangedeliverymargin() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.ExchangeDeliveryMargin)
   return exchangedeliverymargin_;
 }
 inline void PBMsgQueryRspFund::set_exchangedeliverymargin(double value) {
-  set_has_exchangedeliverymargin();
+  
   exchangedeliverymargin_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.ExchangeDeliveryMargin)
 }
 
 // optional double ReserveBalance = 32;
-inline bool PBMsgQueryRspFund::has_reservebalance() const {
-  return (_has_bits_[0] & 0x80000000u) != 0;
-}
-inline void PBMsgQueryRspFund::set_has_reservebalance() {
-  _has_bits_[0] |= 0x80000000u;
-}
-inline void PBMsgQueryRspFund::clear_has_reservebalance() {
-  _has_bits_[0] &= ~0x80000000u;
-}
 inline void PBMsgQueryRspFund::clear_reservebalance() {
   reservebalance_ = 0;
-  clear_has_reservebalance();
 }
 inline double PBMsgQueryRspFund::reservebalance() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgQueryRspFund.ReserveBalance)
   return reservebalance_;
 }
 inline void PBMsgQueryRspFund::set_reservebalance(double value) {
-  set_has_reservebalance();
+  
   reservebalance_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgQueryRspFund.ReserveBalance)
 }
@@ -11740,988 +9097,758 @@ inline void PBMsgQueryRspFund::set_reservebalance(double value) {
 // PBMsgOrderInsert
 
 // optional string BrokerID = 2;
-inline bool PBMsgOrderInsert::has_brokerid() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBMsgOrderInsert::set_has_brokerid() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBMsgOrderInsert::clear_has_brokerid() {
-  _has_bits_[0] &= ~0x00000001u;
-}
 inline void PBMsgOrderInsert::clear_brokerid() {
   brokerid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_brokerid();
 }
 inline const ::std::string& PBMsgOrderInsert::brokerid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderInsert.BrokerID)
   return brokerid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderInsert::set_brokerid(const ::std::string& value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderInsert.BrokerID)
 }
 inline void PBMsgOrderInsert::set_brokerid(const char* value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderInsert.BrokerID)
 }
 inline void PBMsgOrderInsert::set_brokerid(const char* value, size_t size) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderInsert.BrokerID)
 }
 inline ::std::string* PBMsgOrderInsert::mutable_brokerid() {
-  set_has_brokerid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderInsert.BrokerID)
   return brokerid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderInsert::release_brokerid() {
-  clear_has_brokerid();
+  
   return brokerid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderInsert::set_allocated_brokerid(::std::string* brokerid) {
   if (brokerid != NULL) {
-    set_has_brokerid();
+    
   } else {
-    clear_has_brokerid();
+    
   }
   brokerid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), brokerid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderInsert.BrokerID)
 }
 
 // optional string InvestorID = 3;
-inline bool PBMsgOrderInsert::has_investorid() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBMsgOrderInsert::set_has_investorid() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBMsgOrderInsert::clear_has_investorid() {
-  _has_bits_[0] &= ~0x00000002u;
-}
 inline void PBMsgOrderInsert::clear_investorid() {
   investorid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_investorid();
 }
 inline const ::std::string& PBMsgOrderInsert::investorid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderInsert.InvestorID)
   return investorid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderInsert::set_investorid(const ::std::string& value) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderInsert.InvestorID)
 }
 inline void PBMsgOrderInsert::set_investorid(const char* value) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderInsert.InvestorID)
 }
 inline void PBMsgOrderInsert::set_investorid(const char* value, size_t size) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderInsert.InvestorID)
 }
 inline ::std::string* PBMsgOrderInsert::mutable_investorid() {
-  set_has_investorid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderInsert.InvestorID)
   return investorid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderInsert::release_investorid() {
-  clear_has_investorid();
+  
   return investorid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderInsert::set_allocated_investorid(::std::string* investorid) {
   if (investorid != NULL) {
-    set_has_investorid();
+    
   } else {
-    clear_has_investorid();
+    
   }
   investorid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), investorid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderInsert.InvestorID)
 }
 
 // optional string InstrumentID = 4;
-inline bool PBMsgOrderInsert::has_instrumentid() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBMsgOrderInsert::set_has_instrumentid() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBMsgOrderInsert::clear_has_instrumentid() {
-  _has_bits_[0] &= ~0x00000004u;
-}
 inline void PBMsgOrderInsert::clear_instrumentid() {
   instrumentid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_instrumentid();
 }
 inline const ::std::string& PBMsgOrderInsert::instrumentid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderInsert.InstrumentID)
   return instrumentid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderInsert::set_instrumentid(const ::std::string& value) {
-  set_has_instrumentid();
+  
   instrumentid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderInsert.InstrumentID)
 }
 inline void PBMsgOrderInsert::set_instrumentid(const char* value) {
-  set_has_instrumentid();
+  
   instrumentid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderInsert.InstrumentID)
 }
 inline void PBMsgOrderInsert::set_instrumentid(const char* value, size_t size) {
-  set_has_instrumentid();
+  
   instrumentid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderInsert.InstrumentID)
 }
 inline ::std::string* PBMsgOrderInsert::mutable_instrumentid() {
-  set_has_instrumentid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderInsert.InstrumentID)
   return instrumentid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderInsert::release_instrumentid() {
-  clear_has_instrumentid();
+  
   return instrumentid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderInsert::set_allocated_instrumentid(::std::string* instrumentid) {
   if (instrumentid != NULL) {
-    set_has_instrumentid();
+    
   } else {
-    clear_has_instrumentid();
+    
   }
   instrumentid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), instrumentid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderInsert.InstrumentID)
 }
 
 // optional string OrderRef = 5;
-inline bool PBMsgOrderInsert::has_orderref() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void PBMsgOrderInsert::set_has_orderref() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void PBMsgOrderInsert::clear_has_orderref() {
-  _has_bits_[0] &= ~0x00000008u;
-}
 inline void PBMsgOrderInsert::clear_orderref() {
   orderref_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_orderref();
 }
 inline const ::std::string& PBMsgOrderInsert::orderref() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderInsert.OrderRef)
   return orderref_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderInsert::set_orderref(const ::std::string& value) {
-  set_has_orderref();
+  
   orderref_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderInsert.OrderRef)
 }
 inline void PBMsgOrderInsert::set_orderref(const char* value) {
-  set_has_orderref();
+  
   orderref_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderInsert.OrderRef)
 }
 inline void PBMsgOrderInsert::set_orderref(const char* value, size_t size) {
-  set_has_orderref();
+  
   orderref_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderInsert.OrderRef)
 }
 inline ::std::string* PBMsgOrderInsert::mutable_orderref() {
-  set_has_orderref();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderInsert.OrderRef)
   return orderref_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderInsert::release_orderref() {
-  clear_has_orderref();
+  
   return orderref_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderInsert::set_allocated_orderref(::std::string* orderref) {
   if (orderref != NULL) {
-    set_has_orderref();
+    
   } else {
-    clear_has_orderref();
+    
   }
   orderref_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), orderref);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderInsert.OrderRef)
 }
 
 // optional string UserID = 6;
-inline bool PBMsgOrderInsert::has_userid() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void PBMsgOrderInsert::set_has_userid() {
-  _has_bits_[0] |= 0x00000010u;
-}
-inline void PBMsgOrderInsert::clear_has_userid() {
-  _has_bits_[0] &= ~0x00000010u;
-}
 inline void PBMsgOrderInsert::clear_userid() {
   userid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_userid();
 }
 inline const ::std::string& PBMsgOrderInsert::userid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderInsert.UserID)
   return userid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderInsert::set_userid(const ::std::string& value) {
-  set_has_userid();
+  
   userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderInsert.UserID)
 }
 inline void PBMsgOrderInsert::set_userid(const char* value) {
-  set_has_userid();
+  
   userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderInsert.UserID)
 }
 inline void PBMsgOrderInsert::set_userid(const char* value, size_t size) {
-  set_has_userid();
+  
   userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderInsert.UserID)
 }
 inline ::std::string* PBMsgOrderInsert::mutable_userid() {
-  set_has_userid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderInsert.UserID)
   return userid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderInsert::release_userid() {
-  clear_has_userid();
+  
   return userid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderInsert::set_allocated_userid(::std::string* userid) {
   if (userid != NULL) {
-    set_has_userid();
+    
   } else {
-    clear_has_userid();
+    
   }
   userid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), userid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderInsert.UserID)
 }
 
 // optional string OrderPriceType = 7;
-inline bool PBMsgOrderInsert::has_orderpricetype() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
-}
-inline void PBMsgOrderInsert::set_has_orderpricetype() {
-  _has_bits_[0] |= 0x00000020u;
-}
-inline void PBMsgOrderInsert::clear_has_orderpricetype() {
-  _has_bits_[0] &= ~0x00000020u;
-}
 inline void PBMsgOrderInsert::clear_orderpricetype() {
   orderpricetype_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_orderpricetype();
 }
 inline const ::std::string& PBMsgOrderInsert::orderpricetype() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderInsert.OrderPriceType)
   return orderpricetype_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderInsert::set_orderpricetype(const ::std::string& value) {
-  set_has_orderpricetype();
+  
   orderpricetype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderInsert.OrderPriceType)
 }
 inline void PBMsgOrderInsert::set_orderpricetype(const char* value) {
-  set_has_orderpricetype();
+  
   orderpricetype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderInsert.OrderPriceType)
 }
 inline void PBMsgOrderInsert::set_orderpricetype(const char* value, size_t size) {
-  set_has_orderpricetype();
+  
   orderpricetype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderInsert.OrderPriceType)
 }
 inline ::std::string* PBMsgOrderInsert::mutable_orderpricetype() {
-  set_has_orderpricetype();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderInsert.OrderPriceType)
   return orderpricetype_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderInsert::release_orderpricetype() {
-  clear_has_orderpricetype();
+  
   return orderpricetype_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderInsert::set_allocated_orderpricetype(::std::string* orderpricetype) {
   if (orderpricetype != NULL) {
-    set_has_orderpricetype();
+    
   } else {
-    clear_has_orderpricetype();
+    
   }
   orderpricetype_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), orderpricetype);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderInsert.OrderPriceType)
 }
 
 // optional string Direction = 8;
-inline bool PBMsgOrderInsert::has_direction() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
-}
-inline void PBMsgOrderInsert::set_has_direction() {
-  _has_bits_[0] |= 0x00000040u;
-}
-inline void PBMsgOrderInsert::clear_has_direction() {
-  _has_bits_[0] &= ~0x00000040u;
-}
 inline void PBMsgOrderInsert::clear_direction() {
   direction_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_direction();
 }
 inline const ::std::string& PBMsgOrderInsert::direction() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderInsert.Direction)
   return direction_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderInsert::set_direction(const ::std::string& value) {
-  set_has_direction();
+  
   direction_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderInsert.Direction)
 }
 inline void PBMsgOrderInsert::set_direction(const char* value) {
-  set_has_direction();
+  
   direction_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderInsert.Direction)
 }
 inline void PBMsgOrderInsert::set_direction(const char* value, size_t size) {
-  set_has_direction();
+  
   direction_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderInsert.Direction)
 }
 inline ::std::string* PBMsgOrderInsert::mutable_direction() {
-  set_has_direction();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderInsert.Direction)
   return direction_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderInsert::release_direction() {
-  clear_has_direction();
+  
   return direction_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderInsert::set_allocated_direction(::std::string* direction) {
   if (direction != NULL) {
-    set_has_direction();
+    
   } else {
-    clear_has_direction();
+    
   }
   direction_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), direction);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderInsert.Direction)
 }
 
 // optional string CombOffsetFlag = 9;
-inline bool PBMsgOrderInsert::has_comboffsetflag() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
-}
-inline void PBMsgOrderInsert::set_has_comboffsetflag() {
-  _has_bits_[0] |= 0x00000080u;
-}
-inline void PBMsgOrderInsert::clear_has_comboffsetflag() {
-  _has_bits_[0] &= ~0x00000080u;
-}
 inline void PBMsgOrderInsert::clear_comboffsetflag() {
   comboffsetflag_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_comboffsetflag();
 }
 inline const ::std::string& PBMsgOrderInsert::comboffsetflag() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderInsert.CombOffsetFlag)
   return comboffsetflag_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderInsert::set_comboffsetflag(const ::std::string& value) {
-  set_has_comboffsetflag();
+  
   comboffsetflag_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderInsert.CombOffsetFlag)
 }
 inline void PBMsgOrderInsert::set_comboffsetflag(const char* value) {
-  set_has_comboffsetflag();
+  
   comboffsetflag_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderInsert.CombOffsetFlag)
 }
 inline void PBMsgOrderInsert::set_comboffsetflag(const char* value, size_t size) {
-  set_has_comboffsetflag();
+  
   comboffsetflag_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderInsert.CombOffsetFlag)
 }
 inline ::std::string* PBMsgOrderInsert::mutable_comboffsetflag() {
-  set_has_comboffsetflag();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderInsert.CombOffsetFlag)
   return comboffsetflag_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderInsert::release_comboffsetflag() {
-  clear_has_comboffsetflag();
+  
   return comboffsetflag_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderInsert::set_allocated_comboffsetflag(::std::string* comboffsetflag) {
   if (comboffsetflag != NULL) {
-    set_has_comboffsetflag();
+    
   } else {
-    clear_has_comboffsetflag();
+    
   }
   comboffsetflag_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), comboffsetflag);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderInsert.CombOffsetFlag)
 }
 
 // optional string CombHedgeFlag = 10;
-inline bool PBMsgOrderInsert::has_combhedgeflag() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
-}
-inline void PBMsgOrderInsert::set_has_combhedgeflag() {
-  _has_bits_[0] |= 0x00000100u;
-}
-inline void PBMsgOrderInsert::clear_has_combhedgeflag() {
-  _has_bits_[0] &= ~0x00000100u;
-}
 inline void PBMsgOrderInsert::clear_combhedgeflag() {
   combhedgeflag_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_combhedgeflag();
 }
 inline const ::std::string& PBMsgOrderInsert::combhedgeflag() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderInsert.CombHedgeFlag)
   return combhedgeflag_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderInsert::set_combhedgeflag(const ::std::string& value) {
-  set_has_combhedgeflag();
+  
   combhedgeflag_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderInsert.CombHedgeFlag)
 }
 inline void PBMsgOrderInsert::set_combhedgeflag(const char* value) {
-  set_has_combhedgeflag();
+  
   combhedgeflag_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderInsert.CombHedgeFlag)
 }
 inline void PBMsgOrderInsert::set_combhedgeflag(const char* value, size_t size) {
-  set_has_combhedgeflag();
+  
   combhedgeflag_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderInsert.CombHedgeFlag)
 }
 inline ::std::string* PBMsgOrderInsert::mutable_combhedgeflag() {
-  set_has_combhedgeflag();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderInsert.CombHedgeFlag)
   return combhedgeflag_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderInsert::release_combhedgeflag() {
-  clear_has_combhedgeflag();
+  
   return combhedgeflag_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderInsert::set_allocated_combhedgeflag(::std::string* combhedgeflag) {
   if (combhedgeflag != NULL) {
-    set_has_combhedgeflag();
+    
   } else {
-    clear_has_combhedgeflag();
+    
   }
   combhedgeflag_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), combhedgeflag);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderInsert.CombHedgeFlag)
 }
 
 // optional double LimitPrice = 11;
-inline bool PBMsgOrderInsert::has_limitprice() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
-}
-inline void PBMsgOrderInsert::set_has_limitprice() {
-  _has_bits_[0] |= 0x00000200u;
-}
-inline void PBMsgOrderInsert::clear_has_limitprice() {
-  _has_bits_[0] &= ~0x00000200u;
-}
 inline void PBMsgOrderInsert::clear_limitprice() {
   limitprice_ = 0;
-  clear_has_limitprice();
 }
 inline double PBMsgOrderInsert::limitprice() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderInsert.LimitPrice)
   return limitprice_;
 }
 inline void PBMsgOrderInsert::set_limitprice(double value) {
-  set_has_limitprice();
+  
   limitprice_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderInsert.LimitPrice)
 }
 
 // optional int32 VolumeTotalOriginal = 12;
-inline bool PBMsgOrderInsert::has_volumetotaloriginal() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
-}
-inline void PBMsgOrderInsert::set_has_volumetotaloriginal() {
-  _has_bits_[0] |= 0x00000400u;
-}
-inline void PBMsgOrderInsert::clear_has_volumetotaloriginal() {
-  _has_bits_[0] &= ~0x00000400u;
-}
 inline void PBMsgOrderInsert::clear_volumetotaloriginal() {
   volumetotaloriginal_ = 0;
-  clear_has_volumetotaloriginal();
 }
 inline ::google::protobuf::int32 PBMsgOrderInsert::volumetotaloriginal() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderInsert.VolumeTotalOriginal)
   return volumetotaloriginal_;
 }
 inline void PBMsgOrderInsert::set_volumetotaloriginal(::google::protobuf::int32 value) {
-  set_has_volumetotaloriginal();
+  
   volumetotaloriginal_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderInsert.VolumeTotalOriginal)
 }
 
 // optional string TimeCondition = 13;
-inline bool PBMsgOrderInsert::has_timecondition() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
-}
-inline void PBMsgOrderInsert::set_has_timecondition() {
-  _has_bits_[0] |= 0x00000800u;
-}
-inline void PBMsgOrderInsert::clear_has_timecondition() {
-  _has_bits_[0] &= ~0x00000800u;
-}
 inline void PBMsgOrderInsert::clear_timecondition() {
   timecondition_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_timecondition();
 }
 inline const ::std::string& PBMsgOrderInsert::timecondition() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderInsert.TimeCondition)
   return timecondition_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderInsert::set_timecondition(const ::std::string& value) {
-  set_has_timecondition();
+  
   timecondition_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderInsert.TimeCondition)
 }
 inline void PBMsgOrderInsert::set_timecondition(const char* value) {
-  set_has_timecondition();
+  
   timecondition_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderInsert.TimeCondition)
 }
 inline void PBMsgOrderInsert::set_timecondition(const char* value, size_t size) {
-  set_has_timecondition();
+  
   timecondition_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderInsert.TimeCondition)
 }
 inline ::std::string* PBMsgOrderInsert::mutable_timecondition() {
-  set_has_timecondition();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderInsert.TimeCondition)
   return timecondition_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderInsert::release_timecondition() {
-  clear_has_timecondition();
+  
   return timecondition_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderInsert::set_allocated_timecondition(::std::string* timecondition) {
   if (timecondition != NULL) {
-    set_has_timecondition();
+    
   } else {
-    clear_has_timecondition();
+    
   }
   timecondition_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), timecondition);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderInsert.TimeCondition)
 }
 
 // optional string GTDDate = 14;
-inline bool PBMsgOrderInsert::has_gtddate() const {
-  return (_has_bits_[0] & 0x00001000u) != 0;
-}
-inline void PBMsgOrderInsert::set_has_gtddate() {
-  _has_bits_[0] |= 0x00001000u;
-}
-inline void PBMsgOrderInsert::clear_has_gtddate() {
-  _has_bits_[0] &= ~0x00001000u;
-}
 inline void PBMsgOrderInsert::clear_gtddate() {
   gtddate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_gtddate();
 }
 inline const ::std::string& PBMsgOrderInsert::gtddate() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderInsert.GTDDate)
   return gtddate_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderInsert::set_gtddate(const ::std::string& value) {
-  set_has_gtddate();
+  
   gtddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderInsert.GTDDate)
 }
 inline void PBMsgOrderInsert::set_gtddate(const char* value) {
-  set_has_gtddate();
+  
   gtddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderInsert.GTDDate)
 }
 inline void PBMsgOrderInsert::set_gtddate(const char* value, size_t size) {
-  set_has_gtddate();
+  
   gtddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderInsert.GTDDate)
 }
 inline ::std::string* PBMsgOrderInsert::mutable_gtddate() {
-  set_has_gtddate();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderInsert.GTDDate)
   return gtddate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderInsert::release_gtddate() {
-  clear_has_gtddate();
+  
   return gtddate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderInsert::set_allocated_gtddate(::std::string* gtddate) {
   if (gtddate != NULL) {
-    set_has_gtddate();
+    
   } else {
-    clear_has_gtddate();
+    
   }
   gtddate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), gtddate);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderInsert.GTDDate)
 }
 
 // optional string VolumeCondition = 15;
-inline bool PBMsgOrderInsert::has_volumecondition() const {
-  return (_has_bits_[0] & 0x00002000u) != 0;
-}
-inline void PBMsgOrderInsert::set_has_volumecondition() {
-  _has_bits_[0] |= 0x00002000u;
-}
-inline void PBMsgOrderInsert::clear_has_volumecondition() {
-  _has_bits_[0] &= ~0x00002000u;
-}
 inline void PBMsgOrderInsert::clear_volumecondition() {
   volumecondition_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_volumecondition();
 }
 inline const ::std::string& PBMsgOrderInsert::volumecondition() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderInsert.VolumeCondition)
   return volumecondition_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderInsert::set_volumecondition(const ::std::string& value) {
-  set_has_volumecondition();
+  
   volumecondition_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderInsert.VolumeCondition)
 }
 inline void PBMsgOrderInsert::set_volumecondition(const char* value) {
-  set_has_volumecondition();
+  
   volumecondition_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderInsert.VolumeCondition)
 }
 inline void PBMsgOrderInsert::set_volumecondition(const char* value, size_t size) {
-  set_has_volumecondition();
+  
   volumecondition_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderInsert.VolumeCondition)
 }
 inline ::std::string* PBMsgOrderInsert::mutable_volumecondition() {
-  set_has_volumecondition();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderInsert.VolumeCondition)
   return volumecondition_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderInsert::release_volumecondition() {
-  clear_has_volumecondition();
+  
   return volumecondition_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderInsert::set_allocated_volumecondition(::std::string* volumecondition) {
   if (volumecondition != NULL) {
-    set_has_volumecondition();
+    
   } else {
-    clear_has_volumecondition();
+    
   }
   volumecondition_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), volumecondition);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderInsert.VolumeCondition)
 }
 
 // optional int32 MinVolume = 16;
-inline bool PBMsgOrderInsert::has_minvolume() const {
-  return (_has_bits_[0] & 0x00004000u) != 0;
-}
-inline void PBMsgOrderInsert::set_has_minvolume() {
-  _has_bits_[0] |= 0x00004000u;
-}
-inline void PBMsgOrderInsert::clear_has_minvolume() {
-  _has_bits_[0] &= ~0x00004000u;
-}
 inline void PBMsgOrderInsert::clear_minvolume() {
   minvolume_ = 0;
-  clear_has_minvolume();
 }
 inline ::google::protobuf::int32 PBMsgOrderInsert::minvolume() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderInsert.MinVolume)
   return minvolume_;
 }
 inline void PBMsgOrderInsert::set_minvolume(::google::protobuf::int32 value) {
-  set_has_minvolume();
+  
   minvolume_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderInsert.MinVolume)
 }
 
 // optional string ContingentCondition = 17;
-inline bool PBMsgOrderInsert::has_contingentcondition() const {
-  return (_has_bits_[0] & 0x00008000u) != 0;
-}
-inline void PBMsgOrderInsert::set_has_contingentcondition() {
-  _has_bits_[0] |= 0x00008000u;
-}
-inline void PBMsgOrderInsert::clear_has_contingentcondition() {
-  _has_bits_[0] &= ~0x00008000u;
-}
 inline void PBMsgOrderInsert::clear_contingentcondition() {
   contingentcondition_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_contingentcondition();
 }
 inline const ::std::string& PBMsgOrderInsert::contingentcondition() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderInsert.ContingentCondition)
   return contingentcondition_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderInsert::set_contingentcondition(const ::std::string& value) {
-  set_has_contingentcondition();
+  
   contingentcondition_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderInsert.ContingentCondition)
 }
 inline void PBMsgOrderInsert::set_contingentcondition(const char* value) {
-  set_has_contingentcondition();
+  
   contingentcondition_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderInsert.ContingentCondition)
 }
 inline void PBMsgOrderInsert::set_contingentcondition(const char* value, size_t size) {
-  set_has_contingentcondition();
+  
   contingentcondition_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderInsert.ContingentCondition)
 }
 inline ::std::string* PBMsgOrderInsert::mutable_contingentcondition() {
-  set_has_contingentcondition();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderInsert.ContingentCondition)
   return contingentcondition_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderInsert::release_contingentcondition() {
-  clear_has_contingentcondition();
+  
   return contingentcondition_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderInsert::set_allocated_contingentcondition(::std::string* contingentcondition) {
   if (contingentcondition != NULL) {
-    set_has_contingentcondition();
+    
   } else {
-    clear_has_contingentcondition();
+    
   }
   contingentcondition_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), contingentcondition);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderInsert.ContingentCondition)
 }
 
 // optional double StopPrice = 18;
-inline bool PBMsgOrderInsert::has_stopprice() const {
-  return (_has_bits_[0] & 0x00010000u) != 0;
-}
-inline void PBMsgOrderInsert::set_has_stopprice() {
-  _has_bits_[0] |= 0x00010000u;
-}
-inline void PBMsgOrderInsert::clear_has_stopprice() {
-  _has_bits_[0] &= ~0x00010000u;
-}
 inline void PBMsgOrderInsert::clear_stopprice() {
   stopprice_ = 0;
-  clear_has_stopprice();
 }
 inline double PBMsgOrderInsert::stopprice() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderInsert.StopPrice)
   return stopprice_;
 }
 inline void PBMsgOrderInsert::set_stopprice(double value) {
-  set_has_stopprice();
+  
   stopprice_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderInsert.StopPrice)
 }
 
 // optional string ForceCloseReason = 19;
-inline bool PBMsgOrderInsert::has_forceclosereason() const {
-  return (_has_bits_[0] & 0x00020000u) != 0;
-}
-inline void PBMsgOrderInsert::set_has_forceclosereason() {
-  _has_bits_[0] |= 0x00020000u;
-}
-inline void PBMsgOrderInsert::clear_has_forceclosereason() {
-  _has_bits_[0] &= ~0x00020000u;
-}
 inline void PBMsgOrderInsert::clear_forceclosereason() {
   forceclosereason_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_forceclosereason();
 }
 inline const ::std::string& PBMsgOrderInsert::forceclosereason() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderInsert.ForceCloseReason)
   return forceclosereason_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderInsert::set_forceclosereason(const ::std::string& value) {
-  set_has_forceclosereason();
+  
   forceclosereason_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderInsert.ForceCloseReason)
 }
 inline void PBMsgOrderInsert::set_forceclosereason(const char* value) {
-  set_has_forceclosereason();
+  
   forceclosereason_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderInsert.ForceCloseReason)
 }
 inline void PBMsgOrderInsert::set_forceclosereason(const char* value, size_t size) {
-  set_has_forceclosereason();
+  
   forceclosereason_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderInsert.ForceCloseReason)
 }
 inline ::std::string* PBMsgOrderInsert::mutable_forceclosereason() {
-  set_has_forceclosereason();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderInsert.ForceCloseReason)
   return forceclosereason_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderInsert::release_forceclosereason() {
-  clear_has_forceclosereason();
+  
   return forceclosereason_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderInsert::set_allocated_forceclosereason(::std::string* forceclosereason) {
   if (forceclosereason != NULL) {
-    set_has_forceclosereason();
+    
   } else {
-    clear_has_forceclosereason();
+    
   }
   forceclosereason_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), forceclosereason);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderInsert.ForceCloseReason)
 }
 
 // optional int32 IsAutoSuspend = 20;
-inline bool PBMsgOrderInsert::has_isautosuspend() const {
-  return (_has_bits_[0] & 0x00040000u) != 0;
-}
-inline void PBMsgOrderInsert::set_has_isautosuspend() {
-  _has_bits_[0] |= 0x00040000u;
-}
-inline void PBMsgOrderInsert::clear_has_isautosuspend() {
-  _has_bits_[0] &= ~0x00040000u;
-}
 inline void PBMsgOrderInsert::clear_isautosuspend() {
   isautosuspend_ = 0;
-  clear_has_isautosuspend();
 }
 inline ::google::protobuf::int32 PBMsgOrderInsert::isautosuspend() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderInsert.IsAutoSuspend)
   return isautosuspend_;
 }
 inline void PBMsgOrderInsert::set_isautosuspend(::google::protobuf::int32 value) {
-  set_has_isautosuspend();
+  
   isautosuspend_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderInsert.IsAutoSuspend)
 }
 
 // optional string BusinessUnit = 21;
-inline bool PBMsgOrderInsert::has_businessunit() const {
-  return (_has_bits_[0] & 0x00080000u) != 0;
-}
-inline void PBMsgOrderInsert::set_has_businessunit() {
-  _has_bits_[0] |= 0x00080000u;
-}
-inline void PBMsgOrderInsert::clear_has_businessunit() {
-  _has_bits_[0] &= ~0x00080000u;
-}
 inline void PBMsgOrderInsert::clear_businessunit() {
   businessunit_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_businessunit();
 }
 inline const ::std::string& PBMsgOrderInsert::businessunit() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderInsert.BusinessUnit)
   return businessunit_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderInsert::set_businessunit(const ::std::string& value) {
-  set_has_businessunit();
+  
   businessunit_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderInsert.BusinessUnit)
 }
 inline void PBMsgOrderInsert::set_businessunit(const char* value) {
-  set_has_businessunit();
+  
   businessunit_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderInsert.BusinessUnit)
 }
 inline void PBMsgOrderInsert::set_businessunit(const char* value, size_t size) {
-  set_has_businessunit();
+  
   businessunit_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderInsert.BusinessUnit)
 }
 inline ::std::string* PBMsgOrderInsert::mutable_businessunit() {
-  set_has_businessunit();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderInsert.BusinessUnit)
   return businessunit_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderInsert::release_businessunit() {
-  clear_has_businessunit();
+  
   return businessunit_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderInsert::set_allocated_businessunit(::std::string* businessunit) {
   if (businessunit != NULL) {
-    set_has_businessunit();
+    
   } else {
-    clear_has_businessunit();
+    
   }
   businessunit_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), businessunit);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderInsert.BusinessUnit)
 }
 
 // optional int32 RequestID = 22;
-inline bool PBMsgOrderInsert::has_requestid() const {
-  return (_has_bits_[0] & 0x00100000u) != 0;
-}
-inline void PBMsgOrderInsert::set_has_requestid() {
-  _has_bits_[0] |= 0x00100000u;
-}
-inline void PBMsgOrderInsert::clear_has_requestid() {
-  _has_bits_[0] &= ~0x00100000u;
-}
 inline void PBMsgOrderInsert::clear_requestid() {
   requestid_ = 0;
-  clear_has_requestid();
 }
 inline ::google::protobuf::int32 PBMsgOrderInsert::requestid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderInsert.RequestID)
   return requestid_;
 }
 inline void PBMsgOrderInsert::set_requestid(::google::protobuf::int32 value) {
-  set_has_requestid();
+  
   requestid_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderInsert.RequestID)
 }
 
 // optional int32 UserForceClose = 23;
-inline bool PBMsgOrderInsert::has_userforceclose() const {
-  return (_has_bits_[0] & 0x00200000u) != 0;
-}
-inline void PBMsgOrderInsert::set_has_userforceclose() {
-  _has_bits_[0] |= 0x00200000u;
-}
-inline void PBMsgOrderInsert::clear_has_userforceclose() {
-  _has_bits_[0] &= ~0x00200000u;
-}
 inline void PBMsgOrderInsert::clear_userforceclose() {
   userforceclose_ = 0;
-  clear_has_userforceclose();
 }
 inline ::google::protobuf::int32 PBMsgOrderInsert::userforceclose() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderInsert.UserForceClose)
   return userforceclose_;
 }
 inline void PBMsgOrderInsert::set_userforceclose(::google::protobuf::int32 value) {
-  set_has_userforceclose();
+  
   userforceclose_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderInsert.UserForceClose)
 }
 
 // optional int32 IsSwapOrder = 24;
-inline bool PBMsgOrderInsert::has_isswaporder() const {
-  return (_has_bits_[0] & 0x00400000u) != 0;
-}
-inline void PBMsgOrderInsert::set_has_isswaporder() {
-  _has_bits_[0] |= 0x00400000u;
-}
-inline void PBMsgOrderInsert::clear_has_isswaporder() {
-  _has_bits_[0] &= ~0x00400000u;
-}
 inline void PBMsgOrderInsert::clear_isswaporder() {
   isswaporder_ = 0;
-  clear_has_isswaporder();
 }
 inline ::google::protobuf::int32 PBMsgOrderInsert::isswaporder() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderInsert.IsSwapOrder)
   return isswaporder_;
 }
 inline void PBMsgOrderInsert::set_isswaporder(::google::protobuf::int32 value) {
-  set_has_isswaporder();
+  
   isswaporder_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderInsert.IsSwapOrder)
 }
@@ -12731,1122 +9858,872 @@ inline void PBMsgOrderInsert::set_isswaporder(::google::protobuf::int32 value) {
 // PBMsgOrderAction
 
 // optional string BrokerID = 2;
-inline bool PBMsgOrderAction::has_brokerid() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBMsgOrderAction::set_has_brokerid() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBMsgOrderAction::clear_has_brokerid() {
-  _has_bits_[0] &= ~0x00000001u;
-}
 inline void PBMsgOrderAction::clear_brokerid() {
   brokerid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_brokerid();
 }
 inline const ::std::string& PBMsgOrderAction::brokerid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderAction.BrokerID)
   return brokerid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_brokerid(const ::std::string& value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderAction.BrokerID)
 }
 inline void PBMsgOrderAction::set_brokerid(const char* value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderAction.BrokerID)
 }
 inline void PBMsgOrderAction::set_brokerid(const char* value, size_t size) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderAction.BrokerID)
 }
 inline ::std::string* PBMsgOrderAction::mutable_brokerid() {
-  set_has_brokerid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderAction.BrokerID)
   return brokerid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderAction::release_brokerid() {
-  clear_has_brokerid();
+  
   return brokerid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_allocated_brokerid(::std::string* brokerid) {
   if (brokerid != NULL) {
-    set_has_brokerid();
+    
   } else {
-    clear_has_brokerid();
+    
   }
   brokerid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), brokerid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderAction.BrokerID)
 }
 
 // optional string InvestorID = 3;
-inline bool PBMsgOrderAction::has_investorid() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBMsgOrderAction::set_has_investorid() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBMsgOrderAction::clear_has_investorid() {
-  _has_bits_[0] &= ~0x00000002u;
-}
 inline void PBMsgOrderAction::clear_investorid() {
   investorid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_investorid();
 }
 inline const ::std::string& PBMsgOrderAction::investorid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderAction.InvestorID)
   return investorid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_investorid(const ::std::string& value) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderAction.InvestorID)
 }
 inline void PBMsgOrderAction::set_investorid(const char* value) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderAction.InvestorID)
 }
 inline void PBMsgOrderAction::set_investorid(const char* value, size_t size) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderAction.InvestorID)
 }
 inline ::std::string* PBMsgOrderAction::mutable_investorid() {
-  set_has_investorid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderAction.InvestorID)
   return investorid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderAction::release_investorid() {
-  clear_has_investorid();
+  
   return investorid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_allocated_investorid(::std::string* investorid) {
   if (investorid != NULL) {
-    set_has_investorid();
+    
   } else {
-    clear_has_investorid();
+    
   }
   investorid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), investorid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderAction.InvestorID)
 }
 
 // optional int32 OrderActionRef = 4;
-inline bool PBMsgOrderAction::has_orderactionref() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBMsgOrderAction::set_has_orderactionref() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBMsgOrderAction::clear_has_orderactionref() {
-  _has_bits_[0] &= ~0x00000004u;
-}
 inline void PBMsgOrderAction::clear_orderactionref() {
   orderactionref_ = 0;
-  clear_has_orderactionref();
 }
 inline ::google::protobuf::int32 PBMsgOrderAction::orderactionref() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderAction.OrderActionRef)
   return orderactionref_;
 }
 inline void PBMsgOrderAction::set_orderactionref(::google::protobuf::int32 value) {
-  set_has_orderactionref();
+  
   orderactionref_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderAction.OrderActionRef)
 }
 
 // optional string OrderRef = 5;
-inline bool PBMsgOrderAction::has_orderref() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void PBMsgOrderAction::set_has_orderref() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void PBMsgOrderAction::clear_has_orderref() {
-  _has_bits_[0] &= ~0x00000008u;
-}
 inline void PBMsgOrderAction::clear_orderref() {
   orderref_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_orderref();
 }
 inline const ::std::string& PBMsgOrderAction::orderref() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderAction.OrderRef)
   return orderref_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_orderref(const ::std::string& value) {
-  set_has_orderref();
+  
   orderref_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderAction.OrderRef)
 }
 inline void PBMsgOrderAction::set_orderref(const char* value) {
-  set_has_orderref();
+  
   orderref_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderAction.OrderRef)
 }
 inline void PBMsgOrderAction::set_orderref(const char* value, size_t size) {
-  set_has_orderref();
+  
   orderref_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderAction.OrderRef)
 }
 inline ::std::string* PBMsgOrderAction::mutable_orderref() {
-  set_has_orderref();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderAction.OrderRef)
   return orderref_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderAction::release_orderref() {
-  clear_has_orderref();
+  
   return orderref_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_allocated_orderref(::std::string* orderref) {
   if (orderref != NULL) {
-    set_has_orderref();
+    
   } else {
-    clear_has_orderref();
+    
   }
   orderref_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), orderref);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderAction.OrderRef)
 }
 
 // optional int32 RequestID = 6;
-inline bool PBMsgOrderAction::has_requestid() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void PBMsgOrderAction::set_has_requestid() {
-  _has_bits_[0] |= 0x00000010u;
-}
-inline void PBMsgOrderAction::clear_has_requestid() {
-  _has_bits_[0] &= ~0x00000010u;
-}
 inline void PBMsgOrderAction::clear_requestid() {
   requestid_ = 0;
-  clear_has_requestid();
 }
 inline ::google::protobuf::int32 PBMsgOrderAction::requestid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderAction.RequestID)
   return requestid_;
 }
 inline void PBMsgOrderAction::set_requestid(::google::protobuf::int32 value) {
-  set_has_requestid();
+  
   requestid_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderAction.RequestID)
 }
 
 // optional int32 FrontID = 7;
-inline bool PBMsgOrderAction::has_frontid() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
-}
-inline void PBMsgOrderAction::set_has_frontid() {
-  _has_bits_[0] |= 0x00000020u;
-}
-inline void PBMsgOrderAction::clear_has_frontid() {
-  _has_bits_[0] &= ~0x00000020u;
-}
 inline void PBMsgOrderAction::clear_frontid() {
   frontid_ = 0;
-  clear_has_frontid();
 }
 inline ::google::protobuf::int32 PBMsgOrderAction::frontid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderAction.FrontID)
   return frontid_;
 }
 inline void PBMsgOrderAction::set_frontid(::google::protobuf::int32 value) {
-  set_has_frontid();
+  
   frontid_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderAction.FrontID)
 }
 
 // optional int32 SessionID = 8;
-inline bool PBMsgOrderAction::has_sessionid() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
-}
-inline void PBMsgOrderAction::set_has_sessionid() {
-  _has_bits_[0] |= 0x00000040u;
-}
-inline void PBMsgOrderAction::clear_has_sessionid() {
-  _has_bits_[0] &= ~0x00000040u;
-}
 inline void PBMsgOrderAction::clear_sessionid() {
   sessionid_ = 0;
-  clear_has_sessionid();
 }
 inline ::google::protobuf::int32 PBMsgOrderAction::sessionid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderAction.SessionID)
   return sessionid_;
 }
 inline void PBMsgOrderAction::set_sessionid(::google::protobuf::int32 value) {
-  set_has_sessionid();
+  
   sessionid_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderAction.SessionID)
 }
 
 // optional string ExchangeID = 9;
-inline bool PBMsgOrderAction::has_exchangeid() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
-}
-inline void PBMsgOrderAction::set_has_exchangeid() {
-  _has_bits_[0] |= 0x00000080u;
-}
-inline void PBMsgOrderAction::clear_has_exchangeid() {
-  _has_bits_[0] &= ~0x00000080u;
-}
 inline void PBMsgOrderAction::clear_exchangeid() {
   exchangeid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_exchangeid();
 }
 inline const ::std::string& PBMsgOrderAction::exchangeid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderAction.ExchangeID)
   return exchangeid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_exchangeid(const ::std::string& value) {
-  set_has_exchangeid();
+  
   exchangeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderAction.ExchangeID)
 }
 inline void PBMsgOrderAction::set_exchangeid(const char* value) {
-  set_has_exchangeid();
+  
   exchangeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderAction.ExchangeID)
 }
 inline void PBMsgOrderAction::set_exchangeid(const char* value, size_t size) {
-  set_has_exchangeid();
+  
   exchangeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderAction.ExchangeID)
 }
 inline ::std::string* PBMsgOrderAction::mutable_exchangeid() {
-  set_has_exchangeid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderAction.ExchangeID)
   return exchangeid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderAction::release_exchangeid() {
-  clear_has_exchangeid();
+  
   return exchangeid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_allocated_exchangeid(::std::string* exchangeid) {
   if (exchangeid != NULL) {
-    set_has_exchangeid();
+    
   } else {
-    clear_has_exchangeid();
+    
   }
   exchangeid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), exchangeid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderAction.ExchangeID)
 }
 
 // optional string OrderSysID = 10;
-inline bool PBMsgOrderAction::has_ordersysid() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
-}
-inline void PBMsgOrderAction::set_has_ordersysid() {
-  _has_bits_[0] |= 0x00000100u;
-}
-inline void PBMsgOrderAction::clear_has_ordersysid() {
-  _has_bits_[0] &= ~0x00000100u;
-}
 inline void PBMsgOrderAction::clear_ordersysid() {
   ordersysid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_ordersysid();
 }
 inline const ::std::string& PBMsgOrderAction::ordersysid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderAction.OrderSysID)
   return ordersysid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_ordersysid(const ::std::string& value) {
-  set_has_ordersysid();
+  
   ordersysid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderAction.OrderSysID)
 }
 inline void PBMsgOrderAction::set_ordersysid(const char* value) {
-  set_has_ordersysid();
+  
   ordersysid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderAction.OrderSysID)
 }
 inline void PBMsgOrderAction::set_ordersysid(const char* value, size_t size) {
-  set_has_ordersysid();
+  
   ordersysid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderAction.OrderSysID)
 }
 inline ::std::string* PBMsgOrderAction::mutable_ordersysid() {
-  set_has_ordersysid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderAction.OrderSysID)
   return ordersysid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderAction::release_ordersysid() {
-  clear_has_ordersysid();
+  
   return ordersysid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_allocated_ordersysid(::std::string* ordersysid) {
   if (ordersysid != NULL) {
-    set_has_ordersysid();
+    
   } else {
-    clear_has_ordersysid();
+    
   }
   ordersysid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ordersysid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderAction.OrderSysID)
 }
 
 // optional string ActionFlag = 11;
-inline bool PBMsgOrderAction::has_actionflag() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
-}
-inline void PBMsgOrderAction::set_has_actionflag() {
-  _has_bits_[0] |= 0x00000200u;
-}
-inline void PBMsgOrderAction::clear_has_actionflag() {
-  _has_bits_[0] &= ~0x00000200u;
-}
 inline void PBMsgOrderAction::clear_actionflag() {
   actionflag_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_actionflag();
 }
 inline const ::std::string& PBMsgOrderAction::actionflag() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderAction.ActionFlag)
   return actionflag_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_actionflag(const ::std::string& value) {
-  set_has_actionflag();
+  
   actionflag_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderAction.ActionFlag)
 }
 inline void PBMsgOrderAction::set_actionflag(const char* value) {
-  set_has_actionflag();
+  
   actionflag_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderAction.ActionFlag)
 }
 inline void PBMsgOrderAction::set_actionflag(const char* value, size_t size) {
-  set_has_actionflag();
+  
   actionflag_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderAction.ActionFlag)
 }
 inline ::std::string* PBMsgOrderAction::mutable_actionflag() {
-  set_has_actionflag();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderAction.ActionFlag)
   return actionflag_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderAction::release_actionflag() {
-  clear_has_actionflag();
+  
   return actionflag_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_allocated_actionflag(::std::string* actionflag) {
   if (actionflag != NULL) {
-    set_has_actionflag();
+    
   } else {
-    clear_has_actionflag();
+    
   }
   actionflag_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), actionflag);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderAction.ActionFlag)
 }
 
 // optional double LimitPrice = 12;
-inline bool PBMsgOrderAction::has_limitprice() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
-}
-inline void PBMsgOrderAction::set_has_limitprice() {
-  _has_bits_[0] |= 0x00000400u;
-}
-inline void PBMsgOrderAction::clear_has_limitprice() {
-  _has_bits_[0] &= ~0x00000400u;
-}
 inline void PBMsgOrderAction::clear_limitprice() {
   limitprice_ = 0;
-  clear_has_limitprice();
 }
 inline double PBMsgOrderAction::limitprice() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderAction.LimitPrice)
   return limitprice_;
 }
 inline void PBMsgOrderAction::set_limitprice(double value) {
-  set_has_limitprice();
+  
   limitprice_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderAction.LimitPrice)
 }
 
 // optional int32 VolumeChange = 13;
-inline bool PBMsgOrderAction::has_volumechange() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
-}
-inline void PBMsgOrderAction::set_has_volumechange() {
-  _has_bits_[0] |= 0x00000800u;
-}
-inline void PBMsgOrderAction::clear_has_volumechange() {
-  _has_bits_[0] &= ~0x00000800u;
-}
 inline void PBMsgOrderAction::clear_volumechange() {
   volumechange_ = 0;
-  clear_has_volumechange();
 }
 inline ::google::protobuf::int32 PBMsgOrderAction::volumechange() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderAction.VolumeChange)
   return volumechange_;
 }
 inline void PBMsgOrderAction::set_volumechange(::google::protobuf::int32 value) {
-  set_has_volumechange();
+  
   volumechange_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderAction.VolumeChange)
 }
 
 // optional string ActionDate = 14;
-inline bool PBMsgOrderAction::has_actiondate() const {
-  return (_has_bits_[0] & 0x00001000u) != 0;
-}
-inline void PBMsgOrderAction::set_has_actiondate() {
-  _has_bits_[0] |= 0x00001000u;
-}
-inline void PBMsgOrderAction::clear_has_actiondate() {
-  _has_bits_[0] &= ~0x00001000u;
-}
 inline void PBMsgOrderAction::clear_actiondate() {
   actiondate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_actiondate();
 }
 inline const ::std::string& PBMsgOrderAction::actiondate() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderAction.ActionDate)
   return actiondate_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_actiondate(const ::std::string& value) {
-  set_has_actiondate();
+  
   actiondate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderAction.ActionDate)
 }
 inline void PBMsgOrderAction::set_actiondate(const char* value) {
-  set_has_actiondate();
+  
   actiondate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderAction.ActionDate)
 }
 inline void PBMsgOrderAction::set_actiondate(const char* value, size_t size) {
-  set_has_actiondate();
+  
   actiondate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderAction.ActionDate)
 }
 inline ::std::string* PBMsgOrderAction::mutable_actiondate() {
-  set_has_actiondate();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderAction.ActionDate)
   return actiondate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderAction::release_actiondate() {
-  clear_has_actiondate();
+  
   return actiondate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_allocated_actiondate(::std::string* actiondate) {
   if (actiondate != NULL) {
-    set_has_actiondate();
+    
   } else {
-    clear_has_actiondate();
+    
   }
   actiondate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), actiondate);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderAction.ActionDate)
 }
 
 // optional string ActionTime = 15;
-inline bool PBMsgOrderAction::has_actiontime() const {
-  return (_has_bits_[0] & 0x00002000u) != 0;
-}
-inline void PBMsgOrderAction::set_has_actiontime() {
-  _has_bits_[0] |= 0x00002000u;
-}
-inline void PBMsgOrderAction::clear_has_actiontime() {
-  _has_bits_[0] &= ~0x00002000u;
-}
 inline void PBMsgOrderAction::clear_actiontime() {
   actiontime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_actiontime();
 }
 inline const ::std::string& PBMsgOrderAction::actiontime() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderAction.ActionTime)
   return actiontime_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_actiontime(const ::std::string& value) {
-  set_has_actiontime();
+  
   actiontime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderAction.ActionTime)
 }
 inline void PBMsgOrderAction::set_actiontime(const char* value) {
-  set_has_actiontime();
+  
   actiontime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderAction.ActionTime)
 }
 inline void PBMsgOrderAction::set_actiontime(const char* value, size_t size) {
-  set_has_actiontime();
+  
   actiontime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderAction.ActionTime)
 }
 inline ::std::string* PBMsgOrderAction::mutable_actiontime() {
-  set_has_actiontime();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderAction.ActionTime)
   return actiontime_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderAction::release_actiontime() {
-  clear_has_actiontime();
+  
   return actiontime_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_allocated_actiontime(::std::string* actiontime) {
   if (actiontime != NULL) {
-    set_has_actiontime();
+    
   } else {
-    clear_has_actiontime();
+    
   }
   actiontime_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), actiontime);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderAction.ActionTime)
 }
 
 // optional string TraderID = 16;
-inline bool PBMsgOrderAction::has_traderid() const {
-  return (_has_bits_[0] & 0x00004000u) != 0;
-}
-inline void PBMsgOrderAction::set_has_traderid() {
-  _has_bits_[0] |= 0x00004000u;
-}
-inline void PBMsgOrderAction::clear_has_traderid() {
-  _has_bits_[0] &= ~0x00004000u;
-}
 inline void PBMsgOrderAction::clear_traderid() {
   traderid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_traderid();
 }
 inline const ::std::string& PBMsgOrderAction::traderid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderAction.TraderID)
   return traderid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_traderid(const ::std::string& value) {
-  set_has_traderid();
+  
   traderid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderAction.TraderID)
 }
 inline void PBMsgOrderAction::set_traderid(const char* value) {
-  set_has_traderid();
+  
   traderid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderAction.TraderID)
 }
 inline void PBMsgOrderAction::set_traderid(const char* value, size_t size) {
-  set_has_traderid();
+  
   traderid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderAction.TraderID)
 }
 inline ::std::string* PBMsgOrderAction::mutable_traderid() {
-  set_has_traderid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderAction.TraderID)
   return traderid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderAction::release_traderid() {
-  clear_has_traderid();
+  
   return traderid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_allocated_traderid(::std::string* traderid) {
   if (traderid != NULL) {
-    set_has_traderid();
+    
   } else {
-    clear_has_traderid();
+    
   }
   traderid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), traderid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderAction.TraderID)
 }
 
 // optional int32 InstallID = 17;
-inline bool PBMsgOrderAction::has_installid() const {
-  return (_has_bits_[0] & 0x00008000u) != 0;
-}
-inline void PBMsgOrderAction::set_has_installid() {
-  _has_bits_[0] |= 0x00008000u;
-}
-inline void PBMsgOrderAction::clear_has_installid() {
-  _has_bits_[0] &= ~0x00008000u;
-}
 inline void PBMsgOrderAction::clear_installid() {
   installid_ = 0;
-  clear_has_installid();
 }
 inline ::google::protobuf::int32 PBMsgOrderAction::installid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderAction.InstallID)
   return installid_;
 }
 inline void PBMsgOrderAction::set_installid(::google::protobuf::int32 value) {
-  set_has_installid();
+  
   installid_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderAction.InstallID)
 }
 
 // optional string OrderLocalID = 18;
-inline bool PBMsgOrderAction::has_orderlocalid() const {
-  return (_has_bits_[0] & 0x00010000u) != 0;
-}
-inline void PBMsgOrderAction::set_has_orderlocalid() {
-  _has_bits_[0] |= 0x00010000u;
-}
-inline void PBMsgOrderAction::clear_has_orderlocalid() {
-  _has_bits_[0] &= ~0x00010000u;
-}
 inline void PBMsgOrderAction::clear_orderlocalid() {
   orderlocalid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_orderlocalid();
 }
 inline const ::std::string& PBMsgOrderAction::orderlocalid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderAction.OrderLocalID)
   return orderlocalid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_orderlocalid(const ::std::string& value) {
-  set_has_orderlocalid();
+  
   orderlocalid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderAction.OrderLocalID)
 }
 inline void PBMsgOrderAction::set_orderlocalid(const char* value) {
-  set_has_orderlocalid();
+  
   orderlocalid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderAction.OrderLocalID)
 }
 inline void PBMsgOrderAction::set_orderlocalid(const char* value, size_t size) {
-  set_has_orderlocalid();
+  
   orderlocalid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderAction.OrderLocalID)
 }
 inline ::std::string* PBMsgOrderAction::mutable_orderlocalid() {
-  set_has_orderlocalid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderAction.OrderLocalID)
   return orderlocalid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderAction::release_orderlocalid() {
-  clear_has_orderlocalid();
+  
   return orderlocalid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_allocated_orderlocalid(::std::string* orderlocalid) {
   if (orderlocalid != NULL) {
-    set_has_orderlocalid();
+    
   } else {
-    clear_has_orderlocalid();
+    
   }
   orderlocalid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), orderlocalid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderAction.OrderLocalID)
 }
 
 // optional string ActionLocalID = 19;
-inline bool PBMsgOrderAction::has_actionlocalid() const {
-  return (_has_bits_[0] & 0x00020000u) != 0;
-}
-inline void PBMsgOrderAction::set_has_actionlocalid() {
-  _has_bits_[0] |= 0x00020000u;
-}
-inline void PBMsgOrderAction::clear_has_actionlocalid() {
-  _has_bits_[0] &= ~0x00020000u;
-}
 inline void PBMsgOrderAction::clear_actionlocalid() {
   actionlocalid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_actionlocalid();
 }
 inline const ::std::string& PBMsgOrderAction::actionlocalid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderAction.ActionLocalID)
   return actionlocalid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_actionlocalid(const ::std::string& value) {
-  set_has_actionlocalid();
+  
   actionlocalid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderAction.ActionLocalID)
 }
 inline void PBMsgOrderAction::set_actionlocalid(const char* value) {
-  set_has_actionlocalid();
+  
   actionlocalid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderAction.ActionLocalID)
 }
 inline void PBMsgOrderAction::set_actionlocalid(const char* value, size_t size) {
-  set_has_actionlocalid();
+  
   actionlocalid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderAction.ActionLocalID)
 }
 inline ::std::string* PBMsgOrderAction::mutable_actionlocalid() {
-  set_has_actionlocalid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderAction.ActionLocalID)
   return actionlocalid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderAction::release_actionlocalid() {
-  clear_has_actionlocalid();
+  
   return actionlocalid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_allocated_actionlocalid(::std::string* actionlocalid) {
   if (actionlocalid != NULL) {
-    set_has_actionlocalid();
+    
   } else {
-    clear_has_actionlocalid();
+    
   }
   actionlocalid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), actionlocalid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderAction.ActionLocalID)
 }
 
 // optional string ParticipantID = 20;
-inline bool PBMsgOrderAction::has_participantid() const {
-  return (_has_bits_[0] & 0x00040000u) != 0;
-}
-inline void PBMsgOrderAction::set_has_participantid() {
-  _has_bits_[0] |= 0x00040000u;
-}
-inline void PBMsgOrderAction::clear_has_participantid() {
-  _has_bits_[0] &= ~0x00040000u;
-}
 inline void PBMsgOrderAction::clear_participantid() {
   participantid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_participantid();
 }
 inline const ::std::string& PBMsgOrderAction::participantid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderAction.ParticipantID)
   return participantid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_participantid(const ::std::string& value) {
-  set_has_participantid();
+  
   participantid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderAction.ParticipantID)
 }
 inline void PBMsgOrderAction::set_participantid(const char* value) {
-  set_has_participantid();
+  
   participantid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderAction.ParticipantID)
 }
 inline void PBMsgOrderAction::set_participantid(const char* value, size_t size) {
-  set_has_participantid();
+  
   participantid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderAction.ParticipantID)
 }
 inline ::std::string* PBMsgOrderAction::mutable_participantid() {
-  set_has_participantid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderAction.ParticipantID)
   return participantid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderAction::release_participantid() {
-  clear_has_participantid();
+  
   return participantid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_allocated_participantid(::std::string* participantid) {
   if (participantid != NULL) {
-    set_has_participantid();
+    
   } else {
-    clear_has_participantid();
+    
   }
   participantid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), participantid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderAction.ParticipantID)
 }
 
 // optional string ClientID = 21;
-inline bool PBMsgOrderAction::has_clientid() const {
-  return (_has_bits_[0] & 0x00080000u) != 0;
-}
-inline void PBMsgOrderAction::set_has_clientid() {
-  _has_bits_[0] |= 0x00080000u;
-}
-inline void PBMsgOrderAction::clear_has_clientid() {
-  _has_bits_[0] &= ~0x00080000u;
-}
 inline void PBMsgOrderAction::clear_clientid() {
   clientid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_clientid();
 }
 inline const ::std::string& PBMsgOrderAction::clientid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderAction.ClientID)
   return clientid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_clientid(const ::std::string& value) {
-  set_has_clientid();
+  
   clientid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderAction.ClientID)
 }
 inline void PBMsgOrderAction::set_clientid(const char* value) {
-  set_has_clientid();
+  
   clientid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderAction.ClientID)
 }
 inline void PBMsgOrderAction::set_clientid(const char* value, size_t size) {
-  set_has_clientid();
+  
   clientid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderAction.ClientID)
 }
 inline ::std::string* PBMsgOrderAction::mutable_clientid() {
-  set_has_clientid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderAction.ClientID)
   return clientid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderAction::release_clientid() {
-  clear_has_clientid();
+  
   return clientid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_allocated_clientid(::std::string* clientid) {
   if (clientid != NULL) {
-    set_has_clientid();
+    
   } else {
-    clear_has_clientid();
+    
   }
   clientid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), clientid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderAction.ClientID)
 }
 
 // optional string BusinessUnit = 22;
-inline bool PBMsgOrderAction::has_businessunit() const {
-  return (_has_bits_[0] & 0x00100000u) != 0;
-}
-inline void PBMsgOrderAction::set_has_businessunit() {
-  _has_bits_[0] |= 0x00100000u;
-}
-inline void PBMsgOrderAction::clear_has_businessunit() {
-  _has_bits_[0] &= ~0x00100000u;
-}
 inline void PBMsgOrderAction::clear_businessunit() {
   businessunit_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_businessunit();
 }
 inline const ::std::string& PBMsgOrderAction::businessunit() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderAction.BusinessUnit)
   return businessunit_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_businessunit(const ::std::string& value) {
-  set_has_businessunit();
+  
   businessunit_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderAction.BusinessUnit)
 }
 inline void PBMsgOrderAction::set_businessunit(const char* value) {
-  set_has_businessunit();
+  
   businessunit_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderAction.BusinessUnit)
 }
 inline void PBMsgOrderAction::set_businessunit(const char* value, size_t size) {
-  set_has_businessunit();
+  
   businessunit_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderAction.BusinessUnit)
 }
 inline ::std::string* PBMsgOrderAction::mutable_businessunit() {
-  set_has_businessunit();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderAction.BusinessUnit)
   return businessunit_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderAction::release_businessunit() {
-  clear_has_businessunit();
+  
   return businessunit_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_allocated_businessunit(::std::string* businessunit) {
   if (businessunit != NULL) {
-    set_has_businessunit();
+    
   } else {
-    clear_has_businessunit();
+    
   }
   businessunit_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), businessunit);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderAction.BusinessUnit)
 }
 
 // optional string OrderActionStatus = 23;
-inline bool PBMsgOrderAction::has_orderactionstatus() const {
-  return (_has_bits_[0] & 0x00200000u) != 0;
-}
-inline void PBMsgOrderAction::set_has_orderactionstatus() {
-  _has_bits_[0] |= 0x00200000u;
-}
-inline void PBMsgOrderAction::clear_has_orderactionstatus() {
-  _has_bits_[0] &= ~0x00200000u;
-}
 inline void PBMsgOrderAction::clear_orderactionstatus() {
   orderactionstatus_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_orderactionstatus();
 }
 inline const ::std::string& PBMsgOrderAction::orderactionstatus() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderAction.OrderActionStatus)
   return orderactionstatus_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_orderactionstatus(const ::std::string& value) {
-  set_has_orderactionstatus();
+  
   orderactionstatus_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderAction.OrderActionStatus)
 }
 inline void PBMsgOrderAction::set_orderactionstatus(const char* value) {
-  set_has_orderactionstatus();
+  
   orderactionstatus_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderAction.OrderActionStatus)
 }
 inline void PBMsgOrderAction::set_orderactionstatus(const char* value, size_t size) {
-  set_has_orderactionstatus();
+  
   orderactionstatus_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderAction.OrderActionStatus)
 }
 inline ::std::string* PBMsgOrderAction::mutable_orderactionstatus() {
-  set_has_orderactionstatus();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderAction.OrderActionStatus)
   return orderactionstatus_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderAction::release_orderactionstatus() {
-  clear_has_orderactionstatus();
+  
   return orderactionstatus_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_allocated_orderactionstatus(::std::string* orderactionstatus) {
   if (orderactionstatus != NULL) {
-    set_has_orderactionstatus();
+    
   } else {
-    clear_has_orderactionstatus();
+    
   }
   orderactionstatus_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), orderactionstatus);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderAction.OrderActionStatus)
 }
 
 // optional string UserID = 24;
-inline bool PBMsgOrderAction::has_userid() const {
-  return (_has_bits_[0] & 0x00400000u) != 0;
-}
-inline void PBMsgOrderAction::set_has_userid() {
-  _has_bits_[0] |= 0x00400000u;
-}
-inline void PBMsgOrderAction::clear_has_userid() {
-  _has_bits_[0] &= ~0x00400000u;
-}
 inline void PBMsgOrderAction::clear_userid() {
   userid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_userid();
 }
 inline const ::std::string& PBMsgOrderAction::userid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderAction.UserID)
   return userid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_userid(const ::std::string& value) {
-  set_has_userid();
+  
   userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderAction.UserID)
 }
 inline void PBMsgOrderAction::set_userid(const char* value) {
-  set_has_userid();
+  
   userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderAction.UserID)
 }
 inline void PBMsgOrderAction::set_userid(const char* value, size_t size) {
-  set_has_userid();
+  
   userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderAction.UserID)
 }
 inline ::std::string* PBMsgOrderAction::mutable_userid() {
-  set_has_userid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderAction.UserID)
   return userid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderAction::release_userid() {
-  clear_has_userid();
+  
   return userid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_allocated_userid(::std::string* userid) {
   if (userid != NULL) {
-    set_has_userid();
+    
   } else {
-    clear_has_userid();
+    
   }
   userid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), userid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderAction.UserID)
 }
 
 // optional bytes StatusMsg = 25;
-inline bool PBMsgOrderAction::has_statusmsg() const {
-  return (_has_bits_[0] & 0x00800000u) != 0;
-}
-inline void PBMsgOrderAction::set_has_statusmsg() {
-  _has_bits_[0] |= 0x00800000u;
-}
-inline void PBMsgOrderAction::clear_has_statusmsg() {
-  _has_bits_[0] &= ~0x00800000u;
-}
 inline void PBMsgOrderAction::clear_statusmsg() {
   statusmsg_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_statusmsg();
 }
 inline const ::std::string& PBMsgOrderAction::statusmsg() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderAction.StatusMsg)
   return statusmsg_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_statusmsg(const ::std::string& value) {
-  set_has_statusmsg();
+  
   statusmsg_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderAction.StatusMsg)
 }
 inline void PBMsgOrderAction::set_statusmsg(const char* value) {
-  set_has_statusmsg();
+  
   statusmsg_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderAction.StatusMsg)
 }
 inline void PBMsgOrderAction::set_statusmsg(const void* value, size_t size) {
-  set_has_statusmsg();
+  
   statusmsg_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderAction.StatusMsg)
 }
 inline ::std::string* PBMsgOrderAction::mutable_statusmsg() {
-  set_has_statusmsg();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderAction.StatusMsg)
   return statusmsg_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderAction::release_statusmsg() {
-  clear_has_statusmsg();
+  
   return statusmsg_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_allocated_statusmsg(::std::string* statusmsg) {
   if (statusmsg != NULL) {
-    set_has_statusmsg();
+    
   } else {
-    clear_has_statusmsg();
+    
   }
   statusmsg_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), statusmsg);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderAction.StatusMsg)
 }
 
 // optional string InstrumentID = 26;
-inline bool PBMsgOrderAction::has_instrumentid() const {
-  return (_has_bits_[0] & 0x01000000u) != 0;
-}
-inline void PBMsgOrderAction::set_has_instrumentid() {
-  _has_bits_[0] |= 0x01000000u;
-}
-inline void PBMsgOrderAction::clear_has_instrumentid() {
-  _has_bits_[0] &= ~0x01000000u;
-}
 inline void PBMsgOrderAction::clear_instrumentid() {
   instrumentid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_instrumentid();
 }
 inline const ::std::string& PBMsgOrderAction::instrumentid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderAction.InstrumentID)
   return instrumentid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_instrumentid(const ::std::string& value) {
-  set_has_instrumentid();
+  
   instrumentid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderAction.InstrumentID)
 }
 inline void PBMsgOrderAction::set_instrumentid(const char* value) {
-  set_has_instrumentid();
+  
   instrumentid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderAction.InstrumentID)
 }
 inline void PBMsgOrderAction::set_instrumentid(const char* value, size_t size) {
-  set_has_instrumentid();
+  
   instrumentid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderAction.InstrumentID)
 }
 inline ::std::string* PBMsgOrderAction::mutable_instrumentid() {
-  set_has_instrumentid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderAction.InstrumentID)
   return instrumentid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderAction::release_instrumentid() {
-  clear_has_instrumentid();
+  
   return instrumentid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderAction::set_allocated_instrumentid(::std::string* instrumentid) {
   if (instrumentid != NULL) {
-    set_has_instrumentid();
+    
   } else {
-    clear_has_instrumentid();
+    
   }
   instrumentid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), instrumentid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderAction.InstrumentID)
@@ -13857,2548 +10734,1958 @@ inline void PBMsgOrderAction::set_allocated_instrumentid(::std::string* instrume
 // PBMsgOrderRtn
 
 // optional int32 EOF = 1;
-inline bool PBMsgOrderRtn::has_eof() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_eof() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBMsgOrderRtn::clear_has_eof() {
-  _has_bits_[0] &= ~0x00000001u;
-}
 inline void PBMsgOrderRtn::clear_eof() {
   eof_ = 0;
-  clear_has_eof();
 }
 inline ::google::protobuf::int32 PBMsgOrderRtn::eof() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.EOF)
   return eof_;
 }
 inline void PBMsgOrderRtn::set_eof(::google::protobuf::int32 value) {
-  set_has_eof();
+  
   eof_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.EOF)
 }
 
 // optional string BrokerID = 2;
-inline bool PBMsgOrderRtn::has_brokerid() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_brokerid() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBMsgOrderRtn::clear_has_brokerid() {
-  _has_bits_[0] &= ~0x00000002u;
-}
 inline void PBMsgOrderRtn::clear_brokerid() {
   brokerid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_brokerid();
 }
 inline const ::std::string& PBMsgOrderRtn::brokerid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.BrokerID)
   return brokerid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_brokerid(const ::std::string& value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.BrokerID)
 }
 inline void PBMsgOrderRtn::set_brokerid(const char* value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.BrokerID)
 }
 inline void PBMsgOrderRtn::set_brokerid(const char* value, size_t size) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.BrokerID)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_brokerid() {
-  set_has_brokerid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.BrokerID)
   return brokerid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_brokerid() {
-  clear_has_brokerid();
+  
   return brokerid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_brokerid(::std::string* brokerid) {
   if (brokerid != NULL) {
-    set_has_brokerid();
+    
   } else {
-    clear_has_brokerid();
+    
   }
   brokerid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), brokerid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.BrokerID)
 }
 
 // optional string InvestorID = 3;
-inline bool PBMsgOrderRtn::has_investorid() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_investorid() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBMsgOrderRtn::clear_has_investorid() {
-  _has_bits_[0] &= ~0x00000004u;
-}
 inline void PBMsgOrderRtn::clear_investorid() {
   investorid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_investorid();
 }
 inline const ::std::string& PBMsgOrderRtn::investorid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.InvestorID)
   return investorid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_investorid(const ::std::string& value) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.InvestorID)
 }
 inline void PBMsgOrderRtn::set_investorid(const char* value) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.InvestorID)
 }
 inline void PBMsgOrderRtn::set_investorid(const char* value, size_t size) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.InvestorID)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_investorid() {
-  set_has_investorid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.InvestorID)
   return investorid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_investorid() {
-  clear_has_investorid();
+  
   return investorid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_investorid(::std::string* investorid) {
   if (investorid != NULL) {
-    set_has_investorid();
+    
   } else {
-    clear_has_investorid();
+    
   }
   investorid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), investorid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.InvestorID)
 }
 
 // optional string InstrumentID = 4;
-inline bool PBMsgOrderRtn::has_instrumentid() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_instrumentid() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void PBMsgOrderRtn::clear_has_instrumentid() {
-  _has_bits_[0] &= ~0x00000008u;
-}
 inline void PBMsgOrderRtn::clear_instrumentid() {
   instrumentid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_instrumentid();
 }
 inline const ::std::string& PBMsgOrderRtn::instrumentid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.InstrumentID)
   return instrumentid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_instrumentid(const ::std::string& value) {
-  set_has_instrumentid();
+  
   instrumentid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.InstrumentID)
 }
 inline void PBMsgOrderRtn::set_instrumentid(const char* value) {
-  set_has_instrumentid();
+  
   instrumentid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.InstrumentID)
 }
 inline void PBMsgOrderRtn::set_instrumentid(const char* value, size_t size) {
-  set_has_instrumentid();
+  
   instrumentid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.InstrumentID)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_instrumentid() {
-  set_has_instrumentid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.InstrumentID)
   return instrumentid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_instrumentid() {
-  clear_has_instrumentid();
+  
   return instrumentid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_instrumentid(::std::string* instrumentid) {
   if (instrumentid != NULL) {
-    set_has_instrumentid();
+    
   } else {
-    clear_has_instrumentid();
+    
   }
   instrumentid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), instrumentid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.InstrumentID)
 }
 
 // optional string OrderRef = 5;
-inline bool PBMsgOrderRtn::has_orderref() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_orderref() {
-  _has_bits_[0] |= 0x00000010u;
-}
-inline void PBMsgOrderRtn::clear_has_orderref() {
-  _has_bits_[0] &= ~0x00000010u;
-}
 inline void PBMsgOrderRtn::clear_orderref() {
   orderref_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_orderref();
 }
 inline const ::std::string& PBMsgOrderRtn::orderref() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.OrderRef)
   return orderref_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_orderref(const ::std::string& value) {
-  set_has_orderref();
+  
   orderref_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.OrderRef)
 }
 inline void PBMsgOrderRtn::set_orderref(const char* value) {
-  set_has_orderref();
+  
   orderref_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.OrderRef)
 }
 inline void PBMsgOrderRtn::set_orderref(const char* value, size_t size) {
-  set_has_orderref();
+  
   orderref_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.OrderRef)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_orderref() {
-  set_has_orderref();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.OrderRef)
   return orderref_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_orderref() {
-  clear_has_orderref();
+  
   return orderref_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_orderref(::std::string* orderref) {
   if (orderref != NULL) {
-    set_has_orderref();
+    
   } else {
-    clear_has_orderref();
+    
   }
   orderref_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), orderref);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.OrderRef)
 }
 
 // optional string UserID = 6;
-inline bool PBMsgOrderRtn::has_userid() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_userid() {
-  _has_bits_[0] |= 0x00000020u;
-}
-inline void PBMsgOrderRtn::clear_has_userid() {
-  _has_bits_[0] &= ~0x00000020u;
-}
 inline void PBMsgOrderRtn::clear_userid() {
   userid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_userid();
 }
 inline const ::std::string& PBMsgOrderRtn::userid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.UserID)
   return userid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_userid(const ::std::string& value) {
-  set_has_userid();
+  
   userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.UserID)
 }
 inline void PBMsgOrderRtn::set_userid(const char* value) {
-  set_has_userid();
+  
   userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.UserID)
 }
 inline void PBMsgOrderRtn::set_userid(const char* value, size_t size) {
-  set_has_userid();
+  
   userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.UserID)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_userid() {
-  set_has_userid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.UserID)
   return userid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_userid() {
-  clear_has_userid();
+  
   return userid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_userid(::std::string* userid) {
   if (userid != NULL) {
-    set_has_userid();
+    
   } else {
-    clear_has_userid();
+    
   }
   userid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), userid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.UserID)
 }
 
 // optional string OrderPriceType = 7;
-inline bool PBMsgOrderRtn::has_orderpricetype() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_orderpricetype() {
-  _has_bits_[0] |= 0x00000040u;
-}
-inline void PBMsgOrderRtn::clear_has_orderpricetype() {
-  _has_bits_[0] &= ~0x00000040u;
-}
 inline void PBMsgOrderRtn::clear_orderpricetype() {
   orderpricetype_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_orderpricetype();
 }
 inline const ::std::string& PBMsgOrderRtn::orderpricetype() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.OrderPriceType)
   return orderpricetype_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_orderpricetype(const ::std::string& value) {
-  set_has_orderpricetype();
+  
   orderpricetype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.OrderPriceType)
 }
 inline void PBMsgOrderRtn::set_orderpricetype(const char* value) {
-  set_has_orderpricetype();
+  
   orderpricetype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.OrderPriceType)
 }
 inline void PBMsgOrderRtn::set_orderpricetype(const char* value, size_t size) {
-  set_has_orderpricetype();
+  
   orderpricetype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.OrderPriceType)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_orderpricetype() {
-  set_has_orderpricetype();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.OrderPriceType)
   return orderpricetype_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_orderpricetype() {
-  clear_has_orderpricetype();
+  
   return orderpricetype_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_orderpricetype(::std::string* orderpricetype) {
   if (orderpricetype != NULL) {
-    set_has_orderpricetype();
+    
   } else {
-    clear_has_orderpricetype();
+    
   }
   orderpricetype_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), orderpricetype);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.OrderPriceType)
 }
 
 // optional string Direction = 8;
-inline bool PBMsgOrderRtn::has_direction() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_direction() {
-  _has_bits_[0] |= 0x00000080u;
-}
-inline void PBMsgOrderRtn::clear_has_direction() {
-  _has_bits_[0] &= ~0x00000080u;
-}
 inline void PBMsgOrderRtn::clear_direction() {
   direction_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_direction();
 }
 inline const ::std::string& PBMsgOrderRtn::direction() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.Direction)
   return direction_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_direction(const ::std::string& value) {
-  set_has_direction();
+  
   direction_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.Direction)
 }
 inline void PBMsgOrderRtn::set_direction(const char* value) {
-  set_has_direction();
+  
   direction_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.Direction)
 }
 inline void PBMsgOrderRtn::set_direction(const char* value, size_t size) {
-  set_has_direction();
+  
   direction_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.Direction)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_direction() {
-  set_has_direction();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.Direction)
   return direction_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_direction() {
-  clear_has_direction();
+  
   return direction_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_direction(::std::string* direction) {
   if (direction != NULL) {
-    set_has_direction();
+    
   } else {
-    clear_has_direction();
+    
   }
   direction_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), direction);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.Direction)
 }
 
 // optional string CombOffsetFlag = 9;
-inline bool PBMsgOrderRtn::has_comboffsetflag() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_comboffsetflag() {
-  _has_bits_[0] |= 0x00000100u;
-}
-inline void PBMsgOrderRtn::clear_has_comboffsetflag() {
-  _has_bits_[0] &= ~0x00000100u;
-}
 inline void PBMsgOrderRtn::clear_comboffsetflag() {
   comboffsetflag_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_comboffsetflag();
 }
 inline const ::std::string& PBMsgOrderRtn::comboffsetflag() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.CombOffsetFlag)
   return comboffsetflag_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_comboffsetflag(const ::std::string& value) {
-  set_has_comboffsetflag();
+  
   comboffsetflag_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.CombOffsetFlag)
 }
 inline void PBMsgOrderRtn::set_comboffsetflag(const char* value) {
-  set_has_comboffsetflag();
+  
   comboffsetflag_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.CombOffsetFlag)
 }
 inline void PBMsgOrderRtn::set_comboffsetflag(const char* value, size_t size) {
-  set_has_comboffsetflag();
+  
   comboffsetflag_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.CombOffsetFlag)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_comboffsetflag() {
-  set_has_comboffsetflag();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.CombOffsetFlag)
   return comboffsetflag_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_comboffsetflag() {
-  clear_has_comboffsetflag();
+  
   return comboffsetflag_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_comboffsetflag(::std::string* comboffsetflag) {
   if (comboffsetflag != NULL) {
-    set_has_comboffsetflag();
+    
   } else {
-    clear_has_comboffsetflag();
+    
   }
   comboffsetflag_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), comboffsetflag);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.CombOffsetFlag)
 }
 
 // optional string CombHedgeFlag = 10;
-inline bool PBMsgOrderRtn::has_combhedgeflag() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_combhedgeflag() {
-  _has_bits_[0] |= 0x00000200u;
-}
-inline void PBMsgOrderRtn::clear_has_combhedgeflag() {
-  _has_bits_[0] &= ~0x00000200u;
-}
 inline void PBMsgOrderRtn::clear_combhedgeflag() {
   combhedgeflag_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_combhedgeflag();
 }
 inline const ::std::string& PBMsgOrderRtn::combhedgeflag() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.CombHedgeFlag)
   return combhedgeflag_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_combhedgeflag(const ::std::string& value) {
-  set_has_combhedgeflag();
+  
   combhedgeflag_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.CombHedgeFlag)
 }
 inline void PBMsgOrderRtn::set_combhedgeflag(const char* value) {
-  set_has_combhedgeflag();
+  
   combhedgeflag_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.CombHedgeFlag)
 }
 inline void PBMsgOrderRtn::set_combhedgeflag(const char* value, size_t size) {
-  set_has_combhedgeflag();
+  
   combhedgeflag_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.CombHedgeFlag)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_combhedgeflag() {
-  set_has_combhedgeflag();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.CombHedgeFlag)
   return combhedgeflag_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_combhedgeflag() {
-  clear_has_combhedgeflag();
+  
   return combhedgeflag_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_combhedgeflag(::std::string* combhedgeflag) {
   if (combhedgeflag != NULL) {
-    set_has_combhedgeflag();
+    
   } else {
-    clear_has_combhedgeflag();
+    
   }
   combhedgeflag_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), combhedgeflag);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.CombHedgeFlag)
 }
 
 // optional double LimitPrice = 11;
-inline bool PBMsgOrderRtn::has_limitprice() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_limitprice() {
-  _has_bits_[0] |= 0x00000400u;
-}
-inline void PBMsgOrderRtn::clear_has_limitprice() {
-  _has_bits_[0] &= ~0x00000400u;
-}
 inline void PBMsgOrderRtn::clear_limitprice() {
   limitprice_ = 0;
-  clear_has_limitprice();
 }
 inline double PBMsgOrderRtn::limitprice() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.LimitPrice)
   return limitprice_;
 }
 inline void PBMsgOrderRtn::set_limitprice(double value) {
-  set_has_limitprice();
+  
   limitprice_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.LimitPrice)
 }
 
 // optional int32 VolumeTotalOriginal = 12;
-inline bool PBMsgOrderRtn::has_volumetotaloriginal() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_volumetotaloriginal() {
-  _has_bits_[0] |= 0x00000800u;
-}
-inline void PBMsgOrderRtn::clear_has_volumetotaloriginal() {
-  _has_bits_[0] &= ~0x00000800u;
-}
 inline void PBMsgOrderRtn::clear_volumetotaloriginal() {
   volumetotaloriginal_ = 0;
-  clear_has_volumetotaloriginal();
 }
 inline ::google::protobuf::int32 PBMsgOrderRtn::volumetotaloriginal() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.VolumeTotalOriginal)
   return volumetotaloriginal_;
 }
 inline void PBMsgOrderRtn::set_volumetotaloriginal(::google::protobuf::int32 value) {
-  set_has_volumetotaloriginal();
+  
   volumetotaloriginal_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.VolumeTotalOriginal)
 }
 
 // optional string TimeCondition = 13;
-inline bool PBMsgOrderRtn::has_timecondition() const {
-  return (_has_bits_[0] & 0x00001000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_timecondition() {
-  _has_bits_[0] |= 0x00001000u;
-}
-inline void PBMsgOrderRtn::clear_has_timecondition() {
-  _has_bits_[0] &= ~0x00001000u;
-}
 inline void PBMsgOrderRtn::clear_timecondition() {
   timecondition_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_timecondition();
 }
 inline const ::std::string& PBMsgOrderRtn::timecondition() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.TimeCondition)
   return timecondition_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_timecondition(const ::std::string& value) {
-  set_has_timecondition();
+  
   timecondition_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.TimeCondition)
 }
 inline void PBMsgOrderRtn::set_timecondition(const char* value) {
-  set_has_timecondition();
+  
   timecondition_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.TimeCondition)
 }
 inline void PBMsgOrderRtn::set_timecondition(const char* value, size_t size) {
-  set_has_timecondition();
+  
   timecondition_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.TimeCondition)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_timecondition() {
-  set_has_timecondition();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.TimeCondition)
   return timecondition_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_timecondition() {
-  clear_has_timecondition();
+  
   return timecondition_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_timecondition(::std::string* timecondition) {
   if (timecondition != NULL) {
-    set_has_timecondition();
+    
   } else {
-    clear_has_timecondition();
+    
   }
   timecondition_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), timecondition);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.TimeCondition)
 }
 
 // optional string GTDDate = 14;
-inline bool PBMsgOrderRtn::has_gtddate() const {
-  return (_has_bits_[0] & 0x00002000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_gtddate() {
-  _has_bits_[0] |= 0x00002000u;
-}
-inline void PBMsgOrderRtn::clear_has_gtddate() {
-  _has_bits_[0] &= ~0x00002000u;
-}
 inline void PBMsgOrderRtn::clear_gtddate() {
   gtddate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_gtddate();
 }
 inline const ::std::string& PBMsgOrderRtn::gtddate() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.GTDDate)
   return gtddate_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_gtddate(const ::std::string& value) {
-  set_has_gtddate();
+  
   gtddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.GTDDate)
 }
 inline void PBMsgOrderRtn::set_gtddate(const char* value) {
-  set_has_gtddate();
+  
   gtddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.GTDDate)
 }
 inline void PBMsgOrderRtn::set_gtddate(const char* value, size_t size) {
-  set_has_gtddate();
+  
   gtddate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.GTDDate)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_gtddate() {
-  set_has_gtddate();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.GTDDate)
   return gtddate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_gtddate() {
-  clear_has_gtddate();
+  
   return gtddate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_gtddate(::std::string* gtddate) {
   if (gtddate != NULL) {
-    set_has_gtddate();
+    
   } else {
-    clear_has_gtddate();
+    
   }
   gtddate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), gtddate);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.GTDDate)
 }
 
 // optional string VolumeCondition = 15;
-inline bool PBMsgOrderRtn::has_volumecondition() const {
-  return (_has_bits_[0] & 0x00004000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_volumecondition() {
-  _has_bits_[0] |= 0x00004000u;
-}
-inline void PBMsgOrderRtn::clear_has_volumecondition() {
-  _has_bits_[0] &= ~0x00004000u;
-}
 inline void PBMsgOrderRtn::clear_volumecondition() {
   volumecondition_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_volumecondition();
 }
 inline const ::std::string& PBMsgOrderRtn::volumecondition() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.VolumeCondition)
   return volumecondition_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_volumecondition(const ::std::string& value) {
-  set_has_volumecondition();
+  
   volumecondition_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.VolumeCondition)
 }
 inline void PBMsgOrderRtn::set_volumecondition(const char* value) {
-  set_has_volumecondition();
+  
   volumecondition_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.VolumeCondition)
 }
 inline void PBMsgOrderRtn::set_volumecondition(const char* value, size_t size) {
-  set_has_volumecondition();
+  
   volumecondition_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.VolumeCondition)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_volumecondition() {
-  set_has_volumecondition();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.VolumeCondition)
   return volumecondition_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_volumecondition() {
-  clear_has_volumecondition();
+  
   return volumecondition_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_volumecondition(::std::string* volumecondition) {
   if (volumecondition != NULL) {
-    set_has_volumecondition();
+    
   } else {
-    clear_has_volumecondition();
+    
   }
   volumecondition_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), volumecondition);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.VolumeCondition)
 }
 
 // optional int32 MinVolume = 16;
-inline bool PBMsgOrderRtn::has_minvolume() const {
-  return (_has_bits_[0] & 0x00008000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_minvolume() {
-  _has_bits_[0] |= 0x00008000u;
-}
-inline void PBMsgOrderRtn::clear_has_minvolume() {
-  _has_bits_[0] &= ~0x00008000u;
-}
 inline void PBMsgOrderRtn::clear_minvolume() {
   minvolume_ = 0;
-  clear_has_minvolume();
 }
 inline ::google::protobuf::int32 PBMsgOrderRtn::minvolume() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.MinVolume)
   return minvolume_;
 }
 inline void PBMsgOrderRtn::set_minvolume(::google::protobuf::int32 value) {
-  set_has_minvolume();
+  
   minvolume_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.MinVolume)
 }
 
 // optional string ContingentCondition = 17;
-inline bool PBMsgOrderRtn::has_contingentcondition() const {
-  return (_has_bits_[0] & 0x00010000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_contingentcondition() {
-  _has_bits_[0] |= 0x00010000u;
-}
-inline void PBMsgOrderRtn::clear_has_contingentcondition() {
-  _has_bits_[0] &= ~0x00010000u;
-}
 inline void PBMsgOrderRtn::clear_contingentcondition() {
   contingentcondition_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_contingentcondition();
 }
 inline const ::std::string& PBMsgOrderRtn::contingentcondition() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.ContingentCondition)
   return contingentcondition_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_contingentcondition(const ::std::string& value) {
-  set_has_contingentcondition();
+  
   contingentcondition_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.ContingentCondition)
 }
 inline void PBMsgOrderRtn::set_contingentcondition(const char* value) {
-  set_has_contingentcondition();
+  
   contingentcondition_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.ContingentCondition)
 }
 inline void PBMsgOrderRtn::set_contingentcondition(const char* value, size_t size) {
-  set_has_contingentcondition();
+  
   contingentcondition_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.ContingentCondition)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_contingentcondition() {
-  set_has_contingentcondition();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.ContingentCondition)
   return contingentcondition_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_contingentcondition() {
-  clear_has_contingentcondition();
+  
   return contingentcondition_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_contingentcondition(::std::string* contingentcondition) {
   if (contingentcondition != NULL) {
-    set_has_contingentcondition();
+    
   } else {
-    clear_has_contingentcondition();
+    
   }
   contingentcondition_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), contingentcondition);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.ContingentCondition)
 }
 
 // optional double StopPrice = 18;
-inline bool PBMsgOrderRtn::has_stopprice() const {
-  return (_has_bits_[0] & 0x00020000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_stopprice() {
-  _has_bits_[0] |= 0x00020000u;
-}
-inline void PBMsgOrderRtn::clear_has_stopprice() {
-  _has_bits_[0] &= ~0x00020000u;
-}
 inline void PBMsgOrderRtn::clear_stopprice() {
   stopprice_ = 0;
-  clear_has_stopprice();
 }
 inline double PBMsgOrderRtn::stopprice() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.StopPrice)
   return stopprice_;
 }
 inline void PBMsgOrderRtn::set_stopprice(double value) {
-  set_has_stopprice();
+  
   stopprice_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.StopPrice)
 }
 
 // optional string ForceCloseReason = 19;
-inline bool PBMsgOrderRtn::has_forceclosereason() const {
-  return (_has_bits_[0] & 0x00040000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_forceclosereason() {
-  _has_bits_[0] |= 0x00040000u;
-}
-inline void PBMsgOrderRtn::clear_has_forceclosereason() {
-  _has_bits_[0] &= ~0x00040000u;
-}
 inline void PBMsgOrderRtn::clear_forceclosereason() {
   forceclosereason_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_forceclosereason();
 }
 inline const ::std::string& PBMsgOrderRtn::forceclosereason() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.ForceCloseReason)
   return forceclosereason_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_forceclosereason(const ::std::string& value) {
-  set_has_forceclosereason();
+  
   forceclosereason_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.ForceCloseReason)
 }
 inline void PBMsgOrderRtn::set_forceclosereason(const char* value) {
-  set_has_forceclosereason();
+  
   forceclosereason_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.ForceCloseReason)
 }
 inline void PBMsgOrderRtn::set_forceclosereason(const char* value, size_t size) {
-  set_has_forceclosereason();
+  
   forceclosereason_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.ForceCloseReason)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_forceclosereason() {
-  set_has_forceclosereason();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.ForceCloseReason)
   return forceclosereason_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_forceclosereason() {
-  clear_has_forceclosereason();
+  
   return forceclosereason_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_forceclosereason(::std::string* forceclosereason) {
   if (forceclosereason != NULL) {
-    set_has_forceclosereason();
+    
   } else {
-    clear_has_forceclosereason();
+    
   }
   forceclosereason_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), forceclosereason);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.ForceCloseReason)
 }
 
 // optional int32 IsAutoSuspend = 20;
-inline bool PBMsgOrderRtn::has_isautosuspend() const {
-  return (_has_bits_[0] & 0x00080000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_isautosuspend() {
-  _has_bits_[0] |= 0x00080000u;
-}
-inline void PBMsgOrderRtn::clear_has_isautosuspend() {
-  _has_bits_[0] &= ~0x00080000u;
-}
 inline void PBMsgOrderRtn::clear_isautosuspend() {
   isautosuspend_ = 0;
-  clear_has_isautosuspend();
 }
 inline ::google::protobuf::int32 PBMsgOrderRtn::isautosuspend() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.IsAutoSuspend)
   return isautosuspend_;
 }
 inline void PBMsgOrderRtn::set_isautosuspend(::google::protobuf::int32 value) {
-  set_has_isautosuspend();
+  
   isautosuspend_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.IsAutoSuspend)
 }
 
 // optional string BusinessUnit = 21;
-inline bool PBMsgOrderRtn::has_businessunit() const {
-  return (_has_bits_[0] & 0x00100000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_businessunit() {
-  _has_bits_[0] |= 0x00100000u;
-}
-inline void PBMsgOrderRtn::clear_has_businessunit() {
-  _has_bits_[0] &= ~0x00100000u;
-}
 inline void PBMsgOrderRtn::clear_businessunit() {
   businessunit_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_businessunit();
 }
 inline const ::std::string& PBMsgOrderRtn::businessunit() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.BusinessUnit)
   return businessunit_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_businessunit(const ::std::string& value) {
-  set_has_businessunit();
+  
   businessunit_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.BusinessUnit)
 }
 inline void PBMsgOrderRtn::set_businessunit(const char* value) {
-  set_has_businessunit();
+  
   businessunit_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.BusinessUnit)
 }
 inline void PBMsgOrderRtn::set_businessunit(const char* value, size_t size) {
-  set_has_businessunit();
+  
   businessunit_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.BusinessUnit)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_businessunit() {
-  set_has_businessunit();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.BusinessUnit)
   return businessunit_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_businessunit() {
-  clear_has_businessunit();
+  
   return businessunit_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_businessunit(::std::string* businessunit) {
   if (businessunit != NULL) {
-    set_has_businessunit();
+    
   } else {
-    clear_has_businessunit();
+    
   }
   businessunit_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), businessunit);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.BusinessUnit)
 }
 
 // optional int32 RequestID = 22;
-inline bool PBMsgOrderRtn::has_requestid() const {
-  return (_has_bits_[0] & 0x00200000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_requestid() {
-  _has_bits_[0] |= 0x00200000u;
-}
-inline void PBMsgOrderRtn::clear_has_requestid() {
-  _has_bits_[0] &= ~0x00200000u;
-}
 inline void PBMsgOrderRtn::clear_requestid() {
   requestid_ = 0;
-  clear_has_requestid();
 }
 inline ::google::protobuf::int32 PBMsgOrderRtn::requestid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.RequestID)
   return requestid_;
 }
 inline void PBMsgOrderRtn::set_requestid(::google::protobuf::int32 value) {
-  set_has_requestid();
+  
   requestid_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.RequestID)
 }
 
 // optional string OrderLocalID = 23;
-inline bool PBMsgOrderRtn::has_orderlocalid() const {
-  return (_has_bits_[0] & 0x00400000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_orderlocalid() {
-  _has_bits_[0] |= 0x00400000u;
-}
-inline void PBMsgOrderRtn::clear_has_orderlocalid() {
-  _has_bits_[0] &= ~0x00400000u;
-}
 inline void PBMsgOrderRtn::clear_orderlocalid() {
   orderlocalid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_orderlocalid();
 }
 inline const ::std::string& PBMsgOrderRtn::orderlocalid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.OrderLocalID)
   return orderlocalid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_orderlocalid(const ::std::string& value) {
-  set_has_orderlocalid();
+  
   orderlocalid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.OrderLocalID)
 }
 inline void PBMsgOrderRtn::set_orderlocalid(const char* value) {
-  set_has_orderlocalid();
+  
   orderlocalid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.OrderLocalID)
 }
 inline void PBMsgOrderRtn::set_orderlocalid(const char* value, size_t size) {
-  set_has_orderlocalid();
+  
   orderlocalid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.OrderLocalID)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_orderlocalid() {
-  set_has_orderlocalid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.OrderLocalID)
   return orderlocalid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_orderlocalid() {
-  clear_has_orderlocalid();
+  
   return orderlocalid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_orderlocalid(::std::string* orderlocalid) {
   if (orderlocalid != NULL) {
-    set_has_orderlocalid();
+    
   } else {
-    clear_has_orderlocalid();
+    
   }
   orderlocalid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), orderlocalid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.OrderLocalID)
 }
 
 // optional string ExchangeID = 24;
-inline bool PBMsgOrderRtn::has_exchangeid() const {
-  return (_has_bits_[0] & 0x00800000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_exchangeid() {
-  _has_bits_[0] |= 0x00800000u;
-}
-inline void PBMsgOrderRtn::clear_has_exchangeid() {
-  _has_bits_[0] &= ~0x00800000u;
-}
 inline void PBMsgOrderRtn::clear_exchangeid() {
   exchangeid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_exchangeid();
 }
 inline const ::std::string& PBMsgOrderRtn::exchangeid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.ExchangeID)
   return exchangeid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_exchangeid(const ::std::string& value) {
-  set_has_exchangeid();
+  
   exchangeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.ExchangeID)
 }
 inline void PBMsgOrderRtn::set_exchangeid(const char* value) {
-  set_has_exchangeid();
+  
   exchangeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.ExchangeID)
 }
 inline void PBMsgOrderRtn::set_exchangeid(const char* value, size_t size) {
-  set_has_exchangeid();
+  
   exchangeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.ExchangeID)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_exchangeid() {
-  set_has_exchangeid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.ExchangeID)
   return exchangeid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_exchangeid() {
-  clear_has_exchangeid();
+  
   return exchangeid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_exchangeid(::std::string* exchangeid) {
   if (exchangeid != NULL) {
-    set_has_exchangeid();
+    
   } else {
-    clear_has_exchangeid();
+    
   }
   exchangeid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), exchangeid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.ExchangeID)
 }
 
 // optional string ParticipantID = 25;
-inline bool PBMsgOrderRtn::has_participantid() const {
-  return (_has_bits_[0] & 0x01000000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_participantid() {
-  _has_bits_[0] |= 0x01000000u;
-}
-inline void PBMsgOrderRtn::clear_has_participantid() {
-  _has_bits_[0] &= ~0x01000000u;
-}
 inline void PBMsgOrderRtn::clear_participantid() {
   participantid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_participantid();
 }
 inline const ::std::string& PBMsgOrderRtn::participantid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.ParticipantID)
   return participantid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_participantid(const ::std::string& value) {
-  set_has_participantid();
+  
   participantid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.ParticipantID)
 }
 inline void PBMsgOrderRtn::set_participantid(const char* value) {
-  set_has_participantid();
+  
   participantid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.ParticipantID)
 }
 inline void PBMsgOrderRtn::set_participantid(const char* value, size_t size) {
-  set_has_participantid();
+  
   participantid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.ParticipantID)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_participantid() {
-  set_has_participantid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.ParticipantID)
   return participantid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_participantid() {
-  clear_has_participantid();
+  
   return participantid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_participantid(::std::string* participantid) {
   if (participantid != NULL) {
-    set_has_participantid();
+    
   } else {
-    clear_has_participantid();
+    
   }
   participantid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), participantid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.ParticipantID)
 }
 
 // optional string ClientID = 26;
-inline bool PBMsgOrderRtn::has_clientid() const {
-  return (_has_bits_[0] & 0x02000000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_clientid() {
-  _has_bits_[0] |= 0x02000000u;
-}
-inline void PBMsgOrderRtn::clear_has_clientid() {
-  _has_bits_[0] &= ~0x02000000u;
-}
 inline void PBMsgOrderRtn::clear_clientid() {
   clientid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_clientid();
 }
 inline const ::std::string& PBMsgOrderRtn::clientid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.ClientID)
   return clientid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_clientid(const ::std::string& value) {
-  set_has_clientid();
+  
   clientid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.ClientID)
 }
 inline void PBMsgOrderRtn::set_clientid(const char* value) {
-  set_has_clientid();
+  
   clientid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.ClientID)
 }
 inline void PBMsgOrderRtn::set_clientid(const char* value, size_t size) {
-  set_has_clientid();
+  
   clientid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.ClientID)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_clientid() {
-  set_has_clientid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.ClientID)
   return clientid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_clientid() {
-  clear_has_clientid();
+  
   return clientid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_clientid(::std::string* clientid) {
   if (clientid != NULL) {
-    set_has_clientid();
+    
   } else {
-    clear_has_clientid();
+    
   }
   clientid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), clientid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.ClientID)
 }
 
 // optional string ExchangeInstID = 27;
-inline bool PBMsgOrderRtn::has_exchangeinstid() const {
-  return (_has_bits_[0] & 0x04000000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_exchangeinstid() {
-  _has_bits_[0] |= 0x04000000u;
-}
-inline void PBMsgOrderRtn::clear_has_exchangeinstid() {
-  _has_bits_[0] &= ~0x04000000u;
-}
 inline void PBMsgOrderRtn::clear_exchangeinstid() {
   exchangeinstid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_exchangeinstid();
 }
 inline const ::std::string& PBMsgOrderRtn::exchangeinstid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.ExchangeInstID)
   return exchangeinstid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_exchangeinstid(const ::std::string& value) {
-  set_has_exchangeinstid();
+  
   exchangeinstid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.ExchangeInstID)
 }
 inline void PBMsgOrderRtn::set_exchangeinstid(const char* value) {
-  set_has_exchangeinstid();
+  
   exchangeinstid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.ExchangeInstID)
 }
 inline void PBMsgOrderRtn::set_exchangeinstid(const char* value, size_t size) {
-  set_has_exchangeinstid();
+  
   exchangeinstid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.ExchangeInstID)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_exchangeinstid() {
-  set_has_exchangeinstid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.ExchangeInstID)
   return exchangeinstid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_exchangeinstid() {
-  clear_has_exchangeinstid();
+  
   return exchangeinstid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_exchangeinstid(::std::string* exchangeinstid) {
   if (exchangeinstid != NULL) {
-    set_has_exchangeinstid();
+    
   } else {
-    clear_has_exchangeinstid();
+    
   }
   exchangeinstid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), exchangeinstid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.ExchangeInstID)
 }
 
 // optional string TraderID = 28;
-inline bool PBMsgOrderRtn::has_traderid() const {
-  return (_has_bits_[0] & 0x08000000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_traderid() {
-  _has_bits_[0] |= 0x08000000u;
-}
-inline void PBMsgOrderRtn::clear_has_traderid() {
-  _has_bits_[0] &= ~0x08000000u;
-}
 inline void PBMsgOrderRtn::clear_traderid() {
   traderid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_traderid();
 }
 inline const ::std::string& PBMsgOrderRtn::traderid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.TraderID)
   return traderid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_traderid(const ::std::string& value) {
-  set_has_traderid();
+  
   traderid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.TraderID)
 }
 inline void PBMsgOrderRtn::set_traderid(const char* value) {
-  set_has_traderid();
+  
   traderid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.TraderID)
 }
 inline void PBMsgOrderRtn::set_traderid(const char* value, size_t size) {
-  set_has_traderid();
+  
   traderid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.TraderID)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_traderid() {
-  set_has_traderid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.TraderID)
   return traderid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_traderid() {
-  clear_has_traderid();
+  
   return traderid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_traderid(::std::string* traderid) {
   if (traderid != NULL) {
-    set_has_traderid();
+    
   } else {
-    clear_has_traderid();
+    
   }
   traderid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), traderid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.TraderID)
 }
 
 // optional int32 InstallID = 29;
-inline bool PBMsgOrderRtn::has_installid() const {
-  return (_has_bits_[0] & 0x10000000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_installid() {
-  _has_bits_[0] |= 0x10000000u;
-}
-inline void PBMsgOrderRtn::clear_has_installid() {
-  _has_bits_[0] &= ~0x10000000u;
-}
 inline void PBMsgOrderRtn::clear_installid() {
   installid_ = 0;
-  clear_has_installid();
 }
 inline ::google::protobuf::int32 PBMsgOrderRtn::installid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.InstallID)
   return installid_;
 }
 inline void PBMsgOrderRtn::set_installid(::google::protobuf::int32 value) {
-  set_has_installid();
+  
   installid_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.InstallID)
 }
 
 // optional string OrderSubmitStatus = 30;
-inline bool PBMsgOrderRtn::has_ordersubmitstatus() const {
-  return (_has_bits_[0] & 0x20000000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_ordersubmitstatus() {
-  _has_bits_[0] |= 0x20000000u;
-}
-inline void PBMsgOrderRtn::clear_has_ordersubmitstatus() {
-  _has_bits_[0] &= ~0x20000000u;
-}
 inline void PBMsgOrderRtn::clear_ordersubmitstatus() {
   ordersubmitstatus_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_ordersubmitstatus();
 }
 inline const ::std::string& PBMsgOrderRtn::ordersubmitstatus() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.OrderSubmitStatus)
   return ordersubmitstatus_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_ordersubmitstatus(const ::std::string& value) {
-  set_has_ordersubmitstatus();
+  
   ordersubmitstatus_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.OrderSubmitStatus)
 }
 inline void PBMsgOrderRtn::set_ordersubmitstatus(const char* value) {
-  set_has_ordersubmitstatus();
+  
   ordersubmitstatus_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.OrderSubmitStatus)
 }
 inline void PBMsgOrderRtn::set_ordersubmitstatus(const char* value, size_t size) {
-  set_has_ordersubmitstatus();
+  
   ordersubmitstatus_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.OrderSubmitStatus)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_ordersubmitstatus() {
-  set_has_ordersubmitstatus();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.OrderSubmitStatus)
   return ordersubmitstatus_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_ordersubmitstatus() {
-  clear_has_ordersubmitstatus();
+  
   return ordersubmitstatus_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_ordersubmitstatus(::std::string* ordersubmitstatus) {
   if (ordersubmitstatus != NULL) {
-    set_has_ordersubmitstatus();
+    
   } else {
-    clear_has_ordersubmitstatus();
+    
   }
   ordersubmitstatus_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ordersubmitstatus);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.OrderSubmitStatus)
 }
 
 // optional int32 NotifySequence = 31;
-inline bool PBMsgOrderRtn::has_notifysequence() const {
-  return (_has_bits_[0] & 0x40000000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_notifysequence() {
-  _has_bits_[0] |= 0x40000000u;
-}
-inline void PBMsgOrderRtn::clear_has_notifysequence() {
-  _has_bits_[0] &= ~0x40000000u;
-}
 inline void PBMsgOrderRtn::clear_notifysequence() {
   notifysequence_ = 0;
-  clear_has_notifysequence();
 }
 inline ::google::protobuf::int32 PBMsgOrderRtn::notifysequence() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.NotifySequence)
   return notifysequence_;
 }
 inline void PBMsgOrderRtn::set_notifysequence(::google::protobuf::int32 value) {
-  set_has_notifysequence();
+  
   notifysequence_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.NotifySequence)
 }
 
 // optional string TradingDay = 32;
-inline bool PBMsgOrderRtn::has_tradingday() const {
-  return (_has_bits_[0] & 0x80000000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_tradingday() {
-  _has_bits_[0] |= 0x80000000u;
-}
-inline void PBMsgOrderRtn::clear_has_tradingday() {
-  _has_bits_[0] &= ~0x80000000u;
-}
 inline void PBMsgOrderRtn::clear_tradingday() {
   tradingday_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_tradingday();
 }
 inline const ::std::string& PBMsgOrderRtn::tradingday() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.TradingDay)
   return tradingday_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_tradingday(const ::std::string& value) {
-  set_has_tradingday();
+  
   tradingday_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.TradingDay)
 }
 inline void PBMsgOrderRtn::set_tradingday(const char* value) {
-  set_has_tradingday();
+  
   tradingday_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.TradingDay)
 }
 inline void PBMsgOrderRtn::set_tradingday(const char* value, size_t size) {
-  set_has_tradingday();
+  
   tradingday_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.TradingDay)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_tradingday() {
-  set_has_tradingday();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.TradingDay)
   return tradingday_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_tradingday() {
-  clear_has_tradingday();
+  
   return tradingday_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_tradingday(::std::string* tradingday) {
   if (tradingday != NULL) {
-    set_has_tradingday();
+    
   } else {
-    clear_has_tradingday();
+    
   }
   tradingday_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), tradingday);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.TradingDay)
 }
 
 // optional int32 SettlementID = 33;
-inline bool PBMsgOrderRtn::has_settlementid() const {
-  return (_has_bits_[1] & 0x00000001u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_settlementid() {
-  _has_bits_[1] |= 0x00000001u;
-}
-inline void PBMsgOrderRtn::clear_has_settlementid() {
-  _has_bits_[1] &= ~0x00000001u;
-}
 inline void PBMsgOrderRtn::clear_settlementid() {
   settlementid_ = 0;
-  clear_has_settlementid();
 }
 inline ::google::protobuf::int32 PBMsgOrderRtn::settlementid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.SettlementID)
   return settlementid_;
 }
 inline void PBMsgOrderRtn::set_settlementid(::google::protobuf::int32 value) {
-  set_has_settlementid();
+  
   settlementid_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.SettlementID)
 }
 
 // optional string OrderSysID = 34;
-inline bool PBMsgOrderRtn::has_ordersysid() const {
-  return (_has_bits_[1] & 0x00000002u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_ordersysid() {
-  _has_bits_[1] |= 0x00000002u;
-}
-inline void PBMsgOrderRtn::clear_has_ordersysid() {
-  _has_bits_[1] &= ~0x00000002u;
-}
 inline void PBMsgOrderRtn::clear_ordersysid() {
   ordersysid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_ordersysid();
 }
 inline const ::std::string& PBMsgOrderRtn::ordersysid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.OrderSysID)
   return ordersysid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_ordersysid(const ::std::string& value) {
-  set_has_ordersysid();
+  
   ordersysid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.OrderSysID)
 }
 inline void PBMsgOrderRtn::set_ordersysid(const char* value) {
-  set_has_ordersysid();
+  
   ordersysid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.OrderSysID)
 }
 inline void PBMsgOrderRtn::set_ordersysid(const char* value, size_t size) {
-  set_has_ordersysid();
+  
   ordersysid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.OrderSysID)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_ordersysid() {
-  set_has_ordersysid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.OrderSysID)
   return ordersysid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_ordersysid() {
-  clear_has_ordersysid();
+  
   return ordersysid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_ordersysid(::std::string* ordersysid) {
   if (ordersysid != NULL) {
-    set_has_ordersysid();
+    
   } else {
-    clear_has_ordersysid();
+    
   }
   ordersysid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ordersysid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.OrderSysID)
 }
 
 // optional string OrderSource = 35;
-inline bool PBMsgOrderRtn::has_ordersource() const {
-  return (_has_bits_[1] & 0x00000004u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_ordersource() {
-  _has_bits_[1] |= 0x00000004u;
-}
-inline void PBMsgOrderRtn::clear_has_ordersource() {
-  _has_bits_[1] &= ~0x00000004u;
-}
 inline void PBMsgOrderRtn::clear_ordersource() {
   ordersource_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_ordersource();
 }
 inline const ::std::string& PBMsgOrderRtn::ordersource() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.OrderSource)
   return ordersource_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_ordersource(const ::std::string& value) {
-  set_has_ordersource();
+  
   ordersource_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.OrderSource)
 }
 inline void PBMsgOrderRtn::set_ordersource(const char* value) {
-  set_has_ordersource();
+  
   ordersource_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.OrderSource)
 }
 inline void PBMsgOrderRtn::set_ordersource(const char* value, size_t size) {
-  set_has_ordersource();
+  
   ordersource_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.OrderSource)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_ordersource() {
-  set_has_ordersource();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.OrderSource)
   return ordersource_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_ordersource() {
-  clear_has_ordersource();
+  
   return ordersource_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_ordersource(::std::string* ordersource) {
   if (ordersource != NULL) {
-    set_has_ordersource();
+    
   } else {
-    clear_has_ordersource();
+    
   }
   ordersource_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ordersource);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.OrderSource)
 }
 
 // optional string OrderStatus = 36;
-inline bool PBMsgOrderRtn::has_orderstatus() const {
-  return (_has_bits_[1] & 0x00000008u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_orderstatus() {
-  _has_bits_[1] |= 0x00000008u;
-}
-inline void PBMsgOrderRtn::clear_has_orderstatus() {
-  _has_bits_[1] &= ~0x00000008u;
-}
 inline void PBMsgOrderRtn::clear_orderstatus() {
   orderstatus_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_orderstatus();
 }
 inline const ::std::string& PBMsgOrderRtn::orderstatus() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.OrderStatus)
   return orderstatus_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_orderstatus(const ::std::string& value) {
-  set_has_orderstatus();
+  
   orderstatus_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.OrderStatus)
 }
 inline void PBMsgOrderRtn::set_orderstatus(const char* value) {
-  set_has_orderstatus();
+  
   orderstatus_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.OrderStatus)
 }
 inline void PBMsgOrderRtn::set_orderstatus(const char* value, size_t size) {
-  set_has_orderstatus();
+  
   orderstatus_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.OrderStatus)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_orderstatus() {
-  set_has_orderstatus();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.OrderStatus)
   return orderstatus_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_orderstatus() {
-  clear_has_orderstatus();
+  
   return orderstatus_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_orderstatus(::std::string* orderstatus) {
   if (orderstatus != NULL) {
-    set_has_orderstatus();
+    
   } else {
-    clear_has_orderstatus();
+    
   }
   orderstatus_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), orderstatus);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.OrderStatus)
 }
 
 // optional string OrderType = 37;
-inline bool PBMsgOrderRtn::has_ordertype() const {
-  return (_has_bits_[1] & 0x00000010u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_ordertype() {
-  _has_bits_[1] |= 0x00000010u;
-}
-inline void PBMsgOrderRtn::clear_has_ordertype() {
-  _has_bits_[1] &= ~0x00000010u;
-}
 inline void PBMsgOrderRtn::clear_ordertype() {
   ordertype_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_ordertype();
 }
 inline const ::std::string& PBMsgOrderRtn::ordertype() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.OrderType)
   return ordertype_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_ordertype(const ::std::string& value) {
-  set_has_ordertype();
+  
   ordertype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.OrderType)
 }
 inline void PBMsgOrderRtn::set_ordertype(const char* value) {
-  set_has_ordertype();
+  
   ordertype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.OrderType)
 }
 inline void PBMsgOrderRtn::set_ordertype(const char* value, size_t size) {
-  set_has_ordertype();
+  
   ordertype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.OrderType)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_ordertype() {
-  set_has_ordertype();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.OrderType)
   return ordertype_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_ordertype() {
-  clear_has_ordertype();
+  
   return ordertype_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_ordertype(::std::string* ordertype) {
   if (ordertype != NULL) {
-    set_has_ordertype();
+    
   } else {
-    clear_has_ordertype();
+    
   }
   ordertype_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ordertype);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.OrderType)
 }
 
 // optional int32 VolumeTraded = 38;
-inline bool PBMsgOrderRtn::has_volumetraded() const {
-  return (_has_bits_[1] & 0x00000020u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_volumetraded() {
-  _has_bits_[1] |= 0x00000020u;
-}
-inline void PBMsgOrderRtn::clear_has_volumetraded() {
-  _has_bits_[1] &= ~0x00000020u;
-}
 inline void PBMsgOrderRtn::clear_volumetraded() {
   volumetraded_ = 0;
-  clear_has_volumetraded();
 }
 inline ::google::protobuf::int32 PBMsgOrderRtn::volumetraded() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.VolumeTraded)
   return volumetraded_;
 }
 inline void PBMsgOrderRtn::set_volumetraded(::google::protobuf::int32 value) {
-  set_has_volumetraded();
+  
   volumetraded_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.VolumeTraded)
 }
 
 // optional int32 VolumeTotal = 39;
-inline bool PBMsgOrderRtn::has_volumetotal() const {
-  return (_has_bits_[1] & 0x00000040u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_volumetotal() {
-  _has_bits_[1] |= 0x00000040u;
-}
-inline void PBMsgOrderRtn::clear_has_volumetotal() {
-  _has_bits_[1] &= ~0x00000040u;
-}
 inline void PBMsgOrderRtn::clear_volumetotal() {
   volumetotal_ = 0;
-  clear_has_volumetotal();
 }
 inline ::google::protobuf::int32 PBMsgOrderRtn::volumetotal() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.VolumeTotal)
   return volumetotal_;
 }
 inline void PBMsgOrderRtn::set_volumetotal(::google::protobuf::int32 value) {
-  set_has_volumetotal();
+  
   volumetotal_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.VolumeTotal)
 }
 
 // optional string InsertDate = 40;
-inline bool PBMsgOrderRtn::has_insertdate() const {
-  return (_has_bits_[1] & 0x00000080u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_insertdate() {
-  _has_bits_[1] |= 0x00000080u;
-}
-inline void PBMsgOrderRtn::clear_has_insertdate() {
-  _has_bits_[1] &= ~0x00000080u;
-}
 inline void PBMsgOrderRtn::clear_insertdate() {
   insertdate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_insertdate();
 }
 inline const ::std::string& PBMsgOrderRtn::insertdate() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.InsertDate)
   return insertdate_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_insertdate(const ::std::string& value) {
-  set_has_insertdate();
+  
   insertdate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.InsertDate)
 }
 inline void PBMsgOrderRtn::set_insertdate(const char* value) {
-  set_has_insertdate();
+  
   insertdate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.InsertDate)
 }
 inline void PBMsgOrderRtn::set_insertdate(const char* value, size_t size) {
-  set_has_insertdate();
+  
   insertdate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.InsertDate)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_insertdate() {
-  set_has_insertdate();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.InsertDate)
   return insertdate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_insertdate() {
-  clear_has_insertdate();
+  
   return insertdate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_insertdate(::std::string* insertdate) {
   if (insertdate != NULL) {
-    set_has_insertdate();
+    
   } else {
-    clear_has_insertdate();
+    
   }
   insertdate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), insertdate);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.InsertDate)
 }
 
 // optional string InsertTime = 41;
-inline bool PBMsgOrderRtn::has_inserttime() const {
-  return (_has_bits_[1] & 0x00000100u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_inserttime() {
-  _has_bits_[1] |= 0x00000100u;
-}
-inline void PBMsgOrderRtn::clear_has_inserttime() {
-  _has_bits_[1] &= ~0x00000100u;
-}
 inline void PBMsgOrderRtn::clear_inserttime() {
   inserttime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_inserttime();
 }
 inline const ::std::string& PBMsgOrderRtn::inserttime() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.InsertTime)
   return inserttime_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_inserttime(const ::std::string& value) {
-  set_has_inserttime();
+  
   inserttime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.InsertTime)
 }
 inline void PBMsgOrderRtn::set_inserttime(const char* value) {
-  set_has_inserttime();
+  
   inserttime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.InsertTime)
 }
 inline void PBMsgOrderRtn::set_inserttime(const char* value, size_t size) {
-  set_has_inserttime();
+  
   inserttime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.InsertTime)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_inserttime() {
-  set_has_inserttime();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.InsertTime)
   return inserttime_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_inserttime() {
-  clear_has_inserttime();
+  
   return inserttime_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_inserttime(::std::string* inserttime) {
   if (inserttime != NULL) {
-    set_has_inserttime();
+    
   } else {
-    clear_has_inserttime();
+    
   }
   inserttime_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), inserttime);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.InsertTime)
 }
 
 // optional string ActiveTime = 42;
-inline bool PBMsgOrderRtn::has_activetime() const {
-  return (_has_bits_[1] & 0x00000200u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_activetime() {
-  _has_bits_[1] |= 0x00000200u;
-}
-inline void PBMsgOrderRtn::clear_has_activetime() {
-  _has_bits_[1] &= ~0x00000200u;
-}
 inline void PBMsgOrderRtn::clear_activetime() {
   activetime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_activetime();
 }
 inline const ::std::string& PBMsgOrderRtn::activetime() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.ActiveTime)
   return activetime_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_activetime(const ::std::string& value) {
-  set_has_activetime();
+  
   activetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.ActiveTime)
 }
 inline void PBMsgOrderRtn::set_activetime(const char* value) {
-  set_has_activetime();
+  
   activetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.ActiveTime)
 }
 inline void PBMsgOrderRtn::set_activetime(const char* value, size_t size) {
-  set_has_activetime();
+  
   activetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.ActiveTime)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_activetime() {
-  set_has_activetime();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.ActiveTime)
   return activetime_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_activetime() {
-  clear_has_activetime();
+  
   return activetime_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_activetime(::std::string* activetime) {
   if (activetime != NULL) {
-    set_has_activetime();
+    
   } else {
-    clear_has_activetime();
+    
   }
   activetime_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), activetime);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.ActiveTime)
 }
 
 // optional string SuspendTime = 43;
-inline bool PBMsgOrderRtn::has_suspendtime() const {
-  return (_has_bits_[1] & 0x00000400u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_suspendtime() {
-  _has_bits_[1] |= 0x00000400u;
-}
-inline void PBMsgOrderRtn::clear_has_suspendtime() {
-  _has_bits_[1] &= ~0x00000400u;
-}
 inline void PBMsgOrderRtn::clear_suspendtime() {
   suspendtime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_suspendtime();
 }
 inline const ::std::string& PBMsgOrderRtn::suspendtime() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.SuspendTime)
   return suspendtime_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_suspendtime(const ::std::string& value) {
-  set_has_suspendtime();
+  
   suspendtime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.SuspendTime)
 }
 inline void PBMsgOrderRtn::set_suspendtime(const char* value) {
-  set_has_suspendtime();
+  
   suspendtime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.SuspendTime)
 }
 inline void PBMsgOrderRtn::set_suspendtime(const char* value, size_t size) {
-  set_has_suspendtime();
+  
   suspendtime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.SuspendTime)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_suspendtime() {
-  set_has_suspendtime();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.SuspendTime)
   return suspendtime_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_suspendtime() {
-  clear_has_suspendtime();
+  
   return suspendtime_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_suspendtime(::std::string* suspendtime) {
   if (suspendtime != NULL) {
-    set_has_suspendtime();
+    
   } else {
-    clear_has_suspendtime();
+    
   }
   suspendtime_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), suspendtime);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.SuspendTime)
 }
 
 // optional string UpdateTime = 44;
-inline bool PBMsgOrderRtn::has_updatetime() const {
-  return (_has_bits_[1] & 0x00000800u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_updatetime() {
-  _has_bits_[1] |= 0x00000800u;
-}
-inline void PBMsgOrderRtn::clear_has_updatetime() {
-  _has_bits_[1] &= ~0x00000800u;
-}
 inline void PBMsgOrderRtn::clear_updatetime() {
   updatetime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_updatetime();
 }
 inline const ::std::string& PBMsgOrderRtn::updatetime() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.UpdateTime)
   return updatetime_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_updatetime(const ::std::string& value) {
-  set_has_updatetime();
+  
   updatetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.UpdateTime)
 }
 inline void PBMsgOrderRtn::set_updatetime(const char* value) {
-  set_has_updatetime();
+  
   updatetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.UpdateTime)
 }
 inline void PBMsgOrderRtn::set_updatetime(const char* value, size_t size) {
-  set_has_updatetime();
+  
   updatetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.UpdateTime)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_updatetime() {
-  set_has_updatetime();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.UpdateTime)
   return updatetime_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_updatetime() {
-  clear_has_updatetime();
+  
   return updatetime_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_updatetime(::std::string* updatetime) {
   if (updatetime != NULL) {
-    set_has_updatetime();
+    
   } else {
-    clear_has_updatetime();
+    
   }
   updatetime_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), updatetime);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.UpdateTime)
 }
 
 // optional string CancelTime = 45;
-inline bool PBMsgOrderRtn::has_canceltime() const {
-  return (_has_bits_[1] & 0x00001000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_canceltime() {
-  _has_bits_[1] |= 0x00001000u;
-}
-inline void PBMsgOrderRtn::clear_has_canceltime() {
-  _has_bits_[1] &= ~0x00001000u;
-}
 inline void PBMsgOrderRtn::clear_canceltime() {
   canceltime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_canceltime();
 }
 inline const ::std::string& PBMsgOrderRtn::canceltime() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.CancelTime)
   return canceltime_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_canceltime(const ::std::string& value) {
-  set_has_canceltime();
+  
   canceltime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.CancelTime)
 }
 inline void PBMsgOrderRtn::set_canceltime(const char* value) {
-  set_has_canceltime();
+  
   canceltime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.CancelTime)
 }
 inline void PBMsgOrderRtn::set_canceltime(const char* value, size_t size) {
-  set_has_canceltime();
+  
   canceltime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.CancelTime)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_canceltime() {
-  set_has_canceltime();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.CancelTime)
   return canceltime_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_canceltime() {
-  clear_has_canceltime();
+  
   return canceltime_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_canceltime(::std::string* canceltime) {
   if (canceltime != NULL) {
-    set_has_canceltime();
+    
   } else {
-    clear_has_canceltime();
+    
   }
   canceltime_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), canceltime);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.CancelTime)
 }
 
 // optional string ActiveTraderID = 46;
-inline bool PBMsgOrderRtn::has_activetraderid() const {
-  return (_has_bits_[1] & 0x00002000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_activetraderid() {
-  _has_bits_[1] |= 0x00002000u;
-}
-inline void PBMsgOrderRtn::clear_has_activetraderid() {
-  _has_bits_[1] &= ~0x00002000u;
-}
 inline void PBMsgOrderRtn::clear_activetraderid() {
   activetraderid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_activetraderid();
 }
 inline const ::std::string& PBMsgOrderRtn::activetraderid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.ActiveTraderID)
   return activetraderid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_activetraderid(const ::std::string& value) {
-  set_has_activetraderid();
+  
   activetraderid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.ActiveTraderID)
 }
 inline void PBMsgOrderRtn::set_activetraderid(const char* value) {
-  set_has_activetraderid();
+  
   activetraderid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.ActiveTraderID)
 }
 inline void PBMsgOrderRtn::set_activetraderid(const char* value, size_t size) {
-  set_has_activetraderid();
+  
   activetraderid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.ActiveTraderID)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_activetraderid() {
-  set_has_activetraderid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.ActiveTraderID)
   return activetraderid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_activetraderid() {
-  clear_has_activetraderid();
+  
   return activetraderid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_activetraderid(::std::string* activetraderid) {
   if (activetraderid != NULL) {
-    set_has_activetraderid();
+    
   } else {
-    clear_has_activetraderid();
+    
   }
   activetraderid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), activetraderid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.ActiveTraderID)
 }
 
 // optional string ClearingPartID = 47;
-inline bool PBMsgOrderRtn::has_clearingpartid() const {
-  return (_has_bits_[1] & 0x00004000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_clearingpartid() {
-  _has_bits_[1] |= 0x00004000u;
-}
-inline void PBMsgOrderRtn::clear_has_clearingpartid() {
-  _has_bits_[1] &= ~0x00004000u;
-}
 inline void PBMsgOrderRtn::clear_clearingpartid() {
   clearingpartid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_clearingpartid();
 }
 inline const ::std::string& PBMsgOrderRtn::clearingpartid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.ClearingPartID)
   return clearingpartid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_clearingpartid(const ::std::string& value) {
-  set_has_clearingpartid();
+  
   clearingpartid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.ClearingPartID)
 }
 inline void PBMsgOrderRtn::set_clearingpartid(const char* value) {
-  set_has_clearingpartid();
+  
   clearingpartid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.ClearingPartID)
 }
 inline void PBMsgOrderRtn::set_clearingpartid(const char* value, size_t size) {
-  set_has_clearingpartid();
+  
   clearingpartid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.ClearingPartID)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_clearingpartid() {
-  set_has_clearingpartid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.ClearingPartID)
   return clearingpartid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_clearingpartid() {
-  clear_has_clearingpartid();
+  
   return clearingpartid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_clearingpartid(::std::string* clearingpartid) {
   if (clearingpartid != NULL) {
-    set_has_clearingpartid();
+    
   } else {
-    clear_has_clearingpartid();
+    
   }
   clearingpartid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), clearingpartid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.ClearingPartID)
 }
 
 // optional int32 SequenceNo = 48;
-inline bool PBMsgOrderRtn::has_sequenceno() const {
-  return (_has_bits_[1] & 0x00008000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_sequenceno() {
-  _has_bits_[1] |= 0x00008000u;
-}
-inline void PBMsgOrderRtn::clear_has_sequenceno() {
-  _has_bits_[1] &= ~0x00008000u;
-}
 inline void PBMsgOrderRtn::clear_sequenceno() {
   sequenceno_ = 0;
-  clear_has_sequenceno();
 }
 inline ::google::protobuf::int32 PBMsgOrderRtn::sequenceno() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.SequenceNo)
   return sequenceno_;
 }
 inline void PBMsgOrderRtn::set_sequenceno(::google::protobuf::int32 value) {
-  set_has_sequenceno();
+  
   sequenceno_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.SequenceNo)
 }
 
 // optional int32 FrontID = 49;
-inline bool PBMsgOrderRtn::has_frontid() const {
-  return (_has_bits_[1] & 0x00010000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_frontid() {
-  _has_bits_[1] |= 0x00010000u;
-}
-inline void PBMsgOrderRtn::clear_has_frontid() {
-  _has_bits_[1] &= ~0x00010000u;
-}
 inline void PBMsgOrderRtn::clear_frontid() {
   frontid_ = 0;
-  clear_has_frontid();
 }
 inline ::google::protobuf::int32 PBMsgOrderRtn::frontid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.FrontID)
   return frontid_;
 }
 inline void PBMsgOrderRtn::set_frontid(::google::protobuf::int32 value) {
-  set_has_frontid();
+  
   frontid_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.FrontID)
 }
 
 // optional int32 SessionID = 50;
-inline bool PBMsgOrderRtn::has_sessionid() const {
-  return (_has_bits_[1] & 0x00020000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_sessionid() {
-  _has_bits_[1] |= 0x00020000u;
-}
-inline void PBMsgOrderRtn::clear_has_sessionid() {
-  _has_bits_[1] &= ~0x00020000u;
-}
 inline void PBMsgOrderRtn::clear_sessionid() {
   sessionid_ = 0;
-  clear_has_sessionid();
 }
 inline ::google::protobuf::int32 PBMsgOrderRtn::sessionid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.SessionID)
   return sessionid_;
 }
 inline void PBMsgOrderRtn::set_sessionid(::google::protobuf::int32 value) {
-  set_has_sessionid();
+  
   sessionid_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.SessionID)
 }
 
 // optional string UserProductInfo = 51;
-inline bool PBMsgOrderRtn::has_userproductinfo() const {
-  return (_has_bits_[1] & 0x00040000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_userproductinfo() {
-  _has_bits_[1] |= 0x00040000u;
-}
-inline void PBMsgOrderRtn::clear_has_userproductinfo() {
-  _has_bits_[1] &= ~0x00040000u;
-}
 inline void PBMsgOrderRtn::clear_userproductinfo() {
   userproductinfo_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_userproductinfo();
 }
 inline const ::std::string& PBMsgOrderRtn::userproductinfo() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.UserProductInfo)
   return userproductinfo_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_userproductinfo(const ::std::string& value) {
-  set_has_userproductinfo();
+  
   userproductinfo_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.UserProductInfo)
 }
 inline void PBMsgOrderRtn::set_userproductinfo(const char* value) {
-  set_has_userproductinfo();
+  
   userproductinfo_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.UserProductInfo)
 }
 inline void PBMsgOrderRtn::set_userproductinfo(const char* value, size_t size) {
-  set_has_userproductinfo();
+  
   userproductinfo_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.UserProductInfo)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_userproductinfo() {
-  set_has_userproductinfo();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.UserProductInfo)
   return userproductinfo_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_userproductinfo() {
-  clear_has_userproductinfo();
+  
   return userproductinfo_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_userproductinfo(::std::string* userproductinfo) {
   if (userproductinfo != NULL) {
-    set_has_userproductinfo();
+    
   } else {
-    clear_has_userproductinfo();
+    
   }
   userproductinfo_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), userproductinfo);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.UserProductInfo)
 }
 
 // optional bytes StatusMsg = 52;
-inline bool PBMsgOrderRtn::has_statusmsg() const {
-  return (_has_bits_[1] & 0x00080000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_statusmsg() {
-  _has_bits_[1] |= 0x00080000u;
-}
-inline void PBMsgOrderRtn::clear_has_statusmsg() {
-  _has_bits_[1] &= ~0x00080000u;
-}
 inline void PBMsgOrderRtn::clear_statusmsg() {
   statusmsg_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_statusmsg();
 }
 inline const ::std::string& PBMsgOrderRtn::statusmsg() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.StatusMsg)
   return statusmsg_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_statusmsg(const ::std::string& value) {
-  set_has_statusmsg();
+  
   statusmsg_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.StatusMsg)
 }
 inline void PBMsgOrderRtn::set_statusmsg(const char* value) {
-  set_has_statusmsg();
+  
   statusmsg_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.StatusMsg)
 }
 inline void PBMsgOrderRtn::set_statusmsg(const void* value, size_t size) {
-  set_has_statusmsg();
+  
   statusmsg_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.StatusMsg)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_statusmsg() {
-  set_has_statusmsg();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.StatusMsg)
   return statusmsg_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_statusmsg() {
-  clear_has_statusmsg();
+  
   return statusmsg_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_statusmsg(::std::string* statusmsg) {
   if (statusmsg != NULL) {
-    set_has_statusmsg();
+    
   } else {
-    clear_has_statusmsg();
+    
   }
   statusmsg_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), statusmsg);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.StatusMsg)
 }
 
 // optional int32 UserForceClose = 53;
-inline bool PBMsgOrderRtn::has_userforceclose() const {
-  return (_has_bits_[1] & 0x00100000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_userforceclose() {
-  _has_bits_[1] |= 0x00100000u;
-}
-inline void PBMsgOrderRtn::clear_has_userforceclose() {
-  _has_bits_[1] &= ~0x00100000u;
-}
 inline void PBMsgOrderRtn::clear_userforceclose() {
   userforceclose_ = 0;
-  clear_has_userforceclose();
 }
 inline ::google::protobuf::int32 PBMsgOrderRtn::userforceclose() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.UserForceClose)
   return userforceclose_;
 }
 inline void PBMsgOrderRtn::set_userforceclose(::google::protobuf::int32 value) {
-  set_has_userforceclose();
+  
   userforceclose_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.UserForceClose)
 }
 
 // optional string ActiveUserID = 54;
-inline bool PBMsgOrderRtn::has_activeuserid() const {
-  return (_has_bits_[1] & 0x00200000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_activeuserid() {
-  _has_bits_[1] |= 0x00200000u;
-}
-inline void PBMsgOrderRtn::clear_has_activeuserid() {
-  _has_bits_[1] &= ~0x00200000u;
-}
 inline void PBMsgOrderRtn::clear_activeuserid() {
   activeuserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_activeuserid();
 }
 inline const ::std::string& PBMsgOrderRtn::activeuserid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.ActiveUserID)
   return activeuserid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_activeuserid(const ::std::string& value) {
-  set_has_activeuserid();
+  
   activeuserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.ActiveUserID)
 }
 inline void PBMsgOrderRtn::set_activeuserid(const char* value) {
-  set_has_activeuserid();
+  
   activeuserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.ActiveUserID)
 }
 inline void PBMsgOrderRtn::set_activeuserid(const char* value, size_t size) {
-  set_has_activeuserid();
+  
   activeuserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.ActiveUserID)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_activeuserid() {
-  set_has_activeuserid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.ActiveUserID)
   return activeuserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_activeuserid() {
-  clear_has_activeuserid();
+  
   return activeuserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_activeuserid(::std::string* activeuserid) {
   if (activeuserid != NULL) {
-    set_has_activeuserid();
+    
   } else {
-    clear_has_activeuserid();
+    
   }
   activeuserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), activeuserid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.ActiveUserID)
 }
 
 // optional int32 BrokerOrderSeq = 55;
-inline bool PBMsgOrderRtn::has_brokerorderseq() const {
-  return (_has_bits_[1] & 0x00400000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_brokerorderseq() {
-  _has_bits_[1] |= 0x00400000u;
-}
-inline void PBMsgOrderRtn::clear_has_brokerorderseq() {
-  _has_bits_[1] &= ~0x00400000u;
-}
 inline void PBMsgOrderRtn::clear_brokerorderseq() {
   brokerorderseq_ = 0;
-  clear_has_brokerorderseq();
 }
 inline ::google::protobuf::int32 PBMsgOrderRtn::brokerorderseq() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.BrokerOrderSeq)
   return brokerorderseq_;
 }
 inline void PBMsgOrderRtn::set_brokerorderseq(::google::protobuf::int32 value) {
-  set_has_brokerorderseq();
+  
   brokerorderseq_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.BrokerOrderSeq)
 }
 
 // optional string RelativeOrderSysID = 56;
-inline bool PBMsgOrderRtn::has_relativeordersysid() const {
-  return (_has_bits_[1] & 0x00800000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_relativeordersysid() {
-  _has_bits_[1] |= 0x00800000u;
-}
-inline void PBMsgOrderRtn::clear_has_relativeordersysid() {
-  _has_bits_[1] &= ~0x00800000u;
-}
 inline void PBMsgOrderRtn::clear_relativeordersysid() {
   relativeordersysid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_relativeordersysid();
 }
 inline const ::std::string& PBMsgOrderRtn::relativeordersysid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.RelativeOrderSysID)
   return relativeordersysid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_relativeordersysid(const ::std::string& value) {
-  set_has_relativeordersysid();
+  
   relativeordersysid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.RelativeOrderSysID)
 }
 inline void PBMsgOrderRtn::set_relativeordersysid(const char* value) {
-  set_has_relativeordersysid();
+  
   relativeordersysid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgOrderRtn.RelativeOrderSysID)
 }
 inline void PBMsgOrderRtn::set_relativeordersysid(const char* value, size_t size) {
-  set_has_relativeordersysid();
+  
   relativeordersysid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgOrderRtn.RelativeOrderSysID)
 }
 inline ::std::string* PBMsgOrderRtn::mutable_relativeordersysid() {
-  set_has_relativeordersysid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgOrderRtn.RelativeOrderSysID)
   return relativeordersysid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgOrderRtn::release_relativeordersysid() {
-  clear_has_relativeordersysid();
+  
   return relativeordersysid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgOrderRtn::set_allocated_relativeordersysid(::std::string* relativeordersysid) {
   if (relativeordersysid != NULL) {
-    set_has_relativeordersysid();
+    
   } else {
-    clear_has_relativeordersysid();
+    
   }
   relativeordersysid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), relativeordersysid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgOrderRtn.RelativeOrderSysID)
 }
 
 // optional int32 ZCETotalTradedVolume = 57;
-inline bool PBMsgOrderRtn::has_zcetotaltradedvolume() const {
-  return (_has_bits_[1] & 0x01000000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_zcetotaltradedvolume() {
-  _has_bits_[1] |= 0x01000000u;
-}
-inline void PBMsgOrderRtn::clear_has_zcetotaltradedvolume() {
-  _has_bits_[1] &= ~0x01000000u;
-}
 inline void PBMsgOrderRtn::clear_zcetotaltradedvolume() {
   zcetotaltradedvolume_ = 0;
-  clear_has_zcetotaltradedvolume();
 }
 inline ::google::protobuf::int32 PBMsgOrderRtn::zcetotaltradedvolume() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.ZCETotalTradedVolume)
   return zcetotaltradedvolume_;
 }
 inline void PBMsgOrderRtn::set_zcetotaltradedvolume(::google::protobuf::int32 value) {
-  set_has_zcetotaltradedvolume();
+  
   zcetotaltradedvolume_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.ZCETotalTradedVolume)
 }
 
 // optional int32 IsSwapOrder = 58;
-inline bool PBMsgOrderRtn::has_isswaporder() const {
-  return (_has_bits_[1] & 0x02000000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_isswaporder() {
-  _has_bits_[1] |= 0x02000000u;
-}
-inline void PBMsgOrderRtn::clear_has_isswaporder() {
-  _has_bits_[1] &= ~0x02000000u;
-}
 inline void PBMsgOrderRtn::clear_isswaporder() {
   isswaporder_ = 0;
-  clear_has_isswaporder();
 }
 inline ::google::protobuf::int32 PBMsgOrderRtn::isswaporder() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.IsSwapOrder)
   return isswaporder_;
 }
 inline void PBMsgOrderRtn::set_isswaporder(::google::protobuf::int32 value) {
-  set_has_isswaporder();
+  
   isswaporder_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.IsSwapOrder)
 }
 
 // optional int32 IOrderStatus = 59;
-inline bool PBMsgOrderRtn::has_iorderstatus() const {
-  return (_has_bits_[1] & 0x04000000u) != 0;
-}
-inline void PBMsgOrderRtn::set_has_iorderstatus() {
-  _has_bits_[1] |= 0x04000000u;
-}
-inline void PBMsgOrderRtn::clear_has_iorderstatus() {
-  _has_bits_[1] &= ~0x04000000u;
-}
 inline void PBMsgOrderRtn::clear_iorderstatus() {
   iorderstatus_ = 0;
-  clear_has_iorderstatus();
 }
 inline ::google::protobuf::int32 PBMsgOrderRtn::iorderstatus() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgOrderRtn.IOrderStatus)
   return iorderstatus_;
 }
 inline void PBMsgOrderRtn::set_iorderstatus(::google::protobuf::int32 value) {
-  set_has_iorderstatus();
+  
   iorderstatus_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgOrderRtn.IOrderStatus)
 }
@@ -16408,1469 +12695,1159 @@ inline void PBMsgOrderRtn::set_iorderstatus(::google::protobuf::int32 value) {
 // PBMsgTradeRtn
 
 // optional int32 EOF = 1;
-inline bool PBMsgTradeRtn::has_eof() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_eof() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBMsgTradeRtn::clear_has_eof() {
-  _has_bits_[0] &= ~0x00000001u;
-}
 inline void PBMsgTradeRtn::clear_eof() {
   eof_ = 0;
-  clear_has_eof();
 }
 inline ::google::protobuf::int32 PBMsgTradeRtn::eof() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.EOF)
   return eof_;
 }
 inline void PBMsgTradeRtn::set_eof(::google::protobuf::int32 value) {
-  set_has_eof();
+  
   eof_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.EOF)
 }
 
 // optional string BrokerID = 2;
-inline bool PBMsgTradeRtn::has_brokerid() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_brokerid() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBMsgTradeRtn::clear_has_brokerid() {
-  _has_bits_[0] &= ~0x00000002u;
-}
 inline void PBMsgTradeRtn::clear_brokerid() {
   brokerid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_brokerid();
 }
 inline const ::std::string& PBMsgTradeRtn::brokerid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.BrokerID)
   return brokerid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_brokerid(const ::std::string& value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.BrokerID)
 }
 inline void PBMsgTradeRtn::set_brokerid(const char* value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgTradeRtn.BrokerID)
 }
 inline void PBMsgTradeRtn::set_brokerid(const char* value, size_t size) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgTradeRtn.BrokerID)
 }
 inline ::std::string* PBMsgTradeRtn::mutable_brokerid() {
-  set_has_brokerid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgTradeRtn.BrokerID)
   return brokerid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgTradeRtn::release_brokerid() {
-  clear_has_brokerid();
+  
   return brokerid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_allocated_brokerid(::std::string* brokerid) {
   if (brokerid != NULL) {
-    set_has_brokerid();
+    
   } else {
-    clear_has_brokerid();
+    
   }
   brokerid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), brokerid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgTradeRtn.BrokerID)
 }
 
 // optional string InvestorID = 3;
-inline bool PBMsgTradeRtn::has_investorid() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_investorid() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBMsgTradeRtn::clear_has_investorid() {
-  _has_bits_[0] &= ~0x00000004u;
-}
 inline void PBMsgTradeRtn::clear_investorid() {
   investorid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_investorid();
 }
 inline const ::std::string& PBMsgTradeRtn::investorid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.InvestorID)
   return investorid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_investorid(const ::std::string& value) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.InvestorID)
 }
 inline void PBMsgTradeRtn::set_investorid(const char* value) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgTradeRtn.InvestorID)
 }
 inline void PBMsgTradeRtn::set_investorid(const char* value, size_t size) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgTradeRtn.InvestorID)
 }
 inline ::std::string* PBMsgTradeRtn::mutable_investorid() {
-  set_has_investorid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgTradeRtn.InvestorID)
   return investorid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgTradeRtn::release_investorid() {
-  clear_has_investorid();
+  
   return investorid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_allocated_investorid(::std::string* investorid) {
   if (investorid != NULL) {
-    set_has_investorid();
+    
   } else {
-    clear_has_investorid();
+    
   }
   investorid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), investorid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgTradeRtn.InvestorID)
 }
 
 // optional string InstrumentID = 4;
-inline bool PBMsgTradeRtn::has_instrumentid() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_instrumentid() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void PBMsgTradeRtn::clear_has_instrumentid() {
-  _has_bits_[0] &= ~0x00000008u;
-}
 inline void PBMsgTradeRtn::clear_instrumentid() {
   instrumentid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_instrumentid();
 }
 inline const ::std::string& PBMsgTradeRtn::instrumentid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.InstrumentID)
   return instrumentid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_instrumentid(const ::std::string& value) {
-  set_has_instrumentid();
+  
   instrumentid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.InstrumentID)
 }
 inline void PBMsgTradeRtn::set_instrumentid(const char* value) {
-  set_has_instrumentid();
+  
   instrumentid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgTradeRtn.InstrumentID)
 }
 inline void PBMsgTradeRtn::set_instrumentid(const char* value, size_t size) {
-  set_has_instrumentid();
+  
   instrumentid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgTradeRtn.InstrumentID)
 }
 inline ::std::string* PBMsgTradeRtn::mutable_instrumentid() {
-  set_has_instrumentid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgTradeRtn.InstrumentID)
   return instrumentid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgTradeRtn::release_instrumentid() {
-  clear_has_instrumentid();
+  
   return instrumentid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_allocated_instrumentid(::std::string* instrumentid) {
   if (instrumentid != NULL) {
-    set_has_instrumentid();
+    
   } else {
-    clear_has_instrumentid();
+    
   }
   instrumentid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), instrumentid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgTradeRtn.InstrumentID)
 }
 
 // optional string OrderRef = 5;
-inline bool PBMsgTradeRtn::has_orderref() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_orderref() {
-  _has_bits_[0] |= 0x00000010u;
-}
-inline void PBMsgTradeRtn::clear_has_orderref() {
-  _has_bits_[0] &= ~0x00000010u;
-}
 inline void PBMsgTradeRtn::clear_orderref() {
   orderref_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_orderref();
 }
 inline const ::std::string& PBMsgTradeRtn::orderref() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.OrderRef)
   return orderref_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_orderref(const ::std::string& value) {
-  set_has_orderref();
+  
   orderref_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.OrderRef)
 }
 inline void PBMsgTradeRtn::set_orderref(const char* value) {
-  set_has_orderref();
+  
   orderref_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgTradeRtn.OrderRef)
 }
 inline void PBMsgTradeRtn::set_orderref(const char* value, size_t size) {
-  set_has_orderref();
+  
   orderref_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgTradeRtn.OrderRef)
 }
 inline ::std::string* PBMsgTradeRtn::mutable_orderref() {
-  set_has_orderref();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgTradeRtn.OrderRef)
   return orderref_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgTradeRtn::release_orderref() {
-  clear_has_orderref();
+  
   return orderref_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_allocated_orderref(::std::string* orderref) {
   if (orderref != NULL) {
-    set_has_orderref();
+    
   } else {
-    clear_has_orderref();
+    
   }
   orderref_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), orderref);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgTradeRtn.OrderRef)
 }
 
 // optional string UserID = 6;
-inline bool PBMsgTradeRtn::has_userid() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_userid() {
-  _has_bits_[0] |= 0x00000020u;
-}
-inline void PBMsgTradeRtn::clear_has_userid() {
-  _has_bits_[0] &= ~0x00000020u;
-}
 inline void PBMsgTradeRtn::clear_userid() {
   userid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_userid();
 }
 inline const ::std::string& PBMsgTradeRtn::userid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.UserID)
   return userid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_userid(const ::std::string& value) {
-  set_has_userid();
+  
   userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.UserID)
 }
 inline void PBMsgTradeRtn::set_userid(const char* value) {
-  set_has_userid();
+  
   userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgTradeRtn.UserID)
 }
 inline void PBMsgTradeRtn::set_userid(const char* value, size_t size) {
-  set_has_userid();
+  
   userid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgTradeRtn.UserID)
 }
 inline ::std::string* PBMsgTradeRtn::mutable_userid() {
-  set_has_userid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgTradeRtn.UserID)
   return userid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgTradeRtn::release_userid() {
-  clear_has_userid();
+  
   return userid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_allocated_userid(::std::string* userid) {
   if (userid != NULL) {
-    set_has_userid();
+    
   } else {
-    clear_has_userid();
+    
   }
   userid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), userid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgTradeRtn.UserID)
 }
 
 // optional string ExchangeID = 7;
-inline bool PBMsgTradeRtn::has_exchangeid() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_exchangeid() {
-  _has_bits_[0] |= 0x00000040u;
-}
-inline void PBMsgTradeRtn::clear_has_exchangeid() {
-  _has_bits_[0] &= ~0x00000040u;
-}
 inline void PBMsgTradeRtn::clear_exchangeid() {
   exchangeid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_exchangeid();
 }
 inline const ::std::string& PBMsgTradeRtn::exchangeid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.ExchangeID)
   return exchangeid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_exchangeid(const ::std::string& value) {
-  set_has_exchangeid();
+  
   exchangeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.ExchangeID)
 }
 inline void PBMsgTradeRtn::set_exchangeid(const char* value) {
-  set_has_exchangeid();
+  
   exchangeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgTradeRtn.ExchangeID)
 }
 inline void PBMsgTradeRtn::set_exchangeid(const char* value, size_t size) {
-  set_has_exchangeid();
+  
   exchangeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgTradeRtn.ExchangeID)
 }
 inline ::std::string* PBMsgTradeRtn::mutable_exchangeid() {
-  set_has_exchangeid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgTradeRtn.ExchangeID)
   return exchangeid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgTradeRtn::release_exchangeid() {
-  clear_has_exchangeid();
+  
   return exchangeid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_allocated_exchangeid(::std::string* exchangeid) {
   if (exchangeid != NULL) {
-    set_has_exchangeid();
+    
   } else {
-    clear_has_exchangeid();
+    
   }
   exchangeid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), exchangeid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgTradeRtn.ExchangeID)
 }
 
 // optional string TradeID = 8;
-inline bool PBMsgTradeRtn::has_tradeid() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_tradeid() {
-  _has_bits_[0] |= 0x00000080u;
-}
-inline void PBMsgTradeRtn::clear_has_tradeid() {
-  _has_bits_[0] &= ~0x00000080u;
-}
 inline void PBMsgTradeRtn::clear_tradeid() {
   tradeid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_tradeid();
 }
 inline const ::std::string& PBMsgTradeRtn::tradeid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.TradeID)
   return tradeid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_tradeid(const ::std::string& value) {
-  set_has_tradeid();
+  
   tradeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.TradeID)
 }
 inline void PBMsgTradeRtn::set_tradeid(const char* value) {
-  set_has_tradeid();
+  
   tradeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgTradeRtn.TradeID)
 }
 inline void PBMsgTradeRtn::set_tradeid(const char* value, size_t size) {
-  set_has_tradeid();
+  
   tradeid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgTradeRtn.TradeID)
 }
 inline ::std::string* PBMsgTradeRtn::mutable_tradeid() {
-  set_has_tradeid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgTradeRtn.TradeID)
   return tradeid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgTradeRtn::release_tradeid() {
-  clear_has_tradeid();
+  
   return tradeid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_allocated_tradeid(::std::string* tradeid) {
   if (tradeid != NULL) {
-    set_has_tradeid();
+    
   } else {
-    clear_has_tradeid();
+    
   }
   tradeid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), tradeid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgTradeRtn.TradeID)
 }
 
 // optional string Direction = 9;
-inline bool PBMsgTradeRtn::has_direction() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_direction() {
-  _has_bits_[0] |= 0x00000100u;
-}
-inline void PBMsgTradeRtn::clear_has_direction() {
-  _has_bits_[0] &= ~0x00000100u;
-}
 inline void PBMsgTradeRtn::clear_direction() {
   direction_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_direction();
 }
 inline const ::std::string& PBMsgTradeRtn::direction() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.Direction)
   return direction_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_direction(const ::std::string& value) {
-  set_has_direction();
+  
   direction_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.Direction)
 }
 inline void PBMsgTradeRtn::set_direction(const char* value) {
-  set_has_direction();
+  
   direction_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgTradeRtn.Direction)
 }
 inline void PBMsgTradeRtn::set_direction(const char* value, size_t size) {
-  set_has_direction();
+  
   direction_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgTradeRtn.Direction)
 }
 inline ::std::string* PBMsgTradeRtn::mutable_direction() {
-  set_has_direction();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgTradeRtn.Direction)
   return direction_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgTradeRtn::release_direction() {
-  clear_has_direction();
+  
   return direction_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_allocated_direction(::std::string* direction) {
   if (direction != NULL) {
-    set_has_direction();
+    
   } else {
-    clear_has_direction();
+    
   }
   direction_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), direction);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgTradeRtn.Direction)
 }
 
 // optional string OrderSysID = 10;
-inline bool PBMsgTradeRtn::has_ordersysid() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_ordersysid() {
-  _has_bits_[0] |= 0x00000200u;
-}
-inline void PBMsgTradeRtn::clear_has_ordersysid() {
-  _has_bits_[0] &= ~0x00000200u;
-}
 inline void PBMsgTradeRtn::clear_ordersysid() {
   ordersysid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_ordersysid();
 }
 inline const ::std::string& PBMsgTradeRtn::ordersysid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.OrderSysID)
   return ordersysid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_ordersysid(const ::std::string& value) {
-  set_has_ordersysid();
+  
   ordersysid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.OrderSysID)
 }
 inline void PBMsgTradeRtn::set_ordersysid(const char* value) {
-  set_has_ordersysid();
+  
   ordersysid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgTradeRtn.OrderSysID)
 }
 inline void PBMsgTradeRtn::set_ordersysid(const char* value, size_t size) {
-  set_has_ordersysid();
+  
   ordersysid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgTradeRtn.OrderSysID)
 }
 inline ::std::string* PBMsgTradeRtn::mutable_ordersysid() {
-  set_has_ordersysid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgTradeRtn.OrderSysID)
   return ordersysid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgTradeRtn::release_ordersysid() {
-  clear_has_ordersysid();
+  
   return ordersysid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_allocated_ordersysid(::std::string* ordersysid) {
   if (ordersysid != NULL) {
-    set_has_ordersysid();
+    
   } else {
-    clear_has_ordersysid();
+    
   }
   ordersysid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ordersysid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgTradeRtn.OrderSysID)
 }
 
 // optional string ParticipantID = 11;
-inline bool PBMsgTradeRtn::has_participantid() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_participantid() {
-  _has_bits_[0] |= 0x00000400u;
-}
-inline void PBMsgTradeRtn::clear_has_participantid() {
-  _has_bits_[0] &= ~0x00000400u;
-}
 inline void PBMsgTradeRtn::clear_participantid() {
   participantid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_participantid();
 }
 inline const ::std::string& PBMsgTradeRtn::participantid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.ParticipantID)
   return participantid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_participantid(const ::std::string& value) {
-  set_has_participantid();
+  
   participantid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.ParticipantID)
 }
 inline void PBMsgTradeRtn::set_participantid(const char* value) {
-  set_has_participantid();
+  
   participantid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgTradeRtn.ParticipantID)
 }
 inline void PBMsgTradeRtn::set_participantid(const char* value, size_t size) {
-  set_has_participantid();
+  
   participantid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgTradeRtn.ParticipantID)
 }
 inline ::std::string* PBMsgTradeRtn::mutable_participantid() {
-  set_has_participantid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgTradeRtn.ParticipantID)
   return participantid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgTradeRtn::release_participantid() {
-  clear_has_participantid();
+  
   return participantid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_allocated_participantid(::std::string* participantid) {
   if (participantid != NULL) {
-    set_has_participantid();
+    
   } else {
-    clear_has_participantid();
+    
   }
   participantid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), participantid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgTradeRtn.ParticipantID)
 }
 
 // optional string ClientID = 12;
-inline bool PBMsgTradeRtn::has_clientid() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_clientid() {
-  _has_bits_[0] |= 0x00000800u;
-}
-inline void PBMsgTradeRtn::clear_has_clientid() {
-  _has_bits_[0] &= ~0x00000800u;
-}
 inline void PBMsgTradeRtn::clear_clientid() {
   clientid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_clientid();
 }
 inline const ::std::string& PBMsgTradeRtn::clientid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.ClientID)
   return clientid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_clientid(const ::std::string& value) {
-  set_has_clientid();
+  
   clientid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.ClientID)
 }
 inline void PBMsgTradeRtn::set_clientid(const char* value) {
-  set_has_clientid();
+  
   clientid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgTradeRtn.ClientID)
 }
 inline void PBMsgTradeRtn::set_clientid(const char* value, size_t size) {
-  set_has_clientid();
+  
   clientid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgTradeRtn.ClientID)
 }
 inline ::std::string* PBMsgTradeRtn::mutable_clientid() {
-  set_has_clientid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgTradeRtn.ClientID)
   return clientid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgTradeRtn::release_clientid() {
-  clear_has_clientid();
+  
   return clientid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_allocated_clientid(::std::string* clientid) {
   if (clientid != NULL) {
-    set_has_clientid();
+    
   } else {
-    clear_has_clientid();
+    
   }
   clientid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), clientid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgTradeRtn.ClientID)
 }
 
 // optional string TradingRole = 13;
-inline bool PBMsgTradeRtn::has_tradingrole() const {
-  return (_has_bits_[0] & 0x00001000u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_tradingrole() {
-  _has_bits_[0] |= 0x00001000u;
-}
-inline void PBMsgTradeRtn::clear_has_tradingrole() {
-  _has_bits_[0] &= ~0x00001000u;
-}
 inline void PBMsgTradeRtn::clear_tradingrole() {
   tradingrole_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_tradingrole();
 }
 inline const ::std::string& PBMsgTradeRtn::tradingrole() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.TradingRole)
   return tradingrole_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_tradingrole(const ::std::string& value) {
-  set_has_tradingrole();
+  
   tradingrole_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.TradingRole)
 }
 inline void PBMsgTradeRtn::set_tradingrole(const char* value) {
-  set_has_tradingrole();
+  
   tradingrole_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgTradeRtn.TradingRole)
 }
 inline void PBMsgTradeRtn::set_tradingrole(const char* value, size_t size) {
-  set_has_tradingrole();
+  
   tradingrole_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgTradeRtn.TradingRole)
 }
 inline ::std::string* PBMsgTradeRtn::mutable_tradingrole() {
-  set_has_tradingrole();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgTradeRtn.TradingRole)
   return tradingrole_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgTradeRtn::release_tradingrole() {
-  clear_has_tradingrole();
+  
   return tradingrole_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_allocated_tradingrole(::std::string* tradingrole) {
   if (tradingrole != NULL) {
-    set_has_tradingrole();
+    
   } else {
-    clear_has_tradingrole();
+    
   }
   tradingrole_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), tradingrole);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgTradeRtn.TradingRole)
 }
 
 // optional string ExchangeInstID = 14;
-inline bool PBMsgTradeRtn::has_exchangeinstid() const {
-  return (_has_bits_[0] & 0x00002000u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_exchangeinstid() {
-  _has_bits_[0] |= 0x00002000u;
-}
-inline void PBMsgTradeRtn::clear_has_exchangeinstid() {
-  _has_bits_[0] &= ~0x00002000u;
-}
 inline void PBMsgTradeRtn::clear_exchangeinstid() {
   exchangeinstid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_exchangeinstid();
 }
 inline const ::std::string& PBMsgTradeRtn::exchangeinstid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.ExchangeInstID)
   return exchangeinstid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_exchangeinstid(const ::std::string& value) {
-  set_has_exchangeinstid();
+  
   exchangeinstid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.ExchangeInstID)
 }
 inline void PBMsgTradeRtn::set_exchangeinstid(const char* value) {
-  set_has_exchangeinstid();
+  
   exchangeinstid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgTradeRtn.ExchangeInstID)
 }
 inline void PBMsgTradeRtn::set_exchangeinstid(const char* value, size_t size) {
-  set_has_exchangeinstid();
+  
   exchangeinstid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgTradeRtn.ExchangeInstID)
 }
 inline ::std::string* PBMsgTradeRtn::mutable_exchangeinstid() {
-  set_has_exchangeinstid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgTradeRtn.ExchangeInstID)
   return exchangeinstid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgTradeRtn::release_exchangeinstid() {
-  clear_has_exchangeinstid();
+  
   return exchangeinstid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_allocated_exchangeinstid(::std::string* exchangeinstid) {
   if (exchangeinstid != NULL) {
-    set_has_exchangeinstid();
+    
   } else {
-    clear_has_exchangeinstid();
+    
   }
   exchangeinstid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), exchangeinstid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgTradeRtn.ExchangeInstID)
 }
 
 // optional string OffsetFlag = 15;
-inline bool PBMsgTradeRtn::has_offsetflag() const {
-  return (_has_bits_[0] & 0x00004000u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_offsetflag() {
-  _has_bits_[0] |= 0x00004000u;
-}
-inline void PBMsgTradeRtn::clear_has_offsetflag() {
-  _has_bits_[0] &= ~0x00004000u;
-}
 inline void PBMsgTradeRtn::clear_offsetflag() {
   offsetflag_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_offsetflag();
 }
 inline const ::std::string& PBMsgTradeRtn::offsetflag() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.OffsetFlag)
   return offsetflag_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_offsetflag(const ::std::string& value) {
-  set_has_offsetflag();
+  
   offsetflag_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.OffsetFlag)
 }
 inline void PBMsgTradeRtn::set_offsetflag(const char* value) {
-  set_has_offsetflag();
+  
   offsetflag_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgTradeRtn.OffsetFlag)
 }
 inline void PBMsgTradeRtn::set_offsetflag(const char* value, size_t size) {
-  set_has_offsetflag();
+  
   offsetflag_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgTradeRtn.OffsetFlag)
 }
 inline ::std::string* PBMsgTradeRtn::mutable_offsetflag() {
-  set_has_offsetflag();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgTradeRtn.OffsetFlag)
   return offsetflag_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgTradeRtn::release_offsetflag() {
-  clear_has_offsetflag();
+  
   return offsetflag_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_allocated_offsetflag(::std::string* offsetflag) {
   if (offsetflag != NULL) {
-    set_has_offsetflag();
+    
   } else {
-    clear_has_offsetflag();
+    
   }
   offsetflag_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), offsetflag);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgTradeRtn.OffsetFlag)
 }
 
 // optional string HedgeFlag = 16;
-inline bool PBMsgTradeRtn::has_hedgeflag() const {
-  return (_has_bits_[0] & 0x00008000u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_hedgeflag() {
-  _has_bits_[0] |= 0x00008000u;
-}
-inline void PBMsgTradeRtn::clear_has_hedgeflag() {
-  _has_bits_[0] &= ~0x00008000u;
-}
 inline void PBMsgTradeRtn::clear_hedgeflag() {
   hedgeflag_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_hedgeflag();
 }
 inline const ::std::string& PBMsgTradeRtn::hedgeflag() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.HedgeFlag)
   return hedgeflag_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_hedgeflag(const ::std::string& value) {
-  set_has_hedgeflag();
+  
   hedgeflag_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.HedgeFlag)
 }
 inline void PBMsgTradeRtn::set_hedgeflag(const char* value) {
-  set_has_hedgeflag();
+  
   hedgeflag_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgTradeRtn.HedgeFlag)
 }
 inline void PBMsgTradeRtn::set_hedgeflag(const char* value, size_t size) {
-  set_has_hedgeflag();
+  
   hedgeflag_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgTradeRtn.HedgeFlag)
 }
 inline ::std::string* PBMsgTradeRtn::mutable_hedgeflag() {
-  set_has_hedgeflag();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgTradeRtn.HedgeFlag)
   return hedgeflag_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgTradeRtn::release_hedgeflag() {
-  clear_has_hedgeflag();
+  
   return hedgeflag_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_allocated_hedgeflag(::std::string* hedgeflag) {
   if (hedgeflag != NULL) {
-    set_has_hedgeflag();
+    
   } else {
-    clear_has_hedgeflag();
+    
   }
   hedgeflag_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), hedgeflag);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgTradeRtn.HedgeFlag)
 }
 
 // optional double Price = 17;
-inline bool PBMsgTradeRtn::has_price() const {
-  return (_has_bits_[0] & 0x00010000u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_price() {
-  _has_bits_[0] |= 0x00010000u;
-}
-inline void PBMsgTradeRtn::clear_has_price() {
-  _has_bits_[0] &= ~0x00010000u;
-}
 inline void PBMsgTradeRtn::clear_price() {
   price_ = 0;
-  clear_has_price();
 }
 inline double PBMsgTradeRtn::price() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.Price)
   return price_;
 }
 inline void PBMsgTradeRtn::set_price(double value) {
-  set_has_price();
+  
   price_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.Price)
 }
 
 // optional int32 Volume = 18;
-inline bool PBMsgTradeRtn::has_volume() const {
-  return (_has_bits_[0] & 0x00020000u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_volume() {
-  _has_bits_[0] |= 0x00020000u;
-}
-inline void PBMsgTradeRtn::clear_has_volume() {
-  _has_bits_[0] &= ~0x00020000u;
-}
 inline void PBMsgTradeRtn::clear_volume() {
   volume_ = 0;
-  clear_has_volume();
 }
 inline ::google::protobuf::int32 PBMsgTradeRtn::volume() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.Volume)
   return volume_;
 }
 inline void PBMsgTradeRtn::set_volume(::google::protobuf::int32 value) {
-  set_has_volume();
+  
   volume_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.Volume)
 }
 
 // optional string TradeDate = 19;
-inline bool PBMsgTradeRtn::has_tradedate() const {
-  return (_has_bits_[0] & 0x00040000u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_tradedate() {
-  _has_bits_[0] |= 0x00040000u;
-}
-inline void PBMsgTradeRtn::clear_has_tradedate() {
-  _has_bits_[0] &= ~0x00040000u;
-}
 inline void PBMsgTradeRtn::clear_tradedate() {
   tradedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_tradedate();
 }
 inline const ::std::string& PBMsgTradeRtn::tradedate() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.TradeDate)
   return tradedate_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_tradedate(const ::std::string& value) {
-  set_has_tradedate();
+  
   tradedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.TradeDate)
 }
 inline void PBMsgTradeRtn::set_tradedate(const char* value) {
-  set_has_tradedate();
+  
   tradedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgTradeRtn.TradeDate)
 }
 inline void PBMsgTradeRtn::set_tradedate(const char* value, size_t size) {
-  set_has_tradedate();
+  
   tradedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgTradeRtn.TradeDate)
 }
 inline ::std::string* PBMsgTradeRtn::mutable_tradedate() {
-  set_has_tradedate();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgTradeRtn.TradeDate)
   return tradedate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgTradeRtn::release_tradedate() {
-  clear_has_tradedate();
+  
   return tradedate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_allocated_tradedate(::std::string* tradedate) {
   if (tradedate != NULL) {
-    set_has_tradedate();
+    
   } else {
-    clear_has_tradedate();
+    
   }
   tradedate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), tradedate);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgTradeRtn.TradeDate)
 }
 
 // optional string TradeTime = 20;
-inline bool PBMsgTradeRtn::has_tradetime() const {
-  return (_has_bits_[0] & 0x00080000u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_tradetime() {
-  _has_bits_[0] |= 0x00080000u;
-}
-inline void PBMsgTradeRtn::clear_has_tradetime() {
-  _has_bits_[0] &= ~0x00080000u;
-}
 inline void PBMsgTradeRtn::clear_tradetime() {
   tradetime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_tradetime();
 }
 inline const ::std::string& PBMsgTradeRtn::tradetime() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.TradeTime)
   return tradetime_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_tradetime(const ::std::string& value) {
-  set_has_tradetime();
+  
   tradetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.TradeTime)
 }
 inline void PBMsgTradeRtn::set_tradetime(const char* value) {
-  set_has_tradetime();
+  
   tradetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgTradeRtn.TradeTime)
 }
 inline void PBMsgTradeRtn::set_tradetime(const char* value, size_t size) {
-  set_has_tradetime();
+  
   tradetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgTradeRtn.TradeTime)
 }
 inline ::std::string* PBMsgTradeRtn::mutable_tradetime() {
-  set_has_tradetime();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgTradeRtn.TradeTime)
   return tradetime_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgTradeRtn::release_tradetime() {
-  clear_has_tradetime();
+  
   return tradetime_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_allocated_tradetime(::std::string* tradetime) {
   if (tradetime != NULL) {
-    set_has_tradetime();
+    
   } else {
-    clear_has_tradetime();
+    
   }
   tradetime_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), tradetime);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgTradeRtn.TradeTime)
 }
 
 // optional string TradeType = 21;
-inline bool PBMsgTradeRtn::has_tradetype() const {
-  return (_has_bits_[0] & 0x00100000u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_tradetype() {
-  _has_bits_[0] |= 0x00100000u;
-}
-inline void PBMsgTradeRtn::clear_has_tradetype() {
-  _has_bits_[0] &= ~0x00100000u;
-}
 inline void PBMsgTradeRtn::clear_tradetype() {
   tradetype_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_tradetype();
 }
 inline const ::std::string& PBMsgTradeRtn::tradetype() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.TradeType)
   return tradetype_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_tradetype(const ::std::string& value) {
-  set_has_tradetype();
+  
   tradetype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.TradeType)
 }
 inline void PBMsgTradeRtn::set_tradetype(const char* value) {
-  set_has_tradetype();
+  
   tradetype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgTradeRtn.TradeType)
 }
 inline void PBMsgTradeRtn::set_tradetype(const char* value, size_t size) {
-  set_has_tradetype();
+  
   tradetype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgTradeRtn.TradeType)
 }
 inline ::std::string* PBMsgTradeRtn::mutable_tradetype() {
-  set_has_tradetype();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgTradeRtn.TradeType)
   return tradetype_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgTradeRtn::release_tradetype() {
-  clear_has_tradetype();
+  
   return tradetype_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_allocated_tradetype(::std::string* tradetype) {
   if (tradetype != NULL) {
-    set_has_tradetype();
+    
   } else {
-    clear_has_tradetype();
+    
   }
   tradetype_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), tradetype);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgTradeRtn.TradeType)
 }
 
 // optional string PriceSource = 22;
-inline bool PBMsgTradeRtn::has_pricesource() const {
-  return (_has_bits_[0] & 0x00200000u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_pricesource() {
-  _has_bits_[0] |= 0x00200000u;
-}
-inline void PBMsgTradeRtn::clear_has_pricesource() {
-  _has_bits_[0] &= ~0x00200000u;
-}
 inline void PBMsgTradeRtn::clear_pricesource() {
   pricesource_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_pricesource();
 }
 inline const ::std::string& PBMsgTradeRtn::pricesource() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.PriceSource)
   return pricesource_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_pricesource(const ::std::string& value) {
-  set_has_pricesource();
+  
   pricesource_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.PriceSource)
 }
 inline void PBMsgTradeRtn::set_pricesource(const char* value) {
-  set_has_pricesource();
+  
   pricesource_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgTradeRtn.PriceSource)
 }
 inline void PBMsgTradeRtn::set_pricesource(const char* value, size_t size) {
-  set_has_pricesource();
+  
   pricesource_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgTradeRtn.PriceSource)
 }
 inline ::std::string* PBMsgTradeRtn::mutable_pricesource() {
-  set_has_pricesource();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgTradeRtn.PriceSource)
   return pricesource_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgTradeRtn::release_pricesource() {
-  clear_has_pricesource();
+  
   return pricesource_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_allocated_pricesource(::std::string* pricesource) {
   if (pricesource != NULL) {
-    set_has_pricesource();
+    
   } else {
-    clear_has_pricesource();
+    
   }
   pricesource_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), pricesource);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgTradeRtn.PriceSource)
 }
 
 // optional string TraderID = 23;
-inline bool PBMsgTradeRtn::has_traderid() const {
-  return (_has_bits_[0] & 0x00400000u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_traderid() {
-  _has_bits_[0] |= 0x00400000u;
-}
-inline void PBMsgTradeRtn::clear_has_traderid() {
-  _has_bits_[0] &= ~0x00400000u;
-}
 inline void PBMsgTradeRtn::clear_traderid() {
   traderid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_traderid();
 }
 inline const ::std::string& PBMsgTradeRtn::traderid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.TraderID)
   return traderid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_traderid(const ::std::string& value) {
-  set_has_traderid();
+  
   traderid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.TraderID)
 }
 inline void PBMsgTradeRtn::set_traderid(const char* value) {
-  set_has_traderid();
+  
   traderid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgTradeRtn.TraderID)
 }
 inline void PBMsgTradeRtn::set_traderid(const char* value, size_t size) {
-  set_has_traderid();
+  
   traderid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgTradeRtn.TraderID)
 }
 inline ::std::string* PBMsgTradeRtn::mutable_traderid() {
-  set_has_traderid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgTradeRtn.TraderID)
   return traderid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgTradeRtn::release_traderid() {
-  clear_has_traderid();
+  
   return traderid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_allocated_traderid(::std::string* traderid) {
   if (traderid != NULL) {
-    set_has_traderid();
+    
   } else {
-    clear_has_traderid();
+    
   }
   traderid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), traderid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgTradeRtn.TraderID)
 }
 
 // optional string OrderLocalID = 24;
-inline bool PBMsgTradeRtn::has_orderlocalid() const {
-  return (_has_bits_[0] & 0x00800000u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_orderlocalid() {
-  _has_bits_[0] |= 0x00800000u;
-}
-inline void PBMsgTradeRtn::clear_has_orderlocalid() {
-  _has_bits_[0] &= ~0x00800000u;
-}
 inline void PBMsgTradeRtn::clear_orderlocalid() {
   orderlocalid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_orderlocalid();
 }
 inline const ::std::string& PBMsgTradeRtn::orderlocalid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.OrderLocalID)
   return orderlocalid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_orderlocalid(const ::std::string& value) {
-  set_has_orderlocalid();
+  
   orderlocalid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.OrderLocalID)
 }
 inline void PBMsgTradeRtn::set_orderlocalid(const char* value) {
-  set_has_orderlocalid();
+  
   orderlocalid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgTradeRtn.OrderLocalID)
 }
 inline void PBMsgTradeRtn::set_orderlocalid(const char* value, size_t size) {
-  set_has_orderlocalid();
+  
   orderlocalid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgTradeRtn.OrderLocalID)
 }
 inline ::std::string* PBMsgTradeRtn::mutable_orderlocalid() {
-  set_has_orderlocalid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgTradeRtn.OrderLocalID)
   return orderlocalid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgTradeRtn::release_orderlocalid() {
-  clear_has_orderlocalid();
+  
   return orderlocalid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_allocated_orderlocalid(::std::string* orderlocalid) {
   if (orderlocalid != NULL) {
-    set_has_orderlocalid();
+    
   } else {
-    clear_has_orderlocalid();
+    
   }
   orderlocalid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), orderlocalid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgTradeRtn.OrderLocalID)
 }
 
 // optional string ClearingPartID = 25;
-inline bool PBMsgTradeRtn::has_clearingpartid() const {
-  return (_has_bits_[0] & 0x01000000u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_clearingpartid() {
-  _has_bits_[0] |= 0x01000000u;
-}
-inline void PBMsgTradeRtn::clear_has_clearingpartid() {
-  _has_bits_[0] &= ~0x01000000u;
-}
 inline void PBMsgTradeRtn::clear_clearingpartid() {
   clearingpartid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_clearingpartid();
 }
 inline const ::std::string& PBMsgTradeRtn::clearingpartid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.ClearingPartID)
   return clearingpartid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_clearingpartid(const ::std::string& value) {
-  set_has_clearingpartid();
+  
   clearingpartid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.ClearingPartID)
 }
 inline void PBMsgTradeRtn::set_clearingpartid(const char* value) {
-  set_has_clearingpartid();
+  
   clearingpartid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgTradeRtn.ClearingPartID)
 }
 inline void PBMsgTradeRtn::set_clearingpartid(const char* value, size_t size) {
-  set_has_clearingpartid();
+  
   clearingpartid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgTradeRtn.ClearingPartID)
 }
 inline ::std::string* PBMsgTradeRtn::mutable_clearingpartid() {
-  set_has_clearingpartid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgTradeRtn.ClearingPartID)
   return clearingpartid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgTradeRtn::release_clearingpartid() {
-  clear_has_clearingpartid();
+  
   return clearingpartid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_allocated_clearingpartid(::std::string* clearingpartid) {
   if (clearingpartid != NULL) {
-    set_has_clearingpartid();
+    
   } else {
-    clear_has_clearingpartid();
+    
   }
   clearingpartid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), clearingpartid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgTradeRtn.ClearingPartID)
 }
 
 // optional string BusinessUnit = 26;
-inline bool PBMsgTradeRtn::has_businessunit() const {
-  return (_has_bits_[0] & 0x02000000u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_businessunit() {
-  _has_bits_[0] |= 0x02000000u;
-}
-inline void PBMsgTradeRtn::clear_has_businessunit() {
-  _has_bits_[0] &= ~0x02000000u;
-}
 inline void PBMsgTradeRtn::clear_businessunit() {
   businessunit_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_businessunit();
 }
 inline const ::std::string& PBMsgTradeRtn::businessunit() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.BusinessUnit)
   return businessunit_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_businessunit(const ::std::string& value) {
-  set_has_businessunit();
+  
   businessunit_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.BusinessUnit)
 }
 inline void PBMsgTradeRtn::set_businessunit(const char* value) {
-  set_has_businessunit();
+  
   businessunit_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgTradeRtn.BusinessUnit)
 }
 inline void PBMsgTradeRtn::set_businessunit(const char* value, size_t size) {
-  set_has_businessunit();
+  
   businessunit_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgTradeRtn.BusinessUnit)
 }
 inline ::std::string* PBMsgTradeRtn::mutable_businessunit() {
-  set_has_businessunit();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgTradeRtn.BusinessUnit)
   return businessunit_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgTradeRtn::release_businessunit() {
-  clear_has_businessunit();
+  
   return businessunit_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_allocated_businessunit(::std::string* businessunit) {
   if (businessunit != NULL) {
-    set_has_businessunit();
+    
   } else {
-    clear_has_businessunit();
+    
   }
   businessunit_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), businessunit);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgTradeRtn.BusinessUnit)
 }
 
 // optional int32 SequenceNo = 27;
-inline bool PBMsgTradeRtn::has_sequenceno() const {
-  return (_has_bits_[0] & 0x04000000u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_sequenceno() {
-  _has_bits_[0] |= 0x04000000u;
-}
-inline void PBMsgTradeRtn::clear_has_sequenceno() {
-  _has_bits_[0] &= ~0x04000000u;
-}
 inline void PBMsgTradeRtn::clear_sequenceno() {
   sequenceno_ = 0;
-  clear_has_sequenceno();
 }
 inline ::google::protobuf::int32 PBMsgTradeRtn::sequenceno() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.SequenceNo)
   return sequenceno_;
 }
 inline void PBMsgTradeRtn::set_sequenceno(::google::protobuf::int32 value) {
-  set_has_sequenceno();
+  
   sequenceno_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.SequenceNo)
 }
 
 // optional string TradingDay = 28;
-inline bool PBMsgTradeRtn::has_tradingday() const {
-  return (_has_bits_[0] & 0x08000000u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_tradingday() {
-  _has_bits_[0] |= 0x08000000u;
-}
-inline void PBMsgTradeRtn::clear_has_tradingday() {
-  _has_bits_[0] &= ~0x08000000u;
-}
 inline void PBMsgTradeRtn::clear_tradingday() {
   tradingday_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_tradingday();
 }
 inline const ::std::string& PBMsgTradeRtn::tradingday() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.TradingDay)
   return tradingday_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_tradingday(const ::std::string& value) {
-  set_has_tradingday();
+  
   tradingday_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.TradingDay)
 }
 inline void PBMsgTradeRtn::set_tradingday(const char* value) {
-  set_has_tradingday();
+  
   tradingday_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgTradeRtn.TradingDay)
 }
 inline void PBMsgTradeRtn::set_tradingday(const char* value, size_t size) {
-  set_has_tradingday();
+  
   tradingday_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgTradeRtn.TradingDay)
 }
 inline ::std::string* PBMsgTradeRtn::mutable_tradingday() {
-  set_has_tradingday();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgTradeRtn.TradingDay)
   return tradingday_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgTradeRtn::release_tradingday() {
-  clear_has_tradingday();
+  
   return tradingday_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_allocated_tradingday(::std::string* tradingday) {
   if (tradingday != NULL) {
-    set_has_tradingday();
+    
   } else {
-    clear_has_tradingday();
+    
   }
   tradingday_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), tradingday);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgTradeRtn.TradingDay)
 }
 
 // optional int32 SettlementID = 29;
-inline bool PBMsgTradeRtn::has_settlementid() const {
-  return (_has_bits_[0] & 0x10000000u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_settlementid() {
-  _has_bits_[0] |= 0x10000000u;
-}
-inline void PBMsgTradeRtn::clear_has_settlementid() {
-  _has_bits_[0] &= ~0x10000000u;
-}
 inline void PBMsgTradeRtn::clear_settlementid() {
   settlementid_ = 0;
-  clear_has_settlementid();
 }
 inline ::google::protobuf::int32 PBMsgTradeRtn::settlementid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.SettlementID)
   return settlementid_;
 }
 inline void PBMsgTradeRtn::set_settlementid(::google::protobuf::int32 value) {
-  set_has_settlementid();
+  
   settlementid_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.SettlementID)
 }
 
 // optional int32 BrokerOrderSeq = 30;
-inline bool PBMsgTradeRtn::has_brokerorderseq() const {
-  return (_has_bits_[0] & 0x20000000u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_brokerorderseq() {
-  _has_bits_[0] |= 0x20000000u;
-}
-inline void PBMsgTradeRtn::clear_has_brokerorderseq() {
-  _has_bits_[0] &= ~0x20000000u;
-}
 inline void PBMsgTradeRtn::clear_brokerorderseq() {
   brokerorderseq_ = 0;
-  clear_has_brokerorderseq();
 }
 inline ::google::protobuf::int32 PBMsgTradeRtn::brokerorderseq() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.BrokerOrderSeq)
   return brokerorderseq_;
 }
 inline void PBMsgTradeRtn::set_brokerorderseq(::google::protobuf::int32 value) {
-  set_has_brokerorderseq();
+  
   brokerorderseq_ = value;
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.BrokerOrderSeq)
 }
 
 // optional string TradeSource = 31;
-inline bool PBMsgTradeRtn::has_tradesource() const {
-  return (_has_bits_[0] & 0x40000000u) != 0;
-}
-inline void PBMsgTradeRtn::set_has_tradesource() {
-  _has_bits_[0] |= 0x40000000u;
-}
-inline void PBMsgTradeRtn::clear_has_tradesource() {
-  _has_bits_[0] &= ~0x40000000u;
-}
 inline void PBMsgTradeRtn::clear_tradesource() {
   tradesource_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_tradesource();
 }
 inline const ::std::string& PBMsgTradeRtn::tradesource() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgTradeRtn.TradeSource)
   return tradesource_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_tradesource(const ::std::string& value) {
-  set_has_tradesource();
+  
   tradesource_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgTradeRtn.TradeSource)
 }
 inline void PBMsgTradeRtn::set_tradesource(const char* value) {
-  set_has_tradesource();
+  
   tradesource_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgTradeRtn.TradeSource)
 }
 inline void PBMsgTradeRtn::set_tradesource(const char* value, size_t size) {
-  set_has_tradesource();
+  
   tradesource_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgTradeRtn.TradeSource)
 }
 inline ::std::string* PBMsgTradeRtn::mutable_tradesource() {
-  set_has_tradesource();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgTradeRtn.TradeSource)
   return tradesource_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgTradeRtn::release_tradesource() {
-  clear_has_tradesource();
+  
   return tradesource_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgTradeRtn::set_allocated_tradesource(::std::string* tradesource) {
   if (tradesource != NULL) {
-    set_has_tradesource();
+    
   } else {
-    clear_has_tradesource();
+    
   }
   tradesource_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), tradesource);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgTradeRtn.TradeSource)
@@ -17881,212 +13858,172 @@ inline void PBMsgTradeRtn::set_allocated_tradesource(::std::string* tradesource)
 // PBMsgSettlementInfoConfirm
 
 // optional string BrokerID = 2;
-inline bool PBMsgSettlementInfoConfirm::has_brokerid() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBMsgSettlementInfoConfirm::set_has_brokerid() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBMsgSettlementInfoConfirm::clear_has_brokerid() {
-  _has_bits_[0] &= ~0x00000001u;
-}
 inline void PBMsgSettlementInfoConfirm::clear_brokerid() {
   brokerid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_brokerid();
 }
 inline const ::std::string& PBMsgSettlementInfoConfirm::brokerid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgSettlementInfoConfirm.BrokerID)
   return brokerid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgSettlementInfoConfirm::set_brokerid(const ::std::string& value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgSettlementInfoConfirm.BrokerID)
 }
 inline void PBMsgSettlementInfoConfirm::set_brokerid(const char* value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgSettlementInfoConfirm.BrokerID)
 }
 inline void PBMsgSettlementInfoConfirm::set_brokerid(const char* value, size_t size) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgSettlementInfoConfirm.BrokerID)
 }
 inline ::std::string* PBMsgSettlementInfoConfirm::mutable_brokerid() {
-  set_has_brokerid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgSettlementInfoConfirm.BrokerID)
   return brokerid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgSettlementInfoConfirm::release_brokerid() {
-  clear_has_brokerid();
+  
   return brokerid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgSettlementInfoConfirm::set_allocated_brokerid(::std::string* brokerid) {
   if (brokerid != NULL) {
-    set_has_brokerid();
+    
   } else {
-    clear_has_brokerid();
+    
   }
   brokerid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), brokerid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgSettlementInfoConfirm.BrokerID)
 }
 
 // optional string InvestorID = 3;
-inline bool PBMsgSettlementInfoConfirm::has_investorid() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBMsgSettlementInfoConfirm::set_has_investorid() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBMsgSettlementInfoConfirm::clear_has_investorid() {
-  _has_bits_[0] &= ~0x00000002u;
-}
 inline void PBMsgSettlementInfoConfirm::clear_investorid() {
   investorid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_investorid();
 }
 inline const ::std::string& PBMsgSettlementInfoConfirm::investorid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgSettlementInfoConfirm.InvestorID)
   return investorid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgSettlementInfoConfirm::set_investorid(const ::std::string& value) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgSettlementInfoConfirm.InvestorID)
 }
 inline void PBMsgSettlementInfoConfirm::set_investorid(const char* value) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgSettlementInfoConfirm.InvestorID)
 }
 inline void PBMsgSettlementInfoConfirm::set_investorid(const char* value, size_t size) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgSettlementInfoConfirm.InvestorID)
 }
 inline ::std::string* PBMsgSettlementInfoConfirm::mutable_investorid() {
-  set_has_investorid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgSettlementInfoConfirm.InvestorID)
   return investorid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgSettlementInfoConfirm::release_investorid() {
-  clear_has_investorid();
+  
   return investorid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgSettlementInfoConfirm::set_allocated_investorid(::std::string* investorid) {
   if (investorid != NULL) {
-    set_has_investorid();
+    
   } else {
-    clear_has_investorid();
+    
   }
   investorid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), investorid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgSettlementInfoConfirm.InvestorID)
 }
 
 // optional string ConfirmDate = 4;
-inline bool PBMsgSettlementInfoConfirm::has_confirmdate() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBMsgSettlementInfoConfirm::set_has_confirmdate() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBMsgSettlementInfoConfirm::clear_has_confirmdate() {
-  _has_bits_[0] &= ~0x00000004u;
-}
 inline void PBMsgSettlementInfoConfirm::clear_confirmdate() {
   confirmdate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_confirmdate();
 }
 inline const ::std::string& PBMsgSettlementInfoConfirm::confirmdate() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgSettlementInfoConfirm.ConfirmDate)
   return confirmdate_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgSettlementInfoConfirm::set_confirmdate(const ::std::string& value) {
-  set_has_confirmdate();
+  
   confirmdate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgSettlementInfoConfirm.ConfirmDate)
 }
 inline void PBMsgSettlementInfoConfirm::set_confirmdate(const char* value) {
-  set_has_confirmdate();
+  
   confirmdate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgSettlementInfoConfirm.ConfirmDate)
 }
 inline void PBMsgSettlementInfoConfirm::set_confirmdate(const char* value, size_t size) {
-  set_has_confirmdate();
+  
   confirmdate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgSettlementInfoConfirm.ConfirmDate)
 }
 inline ::std::string* PBMsgSettlementInfoConfirm::mutable_confirmdate() {
-  set_has_confirmdate();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgSettlementInfoConfirm.ConfirmDate)
   return confirmdate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgSettlementInfoConfirm::release_confirmdate() {
-  clear_has_confirmdate();
+  
   return confirmdate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgSettlementInfoConfirm::set_allocated_confirmdate(::std::string* confirmdate) {
   if (confirmdate != NULL) {
-    set_has_confirmdate();
+    
   } else {
-    clear_has_confirmdate();
+    
   }
   confirmdate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), confirmdate);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgSettlementInfoConfirm.ConfirmDate)
 }
 
 // optional string ConfirmTime = 5;
-inline bool PBMsgSettlementInfoConfirm::has_confirmtime() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void PBMsgSettlementInfoConfirm::set_has_confirmtime() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void PBMsgSettlementInfoConfirm::clear_has_confirmtime() {
-  _has_bits_[0] &= ~0x00000008u;
-}
 inline void PBMsgSettlementInfoConfirm::clear_confirmtime() {
   confirmtime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_confirmtime();
 }
 inline const ::std::string& PBMsgSettlementInfoConfirm::confirmtime() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgSettlementInfoConfirm.ConfirmTime)
   return confirmtime_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgSettlementInfoConfirm::set_confirmtime(const ::std::string& value) {
-  set_has_confirmtime();
+  
   confirmtime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgSettlementInfoConfirm.ConfirmTime)
 }
 inline void PBMsgSettlementInfoConfirm::set_confirmtime(const char* value) {
-  set_has_confirmtime();
+  
   confirmtime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgSettlementInfoConfirm.ConfirmTime)
 }
 inline void PBMsgSettlementInfoConfirm::set_confirmtime(const char* value, size_t size) {
-  set_has_confirmtime();
+  
   confirmtime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgSettlementInfoConfirm.ConfirmTime)
 }
 inline ::std::string* PBMsgSettlementInfoConfirm::mutable_confirmtime() {
-  set_has_confirmtime();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgSettlementInfoConfirm.ConfirmTime)
   return confirmtime_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgSettlementInfoConfirm::release_confirmtime() {
-  clear_has_confirmtime();
+  
   return confirmtime_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgSettlementInfoConfirm::set_allocated_confirmtime(::std::string* confirmtime) {
   if (confirmtime != NULL) {
-    set_has_confirmtime();
+    
   } else {
-    clear_has_confirmtime();
+    
   }
   confirmtime_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), confirmtime);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgSettlementInfoConfirm.ConfirmTime)
@@ -18097,159 +14034,129 @@ inline void PBMsgSettlementInfoConfirm::set_allocated_confirmtime(::std::string*
 // PBMsgReqConnect
 
 // optional string BrokerID = 2;
-inline bool PBMsgReqConnect::has_brokerid() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBMsgReqConnect::set_has_brokerid() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBMsgReqConnect::clear_has_brokerid() {
-  _has_bits_[0] &= ~0x00000001u;
-}
 inline void PBMsgReqConnect::clear_brokerid() {
   brokerid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_brokerid();
 }
 inline const ::std::string& PBMsgReqConnect::brokerid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgReqConnect.BrokerID)
   return brokerid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgReqConnect::set_brokerid(const ::std::string& value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgReqConnect.BrokerID)
 }
 inline void PBMsgReqConnect::set_brokerid(const char* value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgReqConnect.BrokerID)
 }
 inline void PBMsgReqConnect::set_brokerid(const char* value, size_t size) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgReqConnect.BrokerID)
 }
 inline ::std::string* PBMsgReqConnect::mutable_brokerid() {
-  set_has_brokerid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgReqConnect.BrokerID)
   return brokerid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgReqConnect::release_brokerid() {
-  clear_has_brokerid();
+  
   return brokerid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgReqConnect::set_allocated_brokerid(::std::string* brokerid) {
   if (brokerid != NULL) {
-    set_has_brokerid();
+    
   } else {
-    clear_has_brokerid();
+    
   }
   brokerid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), brokerid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgReqConnect.BrokerID)
 }
 
 // optional string InvestorID = 3;
-inline bool PBMsgReqConnect::has_investorid() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBMsgReqConnect::set_has_investorid() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBMsgReqConnect::clear_has_investorid() {
-  _has_bits_[0] &= ~0x00000002u;
-}
 inline void PBMsgReqConnect::clear_investorid() {
   investorid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_investorid();
 }
 inline const ::std::string& PBMsgReqConnect::investorid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgReqConnect.InvestorID)
   return investorid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgReqConnect::set_investorid(const ::std::string& value) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgReqConnect.InvestorID)
 }
 inline void PBMsgReqConnect::set_investorid(const char* value) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgReqConnect.InvestorID)
 }
 inline void PBMsgReqConnect::set_investorid(const char* value, size_t size) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgReqConnect.InvestorID)
 }
 inline ::std::string* PBMsgReqConnect::mutable_investorid() {
-  set_has_investorid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgReqConnect.InvestorID)
   return investorid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgReqConnect::release_investorid() {
-  clear_has_investorid();
+  
   return investorid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgReqConnect::set_allocated_investorid(::std::string* investorid) {
   if (investorid != NULL) {
-    set_has_investorid();
+    
   } else {
-    clear_has_investorid();
+    
   }
   investorid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), investorid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgReqConnect.InvestorID)
 }
 
 // optional string TradeFront = 4;
-inline bool PBMsgReqConnect::has_tradefront() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBMsgReqConnect::set_has_tradefront() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBMsgReqConnect::clear_has_tradefront() {
-  _has_bits_[0] &= ~0x00000004u;
-}
 inline void PBMsgReqConnect::clear_tradefront() {
   tradefront_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_tradefront();
 }
 inline const ::std::string& PBMsgReqConnect::tradefront() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgReqConnect.TradeFront)
   return tradefront_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgReqConnect::set_tradefront(const ::std::string& value) {
-  set_has_tradefront();
+  
   tradefront_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgReqConnect.TradeFront)
 }
 inline void PBMsgReqConnect::set_tradefront(const char* value) {
-  set_has_tradefront();
+  
   tradefront_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgReqConnect.TradeFront)
 }
 inline void PBMsgReqConnect::set_tradefront(const char* value, size_t size) {
-  set_has_tradefront();
+  
   tradefront_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgReqConnect.TradeFront)
 }
 inline ::std::string* PBMsgReqConnect::mutable_tradefront() {
-  set_has_tradefront();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgReqConnect.TradeFront)
   return tradefront_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgReqConnect::release_tradefront() {
-  clear_has_tradefront();
+  
   return tradefront_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgReqConnect::set_allocated_tradefront(::std::string* tradefront) {
   if (tradefront != NULL) {
-    set_has_tradefront();
+    
   } else {
-    clear_has_tradefront();
+    
   }
   tradefront_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), tradefront);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgReqConnect.TradeFront)
@@ -18260,265 +14167,215 @@ inline void PBMsgReqConnect::set_allocated_tradefront(::std::string* tradefront)
 // PBMsgRspConnect
 
 // optional string BrokerID = 2;
-inline bool PBMsgRspConnect::has_brokerid() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBMsgRspConnect::set_has_brokerid() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBMsgRspConnect::clear_has_brokerid() {
-  _has_bits_[0] &= ~0x00000001u;
-}
 inline void PBMsgRspConnect::clear_brokerid() {
   brokerid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_brokerid();
 }
 inline const ::std::string& PBMsgRspConnect::brokerid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgRspConnect.BrokerID)
   return brokerid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgRspConnect::set_brokerid(const ::std::string& value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgRspConnect.BrokerID)
 }
 inline void PBMsgRspConnect::set_brokerid(const char* value) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgRspConnect.BrokerID)
 }
 inline void PBMsgRspConnect::set_brokerid(const char* value, size_t size) {
-  set_has_brokerid();
+  
   brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgRspConnect.BrokerID)
 }
 inline ::std::string* PBMsgRspConnect::mutable_brokerid() {
-  set_has_brokerid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgRspConnect.BrokerID)
   return brokerid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgRspConnect::release_brokerid() {
-  clear_has_brokerid();
+  
   return brokerid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgRspConnect::set_allocated_brokerid(::std::string* brokerid) {
   if (brokerid != NULL) {
-    set_has_brokerid();
+    
   } else {
-    clear_has_brokerid();
+    
   }
   brokerid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), brokerid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgRspConnect.BrokerID)
 }
 
 // optional string InvestorID = 3;
-inline bool PBMsgRspConnect::has_investorid() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBMsgRspConnect::set_has_investorid() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBMsgRspConnect::clear_has_investorid() {
-  _has_bits_[0] &= ~0x00000002u;
-}
 inline void PBMsgRspConnect::clear_investorid() {
   investorid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_investorid();
 }
 inline const ::std::string& PBMsgRspConnect::investorid() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgRspConnect.InvestorID)
   return investorid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgRspConnect::set_investorid(const ::std::string& value) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgRspConnect.InvestorID)
 }
 inline void PBMsgRspConnect::set_investorid(const char* value) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgRspConnect.InvestorID)
 }
 inline void PBMsgRspConnect::set_investorid(const char* value, size_t size) {
-  set_has_investorid();
+  
   investorid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgRspConnect.InvestorID)
 }
 inline ::std::string* PBMsgRspConnect::mutable_investorid() {
-  set_has_investorid();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgRspConnect.InvestorID)
   return investorid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgRspConnect::release_investorid() {
-  clear_has_investorid();
+  
   return investorid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgRspConnect::set_allocated_investorid(::std::string* investorid) {
   if (investorid != NULL) {
-    set_has_investorid();
+    
   } else {
-    clear_has_investorid();
+    
   }
   investorid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), investorid);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgRspConnect.InvestorID)
 }
 
 // optional string TradeFront = 4;
-inline bool PBMsgRspConnect::has_tradefront() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBMsgRspConnect::set_has_tradefront() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBMsgRspConnect::clear_has_tradefront() {
-  _has_bits_[0] &= ~0x00000004u;
-}
 inline void PBMsgRspConnect::clear_tradefront() {
   tradefront_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_tradefront();
 }
 inline const ::std::string& PBMsgRspConnect::tradefront() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgRspConnect.TradeFront)
   return tradefront_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgRspConnect::set_tradefront(const ::std::string& value) {
-  set_has_tradefront();
+  
   tradefront_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgRspConnect.TradeFront)
 }
 inline void PBMsgRspConnect::set_tradefront(const char* value) {
-  set_has_tradefront();
+  
   tradefront_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgRspConnect.TradeFront)
 }
 inline void PBMsgRspConnect::set_tradefront(const char* value, size_t size) {
-  set_has_tradefront();
+  
   tradefront_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgRspConnect.TradeFront)
 }
 inline ::std::string* PBMsgRspConnect::mutable_tradefront() {
-  set_has_tradefront();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgRspConnect.TradeFront)
   return tradefront_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgRspConnect::release_tradefront() {
-  clear_has_tradefront();
+  
   return tradefront_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgRspConnect::set_allocated_tradefront(::std::string* tradefront) {
   if (tradefront != NULL) {
-    set_has_tradefront();
+    
   } else {
-    clear_has_tradefront();
+    
   }
   tradefront_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), tradefront);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgRspConnect.TradeFront)
 }
 
 // optional string ReqURI = 5;
-inline bool PBMsgRspConnect::has_requri() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void PBMsgRspConnect::set_has_requri() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void PBMsgRspConnect::clear_has_requri() {
-  _has_bits_[0] &= ~0x00000008u;
-}
 inline void PBMsgRspConnect::clear_requri() {
   requri_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_requri();
 }
 inline const ::std::string& PBMsgRspConnect::requri() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgRspConnect.ReqURI)
   return requri_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgRspConnect::set_requri(const ::std::string& value) {
-  set_has_requri();
+  
   requri_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgRspConnect.ReqURI)
 }
 inline void PBMsgRspConnect::set_requri(const char* value) {
-  set_has_requri();
+  
   requri_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgRspConnect.ReqURI)
 }
 inline void PBMsgRspConnect::set_requri(const char* value, size_t size) {
-  set_has_requri();
+  
   requri_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgRspConnect.ReqURI)
 }
 inline ::std::string* PBMsgRspConnect::mutable_requri() {
-  set_has_requri();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgRspConnect.ReqURI)
   return requri_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgRspConnect::release_requri() {
-  clear_has_requri();
+  
   return requri_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgRspConnect::set_allocated_requri(::std::string* requri) {
   if (requri != NULL) {
-    set_has_requri();
+    
   } else {
-    clear_has_requri();
+    
   }
   requri_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), requri);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgRspConnect.ReqURI)
 }
 
 // optional string RspURI = 6;
-inline bool PBMsgRspConnect::has_rspuri() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void PBMsgRspConnect::set_has_rspuri() {
-  _has_bits_[0] |= 0x00000010u;
-}
-inline void PBMsgRspConnect::clear_has_rspuri() {
-  _has_bits_[0] &= ~0x00000010u;
-}
 inline void PBMsgRspConnect::clear_rspuri() {
   rspuri_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_rspuri();
 }
 inline const ::std::string& PBMsgRspConnect::rspuri() const {
   // @@protoc_insertion_point(field_get:PBMsgTrader.PBMsgRspConnect.RspURI)
   return rspuri_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgRspConnect::set_rspuri(const ::std::string& value) {
-  set_has_rspuri();
+  
   rspuri_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBMsgTrader.PBMsgRspConnect.RspURI)
 }
 inline void PBMsgRspConnect::set_rspuri(const char* value) {
-  set_has_rspuri();
+  
   rspuri_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBMsgTrader.PBMsgRspConnect.RspURI)
 }
 inline void PBMsgRspConnect::set_rspuri(const char* value, size_t size) {
-  set_has_rspuri();
+  
   rspuri_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBMsgTrader.PBMsgRspConnect.RspURI)
 }
 inline ::std::string* PBMsgRspConnect::mutable_rspuri() {
-  set_has_rspuri();
+  
   // @@protoc_insertion_point(field_mutable:PBMsgTrader.PBMsgRspConnect.RspURI)
   return rspuri_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgRspConnect::release_rspuri() {
-  clear_has_rspuri();
+  
   return rspuri_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgRspConnect::set_allocated_rspuri(::std::string* rspuri) {
   if (rspuri != NULL) {
-    set_has_rspuri();
+    
   } else {
-    clear_has_rspuri();
+    
   }
   rspuri_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), rspuri);
   // @@protoc_insertion_point(field_set_allocated:PBMsgTrader.PBMsgRspConnect.RspURI)
@@ -18574,10 +14431,10 @@ inline void PBMsgRspConnect::set_allocated_rspuri(::std::string* rspuri) {
 namespace google {
 namespace protobuf {
 
-template <> struct is_proto_enum< ::PBMsgTrader::OrderStatus> : ::google::protobuf::internal::true_type {};
+template <> struct is_proto_enum< ::PBMsgTrader::PBOrderStatus> : ::google::protobuf::internal::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::PBMsgTrader::OrderStatus>() {
-  return ::PBMsgTrader::OrderStatus_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::PBMsgTrader::PBOrderStatus>() {
+  return ::PBMsgTrader::PBOrderStatus_descriptor();
 }
 
 }  // namespace protobuf

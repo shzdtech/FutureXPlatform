@@ -42,14 +42,17 @@ class PBMsgFutMD;
 class PBMsgMDAMD;
 
 enum DataType {
+  DataType_0 = 0,
   EQUITY = 1,
   INDEX = 2,
   INDEX_FUTURE = 3,
   COMMODITY_FUTURE = 4,
-  INDEX_FORCASTER = 5
+  INDEX_FORCASTER = 5,
+  DataType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  DataType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool DataType_IsValid(int value);
-const DataType DataType_MIN = EQUITY;
+const DataType DataType_MIN = DataType_0;
 const DataType DataType_MAX = INDEX_FORCASTER;
 const int DataType_ARRAYSIZE = DataType_MAX + 1;
 
@@ -64,13 +67,16 @@ inline bool DataType_Parse(
     DataType_descriptor(), name, value);
 }
 enum MessageType {
+  MessageType_0 = 0,
   INFORMATION = 1,
   REQUEST = 2,
   IMAGE = 3,
-  DATABASE = 4
+  DATABASE = 4,
+  MessageType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  MessageType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool MessageType_IsValid(int value);
-const MessageType MessageType_MIN = INFORMATION;
+const MessageType MessageType_MIN = MessageType_0;
 const MessageType MessageType_MAX = DATABASE;
 const int MessageType_ARRAYSIZE = MessageType_MAX + 1;
 
@@ -85,11 +91,14 @@ inline bool MessageType_Parse(
     MessageType_descriptor(), name, value);
 }
 enum StatusDB {
+  StatusDB_0 = 0,
   NORMAL = 1,
-  SUSPENDED = 2
+  SUSPENDED = 2,
+  StatusDB_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  StatusDB_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool StatusDB_IsValid(int value);
-const StatusDB StatusDB_MIN = NORMAL;
+const StatusDB StatusDB_MIN = StatusDB_0;
 const StatusDB StatusDB_MAX = SUSPENDED;
 const int StatusDB_ARRAYSIZE = StatusDB_MAX + 1;
 
@@ -115,14 +124,6 @@ class PBMsgEqtMD : public ::google::protobuf::Message {
   inline PBMsgEqtMD& operator=(const PBMsgEqtMD& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -169,15 +170,13 @@ class PBMsgEqtMD : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required int32 EOF = 1;
-  bool has_eof() const;
+  // optional int32 EOF = 1;
   void clear_eof();
   static const int kEOFFieldNumber = 1;
   ::google::protobuf::int32 eof() const;
   void set_eof(::google::protobuf::int32 value);
 
-  // required string source = 3;
-  bool has_source() const;
+  // optional string source = 3;
   void clear_source();
   static const int kSourceFieldNumber = 3;
   const ::std::string& source() const;
@@ -188,15 +187,13 @@ class PBMsgEqtMD : public ::google::protobuf::Message {
   ::std::string* release_source();
   void set_allocated_source(::std::string* source);
 
-  // required .PBWrapMsgMDA.DataType dataType = 4;
-  bool has_datatype() const;
+  // optional .PBWrapMsgMDA.DataType dataType = 4;
   void clear_datatype();
   static const int kDataTypeFieldNumber = 4;
   ::PBWrapMsgMDA::DataType datatype() const;
   void set_datatype(::PBWrapMsgMDA::DataType value);
 
-  // required string symbol = 5;
-  bool has_symbol() const;
+  // optional string symbol = 5;
   void clear_symbol();
   static const int kSymbolFieldNumber = 5;
   const ::std::string& symbol() const;
@@ -207,8 +204,7 @@ class PBMsgEqtMD : public ::google::protobuf::Message {
   ::std::string* release_symbol();
   void set_allocated_symbol(::std::string* symbol);
 
-  // required string timeStamp = 6;
-  bool has_timestamp() const;
+  // optional string timeStamp = 6;
   void clear_timestamp();
   static const int kTimeStampFieldNumber = 6;
   const ::std::string& timestamp() const;
@@ -219,197 +215,169 @@ class PBMsgEqtMD : public ::google::protobuf::Message {
   ::std::string* release_timestamp();
   void set_allocated_timestamp(::std::string* timestamp);
 
-  // required int64 preCloseValue = 7;
-  bool has_preclosevalue() const;
+  // optional int64 preCloseValue = 7;
   void clear_preclosevalue();
   static const int kPreCloseValueFieldNumber = 7;
   ::google::protobuf::int64 preclosevalue() const;
   void set_preclosevalue(::google::protobuf::int64 value);
 
-  // required int64 openValue = 8;
-  bool has_openvalue() const;
+  // optional int64 openValue = 8;
   void clear_openvalue();
   static const int kOpenValueFieldNumber = 8;
   ::google::protobuf::int64 openvalue() const;
   void set_openvalue(::google::protobuf::int64 value);
 
-  // required int64 highValue = 11;
-  bool has_highvalue() const;
+  // optional int64 highValue = 11;
   void clear_highvalue();
   static const int kHighValueFieldNumber = 11;
   ::google::protobuf::int64 highvalue() const;
   void set_highvalue(::google::protobuf::int64 value);
 
-  // required int64 lowValue = 12;
-  bool has_lowvalue() const;
+  // optional int64 lowValue = 12;
   void clear_lowvalue();
   static const int kLowValueFieldNumber = 12;
   ::google::protobuf::int64 lowvalue() const;
   void set_lowvalue(::google::protobuf::int64 value);
 
   // optional int64 latestIndex = 13;
-  bool has_latestindex() const;
   void clear_latestindex();
   static const int kLatestIndexFieldNumber = 13;
   ::google::protobuf::int64 latestindex() const;
   void set_latestindex(::google::protobuf::int64 value);
 
   // optional int64 matchPrice = 14;
-  bool has_matchprice() const;
   void clear_matchprice();
   static const int kMatchPriceFieldNumber = 14;
   ::google::protobuf::int64 matchprice() const;
   void set_matchprice(::google::protobuf::int64 value);
 
   // optional int64 askPrice5 = 15;
-  bool has_askprice5() const;
   void clear_askprice5();
   static const int kAskPrice5FieldNumber = 15;
   ::google::protobuf::int64 askprice5() const;
   void set_askprice5(::google::protobuf::int64 value);
 
   // optional int64 askPrice4 = 17;
-  bool has_askprice4() const;
   void clear_askprice4();
   static const int kAskPrice4FieldNumber = 17;
   ::google::protobuf::int64 askprice4() const;
   void set_askprice4(::google::protobuf::int64 value);
 
   // optional int64 askPrice3 = 19;
-  bool has_askprice3() const;
   void clear_askprice3();
   static const int kAskPrice3FieldNumber = 19;
   ::google::protobuf::int64 askprice3() const;
   void set_askprice3(::google::protobuf::int64 value);
 
   // optional int64 askPrice2 = 21;
-  bool has_askprice2() const;
   void clear_askprice2();
   static const int kAskPrice2FieldNumber = 21;
   ::google::protobuf::int64 askprice2() const;
   void set_askprice2(::google::protobuf::int64 value);
 
   // optional int64 askPrice1 = 23;
-  bool has_askprice1() const;
   void clear_askprice1();
   static const int kAskPrice1FieldNumber = 23;
   ::google::protobuf::int64 askprice1() const;
   void set_askprice1(::google::protobuf::int64 value);
 
   // optional int64 bidPrice1 = 25;
-  bool has_bidprice1() const;
   void clear_bidprice1();
   static const int kBidPrice1FieldNumber = 25;
   ::google::protobuf::int64 bidprice1() const;
   void set_bidprice1(::google::protobuf::int64 value);
 
   // optional int64 bidPrice2 = 27;
-  bool has_bidprice2() const;
   void clear_bidprice2();
   static const int kBidPrice2FieldNumber = 27;
   ::google::protobuf::int64 bidprice2() const;
   void set_bidprice2(::google::protobuf::int64 value);
 
   // optional int64 bidPrice3 = 29;
-  bool has_bidprice3() const;
   void clear_bidprice3();
   static const int kBidPrice3FieldNumber = 29;
   ::google::protobuf::int64 bidprice3() const;
   void set_bidprice3(::google::protobuf::int64 value);
 
   // optional int64 bidPrice4 = 31;
-  bool has_bidprice4() const;
   void clear_bidprice4();
   static const int kBidPrice4FieldNumber = 31;
   ::google::protobuf::int64 bidprice4() const;
   void set_bidprice4(::google::protobuf::int64 value);
 
   // optional int64 bidPrice5 = 33;
-  bool has_bidprice5() const;
   void clear_bidprice5();
   static const int kBidPrice5FieldNumber = 33;
   ::google::protobuf::int64 bidprice5() const;
   void set_bidprice5(::google::protobuf::int64 value);
 
-  // required int64 turnover = 9;
-  bool has_turnover() const;
+  // optional int64 turnover = 9;
   void clear_turnover();
   static const int kTurnoverFieldNumber = 9;
   ::google::protobuf::int64 turnover() const;
   void set_turnover(::google::protobuf::int64 value);
 
-  // required int64 volume = 10;
-  bool has_volume() const;
+  // optional int64 volume = 10;
   void clear_volume();
   static const int kVolumeFieldNumber = 10;
   ::google::protobuf::int64 volume() const;
   void set_volume(::google::protobuf::int64 value);
 
   // optional int64 askSize5 = 16;
-  bool has_asksize5() const;
   void clear_asksize5();
   static const int kAskSize5FieldNumber = 16;
   ::google::protobuf::int64 asksize5() const;
   void set_asksize5(::google::protobuf::int64 value);
 
   // optional int64 askSize4 = 18;
-  bool has_asksize4() const;
   void clear_asksize4();
   static const int kAskSize4FieldNumber = 18;
   ::google::protobuf::int64 asksize4() const;
   void set_asksize4(::google::protobuf::int64 value);
 
   // optional int64 askSize3 = 20;
-  bool has_asksize3() const;
   void clear_asksize3();
   static const int kAskSize3FieldNumber = 20;
   ::google::protobuf::int64 asksize3() const;
   void set_asksize3(::google::protobuf::int64 value);
 
   // optional int64 askSize2 = 22;
-  bool has_asksize2() const;
   void clear_asksize2();
   static const int kAskSize2FieldNumber = 22;
   ::google::protobuf::int64 asksize2() const;
   void set_asksize2(::google::protobuf::int64 value);
 
   // optional int64 askSize1 = 24;
-  bool has_asksize1() const;
   void clear_asksize1();
   static const int kAskSize1FieldNumber = 24;
   ::google::protobuf::int64 asksize1() const;
   void set_asksize1(::google::protobuf::int64 value);
 
   // optional int64 bidSize1 = 26;
-  bool has_bidsize1() const;
   void clear_bidsize1();
   static const int kBidSize1FieldNumber = 26;
   ::google::protobuf::int64 bidsize1() const;
   void set_bidsize1(::google::protobuf::int64 value);
 
   // optional int64 bidSize2 = 28;
-  bool has_bidsize2() const;
   void clear_bidsize2();
   static const int kBidSize2FieldNumber = 28;
   ::google::protobuf::int64 bidsize2() const;
   void set_bidsize2(::google::protobuf::int64 value);
 
   // optional int64 bidSize3 = 30;
-  bool has_bidsize3() const;
   void clear_bidsize3();
   static const int kBidSize3FieldNumber = 30;
   ::google::protobuf::int64 bidsize3() const;
   void set_bidsize3(::google::protobuf::int64 value);
 
   // optional int64 bidSize4 = 32;
-  bool has_bidsize4() const;
   void clear_bidsize4();
   static const int kBidSize4FieldNumber = 32;
   ::google::protobuf::int64 bidsize4() const;
   void set_bidsize4(::google::protobuf::int64 value);
 
   // optional int64 bidSize5 = 34;
-  bool has_bidsize5() const;
   void clear_bidsize5();
   static const int kBidSize5FieldNumber = 34;
   ::google::protobuf::int64 bidsize5() const;
@@ -417,78 +385,9 @@ class PBMsgEqtMD : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:PBWrapMsgMDA.PBMsgEqtMD)
  private:
-  inline void set_has_eof();
-  inline void clear_has_eof();
-  inline void set_has_source();
-  inline void clear_has_source();
-  inline void set_has_datatype();
-  inline void clear_has_datatype();
-  inline void set_has_symbol();
-  inline void clear_has_symbol();
-  inline void set_has_timestamp();
-  inline void clear_has_timestamp();
-  inline void set_has_preclosevalue();
-  inline void clear_has_preclosevalue();
-  inline void set_has_openvalue();
-  inline void clear_has_openvalue();
-  inline void set_has_highvalue();
-  inline void clear_has_highvalue();
-  inline void set_has_lowvalue();
-  inline void clear_has_lowvalue();
-  inline void set_has_latestindex();
-  inline void clear_has_latestindex();
-  inline void set_has_matchprice();
-  inline void clear_has_matchprice();
-  inline void set_has_askprice5();
-  inline void clear_has_askprice5();
-  inline void set_has_askprice4();
-  inline void clear_has_askprice4();
-  inline void set_has_askprice3();
-  inline void clear_has_askprice3();
-  inline void set_has_askprice2();
-  inline void clear_has_askprice2();
-  inline void set_has_askprice1();
-  inline void clear_has_askprice1();
-  inline void set_has_bidprice1();
-  inline void clear_has_bidprice1();
-  inline void set_has_bidprice2();
-  inline void clear_has_bidprice2();
-  inline void set_has_bidprice3();
-  inline void clear_has_bidprice3();
-  inline void set_has_bidprice4();
-  inline void clear_has_bidprice4();
-  inline void set_has_bidprice5();
-  inline void clear_has_bidprice5();
-  inline void set_has_turnover();
-  inline void clear_has_turnover();
-  inline void set_has_volume();
-  inline void clear_has_volume();
-  inline void set_has_asksize5();
-  inline void clear_has_asksize5();
-  inline void set_has_asksize4();
-  inline void clear_has_asksize4();
-  inline void set_has_asksize3();
-  inline void clear_has_asksize3();
-  inline void set_has_asksize2();
-  inline void clear_has_asksize2();
-  inline void set_has_asksize1();
-  inline void clear_has_asksize1();
-  inline void set_has_bidsize1();
-  inline void clear_has_bidsize1();
-  inline void set_has_bidsize2();
-  inline void clear_has_bidsize2();
-  inline void set_has_bidsize3();
-  inline void clear_has_bidsize3();
-  inline void set_has_bidsize4();
-  inline void clear_has_bidsize4();
-  inline void set_has_bidsize5();
-  inline void clear_has_bidsize5();
-
-  // helper for ByteSize()
-  int RequiredFieldsByteSizeFallback() const;
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[2];
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr source_;
   ::google::protobuf::int32 eof_;
   int datatype_;
@@ -544,14 +443,6 @@ class PBMsgFutMD : public ::google::protobuf::Message {
     return *this;
   }
 
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
-  }
-
   static const ::google::protobuf::Descriptor* descriptor();
   static const PBMsgFutMD& default_instance();
 
@@ -596,15 +487,13 @@ class PBMsgFutMD : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required int32 EOF = 1;
-  bool has_eof() const;
+  // optional int32 EOF = 1;
   void clear_eof();
   static const int kEOFFieldNumber = 1;
   ::google::protobuf::int32 eof() const;
   void set_eof(::google::protobuf::int32 value);
 
-  // required string symbol = 5;
-  bool has_symbol() const;
+  // optional string symbol = 5;
   void clear_symbol();
   static const int kSymbolFieldNumber = 5;
   const ::std::string& symbol() const;
@@ -615,8 +504,7 @@ class PBMsgFutMD : public ::google::protobuf::Message {
   ::std::string* release_symbol();
   void set_allocated_symbol(::std::string* symbol);
 
-  // required string timeStamp = 6;
-  bool has_timestamp() const;
+  // optional string timeStamp = 6;
   void clear_timestamp();
   static const int kTimeStampFieldNumber = 6;
   const ::std::string& timestamp() const;
@@ -627,113 +515,97 @@ class PBMsgFutMD : public ::google::protobuf::Message {
   ::std::string* release_timestamp();
   void set_allocated_timestamp(::std::string* timestamp);
 
-  // required int64 askPrice1 = 7;
-  bool has_askprice1() const;
+  // optional int64 askPrice1 = 7;
   void clear_askprice1();
   static const int kAskPrice1FieldNumber = 7;
   ::google::protobuf::int64 askprice1() const;
   void set_askprice1(::google::protobuf::int64 value);
 
-  // required int64 bidPrice1 = 9;
-  bool has_bidprice1() const;
+  // optional int64 bidPrice1 = 9;
   void clear_bidprice1();
   static const int kBidPrice1FieldNumber = 9;
   ::google::protobuf::int64 bidprice1() const;
   void set_bidprice1(::google::protobuf::int64 value);
 
-  // required int64 preClosePrice = 11;
-  bool has_precloseprice() const;
+  // optional int64 preClosePrice = 11;
   void clear_precloseprice();
   static const int kPreClosePriceFieldNumber = 11;
   ::google::protobuf::int64 precloseprice() const;
   void set_precloseprice(::google::protobuf::int64 value);
 
-  // required int64 preSettlePrice = 12;
-  bool has_presettleprice() const;
+  // optional int64 preSettlePrice = 12;
   void clear_presettleprice();
   static const int kPreSettlePriceFieldNumber = 12;
   ::google::protobuf::int64 presettleprice() const;
   void set_presettleprice(::google::protobuf::int64 value);
 
-  // required int64 openPrice = 13;
-  bool has_openprice() const;
+  // optional int64 openPrice = 13;
   void clear_openprice();
   static const int kOpenPriceFieldNumber = 13;
   ::google::protobuf::int64 openprice() const;
   void set_openprice(::google::protobuf::int64 value);
 
-  // required int64 highPrice = 14;
-  bool has_highprice() const;
+  // optional int64 highPrice = 14;
   void clear_highprice();
   static const int kHighPriceFieldNumber = 14;
   ::google::protobuf::int64 highprice() const;
   void set_highprice(::google::protobuf::int64 value);
 
-  // required int64 lowPrice = 15;
-  bool has_lowprice() const;
+  // optional int64 lowPrice = 15;
   void clear_lowprice();
   static const int kLowPriceFieldNumber = 15;
   ::google::protobuf::int64 lowprice() const;
   void set_lowprice(::google::protobuf::int64 value);
 
-  // required int64 matchPrice = 16;
-  bool has_matchprice() const;
+  // optional int64 matchPrice = 16;
   void clear_matchprice();
   static const int kMatchPriceFieldNumber = 16;
   ::google::protobuf::int64 matchprice() const;
   void set_matchprice(::google::protobuf::int64 value);
 
-  // required int64 priceChange = 17;
-  bool has_pricechange() const;
+  // optional int64 priceChange = 17;
   void clear_pricechange();
   static const int kPriceChangeFieldNumber = 17;
   ::google::protobuf::int64 pricechange() const;
   void set_pricechange(::google::protobuf::int64 value);
 
-  // required int64 settlePrice = 20;
-  bool has_settleprice() const;
+  // optional int64 settlePrice = 20;
   void clear_settleprice();
   static const int kSettlePriceFieldNumber = 20;
   ::google::protobuf::int64 settleprice() const;
   void set_settleprice(::google::protobuf::int64 value);
 
-  // required int64 highLimit = 21;
-  bool has_highlimit() const;
+  // optional int64 highLimit = 21;
   void clear_highlimit();
   static const int kHighLimitFieldNumber = 21;
   ::google::protobuf::int64 highlimit() const;
   void set_highlimit(::google::protobuf::int64 value);
 
-  // required int64 lowLimit = 22;
-  bool has_lowlimit() const;
+  // optional int64 lowLimit = 22;
   void clear_lowlimit();
   static const int kLowLimitFieldNumber = 22;
   ::google::protobuf::int64 lowlimit() const;
   void set_lowlimit(::google::protobuf::int64 value);
 
-  // required int64 askSize1 = 8;
-  bool has_asksize1() const;
+  // optional int64 askSize1 = 8;
   void clear_asksize1();
   static const int kAskSize1FieldNumber = 8;
   ::google::protobuf::int64 asksize1() const;
   void set_asksize1(::google::protobuf::int64 value);
 
-  // required int64 bidSize1 = 10;
-  bool has_bidsize1() const;
+  // optional int64 bidSize1 = 10;
   void clear_bidsize1();
   static const int kBidSize1FieldNumber = 10;
   ::google::protobuf::int64 bidsize1() const;
   void set_bidsize1(::google::protobuf::int64 value);
 
-  // required int64 volume = 18;
-  bool has_volume() const;
+  // optional int64 volume = 18;
   void clear_volume();
   static const int kVolumeFieldNumber = 18;
   ::google::protobuf::int64 volume() const;
   void set_volume(::google::protobuf::int64 value);
 
-  // required int64 turnover = 19;
-  bool has_turnover() const;
+  // optional int64 turnover = 19;
   void clear_turnover();
   static const int kTurnoverFieldNumber = 19;
   ::google::protobuf::int64 turnover() const;
@@ -741,51 +613,9 @@ class PBMsgFutMD : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:PBWrapMsgMDA.PBMsgFutMD)
  private:
-  inline void set_has_eof();
-  inline void clear_has_eof();
-  inline void set_has_symbol();
-  inline void clear_has_symbol();
-  inline void set_has_timestamp();
-  inline void clear_has_timestamp();
-  inline void set_has_askprice1();
-  inline void clear_has_askprice1();
-  inline void set_has_bidprice1();
-  inline void clear_has_bidprice1();
-  inline void set_has_precloseprice();
-  inline void clear_has_precloseprice();
-  inline void set_has_presettleprice();
-  inline void clear_has_presettleprice();
-  inline void set_has_openprice();
-  inline void clear_has_openprice();
-  inline void set_has_highprice();
-  inline void clear_has_highprice();
-  inline void set_has_lowprice();
-  inline void clear_has_lowprice();
-  inline void set_has_matchprice();
-  inline void clear_has_matchprice();
-  inline void set_has_pricechange();
-  inline void clear_has_pricechange();
-  inline void set_has_settleprice();
-  inline void clear_has_settleprice();
-  inline void set_has_highlimit();
-  inline void clear_has_highlimit();
-  inline void set_has_lowlimit();
-  inline void clear_has_lowlimit();
-  inline void set_has_asksize1();
-  inline void clear_has_asksize1();
-  inline void set_has_bidsize1();
-  inline void clear_has_bidsize1();
-  inline void set_has_volume();
-  inline void clear_has_volume();
-  inline void set_has_turnover();
-  inline void clear_has_turnover();
-
-  // helper for ByteSize()
-  int RequiredFieldsByteSizeFallback() const;
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr symbol_;
   ::google::protobuf::internal::ArenaStringPtr timestamp_;
   ::google::protobuf::int64 askprice1_;
@@ -805,6 +635,7 @@ class PBMsgFutMD : public ::google::protobuf::Message {
   ::google::protobuf::int64 volume_;
   ::google::protobuf::int64 turnover_;
   ::google::protobuf::int32 eof_;
+  mutable int _cached_size_;
   friend void  protobuf_AddDesc_PBMsgMDA_2eproto();
   friend void protobuf_AssignDesc_PBMsgMDA_2eproto();
   friend void protobuf_ShutdownFile_PBMsgMDA_2eproto();
@@ -824,14 +655,6 @@ class PBMsgMDAMD : public ::google::protobuf::Message {
   inline PBMsgMDAMD& operator=(const PBMsgMDAMD& from) {
     CopyFrom(from);
     return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
@@ -878,8 +701,7 @@ class PBMsgMDAMD : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required int32 EOF = 1;
-  bool has_eof() const;
+  // optional int32 EOF = 1;
   void clear_eof();
   static const int kEOFFieldNumber = 1;
   ::google::protobuf::int32 eof() const;
@@ -902,14 +724,12 @@ class PBMsgMDAMD : public ::google::protobuf::Message {
   ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_requestsymbollist();
 
   // optional .PBWrapMsgMDA.DataType dataType = 6;
-  bool has_datatype() const;
   void clear_datatype();
   static const int kDataTypeFieldNumber = 6;
   ::PBWrapMsgMDA::DataType datatype() const;
   void set_datatype(::PBWrapMsgMDA::DataType value);
 
   // optional string symbol = 7;
-  bool has_symbol() const;
   void clear_symbol();
   static const int kSymbolFieldNumber = 7;
   const ::std::string& symbol() const;
@@ -921,7 +741,6 @@ class PBMsgMDAMD : public ::google::protobuf::Message {
   void set_allocated_symbol(::std::string* symbol);
 
   // optional string timeStamp = 8;
-  bool has_timestamp() const;
   void clear_timestamp();
   static const int kTimeStampFieldNumber = 8;
   const ::std::string& timestamp() const;
@@ -933,231 +752,198 @@ class PBMsgMDAMD : public ::google::protobuf::Message {
   void set_allocated_timestamp(::std::string* timestamp);
 
   // optional int64 preCloseValue = 9;
-  bool has_preclosevalue() const;
   void clear_preclosevalue();
   static const int kPreCloseValueFieldNumber = 9;
   ::google::protobuf::int64 preclosevalue() const;
   void set_preclosevalue(::google::protobuf::int64 value);
 
   // optional int64 openValue = 10;
-  bool has_openvalue() const;
   void clear_openvalue();
   static const int kOpenValueFieldNumber = 10;
   ::google::protobuf::int64 openvalue() const;
   void set_openvalue(::google::protobuf::int64 value);
 
   // optional int64 turnover = 11;
-  bool has_turnover() const;
   void clear_turnover();
   static const int kTurnoverFieldNumber = 11;
   ::google::protobuf::int64 turnover() const;
   void set_turnover(::google::protobuf::int64 value);
 
   // optional int64 volume = 12;
-  bool has_volume() const;
   void clear_volume();
   static const int kVolumeFieldNumber = 12;
   ::google::protobuf::int64 volume() const;
   void set_volume(::google::protobuf::int64 value);
 
   // optional int64 highValue = 13;
-  bool has_highvalue() const;
   void clear_highvalue();
   static const int kHighValueFieldNumber = 13;
   ::google::protobuf::int64 highvalue() const;
   void set_highvalue(::google::protobuf::int64 value);
 
   // optional int64 lowValue = 14;
-  bool has_lowvalue() const;
   void clear_lowvalue();
   static const int kLowValueFieldNumber = 14;
   ::google::protobuf::int64 lowvalue() const;
   void set_lowvalue(::google::protobuf::int64 value);
 
   // optional int64 latestIndex = 15;
-  bool has_latestindex() const;
   void clear_latestindex();
   static const int kLatestIndexFieldNumber = 15;
   ::google::protobuf::int64 latestindex() const;
   void set_latestindex(::google::protobuf::int64 value);
 
   // optional int64 matchPrice = 16;
-  bool has_matchprice() const;
   void clear_matchprice();
   static const int kMatchPriceFieldNumber = 16;
   ::google::protobuf::int64 matchprice() const;
   void set_matchprice(::google::protobuf::int64 value);
 
   // optional int64 askPrice5 = 17;
-  bool has_askprice5() const;
   void clear_askprice5();
   static const int kAskPrice5FieldNumber = 17;
   ::google::protobuf::int64 askprice5() const;
   void set_askprice5(::google::protobuf::int64 value);
 
   // optional int64 askSize5 = 18;
-  bool has_asksize5() const;
   void clear_asksize5();
   static const int kAskSize5FieldNumber = 18;
   ::google::protobuf::int64 asksize5() const;
   void set_asksize5(::google::protobuf::int64 value);
 
   // optional int64 askPrice4 = 19;
-  bool has_askprice4() const;
   void clear_askprice4();
   static const int kAskPrice4FieldNumber = 19;
   ::google::protobuf::int64 askprice4() const;
   void set_askprice4(::google::protobuf::int64 value);
 
   // optional int64 askSize4 = 20;
-  bool has_asksize4() const;
   void clear_asksize4();
   static const int kAskSize4FieldNumber = 20;
   ::google::protobuf::int64 asksize4() const;
   void set_asksize4(::google::protobuf::int64 value);
 
   // optional int64 askPrice3 = 21;
-  bool has_askprice3() const;
   void clear_askprice3();
   static const int kAskPrice3FieldNumber = 21;
   ::google::protobuf::int64 askprice3() const;
   void set_askprice3(::google::protobuf::int64 value);
 
   // optional int64 askSize3 = 22;
-  bool has_asksize3() const;
   void clear_asksize3();
   static const int kAskSize3FieldNumber = 22;
   ::google::protobuf::int64 asksize3() const;
   void set_asksize3(::google::protobuf::int64 value);
 
   // optional int64 askPrice2 = 23;
-  bool has_askprice2() const;
   void clear_askprice2();
   static const int kAskPrice2FieldNumber = 23;
   ::google::protobuf::int64 askprice2() const;
   void set_askprice2(::google::protobuf::int64 value);
 
   // optional int64 askSize2 = 24;
-  bool has_asksize2() const;
   void clear_asksize2();
   static const int kAskSize2FieldNumber = 24;
   ::google::protobuf::int64 asksize2() const;
   void set_asksize2(::google::protobuf::int64 value);
 
   // optional int64 askPrice1 = 25;
-  bool has_askprice1() const;
   void clear_askprice1();
   static const int kAskPrice1FieldNumber = 25;
   ::google::protobuf::int64 askprice1() const;
   void set_askprice1(::google::protobuf::int64 value);
 
   // optional int64 askSize1 = 26;
-  bool has_asksize1() const;
   void clear_asksize1();
   static const int kAskSize1FieldNumber = 26;
   ::google::protobuf::int64 asksize1() const;
   void set_asksize1(::google::protobuf::int64 value);
 
   // optional int64 bidPrice1 = 27;
-  bool has_bidprice1() const;
   void clear_bidprice1();
   static const int kBidPrice1FieldNumber = 27;
   ::google::protobuf::int64 bidprice1() const;
   void set_bidprice1(::google::protobuf::int64 value);
 
   // optional int64 bidSize1 = 28;
-  bool has_bidsize1() const;
   void clear_bidsize1();
   static const int kBidSize1FieldNumber = 28;
   ::google::protobuf::int64 bidsize1() const;
   void set_bidsize1(::google::protobuf::int64 value);
 
   // optional int64 bidPrice2 = 29;
-  bool has_bidprice2() const;
   void clear_bidprice2();
   static const int kBidPrice2FieldNumber = 29;
   ::google::protobuf::int64 bidprice2() const;
   void set_bidprice2(::google::protobuf::int64 value);
 
   // optional int64 bidSize2 = 30;
-  bool has_bidsize2() const;
   void clear_bidsize2();
   static const int kBidSize2FieldNumber = 30;
   ::google::protobuf::int64 bidsize2() const;
   void set_bidsize2(::google::protobuf::int64 value);
 
   // optional int64 bidPrice3 = 31;
-  bool has_bidprice3() const;
   void clear_bidprice3();
   static const int kBidPrice3FieldNumber = 31;
   ::google::protobuf::int64 bidprice3() const;
   void set_bidprice3(::google::protobuf::int64 value);
 
   // optional int64 bidSize3 = 32;
-  bool has_bidsize3() const;
   void clear_bidsize3();
   static const int kBidSize3FieldNumber = 32;
   ::google::protobuf::int64 bidsize3() const;
   void set_bidsize3(::google::protobuf::int64 value);
 
   // optional int64 bidPrice4 = 33;
-  bool has_bidprice4() const;
   void clear_bidprice4();
   static const int kBidPrice4FieldNumber = 33;
   ::google::protobuf::int64 bidprice4() const;
   void set_bidprice4(::google::protobuf::int64 value);
 
   // optional int64 bidSize4 = 34;
-  bool has_bidsize4() const;
   void clear_bidsize4();
   static const int kBidSize4FieldNumber = 34;
   ::google::protobuf::int64 bidsize4() const;
   void set_bidsize4(::google::protobuf::int64 value);
 
   // optional int64 bidPrice5 = 35;
-  bool has_bidprice5() const;
   void clear_bidprice5();
   static const int kBidPrice5FieldNumber = 35;
   ::google::protobuf::int64 bidprice5() const;
   void set_bidprice5(::google::protobuf::int64 value);
 
   // optional int64 bidSize5 = 36;
-  bool has_bidsize5() const;
   void clear_bidsize5();
   static const int kBidSize5FieldNumber = 36;
   ::google::protobuf::int64 bidsize5() const;
   void set_bidsize5(::google::protobuf::int64 value);
 
   // optional int64 preSettlePrice = 37;
-  bool has_presettleprice() const;
   void clear_presettleprice();
   static const int kPreSettlePriceFieldNumber = 37;
   ::google::protobuf::int64 presettleprice() const;
   void set_presettleprice(::google::protobuf::int64 value);
 
   // optional int64 priceChange = 38;
-  bool has_pricechange() const;
   void clear_pricechange();
   static const int kPriceChangeFieldNumber = 38;
   ::google::protobuf::int64 pricechange() const;
   void set_pricechange(::google::protobuf::int64 value);
 
   // optional int64 settlePrice = 39;
-  bool has_settleprice() const;
   void clear_settleprice();
   static const int kSettlePriceFieldNumber = 39;
   ::google::protobuf::int64 settleprice() const;
   void set_settleprice(::google::protobuf::int64 value);
 
   // optional int64 highLimit = 40;
-  bool has_highlimit() const;
   void clear_highlimit();
   static const int kHighLimitFieldNumber = 40;
   ::google::protobuf::int64 highlimit() const;
   void set_highlimit(::google::protobuf::int64 value);
 
   // optional int64 lowLimit = 41;
-  bool has_lowlimit() const;
   void clear_lowlimit();
   static const int kLowLimitFieldNumber = 41;
   ::google::protobuf::int64 lowlimit() const;
@@ -1165,83 +951,9 @@ class PBMsgMDAMD : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:PBWrapMsgMDA.PBMsgMDAMD)
  private:
-  inline void set_has_eof();
-  inline void clear_has_eof();
-  inline void set_has_datatype();
-  inline void clear_has_datatype();
-  inline void set_has_symbol();
-  inline void clear_has_symbol();
-  inline void set_has_timestamp();
-  inline void clear_has_timestamp();
-  inline void set_has_preclosevalue();
-  inline void clear_has_preclosevalue();
-  inline void set_has_openvalue();
-  inline void clear_has_openvalue();
-  inline void set_has_turnover();
-  inline void clear_has_turnover();
-  inline void set_has_volume();
-  inline void clear_has_volume();
-  inline void set_has_highvalue();
-  inline void clear_has_highvalue();
-  inline void set_has_lowvalue();
-  inline void clear_has_lowvalue();
-  inline void set_has_latestindex();
-  inline void clear_has_latestindex();
-  inline void set_has_matchprice();
-  inline void clear_has_matchprice();
-  inline void set_has_askprice5();
-  inline void clear_has_askprice5();
-  inline void set_has_asksize5();
-  inline void clear_has_asksize5();
-  inline void set_has_askprice4();
-  inline void clear_has_askprice4();
-  inline void set_has_asksize4();
-  inline void clear_has_asksize4();
-  inline void set_has_askprice3();
-  inline void clear_has_askprice3();
-  inline void set_has_asksize3();
-  inline void clear_has_asksize3();
-  inline void set_has_askprice2();
-  inline void clear_has_askprice2();
-  inline void set_has_asksize2();
-  inline void clear_has_asksize2();
-  inline void set_has_askprice1();
-  inline void clear_has_askprice1();
-  inline void set_has_asksize1();
-  inline void clear_has_asksize1();
-  inline void set_has_bidprice1();
-  inline void clear_has_bidprice1();
-  inline void set_has_bidsize1();
-  inline void clear_has_bidsize1();
-  inline void set_has_bidprice2();
-  inline void clear_has_bidprice2();
-  inline void set_has_bidsize2();
-  inline void clear_has_bidsize2();
-  inline void set_has_bidprice3();
-  inline void clear_has_bidprice3();
-  inline void set_has_bidsize3();
-  inline void clear_has_bidsize3();
-  inline void set_has_bidprice4();
-  inline void clear_has_bidprice4();
-  inline void set_has_bidsize4();
-  inline void clear_has_bidsize4();
-  inline void set_has_bidprice5();
-  inline void clear_has_bidprice5();
-  inline void set_has_bidsize5();
-  inline void clear_has_bidsize5();
-  inline void set_has_presettleprice();
-  inline void clear_has_presettleprice();
-  inline void set_has_pricechange();
-  inline void clear_has_pricechange();
-  inline void set_has_settleprice();
-  inline void clear_has_settleprice();
-  inline void set_has_highlimit();
-  inline void clear_has_highlimit();
-  inline void set_has_lowlimit();
-  inline void clear_has_lowlimit();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[2];
+  bool _is_default_instance_;
   ::google::protobuf::RepeatedPtrField< ::std::string> requestsymbollist_;
   ::google::protobuf::int32 eof_;
   int datatype_;
@@ -1296,882 +1008,551 @@ class PBMsgMDAMD : public ::google::protobuf::Message {
 #if !PROTOBUF_INLINE_NOT_IN_HEADERS
 // PBMsgEqtMD
 
-// required int32 EOF = 1;
-inline bool PBMsgEqtMD::has_eof() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBMsgEqtMD::set_has_eof() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBMsgEqtMD::clear_has_eof() {
-  _has_bits_[0] &= ~0x00000001u;
-}
+// optional int32 EOF = 1;
 inline void PBMsgEqtMD::clear_eof() {
   eof_ = 0;
-  clear_has_eof();
 }
 inline ::google::protobuf::int32 PBMsgEqtMD::eof() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.EOF)
   return eof_;
 }
 inline void PBMsgEqtMD::set_eof(::google::protobuf::int32 value) {
-  set_has_eof();
+  
   eof_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.EOF)
 }
 
-// required string source = 3;
-inline bool PBMsgEqtMD::has_source() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBMsgEqtMD::set_has_source() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBMsgEqtMD::clear_has_source() {
-  _has_bits_[0] &= ~0x00000002u;
-}
+// optional string source = 3;
 inline void PBMsgEqtMD::clear_source() {
   source_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_source();
 }
 inline const ::std::string& PBMsgEqtMD::source() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.source)
   return source_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgEqtMD::set_source(const ::std::string& value) {
-  set_has_source();
+  
   source_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.source)
 }
 inline void PBMsgEqtMD::set_source(const char* value) {
-  set_has_source();
+  
   source_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBWrapMsgMDA.PBMsgEqtMD.source)
 }
 inline void PBMsgEqtMD::set_source(const char* value, size_t size) {
-  set_has_source();
+  
   source_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBWrapMsgMDA.PBMsgEqtMD.source)
 }
 inline ::std::string* PBMsgEqtMD::mutable_source() {
-  set_has_source();
+  
   // @@protoc_insertion_point(field_mutable:PBWrapMsgMDA.PBMsgEqtMD.source)
   return source_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgEqtMD::release_source() {
-  clear_has_source();
+  
   return source_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgEqtMD::set_allocated_source(::std::string* source) {
   if (source != NULL) {
-    set_has_source();
+    
   } else {
-    clear_has_source();
+    
   }
   source_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), source);
   // @@protoc_insertion_point(field_set_allocated:PBWrapMsgMDA.PBMsgEqtMD.source)
 }
 
-// required .PBWrapMsgMDA.DataType dataType = 4;
-inline bool PBMsgEqtMD::has_datatype() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBMsgEqtMD::set_has_datatype() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBMsgEqtMD::clear_has_datatype() {
-  _has_bits_[0] &= ~0x00000004u;
-}
+// optional .PBWrapMsgMDA.DataType dataType = 4;
 inline void PBMsgEqtMD::clear_datatype() {
-  datatype_ = 1;
-  clear_has_datatype();
+  datatype_ = 0;
 }
 inline ::PBWrapMsgMDA::DataType PBMsgEqtMD::datatype() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.dataType)
   return static_cast< ::PBWrapMsgMDA::DataType >(datatype_);
 }
 inline void PBMsgEqtMD::set_datatype(::PBWrapMsgMDA::DataType value) {
-  assert(::PBWrapMsgMDA::DataType_IsValid(value));
-  set_has_datatype();
+  
   datatype_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.dataType)
 }
 
-// required string symbol = 5;
-inline bool PBMsgEqtMD::has_symbol() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void PBMsgEqtMD::set_has_symbol() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void PBMsgEqtMD::clear_has_symbol() {
-  _has_bits_[0] &= ~0x00000008u;
-}
+// optional string symbol = 5;
 inline void PBMsgEqtMD::clear_symbol() {
   symbol_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_symbol();
 }
 inline const ::std::string& PBMsgEqtMD::symbol() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.symbol)
   return symbol_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgEqtMD::set_symbol(const ::std::string& value) {
-  set_has_symbol();
+  
   symbol_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.symbol)
 }
 inline void PBMsgEqtMD::set_symbol(const char* value) {
-  set_has_symbol();
+  
   symbol_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBWrapMsgMDA.PBMsgEqtMD.symbol)
 }
 inline void PBMsgEqtMD::set_symbol(const char* value, size_t size) {
-  set_has_symbol();
+  
   symbol_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBWrapMsgMDA.PBMsgEqtMD.symbol)
 }
 inline ::std::string* PBMsgEqtMD::mutable_symbol() {
-  set_has_symbol();
+  
   // @@protoc_insertion_point(field_mutable:PBWrapMsgMDA.PBMsgEqtMD.symbol)
   return symbol_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgEqtMD::release_symbol() {
-  clear_has_symbol();
+  
   return symbol_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgEqtMD::set_allocated_symbol(::std::string* symbol) {
   if (symbol != NULL) {
-    set_has_symbol();
+    
   } else {
-    clear_has_symbol();
+    
   }
   symbol_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), symbol);
   // @@protoc_insertion_point(field_set_allocated:PBWrapMsgMDA.PBMsgEqtMD.symbol)
 }
 
-// required string timeStamp = 6;
-inline bool PBMsgEqtMD::has_timestamp() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void PBMsgEqtMD::set_has_timestamp() {
-  _has_bits_[0] |= 0x00000010u;
-}
-inline void PBMsgEqtMD::clear_has_timestamp() {
-  _has_bits_[0] &= ~0x00000010u;
-}
+// optional string timeStamp = 6;
 inline void PBMsgEqtMD::clear_timestamp() {
   timestamp_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_timestamp();
 }
 inline const ::std::string& PBMsgEqtMD::timestamp() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.timeStamp)
   return timestamp_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgEqtMD::set_timestamp(const ::std::string& value) {
-  set_has_timestamp();
+  
   timestamp_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.timeStamp)
 }
 inline void PBMsgEqtMD::set_timestamp(const char* value) {
-  set_has_timestamp();
+  
   timestamp_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBWrapMsgMDA.PBMsgEqtMD.timeStamp)
 }
 inline void PBMsgEqtMD::set_timestamp(const char* value, size_t size) {
-  set_has_timestamp();
+  
   timestamp_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBWrapMsgMDA.PBMsgEqtMD.timeStamp)
 }
 inline ::std::string* PBMsgEqtMD::mutable_timestamp() {
-  set_has_timestamp();
+  
   // @@protoc_insertion_point(field_mutable:PBWrapMsgMDA.PBMsgEqtMD.timeStamp)
   return timestamp_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgEqtMD::release_timestamp() {
-  clear_has_timestamp();
+  
   return timestamp_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgEqtMD::set_allocated_timestamp(::std::string* timestamp) {
   if (timestamp != NULL) {
-    set_has_timestamp();
+    
   } else {
-    clear_has_timestamp();
+    
   }
   timestamp_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), timestamp);
   // @@protoc_insertion_point(field_set_allocated:PBWrapMsgMDA.PBMsgEqtMD.timeStamp)
 }
 
-// required int64 preCloseValue = 7;
-inline bool PBMsgEqtMD::has_preclosevalue() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
-}
-inline void PBMsgEqtMD::set_has_preclosevalue() {
-  _has_bits_[0] |= 0x00000020u;
-}
-inline void PBMsgEqtMD::clear_has_preclosevalue() {
-  _has_bits_[0] &= ~0x00000020u;
-}
+// optional int64 preCloseValue = 7;
 inline void PBMsgEqtMD::clear_preclosevalue() {
   preclosevalue_ = GOOGLE_LONGLONG(0);
-  clear_has_preclosevalue();
 }
 inline ::google::protobuf::int64 PBMsgEqtMD::preclosevalue() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.preCloseValue)
   return preclosevalue_;
 }
 inline void PBMsgEqtMD::set_preclosevalue(::google::protobuf::int64 value) {
-  set_has_preclosevalue();
+  
   preclosevalue_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.preCloseValue)
 }
 
-// required int64 openValue = 8;
-inline bool PBMsgEqtMD::has_openvalue() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
-}
-inline void PBMsgEqtMD::set_has_openvalue() {
-  _has_bits_[0] |= 0x00000040u;
-}
-inline void PBMsgEqtMD::clear_has_openvalue() {
-  _has_bits_[0] &= ~0x00000040u;
-}
+// optional int64 openValue = 8;
 inline void PBMsgEqtMD::clear_openvalue() {
   openvalue_ = GOOGLE_LONGLONG(0);
-  clear_has_openvalue();
 }
 inline ::google::protobuf::int64 PBMsgEqtMD::openvalue() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.openValue)
   return openvalue_;
 }
 inline void PBMsgEqtMD::set_openvalue(::google::protobuf::int64 value) {
-  set_has_openvalue();
+  
   openvalue_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.openValue)
 }
 
-// required int64 highValue = 11;
-inline bool PBMsgEqtMD::has_highvalue() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
-}
-inline void PBMsgEqtMD::set_has_highvalue() {
-  _has_bits_[0] |= 0x00000080u;
-}
-inline void PBMsgEqtMD::clear_has_highvalue() {
-  _has_bits_[0] &= ~0x00000080u;
-}
+// optional int64 highValue = 11;
 inline void PBMsgEqtMD::clear_highvalue() {
   highvalue_ = GOOGLE_LONGLONG(0);
-  clear_has_highvalue();
 }
 inline ::google::protobuf::int64 PBMsgEqtMD::highvalue() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.highValue)
   return highvalue_;
 }
 inline void PBMsgEqtMD::set_highvalue(::google::protobuf::int64 value) {
-  set_has_highvalue();
+  
   highvalue_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.highValue)
 }
 
-// required int64 lowValue = 12;
-inline bool PBMsgEqtMD::has_lowvalue() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
-}
-inline void PBMsgEqtMD::set_has_lowvalue() {
-  _has_bits_[0] |= 0x00000100u;
-}
-inline void PBMsgEqtMD::clear_has_lowvalue() {
-  _has_bits_[0] &= ~0x00000100u;
-}
+// optional int64 lowValue = 12;
 inline void PBMsgEqtMD::clear_lowvalue() {
   lowvalue_ = GOOGLE_LONGLONG(0);
-  clear_has_lowvalue();
 }
 inline ::google::protobuf::int64 PBMsgEqtMD::lowvalue() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.lowValue)
   return lowvalue_;
 }
 inline void PBMsgEqtMD::set_lowvalue(::google::protobuf::int64 value) {
-  set_has_lowvalue();
+  
   lowvalue_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.lowValue)
 }
 
 // optional int64 latestIndex = 13;
-inline bool PBMsgEqtMD::has_latestindex() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
-}
-inline void PBMsgEqtMD::set_has_latestindex() {
-  _has_bits_[0] |= 0x00000200u;
-}
-inline void PBMsgEqtMD::clear_has_latestindex() {
-  _has_bits_[0] &= ~0x00000200u;
-}
 inline void PBMsgEqtMD::clear_latestindex() {
   latestindex_ = GOOGLE_LONGLONG(0);
-  clear_has_latestindex();
 }
 inline ::google::protobuf::int64 PBMsgEqtMD::latestindex() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.latestIndex)
   return latestindex_;
 }
 inline void PBMsgEqtMD::set_latestindex(::google::protobuf::int64 value) {
-  set_has_latestindex();
+  
   latestindex_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.latestIndex)
 }
 
 // optional int64 matchPrice = 14;
-inline bool PBMsgEqtMD::has_matchprice() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
-}
-inline void PBMsgEqtMD::set_has_matchprice() {
-  _has_bits_[0] |= 0x00000400u;
-}
-inline void PBMsgEqtMD::clear_has_matchprice() {
-  _has_bits_[0] &= ~0x00000400u;
-}
 inline void PBMsgEqtMD::clear_matchprice() {
   matchprice_ = GOOGLE_LONGLONG(0);
-  clear_has_matchprice();
 }
 inline ::google::protobuf::int64 PBMsgEqtMD::matchprice() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.matchPrice)
   return matchprice_;
 }
 inline void PBMsgEqtMD::set_matchprice(::google::protobuf::int64 value) {
-  set_has_matchprice();
+  
   matchprice_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.matchPrice)
 }
 
 // optional int64 askPrice5 = 15;
-inline bool PBMsgEqtMD::has_askprice5() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
-}
-inline void PBMsgEqtMD::set_has_askprice5() {
-  _has_bits_[0] |= 0x00000800u;
-}
-inline void PBMsgEqtMD::clear_has_askprice5() {
-  _has_bits_[0] &= ~0x00000800u;
-}
 inline void PBMsgEqtMD::clear_askprice5() {
   askprice5_ = GOOGLE_LONGLONG(0);
-  clear_has_askprice5();
 }
 inline ::google::protobuf::int64 PBMsgEqtMD::askprice5() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.askPrice5)
   return askprice5_;
 }
 inline void PBMsgEqtMD::set_askprice5(::google::protobuf::int64 value) {
-  set_has_askprice5();
+  
   askprice5_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.askPrice5)
 }
 
 // optional int64 askPrice4 = 17;
-inline bool PBMsgEqtMD::has_askprice4() const {
-  return (_has_bits_[0] & 0x00001000u) != 0;
-}
-inline void PBMsgEqtMD::set_has_askprice4() {
-  _has_bits_[0] |= 0x00001000u;
-}
-inline void PBMsgEqtMD::clear_has_askprice4() {
-  _has_bits_[0] &= ~0x00001000u;
-}
 inline void PBMsgEqtMD::clear_askprice4() {
   askprice4_ = GOOGLE_LONGLONG(0);
-  clear_has_askprice4();
 }
 inline ::google::protobuf::int64 PBMsgEqtMD::askprice4() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.askPrice4)
   return askprice4_;
 }
 inline void PBMsgEqtMD::set_askprice4(::google::protobuf::int64 value) {
-  set_has_askprice4();
+  
   askprice4_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.askPrice4)
 }
 
 // optional int64 askPrice3 = 19;
-inline bool PBMsgEqtMD::has_askprice3() const {
-  return (_has_bits_[0] & 0x00002000u) != 0;
-}
-inline void PBMsgEqtMD::set_has_askprice3() {
-  _has_bits_[0] |= 0x00002000u;
-}
-inline void PBMsgEqtMD::clear_has_askprice3() {
-  _has_bits_[0] &= ~0x00002000u;
-}
 inline void PBMsgEqtMD::clear_askprice3() {
   askprice3_ = GOOGLE_LONGLONG(0);
-  clear_has_askprice3();
 }
 inline ::google::protobuf::int64 PBMsgEqtMD::askprice3() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.askPrice3)
   return askprice3_;
 }
 inline void PBMsgEqtMD::set_askprice3(::google::protobuf::int64 value) {
-  set_has_askprice3();
+  
   askprice3_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.askPrice3)
 }
 
 // optional int64 askPrice2 = 21;
-inline bool PBMsgEqtMD::has_askprice2() const {
-  return (_has_bits_[0] & 0x00004000u) != 0;
-}
-inline void PBMsgEqtMD::set_has_askprice2() {
-  _has_bits_[0] |= 0x00004000u;
-}
-inline void PBMsgEqtMD::clear_has_askprice2() {
-  _has_bits_[0] &= ~0x00004000u;
-}
 inline void PBMsgEqtMD::clear_askprice2() {
   askprice2_ = GOOGLE_LONGLONG(0);
-  clear_has_askprice2();
 }
 inline ::google::protobuf::int64 PBMsgEqtMD::askprice2() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.askPrice2)
   return askprice2_;
 }
 inline void PBMsgEqtMD::set_askprice2(::google::protobuf::int64 value) {
-  set_has_askprice2();
+  
   askprice2_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.askPrice2)
 }
 
 // optional int64 askPrice1 = 23;
-inline bool PBMsgEqtMD::has_askprice1() const {
-  return (_has_bits_[0] & 0x00008000u) != 0;
-}
-inline void PBMsgEqtMD::set_has_askprice1() {
-  _has_bits_[0] |= 0x00008000u;
-}
-inline void PBMsgEqtMD::clear_has_askprice1() {
-  _has_bits_[0] &= ~0x00008000u;
-}
 inline void PBMsgEqtMD::clear_askprice1() {
   askprice1_ = GOOGLE_LONGLONG(0);
-  clear_has_askprice1();
 }
 inline ::google::protobuf::int64 PBMsgEqtMD::askprice1() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.askPrice1)
   return askprice1_;
 }
 inline void PBMsgEqtMD::set_askprice1(::google::protobuf::int64 value) {
-  set_has_askprice1();
+  
   askprice1_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.askPrice1)
 }
 
 // optional int64 bidPrice1 = 25;
-inline bool PBMsgEqtMD::has_bidprice1() const {
-  return (_has_bits_[0] & 0x00010000u) != 0;
-}
-inline void PBMsgEqtMD::set_has_bidprice1() {
-  _has_bits_[0] |= 0x00010000u;
-}
-inline void PBMsgEqtMD::clear_has_bidprice1() {
-  _has_bits_[0] &= ~0x00010000u;
-}
 inline void PBMsgEqtMD::clear_bidprice1() {
   bidprice1_ = GOOGLE_LONGLONG(0);
-  clear_has_bidprice1();
 }
 inline ::google::protobuf::int64 PBMsgEqtMD::bidprice1() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.bidPrice1)
   return bidprice1_;
 }
 inline void PBMsgEqtMD::set_bidprice1(::google::protobuf::int64 value) {
-  set_has_bidprice1();
+  
   bidprice1_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.bidPrice1)
 }
 
 // optional int64 bidPrice2 = 27;
-inline bool PBMsgEqtMD::has_bidprice2() const {
-  return (_has_bits_[0] & 0x00020000u) != 0;
-}
-inline void PBMsgEqtMD::set_has_bidprice2() {
-  _has_bits_[0] |= 0x00020000u;
-}
-inline void PBMsgEqtMD::clear_has_bidprice2() {
-  _has_bits_[0] &= ~0x00020000u;
-}
 inline void PBMsgEqtMD::clear_bidprice2() {
   bidprice2_ = GOOGLE_LONGLONG(0);
-  clear_has_bidprice2();
 }
 inline ::google::protobuf::int64 PBMsgEqtMD::bidprice2() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.bidPrice2)
   return bidprice2_;
 }
 inline void PBMsgEqtMD::set_bidprice2(::google::protobuf::int64 value) {
-  set_has_bidprice2();
+  
   bidprice2_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.bidPrice2)
 }
 
 // optional int64 bidPrice3 = 29;
-inline bool PBMsgEqtMD::has_bidprice3() const {
-  return (_has_bits_[0] & 0x00040000u) != 0;
-}
-inline void PBMsgEqtMD::set_has_bidprice3() {
-  _has_bits_[0] |= 0x00040000u;
-}
-inline void PBMsgEqtMD::clear_has_bidprice3() {
-  _has_bits_[0] &= ~0x00040000u;
-}
 inline void PBMsgEqtMD::clear_bidprice3() {
   bidprice3_ = GOOGLE_LONGLONG(0);
-  clear_has_bidprice3();
 }
 inline ::google::protobuf::int64 PBMsgEqtMD::bidprice3() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.bidPrice3)
   return bidprice3_;
 }
 inline void PBMsgEqtMD::set_bidprice3(::google::protobuf::int64 value) {
-  set_has_bidprice3();
+  
   bidprice3_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.bidPrice3)
 }
 
 // optional int64 bidPrice4 = 31;
-inline bool PBMsgEqtMD::has_bidprice4() const {
-  return (_has_bits_[0] & 0x00080000u) != 0;
-}
-inline void PBMsgEqtMD::set_has_bidprice4() {
-  _has_bits_[0] |= 0x00080000u;
-}
-inline void PBMsgEqtMD::clear_has_bidprice4() {
-  _has_bits_[0] &= ~0x00080000u;
-}
 inline void PBMsgEqtMD::clear_bidprice4() {
   bidprice4_ = GOOGLE_LONGLONG(0);
-  clear_has_bidprice4();
 }
 inline ::google::protobuf::int64 PBMsgEqtMD::bidprice4() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.bidPrice4)
   return bidprice4_;
 }
 inline void PBMsgEqtMD::set_bidprice4(::google::protobuf::int64 value) {
-  set_has_bidprice4();
+  
   bidprice4_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.bidPrice4)
 }
 
 // optional int64 bidPrice5 = 33;
-inline bool PBMsgEqtMD::has_bidprice5() const {
-  return (_has_bits_[0] & 0x00100000u) != 0;
-}
-inline void PBMsgEqtMD::set_has_bidprice5() {
-  _has_bits_[0] |= 0x00100000u;
-}
-inline void PBMsgEqtMD::clear_has_bidprice5() {
-  _has_bits_[0] &= ~0x00100000u;
-}
 inline void PBMsgEqtMD::clear_bidprice5() {
   bidprice5_ = GOOGLE_LONGLONG(0);
-  clear_has_bidprice5();
 }
 inline ::google::protobuf::int64 PBMsgEqtMD::bidprice5() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.bidPrice5)
   return bidprice5_;
 }
 inline void PBMsgEqtMD::set_bidprice5(::google::protobuf::int64 value) {
-  set_has_bidprice5();
+  
   bidprice5_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.bidPrice5)
 }
 
-// required int64 turnover = 9;
-inline bool PBMsgEqtMD::has_turnover() const {
-  return (_has_bits_[0] & 0x00200000u) != 0;
-}
-inline void PBMsgEqtMD::set_has_turnover() {
-  _has_bits_[0] |= 0x00200000u;
-}
-inline void PBMsgEqtMD::clear_has_turnover() {
-  _has_bits_[0] &= ~0x00200000u;
-}
+// optional int64 turnover = 9;
 inline void PBMsgEqtMD::clear_turnover() {
   turnover_ = GOOGLE_LONGLONG(0);
-  clear_has_turnover();
 }
 inline ::google::protobuf::int64 PBMsgEqtMD::turnover() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.turnover)
   return turnover_;
 }
 inline void PBMsgEqtMD::set_turnover(::google::protobuf::int64 value) {
-  set_has_turnover();
+  
   turnover_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.turnover)
 }
 
-// required int64 volume = 10;
-inline bool PBMsgEqtMD::has_volume() const {
-  return (_has_bits_[0] & 0x00400000u) != 0;
-}
-inline void PBMsgEqtMD::set_has_volume() {
-  _has_bits_[0] |= 0x00400000u;
-}
-inline void PBMsgEqtMD::clear_has_volume() {
-  _has_bits_[0] &= ~0x00400000u;
-}
+// optional int64 volume = 10;
 inline void PBMsgEqtMD::clear_volume() {
   volume_ = GOOGLE_LONGLONG(0);
-  clear_has_volume();
 }
 inline ::google::protobuf::int64 PBMsgEqtMD::volume() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.volume)
   return volume_;
 }
 inline void PBMsgEqtMD::set_volume(::google::protobuf::int64 value) {
-  set_has_volume();
+  
   volume_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.volume)
 }
 
 // optional int64 askSize5 = 16;
-inline bool PBMsgEqtMD::has_asksize5() const {
-  return (_has_bits_[0] & 0x00800000u) != 0;
-}
-inline void PBMsgEqtMD::set_has_asksize5() {
-  _has_bits_[0] |= 0x00800000u;
-}
-inline void PBMsgEqtMD::clear_has_asksize5() {
-  _has_bits_[0] &= ~0x00800000u;
-}
 inline void PBMsgEqtMD::clear_asksize5() {
   asksize5_ = GOOGLE_LONGLONG(0);
-  clear_has_asksize5();
 }
 inline ::google::protobuf::int64 PBMsgEqtMD::asksize5() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.askSize5)
   return asksize5_;
 }
 inline void PBMsgEqtMD::set_asksize5(::google::protobuf::int64 value) {
-  set_has_asksize5();
+  
   asksize5_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.askSize5)
 }
 
 // optional int64 askSize4 = 18;
-inline bool PBMsgEqtMD::has_asksize4() const {
-  return (_has_bits_[0] & 0x01000000u) != 0;
-}
-inline void PBMsgEqtMD::set_has_asksize4() {
-  _has_bits_[0] |= 0x01000000u;
-}
-inline void PBMsgEqtMD::clear_has_asksize4() {
-  _has_bits_[0] &= ~0x01000000u;
-}
 inline void PBMsgEqtMD::clear_asksize4() {
   asksize4_ = GOOGLE_LONGLONG(0);
-  clear_has_asksize4();
 }
 inline ::google::protobuf::int64 PBMsgEqtMD::asksize4() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.askSize4)
   return asksize4_;
 }
 inline void PBMsgEqtMD::set_asksize4(::google::protobuf::int64 value) {
-  set_has_asksize4();
+  
   asksize4_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.askSize4)
 }
 
 // optional int64 askSize3 = 20;
-inline bool PBMsgEqtMD::has_asksize3() const {
-  return (_has_bits_[0] & 0x02000000u) != 0;
-}
-inline void PBMsgEqtMD::set_has_asksize3() {
-  _has_bits_[0] |= 0x02000000u;
-}
-inline void PBMsgEqtMD::clear_has_asksize3() {
-  _has_bits_[0] &= ~0x02000000u;
-}
 inline void PBMsgEqtMD::clear_asksize3() {
   asksize3_ = GOOGLE_LONGLONG(0);
-  clear_has_asksize3();
 }
 inline ::google::protobuf::int64 PBMsgEqtMD::asksize3() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.askSize3)
   return asksize3_;
 }
 inline void PBMsgEqtMD::set_asksize3(::google::protobuf::int64 value) {
-  set_has_asksize3();
+  
   asksize3_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.askSize3)
 }
 
 // optional int64 askSize2 = 22;
-inline bool PBMsgEqtMD::has_asksize2() const {
-  return (_has_bits_[0] & 0x04000000u) != 0;
-}
-inline void PBMsgEqtMD::set_has_asksize2() {
-  _has_bits_[0] |= 0x04000000u;
-}
-inline void PBMsgEqtMD::clear_has_asksize2() {
-  _has_bits_[0] &= ~0x04000000u;
-}
 inline void PBMsgEqtMD::clear_asksize2() {
   asksize2_ = GOOGLE_LONGLONG(0);
-  clear_has_asksize2();
 }
 inline ::google::protobuf::int64 PBMsgEqtMD::asksize2() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.askSize2)
   return asksize2_;
 }
 inline void PBMsgEqtMD::set_asksize2(::google::protobuf::int64 value) {
-  set_has_asksize2();
+  
   asksize2_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.askSize2)
 }
 
 // optional int64 askSize1 = 24;
-inline bool PBMsgEqtMD::has_asksize1() const {
-  return (_has_bits_[0] & 0x08000000u) != 0;
-}
-inline void PBMsgEqtMD::set_has_asksize1() {
-  _has_bits_[0] |= 0x08000000u;
-}
-inline void PBMsgEqtMD::clear_has_asksize1() {
-  _has_bits_[0] &= ~0x08000000u;
-}
 inline void PBMsgEqtMD::clear_asksize1() {
   asksize1_ = GOOGLE_LONGLONG(0);
-  clear_has_asksize1();
 }
 inline ::google::protobuf::int64 PBMsgEqtMD::asksize1() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.askSize1)
   return asksize1_;
 }
 inline void PBMsgEqtMD::set_asksize1(::google::protobuf::int64 value) {
-  set_has_asksize1();
+  
   asksize1_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.askSize1)
 }
 
 // optional int64 bidSize1 = 26;
-inline bool PBMsgEqtMD::has_bidsize1() const {
-  return (_has_bits_[0] & 0x10000000u) != 0;
-}
-inline void PBMsgEqtMD::set_has_bidsize1() {
-  _has_bits_[0] |= 0x10000000u;
-}
-inline void PBMsgEqtMD::clear_has_bidsize1() {
-  _has_bits_[0] &= ~0x10000000u;
-}
 inline void PBMsgEqtMD::clear_bidsize1() {
   bidsize1_ = GOOGLE_LONGLONG(0);
-  clear_has_bidsize1();
 }
 inline ::google::protobuf::int64 PBMsgEqtMD::bidsize1() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.bidSize1)
   return bidsize1_;
 }
 inline void PBMsgEqtMD::set_bidsize1(::google::protobuf::int64 value) {
-  set_has_bidsize1();
+  
   bidsize1_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.bidSize1)
 }
 
 // optional int64 bidSize2 = 28;
-inline bool PBMsgEqtMD::has_bidsize2() const {
-  return (_has_bits_[0] & 0x20000000u) != 0;
-}
-inline void PBMsgEqtMD::set_has_bidsize2() {
-  _has_bits_[0] |= 0x20000000u;
-}
-inline void PBMsgEqtMD::clear_has_bidsize2() {
-  _has_bits_[0] &= ~0x20000000u;
-}
 inline void PBMsgEqtMD::clear_bidsize2() {
   bidsize2_ = GOOGLE_LONGLONG(0);
-  clear_has_bidsize2();
 }
 inline ::google::protobuf::int64 PBMsgEqtMD::bidsize2() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.bidSize2)
   return bidsize2_;
 }
 inline void PBMsgEqtMD::set_bidsize2(::google::protobuf::int64 value) {
-  set_has_bidsize2();
+  
   bidsize2_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.bidSize2)
 }
 
 // optional int64 bidSize3 = 30;
-inline bool PBMsgEqtMD::has_bidsize3() const {
-  return (_has_bits_[0] & 0x40000000u) != 0;
-}
-inline void PBMsgEqtMD::set_has_bidsize3() {
-  _has_bits_[0] |= 0x40000000u;
-}
-inline void PBMsgEqtMD::clear_has_bidsize3() {
-  _has_bits_[0] &= ~0x40000000u;
-}
 inline void PBMsgEqtMD::clear_bidsize3() {
   bidsize3_ = GOOGLE_LONGLONG(0);
-  clear_has_bidsize3();
 }
 inline ::google::protobuf::int64 PBMsgEqtMD::bidsize3() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.bidSize3)
   return bidsize3_;
 }
 inline void PBMsgEqtMD::set_bidsize3(::google::protobuf::int64 value) {
-  set_has_bidsize3();
+  
   bidsize3_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.bidSize3)
 }
 
 // optional int64 bidSize4 = 32;
-inline bool PBMsgEqtMD::has_bidsize4() const {
-  return (_has_bits_[0] & 0x80000000u) != 0;
-}
-inline void PBMsgEqtMD::set_has_bidsize4() {
-  _has_bits_[0] |= 0x80000000u;
-}
-inline void PBMsgEqtMD::clear_has_bidsize4() {
-  _has_bits_[0] &= ~0x80000000u;
-}
 inline void PBMsgEqtMD::clear_bidsize4() {
   bidsize4_ = GOOGLE_LONGLONG(0);
-  clear_has_bidsize4();
 }
 inline ::google::protobuf::int64 PBMsgEqtMD::bidsize4() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.bidSize4)
   return bidsize4_;
 }
 inline void PBMsgEqtMD::set_bidsize4(::google::protobuf::int64 value) {
-  set_has_bidsize4();
+  
   bidsize4_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.bidSize4)
 }
 
 // optional int64 bidSize5 = 34;
-inline bool PBMsgEqtMD::has_bidsize5() const {
-  return (_has_bits_[1] & 0x00000001u) != 0;
-}
-inline void PBMsgEqtMD::set_has_bidsize5() {
-  _has_bits_[1] |= 0x00000001u;
-}
-inline void PBMsgEqtMD::clear_has_bidsize5() {
-  _has_bits_[1] &= ~0x00000001u;
-}
 inline void PBMsgEqtMD::clear_bidsize5() {
   bidsize5_ = GOOGLE_LONGLONG(0);
-  clear_has_bidsize5();
 }
 inline ::google::protobuf::int64 PBMsgEqtMD::bidsize5() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgEqtMD.bidSize5)
   return bidsize5_;
 }
 inline void PBMsgEqtMD::set_bidsize5(::google::protobuf::int64 value) {
-  set_has_bidsize5();
+  
   bidsize5_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgEqtMD.bidSize5)
 }
@@ -2180,516 +1561,326 @@ inline void PBMsgEqtMD::set_bidsize5(::google::protobuf::int64 value) {
 
 // PBMsgFutMD
 
-// required int32 EOF = 1;
-inline bool PBMsgFutMD::has_eof() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBMsgFutMD::set_has_eof() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBMsgFutMD::clear_has_eof() {
-  _has_bits_[0] &= ~0x00000001u;
-}
+// optional int32 EOF = 1;
 inline void PBMsgFutMD::clear_eof() {
   eof_ = 0;
-  clear_has_eof();
 }
 inline ::google::protobuf::int32 PBMsgFutMD::eof() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.EOF)
   return eof_;
 }
 inline void PBMsgFutMD::set_eof(::google::protobuf::int32 value) {
-  set_has_eof();
+  
   eof_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.EOF)
 }
 
-// required string symbol = 5;
-inline bool PBMsgFutMD::has_symbol() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void PBMsgFutMD::set_has_symbol() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void PBMsgFutMD::clear_has_symbol() {
-  _has_bits_[0] &= ~0x00000002u;
-}
+// optional string symbol = 5;
 inline void PBMsgFutMD::clear_symbol() {
   symbol_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_symbol();
 }
 inline const ::std::string& PBMsgFutMD::symbol() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.symbol)
   return symbol_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgFutMD::set_symbol(const ::std::string& value) {
-  set_has_symbol();
+  
   symbol_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.symbol)
 }
 inline void PBMsgFutMD::set_symbol(const char* value) {
-  set_has_symbol();
+  
   symbol_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBWrapMsgMDA.PBMsgFutMD.symbol)
 }
 inline void PBMsgFutMD::set_symbol(const char* value, size_t size) {
-  set_has_symbol();
+  
   symbol_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBWrapMsgMDA.PBMsgFutMD.symbol)
 }
 inline ::std::string* PBMsgFutMD::mutable_symbol() {
-  set_has_symbol();
+  
   // @@protoc_insertion_point(field_mutable:PBWrapMsgMDA.PBMsgFutMD.symbol)
   return symbol_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgFutMD::release_symbol() {
-  clear_has_symbol();
+  
   return symbol_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgFutMD::set_allocated_symbol(::std::string* symbol) {
   if (symbol != NULL) {
-    set_has_symbol();
+    
   } else {
-    clear_has_symbol();
+    
   }
   symbol_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), symbol);
   // @@protoc_insertion_point(field_set_allocated:PBWrapMsgMDA.PBMsgFutMD.symbol)
 }
 
-// required string timeStamp = 6;
-inline bool PBMsgFutMD::has_timestamp() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBMsgFutMD::set_has_timestamp() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBMsgFutMD::clear_has_timestamp() {
-  _has_bits_[0] &= ~0x00000004u;
-}
+// optional string timeStamp = 6;
 inline void PBMsgFutMD::clear_timestamp() {
   timestamp_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_timestamp();
 }
 inline const ::std::string& PBMsgFutMD::timestamp() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.timeStamp)
   return timestamp_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgFutMD::set_timestamp(const ::std::string& value) {
-  set_has_timestamp();
+  
   timestamp_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.timeStamp)
 }
 inline void PBMsgFutMD::set_timestamp(const char* value) {
-  set_has_timestamp();
+  
   timestamp_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBWrapMsgMDA.PBMsgFutMD.timeStamp)
 }
 inline void PBMsgFutMD::set_timestamp(const char* value, size_t size) {
-  set_has_timestamp();
+  
   timestamp_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBWrapMsgMDA.PBMsgFutMD.timeStamp)
 }
 inline ::std::string* PBMsgFutMD::mutable_timestamp() {
-  set_has_timestamp();
+  
   // @@protoc_insertion_point(field_mutable:PBWrapMsgMDA.PBMsgFutMD.timeStamp)
   return timestamp_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgFutMD::release_timestamp() {
-  clear_has_timestamp();
+  
   return timestamp_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgFutMD::set_allocated_timestamp(::std::string* timestamp) {
   if (timestamp != NULL) {
-    set_has_timestamp();
+    
   } else {
-    clear_has_timestamp();
+    
   }
   timestamp_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), timestamp);
   // @@protoc_insertion_point(field_set_allocated:PBWrapMsgMDA.PBMsgFutMD.timeStamp)
 }
 
-// required int64 askPrice1 = 7;
-inline bool PBMsgFutMD::has_askprice1() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void PBMsgFutMD::set_has_askprice1() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void PBMsgFutMD::clear_has_askprice1() {
-  _has_bits_[0] &= ~0x00000008u;
-}
+// optional int64 askPrice1 = 7;
 inline void PBMsgFutMD::clear_askprice1() {
   askprice1_ = GOOGLE_LONGLONG(0);
-  clear_has_askprice1();
 }
 inline ::google::protobuf::int64 PBMsgFutMD::askprice1() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.askPrice1)
   return askprice1_;
 }
 inline void PBMsgFutMD::set_askprice1(::google::protobuf::int64 value) {
-  set_has_askprice1();
+  
   askprice1_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.askPrice1)
 }
 
-// required int64 bidPrice1 = 9;
-inline bool PBMsgFutMD::has_bidprice1() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void PBMsgFutMD::set_has_bidprice1() {
-  _has_bits_[0] |= 0x00000010u;
-}
-inline void PBMsgFutMD::clear_has_bidprice1() {
-  _has_bits_[0] &= ~0x00000010u;
-}
+// optional int64 bidPrice1 = 9;
 inline void PBMsgFutMD::clear_bidprice1() {
   bidprice1_ = GOOGLE_LONGLONG(0);
-  clear_has_bidprice1();
 }
 inline ::google::protobuf::int64 PBMsgFutMD::bidprice1() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.bidPrice1)
   return bidprice1_;
 }
 inline void PBMsgFutMD::set_bidprice1(::google::protobuf::int64 value) {
-  set_has_bidprice1();
+  
   bidprice1_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.bidPrice1)
 }
 
-// required int64 preClosePrice = 11;
-inline bool PBMsgFutMD::has_precloseprice() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
-}
-inline void PBMsgFutMD::set_has_precloseprice() {
-  _has_bits_[0] |= 0x00000020u;
-}
-inline void PBMsgFutMD::clear_has_precloseprice() {
-  _has_bits_[0] &= ~0x00000020u;
-}
+// optional int64 preClosePrice = 11;
 inline void PBMsgFutMD::clear_precloseprice() {
   precloseprice_ = GOOGLE_LONGLONG(0);
-  clear_has_precloseprice();
 }
 inline ::google::protobuf::int64 PBMsgFutMD::precloseprice() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.preClosePrice)
   return precloseprice_;
 }
 inline void PBMsgFutMD::set_precloseprice(::google::protobuf::int64 value) {
-  set_has_precloseprice();
+  
   precloseprice_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.preClosePrice)
 }
 
-// required int64 preSettlePrice = 12;
-inline bool PBMsgFutMD::has_presettleprice() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
-}
-inline void PBMsgFutMD::set_has_presettleprice() {
-  _has_bits_[0] |= 0x00000040u;
-}
-inline void PBMsgFutMD::clear_has_presettleprice() {
-  _has_bits_[0] &= ~0x00000040u;
-}
+// optional int64 preSettlePrice = 12;
 inline void PBMsgFutMD::clear_presettleprice() {
   presettleprice_ = GOOGLE_LONGLONG(0);
-  clear_has_presettleprice();
 }
 inline ::google::protobuf::int64 PBMsgFutMD::presettleprice() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.preSettlePrice)
   return presettleprice_;
 }
 inline void PBMsgFutMD::set_presettleprice(::google::protobuf::int64 value) {
-  set_has_presettleprice();
+  
   presettleprice_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.preSettlePrice)
 }
 
-// required int64 openPrice = 13;
-inline bool PBMsgFutMD::has_openprice() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
-}
-inline void PBMsgFutMD::set_has_openprice() {
-  _has_bits_[0] |= 0x00000080u;
-}
-inline void PBMsgFutMD::clear_has_openprice() {
-  _has_bits_[0] &= ~0x00000080u;
-}
+// optional int64 openPrice = 13;
 inline void PBMsgFutMD::clear_openprice() {
   openprice_ = GOOGLE_LONGLONG(0);
-  clear_has_openprice();
 }
 inline ::google::protobuf::int64 PBMsgFutMD::openprice() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.openPrice)
   return openprice_;
 }
 inline void PBMsgFutMD::set_openprice(::google::protobuf::int64 value) {
-  set_has_openprice();
+  
   openprice_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.openPrice)
 }
 
-// required int64 highPrice = 14;
-inline bool PBMsgFutMD::has_highprice() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
-}
-inline void PBMsgFutMD::set_has_highprice() {
-  _has_bits_[0] |= 0x00000100u;
-}
-inline void PBMsgFutMD::clear_has_highprice() {
-  _has_bits_[0] &= ~0x00000100u;
-}
+// optional int64 highPrice = 14;
 inline void PBMsgFutMD::clear_highprice() {
   highprice_ = GOOGLE_LONGLONG(0);
-  clear_has_highprice();
 }
 inline ::google::protobuf::int64 PBMsgFutMD::highprice() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.highPrice)
   return highprice_;
 }
 inline void PBMsgFutMD::set_highprice(::google::protobuf::int64 value) {
-  set_has_highprice();
+  
   highprice_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.highPrice)
 }
 
-// required int64 lowPrice = 15;
-inline bool PBMsgFutMD::has_lowprice() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
-}
-inline void PBMsgFutMD::set_has_lowprice() {
-  _has_bits_[0] |= 0x00000200u;
-}
-inline void PBMsgFutMD::clear_has_lowprice() {
-  _has_bits_[0] &= ~0x00000200u;
-}
+// optional int64 lowPrice = 15;
 inline void PBMsgFutMD::clear_lowprice() {
   lowprice_ = GOOGLE_LONGLONG(0);
-  clear_has_lowprice();
 }
 inline ::google::protobuf::int64 PBMsgFutMD::lowprice() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.lowPrice)
   return lowprice_;
 }
 inline void PBMsgFutMD::set_lowprice(::google::protobuf::int64 value) {
-  set_has_lowprice();
+  
   lowprice_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.lowPrice)
 }
 
-// required int64 matchPrice = 16;
-inline bool PBMsgFutMD::has_matchprice() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
-}
-inline void PBMsgFutMD::set_has_matchprice() {
-  _has_bits_[0] |= 0x00000400u;
-}
-inline void PBMsgFutMD::clear_has_matchprice() {
-  _has_bits_[0] &= ~0x00000400u;
-}
+// optional int64 matchPrice = 16;
 inline void PBMsgFutMD::clear_matchprice() {
   matchprice_ = GOOGLE_LONGLONG(0);
-  clear_has_matchprice();
 }
 inline ::google::protobuf::int64 PBMsgFutMD::matchprice() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.matchPrice)
   return matchprice_;
 }
 inline void PBMsgFutMD::set_matchprice(::google::protobuf::int64 value) {
-  set_has_matchprice();
+  
   matchprice_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.matchPrice)
 }
 
-// required int64 priceChange = 17;
-inline bool PBMsgFutMD::has_pricechange() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
-}
-inline void PBMsgFutMD::set_has_pricechange() {
-  _has_bits_[0] |= 0x00000800u;
-}
-inline void PBMsgFutMD::clear_has_pricechange() {
-  _has_bits_[0] &= ~0x00000800u;
-}
+// optional int64 priceChange = 17;
 inline void PBMsgFutMD::clear_pricechange() {
   pricechange_ = GOOGLE_LONGLONG(0);
-  clear_has_pricechange();
 }
 inline ::google::protobuf::int64 PBMsgFutMD::pricechange() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.priceChange)
   return pricechange_;
 }
 inline void PBMsgFutMD::set_pricechange(::google::protobuf::int64 value) {
-  set_has_pricechange();
+  
   pricechange_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.priceChange)
 }
 
-// required int64 settlePrice = 20;
-inline bool PBMsgFutMD::has_settleprice() const {
-  return (_has_bits_[0] & 0x00001000u) != 0;
-}
-inline void PBMsgFutMD::set_has_settleprice() {
-  _has_bits_[0] |= 0x00001000u;
-}
-inline void PBMsgFutMD::clear_has_settleprice() {
-  _has_bits_[0] &= ~0x00001000u;
-}
+// optional int64 settlePrice = 20;
 inline void PBMsgFutMD::clear_settleprice() {
   settleprice_ = GOOGLE_LONGLONG(0);
-  clear_has_settleprice();
 }
 inline ::google::protobuf::int64 PBMsgFutMD::settleprice() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.settlePrice)
   return settleprice_;
 }
 inline void PBMsgFutMD::set_settleprice(::google::protobuf::int64 value) {
-  set_has_settleprice();
+  
   settleprice_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.settlePrice)
 }
 
-// required int64 highLimit = 21;
-inline bool PBMsgFutMD::has_highlimit() const {
-  return (_has_bits_[0] & 0x00002000u) != 0;
-}
-inline void PBMsgFutMD::set_has_highlimit() {
-  _has_bits_[0] |= 0x00002000u;
-}
-inline void PBMsgFutMD::clear_has_highlimit() {
-  _has_bits_[0] &= ~0x00002000u;
-}
+// optional int64 highLimit = 21;
 inline void PBMsgFutMD::clear_highlimit() {
   highlimit_ = GOOGLE_LONGLONG(0);
-  clear_has_highlimit();
 }
 inline ::google::protobuf::int64 PBMsgFutMD::highlimit() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.highLimit)
   return highlimit_;
 }
 inline void PBMsgFutMD::set_highlimit(::google::protobuf::int64 value) {
-  set_has_highlimit();
+  
   highlimit_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.highLimit)
 }
 
-// required int64 lowLimit = 22;
-inline bool PBMsgFutMD::has_lowlimit() const {
-  return (_has_bits_[0] & 0x00004000u) != 0;
-}
-inline void PBMsgFutMD::set_has_lowlimit() {
-  _has_bits_[0] |= 0x00004000u;
-}
-inline void PBMsgFutMD::clear_has_lowlimit() {
-  _has_bits_[0] &= ~0x00004000u;
-}
+// optional int64 lowLimit = 22;
 inline void PBMsgFutMD::clear_lowlimit() {
   lowlimit_ = GOOGLE_LONGLONG(0);
-  clear_has_lowlimit();
 }
 inline ::google::protobuf::int64 PBMsgFutMD::lowlimit() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.lowLimit)
   return lowlimit_;
 }
 inline void PBMsgFutMD::set_lowlimit(::google::protobuf::int64 value) {
-  set_has_lowlimit();
+  
   lowlimit_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.lowLimit)
 }
 
-// required int64 askSize1 = 8;
-inline bool PBMsgFutMD::has_asksize1() const {
-  return (_has_bits_[0] & 0x00008000u) != 0;
-}
-inline void PBMsgFutMD::set_has_asksize1() {
-  _has_bits_[0] |= 0x00008000u;
-}
-inline void PBMsgFutMD::clear_has_asksize1() {
-  _has_bits_[0] &= ~0x00008000u;
-}
+// optional int64 askSize1 = 8;
 inline void PBMsgFutMD::clear_asksize1() {
   asksize1_ = GOOGLE_LONGLONG(0);
-  clear_has_asksize1();
 }
 inline ::google::protobuf::int64 PBMsgFutMD::asksize1() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.askSize1)
   return asksize1_;
 }
 inline void PBMsgFutMD::set_asksize1(::google::protobuf::int64 value) {
-  set_has_asksize1();
+  
   asksize1_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.askSize1)
 }
 
-// required int64 bidSize1 = 10;
-inline bool PBMsgFutMD::has_bidsize1() const {
-  return (_has_bits_[0] & 0x00010000u) != 0;
-}
-inline void PBMsgFutMD::set_has_bidsize1() {
-  _has_bits_[0] |= 0x00010000u;
-}
-inline void PBMsgFutMD::clear_has_bidsize1() {
-  _has_bits_[0] &= ~0x00010000u;
-}
+// optional int64 bidSize1 = 10;
 inline void PBMsgFutMD::clear_bidsize1() {
   bidsize1_ = GOOGLE_LONGLONG(0);
-  clear_has_bidsize1();
 }
 inline ::google::protobuf::int64 PBMsgFutMD::bidsize1() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.bidSize1)
   return bidsize1_;
 }
 inline void PBMsgFutMD::set_bidsize1(::google::protobuf::int64 value) {
-  set_has_bidsize1();
+  
   bidsize1_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.bidSize1)
 }
 
-// required int64 volume = 18;
-inline bool PBMsgFutMD::has_volume() const {
-  return (_has_bits_[0] & 0x00020000u) != 0;
-}
-inline void PBMsgFutMD::set_has_volume() {
-  _has_bits_[0] |= 0x00020000u;
-}
-inline void PBMsgFutMD::clear_has_volume() {
-  _has_bits_[0] &= ~0x00020000u;
-}
+// optional int64 volume = 18;
 inline void PBMsgFutMD::clear_volume() {
   volume_ = GOOGLE_LONGLONG(0);
-  clear_has_volume();
 }
 inline ::google::protobuf::int64 PBMsgFutMD::volume() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.volume)
   return volume_;
 }
 inline void PBMsgFutMD::set_volume(::google::protobuf::int64 value) {
-  set_has_volume();
+  
   volume_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.volume)
 }
 
-// required int64 turnover = 19;
-inline bool PBMsgFutMD::has_turnover() const {
-  return (_has_bits_[0] & 0x00040000u) != 0;
-}
-inline void PBMsgFutMD::set_has_turnover() {
-  _has_bits_[0] |= 0x00040000u;
-}
-inline void PBMsgFutMD::clear_has_turnover() {
-  _has_bits_[0] &= ~0x00040000u;
-}
+// optional int64 turnover = 19;
 inline void PBMsgFutMD::clear_turnover() {
   turnover_ = GOOGLE_LONGLONG(0);
-  clear_has_turnover();
 }
 inline ::google::protobuf::int64 PBMsgFutMD::turnover() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgFutMD.turnover)
   return turnover_;
 }
 inline void PBMsgFutMD::set_turnover(::google::protobuf::int64 value) {
-  set_has_turnover();
+  
   turnover_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgFutMD.turnover)
 }
@@ -2698,26 +1889,16 @@ inline void PBMsgFutMD::set_turnover(::google::protobuf::int64 value) {
 
 // PBMsgMDAMD
 
-// required int32 EOF = 1;
-inline bool PBMsgMDAMD::has_eof() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PBMsgMDAMD::set_has_eof() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PBMsgMDAMD::clear_has_eof() {
-  _has_bits_[0] &= ~0x00000001u;
-}
+// optional int32 EOF = 1;
 inline void PBMsgMDAMD::clear_eof() {
   eof_ = 0;
-  clear_has_eof();
 }
 inline ::google::protobuf::int32 PBMsgMDAMD::eof() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.EOF)
   return eof_;
 }
 inline void PBMsgMDAMD::set_eof(::google::protobuf::int32 value) {
-  set_has_eof();
+  
   eof_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.EOF)
 }
@@ -2777,924 +1958,563 @@ PBMsgMDAMD::mutable_requestsymbollist() {
 }
 
 // optional .PBWrapMsgMDA.DataType dataType = 6;
-inline bool PBMsgMDAMD::has_datatype() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void PBMsgMDAMD::set_has_datatype() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void PBMsgMDAMD::clear_has_datatype() {
-  _has_bits_[0] &= ~0x00000004u;
-}
 inline void PBMsgMDAMD::clear_datatype() {
-  datatype_ = 1;
-  clear_has_datatype();
+  datatype_ = 0;
 }
 inline ::PBWrapMsgMDA::DataType PBMsgMDAMD::datatype() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.dataType)
   return static_cast< ::PBWrapMsgMDA::DataType >(datatype_);
 }
 inline void PBMsgMDAMD::set_datatype(::PBWrapMsgMDA::DataType value) {
-  assert(::PBWrapMsgMDA::DataType_IsValid(value));
-  set_has_datatype();
+  
   datatype_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.dataType)
 }
 
 // optional string symbol = 7;
-inline bool PBMsgMDAMD::has_symbol() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void PBMsgMDAMD::set_has_symbol() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void PBMsgMDAMD::clear_has_symbol() {
-  _has_bits_[0] &= ~0x00000008u;
-}
 inline void PBMsgMDAMD::clear_symbol() {
   symbol_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_symbol();
 }
 inline const ::std::string& PBMsgMDAMD::symbol() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.symbol)
   return symbol_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgMDAMD::set_symbol(const ::std::string& value) {
-  set_has_symbol();
+  
   symbol_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.symbol)
 }
 inline void PBMsgMDAMD::set_symbol(const char* value) {
-  set_has_symbol();
+  
   symbol_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBWrapMsgMDA.PBMsgMDAMD.symbol)
 }
 inline void PBMsgMDAMD::set_symbol(const char* value, size_t size) {
-  set_has_symbol();
+  
   symbol_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBWrapMsgMDA.PBMsgMDAMD.symbol)
 }
 inline ::std::string* PBMsgMDAMD::mutable_symbol() {
-  set_has_symbol();
+  
   // @@protoc_insertion_point(field_mutable:PBWrapMsgMDA.PBMsgMDAMD.symbol)
   return symbol_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgMDAMD::release_symbol() {
-  clear_has_symbol();
+  
   return symbol_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgMDAMD::set_allocated_symbol(::std::string* symbol) {
   if (symbol != NULL) {
-    set_has_symbol();
+    
   } else {
-    clear_has_symbol();
+    
   }
   symbol_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), symbol);
   // @@protoc_insertion_point(field_set_allocated:PBWrapMsgMDA.PBMsgMDAMD.symbol)
 }
 
 // optional string timeStamp = 8;
-inline bool PBMsgMDAMD::has_timestamp() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void PBMsgMDAMD::set_has_timestamp() {
-  _has_bits_[0] |= 0x00000010u;
-}
-inline void PBMsgMDAMD::clear_has_timestamp() {
-  _has_bits_[0] &= ~0x00000010u;
-}
 inline void PBMsgMDAMD::clear_timestamp() {
   timestamp_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_timestamp();
 }
 inline const ::std::string& PBMsgMDAMD::timestamp() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.timeStamp)
   return timestamp_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgMDAMD::set_timestamp(const ::std::string& value) {
-  set_has_timestamp();
+  
   timestamp_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.timeStamp)
 }
 inline void PBMsgMDAMD::set_timestamp(const char* value) {
-  set_has_timestamp();
+  
   timestamp_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:PBWrapMsgMDA.PBMsgMDAMD.timeStamp)
 }
 inline void PBMsgMDAMD::set_timestamp(const char* value, size_t size) {
-  set_has_timestamp();
+  
   timestamp_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:PBWrapMsgMDA.PBMsgMDAMD.timeStamp)
 }
 inline ::std::string* PBMsgMDAMD::mutable_timestamp() {
-  set_has_timestamp();
+  
   // @@protoc_insertion_point(field_mutable:PBWrapMsgMDA.PBMsgMDAMD.timeStamp)
   return timestamp_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBMsgMDAMD::release_timestamp() {
-  clear_has_timestamp();
+  
   return timestamp_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void PBMsgMDAMD::set_allocated_timestamp(::std::string* timestamp) {
   if (timestamp != NULL) {
-    set_has_timestamp();
+    
   } else {
-    clear_has_timestamp();
+    
   }
   timestamp_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), timestamp);
   // @@protoc_insertion_point(field_set_allocated:PBWrapMsgMDA.PBMsgMDAMD.timeStamp)
 }
 
 // optional int64 preCloseValue = 9;
-inline bool PBMsgMDAMD::has_preclosevalue() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
-}
-inline void PBMsgMDAMD::set_has_preclosevalue() {
-  _has_bits_[0] |= 0x00000020u;
-}
-inline void PBMsgMDAMD::clear_has_preclosevalue() {
-  _has_bits_[0] &= ~0x00000020u;
-}
 inline void PBMsgMDAMD::clear_preclosevalue() {
   preclosevalue_ = GOOGLE_LONGLONG(0);
-  clear_has_preclosevalue();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::preclosevalue() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.preCloseValue)
   return preclosevalue_;
 }
 inline void PBMsgMDAMD::set_preclosevalue(::google::protobuf::int64 value) {
-  set_has_preclosevalue();
+  
   preclosevalue_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.preCloseValue)
 }
 
 // optional int64 openValue = 10;
-inline bool PBMsgMDAMD::has_openvalue() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
-}
-inline void PBMsgMDAMD::set_has_openvalue() {
-  _has_bits_[0] |= 0x00000040u;
-}
-inline void PBMsgMDAMD::clear_has_openvalue() {
-  _has_bits_[0] &= ~0x00000040u;
-}
 inline void PBMsgMDAMD::clear_openvalue() {
   openvalue_ = GOOGLE_LONGLONG(0);
-  clear_has_openvalue();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::openvalue() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.openValue)
   return openvalue_;
 }
 inline void PBMsgMDAMD::set_openvalue(::google::protobuf::int64 value) {
-  set_has_openvalue();
+  
   openvalue_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.openValue)
 }
 
 // optional int64 turnover = 11;
-inline bool PBMsgMDAMD::has_turnover() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
-}
-inline void PBMsgMDAMD::set_has_turnover() {
-  _has_bits_[0] |= 0x00000080u;
-}
-inline void PBMsgMDAMD::clear_has_turnover() {
-  _has_bits_[0] &= ~0x00000080u;
-}
 inline void PBMsgMDAMD::clear_turnover() {
   turnover_ = GOOGLE_LONGLONG(0);
-  clear_has_turnover();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::turnover() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.turnover)
   return turnover_;
 }
 inline void PBMsgMDAMD::set_turnover(::google::protobuf::int64 value) {
-  set_has_turnover();
+  
   turnover_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.turnover)
 }
 
 // optional int64 volume = 12;
-inline bool PBMsgMDAMD::has_volume() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
-}
-inline void PBMsgMDAMD::set_has_volume() {
-  _has_bits_[0] |= 0x00000100u;
-}
-inline void PBMsgMDAMD::clear_has_volume() {
-  _has_bits_[0] &= ~0x00000100u;
-}
 inline void PBMsgMDAMD::clear_volume() {
   volume_ = GOOGLE_LONGLONG(0);
-  clear_has_volume();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::volume() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.volume)
   return volume_;
 }
 inline void PBMsgMDAMD::set_volume(::google::protobuf::int64 value) {
-  set_has_volume();
+  
   volume_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.volume)
 }
 
 // optional int64 highValue = 13;
-inline bool PBMsgMDAMD::has_highvalue() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
-}
-inline void PBMsgMDAMD::set_has_highvalue() {
-  _has_bits_[0] |= 0x00000200u;
-}
-inline void PBMsgMDAMD::clear_has_highvalue() {
-  _has_bits_[0] &= ~0x00000200u;
-}
 inline void PBMsgMDAMD::clear_highvalue() {
   highvalue_ = GOOGLE_LONGLONG(0);
-  clear_has_highvalue();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::highvalue() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.highValue)
   return highvalue_;
 }
 inline void PBMsgMDAMD::set_highvalue(::google::protobuf::int64 value) {
-  set_has_highvalue();
+  
   highvalue_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.highValue)
 }
 
 // optional int64 lowValue = 14;
-inline bool PBMsgMDAMD::has_lowvalue() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
-}
-inline void PBMsgMDAMD::set_has_lowvalue() {
-  _has_bits_[0] |= 0x00000400u;
-}
-inline void PBMsgMDAMD::clear_has_lowvalue() {
-  _has_bits_[0] &= ~0x00000400u;
-}
 inline void PBMsgMDAMD::clear_lowvalue() {
   lowvalue_ = GOOGLE_LONGLONG(0);
-  clear_has_lowvalue();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::lowvalue() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.lowValue)
   return lowvalue_;
 }
 inline void PBMsgMDAMD::set_lowvalue(::google::protobuf::int64 value) {
-  set_has_lowvalue();
+  
   lowvalue_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.lowValue)
 }
 
 // optional int64 latestIndex = 15;
-inline bool PBMsgMDAMD::has_latestindex() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
-}
-inline void PBMsgMDAMD::set_has_latestindex() {
-  _has_bits_[0] |= 0x00000800u;
-}
-inline void PBMsgMDAMD::clear_has_latestindex() {
-  _has_bits_[0] &= ~0x00000800u;
-}
 inline void PBMsgMDAMD::clear_latestindex() {
   latestindex_ = GOOGLE_LONGLONG(0);
-  clear_has_latestindex();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::latestindex() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.latestIndex)
   return latestindex_;
 }
 inline void PBMsgMDAMD::set_latestindex(::google::protobuf::int64 value) {
-  set_has_latestindex();
+  
   latestindex_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.latestIndex)
 }
 
 // optional int64 matchPrice = 16;
-inline bool PBMsgMDAMD::has_matchprice() const {
-  return (_has_bits_[0] & 0x00001000u) != 0;
-}
-inline void PBMsgMDAMD::set_has_matchprice() {
-  _has_bits_[0] |= 0x00001000u;
-}
-inline void PBMsgMDAMD::clear_has_matchprice() {
-  _has_bits_[0] &= ~0x00001000u;
-}
 inline void PBMsgMDAMD::clear_matchprice() {
   matchprice_ = GOOGLE_LONGLONG(0);
-  clear_has_matchprice();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::matchprice() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.matchPrice)
   return matchprice_;
 }
 inline void PBMsgMDAMD::set_matchprice(::google::protobuf::int64 value) {
-  set_has_matchprice();
+  
   matchprice_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.matchPrice)
 }
 
 // optional int64 askPrice5 = 17;
-inline bool PBMsgMDAMD::has_askprice5() const {
-  return (_has_bits_[0] & 0x00002000u) != 0;
-}
-inline void PBMsgMDAMD::set_has_askprice5() {
-  _has_bits_[0] |= 0x00002000u;
-}
-inline void PBMsgMDAMD::clear_has_askprice5() {
-  _has_bits_[0] &= ~0x00002000u;
-}
 inline void PBMsgMDAMD::clear_askprice5() {
   askprice5_ = GOOGLE_LONGLONG(0);
-  clear_has_askprice5();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::askprice5() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.askPrice5)
   return askprice5_;
 }
 inline void PBMsgMDAMD::set_askprice5(::google::protobuf::int64 value) {
-  set_has_askprice5();
+  
   askprice5_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.askPrice5)
 }
 
 // optional int64 askSize5 = 18;
-inline bool PBMsgMDAMD::has_asksize5() const {
-  return (_has_bits_[0] & 0x00004000u) != 0;
-}
-inline void PBMsgMDAMD::set_has_asksize5() {
-  _has_bits_[0] |= 0x00004000u;
-}
-inline void PBMsgMDAMD::clear_has_asksize5() {
-  _has_bits_[0] &= ~0x00004000u;
-}
 inline void PBMsgMDAMD::clear_asksize5() {
   asksize5_ = GOOGLE_LONGLONG(0);
-  clear_has_asksize5();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::asksize5() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.askSize5)
   return asksize5_;
 }
 inline void PBMsgMDAMD::set_asksize5(::google::protobuf::int64 value) {
-  set_has_asksize5();
+  
   asksize5_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.askSize5)
 }
 
 // optional int64 askPrice4 = 19;
-inline bool PBMsgMDAMD::has_askprice4() const {
-  return (_has_bits_[0] & 0x00008000u) != 0;
-}
-inline void PBMsgMDAMD::set_has_askprice4() {
-  _has_bits_[0] |= 0x00008000u;
-}
-inline void PBMsgMDAMD::clear_has_askprice4() {
-  _has_bits_[0] &= ~0x00008000u;
-}
 inline void PBMsgMDAMD::clear_askprice4() {
   askprice4_ = GOOGLE_LONGLONG(0);
-  clear_has_askprice4();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::askprice4() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.askPrice4)
   return askprice4_;
 }
 inline void PBMsgMDAMD::set_askprice4(::google::protobuf::int64 value) {
-  set_has_askprice4();
+  
   askprice4_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.askPrice4)
 }
 
 // optional int64 askSize4 = 20;
-inline bool PBMsgMDAMD::has_asksize4() const {
-  return (_has_bits_[0] & 0x00010000u) != 0;
-}
-inline void PBMsgMDAMD::set_has_asksize4() {
-  _has_bits_[0] |= 0x00010000u;
-}
-inline void PBMsgMDAMD::clear_has_asksize4() {
-  _has_bits_[0] &= ~0x00010000u;
-}
 inline void PBMsgMDAMD::clear_asksize4() {
   asksize4_ = GOOGLE_LONGLONG(0);
-  clear_has_asksize4();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::asksize4() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.askSize4)
   return asksize4_;
 }
 inline void PBMsgMDAMD::set_asksize4(::google::protobuf::int64 value) {
-  set_has_asksize4();
+  
   asksize4_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.askSize4)
 }
 
 // optional int64 askPrice3 = 21;
-inline bool PBMsgMDAMD::has_askprice3() const {
-  return (_has_bits_[0] & 0x00020000u) != 0;
-}
-inline void PBMsgMDAMD::set_has_askprice3() {
-  _has_bits_[0] |= 0x00020000u;
-}
-inline void PBMsgMDAMD::clear_has_askprice3() {
-  _has_bits_[0] &= ~0x00020000u;
-}
 inline void PBMsgMDAMD::clear_askprice3() {
   askprice3_ = GOOGLE_LONGLONG(0);
-  clear_has_askprice3();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::askprice3() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.askPrice3)
   return askprice3_;
 }
 inline void PBMsgMDAMD::set_askprice3(::google::protobuf::int64 value) {
-  set_has_askprice3();
+  
   askprice3_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.askPrice3)
 }
 
 // optional int64 askSize3 = 22;
-inline bool PBMsgMDAMD::has_asksize3() const {
-  return (_has_bits_[0] & 0x00040000u) != 0;
-}
-inline void PBMsgMDAMD::set_has_asksize3() {
-  _has_bits_[0] |= 0x00040000u;
-}
-inline void PBMsgMDAMD::clear_has_asksize3() {
-  _has_bits_[0] &= ~0x00040000u;
-}
 inline void PBMsgMDAMD::clear_asksize3() {
   asksize3_ = GOOGLE_LONGLONG(0);
-  clear_has_asksize3();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::asksize3() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.askSize3)
   return asksize3_;
 }
 inline void PBMsgMDAMD::set_asksize3(::google::protobuf::int64 value) {
-  set_has_asksize3();
+  
   asksize3_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.askSize3)
 }
 
 // optional int64 askPrice2 = 23;
-inline bool PBMsgMDAMD::has_askprice2() const {
-  return (_has_bits_[0] & 0x00080000u) != 0;
-}
-inline void PBMsgMDAMD::set_has_askprice2() {
-  _has_bits_[0] |= 0x00080000u;
-}
-inline void PBMsgMDAMD::clear_has_askprice2() {
-  _has_bits_[0] &= ~0x00080000u;
-}
 inline void PBMsgMDAMD::clear_askprice2() {
   askprice2_ = GOOGLE_LONGLONG(0);
-  clear_has_askprice2();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::askprice2() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.askPrice2)
   return askprice2_;
 }
 inline void PBMsgMDAMD::set_askprice2(::google::protobuf::int64 value) {
-  set_has_askprice2();
+  
   askprice2_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.askPrice2)
 }
 
 // optional int64 askSize2 = 24;
-inline bool PBMsgMDAMD::has_asksize2() const {
-  return (_has_bits_[0] & 0x00100000u) != 0;
-}
-inline void PBMsgMDAMD::set_has_asksize2() {
-  _has_bits_[0] |= 0x00100000u;
-}
-inline void PBMsgMDAMD::clear_has_asksize2() {
-  _has_bits_[0] &= ~0x00100000u;
-}
 inline void PBMsgMDAMD::clear_asksize2() {
   asksize2_ = GOOGLE_LONGLONG(0);
-  clear_has_asksize2();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::asksize2() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.askSize2)
   return asksize2_;
 }
 inline void PBMsgMDAMD::set_asksize2(::google::protobuf::int64 value) {
-  set_has_asksize2();
+  
   asksize2_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.askSize2)
 }
 
 // optional int64 askPrice1 = 25;
-inline bool PBMsgMDAMD::has_askprice1() const {
-  return (_has_bits_[0] & 0x00200000u) != 0;
-}
-inline void PBMsgMDAMD::set_has_askprice1() {
-  _has_bits_[0] |= 0x00200000u;
-}
-inline void PBMsgMDAMD::clear_has_askprice1() {
-  _has_bits_[0] &= ~0x00200000u;
-}
 inline void PBMsgMDAMD::clear_askprice1() {
   askprice1_ = GOOGLE_LONGLONG(0);
-  clear_has_askprice1();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::askprice1() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.askPrice1)
   return askprice1_;
 }
 inline void PBMsgMDAMD::set_askprice1(::google::protobuf::int64 value) {
-  set_has_askprice1();
+  
   askprice1_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.askPrice1)
 }
 
 // optional int64 askSize1 = 26;
-inline bool PBMsgMDAMD::has_asksize1() const {
-  return (_has_bits_[0] & 0x00400000u) != 0;
-}
-inline void PBMsgMDAMD::set_has_asksize1() {
-  _has_bits_[0] |= 0x00400000u;
-}
-inline void PBMsgMDAMD::clear_has_asksize1() {
-  _has_bits_[0] &= ~0x00400000u;
-}
 inline void PBMsgMDAMD::clear_asksize1() {
   asksize1_ = GOOGLE_LONGLONG(0);
-  clear_has_asksize1();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::asksize1() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.askSize1)
   return asksize1_;
 }
 inline void PBMsgMDAMD::set_asksize1(::google::protobuf::int64 value) {
-  set_has_asksize1();
+  
   asksize1_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.askSize1)
 }
 
 // optional int64 bidPrice1 = 27;
-inline bool PBMsgMDAMD::has_bidprice1() const {
-  return (_has_bits_[0] & 0x00800000u) != 0;
-}
-inline void PBMsgMDAMD::set_has_bidprice1() {
-  _has_bits_[0] |= 0x00800000u;
-}
-inline void PBMsgMDAMD::clear_has_bidprice1() {
-  _has_bits_[0] &= ~0x00800000u;
-}
 inline void PBMsgMDAMD::clear_bidprice1() {
   bidprice1_ = GOOGLE_LONGLONG(0);
-  clear_has_bidprice1();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::bidprice1() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.bidPrice1)
   return bidprice1_;
 }
 inline void PBMsgMDAMD::set_bidprice1(::google::protobuf::int64 value) {
-  set_has_bidprice1();
+  
   bidprice1_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.bidPrice1)
 }
 
 // optional int64 bidSize1 = 28;
-inline bool PBMsgMDAMD::has_bidsize1() const {
-  return (_has_bits_[0] & 0x01000000u) != 0;
-}
-inline void PBMsgMDAMD::set_has_bidsize1() {
-  _has_bits_[0] |= 0x01000000u;
-}
-inline void PBMsgMDAMD::clear_has_bidsize1() {
-  _has_bits_[0] &= ~0x01000000u;
-}
 inline void PBMsgMDAMD::clear_bidsize1() {
   bidsize1_ = GOOGLE_LONGLONG(0);
-  clear_has_bidsize1();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::bidsize1() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.bidSize1)
   return bidsize1_;
 }
 inline void PBMsgMDAMD::set_bidsize1(::google::protobuf::int64 value) {
-  set_has_bidsize1();
+  
   bidsize1_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.bidSize1)
 }
 
 // optional int64 bidPrice2 = 29;
-inline bool PBMsgMDAMD::has_bidprice2() const {
-  return (_has_bits_[0] & 0x02000000u) != 0;
-}
-inline void PBMsgMDAMD::set_has_bidprice2() {
-  _has_bits_[0] |= 0x02000000u;
-}
-inline void PBMsgMDAMD::clear_has_bidprice2() {
-  _has_bits_[0] &= ~0x02000000u;
-}
 inline void PBMsgMDAMD::clear_bidprice2() {
   bidprice2_ = GOOGLE_LONGLONG(0);
-  clear_has_bidprice2();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::bidprice2() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.bidPrice2)
   return bidprice2_;
 }
 inline void PBMsgMDAMD::set_bidprice2(::google::protobuf::int64 value) {
-  set_has_bidprice2();
+  
   bidprice2_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.bidPrice2)
 }
 
 // optional int64 bidSize2 = 30;
-inline bool PBMsgMDAMD::has_bidsize2() const {
-  return (_has_bits_[0] & 0x04000000u) != 0;
-}
-inline void PBMsgMDAMD::set_has_bidsize2() {
-  _has_bits_[0] |= 0x04000000u;
-}
-inline void PBMsgMDAMD::clear_has_bidsize2() {
-  _has_bits_[0] &= ~0x04000000u;
-}
 inline void PBMsgMDAMD::clear_bidsize2() {
   bidsize2_ = GOOGLE_LONGLONG(0);
-  clear_has_bidsize2();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::bidsize2() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.bidSize2)
   return bidsize2_;
 }
 inline void PBMsgMDAMD::set_bidsize2(::google::protobuf::int64 value) {
-  set_has_bidsize2();
+  
   bidsize2_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.bidSize2)
 }
 
 // optional int64 bidPrice3 = 31;
-inline bool PBMsgMDAMD::has_bidprice3() const {
-  return (_has_bits_[0] & 0x08000000u) != 0;
-}
-inline void PBMsgMDAMD::set_has_bidprice3() {
-  _has_bits_[0] |= 0x08000000u;
-}
-inline void PBMsgMDAMD::clear_has_bidprice3() {
-  _has_bits_[0] &= ~0x08000000u;
-}
 inline void PBMsgMDAMD::clear_bidprice3() {
   bidprice3_ = GOOGLE_LONGLONG(0);
-  clear_has_bidprice3();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::bidprice3() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.bidPrice3)
   return bidprice3_;
 }
 inline void PBMsgMDAMD::set_bidprice3(::google::protobuf::int64 value) {
-  set_has_bidprice3();
+  
   bidprice3_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.bidPrice3)
 }
 
 // optional int64 bidSize3 = 32;
-inline bool PBMsgMDAMD::has_bidsize3() const {
-  return (_has_bits_[0] & 0x10000000u) != 0;
-}
-inline void PBMsgMDAMD::set_has_bidsize3() {
-  _has_bits_[0] |= 0x10000000u;
-}
-inline void PBMsgMDAMD::clear_has_bidsize3() {
-  _has_bits_[0] &= ~0x10000000u;
-}
 inline void PBMsgMDAMD::clear_bidsize3() {
   bidsize3_ = GOOGLE_LONGLONG(0);
-  clear_has_bidsize3();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::bidsize3() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.bidSize3)
   return bidsize3_;
 }
 inline void PBMsgMDAMD::set_bidsize3(::google::protobuf::int64 value) {
-  set_has_bidsize3();
+  
   bidsize3_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.bidSize3)
 }
 
 // optional int64 bidPrice4 = 33;
-inline bool PBMsgMDAMD::has_bidprice4() const {
-  return (_has_bits_[0] & 0x20000000u) != 0;
-}
-inline void PBMsgMDAMD::set_has_bidprice4() {
-  _has_bits_[0] |= 0x20000000u;
-}
-inline void PBMsgMDAMD::clear_has_bidprice4() {
-  _has_bits_[0] &= ~0x20000000u;
-}
 inline void PBMsgMDAMD::clear_bidprice4() {
   bidprice4_ = GOOGLE_LONGLONG(0);
-  clear_has_bidprice4();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::bidprice4() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.bidPrice4)
   return bidprice4_;
 }
 inline void PBMsgMDAMD::set_bidprice4(::google::protobuf::int64 value) {
-  set_has_bidprice4();
+  
   bidprice4_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.bidPrice4)
 }
 
 // optional int64 bidSize4 = 34;
-inline bool PBMsgMDAMD::has_bidsize4() const {
-  return (_has_bits_[0] & 0x40000000u) != 0;
-}
-inline void PBMsgMDAMD::set_has_bidsize4() {
-  _has_bits_[0] |= 0x40000000u;
-}
-inline void PBMsgMDAMD::clear_has_bidsize4() {
-  _has_bits_[0] &= ~0x40000000u;
-}
 inline void PBMsgMDAMD::clear_bidsize4() {
   bidsize4_ = GOOGLE_LONGLONG(0);
-  clear_has_bidsize4();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::bidsize4() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.bidSize4)
   return bidsize4_;
 }
 inline void PBMsgMDAMD::set_bidsize4(::google::protobuf::int64 value) {
-  set_has_bidsize4();
+  
   bidsize4_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.bidSize4)
 }
 
 // optional int64 bidPrice5 = 35;
-inline bool PBMsgMDAMD::has_bidprice5() const {
-  return (_has_bits_[0] & 0x80000000u) != 0;
-}
-inline void PBMsgMDAMD::set_has_bidprice5() {
-  _has_bits_[0] |= 0x80000000u;
-}
-inline void PBMsgMDAMD::clear_has_bidprice5() {
-  _has_bits_[0] &= ~0x80000000u;
-}
 inline void PBMsgMDAMD::clear_bidprice5() {
   bidprice5_ = GOOGLE_LONGLONG(0);
-  clear_has_bidprice5();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::bidprice5() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.bidPrice5)
   return bidprice5_;
 }
 inline void PBMsgMDAMD::set_bidprice5(::google::protobuf::int64 value) {
-  set_has_bidprice5();
+  
   bidprice5_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.bidPrice5)
 }
 
 // optional int64 bidSize5 = 36;
-inline bool PBMsgMDAMD::has_bidsize5() const {
-  return (_has_bits_[1] & 0x00000001u) != 0;
-}
-inline void PBMsgMDAMD::set_has_bidsize5() {
-  _has_bits_[1] |= 0x00000001u;
-}
-inline void PBMsgMDAMD::clear_has_bidsize5() {
-  _has_bits_[1] &= ~0x00000001u;
-}
 inline void PBMsgMDAMD::clear_bidsize5() {
   bidsize5_ = GOOGLE_LONGLONG(0);
-  clear_has_bidsize5();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::bidsize5() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.bidSize5)
   return bidsize5_;
 }
 inline void PBMsgMDAMD::set_bidsize5(::google::protobuf::int64 value) {
-  set_has_bidsize5();
+  
   bidsize5_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.bidSize5)
 }
 
 // optional int64 preSettlePrice = 37;
-inline bool PBMsgMDAMD::has_presettleprice() const {
-  return (_has_bits_[1] & 0x00000002u) != 0;
-}
-inline void PBMsgMDAMD::set_has_presettleprice() {
-  _has_bits_[1] |= 0x00000002u;
-}
-inline void PBMsgMDAMD::clear_has_presettleprice() {
-  _has_bits_[1] &= ~0x00000002u;
-}
 inline void PBMsgMDAMD::clear_presettleprice() {
   presettleprice_ = GOOGLE_LONGLONG(0);
-  clear_has_presettleprice();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::presettleprice() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.preSettlePrice)
   return presettleprice_;
 }
 inline void PBMsgMDAMD::set_presettleprice(::google::protobuf::int64 value) {
-  set_has_presettleprice();
+  
   presettleprice_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.preSettlePrice)
 }
 
 // optional int64 priceChange = 38;
-inline bool PBMsgMDAMD::has_pricechange() const {
-  return (_has_bits_[1] & 0x00000004u) != 0;
-}
-inline void PBMsgMDAMD::set_has_pricechange() {
-  _has_bits_[1] |= 0x00000004u;
-}
-inline void PBMsgMDAMD::clear_has_pricechange() {
-  _has_bits_[1] &= ~0x00000004u;
-}
 inline void PBMsgMDAMD::clear_pricechange() {
   pricechange_ = GOOGLE_LONGLONG(0);
-  clear_has_pricechange();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::pricechange() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.priceChange)
   return pricechange_;
 }
 inline void PBMsgMDAMD::set_pricechange(::google::protobuf::int64 value) {
-  set_has_pricechange();
+  
   pricechange_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.priceChange)
 }
 
 // optional int64 settlePrice = 39;
-inline bool PBMsgMDAMD::has_settleprice() const {
-  return (_has_bits_[1] & 0x00000008u) != 0;
-}
-inline void PBMsgMDAMD::set_has_settleprice() {
-  _has_bits_[1] |= 0x00000008u;
-}
-inline void PBMsgMDAMD::clear_has_settleprice() {
-  _has_bits_[1] &= ~0x00000008u;
-}
 inline void PBMsgMDAMD::clear_settleprice() {
   settleprice_ = GOOGLE_LONGLONG(0);
-  clear_has_settleprice();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::settleprice() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.settlePrice)
   return settleprice_;
 }
 inline void PBMsgMDAMD::set_settleprice(::google::protobuf::int64 value) {
-  set_has_settleprice();
+  
   settleprice_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.settlePrice)
 }
 
 // optional int64 highLimit = 40;
-inline bool PBMsgMDAMD::has_highlimit() const {
-  return (_has_bits_[1] & 0x00000010u) != 0;
-}
-inline void PBMsgMDAMD::set_has_highlimit() {
-  _has_bits_[1] |= 0x00000010u;
-}
-inline void PBMsgMDAMD::clear_has_highlimit() {
-  _has_bits_[1] &= ~0x00000010u;
-}
 inline void PBMsgMDAMD::clear_highlimit() {
   highlimit_ = GOOGLE_LONGLONG(0);
-  clear_has_highlimit();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::highlimit() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.highLimit)
   return highlimit_;
 }
 inline void PBMsgMDAMD::set_highlimit(::google::protobuf::int64 value) {
-  set_has_highlimit();
+  
   highlimit_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.highLimit)
 }
 
 // optional int64 lowLimit = 41;
-inline bool PBMsgMDAMD::has_lowlimit() const {
-  return (_has_bits_[1] & 0x00000020u) != 0;
-}
-inline void PBMsgMDAMD::set_has_lowlimit() {
-  _has_bits_[1] |= 0x00000020u;
-}
-inline void PBMsgMDAMD::clear_has_lowlimit() {
-  _has_bits_[1] &= ~0x00000020u;
-}
 inline void PBMsgMDAMD::clear_lowlimit() {
   lowlimit_ = GOOGLE_LONGLONG(0);
-  clear_has_lowlimit();
 }
 inline ::google::protobuf::int64 PBMsgMDAMD::lowlimit() const {
   // @@protoc_insertion_point(field_get:PBWrapMsgMDA.PBMsgMDAMD.lowLimit)
   return lowlimit_;
 }
 inline void PBMsgMDAMD::set_lowlimit(::google::protobuf::int64 value) {
-  set_has_lowlimit();
+  
   lowlimit_ = value;
   // @@protoc_insertion_point(field_set:PBWrapMsgMDA.PBMsgMDAMD.lowLimit)
 }
