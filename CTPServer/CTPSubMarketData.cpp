@@ -7,6 +7,7 @@
 
 #include "CTPSubMarketData.h"
 #include "CTPRawAPI.h"
+#include "../dataobject/MarketDataDO.h"
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/FieldName.h"
 #include <glog/logging.h>
@@ -62,14 +63,11 @@ dataobj_ptr CTPSubMarketData::HandleResponse(ParamVector& rawRespParams, IRawAPI
 {
 	CTPUtility::CheckError(rawRespParams[1]);
 
-	dataobj_ptr ret;
-	auto pRspInstr = (CThostFtdcSpecificInstrumentField*)rawRespParams[0];
-	auto EOFFlag = *((bool*)rawRespParams[3]);
+	VectorDO_Ptr<MarketDataDO> ret = std::make_shared<VectorDO<MarketDataDO>>();
 
-	auto stDO = new TMultiRecordDO < std::string > ;
-	ret.reset(stDO);
-	stDO->Data = pRspInstr->InstrumentID;
-	stDO->EOFFlag = EOFFlag;
+	auto pRspInstr = (CThostFtdcSpecificInstrumentField*)rawRespParams[0];
+
+	ret->push_back(MarketDataDO("", pRspInstr->InstrumentID));
 
 	DLOG(INFO) << "Subcrible InstID: " << pRspInstr->InstrumentID << std::endl;
 

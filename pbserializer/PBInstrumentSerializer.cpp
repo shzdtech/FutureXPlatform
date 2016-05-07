@@ -7,7 +7,7 @@
 
 #include "PBInstrumentSerializer.h"
 #include "PBStringTableSerializer.h"
-#include "proto/PBMsgTrader.pb.h"
+#include "proto/businessobj.pb.h"
 #include "../dataobject/InstrumentDO.h"
 
 ////////////////////////////////////////////////////////////////////////
@@ -20,14 +20,14 @@
 
 data_buffer PBInstrumentSerializer::Serialize(const dataobj_ptr abstractDO)
 {
-	PBMsgTrader::PBMsgQueryRspInstrumentInfo PB;
+	Micro::Future::Message::Business::PBContractInfo PB;
 	auto pDO = (InstrumentDO*)abstractDO.get();
 
-	PB.set_instrumentid(pDO->InstrumentID().data());
-	PB.set_exchangeid(pDO->ExchangeID().data());
-	PB.set_instrumentname(pDO->Name);
+	PB.set_exchange(pDO->ExchangeID().data());
+	PB.set_contract(pDO->InstrumentID().data());
+	PB.set_name(pDO->Name);
 	PB.set_productid(pDO->ProductID);
-	PB.set_productclass(pDO->ProductClass);
+	PB.set_producttype(pDO->ProductType);
 	PB.set_deliveryyear(pDO->DeliveryYear);
 	PB.set_deliverymonth(pDO->DeliveryMonth);
 	PB.set_maxmarketordervolume(pDO->MaxMarketOrderVolume);
@@ -41,7 +41,7 @@ data_buffer PBInstrumentSerializer::Serialize(const dataobj_ptr abstractDO)
 	PB.set_expiredate(pDO->ExpireDate);
 	PB.set_startdelivdate(pDO->StartDelivDate);
 	PB.set_enddelivdate(pDO->EndDelivDate);
-	PB.set_instlifephase(pDO->InstLifePhase);
+	PB.set_lifephase(pDO->LifePhase);
 	PB.set_istrading(pDO->IsTrading);
 	PB.set_positiontype(pDO->PositionType);
 	PB.set_positiondatetype(pDO->PositionDateType);

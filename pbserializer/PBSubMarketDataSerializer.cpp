@@ -7,6 +7,7 @@
 
 #include "PBSubMarketDataSerializer.h"
 #include "PBStringTableSerializer.h"
+#include "PBMarketDataSerializer.h"
 #include "../dataobject/TemplateDO.h"
 #include "proto/simpletable.pb.h"
 ////////////////////////////////////////////////////////////////////////
@@ -21,17 +22,7 @@ using namespace Micro::Future::Message::Business;
 
 data_buffer PBSubMarketDataSerializer::Serialize(const dataobj_ptr abstractDO)
 {
-	StringResponse PB;
-	auto pDO = (TMultiRecordDO<std::string>*)abstractDO.get();
-
-	PB.set_eof(pDO->EOFFlag);
-	PB.set_value(pDO->Data);
-
-	int bufsize = PB.ByteSize();
-	uint8_t* buf = new uint8_t[bufsize];
-	PB.SerializeToArray(buf, bufsize);
-
-	return data_buffer(buf, bufsize);
+	return PBMarketDataSerializer::Instance()->Serialize(abstractDO);
 }
 
 ////////////////////////////////////////////////////////////////////////

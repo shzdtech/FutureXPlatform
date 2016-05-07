@@ -317,3 +317,65 @@ message PBAccountInfo {
 	///保底期货结算准备金
 	double	reserveBalance = 32;
 }
+
+message PBMarketInfo {
+	//交易所代码
+	string exchange = 1;
+	//交易所名称
+	bytes name = 2;
+	//交易所属性
+	bytes property = 3;
+}
+
+message PBContractInfo {
+	///交易所代码
+	string exchange  = 1;
+	///合约代码
+	string	contract = 2;
+	///合约名称
+	bytes name = 3;
+	///产品代码
+	string productID = 4;
+	///产品类型
+	int32 productType = 5;
+	///交割年份
+	int32 deliveryYear = 6;
+	///交割月
+	int32 deliveryMonth = 7;
+	///市价单最大下单量
+	int32 maxMarketOrderVolume = 8;
+	///市价单最小下单量
+	int32 minMarketOrderVolume = 9;
+	///限价单最大下单量
+	int32 maxLimitOrderVolume = 10;
+	///限价单最小下单量
+	int32 minLimitOrderVolume = 11;
+	///合约数量乘数
+	int32 volumeMultiple = 12;
+	///最小变动价位
+	int32 priceTick = 13;
+	///创建日
+	string createDate = 14;
+	///上市日
+	string openDate = 15;
+	///到期日
+	string expireDate = 16;
+	///开始交割日
+	string startDelivDate = 17;
+	///结束交割日
+	string endDelivDate = 18;
+	///合约生命周期状态
+	string lifePhase = 19;
+	///当前是否交易
+	int32 isTrading = 20;
+	///持仓类型
+	int32 positionType = 21;
+	///持仓日期类型
+	int32 positionDateType = 22;
+	///多头保证金率
+	double longMarginRatio = 23;
+	///空头保证金率
+	double shortMarginRatio = 24;
+	///是否使用大额单边保证金算法
+	string maxMarginSideAlgorithm = 25;
+}

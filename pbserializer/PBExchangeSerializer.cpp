@@ -7,7 +7,7 @@
 
 #include "PBExchangeSerializer.h"
 #include "PBStringTableSerializer.h"
-#include "proto/PBMsgTrader.pb.h"
+#include "proto/businessobj.pb.h"
 #include "../dataobject/ExchangeDO.h"
 
 ////////////////////////////////////////////////////////////////////////
@@ -20,13 +20,12 @@
 
 data_buffer PBExchangeSerializer::Serialize(const dataobj_ptr abstractDO)
 {
-	PBMsgTrader::PBMsgQueryRspMarketInfo PB;
+	Micro::Future::Message::Business::PBMarketInfo PB;
 	auto pDO = (ExchangeDO*)abstractDO.get();
 
-	PB.set_eof(pDO->EOFFlag);
-	PB.set_exchangeid(pDO->ExchangeID);
-	PB.set_exchangename(pDO->Name);
-	PB.set_exchangeproperty(pDO->Property);
+	PB.set_exchange(pDO->ExchangeID);
+	PB.set_name(pDO->Name);
+	PB.set_property(pDO->Property);
 
 	int bufSz = PB.ByteSize();
 	uint8_t* buff = new uint8_t[bufSz];

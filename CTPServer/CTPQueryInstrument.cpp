@@ -70,9 +70,9 @@ dataobj_ptr CTPQueryInstrument::HandleResponse(ParamVector& rawRespParams, IRawA
 		auto pDO = new InstrumentDO(pData->ExchangeID, pData->InstrumentID);
 		ret.reset(pDO);
 
-		pDO->Name = pData->InstrumentName;
+		pDO->Name = Encoding::ToUTF8(pData->InstrumentName, Encoding::CHARSET_GB2312);
 		pDO->ProductID = pData->ProductID;
-		pDO->ProductClass = pData->ProductClass;
+		pDO->ProductType = (ProductType)(pData->ProductClass - THOST_FTDC_PC_Futures);
 		pDO->DeliveryYear = pData->DeliveryYear;
 		pDO->DeliveryMonth = pData->DeliveryMonth;
 		pDO->MaxMarketOrderVolume = pData->MaxMarketOrderVolume;
@@ -86,10 +86,10 @@ dataobj_ptr CTPQueryInstrument::HandleResponse(ParamVector& rawRespParams, IRawA
 		pDO->ExpireDate = pData->ExpireDate;
 		pDO->StartDelivDate = pData->StartDelivDate;
 		pDO->EndDelivDate = pData->EndDelivDate;
-		pDO->InstLifePhase = pData->InstLifePhase;
+		pDO->LifePhase = pData->InstLifePhase;
 		pDO->IsTrading = pData->IsTrading;
-		pDO->PositionType = pData->PositionType;
-		pDO->PositionDateType = pData->PositionDateType;
+		pDO->PositionType = (PositionType)(pData->PositionType - THOST_FTDC_PT_Net);
+		pDO->PositionDateType = (PositionDateType)(pData->PositionDateType - THOST_FTDC_PDT_UseHistory);
 		pDO->LongMarginRatio = pData->LongMarginRatio;
 		pDO->ShortMarginRatio = pData->ShortMarginRatio;
 		pDO->MaxMarginSideAlgorithm = pData->MaxMarginSideAlgorithm;

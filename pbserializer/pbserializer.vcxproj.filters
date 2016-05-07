@@ -60,12 +60,6 @@
     <ClInclude Include="PBAccountInfoSerializer.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="proto\PBMsgMDA.pb.h">
-      <Filter>protos</Filter>
-    </ClInclude>
-    <ClInclude Include="proto\PBMsgTrader.pb.h">
-      <Filter>protos</Filter>
-    </ClInclude>
     <ClInclude Include="pbserializers.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -149,12 +143,6 @@
     <ClCompile Include="PBUserPositionSerializer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="proto\PBMsgMDA.pb.cc">
-      <Filter>protos</Filter>
-    </ClCompile>
-    <ClCompile Include="proto\PBMsgTrader.pb.cc">
-      <Filter>protos</Filter>
-    </ClCompile>
     <ClCompile Include="proto\simpletable.pb.cc">
       <Filter>protos</Filter>
     </ClCompile>
@@ -206,12 +194,6 @@
       <Filter>protos</Filter>
     </CustomBuild>
     <CustomBuild Include="..\Protos\errormsg.proto">
-      <Filter>protos</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\Protos\PBMsgMDA.proto">
-      <Filter>protos</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\Protos\PBMsgTrader.proto">
       <Filter>protos</Filter>
     </CustomBuild>
     <CustomBuild Include="..\Protos\simpletable.proto">

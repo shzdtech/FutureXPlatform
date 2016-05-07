@@ -10,6 +10,7 @@
 
 #include "ContractKey.h"
 #include "AbstractDataObj.h"
+#include "EnumTypes.h"
 
 class InstrumentDO : public ContractKey, public AbstractDataObj
 {
@@ -19,15 +20,15 @@ public:
 
 	std::string Name;
 	std::string ProductID;
-	std::string ProductClass;
+	ProductType ProductType;
 	std::string CreateDate;
 	std::string OpenDate;
 	std::string ExpireDate;
 	std::string StartDelivDate;
 	std::string EndDelivDate;
-	std::string InstLifePhase;
-	std::string PositionType;
-	std::string PositionDateType;
+	std::string LifePhase;
+	PositionType PositionType;
+	PositionDateType PositionDateType;
 	std::string MaxMarginSideAlgorithm;
 
 	int DeliveryYear = 0;

@@ -208,10 +208,10 @@ void ConnectionHelper::checkstatus()
 				{
 					try
 					{
-						connptr->close();
 						connptr->reconnect();
 					}
-					catch (...) {}
+					catch (...) {
+					}
 				}
 			};
 		}

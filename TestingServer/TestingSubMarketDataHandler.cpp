@@ -23,6 +23,8 @@
 
 dataobj_ptr TestingSubMarketDataHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
+	VectorDO_Ptr<MarketDataDO> ret = std::make_shared<VectorDO<MarketDataDO>>();
+
 	auto stdo = (StringTableDO*)reqDO.get();
 
 	std::shared_ptr<MarketDataDOMap> mdDOMap_Ptr =
@@ -42,9 +44,10 @@ dataobj_ptr TestingSubMarketDataHandler::HandleRequest(const dataobj_ptr reqDO, 
 		for (auto& inst : instList)
 		{
 			MarketDataDO mdDO("TestExchange", inst);
+			ret->push_back(mdDO);
 			mdDOMap_Ptr->emplace(inst, std::move(mdDO));
 		}
 	}
 
-	return nullptr;
+	return ret;
 }

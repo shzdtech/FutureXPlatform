@@ -16,6 +16,22 @@ enum PositionDirectionType
 	PD_SHORT = 2
 };
 
+enum PositionType
+{
+	///净持仓
+	PT_NET = 0,
+	///综合持仓
+	PT_GROSS = 1
+};
+
+enum PositionDateType
+{
+	///使用历史持仓
+	PDT_USEHISTORY = 0,
+	///不使用历史持仓
+	PDT_NOUSEHISTORY = 1
+};
+
 enum TradingType
 {
 	TRADINGTYPE_MANUAL = 0,
@@ -50,6 +66,22 @@ enum HedgeType
 	HEDGETYPE_ARBITRAGE = 1,
 	///套保
 	HEDGETYPE_HEDGE = 2,
+};
+
+enum ProductType
+{
+	///期货
+	PRODUCT_FUTURE = 0,
+	///期货期权
+	PRODUCT_OPTIONS = 1,
+	///组合
+	PRODUCT_COMBINATION = 2,
+	///即期
+	PRODUCT_SPOT = 3,
+	///期转现
+	PRODUCT_EFP = 4,
+	///现货期权
+	PRODUCT_SPOTOPTION = 5
 };
 
 #endif
