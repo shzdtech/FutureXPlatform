@@ -43,6 +43,9 @@ data_buffer PBStrategySerializer::Serialize(const dataobj_ptr abstractDO)
 		pStrategy->set_offset(sdo.Offset);
 		pStrategy->set_enabled(sdo.Enabled);
 		pStrategy->set_quantity(sdo.Quantity);
+		pStrategy->set_strike(sdo.Strike);
+		pStrategy->set_riskfreerate(sdo.RiskFreeRate);
+		pStrategy->set_volatility(sdo.Volatility);
 
 		for (auto& param : *sdo.ParamMap)
 		{
@@ -95,6 +98,9 @@ dataobj_ptr PBStrategySerializer::Deserialize(const data_buffer& rawdata)
 		sdo.Trading = strategy.allowtrading();
 		sdo.Enabled = strategy.enabled();
 		sdo.Quantity = strategy.quantity();
+		sdo.RiskFreeRate = strategy.riskfreerate();
+		sdo.Volatility = strategy.volatility();
+		sdo.Strike = strategy.strike();
 
 		auto paramMap = std::make_shared<std::map<std::string, double>>();
 		for (auto& param : strategy.params())

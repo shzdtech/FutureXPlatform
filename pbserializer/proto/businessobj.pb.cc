@@ -149,9 +149,9 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBParam, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBParam, _is_default_instance_));
   PBMarketData_descriptor_ = file->message_type(3);
-  static const int PBMarketData_offsets_[18] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMarketData, symbol_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMarketData, timestamp_),
+  static const int PBMarketData_offsets_[21] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMarketData, exhange_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMarketData, contract_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMarketData, preclosevalue_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMarketData, openvalue_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMarketData, turnover_),
@@ -168,6 +168,9 @@ void protobuf_AssignDesc_businessobj_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMarketData, settleprice_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMarketData, highlimit_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMarketData, lowlimit_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMarketData, preopeninterest_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMarketData, openinterest_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMarketData, averageprice_),
   };
   PBMarketData_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
@@ -246,18 +249,21 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategyWeight, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategyWeight, _is_default_instance_));
   PBStrategy_descriptor_ = file->message_type(8);
-  static const int PBStrategy_offsets_[13] = {
+  static const int PBStrategy_offsets_[16] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, exchange_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, contract_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, underlying_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, symbol_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, description_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, allowtrading_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, enabled_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, quantity_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, depth_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, spread_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, offset_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, enabled_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, strike_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, riskfreerate_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, volatility_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, weightcontract_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, params_),
   };
@@ -667,8 +673,8 @@ void protobuf_AddDesc_businessobj_2eproto() {
     "\npermission\030\t \001(\005\"M\n\016PBUserInfoList\022;\n\010u"
     "serInfo\030\001 \003(\0132).Micro.Future.Message.Bus"
     "iness.PBUserInfo\"&\n\007PBParam\022\014\n\004name\030\001 \001("
-    "\t\022\r\n\005value\030\002 \001(\001\"\347\002\n\014PBMarketData\022\016\n\006sym"
-    "bol\030\001 \001(\t\022\021\n\ttimeStamp\030\002 \001(\t\022\025\n\rpreClose"
+    "\t\022\r\n\005value\030\002 \001(\001\"\254\003\n\014PBMarketData\022\017\n\007exh"
+    "ange\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022\025\n\rpreClose"
     "Value\030\003 \001(\001\022\021\n\topenValue\030\004 \001(\001\022\020\n\010turnov"
     "er\030\005 \001(\001\022\016\n\006volume\030\006 \001(\005\022\021\n\thighValue\030\007 "
     "\001(\001\022\020\n\010lowValue\030\010 \001(\001\022\022\n\nmatchPrice\030\t \001("
@@ -676,95 +682,98 @@ void protobuf_AddDesc_businessobj_2eproto() {
     "\n\010bidPrice\030\014 \003(\001\022\021\n\tbidVolume\030\r \003(\005\022\026\n\016p"
     "reSettlePrice\030\016 \001(\001\022\023\n\013priceChange\030\017 \001(\001"
     "\022\023\n\013settlePrice\030\020 \001(\001\022\021\n\thighLimit\030\021 \001(\005"
-    "\022\020\n\010lowLimit\030\022 \001(\005\"O\n\020PBMarketDataList\022;"
-    "\n\006mdList\030\001 \003(\0132+.Micro.Future.Message.Bu"
-    "siness.PBMarketData\"W\n\rPBPricingData\022\020\n\010"
-    "exchange\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022\020\n\010askP"
-    "rice\030\003 \001(\001\022\020\n\010bidPrice\030\004 \001(\001\"R\n\021PBPricin"
-    "gDataList\022=\n\007pricing\030\001 \003(\0132,.Micro.Futur"
-    "e.Message.Business.PBPricingData\"F\n\020PBSt"
-    "rategyWeight\022\020\n\010exchange\030\003 \001(\t\022\020\n\010contra"
-    "ct\030\004 \001(\t\022\016\n\006weight\030\006 \001(\002\"\322\002\n\nPBStrategy\022"
-    "\020\n\010exchange\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022\022\n\nu"
-    "nderlying\030\003 \001(\t\022\016\n\006symbol\030\004 \001(\t\022\023\n\013descr"
-    "iption\030\005 \001(\t\022\024\n\014allowTrading\030\006 \001(\010\022\020\n\010qu"
-    "antity\030\007 \001(\005\022\r\n\005depth\030\010 \001(\005\022\016\n\006spread\030\t "
-    "\001(\002\022\016\n\006offset\030\n \001(\002\022\017\n\007enabled\030\013 \001(\010\022G\n\016"
-    "weightContract\030\014 \003(\0132/.Micro.Future.Mess"
-    "age.Business.PBStrategyWeight\0226\n\006params\030"
-    "\r \003(\0132&.Micro.Future.Message.Business.PB"
-    "Param\"M\n\016PBStrategyList\022;\n\010strategy\030\001 \003("
-    "\0132).Micro.Future.Message.Business.PBStra"
-    "tegy\"V\n\017PBContractParam\022\020\n\010exchange\030\001 \001("
-    "\t\022\020\n\010contract\030\002 \001(\t\022\020\n\010depthVol\030\003 \001(\005\022\r\n"
-    "\005gamma\030\004 \001(\002\"U\n\023PBContractParamList\022>\n\006p"
-    "arams\030\001 \003(\0132..Micro.Future.Message.Busin"
-    "ess.PBContractParam\"F\n\016PBOTCUserParam\022\020\n"
-    "\010exchange\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022\020\n\010qua"
-    "ntity\030\003 \001(\002\"S\n\022PBOTCUserParamList\022=\n\006par"
-    "ams\030\001 \003(\0132-.Micro.Future.Message.Busines"
-    "s.PBOTCUserParam\"\353\003\n\013PBOrderInfo\022\017\n\007orde"
-    "rID\030\001 \001(\004\022\022\n\norderSysID\030\002 \001(\004\022\020\n\010brokerI"
-    "D\030\003 \001(\t\022\022\n\ninvestorID\030\004 \001(\t\022\020\n\010exchange\030"
-    "\005 \001(\t\022\020\n\010contract\030\006 \001(\t\022\020\n\010execType\030\007 \001("
-    "\005\022\013\n\003tif\030\010 \001(\005\022\023\n\013tradingType\030\t \001(\005\022\021\n\td"
-    "irection\030\n \001(\005\022\022\n\nlimitPrice\030\013 \001(\001\022\021\n\tst"
-    "opPrice\030\014 \001(\001\022\023\n\013orderStatus\030\r \001(\005\022\021\n\tor"
-    "derType\030\016 \001(\005\022\016\n\006volume\030\017 \001(\005\022\022\n\ninsertT"
-    "ime\030\021 \001(\t\022\022\n\nupdateTime\030\022 \001(\t\022\022\n\ncancelT"
-    "ime\030\023 \001(\t\022\024\n\014volumeTraded\030\024 \001(\005\022\024\n\014volum"
-    "eRemain\030\025 \001(\005\022\027\n\017volumeCondition\030\026 \001(\005\022\022"
-    "\n\ntradingDay\030\027 \001(\005\022\016\n\006active\030\030 \001(\010\022\021\n\top"
-    "enclose\030\031 \001(\005\022\017\n\007message\030\032 \001(\014\"\302\002\n\013PBTra"
-    "deInfo\022\017\n\007tradeID\030\001 \001(\004\022\021\n\tdirection\030\002 \001"
-    "(\005\022\021\n\topenclose\030\003 \001(\005\022\022\n\norderSysID\030\004 \001("
-    "\004\022\017\n\007orderID\030\005 \001(\004\022\r\n\005price\030\006 \001(\001\022\016\n\006vol"
-    "ume\030\007 \001(\005\022\020\n\010brokerID\030\010 \001(\t\022\022\n\ninvestorI"
-    "D\030\t \001(\t\022\020\n\010exchange\030\n \001(\t\022\020\n\010contract\030\013 "
-    "\001(\t\022\016\n\006userID\030\014 \001(\t\022\021\n\ttradeDate\030\r \001(\t\022\021"
-    "\n\ttradeTime\030\016 \001(\t\022\021\n\ttradeType\030\017 \001(\005\022\021\n\t"
-    "hedgeFlag\030\020 \001(\005\022\022\n\ncommission\030\021 \001(\001\"\274\002\n\n"
-    "PBPosition\022\020\n\010exchange\030\001 \001(\t\022\020\n\010contract"
-    "\030\002 \001(\t\022\021\n\tdirection\030\003 \001(\005\022\020\n\010position\030\005 "
-    "\001(\005\022\022\n\nydPosition\030\004 \001(\005\022\024\n\014positionDate\030"
-    "\006 \001(\t\022\022\n\nopenVolume\030\007 \001(\005\022\023\n\013closeVolume"
-    "\030\010 \001(\005\022\022\n\nopenAmount\030\t \001(\001\022\023\n\013closeAmoun"
-    "t\030\n \001(\001\022\014\n\004cost\030\013 \001(\001\022\020\n\010openCost\030\014 \001(\001\022"
-    "\016\n\006profit\030\r \001(\001\022\023\n\013closeProfit\030\016 \001(\001\022\021\n\t"
-    "useMargin\030\017 \001(\001\022\021\n\thedgeFlag\030\020 \001(\005\"\213\005\n\rP"
-    "BAccountInfo\022\020\n\010brokerID\030\002 \001(\t\022\021\n\taccoun"
-    "tID\030\003 \001(\t\022\023\n\013preMortgage\030\004 \001(\001\022\021\n\tpreCre"
-    "dit\030\005 \001(\001\022\022\n\npreDeposit\030\006 \001(\001\022\022\n\npreBala"
-    "nce\030\007 \001(\001\022\021\n\tpreMargin\030\010 \001(\001\022\024\n\014interest"
-    "Base\030\t \001(\001\022\020\n\010interest\030\n \001(\001\022\017\n\007deposit\030"
-    "\013 \001(\001\022\020\n\010withdraw\030\014 \001(\001\022\024\n\014frozenMargin\030"
-    "\r \001(\001\022\022\n\nfrozenCash\030\016 \001(\001\022\030\n\020frozenCommi"
-    "ssion\030\017 \001(\001\022\022\n\ncurrMargin\030\020 \001(\001\022\016\n\006cashI"
-    "n\030\021 \001(\001\022\022\n\ncommission\030\022 \001(\001\022\023\n\013closeProf"
-    "it\030\023 \001(\001\022\026\n\016positionProfit\030\024 \001(\001\022\017\n\007bala"
-    "nce\030\025 \001(\001\022\021\n\tavailable\030\026 \001(\001\022\025\n\rwithdraw"
-    "Quota\030\027 \001(\001\022\017\n\007reserve\030\030 \001(\001\022\022\n\ntradingD"
-    "ay\030\031 \001(\t\022\024\n\014settlementID\030\032 \001(\005\022\016\n\006credit"
-    "\030\033 \001(\001\022\020\n\010mortgage\030\034 \001(\001\022\026\n\016exchangeMarg"
-    "in\030\035 \001(\001\022\026\n\016deliveryMargin\030\036 \001(\001\022\036\n\026exch"
-    "angeDeliveryMargin\030\037 \001(\001\022\026\n\016reserveBalan"
-    "ce\030  \001(\001\"@\n\014PBMarketInfo\022\020\n\010exchange\030\001 \001"
-    "(\t\022\014\n\004name\030\002 \001(\014\022\020\n\010property\030\003 \001(\014\"\311\004\n\016P"
-    "BContractInfo\022\020\n\010exchange\030\001 \001(\t\022\020\n\010contr"
-    "act\030\002 \001(\t\022\014\n\004name\030\003 \001(\014\022\021\n\tproductID\030\004 \001"
-    "(\t\022\023\n\013productType\030\005 \001(\005\022\024\n\014deliveryYear\030"
-    "\006 \001(\005\022\025\n\rdeliveryMonth\030\007 \001(\005\022\034\n\024maxMarke"
-    "tOrderVolume\030\010 \001(\005\022\034\n\024minMarketOrderVolu"
-    "me\030\t \001(\005\022\033\n\023maxLimitOrderVolume\030\n \001(\005\022\033\n"
-    "\023minLimitOrderVolume\030\013 \001(\005\022\026\n\016volumeMult"
-    "iple\030\014 \001(\005\022\021\n\tpriceTick\030\r \001(\005\022\022\n\ncreateD"
-    "ate\030\016 \001(\t\022\020\n\010openDate\030\017 \001(\t\022\022\n\nexpireDat"
-    "e\030\020 \001(\t\022\026\n\016startDelivDate\030\021 \001(\t\022\024\n\014endDe"
-    "livDate\030\022 \001(\t\022\021\n\tlifePhase\030\023 \001(\t\022\021\n\tisTr"
-    "ading\030\024 \001(\005\022\024\n\014positionType\030\025 \001(\005\022\030\n\020pos"
-    "itionDateType\030\026 \001(\005\022\027\n\017longMarginRatio\030\027"
-    " \001(\001\022\030\n\020shortMarginRatio\030\030 \001(\001\022\036\n\026maxMar"
-    "ginSideAlgorithm\030\031 \001(\tb\006proto3", 4230);
+    "\022\020\n\010lowLimit\030\022 \001(\005\022\027\n\017preOpenInterest\030\023 "
+    "\001(\001\022\024\n\014openInterest\030\024 \001(\001\022\024\n\014averagePric"
+    "e\030\025 \001(\001\"O\n\020PBMarketDataList\022;\n\006mdList\030\001 "
+    "\003(\0132+.Micro.Future.Message.Business.PBMa"
+    "rketData\"W\n\rPBPricingData\022\020\n\010exchange\030\001 "
+    "\001(\t\022\020\n\010contract\030\002 \001(\t\022\020\n\010askPrice\030\003 \001(\001\022"
+    "\020\n\010bidPrice\030\004 \001(\001\"R\n\021PBPricingDataList\022="
+    "\n\007pricing\030\001 \003(\0132,.Micro.Future.Message.B"
+    "usiness.PBPricingData\"F\n\020PBStrategyWeigh"
+    "t\022\020\n\010exchange\030\003 \001(\t\022\020\n\010contract\030\004 \001(\t\022\016\n"
+    "\006weight\030\006 \001(\001\"\214\003\n\nPBStrategy\022\020\n\010exchange"
+    "\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022\022\n\nunderlying\030\003"
+    " \001(\t\022\016\n\006symbol\030\004 \001(\t\022\023\n\013description\030\005 \001("
+    "\t\022\024\n\014allowTrading\030\006 \001(\010\022\017\n\007enabled\030\007 \001(\010"
+    "\022\020\n\010quantity\030\010 \001(\005\022\r\n\005depth\030\t \001(\005\022\016\n\006spr"
+    "ead\030\n \001(\001\022\016\n\006offset\030\013 \001(\001\022\016\n\006strike\030\014 \001("
+    "\001\022\024\n\014riskFreeRate\030\r \001(\001\022\022\n\nvolatility\030\016 "
+    "\001(\001\022G\n\016weightContract\030\017 \003(\0132/.Micro.Futu"
+    "re.Message.Business.PBStrategyWeight\0226\n\006"
+    "params\030\020 \003(\0132&.Micro.Future.Message.Busi"
+    "ness.PBParam\"M\n\016PBStrategyList\022;\n\010strate"
+    "gy\030\001 \003(\0132).Micro.Future.Message.Business"
+    ".PBStrategy\"V\n\017PBContractParam\022\020\n\010exchan"
+    "ge\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022\020\n\010depthVol\030\003"
+    " \001(\005\022\r\n\005gamma\030\004 \001(\001\"U\n\023PBContractParamLi"
+    "st\022>\n\006params\030\001 \003(\0132..Micro.Future.Messag"
+    "e.Business.PBContractParam\"F\n\016PBOTCUserP"
+    "aram\022\020\n\010exchange\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t"
+    "\022\020\n\010quantity\030\003 \001(\001\"S\n\022PBOTCUserParamList"
+    "\022=\n\006params\030\001 \003(\0132-.Micro.Future.Message."
+    "Business.PBOTCUserParam\"\353\003\n\013PBOrderInfo\022"
+    "\017\n\007orderID\030\001 \001(\004\022\022\n\norderSysID\030\002 \001(\004\022\020\n\010"
+    "brokerID\030\003 \001(\t\022\022\n\ninvestorID\030\004 \001(\t\022\020\n\010ex"
+    "change\030\005 \001(\t\022\020\n\010contract\030\006 \001(\t\022\020\n\010execTy"
+    "pe\030\007 \001(\005\022\013\n\003tif\030\010 \001(\005\022\023\n\013tradingType\030\t \001"
+    "(\005\022\021\n\tdirection\030\n \001(\005\022\022\n\nlimitPrice\030\013 \001("
+    "\001\022\021\n\tstopPrice\030\014 \001(\001\022\023\n\013orderStatus\030\r \001("
+    "\005\022\021\n\torderType\030\016 \001(\005\022\016\n\006volume\030\017 \001(\005\022\022\n\n"
+    "insertTime\030\021 \001(\t\022\022\n\nupdateTime\030\022 \001(\t\022\022\n\n"
+    "cancelTime\030\023 \001(\t\022\024\n\014volumeTraded\030\024 \001(\005\022\024"
+    "\n\014volumeRemain\030\025 \001(\005\022\027\n\017volumeCondition\030"
+    "\026 \001(\005\022\022\n\ntradingDay\030\027 \001(\005\022\016\n\006active\030\030 \001("
+    "\010\022\021\n\topenclose\030\031 \001(\005\022\017\n\007message\030\032 \001(\014\"\302\002"
+    "\n\013PBTradeInfo\022\017\n\007tradeID\030\001 \001(\004\022\021\n\tdirect"
+    "ion\030\002 \001(\005\022\021\n\topenclose\030\003 \001(\005\022\022\n\norderSys"
+    "ID\030\004 \001(\004\022\017\n\007orderID\030\005 \001(\004\022\r\n\005price\030\006 \001(\001"
+    "\022\016\n\006volume\030\007 \001(\005\022\020\n\010brokerID\030\010 \001(\t\022\022\n\nin"
+    "vestorID\030\t \001(\t\022\020\n\010exchange\030\n \001(\t\022\020\n\010cont"
+    "ract\030\013 \001(\t\022\016\n\006userID\030\014 \001(\t\022\021\n\ttradeDate\030"
+    "\r \001(\t\022\021\n\ttradeTime\030\016 \001(\t\022\021\n\ttradeType\030\017 "
+    "\001(\005\022\021\n\thedgeFlag\030\020 \001(\005\022\022\n\ncommission\030\021 \001"
+    "(\001\"\274\002\n\nPBPosition\022\020\n\010exchange\030\001 \001(\t\022\020\n\010c"
+    "ontract\030\002 \001(\t\022\021\n\tdirection\030\003 \001(\005\022\020\n\010posi"
+    "tion\030\005 \001(\005\022\022\n\nydPosition\030\004 \001(\005\022\024\n\014positi"
+    "onDate\030\006 \001(\t\022\022\n\nopenVolume\030\007 \001(\005\022\023\n\013clos"
+    "eVolume\030\010 \001(\005\022\022\n\nopenAmount\030\t \001(\001\022\023\n\013clo"
+    "seAmount\030\n \001(\001\022\014\n\004cost\030\013 \001(\001\022\020\n\010openCost"
+    "\030\014 \001(\001\022\016\n\006profit\030\r \001(\001\022\023\n\013closeProfit\030\016 "
+    "\001(\001\022\021\n\tuseMargin\030\017 \001(\001\022\021\n\thedgeFlag\030\020 \001("
+    "\005\"\213\005\n\rPBAccountInfo\022\020\n\010brokerID\030\002 \001(\t\022\021\n"
+    "\taccountID\030\003 \001(\t\022\023\n\013preMortgage\030\004 \001(\001\022\021\n"
+    "\tpreCredit\030\005 \001(\001\022\022\n\npreDeposit\030\006 \001(\001\022\022\n\n"
+    "preBalance\030\007 \001(\001\022\021\n\tpreMargin\030\010 \001(\001\022\024\n\014i"
+    "nterestBase\030\t \001(\001\022\020\n\010interest\030\n \001(\001\022\017\n\007d"
+    "eposit\030\013 \001(\001\022\020\n\010withdraw\030\014 \001(\001\022\024\n\014frozen"
+    "Margin\030\r \001(\001\022\022\n\nfrozenCash\030\016 \001(\001\022\030\n\020froz"
+    "enCommission\030\017 \001(\001\022\022\n\ncurrMargin\030\020 \001(\001\022\016"
+    "\n\006cashIn\030\021 \001(\001\022\022\n\ncommission\030\022 \001(\001\022\023\n\013cl"
+    "oseProfit\030\023 \001(\001\022\026\n\016positionProfit\030\024 \001(\001\022"
+    "\017\n\007balance\030\025 \001(\001\022\021\n\tavailable\030\026 \001(\001\022\025\n\rw"
+    "ithdrawQuota\030\027 \001(\001\022\017\n\007reserve\030\030 \001(\001\022\022\n\nt"
+    "radingDay\030\031 \001(\t\022\024\n\014settlementID\030\032 \001(\005\022\016\n"
+    "\006credit\030\033 \001(\001\022\020\n\010mortgage\030\034 \001(\001\022\026\n\016excha"
+    "ngeMargin\030\035 \001(\001\022\026\n\016deliveryMargin\030\036 \001(\001\022"
+    "\036\n\026exchangeDeliveryMargin\030\037 \001(\001\022\026\n\016reser"
+    "veBalance\030  \001(\001\"@\n\014PBMarketInfo\022\020\n\010excha"
+    "nge\030\001 \001(\t\022\014\n\004name\030\002 \001(\014\022\020\n\010property\030\003 \001("
+    "\014\"\311\004\n\016PBContractInfo\022\020\n\010exchange\030\001 \001(\t\022\020"
+    "\n\010contract\030\002 \001(\t\022\014\n\004name\030\003 \001(\014\022\021\n\tproduc"
+    "tID\030\004 \001(\t\022\023\n\013productType\030\005 \001(\005\022\024\n\014delive"
+    "ryYear\030\006 \001(\005\022\025\n\rdeliveryMonth\030\007 \001(\005\022\034\n\024m"
+    "axMarketOrderVolume\030\010 \001(\005\022\034\n\024minMarketOr"
+    "derVolume\030\t \001(\005\022\033\n\023maxLimitOrderVolume\030\n"
+    " \001(\005\022\033\n\023minLimitOrderVolume\030\013 \001(\005\022\026\n\016vol"
+    "umeMultiple\030\014 \001(\005\022\021\n\tpriceTick\030\r \001(\005\022\022\n\n"
+    "createDate\030\016 \001(\t\022\020\n\010openDate\030\017 \001(\t\022\022\n\nex"
+    "pireDate\030\020 \001(\t\022\026\n\016startDelivDate\030\021 \001(\t\022\024"
+    "\n\014endDelivDate\030\022 \001(\t\022\021\n\tlifePhase\030\023 \001(\t\022"
+    "\021\n\tisTrading\030\024 \001(\005\022\024\n\014positionType\030\025 \001(\005"
+    "\022\030\n\020positionDateType\030\026 \001(\005\022\027\n\017longMargin"
+    "Ratio\030\027 \001(\001\022\030\n\020shortMarginRatio\030\030 \001(\001\022\036\n"
+    "\026maxMarginSideAlgorithm\030\031 \001(\tb\006proto3", 4357);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "businessobj.proto", &protobuf_RegisterTypes);
   PBUserInfo::default_instance_ = new PBUserInfo();
@@ -2356,8 +2365,8 @@ void PBParam::clear_value() {
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int PBMarketData::kSymbolFieldNumber;
-const int PBMarketData::kTimeStampFieldNumber;
+const int PBMarketData::kExhangeFieldNumber;
+const int PBMarketData::kContractFieldNumber;
 const int PBMarketData::kPreCloseValueFieldNumber;
 const int PBMarketData::kOpenValueFieldNumber;
 const int PBMarketData::kTurnoverFieldNumber;
@@ -2374,6 +2383,9 @@ const int PBMarketData::kPriceChangeFieldNumber;
 const int PBMarketData::kSettlePriceFieldNumber;
 const int PBMarketData::kHighLimitFieldNumber;
 const int PBMarketData::kLowLimitFieldNumber;
+const int PBMarketData::kPreOpenInterestFieldNumber;
+const int PBMarketData::kOpenInterestFieldNumber;
+const int PBMarketData::kAveragePriceFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 PBMarketData::PBMarketData()
@@ -2398,8 +2410,8 @@ void PBMarketData::SharedCtor() {
     _is_default_instance_ = false;
   ::google::protobuf::internal::GetEmptyString();
   _cached_size_ = 0;
-  symbol_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  timestamp_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  exhange_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  contract_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   preclosevalue_ = 0;
   openvalue_ = 0;
   turnover_ = 0;
@@ -2412,6 +2424,9 @@ void PBMarketData::SharedCtor() {
   settleprice_ = 0;
   highlimit_ = 0;
   lowlimit_ = 0;
+  preopeninterest_ = 0;
+  openinterest_ = 0;
+  averageprice_ = 0;
 }
 
 PBMarketData::~PBMarketData() {
@@ -2420,8 +2435,8 @@ PBMarketData::~PBMarketData() {
 }
 
 void PBMarketData::SharedDtor() {
-  symbol_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  timestamp_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  exhange_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  contract_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != default_instance_) {
   }
 }
@@ -2461,13 +2476,13 @@ void PBMarketData::Clear() {
 } while (0)
 
   ZR_(preclosevalue_, lowvalue_);
-  symbol_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  timestamp_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  exhange_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  contract_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   volume_ = 0;
   ZR_(presettleprice_, settleprice_);
   matchprice_ = 0;
+  ZR_(preopeninterest_, lowlimit_);
   highlimit_ = 0;
-  lowlimit_ = 0;
 
 #undef ZR_HELPER_
 #undef ZR_
@@ -2488,32 +2503,32 @@ bool PBMarketData::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional string symbol = 1;
+      // optional string exhange = 1;
       case 1: {
         if (tag == 10) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_symbol()));
+                input, this->mutable_exhange()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->symbol().data(), this->symbol().length(),
+            this->exhange().data(), this->exhange().length(),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "Micro.Future.Message.Business.PBMarketData.symbol"));
+            "Micro.Future.Message.Business.PBMarketData.exhange"));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(18)) goto parse_timeStamp;
+        if (input->ExpectTag(18)) goto parse_contract;
         break;
       }
 
-      // optional string timeStamp = 2;
+      // optional string contract = 2;
       case 2: {
         if (tag == 18) {
-         parse_timeStamp:
+         parse_contract:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_timestamp()));
+                input, this->mutable_contract()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->timestamp().data(), this->timestamp().length(),
+            this->contract().data(), this->contract().length(),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "Micro.Future.Message.Business.PBMarketData.timeStamp"));
+            "Micro.Future.Message.Business.PBMarketData.contract"));
         } else {
           goto handle_unusual;
         }
@@ -2769,6 +2784,51 @@ bool PBMarketData::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
+        if (input->ExpectTag(153)) goto parse_preOpenInterest;
+        break;
+      }
+
+      // optional double preOpenInterest = 19;
+      case 19: {
+        if (tag == 153) {
+         parse_preOpenInterest:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &preopeninterest_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(161)) goto parse_openInterest;
+        break;
+      }
+
+      // optional double openInterest = 20;
+      case 20: {
+        if (tag == 161) {
+         parse_openInterest:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &openinterest_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(169)) goto parse_averagePrice;
+        break;
+      }
+
+      // optional double averagePrice = 21;
+      case 21: {
+        if (tag == 169) {
+         parse_averagePrice:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &averageprice_)));
+
+        } else {
+          goto handle_unusual;
+        }
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -2797,24 +2857,24 @@ failure:
 void PBMarketData::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:Micro.Future.Message.Business.PBMarketData)
-  // optional string symbol = 1;
-  if (this->symbol().size() > 0) {
+  // optional string exhange = 1;
+  if (this->exhange().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->symbol().data(), this->symbol().length(),
+      this->exhange().data(), this->exhange().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "Micro.Future.Message.Business.PBMarketData.symbol");
+      "Micro.Future.Message.Business.PBMarketData.exhange");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      1, this->symbol(), output);
+      1, this->exhange(), output);
   }
 
-  // optional string timeStamp = 2;
-  if (this->timestamp().size() > 0) {
+  // optional string contract = 2;
+  if (this->contract().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->timestamp().data(), this->timestamp().length(),
+      this->contract().data(), this->contract().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "Micro.Future.Message.Business.PBMarketData.timeStamp");
+      "Micro.Future.Message.Business.PBMarketData.contract");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      2, this->timestamp(), output);
+      2, this->contract(), output);
   }
 
   // optional double preCloseValue = 3;
@@ -2917,32 +2977,47 @@ void PBMarketData::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(18, this->lowlimit(), output);
   }
 
+  // optional double preOpenInterest = 19;
+  if (this->preopeninterest() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(19, this->preopeninterest(), output);
+  }
+
+  // optional double openInterest = 20;
+  if (this->openinterest() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(20, this->openinterest(), output);
+  }
+
+  // optional double averagePrice = 21;
+  if (this->averageprice() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(21, this->averageprice(), output);
+  }
+
   // @@protoc_insertion_point(serialize_end:Micro.Future.Message.Business.PBMarketData)
 }
 
 ::google::protobuf::uint8* PBMarketData::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // @@protoc_insertion_point(serialize_to_array_start:Micro.Future.Message.Business.PBMarketData)
-  // optional string symbol = 1;
-  if (this->symbol().size() > 0) {
+  // optional string exhange = 1;
+  if (this->exhange().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->symbol().data(), this->symbol().length(),
+      this->exhange().data(), this->exhange().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "Micro.Future.Message.Business.PBMarketData.symbol");
+      "Micro.Future.Message.Business.PBMarketData.exhange");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->symbol(), target);
+        1, this->exhange(), target);
   }
 
-  // optional string timeStamp = 2;
-  if (this->timestamp().size() > 0) {
+  // optional string contract = 2;
+  if (this->contract().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->timestamp().data(), this->timestamp().length(),
+      this->contract().data(), this->contract().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "Micro.Future.Message.Business.PBMarketData.timeStamp");
+      "Micro.Future.Message.Business.PBMarketData.contract");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->timestamp(), target);
+        2, this->contract(), target);
   }
 
   // optional double preCloseValue = 3;
@@ -3061,6 +3136,21 @@ void PBMarketData::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(18, this->lowlimit(), target);
   }
 
+  // optional double preOpenInterest = 19;
+  if (this->preopeninterest() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(19, this->preopeninterest(), target);
+  }
+
+  // optional double openInterest = 20;
+  if (this->openinterest() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(20, this->openinterest(), target);
+  }
+
+  // optional double averagePrice = 21;
+  if (this->averageprice() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(21, this->averageprice(), target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.Business.PBMarketData)
   return target;
 }
@@ -3068,18 +3158,18 @@ void PBMarketData::SerializeWithCachedSizes(
 int PBMarketData::ByteSize() const {
   int total_size = 0;
 
-  // optional string symbol = 1;
-  if (this->symbol().size() > 0) {
+  // optional string exhange = 1;
+  if (this->exhange().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->symbol());
+        this->exhange());
   }
 
-  // optional string timeStamp = 2;
-  if (this->timestamp().size() > 0) {
+  // optional string contract = 2;
+  if (this->contract().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->timestamp());
+        this->contract());
   }
 
   // optional double preCloseValue = 3;
@@ -3146,6 +3236,21 @@ int PBMarketData::ByteSize() const {
     total_size += 2 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->lowlimit());
+  }
+
+  // optional double preOpenInterest = 19;
+  if (this->preopeninterest() != 0) {
+    total_size += 2 + 8;
+  }
+
+  // optional double openInterest = 20;
+  if (this->openinterest() != 0) {
+    total_size += 2 + 8;
+  }
+
+  // optional double averagePrice = 21;
+  if (this->averageprice() != 0) {
+    total_size += 2 + 8;
   }
 
   // repeated double askPrice = 10;
@@ -3234,13 +3339,13 @@ void PBMarketData::MergeFrom(const PBMarketData& from) {
   askvolume_.MergeFrom(from.askvolume_);
   bidprice_.MergeFrom(from.bidprice_);
   bidvolume_.MergeFrom(from.bidvolume_);
-  if (from.symbol().size() > 0) {
+  if (from.exhange().size() > 0) {
 
-    symbol_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.symbol_);
+    exhange_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.exhange_);
   }
-  if (from.timestamp().size() > 0) {
+  if (from.contract().size() > 0) {
 
-    timestamp_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.timestamp_);
+    contract_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.contract_);
   }
   if (from.preclosevalue() != 0) {
     set_preclosevalue(from.preclosevalue());
@@ -3278,6 +3383,15 @@ void PBMarketData::MergeFrom(const PBMarketData& from) {
   if (from.lowlimit() != 0) {
     set_lowlimit(from.lowlimit());
   }
+  if (from.preopeninterest() != 0) {
+    set_preopeninterest(from.preopeninterest());
+  }
+  if (from.openinterest() != 0) {
+    set_openinterest(from.openinterest());
+  }
+  if (from.averageprice() != 0) {
+    set_averageprice(from.averageprice());
+  }
 }
 
 void PBMarketData::CopyFrom(const ::google::protobuf::Message& from) {
@@ -3302,8 +3416,8 @@ void PBMarketData::Swap(PBMarketData* other) {
   InternalSwap(other);
 }
 void PBMarketData::InternalSwap(PBMarketData* other) {
-  symbol_.Swap(&other->symbol_);
-  timestamp_.Swap(&other->timestamp_);
+  exhange_.Swap(&other->exhange_);
+  contract_.Swap(&other->contract_);
   std::swap(preclosevalue_, other->preclosevalue_);
   std::swap(openvalue_, other->openvalue_);
   std::swap(turnover_, other->turnover_);
@@ -3320,6 +3434,9 @@ void PBMarketData::InternalSwap(PBMarketData* other) {
   std::swap(settleprice_, other->settleprice_);
   std::swap(highlimit_, other->highlimit_);
   std::swap(lowlimit_, other->lowlimit_);
+  std::swap(preopeninterest_, other->preopeninterest_);
+  std::swap(openinterest_, other->openinterest_);
+  std::swap(averageprice_, other->averageprice_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -3335,90 +3452,90 @@ void PBMarketData::InternalSwap(PBMarketData* other) {
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
 // PBMarketData
 
-// optional string symbol = 1;
-void PBMarketData::clear_symbol() {
-  symbol_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// optional string exhange = 1;
+void PBMarketData::clear_exhange() {
+  exhange_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
- const ::std::string& PBMarketData::symbol() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketData.symbol)
-  return symbol_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+ const ::std::string& PBMarketData::exhange() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketData.exhange)
+  return exhange_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
- void PBMarketData::set_symbol(const ::std::string& value) {
+ void PBMarketData::set_exhange(const ::std::string& value) {
   
-  symbol_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.symbol)
+  exhange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.exhange)
 }
- void PBMarketData::set_symbol(const char* value) {
+ void PBMarketData::set_exhange(const char* value) {
   
-  symbol_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBMarketData.symbol)
+  exhange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBMarketData.exhange)
 }
- void PBMarketData::set_symbol(const char* value, size_t size) {
+ void PBMarketData::set_exhange(const char* value, size_t size) {
   
-  symbol_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  exhange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBMarketData.symbol)
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBMarketData.exhange)
 }
- ::std::string* PBMarketData::mutable_symbol() {
+ ::std::string* PBMarketData::mutable_exhange() {
   
-  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBMarketData.symbol)
-  return symbol_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBMarketData.exhange)
+  return exhange_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
- ::std::string* PBMarketData::release_symbol() {
+ ::std::string* PBMarketData::release_exhange() {
   
-  return symbol_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  return exhange_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
- void PBMarketData::set_allocated_symbol(::std::string* symbol) {
-  if (symbol != NULL) {
+ void PBMarketData::set_allocated_exhange(::std::string* exhange) {
+  if (exhange != NULL) {
     
   } else {
     
   }
-  symbol_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), symbol);
-  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBMarketData.symbol)
+  exhange_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), exhange);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBMarketData.exhange)
 }
 
-// optional string timeStamp = 2;
-void PBMarketData::clear_timestamp() {
-  timestamp_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// optional string contract = 2;
+void PBMarketData::clear_contract() {
+  contract_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
- const ::std::string& PBMarketData::timestamp() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketData.timeStamp)
-  return timestamp_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+ const ::std::string& PBMarketData::contract() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketData.contract)
+  return contract_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
- void PBMarketData::set_timestamp(const ::std::string& value) {
+ void PBMarketData::set_contract(const ::std::string& value) {
   
-  timestamp_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.timeStamp)
+  contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.contract)
 }
- void PBMarketData::set_timestamp(const char* value) {
+ void PBMarketData::set_contract(const char* value) {
   
-  timestamp_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBMarketData.timeStamp)
+  contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBMarketData.contract)
 }
- void PBMarketData::set_timestamp(const char* value, size_t size) {
+ void PBMarketData::set_contract(const char* value, size_t size) {
   
-  timestamp_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBMarketData.timeStamp)
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBMarketData.contract)
 }
- ::std::string* PBMarketData::mutable_timestamp() {
+ ::std::string* PBMarketData::mutable_contract() {
   
-  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBMarketData.timeStamp)
-  return timestamp_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBMarketData.contract)
+  return contract_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
- ::std::string* PBMarketData::release_timestamp() {
+ ::std::string* PBMarketData::release_contract() {
   
-  return timestamp_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  return contract_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
- void PBMarketData::set_allocated_timestamp(::std::string* timestamp) {
-  if (timestamp != NULL) {
+ void PBMarketData::set_allocated_contract(::std::string* contract) {
+  if (contract != NULL) {
     
   } else {
     
   }
-  timestamp_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), timestamp);
-  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBMarketData.timeStamp)
+  contract_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), contract);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBMarketData.contract)
 }
 
 // optional double preCloseValue = 3;
@@ -3707,6 +3824,48 @@ void PBMarketData::clear_lowlimit() {
   
   lowlimit_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.lowLimit)
+}
+
+// optional double preOpenInterest = 19;
+void PBMarketData::clear_preopeninterest() {
+  preopeninterest_ = 0;
+}
+ double PBMarketData::preopeninterest() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketData.preOpenInterest)
+  return preopeninterest_;
+}
+ void PBMarketData::set_preopeninterest(double value) {
+  
+  preopeninterest_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.preOpenInterest)
+}
+
+// optional double openInterest = 20;
+void PBMarketData::clear_openinterest() {
+  openinterest_ = 0;
+}
+ double PBMarketData::openinterest() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketData.openInterest)
+  return openinterest_;
+}
+ void PBMarketData::set_openinterest(double value) {
+  
+  openinterest_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.openInterest)
+}
+
+// optional double averagePrice = 21;
+void PBMarketData::clear_averageprice() {
+  averageprice_ = 0;
+}
+ double PBMarketData::averageprice() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketData.averagePrice)
+  return averageprice_;
+}
+ void PBMarketData::set_averageprice(double value) {
+  
+  averageprice_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.averagePrice)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -4799,16 +4958,16 @@ bool PBStrategyWeight::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(53)) goto parse_weight;
+        if (input->ExpectTag(49)) goto parse_weight;
         break;
       }
 
-      // optional float weight = 6;
+      // optional double weight = 6;
       case 6: {
-        if (tag == 53) {
+        if (tag == 49) {
          parse_weight:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
                  input, &weight_)));
 
         } else {
@@ -4862,9 +5021,9 @@ void PBStrategyWeight::SerializeWithCachedSizes(
       4, this->contract(), output);
   }
 
-  // optional float weight = 6;
+  // optional double weight = 6;
   if (this->weight() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(6, this->weight(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(6, this->weight(), output);
   }
 
   // @@protoc_insertion_point(serialize_end:Micro.Future.Message.Business.PBStrategyWeight)
@@ -4895,9 +5054,9 @@ void PBStrategyWeight::SerializeWithCachedSizes(
         4, this->contract(), target);
   }
 
-  // optional float weight = 6;
+  // optional double weight = 6;
   if (this->weight() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(6, this->weight(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(6, this->weight(), target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.Business.PBStrategyWeight)
@@ -4921,9 +5080,9 @@ int PBStrategyWeight::ByteSize() const {
         this->contract());
   }
 
-  // optional float weight = 6;
+  // optional double weight = 6;
   if (this->weight() != 0) {
-    total_size += 1 + 4;
+    total_size += 1 + 8;
   }
 
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
@@ -5085,15 +5244,15 @@ void PBStrategyWeight::clear_contract() {
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBStrategyWeight.contract)
 }
 
-// optional float weight = 6;
+// optional double weight = 6;
 void PBStrategyWeight::clear_weight() {
   weight_ = 0;
 }
- float PBStrategyWeight::weight() const {
+ double PBStrategyWeight::weight() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategyWeight.weight)
   return weight_;
 }
- void PBStrategyWeight::set_weight(float value) {
+ void PBStrategyWeight::set_weight(double value) {
   
   weight_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategyWeight.weight)
@@ -5110,11 +5269,14 @@ const int PBStrategy::kUnderlyingFieldNumber;
 const int PBStrategy::kSymbolFieldNumber;
 const int PBStrategy::kDescriptionFieldNumber;
 const int PBStrategy::kAllowTradingFieldNumber;
+const int PBStrategy::kEnabledFieldNumber;
 const int PBStrategy::kQuantityFieldNumber;
 const int PBStrategy::kDepthFieldNumber;
 const int PBStrategy::kSpreadFieldNumber;
 const int PBStrategy::kOffsetFieldNumber;
-const int PBStrategy::kEnabledFieldNumber;
+const int PBStrategy::kStrikeFieldNumber;
+const int PBStrategy::kRiskFreeRateFieldNumber;
+const int PBStrategy::kVolatilityFieldNumber;
 const int PBStrategy::kWeightContractFieldNumber;
 const int PBStrategy::kParamsFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
@@ -5147,11 +5309,14 @@ void PBStrategy::SharedCtor() {
   symbol_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   description_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   allowtrading_ = false;
+  enabled_ = false;
   quantity_ = 0;
   depth_ = 0;
   spread_ = 0;
   offset_ = 0;
-  enabled_ = false;
+  strike_ = 0;
+  riskfreerate_ = 0;
+  volatility_ = 0;
 }
 
 PBStrategy::~PBStrategy() {
@@ -5203,14 +5368,14 @@ void PBStrategy::Clear() {
            ZR_HELPER_(last) - ZR_HELPER_(first) + sizeof(last));\
 } while (0)
 
-  ZR_(quantity_, allowtrading_);
+  ZR_(allowtrading_, quantity_);
   exchange_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   contract_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   underlying_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   symbol_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   description_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ZR_(enabled_, spread_);
-  offset_ = 0;
+  ZR_(spread_, volatility_);
+  depth_ = 0;
 
 #undef ZR_HELPER_
 #undef ZR_
@@ -5225,7 +5390,7 @@ bool PBStrategy::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   // @@protoc_insertion_point(parse_start:Micro.Future.Message.Business.PBStrategy)
   for (;;) {
-    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(16383);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
@@ -5324,73 +5489,13 @@ bool PBStrategy::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(56)) goto parse_quantity;
+        if (input->ExpectTag(56)) goto parse_enabled;
         break;
       }
 
-      // optional int32 quantity = 7;
+      // optional bool enabled = 7;
       case 7: {
         if (tag == 56) {
-         parse_quantity:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &quantity_)));
-
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(64)) goto parse_depth;
-        break;
-      }
-
-      // optional int32 depth = 8;
-      case 8: {
-        if (tag == 64) {
-         parse_depth:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &depth_)));
-
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(77)) goto parse_spread;
-        break;
-      }
-
-      // optional float spread = 9;
-      case 9: {
-        if (tag == 77) {
-         parse_spread:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
-                 input, &spread_)));
-
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(85)) goto parse_offset;
-        break;
-      }
-
-      // optional float offset = 10;
-      case 10: {
-        if (tag == 85) {
-         parse_offset:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
-                 input, &offset_)));
-
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(88)) goto parse_enabled;
-        break;
-      }
-
-      // optional bool enabled = 11;
-      case 11: {
-        if (tag == 88) {
          parse_enabled:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
@@ -5399,13 +5504,118 @@ bool PBStrategy::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(98)) goto parse_weightContract;
+        if (input->ExpectTag(64)) goto parse_quantity;
         break;
       }
 
-      // repeated .Micro.Future.Message.Business.PBStrategyWeight weightContract = 12;
+      // optional int32 quantity = 8;
+      case 8: {
+        if (tag == 64) {
+         parse_quantity:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &quantity_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(72)) goto parse_depth;
+        break;
+      }
+
+      // optional int32 depth = 9;
+      case 9: {
+        if (tag == 72) {
+         parse_depth:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &depth_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(81)) goto parse_spread;
+        break;
+      }
+
+      // optional double spread = 10;
+      case 10: {
+        if (tag == 81) {
+         parse_spread:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &spread_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(89)) goto parse_offset;
+        break;
+      }
+
+      // optional double offset = 11;
+      case 11: {
+        if (tag == 89) {
+         parse_offset:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &offset_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(97)) goto parse_strike;
+        break;
+      }
+
+      // optional double strike = 12;
       case 12: {
-        if (tag == 98) {
+        if (tag == 97) {
+         parse_strike:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &strike_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(105)) goto parse_riskFreeRate;
+        break;
+      }
+
+      // optional double riskFreeRate = 13;
+      case 13: {
+        if (tag == 105) {
+         parse_riskFreeRate:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &riskfreerate_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(113)) goto parse_volatility;
+        break;
+      }
+
+      // optional double volatility = 14;
+      case 14: {
+        if (tag == 113) {
+         parse_volatility:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &volatility_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(122)) goto parse_weightContract;
+        break;
+      }
+
+      // repeated .Micro.Future.Message.Business.PBStrategyWeight weightContract = 15;
+      case 15: {
+        if (tag == 122) {
          parse_weightContract:
           DO_(input->IncrementRecursionDepth());
          parse_loop_weightContract:
@@ -5414,15 +5624,15 @@ bool PBStrategy::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(98)) goto parse_loop_weightContract;
-        if (input->ExpectTag(106)) goto parse_loop_params;
+        if (input->ExpectTag(122)) goto parse_loop_weightContract;
+        if (input->ExpectTag(130)) goto parse_loop_params;
         input->UnsafeDecrementRecursionDepth();
         break;
       }
 
-      // repeated .Micro.Future.Message.Business.PBParam params = 13;
-      case 13: {
-        if (tag == 106) {
+      // repeated .Micro.Future.Message.Business.PBParam params = 16;
+      case 16: {
+        if (tag == 130) {
           DO_(input->IncrementRecursionDepth());
          parse_loop_params:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtualNoRecursionDepth(
@@ -5430,7 +5640,7 @@ bool PBStrategy::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(106)) goto parse_loop_params;
+        if (input->ExpectTag(130)) goto parse_loop_params;
         input->UnsafeDecrementRecursionDepth();
         if (input->ExpectAtEnd()) goto success;
         break;
@@ -5515,41 +5725,56 @@ void PBStrategy::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteBool(6, this->allowtrading(), output);
   }
 
-  // optional int32 quantity = 7;
-  if (this->quantity() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(7, this->quantity(), output);
-  }
-
-  // optional int32 depth = 8;
-  if (this->depth() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(8, this->depth(), output);
-  }
-
-  // optional float spread = 9;
-  if (this->spread() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(9, this->spread(), output);
-  }
-
-  // optional float offset = 10;
-  if (this->offset() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(10, this->offset(), output);
-  }
-
-  // optional bool enabled = 11;
+  // optional bool enabled = 7;
   if (this->enabled() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(11, this->enabled(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteBool(7, this->enabled(), output);
   }
 
-  // repeated .Micro.Future.Message.Business.PBStrategyWeight weightContract = 12;
+  // optional int32 quantity = 8;
+  if (this->quantity() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(8, this->quantity(), output);
+  }
+
+  // optional int32 depth = 9;
+  if (this->depth() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(9, this->depth(), output);
+  }
+
+  // optional double spread = 10;
+  if (this->spread() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(10, this->spread(), output);
+  }
+
+  // optional double offset = 11;
+  if (this->offset() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(11, this->offset(), output);
+  }
+
+  // optional double strike = 12;
+  if (this->strike() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(12, this->strike(), output);
+  }
+
+  // optional double riskFreeRate = 13;
+  if (this->riskfreerate() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(13, this->riskfreerate(), output);
+  }
+
+  // optional double volatility = 14;
+  if (this->volatility() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(14, this->volatility(), output);
+  }
+
+  // repeated .Micro.Future.Message.Business.PBStrategyWeight weightContract = 15;
   for (unsigned int i = 0, n = this->weightcontract_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      12, this->weightcontract(i), output);
+      15, this->weightcontract(i), output);
   }
 
-  // repeated .Micro.Future.Message.Business.PBParam params = 13;
+  // repeated .Micro.Future.Message.Business.PBParam params = 16;
   for (unsigned int i = 0, n = this->params_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      13, this->params(i), output);
+      16, this->params(i), output);
   }
 
   // @@protoc_insertion_point(serialize_end:Micro.Future.Message.Business.PBStrategy)
@@ -5618,43 +5843,58 @@ void PBStrategy::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(6, this->allowtrading(), target);
   }
 
-  // optional int32 quantity = 7;
-  if (this->quantity() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(7, this->quantity(), target);
-  }
-
-  // optional int32 depth = 8;
-  if (this->depth() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(8, this->depth(), target);
-  }
-
-  // optional float spread = 9;
-  if (this->spread() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(9, this->spread(), target);
-  }
-
-  // optional float offset = 10;
-  if (this->offset() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(10, this->offset(), target);
-  }
-
-  // optional bool enabled = 11;
+  // optional bool enabled = 7;
   if (this->enabled() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(11, this->enabled(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(7, this->enabled(), target);
   }
 
-  // repeated .Micro.Future.Message.Business.PBStrategyWeight weightContract = 12;
+  // optional int32 quantity = 8;
+  if (this->quantity() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(8, this->quantity(), target);
+  }
+
+  // optional int32 depth = 9;
+  if (this->depth() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(9, this->depth(), target);
+  }
+
+  // optional double spread = 10;
+  if (this->spread() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(10, this->spread(), target);
+  }
+
+  // optional double offset = 11;
+  if (this->offset() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(11, this->offset(), target);
+  }
+
+  // optional double strike = 12;
+  if (this->strike() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(12, this->strike(), target);
+  }
+
+  // optional double riskFreeRate = 13;
+  if (this->riskfreerate() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(13, this->riskfreerate(), target);
+  }
+
+  // optional double volatility = 14;
+  if (this->volatility() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(14, this->volatility(), target);
+  }
+
+  // repeated .Micro.Future.Message.Business.PBStrategyWeight weightContract = 15;
   for (unsigned int i = 0, n = this->weightcontract_size(); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        12, this->weightcontract(i), target);
+        15, this->weightcontract(i), target);
   }
 
-  // repeated .Micro.Future.Message.Business.PBParam params = 13;
+  // repeated .Micro.Future.Message.Business.PBParam params = 16;
   for (unsigned int i = 0, n = this->params_size(); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        13, this->params(i), target);
+        16, this->params(i), target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.Business.PBStrategy)
@@ -5704,36 +5944,51 @@ int PBStrategy::ByteSize() const {
     total_size += 1 + 1;
   }
 
-  // optional int32 quantity = 7;
+  // optional bool enabled = 7;
+  if (this->enabled() != 0) {
+    total_size += 1 + 1;
+  }
+
+  // optional int32 quantity = 8;
   if (this->quantity() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->quantity());
   }
 
-  // optional int32 depth = 8;
+  // optional int32 depth = 9;
   if (this->depth() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->depth());
   }
 
-  // optional float spread = 9;
+  // optional double spread = 10;
   if (this->spread() != 0) {
-    total_size += 1 + 4;
+    total_size += 1 + 8;
   }
 
-  // optional float offset = 10;
+  // optional double offset = 11;
   if (this->offset() != 0) {
-    total_size += 1 + 4;
+    total_size += 1 + 8;
   }
 
-  // optional bool enabled = 11;
-  if (this->enabled() != 0) {
-    total_size += 1 + 1;
+  // optional double strike = 12;
+  if (this->strike() != 0) {
+    total_size += 1 + 8;
   }
 
-  // repeated .Micro.Future.Message.Business.PBStrategyWeight weightContract = 12;
+  // optional double riskFreeRate = 13;
+  if (this->riskfreerate() != 0) {
+    total_size += 1 + 8;
+  }
+
+  // optional double volatility = 14;
+  if (this->volatility() != 0) {
+    total_size += 1 + 8;
+  }
+
+  // repeated .Micro.Future.Message.Business.PBStrategyWeight weightContract = 15;
   total_size += 1 * this->weightcontract_size();
   for (int i = 0; i < this->weightcontract_size(); i++) {
     total_size +=
@@ -5741,8 +5996,8 @@ int PBStrategy::ByteSize() const {
         this->weightcontract(i));
   }
 
-  // repeated .Micro.Future.Message.Business.PBParam params = 13;
-  total_size += 1 * this->params_size();
+  // repeated .Micro.Future.Message.Business.PBParam params = 16;
+  total_size += 2 * this->params_size();
   for (int i = 0; i < this->params_size(); i++) {
     total_size +=
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -5794,6 +6049,9 @@ void PBStrategy::MergeFrom(const PBStrategy& from) {
   if (from.allowtrading() != 0) {
     set_allowtrading(from.allowtrading());
   }
+  if (from.enabled() != 0) {
+    set_enabled(from.enabled());
+  }
   if (from.quantity() != 0) {
     set_quantity(from.quantity());
   }
@@ -5806,8 +6064,14 @@ void PBStrategy::MergeFrom(const PBStrategy& from) {
   if (from.offset() != 0) {
     set_offset(from.offset());
   }
-  if (from.enabled() != 0) {
-    set_enabled(from.enabled());
+  if (from.strike() != 0) {
+    set_strike(from.strike());
+  }
+  if (from.riskfreerate() != 0) {
+    set_riskfreerate(from.riskfreerate());
+  }
+  if (from.volatility() != 0) {
+    set_volatility(from.volatility());
   }
 }
 
@@ -5839,11 +6103,14 @@ void PBStrategy::InternalSwap(PBStrategy* other) {
   symbol_.Swap(&other->symbol_);
   description_.Swap(&other->description_);
   std::swap(allowtrading_, other->allowtrading_);
+  std::swap(enabled_, other->enabled_);
   std::swap(quantity_, other->quantity_);
   std::swap(depth_, other->depth_);
   std::swap(spread_, other->spread_);
   std::swap(offset_, other->offset_);
-  std::swap(enabled_, other->enabled_);
+  std::swap(strike_, other->strike_);
+  std::swap(riskfreerate_, other->riskfreerate_);
+  std::swap(volatility_, other->volatility_);
   weightcontract_.UnsafeArenaSwap(&other->weightcontract_);
   params_.UnsafeArenaSwap(&other->params_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
@@ -6090,63 +6357,7 @@ void PBStrategy::clear_allowtrading() {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.allowTrading)
 }
 
-// optional int32 quantity = 7;
-void PBStrategy::clear_quantity() {
-  quantity_ = 0;
-}
- ::google::protobuf::int32 PBStrategy::quantity() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.quantity)
-  return quantity_;
-}
- void PBStrategy::set_quantity(::google::protobuf::int32 value) {
-  
-  quantity_ = value;
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.quantity)
-}
-
-// optional int32 depth = 8;
-void PBStrategy::clear_depth() {
-  depth_ = 0;
-}
- ::google::protobuf::int32 PBStrategy::depth() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.depth)
-  return depth_;
-}
- void PBStrategy::set_depth(::google::protobuf::int32 value) {
-  
-  depth_ = value;
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.depth)
-}
-
-// optional float spread = 9;
-void PBStrategy::clear_spread() {
-  spread_ = 0;
-}
- float PBStrategy::spread() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.spread)
-  return spread_;
-}
- void PBStrategy::set_spread(float value) {
-  
-  spread_ = value;
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.spread)
-}
-
-// optional float offset = 10;
-void PBStrategy::clear_offset() {
-  offset_ = 0;
-}
- float PBStrategy::offset() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.offset)
-  return offset_;
-}
- void PBStrategy::set_offset(float value) {
-  
-  offset_ = value;
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.offset)
-}
-
-// optional bool enabled = 11;
+// optional bool enabled = 7;
 void PBStrategy::clear_enabled() {
   enabled_ = false;
 }
@@ -6160,7 +6371,105 @@ void PBStrategy::clear_enabled() {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.enabled)
 }
 
-// repeated .Micro.Future.Message.Business.PBStrategyWeight weightContract = 12;
+// optional int32 quantity = 8;
+void PBStrategy::clear_quantity() {
+  quantity_ = 0;
+}
+ ::google::protobuf::int32 PBStrategy::quantity() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.quantity)
+  return quantity_;
+}
+ void PBStrategy::set_quantity(::google::protobuf::int32 value) {
+  
+  quantity_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.quantity)
+}
+
+// optional int32 depth = 9;
+void PBStrategy::clear_depth() {
+  depth_ = 0;
+}
+ ::google::protobuf::int32 PBStrategy::depth() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.depth)
+  return depth_;
+}
+ void PBStrategy::set_depth(::google::protobuf::int32 value) {
+  
+  depth_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.depth)
+}
+
+// optional double spread = 10;
+void PBStrategy::clear_spread() {
+  spread_ = 0;
+}
+ double PBStrategy::spread() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.spread)
+  return spread_;
+}
+ void PBStrategy::set_spread(double value) {
+  
+  spread_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.spread)
+}
+
+// optional double offset = 11;
+void PBStrategy::clear_offset() {
+  offset_ = 0;
+}
+ double PBStrategy::offset() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.offset)
+  return offset_;
+}
+ void PBStrategy::set_offset(double value) {
+  
+  offset_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.offset)
+}
+
+// optional double strike = 12;
+void PBStrategy::clear_strike() {
+  strike_ = 0;
+}
+ double PBStrategy::strike() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.strike)
+  return strike_;
+}
+ void PBStrategy::set_strike(double value) {
+  
+  strike_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.strike)
+}
+
+// optional double riskFreeRate = 13;
+void PBStrategy::clear_riskfreerate() {
+  riskfreerate_ = 0;
+}
+ double PBStrategy::riskfreerate() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.riskFreeRate)
+  return riskfreerate_;
+}
+ void PBStrategy::set_riskfreerate(double value) {
+  
+  riskfreerate_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.riskFreeRate)
+}
+
+// optional double volatility = 14;
+void PBStrategy::clear_volatility() {
+  volatility_ = 0;
+}
+ double PBStrategy::volatility() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.volatility)
+  return volatility_;
+}
+ void PBStrategy::set_volatility(double value) {
+  
+  volatility_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.volatility)
+}
+
+// repeated .Micro.Future.Message.Business.PBStrategyWeight weightContract = 15;
 int PBStrategy::weightcontract_size() const {
   return weightcontract_.size();
 }
@@ -6190,7 +6499,7 @@ PBStrategy::weightcontract() const {
   return weightcontract_;
 }
 
-// repeated .Micro.Future.Message.Business.PBParam params = 13;
+// repeated .Micro.Future.Message.Business.PBParam params = 16;
 int PBStrategy::params_size() const {
   return params_.size();
 }
@@ -6550,7 +6859,7 @@ void PBContractParam::Clear() {
            ZR_HELPER_(last) - ZR_HELPER_(first) + sizeof(last));\
 } while (0)
 
-  ZR_(depthvol_, gamma_);
+  ZR_(gamma_, depthvol_);
   exchange_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   contract_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 
@@ -6613,16 +6922,16 @@ bool PBContractParam::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(37)) goto parse_gamma;
+        if (input->ExpectTag(33)) goto parse_gamma;
         break;
       }
 
-      // optional float gamma = 4;
+      // optional double gamma = 4;
       case 4: {
-        if (tag == 37) {
+        if (tag == 33) {
          parse_gamma:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
                  input, &gamma_)));
 
         } else {
@@ -6681,9 +6990,9 @@ void PBContractParam::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->depthvol(), output);
   }
 
-  // optional float gamma = 4;
+  // optional double gamma = 4;
   if (this->gamma() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(4, this->gamma(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(4, this->gamma(), output);
   }
 
   // @@protoc_insertion_point(serialize_end:Micro.Future.Message.Business.PBContractParam)
@@ -6719,9 +7028,9 @@ void PBContractParam::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->depthvol(), target);
   }
 
-  // optional float gamma = 4;
+  // optional double gamma = 4;
   if (this->gamma() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(4, this->gamma(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(4, this->gamma(), target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.Business.PBContractParam)
@@ -6752,9 +7061,9 @@ int PBContractParam::ByteSize() const {
         this->depthvol());
   }
 
-  // optional float gamma = 4;
+  // optional double gamma = 4;
   if (this->gamma() != 0) {
-    total_size += 1 + 4;
+    total_size += 1 + 8;
   }
 
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
@@ -6934,15 +7243,15 @@ void PBContractParam::clear_depthvol() {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBContractParam.depthVol)
 }
 
-// optional float gamma = 4;
+// optional double gamma = 4;
 void PBContractParam::clear_gamma() {
   gamma_ = 0;
 }
- float PBContractParam::gamma() const {
+ double PBContractParam::gamma() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBContractParam.gamma)
   return gamma_;
 }
- void PBContractParam::set_gamma(float value) {
+ void PBContractParam::set_gamma(double value) {
   
   gamma_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBContractParam.gamma)
@@ -7312,16 +7621,16 @@ bool PBOTCUserParam::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(29)) goto parse_quantity;
+        if (input->ExpectTag(25)) goto parse_quantity;
         break;
       }
 
-      // optional float quantity = 3;
+      // optional double quantity = 3;
       case 3: {
-        if (tag == 29) {
+        if (tag == 25) {
          parse_quantity:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
                  input, &quantity_)));
 
         } else {
@@ -7375,9 +7684,9 @@ void PBOTCUserParam::SerializeWithCachedSizes(
       2, this->contract(), output);
   }
 
-  // optional float quantity = 3;
+  // optional double quantity = 3;
   if (this->quantity() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(3, this->quantity(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(3, this->quantity(), output);
   }
 
   // @@protoc_insertion_point(serialize_end:Micro.Future.Message.Business.PBOTCUserParam)
@@ -7408,9 +7717,9 @@ void PBOTCUserParam::SerializeWithCachedSizes(
         2, this->contract(), target);
   }
 
-  // optional float quantity = 3;
+  // optional double quantity = 3;
   if (this->quantity() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(3, this->quantity(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(3, this->quantity(), target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.Business.PBOTCUserParam)
@@ -7434,9 +7743,9 @@ int PBOTCUserParam::ByteSize() const {
         this->contract());
   }
 
-  // optional float quantity = 3;
+  // optional double quantity = 3;
   if (this->quantity() != 0) {
-    total_size += 1 + 4;
+    total_size += 1 + 8;
   }
 
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
@@ -7598,15 +7907,15 @@ void PBOTCUserParam::clear_contract() {
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBOTCUserParam.contract)
 }
 
-// optional float quantity = 3;
+// optional double quantity = 3;
 void PBOTCUserParam::clear_quantity() {
   quantity_ = 0;
 }
- float PBOTCUserParam::quantity() const {
+ double PBOTCUserParam::quantity() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOTCUserParam.quantity)
   return quantity_;
 }
- void PBOTCUserParam::set_quantity(float value) {
+ void PBOTCUserParam::set_quantity(double value) {
   
   quantity_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOTCUserParam.quantity)

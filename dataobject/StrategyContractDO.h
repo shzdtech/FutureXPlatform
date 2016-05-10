@@ -33,8 +33,14 @@ public:
 	double Offset = 0;
 	double TickSize = 1;
 	double Multiplier = 1;
+	double Strike = 0;
+	double RiskFreeRate = 0;
+	double Volatility;
 	bool Trading = false;
 	bool Enabled = false;
+
+	std::tm SettlementDate;
+	std::tm Muturity;
 
 	std::shared_ptr<std::map<std::string, double>> ParamMap;
 	std::shared_ptr<std::vector<ContractParam>> BaseContracts;

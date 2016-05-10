@@ -11,7 +11,7 @@
 #include "../databaseop/ContractDAO.h"
 #include "../databaseop/StrategyContractDAO.h"
 
-#include "../strategy/PricingContext.h"
+#include "../pricingengine/PricingContext.h"
 
 #include "../CTPServer/Attribute_Key.h"
 
@@ -57,7 +57,7 @@ void TradingDeskContextBuilder::LoadPortfolio(ISession* pSession)
 	if (auto portfolioDOVec_Ptr = PortfolioDAO::FindPortfolioByUser(
 		pSession->getUserInfo()->getUserId()))
 	{
-		auto pPortfoliorMap = PricingContext::GetPortfolioDOMap();
+		auto pPortfoliorMap = PricingContext::Instance()->GetPortfolioDOMap();
 
 		for (auto& portfolio : *portfolioDOVec_Ptr)
 		{
@@ -83,7 +83,7 @@ void TradingDeskContextBuilder::LoadContractParam(ISession* pSession)
 	auto contractVec_Ptr = 
 		ContractDAO::FindContractParamByUser(pSession->getUserInfo()->getUserId());
 
-	auto contractMap = PricingContext::GetContractMap();
+	auto contractMap = PricingContext::Instance()->GetContractMap();
 
 	for (auto& con : *contractVec_Ptr)
 	{
@@ -108,7 +108,7 @@ void TradingDeskContextBuilder::LoadStrategy(ISession* pSession)
 	if (auto sDOVec_Ptr = StrategyContractDAO::FindStrategyContractByUser(
 		pSession->getUserInfo()->getUserId()))
 	{
-		auto strategyMap = PricingContext::GetStrategyMap();
+		auto strategyMap = PricingContext::Instance()->GetStrategyMap();
 
 		for (auto& strategy : *sDOVec_Ptr)
 		{

@@ -9,7 +9,7 @@
 #include <memory>
 #include "../CTPServer/CTPUtility.h"
 #include "../CTPServer/CTPAppContext.h"
-#include "../strategy/PricingContext.h"
+#include "../pricingengine/PricingContext.h"
 #include "CTPWorkerProcessorID.h"
 #include "CTPOTCWorkerProcessor.h"
 #include "../dataobject/OrderDO.h"

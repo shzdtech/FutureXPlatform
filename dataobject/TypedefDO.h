@@ -9,6 +9,7 @@
 #include "StrategyContractDO.h"
 #include "UserContractParam.h"
 #include "MarketDataDO.h"
+#include "InstrumentDO.h"
 
 template <typename V>
 using ContractMap = typename AutoFillMap<ContractKey, V>;
@@ -30,9 +31,12 @@ typedef ContractMap<UserContractParam> UserContractParamMap;
 
 typedef ContractMap<ContractDO> ContractDOMap;
 
+typedef ContractMap<InstrumentDO> InstrumentDOMap;
+
 template <typename V>
 using PortfolioMap = typename AutoFillMap<PortfolioKey, V>;
 
 typedef PortfolioMap<PortfolioDO> PortfolioDOMap;
+
 
 #endif

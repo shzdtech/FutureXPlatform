@@ -15,9 +15,10 @@
 // Return:     
 ////////////////////////////////////////////////////////////////////////
 
-OrderManager::OrderManager(IOrderAPI* pOrderAPI)
+OrderManager::OrderManager(IOrderAPI* pOrderAPI, PricingContext* pricingCtx)
 {
-   _pOrderAPI = pOrderAPI;
+	_pOrderAPI = pOrderAPI;
+	_pricingCtx = pricingCtx;
 }
 
 ////////////////////////////////////////////////////////////////////////

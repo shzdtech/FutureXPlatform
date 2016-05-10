@@ -13,12 +13,12 @@
 #include "../message/DefMessageID.h"
 #include "../message/SysParam.h"
 #include "../message/message_marco.h"
-#include "../strategy/PricingUtility.h"
+#include "../pricingengine/PricingUtility.h"
 
 #include "../databaseop/OTCOrderDAO.h"
 #include "../databaseop/ContractDAO.h"
 
-#include "../strategy/PricingContext.h"
+#include "../pricingengine/PricingContext.h"
 #include "../ordermanager/OrderSeqGen.h"
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPOTCWorkerProcessor::CTPOTCWorkerProcessor(const std::map<std::string, std::string>& configMap)
@@ -36,7 +36,7 @@ CTPOTCWorkerProcessor::CTPOTCWorkerProcessor(const std::map<std::string, std::st
 {
 	_isLogged = false;
 	_rawAPI.TrdAPI = ((CTPRawAPI*)(_otcTradeProcessor.getRawAPI()))->TrdAPI;
-	auto pContractMap = PricingContext::GetContractMap();
+	auto pContractMap = PricingContext::Instance()->GetContractMap();
 	if (pContractMap->size() == 0)
 	{
 		*pContractMap = *ContractDAO::FindAllContract();
@@ -93,7 +93,7 @@ int CTPOTCWorkerProcessor::LoginIfNeed(void)
 
 void CTPOTCWorkerProcessor::AddContractToMonitor(const ContractKey& contractId)
 {
-	auto mdMap_Ptr = PricingContext::GetMarketDataDOMap();
+	auto mdMap_Ptr = PricingContext::Instance()->GetMarketDataDOMap();
 	if (mdMap_Ptr->find(contractId.InstrumentID()) == mdMap_Ptr->end())
 	{
 		MarketDataDO mdo(contractId.ExchangeID(), contractId.InstrumentID());
@@ -173,7 +173,7 @@ void CTPOTCWorkerProcessor::TriggerPricing(const StrategyContractDO& strategyDO)
 
 void CTPOTCWorkerProcessor::TriggerUpdating(const MarketDataDO& mdDO)
 {
-	auto strategyMap = PricingContext::GetStrategyMap();
+	auto strategyMap = PricingContext::Instance()->GetStrategyMap();
 	auto it = _contract_strategy_map.find(mdDO);
 	if (it != _contract_strategy_map.end())
 	{
@@ -193,7 +193,7 @@ void CTPOTCWorkerProcessor::TriggerUpdating(const MarketDataDO& mdDO)
 
 void CTPOTCWorkerProcessor::TriggerOTCOrderUpdating(const StrategyContractDO& strategyDO)
 {
-	if (auto updatedOrders = _otcTradeProcessor.GetOTCOrderManager().UpdateByStrategy(strategyDO))
+	if (auto updatedOrders = _otcTradeProcessor.GetOTCOrderManager().UpdateOrderByStrategy(strategyDO))
 	{
 		for (auto& order : *updatedOrders)
 		{
@@ -235,7 +235,7 @@ void CTPOTCWorkerProcessor::CancelAutoOrder(const UserContractKey& userContractK
 
 void CTPOTCWorkerProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
 {
-	auto mdMap = PricingContext::GetMarketDataDOMap();
+	auto mdMap = PricingContext::Instance()->GetMarketDataDOMap();
 	auto it = mdMap->find(pDepthMarketData->InstrumentID);
 	if (it != mdMap->end())
 	{

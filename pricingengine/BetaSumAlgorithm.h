@@ -9,13 +9,16 @@
 #define __strategy_BetaSumAlgorithm_h
 
 #include "IAlgorithm.h"
-#include "strategy_exp.h"
 
-class STRATEGY_CLASS_EXPORTS BetaSumAlgorithm : public IAlgorithm
+class BetaSumAlgorithm : public IAlgorithm
 {
 public:
 	const std::string& Name(void) const;
-	dataobj_ptr Compute(ParamVector& params);
+	dataobj_ptr Compute(
+		const StrategyContractDO& sdo,
+		double inputVal,
+		PricingContext& priceCtx,
+		const ParamVector* params) const;
 
 protected:
 private:

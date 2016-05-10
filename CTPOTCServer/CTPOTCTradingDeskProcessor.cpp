@@ -11,7 +11,7 @@
 #include "../CTPServer/Attribute_Key.h"
 #include "../CTPServer/CTPAppContext.h"
 
-#include "../strategy/PricingContext.h"
+#include "../pricingengine/PricingContext.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPOTCTradingDeskProcessor::CTPOTCTradingDeskProcessor()
@@ -52,7 +52,7 @@ bool CTPOTCTradingDeskProcessor::OnSessionClosing(void)
 	if (auto proc = std::static_pointer_cast<CTPOTCWorkerProcessor>
 		(CTPAppContext::FindServerProcessor(WORKPROCESSOR_OTC)))
 	{
-		auto pStrategyMap = PricingContext::GetStrategyMap();
+		auto pStrategyMap = PricingContext::Instance()->GetStrategyMap();
 		
 		if (auto strategyVec_Ptr = std::static_pointer_cast<std::vector<ContractKey>>(
 			getSession()->getContext()->getAttribute(STR_KEY_USER_STRATEGY)))

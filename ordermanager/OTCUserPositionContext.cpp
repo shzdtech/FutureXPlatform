@@ -6,7 +6,7 @@
  ***********************************************************************/
 
 #include "OTCUserPositionContext.h"
-#include "../strategy/PricingContext.h"
+#include "../pricingengine/PricingContext.h"
 #include "../utility/atomicutil.h"
 
 int OTCUserPositionContext::UpdatePosition(
@@ -47,7 +47,7 @@ ContractMap<double> OTCUserPositionContext::GenSpreadPoints(
 	bool updatePosition)
 {
 	ContractMap<double> hedgeMap;
-	auto pStrategyMap = PricingContext::GetStrategyMap();
+	auto pStrategyMap = PricingContext::Instance()->GetStrategyMap();
 
 	double initPos = 0;
 	double sumPos = 0;

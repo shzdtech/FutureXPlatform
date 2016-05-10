@@ -24,9 +24,6 @@
     <ClInclude Include="IAlgorithm.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="strategy_exp.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="ETPAlgorithm.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -34,6 +31,18 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="PricingContext.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IAlgorithmFactory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="pricingengine_exp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BlackScholesPricing.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PricingAlgorithmFactory.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -51,6 +60,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="PricingContext.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BlackScholesPricing.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PricingAlgorithmFactory.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -13,7 +13,6 @@
 #include "../dataobject/PricingDO.h"
 #include "../dataobject/TradeRecordDO.h"
 #include "../dataobject/TemplateDO.h"
-#include "../message/BizError.h"
 
 class IOrderUpdatedEvent
 {
@@ -28,7 +27,8 @@ public:
 	virtual int CreateOrder(OrderDO& orderInfo) = 0;
 	virtual int CancelOrder(OrderDO& orderInfo) = 0;
 	virtual int RejectOrder(OrderDO& orderInfo) = 0;
-	virtual OrderDOVec_Ptr UpdateByStrategy(const StrategyContractDO& strategyDO) = 0;
+	virtual OrderDOVec_Ptr UpdateOrderByStrategy(
+		const StrategyContractDO& strategyDO) = 0;
 
 protected:
 private:

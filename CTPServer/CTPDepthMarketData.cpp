@@ -46,6 +46,9 @@ dataobj_ptr CTPDepthMarketData::HandleResponse(ParamVector& rawRespParams, IRawA
 	mdo.LowerLimitPrice = pData->LowerLimitPrice;
 	mdo.PreSettlementPrice = pData->PreSettlementPrice;
 	mdo.SettlementPrice = pData->SettlementPrice;
+	mdo.PreOpenInterest = pData->PreOpenInterest;
+	mdo.OpenInterest = pData->OpenInterest;
+	mdo.AveragePrice = pData->AveragePrice;
 
 	pDOVec->push_back(std::move(mdo));
 

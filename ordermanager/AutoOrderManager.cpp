@@ -9,13 +9,13 @@
 #include <algorithm>
 #include "AutoOrderManager.h"
 #include "OrderSeqGen.h"
-#include "../strategy/PricingContext.h"
+#include "../pricingengine/PricingContext.h"
 #include "../databaseop/OrderDAO.h"
-#include "../strategy/PricingUtility.h"
+#include "../pricingengine/PricingUtility.h"
 
 
-AutoOrderManager::AutoOrderManager(IOrderAPI* pOrderAPI)
-	: OrderManager(pOrderAPI)
+AutoOrderManager::AutoOrderManager(IOrderAPI* pOrderAPI, PricingContext* pricingCtx)
+	: OrderManager(pOrderAPI, pricingCtx)
 {
 }
 
@@ -55,7 +55,8 @@ int AutoOrderManager::CreateOrder(OrderDO& orderInfo)
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-OrderDOVec_Ptr AutoOrderManager::UpdateByStrategy(const StrategyContractDO& strategyDO)
+OrderDOVec_Ptr AutoOrderManager::UpdateOrderByStrategy(
+	const StrategyContractDO& strategyDO)
 {
 	OrderDOVec_Ptr ret;
 
@@ -63,7 +64,7 @@ OrderDOVec_Ptr AutoOrderManager::UpdateByStrategy(const StrategyContractDO& stra
 	{
 		std::lock_guard<std::mutex> guard(_userOrderCtx.GetMutex(strategyDO));
 
-		if (auto pricingDO_ptr = PricingUtility::Pricing(strategyDO, strategyDO.Quantity))
+		if (auto pricingDO_ptr = PricingUtility::Pricing(strategyDO, strategyDO.Quantity, _pricingCtx))
 		{
 			ret = std::make_shared<VectorDO<OrderDO>>();
 
@@ -196,10 +197,10 @@ int AutoOrderManager::OnOrderUpdated(OrderDO& orderInfo)
 
 		if (addnew)
 		{
-			auto pMap = PricingContext::GetStrategyMap();
+			auto pMap = _pricingCtx->GetStrategyMap();
 			auto it = pMap->find(orderInfo);
 			if (it != pMap->end())
-				UpdateByStrategy(it->second);
+				UpdateOrderByStrategy(it->second);
 		}
 
 		ret = 0;

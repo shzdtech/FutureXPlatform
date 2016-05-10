@@ -239,7 +239,7 @@
     <ProjectReference Include="..\ordermanager\ordermanager.vcxproj">
       <Project>{be84a8c2-79ea-49a5-ab37-23250e0631b6}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\strategy\strategy.vcxproj">
+    <ProjectReference Include="..\pricingengine\pricingengine.vcxproj">
       <Project>{001a89a1-70d7-4a9b-a7b2-82d0be1ba07c}</Project>
     </ProjectReference>
     <ProjectReference Include="..\utility\utility.vcxproj">

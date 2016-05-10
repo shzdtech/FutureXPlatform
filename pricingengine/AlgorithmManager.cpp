@@ -6,8 +6,7 @@
  ***********************************************************************/
 
 #include "AlgorithmManager.h"
-#include "BetaSumAlgorithm.h"
-#include "ETPAlgorithm.h"
+#include "PricingAlgorithmFactory.h"
 
 std::once_flag AlgorithmManager::_instance_flag;
 std::shared_ptr<AlgorithmManager> AlgorithmManager::_instance = nullptr;
@@ -20,7 +19,7 @@ std::shared_ptr<AlgorithmManager> AlgorithmManager::_instance = nullptr;
 // Return:     IAlgorithm_Ptr
 ////////////////////////////////////////////////////////////////////////
 
-IAlgorithm_Ptr AlgorithmManager::FindAlgorithm(const std::string& name)
+IAlgorithm_Ptr AlgorithmManager::FindAlgorithm(const std::string& name) const
 {
 	IAlgorithm_Ptr ret;
 	auto it = _algMap.find(name);
@@ -33,11 +32,10 @@ IAlgorithm_Ptr AlgorithmManager::FindAlgorithm(const std::string& name)
 
 void AlgorithmManager::Initialize()
 {
-	IAlgorithm_Ptr algptr;
-	
-	algptr = std::make_shared<BetaSumAlgorithm>();
-	_algMap[algptr->Name()] = algptr;
+	auto algVect = PricingAlgorithmFactory().CreateAlgorithms();
 
-	algptr = std::make_shared<ETPAlgorithm>();
-	_algMap[algptr->Name()] = algptr;
+	for (auto& it : algVect)
+	{
+		_algMap.emplace(it->Name(), it);
+	}
 }

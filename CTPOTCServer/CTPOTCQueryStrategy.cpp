@@ -9,7 +9,7 @@
 #include "../CTPServer/CTPUtility.h"
 #include "../CTPServer/CTPAppContext.h"
 #include "../CTPServer/Attribute_Key.h"
-#include "../strategy/PricingContext.h"
+#include "../pricingengine/PricingContext.h"
 #include "CTPWorkerProcessorID.h"
 #include "CTPOTCWorkerProcessor.h"
 #include "../CTPServer/CTPRawAPI.h"
@@ -47,7 +47,7 @@ dataobj_ptr CTPOTCQueryStrategy::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 	auto wkProcPtr = std::static_pointer_cast<CTPOTCWorkerProcessor>
 		(CTPAppContext::FindServerProcessor(CTPWorkProcessorID::WORKPROCESSOR_OTC));
 
-	auto pStrategyMap = PricingContext::GetStrategyMap();
+	auto pStrategyMap = PricingContext::Instance()->GetStrategyMap();
 
 	for (auto& strategyKey : *strategyVec_Ptr)
 	{

@@ -11,12 +11,17 @@
 #include <string>
 #include "../dataobject/AbstractDataObj.h"
 #include "../dataobject/data_commondef.h"
+#include "PricingContext.h"
 
 class IAlgorithm
 {
 public:
 	virtual const std::string& Name(void) const = 0;
-	virtual dataobj_ptr Compute(ParamVector& params) = 0;
+	virtual dataobj_ptr Compute(
+		const StrategyContractDO& sdo,
+		double inputVal,
+		PricingContext& priceCtx,
+		const ParamVector* params) const = 0;
 
 protected:
 private:

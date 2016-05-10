@@ -13,7 +13,7 @@
 #include "ctpotc_bizhandlers.h"
 #include "../CTPServer/ctp_bizhandlers.h"
 #include "../CTPServer/CTPAppContext.h"
-#include "../strategy/PricingContext.h"
+#include "../pricingengine/PricingContext.h"
 
 #include "../message/EchoMsgHandler.h"
 #include "../message/EchoMsgSerializer.h"

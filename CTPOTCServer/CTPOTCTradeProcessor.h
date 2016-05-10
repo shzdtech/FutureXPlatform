@@ -43,6 +43,7 @@ protected:
 	SessionContainer_Ptr<uint64_t> _orderNotifier;
 
 	OTCOrderManager _otcOrderMgr;
+
 	AutoOrderManager _autoOrderMgr;
 private:
 

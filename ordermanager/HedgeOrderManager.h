@@ -18,13 +18,17 @@
 class ORDERMGR_CLASS_EXPORT HedgeOrderManager : public AutoOrderManager
 {
 public:
-	HedgeOrderManager(const std::string& user, IOrderAPI* pOrderAPI);
+	HedgeOrderManager(const std::string& user, IOrderAPI* pOrderAPI, PricingContext* pricingCtx);
 
 	int CreateOrder(OrderDO& orderInfo);
-	OrderDOVec_Ptr UpdateByStrategy(const StrategyContractDO& strategyDO);
+
 	int OnOrderUpdated(OrderDO& orderInfo);
+
 	int Hedge(void);
+
 	int Reset(void);
+
+	OrderDOVec_Ptr UpdateOrderByStrategy(const StrategyContractDO& strategyDO);
 
 	void FillPosition(ContractMap<double>& position);
 

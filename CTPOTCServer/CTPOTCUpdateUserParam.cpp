@@ -8,7 +8,7 @@
 #include "CTPOTCUpdateUserParam.h"
 #include "../CTPServer/CTPUtility.h"
 #include "../CTPServer/Attribute_Key.h"
-#include "../strategy/PricingContext.h"
+#include "../pricingengine/PricingContext.h"
 
 #include  "../message/message_marco.h"
 #include "../message/MessageProcessor.h"
@@ -37,7 +37,7 @@ dataobj_ptr CTPOTCUpdateUserParam::HandleRequest(const dataobj_ptr reqDO, IRawAP
 
 	auto vecUserConDO_Ptr = (VectorDO<UserContractParam>*)reqDO.get();
 
-	auto strategyMap = PricingContext::GetStrategyMap();
+	auto strategyMap = PricingContext::Instance()->GetStrategyMap();
 
 	for (auto& userConDO : *vecUserConDO_Ptr)
 	{

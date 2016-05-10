@@ -10,7 +10,7 @@
 #include "../CTPServer/Attribute_Key.h"
 
 #include <glog/logging.h>
-#include "../strategy/PricingContext.h"
+#include "../pricingengine/PricingContext.h"
 
 #include "../message/BizError.h"
 
@@ -38,7 +38,7 @@ dataobj_ptr CTPOTCQueryContractParam::HandleRequest(const dataobj_ptr reqDO, IRa
 
 	auto contractVec_Ptr = std::make_shared<VectorDO<ContractDO>>();
 
-	auto contractMap = PricingContext::GetContractMap();
+	auto contractMap = PricingContext::Instance()->GetContractMap();
 
 	for (auto& con : *cpVec_Ptr)
 	{

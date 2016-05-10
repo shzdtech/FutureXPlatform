@@ -9,7 +9,7 @@
 #include "../CTPServer/CTPUtility.h"
 #include "../CTPServer/Attribute_Key.h"
 #include "../CTPServer/CTPAppContext.h"
-#include "../strategy/PricingContext.h"
+#include "../pricingengine/PricingContext.h"
 #include "CTPOTCWorkerProcessor.h"
 #include "CTPWorkerProcessorID.h"
 
@@ -32,7 +32,7 @@ dataobj_ptr CTPOTCUpdateStrategy::HandleRequest(const dataobj_ptr reqDO, IRawAPI
 {
 	CTPUtility::CheckLogin(session);
 
-	auto strategyMap = PricingContext::GetStrategyMap();
+	auto strategyMap = PricingContext::Instance()->GetStrategyMap();
 
 	auto strategyVec = (VectorDO<StrategyContractDO>*)reqDO.get();
 
@@ -54,6 +54,9 @@ dataobj_ptr CTPOTCUpdateStrategy::HandleRequest(const dataobj_ptr reqDO, IRawAPI
 			scDO.Spread = strategyDO.Spread;
 			userContractMap_Ptr->at(strategyDO).Quantity = scDO.Quantity;
 			scDO.Enabled = strategyDO.Enabled;
+			scDO.RiskFreeRate = scDO.RiskFreeRate;
+			scDO.Strike = scDO.Strike;
+			scDO.Volatility = scDO.Volatility;
 
 			if (scDO.Enabled)
 				proc->TriggerPricing(scDO);

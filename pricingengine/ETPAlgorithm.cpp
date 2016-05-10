@@ -33,17 +33,19 @@ const std::string& ETPAlgorithm::Name(void) const
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr ETPAlgorithm::Compute(ParamVector& params)
+dataobj_ptr ETPAlgorithm::Compute(
+	const StrategyContractDO& sdo,
+	double inputVal,
+	PricingContext& priceCtx,
+	const ParamVector* params) const
 {
 	static const std::string const1_name("const1");
 	static const std::string const2_name("const2");
 
 	dataobj_ptr ret;
 
-	int quantity = *((int*)(params[0]));
-	auto& sdo = *((StrategyContractDO*)params[1]);
-	auto& mdDOMap = *((MarketDataDOMap*)params[2]);
-	auto& conDOMap = *((ContractDOMap*)params[3]);
+	auto& mdDOMap = *(priceCtx.GetMarketDataDOMap());
+	auto& conDOMap = *(priceCtx.GetContractMap());
 
 	auto& parentCon = conDOMap.at(sdo);
 
@@ -52,6 +54,7 @@ dataobj_ptr ETPAlgorithm::Compute(ParamVector& params)
 	double bias = sdo.ParamMap->at(const2_name) + sdo.Offset;
 	double BidPrice = 0;
 	double AskPrice = 0;
+	double quantity = inputVal;
 
 	if (sdo.BaseContracts && sdo.BaseContracts->size() > 0)
 	{

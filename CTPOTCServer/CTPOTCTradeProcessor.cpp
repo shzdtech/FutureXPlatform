@@ -15,13 +15,13 @@
 #include "../message/SysParam.h"
 #include "../message/AppContext.h"
 
-#include "../strategy/PricingContext.h"
+#include "../pricingengine/PricingContext.h"
 
 
 CTPOTCTradeProcessor::CTPOTCTradeProcessor(const std::map<std::string, std::string>& configMap)
 	: CTPProcessor(configMap),
-	_otcOrderMgr(this),
-	_autoOrderMgr(this),
+	_otcOrderMgr(this, PricingContext::Instance()),
+	_autoOrderMgr(this, PricingContext::Instance()),
 	_orderNotifier(new SessionContainer<uint64_t>())
 {
 	_isLogged = false;
@@ -57,7 +57,7 @@ CTPOTCTradeProcessor::~CTPOTCTradeProcessor()
 
 bool CTPOTCTradeProcessor::OnSessionClosing(void)
 {
-	auto pMap = PricingContext::GetStrategyMap();
+	auto pMap = PricingContext::Instance()->GetStrategyMap();
 	for (auto& it : *pMap)
 	{
 		auto& stragety = it.second;
@@ -127,7 +127,7 @@ void CTPOTCTradeProcessor::RegisterOrderListener(const int orderID,
 
 void CTPOTCTradeProcessor::TriggerOrderUpdating(const StrategyContractDO& strategyDO)
 {
-	if (auto updatedOrders = _autoOrderMgr.UpdateByStrategy(strategyDO))
+	if (auto updatedOrders = _autoOrderMgr.UpdateOrderByStrategy(strategyDO))
 	{
 		for (auto& order : *updatedOrders)
 		{

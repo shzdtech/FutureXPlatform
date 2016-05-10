@@ -33,22 +33,25 @@ const std::string& BetaSumAlgorithm::Name(void) const
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr BetaSumAlgorithm::Compute(ParamVector& params)
+dataobj_ptr BetaSumAlgorithm::Compute(
+	const StrategyContractDO& sdo,
+	double inputVal,
+	PricingContext& priceCtx,
+	const ParamVector* params) const
 {
 	static const std::string alpha_name("alpha");
 
 	dataobj_ptr ret;
 
-	int quantity = *((int*)(params[0]));
-	auto& sdo = *((StrategyContractDO*)params[1]);
-	auto& mdDOMap = *((MarketDataDOMap*)params[2]);
-	auto& conDOMap = *((ContractDOMap*)params[3]);
+	auto& mdDOMap = *(priceCtx.GetMarketDataDOMap());
+	auto& conDOMap = *(priceCtx.GetContractMap());
 
 	auto& parentCon = conDOMap.at(sdo);
 
 	double bias = sdo.ParamMap->at(alpha_name) + sdo.Offset;
 	double BidPrice = 0;
 	double AskPrice = 0;
+	double quantity = inputVal;
 
 	if (sdo.BaseContracts && sdo.BaseContracts->size() > 0)
 	{

@@ -28,8 +28,8 @@ message PBParam
 
 message PBMarketData {
 	//MD Common Data
-	string symbol = 1;
-	string timeStamp = 2;
+	string exhange = 1;
+	string contract = 2;
 	double preCloseValue = 3;
 	double openValue = 4;
 	double turnover = 5;
@@ -50,6 +50,10 @@ message PBMarketData {
 	double settlePrice = 16;
 	int32 highLimit = 17;
 	int32 lowLimit = 18;
+
+	double preOpenInterest = 19;
+	double openInterest = 20;
+	double averagePrice = 21;
 }
 
 message PBMarketDataList
@@ -76,7 +80,7 @@ message PBStrategyWeight
 {
 	string exchange = 3;
 	string contract = 4;
-	float weight = 6;
+	double weight = 6;
 }
 
 message PBStrategy
@@ -87,13 +91,16 @@ message PBStrategy
 	string symbol = 4;
 	string description = 5;
 	bool allowTrading = 6;
-	int32 quantity = 7;
-	int32 depth = 8;
-	float spread = 9;
-	float offset = 10;
-	bool enabled = 11;
-	repeated PBStrategyWeight weightContract = 12;
-	repeated PBParam params = 13;
+	bool enabled = 7;
+	int32 quantity = 8;
+	int32 depth = 9;
+	double spread = 10;
+	double offset = 11;
+	double strike = 12;
+	double riskFreeRate = 13;
+	double volatility = 14;
+	repeated PBStrategyWeight weightContract = 15;
+	repeated PBParam params = 16;
 }
 
 message PBStrategyList
@@ -106,7 +113,7 @@ message PBContractParam
 	string exchange = 1;
 	string contract = 2;
 	int32 depthVol = 3;
-	float gamma = 4;
+	double gamma = 4;
 }
 
 message PBContractParamList
@@ -118,7 +125,7 @@ message PBOTCUserParam
 {
 	string exchange = 1;
 	string contract = 2;
-	float quantity = 3;
+	double quantity = 3;
 }
 
 message PBOTCUserParamList

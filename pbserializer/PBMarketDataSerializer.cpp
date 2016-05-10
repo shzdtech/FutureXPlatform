@@ -26,7 +26,8 @@ data_buffer PBMarketDataSerializer::Serialize(const dataobj_ptr abstractDO)
 	for (auto& pDO : *pVecDO)
 	{
 		auto PB = PBList.add_mdlist();
-		PB->set_symbol(pDO.InstrumentID());
+		PB->set_exhange(pDO.ExchangeID());
+		PB->set_contract(pDO.InstrumentID());
 		PB->set_preclosevalue(pDO.PreClosePrice);
 		PB->set_openvalue(pDO.OpenPrice);
 		PB->set_highvalue(pDO.HighestPrice);
@@ -43,6 +44,9 @@ data_buffer PBMarketDataSerializer::Serialize(const dataobj_ptr abstractDO)
 		PB->set_lowlimit(pDO.LowerLimitPrice);
 		PB->set_presettleprice(pDO.PreSettlementPrice);
 		PB->set_settleprice(pDO.SettlementPrice);
+		PB->set_preopeninterest(pDO.PreOpenInterest);
+		PB->set_openinterest(pDO.OpenInterest);
+		PB->set_averageprice(pDO.AveragePrice);
 	}
 
 	int bufSz = PBList.ByteSize();

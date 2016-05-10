@@ -11,12 +11,12 @@
 #include "IAlgorithm.h"
 #include "../utility/singleton_templ_mt.h"
 #include <map>
-#include "strategy_exp.h"
+#include "pricingengine_exp.h"
 
-class STRATEGY_CLASS_EXPORTS AlgorithmManager : public singleton_mt_ptr<AlgorithmManager>
+class PRICINGENGINE_CLASS_EXPORTS AlgorithmManager : public singleton_mt_ptr<AlgorithmManager>
 {
 public:
-   IAlgorithm_Ptr FindAlgorithm(const std::string& name);
+   IAlgorithm_Ptr FindAlgorithm(const std::string& name) const;
    void Initialize();
 
 protected:

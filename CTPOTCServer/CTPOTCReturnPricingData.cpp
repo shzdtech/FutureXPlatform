@@ -8,7 +8,7 @@
 #include "CTPOTCReturnPricingData.h"
 #include "../CTPServer/CTPUtility.h"
 #include "../CTPServer/Attribute_Key.h"
-#include "../strategy/PricingContext.h"
+#include "../pricingengine/PricingContext.h"
 #include <glog/logging.h>
 
 #include "../dataobject/MarketDataDO.h"
@@ -23,7 +23,7 @@
 
 #include "../utility/Encoding.h"
 
-#include "../strategy/PricingUtility.h"
+#include "../pricingengine/PricingUtility.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPOTCReturnPricingData::HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session)

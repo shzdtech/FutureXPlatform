@@ -24,9 +24,9 @@
 
 #include "../utility/Encoding.h"
 #include <glog/logging.h>
-#include "../strategy/AlgorithmManager.h"
+#include "../pricingengine/AlgorithmManager.h"
 
-#include "../strategy/PricingContext.h"
+#include "../pricingengine/PricingContext.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPOTCDepthMarketData::HandleResponse(ParamVector& rawRespParams, void* rawAPI, ISession* session)
@@ -44,7 +44,7 @@ dataobj_ptr CTPOTCDepthMarketData::HandleResponse(ParamVector& rawRespParams, vo
 
 	auto pData = (CThostFtdcDepthMarketDataField*)rawRespParams[0];
 
-	auto pMdMap = PricingContext::GetMarketDataDOMap();
+	auto pMdMap = PricingContext::Instance()->GetMarketDataDOMap();
 
 	MarketDataDO& mdo = pMdMap->at(pData->InstrumentID);
 

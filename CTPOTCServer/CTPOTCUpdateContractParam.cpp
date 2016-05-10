@@ -9,7 +9,7 @@
 #include "../CTPServer/CTPUtility.h"
 #include "../CTPServer/CTPAppContext.h"
 #include <glog/logging.h>
-#include "../strategy/PricingContext.h"
+#include "../pricingengine/PricingContext.h"
 #include "CTPOTCWorkerProcessor.h"
 #include "CTPWorkerProcessorID.h"
 
@@ -36,8 +36,8 @@ dataobj_ptr CTPOTCUpdateContractParam::HandleRequest(const dataobj_ptr reqDO, IR
 	CTPUtility::CheckLogin(session);
 
 	auto vecConDO_Ptr = (VectorDO<ContractDO>*)reqDO.get();
-	auto mdMap = PricingContext::GetMarketDataDOMap();
-	auto contractMap = PricingContext::GetContractMap();
+	auto mdMap = PricingContext::Instance()->GetMarketDataDOMap();
+	auto contractMap = PricingContext::Instance()->GetContractMap();
 
 	auto proc = std::static_pointer_cast<CTPOTCWorkerProcessor>
 		(CTPAppContext::FindServerProcessor(WORKPROCESSOR_OTC));

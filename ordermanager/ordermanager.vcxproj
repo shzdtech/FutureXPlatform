@@ -184,7 +184,7 @@
     <ProjectReference Include="..\message\message.vcxproj">
       <Project>{e9adaa2b-1ccb-4111-9ac3-bddb3dc114f2}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\strategy\strategy.vcxproj">
+    <ProjectReference Include="..\pricingengine\pricingengine.vcxproj">
       <Project>{001a89a1-70d7-4a9b-a7b2-82d0be1ba07c}</Project>
     </ProjectReference>
   </ItemGroup>

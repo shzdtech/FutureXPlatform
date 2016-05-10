@@ -6,12 +6,13 @@
  ***********************************************************************/
 
 #include "HedgeOrderManager.h"
-#include "../strategy/PricingContext.h"
+#include "../pricingengine/PricingContext.h"
 #include "../utility/atomicutil.h"
 
 
-HedgeOrderManager::HedgeOrderManager(const std::string& user, IOrderAPI* pOrderAPI)
-	: _user(user), AutoOrderManager(pOrderAPI)
+HedgeOrderManager::HedgeOrderManager(const std::string& user,
+	IOrderAPI* pOrderAPI, PricingContext* pricingCtx)
+	: _user(user), AutoOrderManager(pOrderAPI, pricingCtx)
 {
 
 }
@@ -26,7 +27,7 @@ HedgeOrderManager::HedgeOrderManager(const std::string& user, IOrderAPI* pOrderA
 
 int HedgeOrderManager::CreateOrder(OrderDO& orderInfo)
 {
-	auto pMdMap = PricingContext::GetMarketDataDOMap();
+	auto pMdMap = _pricingCtx->GetMarketDataDOMap();
 	auto& mdo = pMdMap->at(orderInfo.InstrumentID());
 
 	orderInfo.TIF = OrderTIFType::IOC;
@@ -65,7 +66,8 @@ int HedgeOrderManager::CreateOrder(OrderDO& orderInfo)
 // Return:     OrderDOVec_Ptr
 ////////////////////////////////////////////////////////////////////////
 
-OrderDOVec_Ptr HedgeOrderManager::UpdateByStrategy(const StrategyContractDO& strategyDO)
+OrderDOVec_Ptr HedgeOrderManager::UpdateOrderByStrategy(
+	const StrategyContractDO& strategyDO)
 {
 	return nullptr;
 }
