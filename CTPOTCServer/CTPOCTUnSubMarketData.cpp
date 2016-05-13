@@ -6,9 +6,9 @@
  ***********************************************************************/
 
 #include "CTPOCTUnSubMarketData.h"
-#include "../CTPServer/CTPUtility.h"
-#include "../CTPServer/Attribute_Key.h"
-#include "../CTPServer/CTPAppContext.h"
+
+#include "../common/Attribute_Key.h"
+#include "../message/GlobalProcessorRegistry.h"
 #include "CTPOTCWorkerProcessor.h"
 #include "CTPWorkerProcessorID.h"
 
@@ -26,12 +26,12 @@
 
 dataobj_ptr CTPOCTUnSubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
-	CTPUtility::CheckLogin(session);
+	CheckLogin(session);
 
 	auto userContractMap = std::static_pointer_cast<UserContractParamMap>
 		(session->getContext()->getAttribute(STR_KEY_USER_CONTRACTS));
 
-	if (auto workPrc = CTPAppContext::FindServerProcessor
+	if (auto workPrc = GlobalProcessorRegistry::FindProcessor
 		(CTPWorkProcessorID::WORKPROCESSOR_OTC))
 	{
 		auto otcworkproc = (std::static_pointer_cast<CTPOTCWorkerProcessor>(workPrc));
@@ -53,7 +53,7 @@ dataobj_ptr CTPOCTUnSubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAP
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOCTUnSubMarketData::HandleResponse(ParamVector rawParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPOCTUnSubMarketData::HandleResponse(param_vector rawParams, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPOCTUnSubMarketData::HandleResponse()
 // Parameters:
 // - rawParams
@@ -62,7 +62,7 @@ dataobj_ptr CTPOCTUnSubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAP
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOCTUnSubMarketData::HandleResponse(ParamVector rawParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOCTUnSubMarketData::HandleResponse(param_vector rawParams, IRawAPI* rawAPI, ISession* session)
 {
 	return nullptr;
 }

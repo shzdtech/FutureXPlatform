@@ -6,7 +6,7 @@
  ***********************************************************************/
 
 #include "BizErrorSerializer.h"
-#include "AbstractMessageSerializerFactory.h"
+#include "AbstractDataSerializerFactory.h"
 #include "../message/DefMessageID.h"
 
 ////////////////////////////////////////////////////////////////////////
@@ -18,6 +18,6 @@
 IDataSerializer_Ptr BizErrorSerializer::Instance(void)
 {
 	static IDataSerializer_Ptr instance
-		(AbstractMessageSerializerFactory::Instance()->Find(MSG_ID_ERROR));
+		(AbstractDataSerializerFactory::Instance()->Find(MSG_ID_ERROR));
 	return instance;
 }

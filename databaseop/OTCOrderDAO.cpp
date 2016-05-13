@@ -15,13 +15,13 @@
 // - orderDO
 // Return:     bool
 ////////////////////////////////////////////////////////////////////////
-static const std::string sql_proc_createorder("CALL Order_OTC_New"
-	"(?,?,?,?,?,"
-	"?,?,?,?,?,"
-	"@orderID,@orderSysID,@orderStatus)");
 
 OrderDO_Ptr OTCOrderDAO::CreateOrder(const OrderDO& orderDO, const PricingDO& pricingDO)
 {
+	static const std::string sql_proc_createorder("CALL Order_OTC_New"
+		"(?,?,?,?,?,?,?,?,?,?,"
+		"@orderID,@orderSysID,@orderStatus)");
+
 	auto ret = std::make_shared<OrderDO>(orderDO);
 
 	auto session = ConnectionHelper::Instance()->LeaseOrCreate();
@@ -66,11 +66,12 @@ OrderDO_Ptr OTCOrderDAO::CreateOrder(const OrderDO& orderDO, const PricingDO& pr
 // - orderDO
 // Return:     bool
 ////////////////////////////////////////////////////////////////////////
-static const std::string sql_proc_cancelorder
-("CALL Order_OTC_Cancel(?,?)");
 
 bool OTCOrderDAO::CancelOrder(const OrderBaseDO& orderDO, OrderStatus& status)
 {
+	static const std::string sql_proc_cancelorder
+	("CALL Order_OTC_Cancel(?,?)");
+
 	bool ret = true;
 	status = OrderStatus::UNDEFINED;
 
@@ -102,10 +103,11 @@ bool OTCOrderDAO::CancelOrder(const OrderBaseDO& orderDO, OrderStatus& status)
 // - orderDO
 // Return:     bool
 ////////////////////////////////////////////////////////////////////////
-static const std::string sql_proc_acceptorder("CALL Order_OTC_Accept(?)");
 
 bool OTCOrderDAO::AcceptOrder(const OrderBaseDO& orderDO, OrderStatus& status)
 {
+	static const std::string sql_proc_acceptorder("CALL Order_OTC_Accept(?)");
+
 	bool ret = true;
 	status = OrderStatus::UNDEFINED;
 
@@ -136,10 +138,11 @@ bool OTCOrderDAO::AcceptOrder(const OrderBaseDO& orderDO, OrderStatus& status)
 // - orderDO
 // Return:     bool
 ////////////////////////////////////////////////////////////////////////
-static const std::string sql_proc_rejectorder("CALL Order_OTC_Reject(?)");
 
 bool OTCOrderDAO::RejectOrder(const OrderBaseDO& orderDO, OrderStatus& status)
 {
+	static const std::string sql_proc_rejectorder("CALL Order_OTC_Reject(?)");
+
 	bool ret = true;
 	status = OrderStatus::UNDEFINED;
 
@@ -147,7 +150,7 @@ bool OTCOrderDAO::RejectOrder(const OrderBaseDO& orderDO, OrderStatus& status)
 	try
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
-			session->getConnection()->prepareStatement(sql_proc_acceptorder));
+			session->getConnection()->prepareStatement(sql_proc_rejectorder));
 		prestmt->setUInt64(1, orderDO.OrderID);
 
 		if (prestmt->executeUpdate() > 0)
@@ -170,11 +173,12 @@ bool OTCOrderDAO::RejectOrder(const OrderBaseDO& orderDO, OrderStatus& status)
 // - contractKey
 // Return:     VectorDO_Ptr<OrderDO>
 ////////////////////////////////////////////////////////////////////////
-static const std::string sql_proc_querytradingorder
-("CALL Order_OTC_QueryActive(?)");
 
 OrderDOVec_Ptr OTCOrderDAO::QueryTradingOrder(const ContractKey& contractKey)
 {
+	static const std::string sql_proc_querytradingorder
+	("CALL Order_OTC_QueryActive(?)");
+	
 	OrderDOVec_Ptr ret;
 
 	auto session = ConnectionHelper::Instance()->LeaseOrCreate();
@@ -213,11 +217,12 @@ OrderDOVec_Ptr OTCOrderDAO::QueryTradingOrder(const ContractKey& contractKey)
 // - contractKey
 // Return:     VectorDO_Ptr<OrderDO>
 ////////////////////////////////////////////////////////////////////////
-static const std::string sql_proc_querytodayorder
-("CALL Order_OTC_QueryToday(?,?)");
 
 OrderDOVec_Ptr OTCOrderDAO::QueryTodayOrder(const std::string& userId, const ContractKey& contractKey)
 {
+	static const std::string sql_proc_querytodayorder
+	("CALL Order_OTC_QueryToday(?,?)");
+
 	OrderDOVec_Ptr ret;
 
 	auto session = ConnectionHelper::Instance()->LeaseOrCreate();
@@ -225,7 +230,7 @@ OrderDOVec_Ptr OTCOrderDAO::QueryTodayOrder(const std::string& userId, const Con
 	try
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
-			session->getConnection()->prepareStatement(sql_proc_createorder));
+			session->getConnection()->prepareStatement(sql_proc_querytodayorder));
 		prestmt->setString(1, userId);
 		prestmt->setString(2, contractKey.InstrumentID());
 

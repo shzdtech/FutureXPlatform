@@ -6,14 +6,19 @@
  ***********************************************************************/
 
 #include "CTPOTCUpdateContractParam.h"
-#include "../CTPServer/CTPUtility.h"
-#include "../CTPServer/CTPAppContext.h"
-#include <glog/logging.h>
-#include "../pricingengine/PricingContext.h"
 #include "CTPOTCWorkerProcessor.h"
 #include "CTPWorkerProcessorID.h"
 
+
+#include "../message/GlobalProcessorRegistry.h"
+#include "../common/Attribute_Key.h"
+
+#include <glog/logging.h>
+
 #include "../message/BizError.h"
+
+#include "../message/message_macro.h"
+#include "../pricingengine/IPricingDataContext.h"
 
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/ResultDO.h"
@@ -33,14 +38,17 @@
 
 dataobj_ptr CTPOTCUpdateContractParam::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
-	CTPUtility::CheckLogin(session);
+	CheckLogin(session);
 
 	auto vecConDO_Ptr = (VectorDO<ContractDO>*)reqDO.get();
-	auto mdMap = PricingContext::Instance()->GetMarketDataDOMap();
-	auto contractMap = PricingContext::Instance()->GetContractMap();
+	auto pricingCtx = AttribPointerCast(session->getProcessor(),
+		STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext);
+
+	auto mdMap = pricingCtx->GetMarketDataDOMap();
+	auto contractMap = pricingCtx->GetContractMap();
 
 	auto proc = std::static_pointer_cast<CTPOTCWorkerProcessor>
-		(CTPAppContext::FindServerProcessor(WORKPROCESSOR_OTC));
+		(GlobalProcessorRegistry::FindProcessor(CTPWorkProcessorID::WORKPROCESSOR_OTC));
 
 	for (auto& conDO : *vecConDO_Ptr)
 	{
@@ -65,7 +73,7 @@ dataobj_ptr CTPOTCUpdateContractParam::HandleRequest(const dataobj_ptr reqDO, IR
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCUpdateContractParam::HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOTCUpdateContractParam::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	return nullptr;
 }

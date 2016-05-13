@@ -55,9 +55,6 @@ dataobj_ptr CTPLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* raw
 	auto pUserInfo = session->getUserInfo();
 	pUserInfo->setInvestorId(req.UserID);
 	pUserInfo->setBrokerId(req.BrokerID);
-	pUserInfo->setCompany(userid);
-	pUserInfo->setContactNum(EMPTY_STRING);
-	pUserInfo->setEmail(EMPTY_STRING);
 	pUserInfo->setName(userid);
 	pUserInfo->setPassword(password);
 	pUserInfo->setUserId(userid);
@@ -79,7 +76,7 @@ dataobj_ptr CTPLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* raw
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPLoginHandler::HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPLoginHandler::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	CTPUtility::CheckError(rawRespParams[1]);
 
@@ -96,10 +93,8 @@ dataobj_ptr CTPLoginHandler::HandleResponse(ParamVector& rawRespParams, IRawAPI*
 	pUserInfo->setSessionId(pData->SessionID);
 
 	pDO->BrokerId = pUserInfo->getBrokerId();
-	pDO->Company = pUserInfo->getCompany();
-	pDO->ContactNum = pUserInfo->getContactNum();
-	pDO->Email = pUserInfo->getEmail();
-	pDO->Name = pUserInfo->getName();
+	pDO->Company = pUserInfo->getBrokerId();
+	pDO->FirstName = pUserInfo->getName();
 	//pDO->Password = pUserInfo->getPassword();
 	pDO->Permission = pUserInfo->getPermission();
 	pDO->Role = pUserInfo->getRole();

@@ -8,10 +8,9 @@
 #ifndef __CTP_CTPWORKERPROCESSORID_H
 #define	__CTP_CTPWORKERPROCESSORID_H
 
-enum CTPWorkProcessorID
+namespace CTPWorkProcessorID
 {
-	WORKPROCESSOR_OTC = 0,
-	WORKPROCESSOR_MAX_IDX,
+	static int WORKPROCESSOR_OTC = -1;
 };
 
 #endif	/* __CTP_CTPWORKERPROCESSORID_H */

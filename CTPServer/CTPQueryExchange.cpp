@@ -46,7 +46,7 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPQueryExchange::HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPQueryExchange::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPQueryExchange::HandleResponse()
 // Parameters:
 // - rawRespParams
@@ -55,7 +55,7 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryExchange::HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryExchange::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	CTPUtility::CheckError(rawRespParams[1]);
 

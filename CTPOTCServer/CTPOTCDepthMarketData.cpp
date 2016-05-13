@@ -6,8 +6,8 @@
  ***********************************************************************/
 
 #include "CTPOTCDepthMarketData.h"
-#include "../CTPServer/CTPUtility.h"
-#include "../CTPServer/Attribute_Key.h"
+
+#include "../common/Attribute_Key.h"
 
 #include "../CTPServer/tradeapi/ThostFtdcMdApi.h"
 
@@ -26,27 +26,32 @@
 #include <glog/logging.h>
 #include "../pricingengine/AlgorithmManager.h"
 
-#include "../pricingengine/PricingContext.h"
+#include "../common/Attribute_Key.h"
+#include "../message/message_macro.h"
+#include "../pricingengine/IPricingDataContext.h"
 
-////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCDepthMarketData::HandleResponse(ParamVector& rawRespParams, void* rawAPI, ISession* session)
-// Purpose:    Implementation of CTPOTCDepthMarketData::HandleResponse()
-// Parameters:
-// - rawRespParams
-// - rawAPI
-// - session
-// Return:     dataobj_ptr
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       CTPOTCDepthMarketData::HandleResponse(param_vector& rawRespParams, void* rawAPI, ISession* session)
+ // Purpose:    Implementation of CTPOTCDepthMarketData::HandleResponse()
+ // Parameters:
+ // - rawRespParams
+ // - rawAPI
+ // - session
+ // Return:     dataobj_ptr
+ ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCDepthMarketData::HandleResponse(ParamVector& rawRespParams, void* rawAPI, ISession* session)
+dataobj_ptr CTPOTCDepthMarketData::HandleResponse(param_vector& rawRespParams, void* rawAPI, ISession* session)
 {
 	dataobj_ptr ret;
 
 	auto pData = (CThostFtdcDepthMarketDataField*)rawRespParams[0];
 
-	auto pMdMap = PricingContext::Instance()->GetMarketDataDOMap();
+	if (!_mdDOMap)
+		_mdDOMap = AttribPointerCast(session->getProcessor(),
+			STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext)
+		->GetMarketDataDOMap();
 
-	MarketDataDO& mdo = pMdMap->at(pData->InstrumentID);
+	MarketDataDO& mdo = _mdDOMap->at(pData->InstrumentID);
 
 	mdo.PreClosePrice = pData->PreClosePrice;
 	mdo.OpenPrice = pData->OpenPrice;
@@ -64,6 +69,9 @@ dataobj_ptr CTPOTCDepthMarketData::HandleResponse(ParamVector& rawRespParams, vo
 	mdo.LowerLimitPrice = pData->LowerLimitPrice;
 	mdo.PreSettlementPrice = pData->PreSettlementPrice;
 	mdo.SettlementPrice = pData->SettlementPrice;
+	mdo.PreOpenInterest = pData->PreOpenInterest;
+	mdo.OpenInterest = pData->OpenInterest;
+	mdo.AveragePrice = pData->AveragePrice;
 
 	return ret;
 }

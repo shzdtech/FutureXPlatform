@@ -9,7 +9,7 @@
 #define __CTP_CTPLoginHandler_h
 
 #include "../message/LoginHandler.h"
-#include "../dataobject/data_commondef.h"
+#include "../common/typedefs.h"
 #include "tradeapi/ThostFtdcUserApiStruct.h"
 #include "ctpexport.h"
 
@@ -17,7 +17,7 @@ class CTP_CLASS_EXPORT CTPLoginHandler : public LoginHandler
 {
 public:
 	dataobj_ptr HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session);
-	dataobj_ptr HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session);
+	dataobj_ptr HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session);
 	virtual int LoginFunction(IRawAPI* rawAPI, CThostFtdcReqUserLoginField* loginInfo) = 0;
 
 protected:

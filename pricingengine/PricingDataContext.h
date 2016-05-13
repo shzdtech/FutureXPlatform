@@ -5,19 +5,15 @@
  * Purpose: Declaration of the class PricingContext
  ***********************************************************************/
 
-#if !defined(__strategy__PricingContext_h)
-#define __strategy__PricingContext_h
+#if !defined(__strategy__PricingDataContext_h)
+#define __strategy__PricingDataContext_h
 
 #include <memory>
-#include "../message/AppContext.h"
-#include "../message/IMessageProcessor.h"
-
-#include "../dataobject/TypedefDO.h"
-#include "../utility/singleton_templ.h"
+#include "IPricingDataContext.h"
 
 #include "pricingengine_exp.h"
 
-class PRICINGENGINE_CLASS_EXPORTS PricingContext
+class PRICINGENGINE_CLASS_EXPORTS PricingDataContext : IPricingDataContext
 {
 public:
 	StrategyContractDOMap* GetStrategyMap();
@@ -26,10 +22,7 @@ public:
 	PortfolioDOMap* GetPortfolioDOMap();
 	InstrumentDOMap* GetInstrumentDOMap();
 
-	static PricingContext* Instance();
-
 protected:
-	static PricingContext* _defaultInstance;
 
 private:
 	StrategyContractDOMap _strategyContractDOMap;

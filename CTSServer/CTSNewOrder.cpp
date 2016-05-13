@@ -30,7 +30,7 @@ dataobj_ptr CTSNewOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI,
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTSNewOrder::HandleResponse(ParamVector& rawParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTSNewOrder::HandleResponse(param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTSNewOrder::HandleResponse()
 // Parameters:
 // - rawParams
@@ -39,7 +39,7 @@ dataobj_ptr CTSNewOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI,
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTSNewOrder::HandleResponse(ParamVector& rawParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTSNewOrder::HandleResponse(param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
 {
 	OrderDO_Ptr order_ptr = *((OrderDO_Ptr*)rawParams[0]);
 

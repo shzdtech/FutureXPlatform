@@ -16,12 +16,12 @@
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-static const std::string sql_findportfolio(
-	"SELECT portfolio_symbol, hedge_delay FROM portfolio "
-	"WHERE client_account = ?");
-
 VectorDO_Ptr<PortfolioDO> PortfolioDAO::FindPortfolioByUser(const std::string& userID)
 {
+	static const std::string sql_findportfolio(
+		"SELECT portfolio_symbol, hedge_delay FROM portfolio "
+		"WHERE client_account = ?");
+
 	auto ret = std::make_shared<VectorDO<PortfolioDO>>();
 	auto session = ConnectionHelper::Instance()->LeaseOrCreate();
 	try

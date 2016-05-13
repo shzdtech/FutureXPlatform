@@ -6,9 +6,8 @@
  ***********************************************************************/
 
 #include "CTPOTCReturnPricingData.h"
-#include "../CTPServer/CTPUtility.h"
-#include "../CTPServer/Attribute_Key.h"
-#include "../pricingengine/PricingContext.h"
+
+#include "../common/Attribute_Key.h"
 #include <glog/logging.h>
 
 #include "../dataobject/MarketDataDO.h"
@@ -26,7 +25,7 @@
 #include "../pricingengine/PricingUtility.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCReturnPricingData::HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPOTCReturnPricingData::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPOTCReturnPricingData::HandleResponse()
 // Parameters:
 // - rawRespParams
@@ -35,7 +34,7 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCReturnPricingData::HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOTCReturnPricingData::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	auto pStrategyDO = (StrategyContractDO*)rawRespParams[0];
 

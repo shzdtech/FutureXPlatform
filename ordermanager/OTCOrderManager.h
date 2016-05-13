@@ -17,7 +17,7 @@
 class ORDERMGR_CLASS_EXPORT OTCOrderManager : public OrderManager
 {
 public:
-	OTCOrderManager(IOrderAPI* pOrderAPI, PricingContext* pricingCtx);
+	OTCOrderManager(IOrderAPI* pOrderAPI, IPricingDataContext* pricingCtx);
 
 	int Reset();
 	int CreateOrder(OrderDO& orderInfo);

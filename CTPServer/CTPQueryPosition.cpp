@@ -48,7 +48,7 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPQueryPosition::HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPQueryPosition::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPQueryPosition::HandleResponse()
 // Parameters:
 // - rawRespParams
@@ -57,7 +57,7 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryPosition::HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryPosition::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	CTPUtility::CheckError(rawRespParams[1]);
 	dataobj_ptr ret;

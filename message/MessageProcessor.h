@@ -29,11 +29,15 @@ public:
 
 	virtual IRawAPI* getRawAPI(void) = 0;
 	virtual int OnRecvMsg(const uint msgId, const data_buffer& msg) = 0;
-	virtual int OnResponse(const uint msgId, ParamVector& rawRespParams) = 0;
+	virtual int OnResponse(const uint msgId, param_vector& rawRespParams) = 0;
+
+	virtual void setServerContext(IContextAttribute* serverCtx);
+	virtual IContextAttribute* getServerContext(void);
 
 protected:
 	IMessageSession* _pMsgSession;
 	IMessageServiceLocator_Ptr _svc_locator_ptr;
+	IContextAttribute* _serverCtx;
 
 	bool OnSessionClosing(void){ return true; };
 private:

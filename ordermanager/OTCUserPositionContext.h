@@ -11,10 +11,13 @@
 #include <atomic>
 #include "../dataobject/TypedefDO.h"
 #include "../dataobject/OrderDO.h"
+#include "../pricingengine/IPricingDataContext.h"
 
 class OTCUserPositionContext
 {
 public:
+	OTCUserPositionContext(IPricingDataContext* pricingCtx);
+
 	int UpdatePosition(const StrategyContractDO& strategyDO, DirectionType direction,
 		OrderOpenCloseType openClose, int deltaPos);
 
@@ -23,6 +26,7 @@ public:
 
 protected:
 	PortfolioMap<ContractMap<std::atomic_int>> _position;
+	IPricingDataContext* _pricingCtx;
 
 private:
 

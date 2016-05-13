@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package Micro.Future.Message.Business;
+
+message PBUserInfo
+{
+   string userId = 1;
+   string password = 2;
+   string firstName = 3;
+   string lastName = 4;
+   int32 gender = 5;
+   string company = 6;
+   string email = 7;
+   string contactNum = 8;
+   string identityNum = 9;
+   string address = 10;
+   string zipcode = 11;
+   int32 role = 12;
+   int32 permission = 13;
+}
+
+message PBUserInfoList
+{
+	repeated PBUserInfo userInfo = 1;
+}

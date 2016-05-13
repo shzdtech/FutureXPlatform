@@ -9,9 +9,9 @@
 #define __strategy_IAlgorithm_h
 
 #include <string>
-#include "../dataobject/AbstractDataObj.h"
-#include "../dataobject/data_commondef.h"
-#include "PricingContext.h"
+#include "../dataobject/StrategyContractDO.h"
+#include "../common/typedefs.h"
+#include "IPricingDataContext.h"
 
 class IAlgorithm
 {
@@ -20,8 +20,8 @@ public:
 	virtual dataobj_ptr Compute(
 		const StrategyContractDO& sdo,
 		double inputVal,
-		PricingContext& priceCtx,
-		const ParamVector* params) const = 0;
+		IPricingDataContext& priceCtx,
+		const param_vector* params) const = 0;
 
 protected:
 private:

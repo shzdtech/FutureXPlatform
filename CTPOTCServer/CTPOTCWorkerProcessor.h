@@ -20,7 +20,7 @@
 class CTPOTCWorkerProcessor : public CTPMarketDataProcessor
 {
 public:
-   CTPOTCWorkerProcessor(const std::map<std::string, std::string>& configMap);
+   CTPOTCWorkerProcessor(const std::map<std::string, std::string>& configMap, IPricingDataContext* pricingCtx);
    ~CTPOTCWorkerProcessor();
    bool OnSessionClosing(void);
    void setSession(IMessageSession* msgSession);
@@ -55,6 +55,7 @@ protected:
 
 	CTPOTCTradeProcessor _otcTradeProcessor;
 
+	IPricingDataContext* _pricingCtx;
 private:
 	
 

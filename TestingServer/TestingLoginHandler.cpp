@@ -35,9 +35,6 @@ dataobj_ptr TestingLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 	auto pUserInfo = session->getUserInfo();
 	pUserInfo->setInvestorId(userid);
 	pUserInfo->setBrokerId(brokeid);
-	pUserInfo->setCompany(userid);
-	pUserInfo->setContactNum("110");
-	pUserInfo->setEmail("cookie@gmail.com");
 	pUserInfo->setName(userid);
 	pUserInfo->setPassword(password);
 	pUserInfo->setUserId(userid);
@@ -49,12 +46,9 @@ dataobj_ptr TestingLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 	//
 	auto pDO = std::make_shared<UserInfoDO>();
 
-	pDO->BrokerId = pUserInfo->getBrokerId();
-	pDO->Company = pUserInfo->getCompany();
-	pDO->ContactNum = pUserInfo->getContactNum();
-	pDO->Email = pUserInfo->getEmail();
-	pDO->Name = pUserInfo->getName();
-	//pDO->Password = pUserInfo->getPassword();
+	pDO->BrokerId = pUserInfo->getBrokerId();;
+	pDO->FirstName = pUserInfo->getName();
+	pDO->Password = pUserInfo->getPassword();
 	pDO->Permission = pUserInfo->getPermission();
 	pDO->Role = pUserInfo->getRole();
 	pDO->UserId = pUserInfo->getUserId();

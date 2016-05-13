@@ -36,8 +36,8 @@ const std::string& ETPAlgorithm::Name(void) const
 dataobj_ptr ETPAlgorithm::Compute(
 	const StrategyContractDO& sdo,
 	double inputVal,
-	PricingContext& priceCtx,
-	const ParamVector* params) const
+	IPricingDataContext& priceCtx,
+	const param_vector* params) const
 {
 	static const std::string const1_name("const1");
 	static const std::string const2_name("const2");

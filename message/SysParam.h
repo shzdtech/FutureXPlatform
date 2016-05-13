@@ -19,10 +19,8 @@ public:
 	static void Update(std::map<std::string, std::string>& paramMap);
 
 protected:
+
 private:
-	static std::map<std::string, std::string> _data;
-
-
 };
 
 #endif

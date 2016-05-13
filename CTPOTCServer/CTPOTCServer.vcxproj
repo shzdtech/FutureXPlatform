@@ -96,7 +96,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>CTP_OTC_LIBRARY_EXPORTS;WIN32;_DEBUG;_WINDOWS;_USRDLL;CTPOTCSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include\glog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include;$(SolutionDir)\include\glog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-D_CRT_SECURE_NO_WARNINGS -D_DEMO %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -114,7 +114,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>CTP_OTC_LIBRARY_EXPORTS;WIN32;_DEBUG;_WINDOWS;_USRDLL;CTPOTCSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include\glog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include;$(SolutionDir)\include\glog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-D_CRT_SECURE_NO_WARNINGS -D_DEMO %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -134,7 +134,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>CTP_OTC_LIBRARY_EXPORTS;WIN32;NDEBUG;_WINDOWS;_USRDLL;CTPOTCSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include\glog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include;$(SolutionDir)\include\glog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-D_CRT_SECURE_NO_WARNINGS -D_DEMO %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -156,7 +156,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>CTP_OTC_LIBRARY_EXPORTS;WIN32;NDEBUG;_WINDOWS;_USRDLL;CTPOTCSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include\glog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include;$(SolutionDir)\include\glog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-D_CRT_SECURE_NO_WARNINGS -D_DEMO %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -175,6 +175,7 @@
     <ClCompile Include="CTPOTCDepthMarketData.cpp" />
     <ClCompile Include="CTPOTCLogin.cpp" />
     <ClCompile Include="CTPOTCNewOrder.cpp" />
+    <ClCompile Include="CTPOTCNewUser.cpp" />
     <ClCompile Include="CTPOTCQueryContractParam.cpp" />
     <ClCompile Include="CTPOTCQueryOrder.cpp" />
     <ClCompile Include="CTPOTCQueryStrategy.cpp" />
@@ -200,6 +201,7 @@
     <ClInclude Include="CTPOTCDepthMarketData.h" />
     <ClInclude Include="CTPOTCLogin.h" />
     <ClInclude Include="CTPOTCNewOrder.h" />
+    <ClInclude Include="CTPOTCNewUser.h" />
     <ClInclude Include="CTPOTCQueryContractParam.h" />
     <ClInclude Include="CTPOTCQueryOrder.h" />
     <ClInclude Include="CTPOTCQueryStrategy.h" />

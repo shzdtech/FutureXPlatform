@@ -9,12 +9,11 @@
 #include <algorithm>
 #include "AutoOrderManager.h"
 #include "OrderSeqGen.h"
-#include "../pricingengine/PricingContext.h"
 #include "../databaseop/OrderDAO.h"
 #include "../pricingengine/PricingUtility.h"
 
 
-AutoOrderManager::AutoOrderManager(IOrderAPI* pOrderAPI, PricingContext* pricingCtx)
+AutoOrderManager::AutoOrderManager(IOrderAPI* pOrderAPI, IPricingDataContext* pricingCtx)
 	: OrderManager(pOrderAPI, pricingCtx)
 {
 }

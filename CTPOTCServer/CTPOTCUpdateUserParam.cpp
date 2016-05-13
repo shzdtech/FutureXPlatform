@@ -6,18 +6,17 @@
  ***********************************************************************/
 
 #include "CTPOTCUpdateUserParam.h"
-#include "../CTPServer/CTPUtility.h"
-#include "../CTPServer/Attribute_Key.h"
-#include "../pricingengine/PricingContext.h"
 
-#include  "../message/message_marco.h"
+#include "../common/Attribute_Key.h"
+
+#include  "../message/message_macro.h"
 #include "../message/MessageProcessor.h"
 #include "../message/DefMessageID.h"
 #include "../message/BizError.h"
 #include "../dataobject/TemplateDO.h"
-#include "../dataobject/UserContractParam.h"
+#include "../dataobject/TypedefDO.h"
 #include "../dataobject/ResultDO.h"
-
+#include "../pricingengine/IPricingDataContext.h"
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPOTCUpdateUserParam::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPOTCUpdateUserParam::HandleRequest()
@@ -30,14 +29,15 @@
 
 dataobj_ptr CTPOTCUpdateUserParam::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
-	CTPUtility::CheckLogin(session);
+	CheckLogin(session);
 
 	auto userContractMap_Ptr = std::static_pointer_cast<UserContractParamMap>
 		(session->getContext()->getAttribute(STR_KEY_USER_CONTRACTS));
 
 	auto vecUserConDO_Ptr = (VectorDO<UserContractParam>*)reqDO.get();
 
-	auto strategyMap = PricingContext::Instance()->GetStrategyMap();
+	auto strategyMap = AttribPointerCast(session->getProcessor(),
+		STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext)->GetStrategyMap();
 
 	for (auto& userConDO : *vecUserConDO_Ptr)
 	{
@@ -47,7 +47,7 @@ dataobj_ptr CTPOTCUpdateUserParam::HandleRequest(const dataobj_ptr reqDO, IRawAP
 		auto it = strategyMap->find(userConDO);
 		if (it != strategyMap->end())
 		{
-			OnResponseProcMarco(
+			OnResponseProcMacro(
 				session->getProcessor(),
 				MSG_ID_RTN_PRICING, &it->second);
 		}
@@ -66,7 +66,7 @@ dataobj_ptr CTPOTCUpdateUserParam::HandleRequest(const dataobj_ptr reqDO, IRawAP
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCUpdateUserParam::HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOTCUpdateUserParam::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	return nullptr;
 }

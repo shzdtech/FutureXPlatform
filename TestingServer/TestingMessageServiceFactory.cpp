@@ -15,7 +15,7 @@
 #include "../message/EchoMsgHandler.h"
 #include "../message/EchoMsgSerializer.h"
 #include "../message/DefMessageID.h"
-#include "../dataobject/AbstractMessageSerializerFactory.h"
+#include "../dataobject/AbstractDataSerializerFactory.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       TestingMessageServiceFactory::CreateMessageHandlers()
@@ -48,7 +48,7 @@ std::map<uint, IMessageHandler_Ptr> TestingMessageServiceFactory::CreateMessageH
 
 std::map<uint, IDataSerializer_Ptr> TestingMessageServiceFactory::CreateDataSerializers(void)
 {
-	return AbstractMessageSerializerFactory::Instance()->CreateDataSerializers();
+	return AbstractDataSerializerFactory::Instance()->CreateDataSerializers();
 }
 
 ////////////////////////////////////////////////////////////////////////

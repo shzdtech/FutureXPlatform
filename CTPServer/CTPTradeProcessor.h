@@ -21,6 +21,8 @@ protected:
 	void OnInit(void);
 
 private:
+	static bool _requestInsInfo;
+
 
 public:
 	///当客户端与交易后台建立起通信连接时（还未登录前），该方法被调用。

@@ -7,18 +7,20 @@
 
 #include "CTPOTCWorkerProcessor.h"
 #include "../CTPServer/CTPConstant.h"
-#include "../CTPServer/CTPUtility.h"
+
+#include "../common/Attribute_Key.h"
+
 #include <glog/logging.h>
 
 #include "../message/DefMessageID.h"
 #include "../message/SysParam.h"
-#include "../message/message_marco.h"
+#include "../message/message_macro.h"
+#include "../message/AppContext.h"
 #include "../pricingengine/PricingUtility.h"
 
 #include "../databaseop/OTCOrderDAO.h"
 #include "../databaseop/ContractDAO.h"
 
-#include "../pricingengine/PricingContext.h"
 #include "../ordermanager/OrderSeqGen.h"
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPOTCWorkerProcessor::CTPOTCWorkerProcessor(const std::map<std::string, std::string>& configMap)
@@ -28,15 +30,17 @@
 // Return:     
 ////////////////////////////////////////////////////////////////////////
 
-CTPOTCWorkerProcessor::CTPOTCWorkerProcessor(const std::map<std::string, std::string>& configMap)
+CTPOTCWorkerProcessor::CTPOTCWorkerProcessor(const std::map<std::string, std::string>& configMap,
+	IPricingDataContext* pricingCtx)
 	: CTPMarketDataProcessor(configMap),
-	_otcTradeProcessor(configMap),
+	_pricingCtx(pricingCtx),
+	_otcTradeProcessor(configMap, pricingCtx),
 	_pricingNotifers(new SessionContainer<ContractKey>()),
 	_otcOrderNotifers(new SessionContainer<uint64_t>())
 {
 	_isLogged = false;
 	_rawAPI.TrdAPI = ((CTPRawAPI*)(_otcTradeProcessor.getRawAPI()))->TrdAPI;
-	auto pContractMap = PricingContext::Instance()->GetContractMap();
+	auto pContractMap = _pricingCtx->GetContractMap();
 	if (pContractMap->size() == 0)
 	{
 		*pContractMap = *ContractDAO::FindAllContract();
@@ -93,7 +97,7 @@ int CTPOTCWorkerProcessor::LoginIfNeed(void)
 
 void CTPOTCWorkerProcessor::AddContractToMonitor(const ContractKey& contractId)
 {
-	auto mdMap_Ptr = PricingContext::Instance()->GetMarketDataDOMap();
+	auto mdMap_Ptr = _pricingCtx->GetMarketDataDOMap();
 	if (mdMap_Ptr->find(contractId.InstrumentID()) == mdMap_Ptr->end())
 	{
 		MarketDataDO mdo(contractId.ExchangeID(), contractId.InstrumentID());
@@ -164,7 +168,7 @@ void CTPOTCWorkerProcessor::TriggerPricing(const StrategyContractDO& strategyDO)
 		{
 			for (auto pSession : *pNotiferSet)
 			{
-				OnResponseProcMarco(pSession->getProcessor(), MSG_ID_RTN_PRICING,
+				OnResponseProcMacro(pSession->getProcessor(), MSG_ID_RTN_PRICING,
 					&strategyDO);
 			}
 		}
@@ -173,7 +177,7 @@ void CTPOTCWorkerProcessor::TriggerPricing(const StrategyContractDO& strategyDO)
 
 void CTPOTCWorkerProcessor::TriggerUpdating(const MarketDataDO& mdDO)
 {
-	auto strategyMap = PricingContext::Instance()->GetStrategyMap();
+	auto strategyMap = _pricingCtx->GetStrategyMap();
 	auto it = _contract_strategy_map.find(mdDO);
 	if (it != _contract_strategy_map.end())
 	{
@@ -202,7 +206,7 @@ void CTPOTCWorkerProcessor::TriggerOTCOrderUpdating(const StrategyContractDO& st
 			{
 				for (auto pSession : *pNotiferSet)
 				{
-					OnResponseProcMarco(pSession->getProcessor(), MSG_ID_ORDER_UPDATE, &order);
+					OnResponseProcMacro(pSession->getProcessor(), MSG_ID_ORDER_UPDATE, &order);
 				}
 			}
 		}
@@ -235,7 +239,7 @@ void CTPOTCWorkerProcessor::CancelAutoOrder(const UserContractKey& userContractK
 
 void CTPOTCWorkerProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
 {
-	auto mdMap = PricingContext::Instance()->GetMarketDataDOMap();
+	auto mdMap = _pricingCtx->GetMarketDataDOMap();
 	auto it = mdMap->find(pDepthMarketData->InstrumentID);
 	if (it != mdMap->end())
 	{

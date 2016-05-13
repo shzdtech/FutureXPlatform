@@ -17,7 +17,7 @@ class ASIOSessionManager : public ServerSessionManager
 public:
 	ASIOSessionManager(IMessageServer* server);
 	~ASIOSessionManager();
-	asiotcpsession_ptr CreateSession(boost::asio::ip::tcp::socket&& socket);
+	ASIOTCPSession_Ptr CreateSession(boost::asio::ip::tcp::socket&& socket);
 
 protected:
 private:

@@ -15,5 +15,6 @@
 #include "CTPOTCNewOrder.h"
 #include "CTPOTCCancelOrder.h"
 #include "CTPOTCQueryOrder.h"
+#include "CTPOTCNewUser.h"
 
 #endif

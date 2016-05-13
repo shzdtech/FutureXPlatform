@@ -45,7 +45,7 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPQueryAccountInfo::HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPQueryAccountInfo::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPQueryAccountInfo::HandleResponse()
 // Parameters:
 // - rawRespParams
@@ -54,7 +54,7 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryAccountInfo::HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryAccountInfo::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	CTPUtility::CheckError(rawRespParams[1]);
 

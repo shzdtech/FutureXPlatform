@@ -11,10 +11,12 @@
 #include "IMessageSession.h"
 #include "IMessageProcessor.h"
 #include "ISessionManager.h"
-#include "SessionContext.h"
-#include "message_exp.h"
-#include "UserInfo.h"
+#include "IContextAttribute.h"
+#include "IUserInfo.h"
+
 #include <list>
+#include "message_exp.h"
+
 
 class MESSAGE_CLASS_EXPORT MessageSession : public IMessageSession, public std::enable_shared_from_this < MessageSession >
 {
@@ -29,7 +31,7 @@ public:
 	int WriteMessage(const uint msgId, const data_buffer& msg) { return 0; }
 	int WriteMessage(const data_buffer& msg) { return 0; }
 	void setTimeout(long seconds);
-	ISessionContext_Ptr getContext(void);
+	IContextAttribute_Ptr getContext(void);
 	bool IsLogin(void);
 	void setLoginStatus(bool status);
 	IUserInfo_Ptr getUserInfo(void);
@@ -39,7 +41,7 @@ public:
 
 protected:
 	uint64_t _id;
-	ISessionContext_Ptr _context_ptr;
+	IContextAttribute_Ptr _context_ptr;
 	IMessageProcessor_Ptr _messageProcessor_ptr;
 	std::list<IMessageSessionEvent_WkPtr> _sessionEventList;
 	IUserInfo_Ptr _userInfo_ptr;

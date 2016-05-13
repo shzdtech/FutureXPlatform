@@ -6,7 +6,7 @@
  ***********************************************************************/
 
 #include "PBUserInfoListSerializer.h"
-#include "proto/businessobj.pb.h"
+#include "proto/usermanager.pb.h"
 #include "../message/BizError.h"
 #include "ExceptionDef.h"
 #include "../dataobject/UserInfoDO.h"
@@ -28,14 +28,19 @@ data_buffer PBUserInfoListSerializer::Serialize(const dataobj_ptr abstractDO)
 	for (auto& userDO : *pDO)
 	{
 		auto pUserInfo = PB.add_userinfo();
-		pUserInfo->set_brokerid(userDO.BrokerId);
+		pUserInfo->set_address(userDO.Address);
 		pUserInfo->set_company(userDO.Company);
 		pUserInfo->set_contactnum(userDO.ContactNum);
 		pUserInfo->set_email(userDO.Email);
-		pUserInfo->set_name(userDO.Name);
+		pUserInfo->set_firstname(userDO.FirstName);
+		pUserInfo->set_lastname(userDO.LastName);
+		pUserInfo->set_gender(userDO.Gender);
+		pUserInfo->set_identitynum(userDO.IdentityNum);
+		pUserInfo->set_zipcode(userDO.ZipCode);
+		pUserInfo->set_userid(userDO.UserId);
+
 		pUserInfo->set_permission(userDO.Permission);
 		pUserInfo->set_role(userDO.Role);
-		pUserInfo->set_userid(userDO.UserId);
 	}
 
 	int bufsize = PB.ByteSize();

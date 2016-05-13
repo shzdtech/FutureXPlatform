@@ -6,18 +6,20 @@
  ***********************************************************************/
 
 #include "CTPOTCQueryContractParam.h"
-#include "../CTPServer/CTPUtility.h"
-#include "../CTPServer/Attribute_Key.h"
+
+#include "../common/Attribute_Key.h"
 
 #include <glog/logging.h>
-#include "../pricingengine/PricingContext.h"
 
 #include "../message/BizError.h"
+
+#include "../message/message_macro.h"
 
 #include "../dataobject/TemplateDO.h"
 
 #include "../databaseop/ContractDAO.h"
 
+#include "../pricingengine/IPricingDataContext.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPOTCQueryContractParam::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
@@ -31,14 +33,17 @@
 
 dataobj_ptr CTPOTCQueryContractParam::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
-	CTPUtility::CheckLogin(session);
+	CheckLogin(session);
 
 	auto cpVec_Ptr = std::static_pointer_cast<std::vector<ContractKey>>(
 		session->getContext()->getAttribute(STR_KEY_USER_CONTRACT_PARAM));
 
 	auto contractVec_Ptr = std::make_shared<VectorDO<ContractDO>>();
 
-	auto contractMap = PricingContext::Instance()->GetContractMap();
+	auto pricingCtx = AttribPointerCast(session->getProcessor(),
+		STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext);
+
+	auto contractMap = pricingCtx->GetContractMap();
 
 	for (auto& con : *cpVec_Ptr)
 	{
@@ -50,7 +55,7 @@ dataobj_ptr CTPOTCQueryContractParam::HandleRequest(const dataobj_ptr reqDO, IRa
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCQueryContractParam::HandleResponse(ParamVector rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPOTCQueryContractParam::HandleResponse(param_vector rawRespParams, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPOTCQueryContractParam::HandleResponse()
 // Parameters:
 // - rawRespParams
@@ -59,7 +64,7 @@ dataobj_ptr CTPOTCQueryContractParam::HandleRequest(const dataobj_ptr reqDO, IRa
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCQueryContractParam::HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOTCQueryContractParam::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	return nullptr;
 }

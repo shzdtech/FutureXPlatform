@@ -8,6 +8,8 @@
 #ifndef _ASIOTCPCONSTS_H
 #define	_ASIOTCPCONSTS_H
 
+#include "../common/typedefs.h"
+
 static const uint SESSION_TIMEOUT = 300;
 
 static const uint HEADER_SIZE = 6;

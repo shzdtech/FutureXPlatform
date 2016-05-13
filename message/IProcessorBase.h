@@ -8,8 +8,8 @@
 #if !defined(__message_IProcessorBase_h)
 #define __message_IProcessorBase_h
 
-#include "typedef.h"
-#include "../dataobject/AbstractDataObj.h"
+#include "../common/typedefs.h"
+#include "IContextAttribute.h"
 #include "../dataobject/data_buffer.h"
 
 class IMessageServiceLocator;
@@ -21,7 +21,8 @@ class IProcessorBase
 public:
    virtual IMessageServiceLocator_Ptr getServiceLocator(void) = 0;
    virtual int OnRecvMsg(const uint msgId, const data_buffer& msg) = 0;
-   virtual int OnResponse(const uint msgId, ParamVector& rawRespParams) = 0;
+   virtual int OnResponse(const uint msgId, param_vector& rawRespParams) = 0;
+   virtual IContextAttribute* getServerContext(void) = 0;
 
 protected:
 private:

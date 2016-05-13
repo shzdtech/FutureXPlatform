@@ -16,6 +16,8 @@ static const char* EXCHANGE_OTC = "otc";
 class ContractKey
 {
 public:
+	ContractKey() {}
+
 	ContractKey(const char* exchangeID, const char* instrumentID) :
 		_exchangeID(exchangeID), _instrumentID(instrumentID){}
 

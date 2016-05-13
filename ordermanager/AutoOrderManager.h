@@ -15,7 +15,7 @@
 class ORDERMGR_CLASS_EXPORT AutoOrderManager : public OrderManager
 {
 public:
-	AutoOrderManager(IOrderAPI* pOrderAPI, PricingContext* pricingCtx);
+	AutoOrderManager(IOrderAPI* pOrderAPI, IPricingDataContext* pricingCtx);
 
 	int Reset();
 	int CreateOrder(OrderDO& orderInfo);

@@ -7,7 +7,7 @@
       <FileName>AbstractDataObj.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="AbstractMessageSerializerFactory" Collapsed="true">
+  <Class Name="AbstractDataSerializerFactory" Collapsed="true">
     <Position X="0.5" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAQAAAACAAAAA=</HashCode>
@@ -273,21 +273,21 @@
       <FileName>data_commondef.h</FileName>
     </TypeIdentifier>
   </Typedef>
-  <Typedef Name="Buffer_Ptr" Collapsed="true">
+  <Typedef Name="buffer_ptr" Collapsed="true">
     <Position X="6.5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>data_commondef.h</FileName>
     </TypeIdentifier>
   </Typedef>
-  <Typedef Name="Attrib_Ptr" Collapsed="true">
+  <Typedef Name="attribute_ptr" Collapsed="true">
     <Position X="8.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>data_commondef.h</FileName>
     </TypeIdentifier>
   </Typedef>
-  <Typedef Name="ParamVector" Collapsed="true">
+  <Typedef Name="param_vector" Collapsed="true">
     <Position X="43" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>

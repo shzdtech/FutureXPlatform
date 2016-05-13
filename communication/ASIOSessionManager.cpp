@@ -26,7 +26,7 @@ ASIOSessionManager::~ASIOSessionManager()
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-asiotcpsession_ptr ASIOSessionManager::CreateSession(boost::asio::ip::tcp::socket&& socket)
+ASIOTCPSession_Ptr ASIOSessionManager::CreateSession(boost::asio::ip::tcp::socket&& socket)
 {
 	auto asioSession_Ptr = std::make_shared<ASIOTCPSession>(std::move(socket));
 	asioSession_Ptr->addListener(shared_from_this());

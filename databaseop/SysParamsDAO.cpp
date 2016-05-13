@@ -16,11 +16,11 @@
 // Return:     std::shared_ptr<std::map<std::string,std::string>>
 ////////////////////////////////////////////////////////////////////////
 
-const static std::string sql_findparams(
-	"SELECT keycode, val FROM sys_param WHERE keycode LIKE ?");
-
 std::shared_ptr<std::map<std::string, std::string>> SysParamsDAO::FindSysParams(const std::string& key)
 {
+	const static std::string sql_findparams(
+		"SELECT keycode, val FROM sys_param WHERE keycode LIKE ?");
+
 	std::map<std::string, std::string> sysparams;
 	auto session = ConnectionHelper::Instance()->LeaseOrCreate();
 	try

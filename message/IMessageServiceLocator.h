@@ -11,7 +11,7 @@
 #include "../dataobject/IDataSerializer.h"
 #include "IMessageHandler.h"
 #include "IProcessorBase.h"
-#include "typedef.h"
+#include "../common/typedefs.h"
 #include <map>
 
 class IMessageServiceLocator

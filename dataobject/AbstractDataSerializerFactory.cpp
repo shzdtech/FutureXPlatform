@@ -1,25 +1,25 @@
 /***********************************************************************
- * Module:  AbstractMessageSerializerFactory.cpp
+ * Module:  AbstractDataSerializerFactory.cpp
  * Author:  milk
  * Modified: 2015年9月18日 10:00:10
- * Purpose: Implementation of the class AbstractMessageSerializerFactory
+ * Purpose: Implementation of the class AbstractDataSerializerFactory
  ***********************************************************************/
 
-#include "AbstractMessageSerializerFactory.h"
+#include "AbstractDataSerializerFactory.h"
 #include "../dynamicloader/ConfigBasedCreator.h"
 
-MessageSerializerConfig AbstractMessageSerializerFactory::DefaultMessageSerializerConfig;
+MessageSerializerConfig AbstractDataSerializerFactory::DefaultMessageSerializerConfig;
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       AbstractMessageSerializerFactory::Instance()
-// Purpose:    Implementation of AbstractMessageSerializerFactory::Instance()
+// Name:       AbstractDataSerializerFactory::Instance()
+// Purpose:    Implementation of AbstractDataSerializerFactory::Instance()
 // Return:     IMessageSerializerFactory_Ptr
 ////////////////////////////////////////////////////////////////////////
 
-std::shared_ptr<AbstractMessageSerializerFactory> AbstractMessageSerializerFactory::Instance(void)
+std::shared_ptr<AbstractDataSerializerFactory> AbstractDataSerializerFactory::Instance(void)
 {
-	static std::shared_ptr<AbstractMessageSerializerFactory> instance(
-		std::static_pointer_cast<AbstractMessageSerializerFactory>
+	static std::shared_ptr<AbstractDataSerializerFactory> instance(
+		std::static_pointer_cast<AbstractDataSerializerFactory>
 		(ConfigBasedCreator::CreateInstance(
 			DefaultMessageSerializerConfig.MODULE_UUID,
 			DefaultMessageSerializerConfig.MODULE_PATH,
@@ -30,14 +30,14 @@ std::shared_ptr<AbstractMessageSerializerFactory> AbstractMessageSerializerFacto
 
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       AbstractMessageSerializerFactory::Find(unsigned int msgId)
-// Purpose:    Implementation of AbstractMessageSerializerFactory::Find()
+// Name:       AbstractDataSerializerFactory::Find(unsigned int msgId)
+// Purpose:    Implementation of AbstractDataSerializerFactory::Find()
 // Parameters:
 // - msgId
 // Return:     IDataSerializer_Ptr
 ////////////////////////////////////////////////////////////////////////
 
-IDataSerializer_Ptr AbstractMessageSerializerFactory::Find(unsigned int msgId)
+IDataSerializer_Ptr AbstractDataSerializerFactory::Find(unsigned int msgId)
 {
 	return _serializer_map[msgId];
 }

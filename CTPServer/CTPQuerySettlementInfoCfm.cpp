@@ -49,7 +49,7 @@ dataobj_ptr CTPQuerySettlementInfoCfm::HandleRequest(const dataobj_ptr reqDO, IR
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPQuerySettlementInfoCfm::HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPQuerySettlementInfoCfm::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPQuerySettlementInfoCfm::HandleResponse()
 // Parameters:
 // - rawRespParams
@@ -58,7 +58,7 @@ dataobj_ptr CTPQuerySettlementInfoCfm::HandleRequest(const dataobj_ptr reqDO, IR
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQuerySettlementInfoCfm::HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQuerySettlementInfoCfm::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	CTPUtility::CheckError(rawRespParams[1]);
 

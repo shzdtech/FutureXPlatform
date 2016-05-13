@@ -17,8 +17,8 @@ public:
    dataobj_ptr Compute(
 	   const StrategyContractDO& sdo,
 	   double inputVal,
-	   PricingContext& priceCtx,
-	   const ParamVector* params) const;
+	   IPricingDataContext& priceCtx,
+	   const param_vector* params) const;
 
 protected:
 private:

@@ -9,7 +9,7 @@
 #include "CTSProcessor.h"
 #include "cts_handlers.h"
 #include "../message/DefMessageID.h"
-#include "../dataobject/AbstractMessageSerializerFactory.h"
+#include "../dataobject/AbstractDataSerializerFactory.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTSServiceFactory::CreateMessageHandlers()
@@ -46,7 +46,7 @@ std::map<uint, IMessageHandler_Ptr> CTSServiceFactory::CreateMessageHandlers(voi
 
 std::map<uint, IDataSerializer_Ptr> CTSServiceFactory::CreateDataSerializers(void)
 {
-	return AbstractMessageSerializerFactory::Instance()->CreateDataSerializers();
+	return AbstractDataSerializerFactory::Instance()->CreateDataSerializers();
 }
 
 ////////////////////////////////////////////////////////////////////////

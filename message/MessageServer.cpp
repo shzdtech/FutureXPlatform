@@ -29,6 +29,7 @@ std::string MessageServer::getUri(void)
 void MessageServer::RegisterServiceFactory(IMessageServiceFactory_Ptr msgSvcFactory)
 {
 	_svcfactory_ptr = msgSvcFactory;
+	msgSvcFactory->SetServerContext(getContext());
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -40,4 +41,9 @@ void MessageServer::RegisterServiceFactory(IMessageServiceFactory_Ptr msgSvcFact
 IMessageServiceFactory_Ptr MessageServer::GetServiceFactory(void)
 {
 	return _svcfactory_ptr;
+}
+
+IContextAttribute * MessageServer::getContext()
+{
+	return &_context;
 }

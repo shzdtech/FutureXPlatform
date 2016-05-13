@@ -11,16 +11,28 @@
 #include "AbstractDataObj.h"
 #include <string>
 
+enum GenderType
+{
+	GENDER_UNSPECIFIED = 0,
+	GENDER_MAN = 1,
+	GENDER_WOMAN = 2
+};
+
 class UserInfoDO : public AbstractDataObj
 {
 public:
 	std::string BrokerId;
 	std::string UserId;
 	std::string Password;
-	std::string Name;
+	std::string FirstName;
+	std::string LastName;
 	std::string Company;
 	std::string Email;
 	std::string ContactNum;
+	std::string IdentityNum;
+	std::string Address;
+	std::string ZipCode;
+	GenderType Gender;
 	int Role;
 	int Permission;
 

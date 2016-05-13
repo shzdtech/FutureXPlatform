@@ -8,7 +8,6 @@
 #include "CTPOTCLogin.h"
 #include "CTPOTCUserContextBuilder.h"
 
-#include "../CTPServer/CTPRawAPI.h"
 #include "../utility/Encoding.h"
 #include "../utility/TUtil.h"
 
@@ -20,11 +19,13 @@
 #include "../message/UserInfo.h"
 #include "../message/SysParam.h"
 
+#include "../common/BizErrorIDs.h"
+
 #include "../databaseop/UserInfoDAO.h"
 
+#include "../common/Attribute_Key.h"
+
 #include <glog/logging.h>
-#include "../CTPServer/CTPUtility.h"
-#include "../CTPServer/CTPConstant.h"
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -48,19 +49,20 @@ dataobj_ptr CTPOTCLogin::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI,
 
 		auto& userid = TUtil::FirstNamedEntry(STR_USER_ID, data, EMPTY_STRING);
 		auto& password = TUtil::FirstNamedEntry(STR_PASSWORD, data, EMPTY_STRING);
-		auto userInfo_Ptr = UserInfoDAO::FindUser(userid, password);
+		auto userInfo_Ptr = UserInfoDAO::FindUser(userid);
 
 		if (!userInfo_Ptr)
 		{
-			throw BizError(INVAID_USERNAME_OR_PASSWORD, "Invalid Username or Passowrd.");
+			throw BizError(INVAID_USERNAME, "Invalid Username.");
+		}
+		else if(userInfo_Ptr->Password != password)
+		{
+			throw BizError(WRONG_PASSWORD, "Wrong Password.");
 		}
 
 		auto pUserInfo = session->getUserInfo();
-		pUserInfo->setBrokerId(userInfo_Ptr->BrokerId);
-		pUserInfo->setCompany(userInfo_Ptr->Company);
-		pUserInfo->setContactNum(userInfo_Ptr->ContactNum);
-		pUserInfo->setEmail(userInfo_Ptr->Email);
-		pUserInfo->setName(userInfo_Ptr->Name);
+		pUserInfo->setBrokerId(userInfo_Ptr->Company);
+		pUserInfo->setName(userInfo_Ptr->FirstName);
 		pUserInfo->setPassword(userInfo_Ptr->Password);
 		pUserInfo->setUserId(userInfo_Ptr->UserId);
 		pUserInfo->setRole(userInfo_Ptr->Role);
@@ -68,16 +70,19 @@ dataobj_ptr CTPOTCLogin::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI,
 
 		CTPOTCUserContextBuilder::Instance()->BuildContext(session);
 
+		session->getUserInfo()->setAttribute(STR_KEY_USER_INFO_DETAIL, userInfo_Ptr);
+
 		session->setLoginStatus(true);
 	}
 
-	ret = GenUserInfoDO(session->getUserInfo().get());
+	ret = std::static_pointer_cast<UserInfoDO>
+		(session->getUserInfo()->getAttribute(STR_KEY_USER_INFO_DETAIL));
 	
 	return ret;
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCLogin::HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, IMessageProcessor* session)
+// Name:       CTPOTCLogin::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, IMessageProcessor* session)
 // Purpose:    Implementation of CTPOTCLogin::HandleResponse()
 // Parameters:
 // - rawRespParams
@@ -86,25 +91,8 @@ dataobj_ptr CTPOTCLogin::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI,
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCLogin::HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOTCLogin::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	return nullptr;
-}
-
-std::shared_ptr<UserInfoDO> CTPOTCLogin::GenUserInfoDO(IUserInfo* pUserInfo)
-{
-	auto pDO = std::make_shared<UserInfoDO>();
-
-	pDO->BrokerId = pUserInfo->getBrokerId();
-	pDO->Company = pUserInfo->getCompany();
-	pDO->ContactNum = pUserInfo->getContactNum();
-	pDO->Email = pUserInfo->getEmail();
-	pDO->Name = pUserInfo->getName();
-	//pDO->Password = pUserInfo->getPassword();
-	pDO->Permission = pUserInfo->getPermission();
-	pDO->Role = pUserInfo->getRole();
-	pDO->UserId = pUserInfo->getUserId();
-
-	return pDO;
 }
 

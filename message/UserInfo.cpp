@@ -12,12 +12,12 @@
 // Purpose:    Implementation of UserInfo::getAttribute()
 // Parameters:
 // - key
-// Return:     Attrib_Ptr
+// Return:     attribute_ptr
 ////////////////////////////////////////////////////////////////////////
 
-Attrib_Ptr UserInfo::getAttribute(const std::string& key) const
+attribute_ptr UserInfo::getAttribute(const std::string& key) const
 {
-	Attrib_Ptr ret;
+	attribute_ptr ret;
 	auto itr = _attributes.find(key);
 	if (itr != _attributes.end())
 		ret = itr->second;
@@ -26,7 +26,7 @@ Attrib_Ptr UserInfo::getAttribute(const std::string& key) const
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       UserInfo::setAttribute(std::string& key, Attrib_Ptr value)
+// Name:       UserInfo::setAttribute(std::string& key, attribute_ptr value)
 // Purpose:    Implementation of UserInfo::setAttribute()
 // Parameters:
 // - key
@@ -34,33 +34,9 @@ Attrib_Ptr UserInfo::getAttribute(const std::string& key) const
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void UserInfo::setAttribute(const std::string& key, Attrib_Ptr value)
+void UserInfo::setAttribute(const std::string& key, attribute_ptr value)
 {
 	_attributes[key] = value;
-}
-
-////////////////////////////////////////////////////////////////////////
-// Name:       UserInfo::setCompany(const std::string& newCompany)
-// Purpose:    Implementation of UserInfo::setCompany()
-// Parameters:
-// - newCompany
-// Return:     void
-////////////////////////////////////////////////////////////////////////
-
-void UserInfo::setCompany(const std::string& newCompany)
-{
-	_company = newCompany;
-}
-
-////////////////////////////////////////////////////////////////////////
-// Name:       UserInfo::getCompany()
-// Purpose:    Implementation of UserInfo::getCompany()
-// Return:     const std::string&
-////////////////////////////////////////////////////////////////////////
-
-const std::string& UserInfo::getCompany(void) const
-{
-	return _company;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -85,54 +61,6 @@ void UserInfo::setName(const std::string& newName)
 const std::string& UserInfo::getName(void) const
 {
 	return _name;
-}
-
-////////////////////////////////////////////////////////////////////////
-// Name:       UserInfo::setContactNum(const std::string& newContactNum)
-// Purpose:    Implementation of UserInfo::setContactNum()
-// Parameters:
-// - newContactNum
-// Return:     void
-////////////////////////////////////////////////////////////////////////
-
-void UserInfo::setContactNum(const std::string& newContactNum)
-{
-	_contactnum = newContactNum;
-}
-
-////////////////////////////////////////////////////////////////////////
-// Name:       UserInfo::getContactNum()
-// Purpose:    Implementation of UserInfo::getContactNum()
-// Return:     std::string
-////////////////////////////////////////////////////////////////////////
-
-const std::string& UserInfo::getContactNum(void) const
-{
-	return _contactnum;
-}
-
-////////////////////////////////////////////////////////////////////////
-// Name:       UserInfo::getEmail()
-// Purpose:    Implementation of UserInfo::getEmail()
-// Return:     const std::string&
-////////////////////////////////////////////////////////////////////////
-
-const std::string& UserInfo::getEmail(void) const
-{
-	return _email;
-}
-
-////////////////////////////////////////////////////////////////////////
-// Name:       UserInfo::setEmail(const std::string& newEmail)
-// Purpose:    Implementation of UserInfo::setEmail()
-// Parameters:
-// - newEmail
-// Return:     void
-////////////////////////////////////////////////////////////////////////
-
-void UserInfo::setEmail(const std::string& newEmail)
-{
-	_email = newEmail;
 }
 
 ////////////////////////////////////////////////////////////////////////

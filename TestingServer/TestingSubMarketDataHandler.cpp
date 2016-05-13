@@ -9,7 +9,7 @@
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/FieldName.h"
 #include "../dataobject/TypedefDO.h"
-#include "../CTPServer/Attribute_Key.h"
+#include "../common/Attribute_Key.h"
 
  ////////////////////////////////////////////////////////////////////////
  // Name:       TestingSubMarketDataHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)

@@ -39,6 +39,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "message", "message\message.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestingServer", "TestingServer\TestingServer.vcxproj", "{4A30BDB2-7A3A-4436-B227-AE24A517A59A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{CEA77448-2ECE-433C-BD44-380C2A1B9E4B}"
+	ProjectSection(SolutionItems) = preProject
+		common\Attribute_Key.h = common\Attribute_Key.h
+		common\BizErrorIDs.h = common\BizErrorIDs.h
+		common\typedefs.h = common\typedefs.h
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32

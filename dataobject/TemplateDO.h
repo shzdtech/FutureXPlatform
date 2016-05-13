@@ -26,9 +26,6 @@ class SetDO : public std::set<T>, public AbstractDataObj
 {};
 template <typename T> using SetDO_Ptr = typename std::shared_ptr<SetDO<T>>;
 
-template <typename T>
-using MapPtr = typename std::shared_ptr < std::map<std::string, T> > ;
-
 
 template <typename T>
 class TemplateDO : public AbstractDataObj

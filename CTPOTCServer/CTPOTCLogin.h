@@ -15,10 +15,9 @@ class CTPOTCLogin : public LoginHandler
 {
 public:
 	dataobj_ptr HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session);
-	dataobj_ptr HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session);
+	dataobj_ptr HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session);
 
 protected:
-	std::shared_ptr<UserInfoDO> GenUserInfoDO(IUserInfo* pUserInfo);
 
 private:
 

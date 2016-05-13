@@ -19,6 +19,7 @@ static const char* CTP_TRADER_BROKERID = "CTP.TRADER.LOGIN.BROKERID";
 static const char* CTP_TRADER_USERID = "CTP.TRADER.LOGIN.USERID";
 static const char* CTP_TRADER_PASSWORD = "CTP.TRADER.LOGIN.PASSWORD";
 static const char* CTP_TRADER_SERVER = "CTP.TRADER.SERVER";
+static const char* DEFAULT_CLIENT_SYMBOL = "DEFAULT.CLIENT.SYMBOL";
 
 static const char* FMT_PADDING_ORDERREF = "%llu";
 static const char* FMT_PADDING_ORDERSYSID = "%12llu";

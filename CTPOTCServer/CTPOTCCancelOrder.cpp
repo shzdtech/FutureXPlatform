@@ -7,9 +7,8 @@
 
 #include "CTPOTCCancelOrder.h"
 #include <memory>
-#include "../CTPServer/CTPUtility.h"
-#include "../CTPServer/CTPAppContext.h"
-#include "../pricingengine/PricingContext.h"
+
+#include "../message/GlobalProcessorRegistry.h"
 #include "CTPWorkerProcessorID.h"
 #include "CTPOTCWorkerProcessor.h"
 #include "../dataobject/OrderDO.h"
@@ -26,11 +25,13 @@
 
 dataobj_ptr CTPOTCCancelOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
+	CheckLogin(session);
+
 	auto ret = reqDO;
 	auto& orderDO = *((OrderDO*)reqDO.get());
 	
 	if(auto wkProcPtr = std::static_pointer_cast<CTPOTCWorkerProcessor>
-		(CTPAppContext::FindServerProcessor(CTPWorkProcessorID::WORKPROCESSOR_OTC)))
+		(GlobalProcessorRegistry::FindProcessor(CTPWorkProcessorID::WORKPROCESSOR_OTC)))
 	{
 		wkProcPtr->OTCCancelOrder(orderDO);
 	}
@@ -39,7 +40,7 @@ dataobj_ptr CTPOTCCancelOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* r
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCCancelOrder::HandleResponse(ParamVector rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPOTCCancelOrder::HandleResponse(param_vector rawRespParams, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPOTCCancelOrder::HandleResponse()
 // Parameters:
 // - rawRespParams
@@ -48,7 +49,7 @@ dataobj_ptr CTPOTCCancelOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* r
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCCancelOrder::HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOTCCancelOrder::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	auto& orderDO = *((OrderDO*)rawRespParams[0]);
 

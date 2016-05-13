@@ -48,6 +48,7 @@ void ServerSessionManager::AssembleSession(IMessageSession_Ptr msgSessionPtr)
 {
 	DLOG(INFO) << "Session created: " << msgSessionPtr << std::endl;
 	auto msgProcessor = _server->GetServiceFactory()->CreateMessageProcessor();
+	msgProcessor->setServerContext(_server->getContext());
 	msgProcessor->setServiceLocator(_msgsvclocator);
 	msgSessionPtr->RegistProcessor(msgProcessor);
 	if (msgSessionPtr->Start())

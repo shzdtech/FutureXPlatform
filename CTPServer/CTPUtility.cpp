@@ -9,6 +9,7 @@
 #include "tradeapi/ThostFtdcUserApiStruct.h"
 #include "../message/BizError.h"
 #include "../utility/Encoding.h"
+#include "../common/BizErrorIDs.h"
 
  ////////////////////////////////////////////////////////////////////////
  // Name:       CTPUtility::CheckError()
@@ -49,25 +50,6 @@ bool CTPUtility::HasError(const void* pRspInfo)
 	}
 
 	return ret;
-}
-
-////////////////////////////////////////////////////////////////////////
-// Name:       CTPUtility::CheckLogin(ISession* session)
-// Purpose:    Implementation of CTPUtility::CheckLogin()
-// Parameters:
-// - session
-// Return:     void
-////////////////////////////////////////////////////////////////////////
-
-void CTPUtility::CheckLogin(const ISession* session)
-{
-#if !defined(_DEMO)
-	if (!session->IsLogin())
-	{
-		throw BizError(STATUS_NOT_LOGIN,
-			"NOT LOGIN!");
-	}
-#endif
 }
 
 ////////////////////////////////////////////////////////////////////////

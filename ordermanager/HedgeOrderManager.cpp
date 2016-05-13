@@ -6,12 +6,11 @@
  ***********************************************************************/
 
 #include "HedgeOrderManager.h"
-#include "../pricingengine/PricingContext.h"
 #include "../utility/atomicutil.h"
 
 
 HedgeOrderManager::HedgeOrderManager(const std::string& user,
-	IOrderAPI* pOrderAPI, PricingContext* pricingCtx)
+	IOrderAPI* pOrderAPI, IPricingDataContext* pricingCtx)
 	: _user(user), AutoOrderManager(pOrderAPI, pricingCtx)
 {
 

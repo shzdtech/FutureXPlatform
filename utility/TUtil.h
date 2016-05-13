@@ -6,6 +6,7 @@
 #include <map>
 
 static const std::string EMPTY_STRING;
+static const std::string START_STRING("*");
 
 class TUtil
 {

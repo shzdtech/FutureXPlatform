@@ -16,7 +16,7 @@
 #include "../message/SysParam.h"
 
 #include "../configuration/AbstractConfigReaderFactory.h"
-#include "../dataobject/AbstractMessageSerializerFactory.h"
+#include "../dataobject/AbstractDataSerializerFactory.h"
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -31,11 +31,7 @@ std::map<uint, IMessageHandler_Ptr> CTPTradeServiceFactory::CreateMessageHandler
 
 	msg_hdl_map[MSG_ID_ECHO] = std::make_shared<EchoMsgHandler>();
 
-	msg_hdl_map[MSG_ID_LOGIN] = std::make_shared<CTPTradeLoginHandler>();
-
-	msg_hdl_map[MSG_ID_ORDER_NEW] = std::make_shared<CTPNewOrder>();
-
-	msg_hdl_map[MSG_ID_ORDER_CANCEL] = std::make_shared<CTPCancelOrder>();
+	msg_hdl_map[MSG_ID_LOGIN] = std::make_shared<CTPTradeLoginHandler>();;
 
 	msg_hdl_map[MSG_ID_QUERY_ACCOUNT_INFO] = std::make_shared<CTPQueryAccountInfo>();
 
@@ -43,15 +39,19 @@ std::map<uint, IMessageHandler_Ptr> CTPTradeServiceFactory::CreateMessageHandler
 
 	msg_hdl_map[MSG_ID_QUERY_INSTRUMENT] = std::make_shared<CTPQueryInstrument>();
 
+	msg_hdl_map[MSG_ID_ORDER_NEW] = std::make_shared<CTPNewOrder>();
+
+	msg_hdl_map[MSG_ID_ORDER_CANCEL] = std::make_shared<CTPCancelOrder>();
+
 	msg_hdl_map[MSG_ID_QUERY_ORDER] = std::make_shared<CTPQueryOrder>();
 
-	msg_hdl_map[MSG_ID_ORDER_UPDATE] = std::make_shared<CTPQueryOrder>();
+	msg_hdl_map[MSG_ID_ORDER_UPDATE] = msg_hdl_map[MSG_ID_QUERY_ORDER];
 
 	msg_hdl_map[MSG_ID_QUERY_POSITION] = std::make_shared<CTPQueryPosition>();
 
 	msg_hdl_map[MSG_ID_QUERY_TRADE] = std::make_shared<CTPQueryTrade>();
 
-	msg_hdl_map[MSG_ID_TRADE_RTN] = std::make_shared<CTPQueryTrade>();
+	msg_hdl_map[MSG_ID_TRADE_RTN] = msg_hdl_map[MSG_ID_QUERY_TRADE];
 
 	msg_hdl_map[MSG_ID_SETTLEMENT_INFO_CONFIRM] = std::make_shared<CTPQuerySettlementInfoCfm>();
 
@@ -66,7 +66,7 @@ std::map<uint, IMessageHandler_Ptr> CTPTradeServiceFactory::CreateMessageHandler
 
 std::map<uint, IDataSerializer_Ptr> CTPTradeServiceFactory::CreateDataSerializers(void)
 {
-	return AbstractMessageSerializerFactory::Instance()->CreateDataSerializers();
+	return AbstractDataSerializerFactory::Instance()->CreateDataSerializers();
 }
 
 ////////////////////////////////////////////////////////////////////////

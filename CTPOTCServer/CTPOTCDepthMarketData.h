@@ -9,13 +9,16 @@
 #define __CTP_CTPOTCDepthMarketData_h
 
 #include "../message/NopHandler.h"
+#include "../pricingengine/IPricingDataContext.h"
 
 class CTPOTCDepthMarketData : public NopHandler
 {
 public:
-   dataobj_ptr HandleResponse(ParamVector& rawRespParams, void* rawAPI, ISession* session);
+   dataobj_ptr HandleResponse(param_vector& rawRespParams, void* rawAPI, ISession* session);
 
 protected:
+	MarketDataDOMap* _mdDOMap = nullptr;
+
 private:
 
 };

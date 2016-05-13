@@ -28,7 +28,7 @@ dataobj_ptr CTSCancelOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawA
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTSCancelOrder::HandleResponse(ParamVector& rawParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTSCancelOrder::HandleResponse(param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTSCancelOrder::HandleResponse()
 // Parameters:
 // - rawParams
@@ -37,7 +37,7 @@ dataobj_ptr CTSCancelOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawA
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTSCancelOrder::HandleResponse(ParamVector& rawParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTSCancelOrder::HandleResponse(param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
 {
 	OrderDO_Ptr order_ptr = *((OrderDO_Ptr*)rawParams[0]);
 

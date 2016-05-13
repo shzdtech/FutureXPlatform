@@ -10,12 +10,12 @@
   <Class Name="ASIOTCPSession" Collapsed="true">
     <Position X="2.25" Y="0.5" Width="1.5" />
     <NestedTypes>
-      <Typedef Name="ASIOTCPSession::asiotcpsession_ptr" Collapsed="true">
+      <Typedef Name="ASIOTCPSession::ASIOTCPSession_Ptr" Collapsed="true">
         <TypeIdentifier>
           <NewMemberFileName>ASIOTCPSession.h</NewMemberFileName>
         </TypeIdentifier>
       </Typedef>
-      <Typedef Name="ASIOTCPSession::asiotcpsession_wk_ptr" Collapsed="true">
+      <Typedef Name="ASIOTCPSession::ASIOTCPSession_WkPtr" Collapsed="true">
         <TypeIdentifier>
           <NewMemberFileName>ASIOTCPSession.h</NewMemberFileName>
         </TypeIdentifier>

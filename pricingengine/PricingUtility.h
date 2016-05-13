@@ -9,10 +9,10 @@
 #define __strategy_PricingUtility_h
 
 #include "../dataobject/PricingDO.h"
-#include "../dataobject/data_commondef.h"
+#include "../common/typedefs.h"
 #include "../dataobject/StrategyContractDO.h"
 #include "../utility/singleton_templ.h"
-#include "PricingContext.h"
+#include "IPricingDataContext.h"
 
 #include "pricingengine_exp.h"
 
@@ -22,30 +22,25 @@ public:
 	static std::shared_ptr<PricingDO> Pricing(
 		const StrategyContractDO& strategy,
 		double inputVal,
-		PricingContext* priceCtx,
-		const ParamVector* params);
+		IPricingDataContext* priceCtx,
+		const param_vector* params);
 
 	static std::shared_ptr<PricingDO> Pricing(
 		const StrategyContractDO& strategy,
 		double inputVal,
-		PricingContext* priceCtx = nullptr);
+		IPricingDataContext* priceCtx = nullptr);
 
 	static std::shared_ptr<PricingDO> Pricing(
 		const ContractKey& contractKey,
 		double inputVal,
-		PricingContext* priceCtx,
-		const ParamVector* params);
+		IPricingDataContext* priceCtx,
+		const param_vector* params);
 
 	static std::shared_ptr<PricingDO> Pricing(
 		const ContractKey& contractKey,
 		double inputVal,
-		PricingContext* priceCtx);
+		IPricingDataContext* priceCtx);
 
-
-	static std::shared_ptr<PricingDO> Pricing(
-		const StrategyContractDO& strategy,
-		double inputVal,
-		const ParamVector* params);
 
 protected:
 private:

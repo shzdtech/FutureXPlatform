@@ -96,9 +96,6 @@
     <ClInclude Include="CTPUnsubMarketData.h">
       <Filter>头文件\CTPHandler\MarketData</Filter>
     </ClInclude>
-    <ClInclude Include="CTPAppContext.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="CTPRawAPI.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -181,9 +178,6 @@
     </ClCompile>
     <ClCompile Include="CTPTradeServiceFactory.cpp">
       <Filter>源文件\CTPHandler\Trader</Filter>
-    </ClCompile>
-    <ClCompile Include="CTPAppContext.cpp">
-      <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="CTPNewOrder.cpp">
       <Filter>源文件\CTPHandler\Trader</Filter>

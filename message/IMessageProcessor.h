@@ -17,8 +17,7 @@ public:
 	virtual IMessageSession* getSession(void) = 0;
 	virtual void setSession(IMessageSession* msgSession) = 0;
 	virtual void setServiceLocator(IMessageServiceLocator_Ptr svc_locator_ptr) = 0;
-	virtual int OnRecvMsg(const uint msgId, const data_buffer& msg) = 0;
-	virtual int OnResponse(const uint msgId, ParamVector& rawRespParams) = 0;
+	virtual void setServerContext(IContextAttribute* serverCtx) = 0;
 	virtual bool OnSessionClosing(void) = 0;
 
 protected:

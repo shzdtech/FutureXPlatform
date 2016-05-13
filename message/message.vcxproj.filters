@@ -39,9 +39,6 @@
     <ClInclude Include="IMessageSession.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="ISessionContext.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="ISessionManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -69,9 +66,6 @@
     <ClInclude Include="MessageSession.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="SessionContext.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="SessionManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -91,9 +85,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="MessageServiceLocator.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="message_marco.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="BizError.h">
@@ -126,6 +117,18 @@
     <ClInclude Include="IUserContextBuilder.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="message_macro.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IContextAttribute.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ContextAttribute.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalProcessorRegistry.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EchoMsgHandler.cpp">
@@ -141,9 +144,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="MessageSession.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="SessionContext.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="SessionManager.cpp">
@@ -168,6 +168,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ServerSessionManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ContextAttribute.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GlobalProcessorRegistry.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageHandler.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

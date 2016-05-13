@@ -9,7 +9,6 @@
 #define __communication_ASIOTCPSession_h
 
 #include "../message/MessageSession.h"
-#include "../dataobject/data_commondef.h"
 #include "../dataobject/data_buffer.h"
 #include "ASIOTCPConsts.h"
 #include <boost/asio.hpp>
@@ -19,8 +18,8 @@ using namespace boost::asio;
 using boost::asio::ip::tcp;
 
 class ASIOTCPSession;
-typedef std::shared_ptr<ASIOTCPSession> asiotcpsession_ptr;
-typedef std::weak_ptr<ASIOTCPSession> asiotcpsession_wk_ptr;
+typedef std::shared_ptr<ASIOTCPSession> ASIOTCPSession_Ptr;
+typedef std::weak_ptr<ASIOTCPSession> ASIOTCPSession_WkPtr;
 
 class ASIOTCPSession : public MessageSession
 {
@@ -45,9 +44,9 @@ protected:
    std::mutex _clsmutex;
 
 private:
-   static void asyn_read_header(asiotcpsession_ptr this_ptr);
-   static void asyn_read_body(asiotcpsession_ptr this_ptr, uint msgSize);
-   static void asyn_timeout(asiotcpsession_wk_ptr this_wk_ptr);
+   static void asyn_read_header(ASIOTCPSession_Ptr this_ptr);
+   static void asyn_read_body(ASIOTCPSession_Ptr this_ptr, uint msgSize);
+   static void asyn_timeout(ASIOTCPSession_WkPtr this_wk_ptr);
 };
 
 #endif

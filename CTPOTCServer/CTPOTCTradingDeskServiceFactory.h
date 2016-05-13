@@ -13,11 +13,12 @@
 class CTPOTCTradingDeskServiceFactory : public CTPMDServiceFactory
 {
 public:
-   std::map<uint, IMessageHandler_Ptr> CreateMessageHandlers(void);
-   std::map<uint, IDataSerializer_Ptr> CreateDataSerializers(void);
-   std::map<uint, IProcessorBase_Ptr> CreateWorkProcessor(void);
-   bool Load(const std::string& configFile, const std::string& param);
-   IMessageProcessor_Ptr CreateMessageProcessor(void);
+	void SetServerContext(IContextAttribute* serverCtx);
+	std::map<uint, IMessageHandler_Ptr> CreateMessageHandlers(void);
+	std::map<uint, IDataSerializer_Ptr> CreateDataSerializers(void);
+	std::map<uint, IProcessorBase_Ptr> CreateWorkProcessor(void);
+	bool Load(const std::string& configFile, const std::string& param);
+	IMessageProcessor_Ptr CreateMessageProcessor(void);
 
 protected:
 private:

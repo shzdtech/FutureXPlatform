@@ -7,7 +7,7 @@
 
 #include "SysParam.h"
 
-std::map<std::string, std::string> SysParam::_data;
+static std::map<std::string, std::string> sysparamdata;
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       SysParam::Get()
@@ -17,7 +17,7 @@ std::map<std::string, std::string> SysParam::_data;
 
 const std::string& SysParam::Get(const std::string& key)
 {
-	return _data[key];
+	return sysparamdata[key];
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -32,8 +32,8 @@ const std::string& SysParam::Get(const std::string& key)
 bool SysParam::TryGet(const std::string& key, std::string& value)
 {
 	bool ret;
-	auto it = _data.find(key);
-	if (ret = (it != _data.end()))
+	auto it = sysparamdata.find(key);
+	if (ret = (it != sysparamdata.end()))
 	{
 		value = it->second;
 	}
@@ -51,5 +51,5 @@ bool SysParam::TryGet(const std::string& key, std::string& value)
 
 void SysParam::Update(std::map<std::string,std::string>& paramMap)
 {
-	_data.insert(paramMap.begin(), paramMap.end());
+	sysparamdata.insert(paramMap.begin(), paramMap.end());
 }

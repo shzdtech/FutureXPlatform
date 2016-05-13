@@ -6,16 +6,14 @@
  ***********************************************************************/
 
 #include "OTCOrderManager.h"
-#include "../pricingengine/PricingContext.h"
 #include "../pricingengine/PricingUtility.h"
 #include "../databaseop/OTCOrderDAO.h"
 
 
-OTCOrderManager::OTCOrderManager(IOrderAPI* pOrderAPI, PricingContext* pricingCtx)
-	: OrderManager(pOrderAPI, pricingCtx)
-{
-
-}
+OTCOrderManager::OTCOrderManager(IOrderAPI* pOrderAPI, IPricingDataContext* pricingCtx)
+	: OrderManager(pOrderAPI, pricingCtx),
+	_positionCtx(pricingCtx)
+{ }
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       OTCOrderManager::CreateOrder(const OrderDO& orderInfo)
@@ -188,7 +186,7 @@ int OTCOrderManager::Reset()
 
 void OTCOrderManager::Hedge(const PortfolioKey& portfolioKey)
 {
-	auto& portfolio = PricingContext::Instance()->GetPortfolioDOMap()->at(portfolioKey);
+	auto& portfolio = _pricingCtx->GetPortfolioDOMap()->at(portfolioKey);
 	auto now = std::chrono::steady_clock::now();
 	auto int_ms =
 		std::chrono::duration_cast<std::chrono::milliseconds>
@@ -218,5 +216,5 @@ HedgeOrderManager_Ptr OTCOrderManager::FindHedgeManager(const PortfolioKey& port
 
 HedgeOrderManager_Ptr OTCOrderManager::initHedgeOrderMgr(const std::string& userID)
 {
-	return std::make_shared<HedgeOrderManager>(userID, _pOrderAPI, PricingContext::Instance());
+	return std::make_shared<HedgeOrderManager>(userID, _pOrderAPI, _pricingCtx);
 }

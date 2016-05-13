@@ -9,8 +9,9 @@
 #define __message_ISession_h
 
 #include "../dataobject/data_buffer.h"
-#include "typedef.h"
-#include "ISessionContext.h"
+#include "../common/typedefs.h"
+#include "IContextAttribute.h"
+#include "IUserInfo.h"
 
 class IProcessorBase;
 typedef std::shared_ptr<IProcessorBase> IProcessorBase_Ptr;
@@ -22,7 +23,7 @@ public:
 	virtual uint64_t Id() = 0;
 	virtual int WriteMessage(const uint msgId, const data_buffer& msg) = 0;
 	virtual int WriteMessage(const data_buffer& msg) = 0;
-	virtual ISessionContext_Ptr getContext(void) = 0;
+	virtual IContextAttribute_Ptr getContext(void) = 0;
 	virtual bool IsLogin(void) = 0;
 	virtual void setLoginStatus(bool status) = 0;
 	virtual IUserInfo_Ptr getUserInfo(void) = 0;

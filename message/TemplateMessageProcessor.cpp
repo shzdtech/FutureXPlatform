@@ -8,7 +8,7 @@
 #include <iostream>
 #include <glog/logging.h>
 #include "DefMessageID.h"
-#include "message_marco.h"
+#include "message_macro.h"
 #include "TemplateMessageProcessor.h"
 #include "../dataobject/BizErrorSerializer.h"
 
@@ -92,7 +92,7 @@ int TemplateMessageProcessor::OnRecvMsg(const uint msgId, const data_buffer& msg
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-int TemplateMessageProcessor::OnResponse(const uint msgId, ParamVector& rawRespParams) {
+int TemplateMessageProcessor::OnResponse(const uint msgId, param_vector& rawRespParams) {
 	try {
 		if (_svc_locator_ptr)
 		{

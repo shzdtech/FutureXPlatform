@@ -26,7 +26,7 @@ dataobj_ptr CTSReturnMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTSReturnMarketData::HandleResponse(ParamVector& rawParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTSReturnMarketData::HandleResponse(param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTSReturnMarketData::HandleResponse()
 // Parameters:
 // - rawParams
@@ -35,7 +35,7 @@ dataobj_ptr CTSReturnMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTSReturnMarketData::HandleResponse(ParamVector& rawParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTSReturnMarketData::HandleResponse(param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
 {
 	auto pMdDO = (MarketDataDO*)rawParams[0];
 	auto ret = std::make_shared<VectorDO<MarketDataDO>>();

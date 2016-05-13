@@ -17,10 +17,10 @@
 // Return:     bool
 ////////////////////////////////////////////////////////////////////////
 
-static const std::string sql_proc_createorder("CALL Order_Auto_New(?,?,?,?,?,?,@orderID)");
-
 OrderDO_Ptr OrderDAO::CreateOrder(const OrderDO& orderDO)
 {
+	static const std::string sql_proc_createorder("CALL Order_Auto_New(?,?,?,?,?,?,@orderID)");
+
 	OrderDO_Ptr ret;
 
 	auto session = ConnectionHelper::Instance()->LeaseOrCreate();

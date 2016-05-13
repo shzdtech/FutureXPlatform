@@ -11,7 +11,7 @@
 #include "CTPOTCWorkerProcessor.h"
 
 #include "../CTPServer/CTPUtility.h"
-#include "../CTPServer/CTPAppContext.h"
+#include "../message/GlobalProcessorRegistry.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPOTCTradingDeskLogin::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
@@ -26,7 +26,7 @@
 dataobj_ptr CTPOTCTradingDeskLogin::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	auto workPrc = std::static_pointer_cast<CTPOTCWorkerProcessor>
-		(CTPAppContext::FindServerProcessor(CTPWorkProcessorID::WORKPROCESSOR_OTC));
+		(GlobalProcessorRegistry::FindProcessor(CTPWorkProcessorID::WORKPROCESSOR_OTC));
 	if (workPrc)
 	{
 		int ret = workPrc->LoginIfNeed();

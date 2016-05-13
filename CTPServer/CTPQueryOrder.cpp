@@ -57,7 +57,7 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAP
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPQueryOrder::HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPQueryOrder::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPQueryOrder::HandleResponse()
 // Parameters:
 // - rawRespParams
@@ -66,7 +66,7 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAP
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryOrder::HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryOrder::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	OrderDO_Ptr ret;
 	if (auto pData = (CThostFtdcOrderField*)rawRespParams[0])

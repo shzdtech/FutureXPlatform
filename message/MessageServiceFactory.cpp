@@ -73,3 +73,9 @@ bool MessageServiceFactory::Load(const std::string& configFile, const std::strin
 	}
 	return ret;
 }
+
+
+void MessageServiceFactory::SetServerContext(IContextAttribute * serverCtx)
+{
+	_serverCtx = serverCtx;
+}

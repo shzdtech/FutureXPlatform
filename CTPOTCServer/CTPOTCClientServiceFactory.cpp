@@ -16,7 +16,7 @@
 #include "../message/EchoMsgSerializer.h"
 #include "../message/DefMessageID.h"
 
-#include "../dataobject/AbstractMessageSerializerFactory.h"
+#include "../dataobject/AbstractDataSerializerFactory.h"
 
  ////////////////////////////////////////////////////////////////////////
  // Name:       CTPOTCClientServiceFactory::CreateMessageHandlers()
@@ -42,15 +42,17 @@ std::map<uint, IMessageHandler_Ptr> CTPOTCClientServiceFactory::CreateMessageHan
 
 	msg_hdl_map[MSG_ID_QUERY_TRADINGDESK] = std::make_shared<CTPOTCQueryTradingDesks>();
 
-	msg_hdl_map[MSG_ID_QUERY_ORDER] = std::make_shared<CTPOTCCancelOrder>();
-
 	msg_hdl_map[MSG_ID_ORDER_NEW] = std::make_shared<CTPOTCNewOrder>();
 
 	msg_hdl_map[MSG_ID_ORDER_CANCEL] = std::make_shared<CTPOTCCancelOrder>();
 
 	msg_hdl_map[MSG_ID_QUERY_ORDER] = std::make_shared<CTPOTCQueryOrder>();
 
-	msg_hdl_map[MSG_ID_ORDER_UPDATE] = std::make_shared<CTPOTCQueryOrder>();
+	msg_hdl_map[MSG_ID_ORDER_UPDATE] = msg_hdl_map[MSG_ID_QUERY_ORDER];
+
+	msg_hdl_map[MSG_ID_USER_NEW] = std::make_shared<CTPOTCNewUser>();
+
+	msg_hdl_map[MSG_ID_USER_INFO] = msg_hdl_map[MSG_ID_LOGIN];
 
 	return msg_hdl_map;
 }
@@ -63,7 +65,7 @@ std::map<uint, IMessageHandler_Ptr> CTPOTCClientServiceFactory::CreateMessageHan
 
 std::map<uint, IDataSerializer_Ptr> CTPOTCClientServiceFactory::CreateDataSerializers(void)
 {
-	return AbstractMessageSerializerFactory::Instance()->CreateDataSerializers();
+	return AbstractDataSerializerFactory::Instance()->CreateDataSerializers();
 }
 
 ////////////////////////////////////////////////////////////////////////

@@ -8,20 +8,23 @@
 #include "CTPOTCTradeProcessor.h"
 #include "../CTPServer/CTPConstant.h"
 #include "../CTPServer/CTPUtility.h"
+
+#include "../common/Attribute_Key.h"
+
 #include <glog/logging.h>
 
-#include "../message/message_marco.h"
+#include "../message/message_macro.h"
 #include "../message/DefMessageID.h"
 #include "../message/SysParam.h"
 #include "../message/AppContext.h"
 
-#include "../pricingengine/PricingContext.h"
 
-
-CTPOTCTradeProcessor::CTPOTCTradeProcessor(const std::map<std::string, std::string>& configMap)
+CTPOTCTradeProcessor::CTPOTCTradeProcessor(const std::map<std::string, std::string>& configMap,
+	IPricingDataContext* pricingCtx)
 	: CTPProcessor(configMap),
-	_otcOrderMgr(this, PricingContext::Instance()),
-	_autoOrderMgr(this, PricingContext::Instance()),
+	_pricingCtx(pricingCtx),
+	_otcOrderMgr(this, pricingCtx),
+	_autoOrderMgr(this, pricingCtx),
 	_orderNotifier(new SessionContainer<uint64_t>())
 {
 	_isLogged = false;
@@ -57,7 +60,7 @@ CTPOTCTradeProcessor::~CTPOTCTradeProcessor()
 
 bool CTPOTCTradeProcessor::OnSessionClosing(void)
 {
-	auto pMap = PricingContext::Instance()->GetStrategyMap();
+	auto pMap = _pricingCtx->GetStrategyMap();
 	for (auto& it : *pMap)
 	{
 		auto& stragety = it.second;
@@ -113,7 +116,7 @@ void CTPOTCTradeProcessor::DispatchMessage(const int msgId, const OrderDO* pOrde
 	{
 		for (auto pSession : *pNotiferSet)
 		{
-			OnResponseProcMarco(pSession->getProcessor(), msgId, pOrderDO);
+			OnResponseProcMacro(pSession->getProcessor(), msgId, pOrderDO);
 		}
 	}
 }

@@ -31,7 +31,7 @@ typedef ContractMap<UserContractParam> UserContractParamMap;
 
 typedef ContractMap<ContractDO> ContractDOMap;
 
-typedef ContractMap<InstrumentDO> InstrumentDOMap;
+typedef std::map<std::string, InstrumentDO> InstrumentDOMap;
 
 template <typename V>
 using PortfolioMap = typename AutoFillMap<PortfolioKey, V>;

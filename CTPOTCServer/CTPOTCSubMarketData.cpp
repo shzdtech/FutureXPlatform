@@ -8,8 +8,10 @@
 #include "CTPOTCSubMarketData.h"
 #include "../CTPServer/tradeapi/ThostFtdcMdApi.h"
 #include "../CTPServer/CTPUtility.h"
-#include "../CTPServer/Attribute_Key.h"
-#include "../CTPServer/CTPAppContext.h"
+#include "../common/BizErrorIDs.h"
+
+#include "../common/Attribute_Key.h"
+#include "../message/GlobalProcessorRegistry.h"
 #include "CTPOTCWorkerProcessor.h"
 #include "CTPWorkerProcessorID.h"
 
@@ -39,9 +41,9 @@
 
 dataobj_ptr CTPOTCSubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
-	CTPUtility::CheckLogin(session);
+	CheckLogin(session);
 
-	auto company = session->getUserInfo()->getCompany();
+	auto company = session->getUserInfo()->getBrokerId();
 	auto otcContractVec = ContractDAO::FindContractByCompany(company);
 	auto userContractMap_Ptr =
 		std::make_shared < UserContractParamMap >();
@@ -61,7 +63,7 @@ dataobj_ptr CTPOTCSubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 
 	session->getContext()->setAttribute(STR_KEY_USER_CONTRACTS, userContractMap_Ptr);
 
-	if (auto workPrc = CTPAppContext::FindServerProcessor
+	if (auto workPrc = GlobalProcessorRegistry::FindProcessor
 		(CTPWorkProcessorID::WORKPROCESSOR_OTC))
 	{
 		auto otcworkproc = (std::static_pointer_cast<CTPOTCWorkerProcessor>(workPrc));
@@ -73,7 +75,7 @@ dataobj_ptr CTPOTCSubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCSubMarketData::HandleResponse(ParamVector rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPOTCSubMarketData::HandleResponse(param_vector rawRespParams, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPOTCSubMarketData::HandleResponse()
 // Parameters:
 // - rawRespParams
@@ -82,7 +84,7 @@ dataobj_ptr CTPOTCSubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCSubMarketData::HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOTCSubMarketData::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	if (CTPUtility::HasError(rawRespParams[1]))
 	{

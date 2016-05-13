@@ -20,8 +20,8 @@
 std::shared_ptr<PricingDO> PricingUtility::Pricing(
 	const StrategyContractDO& strategy,
 	double inputVal,
-	PricingContext* priceCtx,
-	const ParamVector* params)
+	IPricingDataContext* priceCtx,
+	const param_vector* params)
 {
 	std::shared_ptr<PricingDO> ret;
 
@@ -39,7 +39,7 @@ std::shared_ptr<PricingDO> PricingUtility::Pricing(
 std::shared_ptr<PricingDO>  PricingUtility::Pricing(
 	const StrategyContractDO& strategy,
 	double inputVal,
-	PricingContext* priceCtx)
+	IPricingDataContext* priceCtx)
 {
 	return Pricing(strategy, inputVal, priceCtx, nullptr);
 }
@@ -47,8 +47,8 @@ std::shared_ptr<PricingDO>  PricingUtility::Pricing(
 std::shared_ptr<PricingDO> PricingUtility::Pricing(
 	const ContractKey& contractKey,
 	double inputVal,
-	PricingContext* priceCtx,
-	const ParamVector* params)
+	IPricingDataContext* priceCtx,
+	const param_vector* params)
 {
 	auto it = priceCtx->GetStrategyMap()->find(contractKey);
 	if (it == priceCtx->GetStrategyMap()->end())
@@ -60,15 +60,7 @@ std::shared_ptr<PricingDO> PricingUtility::Pricing(
 std::shared_ptr<PricingDO> PricingUtility::Pricing(
 	const ContractKey& contractKey,
 	double inputVal,
-	PricingContext* priceCtx)
+	IPricingDataContext* priceCtx)
 {
 	return Pricing(contractKey, inputVal, priceCtx, nullptr);
-}
-
-std::shared_ptr<PricingDO> PricingUtility::Pricing(
-	const StrategyContractDO& strategy,
-	double inputVal,
-	const ParamVector* params)
-{
-	return Pricing(strategy, inputVal, PricingContext::Instance(), params);
 }

@@ -187,6 +187,7 @@
     <ClInclude Include="proto\businessobj.pb.h" />
     <ClInclude Include="proto\errormsg.pb.h" />
     <ClInclude Include="proto\simpletable.pb.h" />
+    <ClInclude Include="proto\usermanager.pb.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PBAccountInfoSerializer.cpp" />
@@ -216,6 +217,7 @@
     <ClCompile Include="proto\businessobj.pb.cc" />
     <ClCompile Include="proto\errormsg.pb.cc" />
     <ClCompile Include="proto\simpletable.pb.cc" />
+    <ClCompile Include="proto\usermanager.pb.cc" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\Protos\businessobj.proto">
@@ -263,11 +265,29 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)proto/%(Filename).pb.h;$(ProjectDir)proto/%(Filename).pb.cc;%(Outputs)</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)proto/%(Filename).pb.h;$(ProjectDir)proto/%(Filename).pb.cc;%(Outputs)</Outputs>
     </CustomBuild>
+    <CustomBuild Include="..\Protos\usermanager.proto">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(ProjectDir)proto  %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(ProjectDir)proto  %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(ProjectDir)proto  %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(ProjectDir)proto  %(FullPath)</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(Identity)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Identity)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)proto/%(Filename).pb.h;$(ProjectDir)proto/%(Filename).pb.cc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)proto/%(Filename).pb.h;$(ProjectDir)proto/%(Filename).pb.cc;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(Identity)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Identity)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)proto/%(Filename).pb.h;$(ProjectDir)proto/%(Filename).pb.cc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)proto/%(Filename).pb.h;$(ProjectDir)proto/%(Filename).pb.cc;%(Outputs)</Outputs>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\dataobject\dataobject.vcxproj">
       <Project>{6257959c-c51c-47ba-9b4c-b40e83f8453a}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Protos\usermanager.proto" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

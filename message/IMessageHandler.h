@@ -11,12 +11,15 @@
 #include "../dataobject/AbstractDataObj.h"
 #include "ISession.h"
 #include "IRawAPI.h"
+#include "BizError.h"
+#include "SysParam.h"
+
 
 class IMessageHandler
 {
 public:
 	virtual dataobj_ptr HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session) = 0;
-	virtual dataobj_ptr HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session) = 0;
+	virtual dataobj_ptr HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session) = 0;
 
 protected:
 private:

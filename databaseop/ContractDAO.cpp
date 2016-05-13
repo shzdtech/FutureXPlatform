@@ -16,13 +16,14 @@
 // - company
 // Return:     std::shared_ptr<std::vector<ContractKey>>
 ////////////////////////////////////////////////////////////////////////
-static const std::string sql_findcontract(
-	"SELECT exchange_symbol, contract_symbol "
-	"FROM vw_pricing_contract "
-	"WHERE client_symbol = ?");
 
 VectorDO_Ptr<ContractKey> ContractDAO::FindContractByCompany(const std::string& company)
 {
+	static const std::string sql_findcontract(
+		"SELECT exchange_symbol, contract_symbol "
+		"FROM vw_pricing_contract "
+		"WHERE client_symbol = ?");
+
 	auto ret = std::make_shared<VectorDO<ContractKey>>();
 
 	auto session = ConnectionHelper::Instance()->LeaseOrCreate();
@@ -49,10 +50,6 @@ VectorDO_Ptr<ContractKey> ContractDAO::FindContractByCompany(const std::string& 
 }
 
 
-static const std::string sql_findallcontract(
-	"SELECT a.exchange_symbol, a.contract_symbol, b.tick_size, b.multiplier FROM contract a "
-	"JOIN underlying b ON b.exchange_symbol = a.exchange_symbol AND b.underlying_symbol = a.underlying_symbol");
-
 ////////////////////////////////////////////////////////////////////////
 // Name:       ContractDAO::FindBaseContractByCompany(const std::string& company)
 // Purpose:    Implementation of ContractDAO::FindBaseContractByCompany()
@@ -63,6 +60,10 @@ static const std::string sql_findallcontract(
 
 std::shared_ptr<ContractDOMap> ContractDAO::FindAllContract(void)
 {
+	static const std::string sql_findallcontract(
+		"SELECT a.exchange_symbol, a.contract_symbol, b.tick_size, b.multiplier FROM contract a "
+		"JOIN underlying b ON b.exchange_symbol = a.exchange_symbol AND b.underlying_symbol = a.underlying_symbol");
+
 	auto ret = std::make_shared<ContractDOMap>();
 
 	auto session = ConnectionHelper::Instance()->LeaseOrCreate();
@@ -90,13 +91,14 @@ std::shared_ptr<ContractDOMap> ContractDAO::FindAllContract(void)
 }
 
 
-static const std::string sql_findcontractparam(
-	"SELECT distinct exchange_symbol, contract_symbol, tick_size, multiplier "
-	"FROM vw_pricing_contract_property "
-	"WHERE client_account = ?");
 
 VectorDO_Ptr<ContractDO> ContractDAO::FindContractParamByUser(const std::string& userID)
 {
+	static const std::string sql_findcontractparam(
+		"SELECT distinct exchange_symbol, contract_symbol, tick_size, multiplier "
+		"FROM vw_pricing_contract_property "
+		"WHERE client_account = ?");
+
 	auto ret = std::make_shared<VectorDO<ContractDO>>();
 
 	auto session = ConnectionHelper::Instance()->LeaseOrCreate();

@@ -6,7 +6,7 @@
  ***********************************************************************/
 
 #include "MessageProcessor.h"
-#include "SessionContext.h"
+#include "ContextAttribute.h"
 #include <glog/logging.h>
 
 MessageProcessor::MessageProcessor()
@@ -46,6 +46,16 @@ void MessageProcessor::setSession(IMessageSession* pMsgSession)
 void MessageProcessor::setServiceLocator(IMessageServiceLocator_Ptr svcLct_Ptr)
 {
 	_svc_locator_ptr = svcLct_Ptr;
+}
+
+void MessageProcessor::setServerContext(IContextAttribute * serverCtx)
+{
+	_serverCtx = serverCtx;
+}
+
+IContextAttribute * MessageProcessor::getServerContext(void)
+{
+	return _serverCtx;
 }
 
 ////////////////////////////////////////////////////////////////////////

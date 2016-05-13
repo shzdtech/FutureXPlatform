@@ -4,7 +4,7 @@
 #include "../dataobject/MarketDataDO.h"
 #include "../ordermanager/OrderSeqGen.h"
 #include "../message/BizError.h"
-
+#include "../common/BizErrorIDs.h"
 
 using namespace System;
 
@@ -54,7 +54,7 @@ int CTSAPIWrapperImpl::Subscribe(const ContractKey& contractKey)
 
 	if (!IsSubscribed(contractKey))
 	{
-		ret = BizErrID::CONTRACT_NOT_FOUND;
+		ret = CONTRACT_NOT_FOUND;
 
 		System::String^ exchange = gcnew System::String(contractKey.ExchangeID().data());
 		System::String^ contract = gcnew System::String(contractKey.InstrumentID().data());
@@ -79,7 +79,7 @@ int CTSAPIWrapperImpl::Subscribe(const ContractKey& contractKey)
 			//marketList->MarketTradeVolume += 
 			//	gcnew MarketList::MarketTradeVolumeEventHandler(_callback, &CTSMDCallback::OnMarketDataUpdated);
 
-			ret = BizErrID::NO_ERROR;
+			ret = NO_ERROR;
 		}
 	}
 
@@ -132,9 +132,9 @@ int CTSAPIWrapperImpl::CreateOrder(OrderDO& orderDO)
 
 			OrderDO_Ptr order_ptr = CTSUtility::ParseRawOrder(pOrder);
 
-			OnResponseProcMarco(_pMsgProcessor, MSG_ID_ORDER_NEW, &order_ptr);
+			OnResponseProcMacro(_pMsgProcessor, MSG_ID_ORDER_NEW, &order_ptr);
 
-			ret = BizErrID::NO_ERROR;
+			ret = NO_ERROR;
 		}
 	}
 
@@ -144,15 +144,15 @@ int CTSAPIWrapperImpl::CreateOrder(OrderDO& orderDO)
 
 int CTSAPIWrapperImpl::CancelOrder(OrderDO& orderDO)
 {
-	int ret = BizErrID::CONTRACT_NOT_FOUND;
+	int ret = CONTRACT_NOT_FOUND;
 
 	Order^ order;
 	if (_orderMap->TryGetValue(orderDO.OrderID, order))
 	{
 		if (order->Pull())
-			ret = BizErrID::NO_ERROR;
+			ret = NO_ERROR;
 		else if (!order->IsWorking)
-			ret = BizErrID::ORDER_IS_CLOSED;
+			ret = ORDER_IS_CLOSED;
 	}
 
 	return ret;
@@ -170,7 +170,7 @@ void CTSAPIWrapperImpl::OnLoginSuccess()
 	_account->Subscribe();
 
 	int errCode = 0;
-	OnResponseProcMarco(_pMsgProcessor, MSG_ID_LOGIN, &errCode);
+	OnResponseProcMacro(_pMsgProcessor, MSG_ID_LOGIN, &errCode);
 }
 
 void CTSAPIWrapperImpl::OnLoginFailure(LoginResult loginResult)
@@ -179,7 +179,7 @@ void CTSAPIWrapperImpl::OnLoginFailure(LoginResult loginResult)
 	{
 		_isLogged = false;
 		int errCode = (int)loginResult;
-		OnResponseProcMarco(_pMsgProcessor, MSG_ID_LOGIN, &errCode);
+		OnResponseProcMacro(_pMsgProcessor, MSG_ID_LOGIN, &errCode);
 	}
 }
 
@@ -200,7 +200,7 @@ void CTSAPIWrapperImpl::OnMarketDataUpdated(Market^ poMarket)
 	mdDO.SettlementPrice = poMarket->ConvertTicksToDecimal(poMarket->LastSettlement->Ticks);
 	mdDO.Volume = poMarket->LastTradeVolume->Count;
 
-	OnResponseProcMarco(_pMsgProcessor, MSG_ID_RET_MARKETDATA, &mdDO);
+	OnResponseProcMacro(_pMsgProcessor, MSG_ID_RET_MARKETDATA, &mdDO);
 }
 
 

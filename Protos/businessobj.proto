@@ -2,24 +2,6 @@ syntax = "proto3";
 
 package Micro.Future.Message.Business;
 
-message PBUserInfo
-{
-   string userId = 1;
-   string password = 2;
-   string brokerId = 3;
-   string name = 4;
-   string company = 5;
-   string email = 6;
-   string contactNum = 7;
-   int32 role = 8;
-   int32 permission = 9;
-}
-
-message PBUserInfoList
-{
-	repeated PBUserInfo userInfo = 1;
-}
-
 message PBParam
 {
 	string name = 1;
@@ -78,9 +60,9 @@ message PBPricingDataList
 
 message PBStrategyWeight
 {
-	string exchange = 3;
-	string contract = 4;
-	double weight = 6;
+	string exchange = 1;
+	string contract = 2;
+	double weight = 3;
 }
 
 message PBStrategy
@@ -385,4 +367,9 @@ message PBContractInfo {
 	double shortMarginRatio = 24;
 	///是否使用大额单边保证金算法
 	string maxMarginSideAlgorithm = 25;
+}
+
+message PBContractInfoList
+{
+	repeated PBContractInfo contractInfo = 1;
 }

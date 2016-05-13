@@ -2,7 +2,7 @@
 
 #include "pbserializer_exp.h"
 #include "PBMessageSerializerFactory.h"
-#include "../dataobject/AbstractMessageSerializerFactory.h"
+#include "../dataobject/AbstractDataSerializerFactory.h"
 
 
 extern "C" PBSERIALIZER_CLASS_EXPORTS void* CreateInstance(const char* classUUID) {

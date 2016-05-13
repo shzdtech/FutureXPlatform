@@ -19,7 +19,6 @@ class CTP_CLASS_EXPORT CTPUtility
 public:
 	static bool HasError(const void* pRspInfo);
 	static void CheckError(const void* pRspInfo);
-	static void CheckLogin(const ISession* session);
 	static BizError_Ptr HasReturnError(const int rtnCode);
 	static void CheckReturnError(const int rtncode);
 	static bool IsOrderActive(const int status);

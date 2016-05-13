@@ -58,7 +58,7 @@ dataobj_ptr CTPCancelOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawA
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPCancelOrder::HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPCancelOrder::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPCancleOrder::HandleResponse()
 // Parameters:
 // - rawRespParams
@@ -67,7 +67,7 @@ dataobj_ptr CTPCancelOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawA
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPCancelOrder::HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPCancelOrder::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	dataobj_ptr ret;
 

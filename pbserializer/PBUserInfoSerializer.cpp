@@ -6,7 +6,7 @@
  ***********************************************************************/
 
 #include "PBUserInfoSerializer.h"
-#include "proto/businessobj.pb.h"
+#include "proto/usermanager.pb.h"
 #include "../message/BizError.h"
 #include "ExceptionDef.h"
 #include "../dataobject/UserInfoDO.h"
@@ -24,15 +24,19 @@ data_buffer PBUserInfoSerializer::Serialize(const dataobj_ptr abstractDO)
 	Micro::Future::Message::Business::PBUserInfo PB;
 
 	auto pDO = (UserInfoDO*)abstractDO.get();
-
-	PB.set_brokerid(pDO->BrokerId);
+	PB.set_address(pDO->Address);
 	PB.set_company(pDO->Company);
 	PB.set_contactnum(pDO->ContactNum);
 	PB.set_email(pDO->Email);
-	PB.set_name(pDO->Name);
+	PB.set_firstname(pDO->FirstName);
+	PB.set_lastname(pDO->LastName);
+	PB.set_gender(pDO->Gender);
+	PB.set_identitynum(pDO->IdentityNum);
+	PB.set_zipcode(pDO->ZipCode);
+	PB.set_userid(pDO->UserId);
+
 	PB.set_permission(pDO->Permission);
 	PB.set_role(pDO->Role);
-	PB.set_userid(pDO->UserId);
 
 	int bufsize = PB.ByteSize();
 	uint8_t* buf = new uint8_t[bufsize];
@@ -58,14 +62,19 @@ dataobj_ptr PBUserInfoSerializer::Deserialize(const data_buffer& rawdata)
 	if (!PB.ParseFromArray(rawdata.get(), rawdata.size()))
 		throw BizError(INVALID_DATAFORMAT_CODE, INVALID_DATAFORMAT_DESC);
 
-	ret->BrokerId = PB.brokerid();
+	ret->Address = PB.address();
 	ret->Company = PB.company();
 	ret->ContactNum = PB.contactnum();
 	ret->Email = PB.email();
-	ret->Name = PB.name();
-	ret->Permission = PB.permission();
-	ret->Role = PB.role();
+	ret->FirstName = PB.firstname();
+	ret->LastName = PB.lastname();
+	ret->Gender = (GenderType)PB.gender();
+	ret->IdentityNum = PB.identitynum();
+	ret->ZipCode = PB.zipcode();
 	ret->UserId = PB.userid();
+	ret->Password = PB.password();
+
+	ret->Role = PB.role();
 
 	return ret;
 }

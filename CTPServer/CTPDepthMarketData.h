@@ -14,7 +14,7 @@
 class CTP_CLASS_EXPORT CTPDepthMarketData : public NopHandler
 {
 public:
-   dataobj_ptr HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session);
+   dataobj_ptr HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session);
 
 protected:
 private:

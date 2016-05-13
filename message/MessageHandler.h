@@ -10,18 +10,19 @@
 
 #include <atomic>
 #include "IMessageHandler.h"
-#include "AppContext.h"
-#include "SysParam.h"
+#include "ISession.h"
 #include "message_exp.h"
 
 class MESSAGE_CLASS_EXPORT MessageHandler : public IMessageHandler
 {
 public:
 	virtual dataobj_ptr HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session) = 0;
-	virtual dataobj_ptr HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session) = 0;
+	virtual dataobj_ptr HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session) = 0;
+
+	virtual bool CheckLogin(ISession* session, bool throwBizErr = true);
 
 protected:
-	std::atomic_int _requestIdGen;
+	static std::atomic_uint _requestIdGen;
 
 private:
 

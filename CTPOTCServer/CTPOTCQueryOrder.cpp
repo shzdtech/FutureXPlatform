@@ -6,15 +6,15 @@
  ***********************************************************************/
 
 #include "CTPOTCQueryOrder.h"
-#include "../CTPServer/CTPUtility.h"
-#include "../CTPServer/CTPAppContext.h"
+
+#include "../message/GlobalProcessorRegistry.h"
 #include "CTPWorkerProcessorID.h"
 #include "CTPOTCWorkerProcessor.h"
 
 #include "../dataobject/FieldName.h"
 #include "../dataobject/TemplateDO.h"
 #include "../message/BizError.h"
-#include "../message/message_marco.h"
+#include "../message/message_macro.h"
 #include "../message/DefMessageID.h"
 #include "../utility/Encoding.h"
 #include "../utility/TUtil.h"
@@ -36,7 +36,7 @@
 
 dataobj_ptr CTPOTCQueryOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
-	CTPUtility::CheckLogin(session);
+	CheckLogin(session);
 
 	auto stdo = (StringTableDO*)reqDO.get();
 	auto& data = stdo->Data;
@@ -47,13 +47,13 @@ dataobj_ptr CTPOTCQueryOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 		ContractKey(EMPTY_STRING, instrumentid)))
 	{
 		if (auto proc = std::static_pointer_cast<CTPOTCWorkerProcessor>
-			(CTPAppContext::FindServerProcessor(WORKPROCESSOR_OTC)))
+			(GlobalProcessorRegistry::FindProcessor(CTPWorkProcessorID::WORKPROCESSOR_OTC)))
 		{
 			for (auto& it : *ordervec_ptr)
 			{
 				if (it.OrderStatus == OrderStatus::OPENNING)
 					proc->RegisterOTCOrderListener(it.OrderID, (IMessageSession*)session);
-				OnResponseProcMarco(session->getProcessor(), MSG_ID_QUERY_ORDER, &it);
+				OnResponseProcMacro(session->getProcessor(), MSG_ID_QUERY_ORDER, &it);
 			}
 		}
 	}
@@ -62,7 +62,7 @@ dataobj_ptr CTPOTCQueryOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCQueryOrder::HandleResponse(ParamVector rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPOTCQueryOrder::HandleResponse(param_vector rawRespParams, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPOTCQueryOrder::HandleResponse()
 // Parameters:
 // - rawRespParams
@@ -71,7 +71,7 @@ dataobj_ptr CTPOTCQueryOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCQueryOrder::HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOTCQueryOrder::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	auto& orderDO = *((OrderDO*)rawRespParams[0]);
 

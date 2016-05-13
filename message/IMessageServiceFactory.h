@@ -11,11 +11,13 @@
 #include <map>
 #include "IMessageProcessor.h"
 #include "IMessageHandler.h"
+#include "IContextAttribute.h"
 #include "../dataobject/IDataSerializer.h"
 
 class IMessageServiceFactory
 {
 public:
+	virtual void SetServerContext(IContextAttribute* serverCtx) = 0;
 	virtual std::map<uint, IMessageHandler_Ptr> CreateMessageHandlers(void) = 0;
 	virtual std::map<uint, IDataSerializer_Ptr> CreateDataSerializers(void) = 0;
 	virtual std::map<uint, IProcessorBase_Ptr> CreateWorkProcessor(void) = 0;

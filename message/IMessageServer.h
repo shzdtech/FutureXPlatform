@@ -21,6 +21,7 @@ public:
    virtual std::string getUri(void)=0;;
    virtual void RegisterServiceFactory(IMessageServiceFactory_Ptr msgSvcFactory) = 0;
    virtual IMessageServiceFactory_Ptr GetServiceFactory(void) = 0;
+   virtual IContextAttribute* getContext() = 0;
 
 protected:
 private:

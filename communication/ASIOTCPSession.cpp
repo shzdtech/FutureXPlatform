@@ -59,7 +59,7 @@ void ASIOTCPSession::RegistProcessor(IMessageProcessor_Ptr msgprocessor) {
 int ASIOTCPSession::WriteMessage(const uint msgId, const data_buffer& msg) {
 	int packetSz = msg.size() + EXINFO_SIZE; // Total packet size
 	// Assemble Header
-	Buffer_Ptr msg_header(new byte[HEADER_SIZE]);
+	buffer_ptr msg_header(new byte[HEADER_SIZE]);
 	byte* buf_header = (byte*)msg_header.get();
 	buf_header[0] = CTRLCHAR::SOH; //Start of Header 
 	buf_header[1] = packetSz;
@@ -69,7 +69,7 @@ int ASIOTCPSession::WriteMessage(const uint msgId, const data_buffer& msg) {
 	buf_header[HEADER_LAST] = CTRLCHAR::STX; //Start of Text
 
 	// Assemble Extra Info
-	Buffer_Ptr msg_exinfo(new byte[EXINFO_SIZE]);
+	buffer_ptr msg_exinfo(new byte[EXINFO_SIZE]);
 	byte* buf_exinfo = (byte*)msg_exinfo.get();
 	buf_exinfo[0] = CTRLCHAR::ETX; //End of Text
 	buf_exinfo[1] = msgId;
@@ -146,7 +146,7 @@ bool ASIOTCPSession::Close(void) {
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void ASIOTCPSession::asyn_read_header(asiotcpsession_ptr this_ptr) {
+void ASIOTCPSession::asyn_read_header(ASIOTCPSession_Ptr this_ptr) {
 	async_read(this_ptr->_socket, buffer(this_ptr->_header, HEADER_SIZE),
 		[this_ptr](boost::system::error_code ec, std::size_t length) {
 		auto this_ins = this_ptr.get();
@@ -182,8 +182,8 @@ void ASIOTCPSession::asyn_read_header(asiotcpsession_ptr this_ptr) {
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void ASIOTCPSession::asyn_read_body(asiotcpsession_ptr this_ptr, uint msgSize) {
-	Buffer_Ptr msgbuf(new byte[msgSize]);
+void ASIOTCPSession::asyn_read_body(ASIOTCPSession_Ptr this_ptr, uint msgSize) {
+	buffer_ptr msgbuf(new byte[msgSize]);
 	async_read(this_ptr->_socket, buffer(msgbuf.get(), msgSize),
 		[this_ptr, msgbuf](boost::system::error_code ec, std::size_t length) {
 		auto this_ins = this_ptr.get();
@@ -213,7 +213,7 @@ void ASIOTCPSession::asyn_read_body(asiotcpsession_ptr this_ptr, uint msgSize) {
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void ASIOTCPSession::asyn_timeout(asiotcpsession_wk_ptr this_wk_ptr) {
+void ASIOTCPSession::asyn_timeout(ASIOTCPSession_WkPtr this_wk_ptr) {
 	if (auto this_ptr = this_wk_ptr.lock()) {
 		auto this_ins = this_ptr.get();
 		if (this_ins->_timeout > 0) {

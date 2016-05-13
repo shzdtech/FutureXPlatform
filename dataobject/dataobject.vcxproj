@@ -147,7 +147,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AbstractDataObj.h" />
-    <ClInclude Include="AbstractMessageSerializerFactory.h" />
+    <ClInclude Include="AbstractDataSerializerFactory.h" />
     <ClInclude Include="AccountInfoDO.h" />
     <ClInclude Include="BizErrorDO.h" />
     <ClInclude Include="BizErrorSerializer.h" />
@@ -165,7 +165,7 @@
     <ClInclude Include="ExchangeDO.h" />
     <ClInclude Include="FieldName.h" />
     <ClInclude Include="IDataSerializer.h" />
-    <ClInclude Include="IMessageSerializerFactory.h" />
+    <ClInclude Include="IDataSerializerFactory.h" />
     <ClInclude Include="InstrumentDO.h" />
     <ClInclude Include="MultiRecordDO.h" />
     <ClInclude Include="OrderDO.h" />
@@ -182,7 +182,7 @@
     <ClInclude Include="UserPositionDO.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AbstractMessageSerializerFactory.cpp" />
+    <ClCompile Include="AbstractDataSerializerFactory.cpp" />
     <ClCompile Include="BizErrorSerializer.cpp" />
     <ClCompile Include="DataBufferSerializer.cpp" />
   </ItemGroup>

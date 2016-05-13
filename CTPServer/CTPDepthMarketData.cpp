@@ -15,7 +15,7 @@
 #include "CTPUtility.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPDepthMarketData::HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPDepthMarketData::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPDepthMarketData::HandleResponse()
 // Parameters:
 // - rawRespParams
@@ -24,7 +24,7 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPDepthMarketData::HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPDepthMarketData::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	auto pData = (CThostFtdcDepthMarketDataField*)rawRespParams[0];
 	auto pDOVec = new VectorDO<MarketDataDO>;

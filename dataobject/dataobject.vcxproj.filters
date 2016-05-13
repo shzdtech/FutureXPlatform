@@ -99,12 +99,6 @@
     <ClInclude Include="ResultDO.h">
       <Filter>头文件\DO</Filter>
     </ClInclude>
-    <ClInclude Include="AbstractMessageSerializerFactory.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="IMessageSerializerFactory.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="EchoMsgDO.h">
       <Filter>头文件\DO</Filter>
     </ClInclude>
@@ -120,6 +114,12 @@
     <ClInclude Include="PortfolioDO.h">
       <Filter>头文件\DO</Filter>
     </ClInclude>
+    <ClInclude Include="IDataSerializerFactory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractDataSerializerFactory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BizErrorSerializer.cpp">
@@ -128,7 +128,7 @@
     <ClCompile Include="DataBufferSerializer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="AbstractMessageSerializerFactory.cpp">
+    <ClCompile Include="AbstractDataSerializerFactory.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

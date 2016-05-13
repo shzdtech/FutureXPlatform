@@ -45,9 +45,6 @@ dataobj_ptr CTSLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* raw
 	auto pUserInfo = session->getUserInfo();
 	pUserInfo->setInvestorId(userid);
 	pUserInfo->setBrokerId(brokeid);
-	pUserInfo->setCompany(userid);
-	pUserInfo->setContactNum(EMPTY_STRING);
-	pUserInfo->setEmail(EMPTY_STRING);
 	pUserInfo->setName(userid);
 	pUserInfo->setPassword(password);
 	pUserInfo->setUserId(userid);
@@ -58,7 +55,7 @@ dataobj_ptr CTSLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* raw
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTSLoginHandler::HandleResponse(ParamVector& rawParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTSLoginHandler::HandleResponse(param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTSLoginHandler::HandleResponse()
 // Parameters:
 // - rawParams
@@ -67,7 +64,7 @@ dataobj_ptr CTSLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* raw
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTSLoginHandler::HandleResponse(ParamVector& rawParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTSLoginHandler::HandleResponse(param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
 {
 	auto errCode = *(int*)rawParams[0];
 	if (errCode)
@@ -80,15 +77,12 @@ dataobj_ptr CTSLoginHandler::HandleResponse(ParamVector& rawParams, IRawAPI* raw
 
 	auto pUserInfo = session->getUserInfo();
 
-	pDO->BrokerId = pUserInfo->getBrokerId();
-	pDO->Company = pUserInfo->getCompany();
-	pDO->ContactNum = pUserInfo->getContactNum();
-	pDO->Email = pUserInfo->getEmail();
-	pDO->Name = pUserInfo->getName();
-	//pDO->Password = pUserInfo->getPassword();
-	pDO->Permission = pUserInfo->getPermission();
-	pDO->Role = pUserInfo->getRole();
 	pDO->UserId = pUserInfo->getUserId();
+	pDO->BrokerId = pUserInfo->getBrokerId();
+	//pDO->Password = pUserInfo->getPassword();
+	pDO->FirstName = pUserInfo->getName();
+	pDO->Role = pUserInfo->getRole();
+	pDO->Permission = pUserInfo->getPermission();
 
 	session->setLoginStatus(true);
 

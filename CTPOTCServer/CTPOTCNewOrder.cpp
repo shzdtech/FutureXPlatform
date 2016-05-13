@@ -7,9 +7,8 @@
 
 #include "CTPOTCNewOrder.h"
 #include <memory>
-#include "../CTPServer/CTPUtility.h"
-#include "../CTPServer/CTPAppContext.h"
-#include "../pricingengine/PricingContext.h"
+
+#include "../message/GlobalProcessorRegistry.h"
 #include "CTPWorkerProcessorID.h"
 #include "CTPOTCWorkerProcessor.h"
 #include "../dataobject/OrderDO.h"
@@ -27,11 +26,13 @@
 
 dataobj_ptr CTPOTCNewOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
+	CheckLogin(session);
+
 	dataobj_ptr ret = reqDO;
 	auto& orderDO = *((OrderDO*)reqDO.get());
 	orderDO.SetUserID(session->getUserInfo()->getUserId());
 	if (auto wkProcPtr = std::static_pointer_cast<CTPOTCWorkerProcessor>
-		(CTPAppContext::FindServerProcessor(CTPWorkProcessorID::WORKPROCESSOR_OTC)))
+		(GlobalProcessorRegistry::FindProcessor(CTPWorkProcessorID::WORKPROCESSOR_OTC)))
 	{
 		int rtn = wkProcPtr->OTCNewOrder(orderDO);
 		if (rtn != 0)
@@ -44,7 +45,7 @@ dataobj_ptr CTPOTCNewOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawA
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCNewOrder::HandleResponse(ParamVector rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPOTCNewOrder::HandleResponse(param_vector rawRespParams, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPOTCNewOrder::HandleResponse()
 // Parameters:
 // - rawRespParams
@@ -53,7 +54,7 @@ dataobj_ptr CTPOTCNewOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawA
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCNewOrder::HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOTCNewOrder::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	auto& orderDO = *((OrderDO*)rawRespParams[0]);
 

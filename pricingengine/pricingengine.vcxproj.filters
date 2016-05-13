@@ -30,9 +30,6 @@
     <ClInclude Include="PricingUtility.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="PricingContext.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="IAlgorithmFactory.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -43,6 +40,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="PricingAlgorithmFactory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IPricingDataContext.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PricingDataContext.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -59,13 +62,13 @@
     <ClCompile Include="PricingUtility.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="PricingContext.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="BlackScholesPricing.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="PricingAlgorithmFactory.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PricingDataContext.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

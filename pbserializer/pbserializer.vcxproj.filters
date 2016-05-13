@@ -105,6 +105,9 @@
     <ClInclude Include="PBEchoMsgSerializer.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="proto\usermanager.pb.h">
+      <Filter>protos</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PBBizErrorSerializer.cpp">
@@ -188,6 +191,9 @@
     <ClCompile Include="PBEchoMsgSerializer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="proto\usermanager.pb.cc">
+      <Filter>protos</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\Protos\businessobj.proto">
@@ -199,5 +205,11 @@
     <CustomBuild Include="..\Protos\simpletable.proto">
       <Filter>protos</Filter>
     </CustomBuild>
+    <CustomBuild Include="..\Protos\usermanager.proto" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Protos\usermanager.proto">
+      <Filter>protos</Filter>
+    </None>
   </ItemGroup>
 </Project>

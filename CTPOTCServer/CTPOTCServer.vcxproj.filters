@@ -84,6 +84,9 @@
     <ClCompile Include="CTPOCTUnSubMarketData.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="CTPOTCNewUser.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CTPOTCClientServiceFactory.h">
@@ -159,6 +162,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="CTPOCTUnSubMarketData.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPOTCNewUser.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -8,10 +8,10 @@
 #include "CTPOTCTradingDeskProcessor.h"
 #include "CTPOTCWorkerProcessor.h"
 #include "CTPWorkerProcessorID.h"
-#include "../CTPServer/Attribute_Key.h"
-#include "../CTPServer/CTPAppContext.h"
+#include "../common/Attribute_Key.h"
+#include "../message/GlobalProcessorRegistry.h"
 
-#include "../pricingengine/PricingContext.h"
+#include "../message/message_macro.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPOTCTradingDeskProcessor::CTPOTCTradingDeskProcessor()
@@ -50,9 +50,10 @@ void CTPOTCTradingDeskProcessor::OnInit(void)
 bool CTPOTCTradingDeskProcessor::OnSessionClosing(void)
 {
 	if (auto proc = std::static_pointer_cast<CTPOTCWorkerProcessor>
-		(CTPAppContext::FindServerProcessor(WORKPROCESSOR_OTC)))
+		(GlobalProcessorRegistry::FindProcessor(CTPWorkProcessorID::WORKPROCESSOR_OTC)))
 	{
-		auto pStrategyMap = PricingContext::Instance()->GetStrategyMap();
+		auto pStrategyMap = AttribPointerCast(this, STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext)
+			->GetStrategyMap();
 		
 		if (auto strategyVec_Ptr = std::static_pointer_cast<std::vector<ContractKey>>(
 			getSession()->getContext()->getAttribute(STR_KEY_USER_STRATEGY)))

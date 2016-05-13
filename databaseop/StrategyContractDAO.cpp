@@ -15,14 +15,15 @@
 // - contractID
 // Return:     std::shared_ptr<std::vector<StrategyContractDO>>
 ////////////////////////////////////////////////////////////////////////
-static const std::string sql_findstrategy(
-	"SELECT exchange_symbol, contract_symbol, underlying_symbol, tick_size, multiplier, "
-	"strategy_symbol, description, pricing_algorithm, portfolio_symbol "
-	"FROM vw_strategy_contract_info "
-	"WHERE client_account = ?");
 
 VectorDO_Ptr<StrategyContractDO> StrategyContractDAO::FindStrategyContractByUser(const std::string& userID)
 {
+	static const std::string sql_findstrategy(
+		"SELECT exchange_symbol, contract_symbol, underlying_symbol, tick_size, multiplier, "
+		"strategy_symbol, description, pricing_algorithm, portfolio_symbol "
+		"FROM vw_strategy_contract_info "
+		"WHERE client_account = ?");
+
 	auto ret = std::make_shared<VectorDO<StrategyContractDO>>();
 	auto session = ConnectionHelper::Instance()->LeaseOrCreate();
 	try
@@ -58,12 +59,12 @@ VectorDO_Ptr<StrategyContractDO> StrategyContractDAO::FindStrategyContractByUser
 }
 
 
-static const std::string sql_findcontractparam(
-	"SELECT exchange_symbol, contract_symbol, weight FROM vw_strategy_param "
-	"WHERE strategy_symbol = ?");
-
 VectorDO_Ptr<ContractParam> StrategyContractDAO::FindContractParam(const std::string& strategy)
 {
+	static const std::string sql_findcontractparam(
+		"SELECT exchange_symbol, contract_symbol, weight FROM vw_strategy_param "
+		"WHERE strategy_symbol = ?");
+
 	auto ret = std::make_shared<VectorDO<ContractParam>>();
 
 	auto session = ConnectionHelper::Instance()->LeaseOrCreate();
@@ -92,12 +93,12 @@ VectorDO_Ptr<ContractParam> StrategyContractDAO::FindContractParam(const std::st
 	return ret;
 }
 
-static const std::string sql_findstrategyparam(
-	"SELECT param_name, param_value FROM strategy_pricing_param "
-	"WHERE strategy_symbol = ?");
-
 std::shared_ptr<std::map<std::string, double>> StrategyContractDAO::FindStrategyParam(const std::string& strategy)
 {
+	static const std::string sql_findstrategyparam(
+		"SELECT param_name, param_value FROM strategy_pricing_param "
+		"WHERE strategy_symbol = ?");
+
 	auto ret = std::make_shared<std::map<std::string, double>>();
 
 	auto session = ConnectionHelper::Instance()->LeaseOrCreate();

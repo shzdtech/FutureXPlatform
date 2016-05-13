@@ -19,7 +19,6 @@
 
 dataobj_ptr CTPOTCQueryTradingDesks::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
-
 	auto userDOVec = UserInfoDAO::FindAllUserByRole(ROLE_TRADINGDESK);
 
 	return userDOVec;

@@ -6,17 +6,20 @@
  ***********************************************************************/
 
 #include "CTPOTCQueryStrategy.h"
-#include "../CTPServer/CTPUtility.h"
-#include "../CTPServer/CTPAppContext.h"
-#include "../CTPServer/Attribute_Key.h"
-#include "../pricingengine/PricingContext.h"
+
+
 #include "CTPWorkerProcessorID.h"
 #include "CTPOTCWorkerProcessor.h"
-#include "../CTPServer/CTPRawAPI.h"
 
 #include <glog/logging.h>
 
+#include "../message/GlobalProcessorRegistry.h"
+#include "../common/Attribute_Key.h"
+
+#include "../CTPServer/CTPUtility.h"
+#include "../common/Attribute_Key.h"
 #include "../message/BizError.h"
+#include "../message/message_macro.h"
 #include "../message/IMessageServiceLocator.h"
 
 #include "../dataobject/TemplateDO.h"
@@ -37,7 +40,7 @@
 
 dataobj_ptr CTPOTCQueryStrategy::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
-	CTPUtility::CheckLogin(session);
+	CheckLogin(session);
 
 	auto strategyVec_Ptr = std::static_pointer_cast<std::vector<ContractKey>>(
 		session->getContext()->getAttribute(STR_KEY_USER_STRATEGY));
@@ -45,9 +48,12 @@ dataobj_ptr CTPOTCQueryStrategy::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 	auto sDOVec_Ptr = std::make_shared<VectorDO<StrategyContractDO>>();
 
 	auto wkProcPtr = std::static_pointer_cast<CTPOTCWorkerProcessor>
-		(CTPAppContext::FindServerProcessor(CTPWorkProcessorID::WORKPROCESSOR_OTC));
+		(GlobalProcessorRegistry::FindProcessor(CTPWorkProcessorID::WORKPROCESSOR_OTC));
 
-	auto pStrategyMap = PricingContext::Instance()->GetStrategyMap();
+	auto pricingCtx = AttribPointerCast(session->getProcessor(),
+		STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext);
+
+	auto pStrategyMap = pricingCtx->GetStrategyMap();
 
 	for (auto& strategyKey : *strategyVec_Ptr)
 	{
@@ -77,7 +83,7 @@ dataobj_ptr CTPOTCQueryStrategy::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCQueryStrategy::HandleResponse(ParamVector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOTCQueryStrategy::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	return nullptr;
 }

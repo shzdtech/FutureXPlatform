@@ -8,9 +8,9 @@
 #include "TestingServerMessageProcessor.h"
 
 #include "../message/DefMessageID.h"
-#include "../message/message_marco.h"
+#include "../message/message_macro.h"
 
-#include "../CTPServer/Attribute_Key.h"
+#include "../common/Attribute_Key.h"
 #include "../dataobject/MarketDataDO.h"
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/MarketDataDO.h"
@@ -73,7 +73,7 @@ void TestingServerMessageProcessor::_mdGenerator()
 					marketDataDO.UpperLimitPrice = marketDataDO.AskPrice * 1.1;
 					marketDataDO.LowerLimitPrice = marketDataDO.BidVolume * 0.9;
 
-					OnResponseMarco(MSG_ID_RET_MARKETDATA, &marketDataDO);
+					OnResponseMacro(MSG_ID_RET_MARKETDATA, &marketDataDO);
 				}
 			}
 		}

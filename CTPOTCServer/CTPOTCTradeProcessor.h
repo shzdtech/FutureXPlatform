@@ -20,7 +20,7 @@ class CTPOTCTradeProcessor : public CTPProcessor, public CThostFtdcTraderSpi,
 	public IOrderAPI
 {
 public:
-	CTPOTCTradeProcessor(const std::map<std::string, std::string>& configMap);
+	CTPOTCTradeProcessor(const std::map<std::string, std::string>& configMap, IPricingDataContext* pricingCtx);
 	~CTPOTCTradeProcessor();
 	bool OnSessionClosing(void);
 	int LoginIfNeed(void);
@@ -30,7 +30,6 @@ public:
 
 	AutoOrderManager& GetAutoOrderManager(void);
 	OTCOrderManager& GetOTCOrderManager(void);
-	HedgeOrderManager& GetHedgeOrderManager(void);
 
 	int CreateOrder(const OrderDO& orderInfo, OrderStatus& currStatus);
 	int CancelOrder(const OrderDO& orderInfo, OrderStatus& currStatus);
@@ -45,6 +44,8 @@ protected:
 	OTCOrderManager _otcOrderMgr;
 
 	AutoOrderManager _autoOrderMgr;
+
+	IPricingDataContext* _pricingCtx;
 private:
 
 

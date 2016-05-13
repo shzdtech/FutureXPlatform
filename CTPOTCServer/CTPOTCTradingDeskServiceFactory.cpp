@@ -12,13 +12,15 @@
 #include "CTPWorkerProcessorID.h"
 #include "ctpotc_bizhandlers.h"
 #include "../CTPServer/ctp_bizhandlers.h"
-#include "../CTPServer/CTPAppContext.h"
-#include "../pricingengine/PricingContext.h"
+#include "../message/GlobalProcessorRegistry.h"
+#include "../common/Attribute_Key.h"
 
 #include "../message/EchoMsgHandler.h"
 #include "../message/EchoMsgSerializer.h"
 #include "../message/DefMessageID.h"
-#include "../dataobject/AbstractMessageSerializerFactory.h"
+#include "../dataobject/AbstractDataSerializerFactory.h"
+
+#include "../pricingengine/PricingDataContext.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPOTCTradingDeskServiceFactory::CreateMessageHandlers()
@@ -56,7 +58,7 @@ std::map<uint, IMessageHandler_Ptr> CTPOTCTradingDeskServiceFactory::CreateMessa
 
 	msg_hdl_map[MSG_ID_QUERY_ORDER] = std::make_shared<CTPOTCQueryOrder>();
 
-	msg_hdl_map[MSG_ID_ORDER_UPDATE] = std::make_shared<CTPOTCQueryOrder>();
+	msg_hdl_map[MSG_ID_ORDER_UPDATE] = msg_hdl_map[MSG_ID_QUERY_ORDER];
 
 	return msg_hdl_map;
 }
@@ -69,7 +71,7 @@ std::map<uint, IMessageHandler_Ptr> CTPOTCTradingDeskServiceFactory::CreateMessa
 
 std::map<uint, IDataSerializer_Ptr> CTPOTCTradingDeskServiceFactory::CreateDataSerializers(void)
 {
-	return AbstractMessageSerializerFactory::Instance()->CreateDataSerializers();
+	return AbstractDataSerializerFactory::Instance()->CreateDataSerializers();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -94,12 +96,15 @@ std::map<uint, IProcessorBase_Ptr> CTPOTCTradingDeskServiceFactory::CreateWorkPr
 	std::map<uint, IProcessorBase_Ptr> workerProcMap;
 	IProcessorBase_Ptr prcPtr;
 
-	if (!(prcPtr = CTPAppContext::FindServerProcessor(WORKPROCESSOR_OTC)))
+	if (!(prcPtr = GlobalProcessorRegistry::FindProcessor(CTPWorkProcessorID::WORKPROCESSOR_OTC)))
 	{
-		prcPtr = std::make_shared<CTPOTCWorkerProcessor>(_configMap);
-		CTPAppContext::RegisterServerProcessor(WORKPROCESSOR_OTC, prcPtr);
+		prcPtr = std::make_shared<CTPOTCWorkerProcessor>(_configMap, 
+			std::static_pointer_cast<IPricingDataContext>
+			(_serverCtx->getAttribute(STR_KEY_SERVER_PRICING_DATACONTEXT)).get());
+		CTPWorkProcessorID::WORKPROCESSOR_OTC = 
+			GlobalProcessorRegistry::RegisterProcessor(prcPtr);
 	}
-	workerProcMap[WORKPROCESSOR_OTC] = prcPtr;
+	workerProcMap[CTPWorkProcessorID::WORKPROCESSOR_OTC] = prcPtr;
 
 	return workerProcMap;
 }
@@ -107,4 +112,11 @@ std::map<uint, IProcessorBase_Ptr> CTPOTCTradingDeskServiceFactory::CreateWorkPr
 bool CTPOTCTradingDeskServiceFactory::Load(const std::string& configFile, const std::string& param)
 {
 	return CTPMDServiceFactory::Load(configFile, param);
+}
+
+
+void CTPOTCTradingDeskServiceFactory::SetServerContext(IContextAttribute * serverCtx)
+{
+	CTPMDServiceFactory::SetServerContext(serverCtx);
+	serverCtx->setAttribute(STR_KEY_SERVER_PRICING_DATACONTEXT, std::make_shared<PricingDataContext>());
 }

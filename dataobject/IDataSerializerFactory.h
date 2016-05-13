@@ -10,8 +10,9 @@
 #include <map>
 #include <memory>
 #include "IDataSerializer.h"
+#include "../message/IContextAttribute.h"
 
-class IMessageSerializerFactory
+class IDataSerializerFactory
 {
 public:
 	virtual std::map<unsigned int, IDataSerializer_Ptr> CreateDataSerializers(void) = 0;
@@ -21,6 +22,6 @@ private:
 
 };
 
-typedef std::shared_ptr<IMessageSerializerFactory> IMessageSerializerFactory_Ptr;
+typedef std::shared_ptr<IDataSerializerFactory> IDataSerializerFactory_Ptr;
 
 #endif

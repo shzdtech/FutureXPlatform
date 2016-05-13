@@ -30,7 +30,7 @@ const std::string& BlackScholesPricing::Name(void) const
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       BlackScholesPricing::Compute(ParamVector params)
+// Name:       BlackScholesPricing::Compute(param_vector params)
 // Purpose:    Implementation of BlackScholesPricing::Compute()
 // Parameters:
 // - params
@@ -40,8 +40,8 @@ const std::string& BlackScholesPricing::Name(void) const
 dataobj_ptr BlackScholesPricing::Compute(
 	const StrategyContractDO& sdo,
 	double inputVal,
-	PricingContext& priceCtx,
-	const ParamVector* params) const
+	IPricingDataContext& priceCtx,
+	const param_vector* params) const
 {
 	dataobj_ptr ret;
 

@@ -17,6 +17,13 @@ enum SystemMessageID
     MSG_ID_LOGOUT = 1003    
 };
 
+enum AccountManageMessageID
+{
+	MSG_ID_USER_NEW = 5000,
+	MSG_ID_USER_INFO = 5001,
+	MSG_ID_USER_INFO_UPDATE = 5002,
+};
+
 enum BussinessMessageID
 {
 	MSG_ID_SUB_MARKETDATA = 10001,

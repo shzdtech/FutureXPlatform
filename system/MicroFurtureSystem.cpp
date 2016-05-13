@@ -13,7 +13,7 @@
 #include "../message/SysParam.h"
 
 #include "../databaseop/SysParamsDAO.h"
-#include "../dataobject/AbstractMessageSerializerFactory.h"
+#include "../dataobject/AbstractDataSerializerFactory.h"
 
  ////////////////////////////////////////////////////////////////////////
  // Name:       MicroFurtureSystem::Load(const std::string& config)
@@ -45,11 +45,11 @@ bool MicroFurtureSystem::Load(const std::string& config)
 		cfgReader->getMap("system.serializer", cfgMap);
 		auto it = cfgMap.find("module.uuid");
 		if (it != cfgMap.end())
-			AbstractMessageSerializerFactory::DefaultMessageSerializerConfig.MODULE_UUID =
+			AbstractDataSerializerFactory::DefaultMessageSerializerConfig.MODULE_UUID =
 			it->second;
 		it = cfgMap.find("module.path");
 		if (it != cfgMap.end())
-			AbstractMessageSerializerFactory::DefaultMessageSerializerConfig.MODULE_PATH =
+			AbstractDataSerializerFactory::DefaultMessageSerializerConfig.MODULE_PATH =
 			it->second;
 
 		// Initialize Services

@@ -5,40 +5,34 @@
  * Purpose: Implementation of the class PricingContext
  ***********************************************************************/
 
-#include "PricingContext.h"
+#include "PricingDataContext.h"
 
 #include <set>
 #include "../databaseop/ContractDAO.h"
 #include "../databaseop/StrategyContractDAO.h"
 
 
-StrategyContractDOMap* PricingContext::GetStrategyMap() 
+StrategyContractDOMap* PricingDataContext::GetStrategyMap()
 {
 	return &_strategyContractDOMap;
 }
 
-ContractDOMap* PricingContext::GetContractMap()
+ContractDOMap* PricingDataContext::GetContractMap()
 {
 	return &_contractDOMap;
 }
 
-MarketDataDOMap* PricingContext::GetMarketDataDOMap()
+MarketDataDOMap* PricingDataContext::GetMarketDataDOMap()
 {
 	return &_marketDataDOMap;
 }
 
-PortfolioDOMap* PricingContext::GetPortfolioDOMap()
+PortfolioDOMap* PricingDataContext::GetPortfolioDOMap()
 {
 	return &_portfolioDOMap;
 }
 
-InstrumentDOMap * PricingContext::GetInstrumentDOMap()
+InstrumentDOMap * PricingDataContext::GetInstrumentDOMap()
 {
 	return &_instrumentDOMap;
-}
-
-PricingContext * PricingContext::Instance()
-{
-	static PricingContext* instance = new PricingContext();
-	return instance;
 }

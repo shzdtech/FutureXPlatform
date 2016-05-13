@@ -69,10 +69,11 @@ IProcessorBase_Ptr MessageServiceLocator::FindWorkProccessor(uint processorID)
 // Return:     
 ////////////////////////////////////////////////////////////////////////
 
-MessageServiceLocator::MessageServiceLocator(IMessageServiceFactory_Ptr msgsvc_fac) {
+MessageServiceLocator::MessageServiceLocator(IMessageServiceFactory_Ptr msgsvc_fac)
+{
     _msghdlMap = msgsvc_fac->CreateMessageHandlers();
-    _dataSerialMap = msgsvc_fac->CreateDataSerializers();
 	_prcMap = msgsvc_fac->CreateWorkProcessor();
+	_dataSerialMap = msgsvc_fac->CreateDataSerializers();
 }
 
 

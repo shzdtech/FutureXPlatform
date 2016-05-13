@@ -15,6 +15,7 @@
 class MESSAGE_CLASS_EXPORT MessageServiceFactory : public IMessageServiceFactory
 {
 public:
+	virtual void SetServerContext(IContextAttribute* serverCtx);
 	virtual std::map<uint, IMessageHandler_Ptr> CreateMessageHandlers(void);
 	virtual std::map<uint, IDataSerializer_Ptr> CreateDataSerializers(void);
 	virtual std::map<uint, IProcessorBase_Ptr> CreateWorkProcessor(void);
@@ -23,6 +24,7 @@ public:
 
 protected:
 	std::map<std::string, std::string> _configMap;
+	IContextAttribute* _serverCtx;
 
 private:
 

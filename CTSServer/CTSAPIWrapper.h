@@ -2,7 +2,7 @@
 
 #include "../message/IMessageProcessor.h"
 #include "../dataobject/OrderDO.h"
-#include "../message/message_marco.h"
+#include "../message/message_macro.h"
 #include "../message/DefMessageID.h"
 #include "../message/IRawAPI.h"
 #include "CTSConvertor.h"

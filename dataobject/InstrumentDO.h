@@ -15,6 +15,8 @@
 class InstrumentDO : public ContractKey, public AbstractDataObj
 {
 public:
+	InstrumentDO() {}
+
 	InstrumentDO(const std::string& exchangeID, const std::string& instrumentID)
 		: ContractKey(exchangeID, instrumentID)	{}
 

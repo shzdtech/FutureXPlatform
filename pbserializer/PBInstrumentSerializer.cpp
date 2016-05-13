@@ -9,6 +9,7 @@
 #include "PBStringTableSerializer.h"
 #include "proto/businessobj.pb.h"
 #include "../dataobject/InstrumentDO.h"
+#include "../dataobject/TemplateDO.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       PBInstrumentSerializer::Serialize(const dataobj_ptr abstractDO)
@@ -20,38 +21,42 @@
 
 data_buffer PBInstrumentSerializer::Serialize(const dataobj_ptr abstractDO)
 {
-	Micro::Future::Message::Business::PBContractInfo PB;
-	auto pDO = (InstrumentDO*)abstractDO.get();
+	Micro::Future::Message::Business::PBContractInfoList PBList;
+	auto vectDO = *(VectorDO<InstrumentDO>*)abstractDO.get();
 
-	PB.set_exchange(pDO->ExchangeID().data());
-	PB.set_contract(pDO->InstrumentID().data());
-	PB.set_name(pDO->Name);
-	PB.set_productid(pDO->ProductID);
-	PB.set_producttype(pDO->ProductType);
-	PB.set_deliveryyear(pDO->DeliveryYear);
-	PB.set_deliverymonth(pDO->DeliveryMonth);
-	PB.set_maxmarketordervolume(pDO->MaxMarketOrderVolume);
-	PB.set_minmarketordervolume(pDO->MinMarketOrderVolume);
-	PB.set_maxlimitordervolume(pDO->MaxLimitOrderVolume);
-	PB.set_minlimitordervolume(pDO->MinLimitOrderVolume);
-	PB.set_volumemultiple(pDO->VolumeMultiple);
-	PB.set_pricetick(pDO->PriceTick);
-	PB.set_createdate(pDO->CreateDate);
-	PB.set_opendate(pDO->OpenDate);
-	PB.set_expiredate(pDO->ExpireDate);
-	PB.set_startdelivdate(pDO->StartDelivDate);
-	PB.set_enddelivdate(pDO->EndDelivDate);
-	PB.set_lifephase(pDO->LifePhase);
-	PB.set_istrading(pDO->IsTrading);
-	PB.set_positiontype(pDO->PositionType);
-	PB.set_positiondatetype(pDO->PositionDateType);
-	PB.set_longmarginratio(pDO->LongMarginRatio);
-	PB.set_shortmarginratio(pDO->ShortMarginRatio);
-	PB.set_maxmarginsidealgorithm(pDO->MaxMarginSideAlgorithm);
+	for (auto& insDO : vectDO)
+	{
+		auto PB = PBList.add_contractinfo();
+		PB->set_exchange(insDO.ExchangeID().data());
+		PB->set_contract(insDO.InstrumentID().data());
+		PB->set_name(insDO.Name);
+		PB->set_productid(insDO.ProductID);
+		PB->set_producttype(insDO.ProductType);
+		PB->set_deliveryyear(insDO.DeliveryYear);
+		PB->set_deliverymonth(insDO.DeliveryMonth);
+		PB->set_maxmarketordervolume(insDO.MaxMarketOrderVolume);
+		PB->set_minmarketordervolume(insDO.MinMarketOrderVolume);
+		PB->set_maxlimitordervolume(insDO.MaxLimitOrderVolume);
+		PB->set_minlimitordervolume(insDO.MinLimitOrderVolume);
+		PB->set_volumemultiple(insDO.VolumeMultiple);
+		PB->set_pricetick(insDO.PriceTick);
+		PB->set_createdate(insDO.CreateDate);
+		PB->set_opendate(insDO.OpenDate);
+		PB->set_expiredate(insDO.ExpireDate);
+		PB->set_startdelivdate(insDO.StartDelivDate);
+		PB->set_enddelivdate(insDO.EndDelivDate);
+		PB->set_lifephase(insDO.LifePhase);
+		PB->set_istrading(insDO.IsTrading);
+		PB->set_positiontype(insDO.PositionType);
+		PB->set_positiondatetype(insDO.PositionDateType);
+		PB->set_longmarginratio(insDO.LongMarginRatio);
+		PB->set_shortmarginratio(insDO.ShortMarginRatio);
+		PB->set_maxmarginsidealgorithm(insDO.MaxMarginSideAlgorithm);
+	}
 
-	int bufSz = PB.ByteSize();
+	int bufSz = PBList.ByteSize();
 	uint8_t* buff = new uint8_t[bufSz];
-	PB.SerializePartialToArray(buff, bufSz);
+	PBList.SerializePartialToArray(buff, bufSz);
 	return data_buffer(buff, bufSz);
 }
 

@@ -15,7 +15,7 @@
 #include "../message/DefMessageID.h"
 #include "../message/SysParam.h"
 
-#include "../dataobject/AbstractMessageSerializerFactory.h"
+#include "../dataobject/AbstractDataSerializerFactory.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPMDServiceFactory::CreateMessageHandlers()
@@ -48,7 +48,7 @@ std::map<uint, IMessageHandler_Ptr> CTPMDServiceFactory::CreateMessageHandlers(v
 
 std::map<uint, IDataSerializer_Ptr> CTPMDServiceFactory::CreateDataSerializers(void)
 {
-	return AbstractMessageSerializerFactory::Instance()->CreateDataSerializers();
+	return AbstractDataSerializerFactory::Instance()->CreateDataSerializers();
 }
 
 ////////////////////////////////////////////////////////////////////////
