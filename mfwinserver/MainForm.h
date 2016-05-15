@@ -5,7 +5,7 @@
 
 namespace Micro
 {
-	namespace Future{
+	namespace Future {
 
 		using namespace System;
 		using namespace System::ComponentModel;
@@ -20,12 +20,34 @@ namespace Micro
 		/// </summary>
 		public ref class MainForm : public System::Windows::Forms::Form
 		{
+		private: System::Windows::Forms::NotifyIcon^  notifyIconStatus;
+		private: System::Windows::Forms::RichTextBox^  richTextBoxLog;
+		private: System::Windows::Forms::ContextMenuStrip^  contextMenuStrip;
+		private: System::Windows::Forms::ToolStripMenuItem^  toolStripMenuItemStart;
+		private: System::Windows::Forms::ToolStripMenuItem^  toolStripMenuItemStop;
+		private: System::Windows::Forms::ToolStripMenuItem^  toolStripMenuItemExit;
+
+		private: System::ComponentModel::IContainer^  components;
+
+		public: static const char* CONFIG_FILE = "system";
+
+		private: ResourceManager^ _resouceMgr;
+		private: System::Drawing::Icon^ _RLightIcon;
+		private: System::Drawing::Icon^ _GLightIcon;;
+		private: bool _exiting;
+		private: System::Windows::Forms::Timer^  timer;
+
+		private: InteroLogSink* _logSink;
+
+		private: DelegateMessageRecv^ _appendTxt;
+
 		public:
+
 			MainForm(void)
 			{
 				InitializeComponent();
 
-				_msgrcv = gcnew DelegateMessageRecv(this, &MainForm::AppendText);
+				_appendTxt = gcnew DelegateMessageRecv(this, &MainForm::AppendText);
 
 				_logSink = new InteroLogSink();
 
@@ -61,29 +83,10 @@ namespace Micro
 				}
 
 				if (_logSink)
+				{
 					delete _logSink;
+				}
 			}
-		private: System::Windows::Forms::NotifyIcon^  notifyIconStatus;
-		private: System::Windows::Forms::RichTextBox^  richTextBoxLog;
-		private: System::Windows::Forms::ContextMenuStrip^  contextMenuStrip;
-		private: System::Windows::Forms::ToolStripMenuItem^  toolStripMenuItemStart;
-		private: System::Windows::Forms::ToolStripMenuItem^  toolStripMenuItemStop;
-		private: System::Windows::Forms::ToolStripMenuItem^  toolStripMenuItemExit;
-		protected:
-		private: System::ComponentModel::IContainer^  components;
-
-		public: static const char* CONFIG_FILE = "system";
-				/// <summary>
-				/// 必需的设计器变量。
-				/// </summary>
-		private: ResourceManager^ _resouceMgr;
-		private: System::Drawing::Icon^ _RLightIcon;
-		private: System::Drawing::Icon^ _GLightIcon;;
-		private: bool _exiting;
-		private: System::Windows::Forms::Timer^  timer;
-
-		private: InteroLogSink* _logSink;
-		private: DelegateMessageRecv^ _msgrcv;
 
 #pragma region Windows Form Designer generated code
 				 /// <summary>
@@ -179,7 +182,7 @@ namespace Micro
 #pragma endregion
 		private: System::Void OnMessageRecv(String^ message)
 		{
-			richTextBoxLog->BeginInvoke(_msgrcv, message);
+			richTextBoxLog->BeginInvoke(_appendTxt, message);
 		}
 
 		private: void AppendText(String^ message)
@@ -189,11 +192,13 @@ namespace Micro
 		}
 
 		private: System::Void MainForm_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
-			e->Cancel = !_exiting;
-
-			this->Visible = false;
-			notifyIconStatus->BalloonTipText = L"Log window is hidden.\nDouble click to show it.";
-			notifyIconStatus->ShowBalloonTip(10000);
+			if (!_exiting)
+			{
+				e->Cancel = true;
+				this->Visible = false;
+				notifyIconStatus->BalloonTipText = L"Log window is hidden.\nDouble click to show it.";
+				notifyIconStatus->ShowBalloonTip(10000);
+			}
 		}
 
 		private: System::Void MainForm_Load(System::Object^  sender, System::EventArgs^  e) {

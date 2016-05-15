@@ -24,5 +24,7 @@ int CALLBACK WinMain(
 
 	Application::Run(gcnew Micro::Future::MainForm());
 
+	System::Diagnostics::Process::GetCurrentProcess()->Kill();
+
 	return 0;
 }

@@ -44,7 +44,6 @@ public:
 public:
 
 private:
-	void AppendText(System::String^ msg);
 	gcroot<InteroLogCallBack^> _interoLogCallBack = gcnew InteroLogCallBack;
 	gcroot<TextBoxBase^> _textBox;
 	gcroot<Encoding^> _encoding;
