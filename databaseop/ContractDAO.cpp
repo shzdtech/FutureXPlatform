@@ -41,9 +41,10 @@ VectorDO_Ptr<ContractKey> ContractDAO::FindContractByCompany(const std::string& 
 			ret->push_back(std::move(ck));
 		}
 	}
-	catch (std::exception& ex)
+	catch (sql::SQLException& sqlEx)
 	{
-		LOG(ERROR) << __FUNCTION__ << ": " << ex.what();
+		LOG(ERROR) << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
 	}
 
 	return ret;
@@ -82,9 +83,10 @@ std::shared_ptr<ContractDOMap> ContractDAO::FindAllContract(void)
 			ret->emplace(cdo, std::move(cdo));
 		}
 	}
-	catch (std::exception& ex)
+	catch (sql::SQLException& sqlEx)
 	{
-		LOG(ERROR) << __FUNCTION__ << ": " << ex.what();
+		LOG(ERROR) << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
 	}
 
 	return ret;
@@ -118,9 +120,10 @@ VectorDO_Ptr<ContractDO> ContractDAO::FindContractParamByUser(const std::string&
 			ret->push_back(std::move(cdo));
 		}
 	}
-	catch (std::exception& ex)
+	catch (sql::SQLException& sqlEx)
 	{
-		LOG(ERROR) << __FUNCTION__ << ": " << ex.what();
+		LOG(ERROR) << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
 	}
 
 	return ret;

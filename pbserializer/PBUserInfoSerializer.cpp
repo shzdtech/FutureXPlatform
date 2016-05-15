@@ -34,6 +34,7 @@ data_buffer PBUserInfoSerializer::Serialize(const dataobj_ptr abstractDO)
 	PB.set_identitynum(pDO->IdentityNum);
 	PB.set_zipcode(pDO->ZipCode);
 	PB.set_userid(pDO->UserId);
+	PB.set_password(pDO->Password);
 
 	PB.set_permission(pDO->Permission);
 	PB.set_role(pDO->Role);

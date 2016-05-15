@@ -1,16 +1,17 @@
 /***********************************************************************
- * Module:  CTPOTCNewUser.h
+ * Module:  AdminLoginHandler.h
  * Author:  milk
- * Modified: 2016年5月12日 17:33:04
- * Purpose: Declaration of the class CTPOTCNewUser
+ * Modified: 2016年5月14日 22:10:51
+ * Purpose: Declaration of the class AdminLoginHandler
  ***********************************************************************/
 
-#if !defined(__CTPOTCServer_CTPOTCNewUser_h)
-#define __CTPOTCServer_CTPOTCNewUser_h
+#if !defined(__AdminServer_AdminLoginHandler_h)
+#define __AdminServer_AdminLoginHandler_h
 
 #include "../message/NopHandler.h"
+#include "AdminServerExport.h"
 
-class CTPOTCNewUser : public NopHandler
+class ADMINSERVER_CLASS_EXPORT AdminLoginHandler : public NopHandler
 {
 public:
    dataobj_ptr HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session);

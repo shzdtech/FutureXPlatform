@@ -50,10 +50,6 @@ std::map<uint, IMessageHandler_Ptr> CTPOTCClientServiceFactory::CreateMessageHan
 
 	msg_hdl_map[MSG_ID_ORDER_UPDATE] = msg_hdl_map[MSG_ID_QUERY_ORDER];
 
-	msg_hdl_map[MSG_ID_USER_NEW] = std::make_shared<CTPOTCNewUser>();
-
-	msg_hdl_map[MSG_ID_USER_INFO] = msg_hdl_map[MSG_ID_LOGIN];
-
 	return msg_hdl_map;
 }
 

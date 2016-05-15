@@ -46,9 +46,10 @@ OrderDO_Ptr OrderDAO::CreateOrder(const OrderDO& orderDO)
 			ret->OrderID = rsout->getUInt64(1);
 		}
 	}
-	catch (std::exception& ex)
+	catch (sql::SQLException& sqlEx)
 	{
-		LOG(ERROR) << __FUNCTION__ << ": " << ex.what();
+		LOG(ERROR) << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
 	}
 
 	return ret;

@@ -1,5 +1,12 @@
 {
   "factory": {
+    "admin": {
+      "manage": {
+        "module.uuid": "com.micro.future.admin.dll",
+        "module.path": "AdminServer.dll",
+        "class.uuid": "factory.admin.service"
+      }
+    },
     "ctp": {
       "marketdata": {
         "module.uuid": "com.micro.future.ctp.dll",

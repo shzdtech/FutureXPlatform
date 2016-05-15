@@ -46,9 +46,10 @@ int UserInfoDAO::InsertUser(const UserInfoDO & userDO)
 
 		ret = 0;
 	}
-	catch (std::exception& ex)
+	catch (sql::SQLException& sqlEx)
 	{
-		LOG(ERROR) << __FUNCTION__ << ": " << ex.what();
+		LOG(ERROR) << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
 	}
 
 	return ret;
@@ -91,9 +92,10 @@ std::shared_ptr<UserInfoDO> UserInfoDAO::FindUser(const std::string& userId)
 			userDO->Role = rs->getInt(11);
 		}
 	}
-	catch (std::exception& ex)
+	catch (sql::SQLException& sqlEx)
 	{
-		LOG(ERROR) << __FUNCTION__ << ": " << ex.what();
+		LOG(ERROR) << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
 	}
 
 	return ret;
@@ -135,9 +137,10 @@ VectorDO_Ptr<UserInfoDO> UserInfoDAO::FindAllUserByRole(int role)
 			ret->push_back(std::move(userDO));
 		}
 	}
-	catch (std::exception& ex)
+	catch (sql::SQLException& sqlEx)
 	{
-		LOG(ERROR) << __FUNCTION__ << ": " << ex.what();
+		LOG(ERROR) << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
 	}
 
 	return ret;

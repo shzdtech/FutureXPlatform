@@ -52,6 +52,16 @@ void UserInfo::setName(const std::string& newName)
 	_name = newName;
 }
 
+void UserInfo::setExtInfo(std::shared_ptr<void> extInfo)
+{
+	_extInfo = extInfo;
+}
+
+void * UserInfo::getExtInfo(void) const
+{
+	return _extInfo.get();
+}
+
 ////////////////////////////////////////////////////////////////////////
 // Name:       UserInfo::getName()
 // Purpose:    Implementation of UserInfo::getName()
@@ -287,4 +297,25 @@ void UserInfo::setServer(const std::string& newServer)
 const std::string& UserInfo::getServer(void) const
 {
 	return _server;
+}
+
+
+const std::string & UserInfo::getAuthorizedKey(void) const
+{
+	return _authKey;
+}
+
+void UserInfo::setAuthorizedKey(const std::string & newAuthKey)
+{
+	_authKey = newAuthKey;
+}
+
+std::time_t UserInfo::getLoginTime(void) const
+{
+	return _loginTm;
+}
+
+void UserInfo::setLoginTime(const std::time_t time)
+{
+	_loginTm = time;
 }

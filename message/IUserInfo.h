@@ -9,6 +9,7 @@
 #define __message_IUserInfo_h
 
 #include "../common/typedefs.h"
+#include <ctime>
 
 class IUserInfo
 {
@@ -30,6 +31,15 @@ public:
 
 	virtual void setName(const std::string& newName) = 0;
 	virtual const std::string& getName(void) const = 0;
+
+	virtual void setExtInfo(std::shared_ptr<void> extInfo) = 0;
+	virtual void* getExtInfo(void) const = 0;
+
+	virtual const std::string& getAuthorizedKey(void) const = 0;
+	virtual void setAuthorizedKey(const std::string& newAuthKey) = 0;
+
+	virtual std::time_t getLoginTime(void) const = 0;
+	virtual void setLoginTime(const std::time_t time) = 0;
 
 	virtual int getRole(void) const = 0;
 	virtual void setRole(const int role) = 0;
@@ -68,4 +78,7 @@ enum UserRoleType
 };
 
 typedef std::shared_ptr<IUserInfo> IUserInfo_Ptr;
+typedef std::map<std::string, IUserInfo_Ptr> IUserInfoPtrMap;
+typedef std::shared_ptr<IUserInfoPtrMap> UserInfoCache;
+
 #endif

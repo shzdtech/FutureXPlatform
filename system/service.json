@@ -1,6 +1,7 @@
 {
   "service": {
     "servercfg": [
+      "service.admin",
       "service.ctp_md",
       "service.ctp_trade",
       "service.otc_client",
@@ -8,6 +9,16 @@
       "service.cts",
       "service.testing"
     ],
+    "admin": {
+      "server.uri": "admin.manage",
+      "server.module.uuid": "com.micro.future.asio.dll",
+      "server.module.path": "communication.dll",
+      "server.class.uuid": "server.asiotcp.lite",
+      "server.config": "server.json",
+      "server.config.section": "server.admin.manage",
+      "factory.config": "factory.json",
+      "factory.config.section": "factory.admin.manage"
+    },
     "ctp_md": {
       "server.uri": "ctp.marketdata",
       "server.module.uuid": "com.micro.future.asio.dll",

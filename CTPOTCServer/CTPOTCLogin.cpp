@@ -15,6 +15,7 @@
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/FieldName.h"
 
+#include "../message/AppContext.h"
 #include "../message/BizError.h"
 #include "../message/UserInfo.h"
 #include "../message/SysParam.h"
@@ -28,20 +29,18 @@
 #include <glog/logging.h>
 
 
-////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCLogin::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, IMessageProcessor* session)
-// Purpose:    Implementation of CTPOTCLogin::HandleRequest()
-// Parameters:
-// - reqDO
-// - rawAPI
-// - session
-// Return:     dataobj_ptr
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       CTPOTCLogin::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, IMessageProcessor* session)
+ // Purpose:    Implementation of CTPOTCLogin::HandleRequest()
+ // Parameters:
+ // - reqDO
+ // - rawAPI
+ // - session
+ // Return:     dataobj_ptr
+ ////////////////////////////////////////////////////////////////////////
 
 dataobj_ptr CTPOTCLogin::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
-	dataobj_ptr ret;
-
 	if (!session->IsLogin())
 	{
 		auto stdo = (StringTableDO*)reqDO.get();
@@ -49,13 +48,31 @@ dataobj_ptr CTPOTCLogin::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI,
 
 		auto& userid = TUtil::FirstNamedEntry(STR_USER_ID, data, EMPTY_STRING);
 		auto& password = TUtil::FirstNamedEntry(STR_PASSWORD, data, EMPTY_STRING);
-		auto userInfo_Ptr = UserInfoDAO::FindUser(userid);
+
+		bool userInCache = false;
+		std::shared_ptr<UserInfoDO> userInfo_Ptr;
+
+		if (auto userInfoCache = std::static_pointer_cast<IUserInfoPtrMap>
+			(AppContext::GetData(STR_KEY_DEFAULT_CLIENT_SYMBOL)))
+		{
+			auto it = userInfoCache->find(userid);
+			if (it != userInfoCache->end())
+			{
+				userInfo_Ptr = std::static_pointer_cast<UserInfoDO>
+					(it->second->getAttribute(STR_KEY_USER_INFO_DETAIL));
+				userInCache = true;
+			}
+		}
+		
+		// Try to load from database
+		if(!userInCache) 
+			userInfo_Ptr = UserInfoDAO::FindUser(userid);
 
 		if (!userInfo_Ptr)
 		{
 			throw BizError(INVAID_USERNAME, "Invalid Username.");
 		}
-		else if(userInfo_Ptr->Password != password)
+		else if (userInfo_Ptr->Password != password)
 		{
 			throw BizError(WRONG_PASSWORD, "Wrong Password.");
 		}
@@ -75,10 +92,8 @@ dataobj_ptr CTPOTCLogin::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI,
 		session->setLoginStatus(true);
 	}
 
-	ret = std::static_pointer_cast<UserInfoDO>
+	return std::static_pointer_cast<UserInfoDO>
 		(session->getUserInfo()->getAttribute(STR_KEY_USER_INFO_DETAIL));
-	
-	return ret;
 }
 
 ////////////////////////////////////////////////////////////////////////

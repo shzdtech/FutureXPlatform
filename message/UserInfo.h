@@ -35,6 +35,15 @@ public:
 	virtual const std::string& getName(void) const;
 	virtual void setName(const std::string& newName);
 
+	virtual void setExtInfo(std::shared_ptr<void> extInfo);
+	virtual void* getExtInfo(void) const;
+
+	virtual const std::string& getAuthorizedKey(void) const;
+	virtual void setAuthorizedKey(const std::string& newAuthKey);
+
+	virtual std::time_t getLoginTime(void) const;
+	virtual void setLoginTime(const std::time_t time);
+
 	virtual int getRole(void) const;
 	virtual void setRole(const int role);
 
@@ -62,10 +71,13 @@ private:
 	std::string _password;
 	std::string _name;
 	std::string _server;
+	std::string _authKey;
+	std::time_t _loginTm;
 	int _role;
 	int _permission;
 	int _sessionId;
 	int _frontId;
+	std::shared_ptr<void> _extInfo;
 	std::atomic_ulong _seqGen;
 };
 #endif

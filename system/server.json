@@ -1,5 +1,13 @@
 {
   "server": {
+    "admin": {
+      "manage": {
+        "port": "31234",
+        "workerthread": "2",
+        "timeout": "120",
+        "max_msg_size": "0x10000"
+      }
+    },
     "ctp": {
       "marketdata": {
         "port": "31000",

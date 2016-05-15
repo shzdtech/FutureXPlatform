@@ -3,8 +3,9 @@
 
 enum ResultType
 {
+	DB_ERROR = -2,
 	SYS_ERROR = -1,
-	NO_ERROR = 0
+	NO_ERROR = 0,
 };
 
 enum APIErrorID

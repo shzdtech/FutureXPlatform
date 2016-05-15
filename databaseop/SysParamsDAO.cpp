@@ -34,9 +34,10 @@ std::shared_ptr<std::map<std::string, std::string>> SysParamsDAO::FindSysParams(
 		while (rs->next())
 			sysparams[rs->getString(1)] = rs->getString(2);
 	}
-	catch (std::exception& ex)
+	catch (sql::SQLException& sqlEx)
 	{
-		LOG(ERROR) << __FUNCTION__ << ": " << ex.what();
+		LOG(ERROR) << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
 	}
 
 	auto ret = std::make_shared<std::map<std::string, std::string>>(std::move(sysparams));

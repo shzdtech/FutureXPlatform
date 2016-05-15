@@ -19,6 +19,8 @@
 #include <string>
 #include <memory>
 #include <future>
+#include "../message/BizError.h"
+#include "../common/BizErrorIDs.h"
 
 #include "ConnectionPool.h"
 #include "ConnCfg.h"

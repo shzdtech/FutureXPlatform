@@ -10,30 +10,13 @@
 #include <map>
 #include "../message/SessionContainer.h"
 
-UserOrderContext testInit(int a)
+
+void testCollection()
 {
-	UserOrderContext ret;
-	return ret;
-}
-
-
-
-int _tmain(int argc, _TCHAR* argv[])
-{
-	UserPositionDO up("ab", "cd");
-	std::thread;
-
-	AutoFillMap< int, UserOrderContext > autoMap;
-
 	std::multimap<int, int> mmap;
 	mmap.emplace(1, 1);
 	mmap.emplace(1, 2);
 	mmap.emplace(1, 1);
-
-	auto& vec = autoMap.getorfillfunc(1, testInit, 123);
-	SessionContainer<int> sc;
-	ScopeLockContext ptr;
-	sc.getwithlock(1, ptr);
 
 	std::set<int> testset;
 	testset.insert(1);
@@ -48,22 +31,50 @@ int _tmain(int argc, _TCHAR* argv[])
 	auto it = testMap.find(1);
 	it->second = 2;
 	int a = testMap[1];
+}
+
+void testConnectHelper()
+{
+	ConnectionConfig cfg;
+	cfg.DB_URL = "tcp://116.255.156.152:3306/otc_db";
+	cfg.DB_USER = "zhuyi";
+	cfg.DB_PASSWORD = "zhuyi!168";
+	ConnectionHelper connHelper(cfg);
+	connHelper.Initialize();
+	auto rawconnection = connHelper.CreateConnection();
+	auto session = connHelper.LeaseOrCreate();
+	AutoCloseStatement_Ptr stmt_ptr(session->getConnection()->createStatement());
+	AutoCloseResultSet_Ptr rs(stmt_ptr->executeQuery(cfg.DB_CHECKSQL));
+}
+
+void testAutoFillMap()
+{
+	AutoFillMap< int, UserOrderContext > autoMap;
+	auto& vec = autoMap.getorfillfunc(1, [](int a){ return UserOrderContext(); }, 123);
+}
+
+void testSessionContainer()
+{
+	SessionContainer<int> sc;
+	ScopeLockContext ptr;
+	sc.getwithlock(1, ptr);
+}
 
 
-	const std::string sql_callsp =
-		"CALL TestProc(:output)";
-	
-	int count;
+int _tmain(int argc, _TCHAR* argv[])
+{
 	try
 	{
-		std::string url("tcp://116.255.156.152:3306/otc_db");
-		auto session = get_driver_instance()->connect(url, "zhuyi", "zhuyi!168");
+		testCollection();
+		testAutoFillMap();
+		testSessionContainer();
+		testConnectHelper();
 	}
 	catch (std::exception& err)
 	{
-		std::printf(err.what());
+		std::cout << err.what();
 	}
+
 	std::this_thread::sleep_for(std::chrono::seconds(120));
 	return 0;
 }
-
