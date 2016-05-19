@@ -6,13 +6,14 @@
  ***********************************************************************/
 
 #include "Encoding.h"
+#include "commonconst.h"
 #include <boost\locale\encoding.hpp>
 
 using boost::locale::conv::to_utf;
 using boost::locale::conv::from_utf;
 
 
-const std::string Encoding::CHARSET_GB2312 = "gb2312";
+std::string Encoding::DEFAULT_CHARSET(CHARSET_GB2312);
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       Encoding::ToUTF8(const std::string& srcStr, const std::string& charset)

@@ -10,9 +10,7 @@
 #include <glog/logging.h>
 #include "../message/DefMessageID.h"
 #include "../message/message_macro.h"
-#include "../common/Attribute_Key.h"
-#include "../common/typedefs.h"
-#include "../dataobject/TypedefDO.h"
+#include "../bizutility/InstrumentCache.h"
 
 
 bool CTPTradeProcessor::_requestInsInfo = false;
@@ -98,13 +96,6 @@ void CTPTradeProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogi
 
 		if (!_requestInsInfo)
 		{
-			auto instrumentMap =
-				AttribPointerCast(this, STR_KEY_SERVER_CONTRACT_DETAIL, InstrumentDOMap);
-
-			if (!instrumentMap)
-				getServerContext()->setAttribute(STR_KEY_SERVER_CONTRACT_DETAIL,
-					std::make_shared<InstrumentDOMap>());
-
 			CThostFtdcQryInstrumentField req;
 			std::memset(&req, 0x0, sizeof(CThostFtdcQryInstrumentField));
 

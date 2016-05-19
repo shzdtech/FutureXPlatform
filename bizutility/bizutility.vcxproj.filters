@@ -15,42 +15,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Encoding.h">
+    <ClInclude Include="InstrumentCache.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="utility_exp.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="singleton_templ.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="TUtil.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="singleton_templ_mt.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="AutoFillMap.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ElementMutex.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="semaphore.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="atomicutil.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="stringutility.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="commonconst.h">
+    <ClInclude Include="bizutility_exp.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Encoding.cpp">
+    <ClCompile Include="InstrumentCache.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

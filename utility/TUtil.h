@@ -4,9 +4,7 @@
 #include <string>
 #include <vector>
 #include <map>
-
-static const std::string EMPTY_STRING;
-static const std::string START_STRING("*");
+#include "commonconst.h"
 
 class TUtil
 {
@@ -35,6 +33,18 @@ public:
 	{
 		auto vecItr = mapTVec.find(name);
 		return (vecItr != mapTVec.end()) ? vecItr->second : defaultVal;
+	};
+
+	template<class T>
+	static inline bool IsNullOrEmpty(const T* pContainer)
+	{
+		return !pContainer || pContainer->size() < 1;
+	};
+
+	template<class T>
+	static inline bool IsNullOrEmpty(const std::shared_ptr<T>& containerPtr)
+	{
+		return !containerPtr || containerPtr->size() < 1;
 	};
 };
 

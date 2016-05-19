@@ -67,8 +67,8 @@ dataobj_ptr CTPQueryExchange::HandleResponse(param_vector& rawRespParams, IRawAP
 		ret.reset(pDO);
 
 		pDO->EOFFlag = *((bool*)rawRespParams[3]) ? 1 : 0;
-		pDO->ExchangeID = Encoding::ToUTF8(pData->ExchangeID, Encoding::CHARSET_GB2312);
-		pDO->Name = Encoding::ToUTF8(pData->ExchangeName, Encoding::CHARSET_GB2312);
+		pDO->ExchangeID = Encoding::ToUTF8(pData->ExchangeID, CHARSET_GB2312);
+		pDO->Name = Encoding::ToUTF8(pData->ExchangeName, CHARSET_GB2312);
 		pDO->Property = pData->ExchangeProperty;
 	}
 

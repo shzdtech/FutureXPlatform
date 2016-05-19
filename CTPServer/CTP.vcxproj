@@ -207,6 +207,9 @@
     <ClCompile Include="CTPUtility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\bizutility\bizutility.vcxproj">
+      <Project>{e3f399cf-2d32-49a8-b536-ea7fad14483f}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\configuration\configuration.vcxproj">
       <Project>{6ca92597-54a1-435d-b200-41860f096abc}</Project>
     </ProjectReference>

@@ -9,6 +9,7 @@
 #include "tradeapi/ThostFtdcUserApiStruct.h"
 #include "../message/BizError.h"
 #include "../utility/Encoding.h"
+#include "../utility/commonconst.h"
 #include "../common/BizErrorIDs.h"
 
  ////////////////////////////////////////////////////////////////////////
@@ -23,7 +24,7 @@ void CTPUtility::CheckError(const void* pRspInfo)
 	{
 		auto pRsp = (CThostFtdcRspInfoField*)pRspInfo;
 		throw BizError(API_INNER_ERROR,
-			std::move(Encoding::ToUTF8(pRsp->ErrorMsg, Encoding::CHARSET_GB2312)),
+			std::move(Encoding::ToUTF8(pRsp->ErrorMsg, CHARSET_GB2312)),
 			pRsp->ErrorID);
 	}
 }
@@ -189,7 +190,7 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(CThostFtdcOrderField *pOrder)
 	pDO->UpdateTime = pOrder->UpdateTime;
 	pDO->CancelTime = pOrder->CancelTime;
 	pDO->TradingDay = std::strtoull(pOrder->TradingDay, nullptr, 0);
-	pDO->Message = std::move(Encoding::ToUTF8(pOrder->StatusMsg, Encoding::CHARSET_GB2312));
+	pDO->Message = std::move(Encoding::ToUTF8(pOrder->StatusMsg, CHARSET_GB2312));
 
 	return ret;
 }
@@ -209,7 +210,7 @@ OrderDO_Ptr CTPUtility::ParseRawOrderAction(
 
 	if (pRsp) {
 		pDO->ErrorCode = pRsp->ErrorID;
-		pDO->Message = std::move(Encoding::ToUTF8(pRsp->ErrorMsg, Encoding::CHARSET_GB2312));
+		pDO->Message = std::move(Encoding::ToUTF8(pRsp->ErrorMsg, CHARSET_GB2312));
 	}
 
 	return ret;
@@ -233,7 +234,7 @@ OrderDO_Ptr CTPUtility::ParseRawOrderInput(
 
 	if (pRsp) {
 		pDO->ErrorCode = pRsp->ErrorID;
-		pDO->Message = std::move(Encoding::ToUTF8(pRsp->ErrorMsg, Encoding::CHARSET_GB2312));
+		pDO->Message = std::move(Encoding::ToUTF8(pRsp->ErrorMsg, CHARSET_GB2312));
 	}
 
 	return ret;
