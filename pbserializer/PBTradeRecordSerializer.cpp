@@ -20,8 +20,20 @@
 
 data_buffer PBTradeRecordSerializer::Serialize(const dataobj_ptr abstractDO)
 {
-	Micro::Future::Message::Business::PBTradeInfo PB;
+	using namespace Micro::Future::Message::Business;
+	
+	PBTradeInfo PB;
 	auto pDO = (TradeRecordDO*)abstractDO.get();
+
+	if (pDO->SerialId != 0)
+	{
+		auto pHeader = new DataHeader();
+		pHeader->set_serialid(pDO->SerialId);
+		if (pDO->HasMore)
+			pHeader->set_hasmore(pDO->HasMore);
+
+		PB.set_allocated_header(pHeader);
+	}
 
 	PB.set_exchange(pDO->ExchangeID().data());
 	PB.set_contract(pDO->InstrumentID().data());

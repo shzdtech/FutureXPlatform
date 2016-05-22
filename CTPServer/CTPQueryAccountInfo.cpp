@@ -38,7 +38,7 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 	std::memset(&req, 0, sizeof(req));
 	std::strcpy(req.BrokerID, brokeid.data());
 	std::strcpy(req.InvestorID, userid.data());
-	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryTradingAccount(&req, ++_requestIdGen);
+	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryTradingAccount(&req, stdo->SerialId);
 	CTPUtility::CheckReturnError(iRet);
 
 	return nullptr;
@@ -64,6 +64,8 @@ dataobj_ptr CTPQueryAccountInfo::HandleResponse(param_vector& rawRespParams, IRa
 	{
 		auto pDO = new AccountInfoDO;
 		ret.reset(pDO);
+		pDO->SerialId = *(uint32_t*)rawRespParams[2];
+		pDO->HasMore = *(bool*)rawRespParams[3];
 
 		pDO->BrokerID = pData->BrokerID;
 		pDO->AccountID = pData->AccountID;

@@ -48,7 +48,7 @@ dataobj_ptr CTPLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* raw
 	std::strcpy(req.Password, password.data());
 	std::strcpy(req.UserProductInfo, UUID_MICROFUTURE_CTP);
 
-	int ret = LoginFunction(rawAPI, &req);
+	int ret = LoginFunction(rawAPI, &req, stdo->SerialId);
 	CTPUtility::CheckReturnError(ret);
 	//int ret = ((CThostFtdcMdApi*)rawAPI)->ReqUserLogin(&req, 1);
 

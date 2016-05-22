@@ -50,7 +50,7 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAP
 	std::strcpy(req.OrderSysID, orderid.data());
 	std::strcpy(req.InsertTimeStart, tmstart.data());
 	std::strcpy(req.InsertTimeEnd, tmend.data());
-	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryOrder(&req, ++_requestIdGen);
+	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryOrder(&req, stdo->SerialId);
 	CTPUtility::CheckReturnError(iRet);
 
 	return nullptr;
@@ -72,6 +72,8 @@ dataobj_ptr CTPQueryOrder::HandleResponse(param_vector& rawRespParams, IRawAPI* 
 	if (auto pData = (CThostFtdcOrderField*)rawRespParams[0])
 	{
 		ret = CTPUtility::ParseRawOrder(pData);
+		ret->SerialId = *(uint32_t*)rawRespParams[2];
+		ret->HasMore = *(bool*)rawRespParams[3];
 
 		if (rawRespParams.size() > 1)
 		{

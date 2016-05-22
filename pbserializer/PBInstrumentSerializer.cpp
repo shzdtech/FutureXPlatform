@@ -21,10 +21,22 @@
 
 data_buffer PBInstrumentSerializer::Serialize(const dataobj_ptr abstractDO)
 {
-	Micro::Future::Message::Business::PBContractInfoList PBList;
-	auto vectDO = *(VectorDO<InstrumentDO>*)abstractDO.get();
+	using namespace Micro::Future::Message::Business;
+	
+	PBContractInfoList PBList;
+	auto pVecDO = (VectorDO<InstrumentDO>*)abstractDO.get();
 
-	for (auto& insDO : vectDO)
+	if (pVecDO->SerialId != 0)
+	{
+		auto pHeader = new DataHeader();
+		pHeader->set_serialid(pVecDO->SerialId);
+		if (pVecDO->HasMore)
+			pHeader->set_hasmore(pVecDO->HasMore);
+
+		PBList.set_allocated_header(pHeader);
+	}
+
+	for (auto& insDO : *pVecDO)
 	{
 		auto PB = PBList.add_contractinfo();
 		PB->set_exchange(insDO.ExchangeID().data());

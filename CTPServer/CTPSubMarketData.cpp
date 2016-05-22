@@ -10,6 +10,9 @@
 #include "../dataobject/MarketDataDO.h"
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/FieldName.h"
+#include "../utility/TUtil.h"
+#include "../bizutility/InstrumentCache.h"
+
 #include <glog/logging.h>
 #include <algorithm>
 #include "CTPUtility.h"
@@ -40,7 +43,7 @@ dataobj_ptr CTPSubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 
 			std::transform(inst.begin(), inst.end(), inst.begin(), ::toupper);
 			pContract[0] = const_cast<char*>(inst.data());
-			ret = ((CTPRawAPI*)rawAPI)->MdAPI->SubscribeMarketData(pContract, 1);
+			ret = ((CTPRawAPI*)rawAPI)->MdAPI->SubscribeMarketData(pContract, stdo->SerialId);
 			CTPUtility::CheckReturnError(ret);
 		}
 	}
@@ -64,10 +67,20 @@ dataobj_ptr CTPSubMarketData::HandleResponse(param_vector& rawRespParams, IRawAP
 	CTPUtility::CheckError(rawRespParams[1]);
 
 	VectorDO_Ptr<MarketDataDO> ret = std::make_shared<VectorDO<MarketDataDO>>();
+	ret->SerialId = *(uint32_t*)rawRespParams[2];
+	ret->HasMore = *(bool*)rawRespParams[3];
 
 	auto pRspInstr = (CThostFtdcSpecificInstrumentField*)rawRespParams[0];
 
-	ret->push_back(MarketDataDO("", pRspInstr->InstrumentID));
+	std::string exchange;
+
+	if (auto instruments = InstrumentCache::QueryInstrument(pRspInstr->InstrumentID))
+	{
+		if (instruments->size() > 0)
+			exchange = instruments->at(0).ExchangeID();
+	}
+
+	ret->push_back(MarketDataDO(exchange, pRspInstr->InstrumentID));
 
 	DLOG(INFO) << "Subcrible InstID: " << pRspInstr->InstrumentID << std::endl;
 

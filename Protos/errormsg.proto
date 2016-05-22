@@ -3,15 +3,17 @@ syntax = "proto3";
 package Micro.Future.Message.Business;
 
 message BizErrorMsg {
-	uint32 messageId = 1;
-	int32 errorcode = 2;
-	bytes description = 3;
-	int32 syserrcode = 4;
+	uint32 serialId = 1;
+	uint32 messageId = 2;
+	int32 errorcode = 3;
+	bytes description = 4;
+	int32 syserrcode = 5;
 }
 
 message Result
 {
 	int32 code = 1;
+	uint32 serialId = 2;
 }
 
 message RawData

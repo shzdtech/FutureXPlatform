@@ -121,7 +121,7 @@ void CTPOTCTradeProcessor::DispatchMessage(const int msgId, const OrderDO* pOrde
 	}
 }
 
-void CTPOTCTradeProcessor::RegisterOrderListener(const int orderID,
+void CTPOTCTradeProcessor::RegisterOrderListener(const uint64_t orderID,
 	IMessageSession* pMsgSession)
 {
 	_orderNotifier->add(orderID, pMsgSession);

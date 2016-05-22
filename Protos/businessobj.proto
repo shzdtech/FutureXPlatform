@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "commondefine.proto";
+
 package Micro.Future.Message.Business;
 
 message PBParam
@@ -36,11 +38,14 @@ message PBMarketData {
 	double preOpenInterest = 19;
 	double openInterest = 20;
 	double averagePrice = 21;
+
+	DataHeader header = 22;
 }
 
 message PBMarketDataList
 {
 	repeated PBMarketData mdList = 1;
+	DataHeader header = 2;
 }
 
 message PBPricingData {
@@ -51,11 +56,14 @@ message PBPricingData {
 	//Equity Data
 	double askPrice = 3;
 	double bidPrice = 4;
+
+	DataHeader header = 5;
 }
 
 message PBPricingDataList
 {
 	repeated PBPricingData pricing = 1;
+	DataHeader header = 2;
 }
 
 message PBStrategyWeight
@@ -167,6 +175,8 @@ message PBOrderInfo {
 	int32 openclose = 25;
 	///状态信息
 	bytes message = 26;
+
+	DataHeader header = 27;
 }
 
 ///成交
@@ -205,6 +215,8 @@ message PBTradeInfo {
 	int32 hedgeFlag = 16;
 	///手续费
 	double	commission = 17;
+
+	DataHeader header = 18;
 }
 
 message PBPosition {
@@ -240,6 +252,8 @@ message PBPosition {
 	double	useMargin = 15;
 	///投机套保标志
 	int32 hedgeFlag = 16;
+
+	DataHeader header = 17;
 }
 
 message PBAccountInfo {
@@ -305,6 +319,8 @@ message PBAccountInfo {
 	double	exchangeDeliveryMargin = 31;
 	///保底期货结算准备金
 	double	reserveBalance = 32;
+
+	DataHeader header = 33;
 }
 
 message PBMarketInfo {
@@ -314,6 +330,8 @@ message PBMarketInfo {
 	bytes name = 2;
 	//交易所属性
 	bytes property = 3;
+
+	DataHeader header = 4;
 }
 
 message PBContractInfo {
@@ -367,9 +385,12 @@ message PBContractInfo {
 	double shortMarginRatio = 24;
 	///是否使用大额单边保证金算法
 	string maxMarginSideAlgorithm = 25;
+
+	DataHeader header = 26;
 }
 
 message PBContractInfoList
 {
 	repeated PBContractInfo contractInfo = 1;
+	DataHeader header = 2;
 }

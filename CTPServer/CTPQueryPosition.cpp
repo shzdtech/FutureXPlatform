@@ -41,7 +41,7 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 	std::strcpy(req.BrokerID, brokeid.data());
 	std::strcpy(req.InvestorID, userid.data());
 	std::strcpy(req.InstrumentID, instrumentid.data());
-	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryInvestorPosition(&req, ++_requestIdGen);
+	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryInvestorPosition(&req, stdo->SerialId);
 	CTPUtility::CheckReturnError(iRet);
 
 	return nullptr;
@@ -66,6 +66,8 @@ dataobj_ptr CTPQueryPosition::HandleResponse(param_vector& rawRespParams, IRawAP
 	{
 		auto pDO = new UserPositionExDO(EXCHANGE_CTP, pData->InstrumentID);
 		ret.reset(pDO);
+		pDO->SerialId = *(uint32_t*)rawRespParams[2];
+		pDO->HasMore = *(bool*)rawRespParams[3];
 
 		pDO->Direction = (PositionDirectionType)(pData->PosiDirection - THOST_FTDC_PD_Net);
 		pDO->HedgeFlag = (HedgeType)(pData->HedgeFlag - THOST_FTDC_HF_Speculation);

@@ -37,5 +37,5 @@ dataobj_ptr TestingUnsubMarketDataHandler::HandleRequest(const dataobj_ptr reqDO
 			}
 		}
 	}
-	return nullptr;
+	return reqDO;
 }

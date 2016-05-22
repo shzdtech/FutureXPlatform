@@ -34,7 +34,7 @@ PBMessageSerializerFactory::PBMessageSerializerFactory()
 
 	//Market Data
 	_serializer_map[MSG_ID_SUB_MARKETDATA] = PBSubMarketDataSerializer::Instance();
-	_serializer_map[MSG_ID_UNSUB_MARKETDATA] = PBSubMarketDataSerializer::Instance();
+	_serializer_map[MSG_ID_UNSUB_MARKETDATA] = PBStringTableSerializer::Instance();
 	_serializer_map[MSG_ID_RET_MARKETDATA] = std::make_shared<PBMarketDataSerializer>();
 
 	//Trade

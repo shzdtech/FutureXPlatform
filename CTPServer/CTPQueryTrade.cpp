@@ -50,7 +50,7 @@ dataobj_ptr CTPQueryTrade::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAP
 	std::strcpy(req.TradeID, tradeid.data());
 	std::strcpy(req.TradeTimeStart, tmstart.data());
 	std::strcpy(req.TradeTimeEnd, tmend.data());
-	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryTrade(&req, ++_requestIdGen);
+	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryTrade(&req, stdo->SerialId);
 	CTPUtility::CheckReturnError(iRet);
 
 	return nullptr;
@@ -75,6 +75,8 @@ dataobj_ptr CTPQueryTrade::HandleResponse(param_vector& rawRespParams, IRawAPI* 
 	{
 		auto pDO = new TradeRecordDO(pData->ExchangeID, pData->InstrumentID);
 		ret.reset(pDO);
+		pDO->SerialId = *(uint32_t*)rawRespParams[2];
+		pDO->HasMore = *(bool*)rawRespParams[3];
 
 		pDO->OrderID = std::strtoull(pData->OrderRef, nullptr, 0);
 		pDO->OrderSysID = std::strtoull(pData->OrderSysID, nullptr, 0);

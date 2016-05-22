@@ -51,7 +51,7 @@ dataobj_ptr CTPCancelOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawA
 		std::sprintf(req.OrderRef, FMT_PADDING_ORDERREF, pDO->OrderID);
 	}
 
-	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqOrderAction(&req, ++_requestIdGen);
+	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqOrderAction(&req, pDO->SerialId);
 	CTPUtility::CheckReturnError(iRet);
 
 	return nullptr;

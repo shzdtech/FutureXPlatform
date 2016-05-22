@@ -14,13 +14,16 @@
 class BizErrorDO : public AbstractDataObj
 {
 public:
-	BizErrorDO(){ MessgeId = ErrorCode = SysErrCode = 0; };
-	BizErrorDO(unsigned msgId, int errcode, const std::string& errmsg, int syserrcode) :
-		MessgeId(msgId), ErrorCode(errcode), ErrorMessage(errmsg), SysErrCode(syserrcode) {};
+	BizErrorDO() { };
+	BizErrorDO(unsigned msgId, int errcode, const std::string& errmsg, int syserrcode, uint32_t serialId = 0) :
+		MessgeId(msgId), ErrorCode(errcode), ErrorMessage(errmsg), SysErrCode(syserrcode)
+	{
+		SerialId = serialId;
+	};
 
-	unsigned MessgeId;
-	int ErrorCode;
-	int SysErrCode;
+	unsigned MessgeId = 0;
+	int ErrorCode = 0;
+	int SysErrCode = 0;
 	std::string ErrorMessage;
 
 protected:

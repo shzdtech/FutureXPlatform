@@ -44,9 +44,8 @@ dataobj_ptr CTPOCTUnSubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAP
 	}
 
 	dataobj_ptr ret;
-	auto stDO = new TMultiRecordDO < std::string >;
+	auto stDO = new TDataObject<std::string>;
 	ret.reset(stDO);
-	stDO->EOFFlag = true;
 	DLOG(INFO) << "OTCUnsubMarketData successful." << std::endl;
 
 	return ret;

@@ -16,7 +16,7 @@
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-int CTPMDLoginHandler::LoginFunction(IRawAPI* rawAPI, CThostFtdcReqUserLoginField* loginInfo)
+int CTPMDLoginHandler::LoginFunction(IRawAPI* rawAPI, CThostFtdcReqUserLoginField* loginInfo, uint32_t requestId)
 {
 	std::string value;
 
@@ -36,5 +36,5 @@ int CTPMDLoginHandler::LoginFunction(IRawAPI* rawAPI, CThostFtdcReqUserLoginFiel
 		std::strcpy(loginInfo->Password, value.data());
 	}
 
-	return ((CTPRawAPI*)rawAPI)->MdAPI->ReqUserLogin(loginInfo, ++_requestIdGen);
+	return ((CTPRawAPI*)rawAPI)->MdAPI->ReqUserLogin(loginInfo, requestId);
 }

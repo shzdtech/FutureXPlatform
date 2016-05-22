@@ -101,21 +101,27 @@ class BizErrorMsg : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // optional uint32 messageId = 1;
+  // optional uint32 serialId = 1;
+  void clear_serialid();
+  static const int kSerialIdFieldNumber = 1;
+  ::google::protobuf::uint32 serialid() const;
+  void set_serialid(::google::protobuf::uint32 value);
+
+  // optional uint32 messageId = 2;
   void clear_messageid();
-  static const int kMessageIdFieldNumber = 1;
+  static const int kMessageIdFieldNumber = 2;
   ::google::protobuf::uint32 messageid() const;
   void set_messageid(::google::protobuf::uint32 value);
 
-  // optional int32 errorcode = 2;
+  // optional int32 errorcode = 3;
   void clear_errorcode();
-  static const int kErrorcodeFieldNumber = 2;
+  static const int kErrorcodeFieldNumber = 3;
   ::google::protobuf::int32 errorcode() const;
   void set_errorcode(::google::protobuf::int32 value);
 
-  // optional bytes description = 3;
+  // optional bytes description = 4;
   void clear_description();
-  static const int kDescriptionFieldNumber = 3;
+  static const int kDescriptionFieldNumber = 4;
   const ::std::string& description() const;
   void set_description(const ::std::string& value);
   void set_description(const char* value);
@@ -124,9 +130,9 @@ class BizErrorMsg : public ::google::protobuf::Message {
   ::std::string* release_description();
   void set_allocated_description(::std::string* description);
 
-  // optional int32 syserrcode = 4;
+  // optional int32 syserrcode = 5;
   void clear_syserrcode();
-  static const int kSyserrcodeFieldNumber = 4;
+  static const int kSyserrcodeFieldNumber = 5;
   ::google::protobuf::int32 syserrcode() const;
   void set_syserrcode(::google::protobuf::int32 value);
 
@@ -135,9 +141,10 @@ class BizErrorMsg : public ::google::protobuf::Message {
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   bool _is_default_instance_;
+  ::google::protobuf::uint32 serialid_;
   ::google::protobuf::uint32 messageid_;
-  ::google::protobuf::int32 errorcode_;
   ::google::protobuf::internal::ArenaStringPtr description_;
+  ::google::protobuf::int32 errorcode_;
   ::google::protobuf::int32 syserrcode_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_errormsg_2eproto();
@@ -211,12 +218,19 @@ class Result : public ::google::protobuf::Message {
   ::google::protobuf::int32 code() const;
   void set_code(::google::protobuf::int32 value);
 
+  // optional uint32 serialId = 2;
+  void clear_serialid();
+  static const int kSerialIdFieldNumber = 2;
+  ::google::protobuf::uint32 serialid() const;
+  void set_serialid(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.Result)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   bool _is_default_instance_;
   ::google::protobuf::int32 code_;
+  ::google::protobuf::uint32 serialid_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_errormsg_2eproto();
   friend void protobuf_AssignDesc_errormsg_2eproto();
@@ -316,7 +330,21 @@ class RawData : public ::google::protobuf::Message {
 #if !PROTOBUF_INLINE_NOT_IN_HEADERS
 // BizErrorMsg
 
-// optional uint32 messageId = 1;
+// optional uint32 serialId = 1;
+inline void BizErrorMsg::clear_serialid() {
+  serialid_ = 0u;
+}
+inline ::google::protobuf::uint32 BizErrorMsg::serialid() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.BizErrorMsg.serialId)
+  return serialid_;
+}
+inline void BizErrorMsg::set_serialid(::google::protobuf::uint32 value) {
+  
+  serialid_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.BizErrorMsg.serialId)
+}
+
+// optional uint32 messageId = 2;
 inline void BizErrorMsg::clear_messageid() {
   messageid_ = 0u;
 }
@@ -330,7 +358,7 @@ inline void BizErrorMsg::set_messageid(::google::protobuf::uint32 value) {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.BizErrorMsg.messageId)
 }
 
-// optional int32 errorcode = 2;
+// optional int32 errorcode = 3;
 inline void BizErrorMsg::clear_errorcode() {
   errorcode_ = 0;
 }
@@ -344,7 +372,7 @@ inline void BizErrorMsg::set_errorcode(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.BizErrorMsg.errorcode)
 }
 
-// optional bytes description = 3;
+// optional bytes description = 4;
 inline void BizErrorMsg::clear_description() {
   description_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -374,6 +402,7 @@ inline ::std::string* BizErrorMsg::mutable_description() {
   return description_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* BizErrorMsg::release_description() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.BizErrorMsg.description)
   
   return description_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -387,7 +416,7 @@ inline void BizErrorMsg::set_allocated_description(::std::string* description) {
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.BizErrorMsg.description)
 }
 
-// optional int32 syserrcode = 4;
+// optional int32 syserrcode = 5;
 inline void BizErrorMsg::clear_syserrcode() {
   syserrcode_ = 0;
 }
@@ -417,6 +446,20 @@ inline void Result::set_code(::google::protobuf::int32 value) {
   
   code_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.Result.code)
+}
+
+// optional uint32 serialId = 2;
+inline void Result::clear_serialid() {
+  serialid_ = 0u;
+}
+inline ::google::protobuf::uint32 Result::serialid() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.Result.serialId)
+  return serialid_;
+}
+inline void Result::set_serialid(::google::protobuf::uint32 value) {
+  
+  serialid_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.Result.serialId)
 }
 
 // -------------------------------------------------------------------
@@ -453,6 +496,7 @@ inline ::std::string* RawData::mutable_data() {
   return data_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* RawData::release_data() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.RawData.data)
   
   return data_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }

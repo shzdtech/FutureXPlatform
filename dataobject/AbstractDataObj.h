@@ -16,6 +16,8 @@
 class AbstractDataObj
 {
 public:
+	uint32_t SerialId = 0;
+	bool HasMore = false;
 
 protected:
 

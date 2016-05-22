@@ -20,9 +20,19 @@
 
 data_buffer PBUserPositionSerializer::Serialize(const dataobj_ptr abstractDO)
 {
-	Micro::Future::Message::Business::PBPosition PB;
+	using namespace Micro::Future::Message::Business;
+	PBPosition PB;
 	auto pDO = (UserPositionDO*)abstractDO.get();
 
+	if (pDO->SerialId != 0)
+	{
+		auto pHeader = new DataHeader();
+		pHeader->set_serialid(pDO->SerialId);
+		if (pDO->HasMore)
+			pHeader->set_hasmore(pDO->HasMore);
+
+		PB.set_allocated_header(pHeader);
+	}
 	PB.set_exchange(pDO->ExchangeID().data());
 	PB.set_contract(pDO->InstrumentID().data());
 	PB.set_direction(pDO->Direction);
@@ -39,29 +49,29 @@ data_buffer PBUserPositionSerializer::Serialize(const dataobj_ptr abstractDO)
 	PB.set_closeprofit(pDO->CloseProfit);
 	PB.set_profit(pDO->Profit);
 	PB.set_opencost(pDO->OpenCost);
-	//PB.set_longfrozen(pDO->LongFrozen);
-	//PB.set_shortfrozen(pDO->ShortFrozen);
-	//PB.set_longfrozenamount(pDO->LongFrozenAmount);
-	//PB.set_shortfrozenamount(pDO->ShortFrozenAmount);
-	//PB.set_premargin(pDO->PreMargin);
-	//PB.set_frozenmargin(pDO->FrozenMargin);
-	//PB.set_frozencash(pDO->FrozenCash);
-	//PB.set_frozencommission(pDO->FrozenCommission);
-	//PB.set_cashin(pDO->CashIn);
-	//PB.set_commission(pDO->Commission);
-	//PB.set_presettlementprice(pDO->PreSettlementPrice);
-	//PB.set_settlementprice(pDO->SettlementPrice);
-	//PB.set_tradingday(pDO->TradingDay);
-	//PB.set_settlementid(pDO->SettlementID);
-	//PB.set_exchangemargin(pDO->ExchangeMargin);
-	//PB.set_combposition(pDO->CombPosition);
-	//PB.set_comblongfrozen(pDO->CombLongFrozen);
-	//PB.set_combshortfrozen(pDO->CombShortFrozen);
-	//PB.set_closeprofitbydate(pDO->CloseProfitByDate);
-	//PB.set_closeprofitbytrade(pDO->CloseProfitByTrade);
-	//PB.set_todayposition(pDO->TodayPosition);
-	//PB.set_marginratebymoney(pDO->MarginRateByMoney);
-	//PB.set_marginratebyvolume(pDO->MarginRateByVolume);
+	/*PB.set_longfrozen(pDO->LongFrozen);
+	PB.set_shortfrozen(pDO->ShortFrozen);
+	PB.set_longfrozenamount(pDO->LongFrozenAmount);
+	PB.set_shortfrozenamount(pDO->ShortFrozenAmount);
+	PB.set_premargin(pDO->PreMargin);
+	PB.set_frozenmargin(pDO->FrozenMargin);
+	PB.set_frozencash(pDO->FrozenCash);
+	PB.set_frozencommission(pDO->FrozenCommission);
+	PB.set_cashin(pDO->CashIn);
+	PB.set_commission(pDO->Commission);
+	PB.set_presettlementprice(pDO->PreSettlementPrice);
+	PB.set_settlementprice(pDO->SettlementPrice);
+	PB.set_tradingday(pDO->TradingDay);
+	PB.set_settlementid(pDO->SettlementID);
+	PB.set_exchangemargin(pDO->ExchangeMargin);
+	PB.set_combposition(pDO->CombPosition);
+	PB.set_comblongfrozen(pDO->CombLongFrozen);
+	PB.set_combshortfrozen(pDO->CombShortFrozen);
+	PB.set_closeprofitbydate(pDO->CloseProfitByDate);
+	PB.set_closeprofitbytrade(pDO->CloseProfitByTrade);
+	PB.set_todayposition(pDO->TodayPosition);
+	PB.set_marginratebymoney(pDO->MarginRateByMoney);
+	PB.set_marginratebyvolume(pDO->MarginRateByVolume);*/
 
 	int bufSz = PB.ByteSize();
 	uint8_t* buff = new uint8_t[bufSz];

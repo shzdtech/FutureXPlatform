@@ -42,7 +42,7 @@ dataobj_ptr CTPQuerySettlementInfoCfm::HandleRequest(const dataobj_ptr reqDO, IR
 	std::strcpy(req.ConfirmDate, cfmdate.data());
 	std::strcpy(req.ConfirmTime, cfmtime.data());
 
-	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqSettlementInfoConfirm(&req, ++_requestIdGen);
+	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqSettlementInfoConfirm(&req, stdo->SerialId);
 	CTPUtility::CheckReturnError(iRet);
 
 	return nullptr;
@@ -68,6 +68,8 @@ dataobj_ptr CTPQuerySettlementInfoCfm::HandleResponse(param_vector& rawRespParam
 	{
 		auto pDO = new StringTableDO;
 		ret.reset(pDO);
+		pDO->SerialId = *(uint32_t*)rawRespParams[2];
+		pDO->HasMore = *(bool*)rawRespParams[3];
 
 		pDO->Data[STR_BROKER_ID].push_back(pData->BrokerID);
 		pDO->Data[STR_USER_ID].push_back(pData->InvestorID);

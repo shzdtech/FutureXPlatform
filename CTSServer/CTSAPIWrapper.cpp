@@ -54,7 +54,7 @@ int CTSAPIWrapperImpl::Subscribe(const ContractKey& contractKey)
 
 	if (!IsSubscribed(contractKey))
 	{
-		ret = CONTRACT_NOT_FOUND;
+		ret = OBJECT_NOT_FOUND;
 
 		System::String^ exchange = gcnew System::String(contractKey.ExchangeID().data());
 		System::String^ contract = gcnew System::String(contractKey.InstrumentID().data());
@@ -144,7 +144,7 @@ int CTSAPIWrapperImpl::CreateOrder(OrderDO& orderDO)
 
 int CTSAPIWrapperImpl::CancelOrder(OrderDO& orderDO)
 {
-	int ret = CONTRACT_NOT_FOUND;
+	int ret = OBJECT_NOT_FOUND;
 
 	Order^ order;
 	if (_orderMap->TryGetValue(orderDO.OrderID, order))

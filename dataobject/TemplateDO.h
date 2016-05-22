@@ -14,7 +14,6 @@
 #include <set>
 #include "AbstractDataObj.h"
 #include "data_buffer.h"
-#include "MultiRecordDO.h"
 
 template <typename T>
 class VectorDO : public std::vector<T>, public AbstractDataObj
@@ -42,7 +41,7 @@ typedef TemplateDO<MapDoubleVector> DoubleTableDO;
 typedef TemplateDO<MapStringVector> StringTableDO;
 
 template<class T>
-class TMultiRecordDO : public MultiRecordDO
+class TDataObject : public AbstractDataObj
 {
 public:
 	T Data;

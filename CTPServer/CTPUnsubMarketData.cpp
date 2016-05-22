@@ -37,12 +37,12 @@ dataobj_ptr CTPUnsubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI* 
 		{
 			std::transform(inst.begin(), inst.end(), inst.begin(), ::tolower);
 			pContract[0] = const_cast<char*>(inst.data());
-			ret = ((CTPRawAPI*)rawAPI)->MdAPI->UnSubscribeMarketData(pContract, 1);
+			ret = ((CTPRawAPI*)rawAPI)->MdAPI->UnSubscribeMarketData(pContract, stdo->SerialId);
 			CTPUtility::CheckReturnError(ret);
 
 			std::transform(inst.begin(), inst.end(), inst.begin(), ::toupper);
 			pContract[0] = const_cast<char*>(inst.data());
-			ret = ((CTPRawAPI*)rawAPI)->MdAPI->UnSubscribeMarketData(pContract, 1);
+			ret = ((CTPRawAPI*)rawAPI)->MdAPI->UnSubscribeMarketData(pContract, stdo->SerialId);
 			CTPUtility::CheckReturnError(ret);
 		}
 	}
@@ -67,12 +67,12 @@ dataobj_ptr CTPUnsubMarketData::HandleResponse(param_vector& rawRespParams, IRaw
 
 	dataobj_ptr ret;
 	auto pRspInstr = (CThostFtdcSpecificInstrumentField*)rawRespParams[0];
-	auto EOFFlag = *((bool*)rawRespParams[3]);
 
-	auto stDO = new TMultiRecordDO < std::string > ;
+	auto stDO = new StringTableDO;
 	ret.reset(stDO);
-	stDO->Data = pRspInstr->InstrumentID;
-	stDO->EOFFlag = EOFFlag;
+	stDO->Data[STR_INSTRUMENT_ID].push_back(pRspInstr->InstrumentID);
+	stDO->SerialId = *(uint32_t*)rawRespParams[2];
+	stDO->HasMore = *(bool*)rawRespParams[3];
 	DLOG(INFO) << "UnsubMarketData successful." << std::endl;
 
 	return ret;

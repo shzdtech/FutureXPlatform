@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "commondefine.proto";
+
 package Micro.Future.Message.Business;
 
 message PBUserInfo

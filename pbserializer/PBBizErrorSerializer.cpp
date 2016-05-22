@@ -27,7 +27,8 @@ dataobj_ptr PBBizErrorSerializer::Deserialize(const data_buffer& rawdata)
 		throw BizError(INVALID_DATAFORMAT_CODE, INVALID_DATAFORMAT_DESC);
 
 	auto ret = std::make_shared<BizErrorDO>
-		(bizMsg.messageid(), bizMsg.errorcode(), bizMsg.description(), bizMsg.syserrcode());
+		(bizMsg.messageid(), bizMsg.errorcode(), bizMsg.description(), 
+			bizMsg.syserrcode(), bizMsg.serialid());
 
 	return ret;
 }
@@ -44,6 +45,9 @@ data_buffer PBBizErrorSerializer::Serialize(const dataobj_ptr abstractDO)
 {
 	auto bizErr = (BizErrorDO*)abstractDO.get();
 	BizErrorMsg bizMsg;
+	if (bizErr->SerialId != 0)
+		bizMsg.set_serialid(bizErr->SerialId);
+
 	bizMsg.set_messageid(bizErr->MessgeId);
 	bizMsg.set_errorcode(bizErr->ErrorCode);
 	bizMsg.set_description(bizErr->ErrorMessage);

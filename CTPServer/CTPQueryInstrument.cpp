@@ -53,7 +53,7 @@ dataobj_ptr CTPQueryInstrument::HandleRequest(const dataobj_ptr reqDO, IRawAPI* 
 		std::strcpy(req.ExchangeID, exchangeid.data());
 		std::strcpy(req.InstrumentID, instrumentid.data());
 		std::strcpy(req.ProductID, productid.data());
-		((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryInstrument(&req, 0) == 0;
+		((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryInstrument(&req, stdo->SerialId) == 0;
 	}
 
 	return ret;
@@ -74,6 +74,8 @@ dataobj_ptr CTPQueryInstrument::HandleResponse(param_vector& rawRespParams, IRaw
 	CTPUtility::CheckError(rawRespParams[1]);
 
 	VectorDO_Ptr<InstrumentDO> ret;
+	ret->SerialId = *(uint32_t*)rawRespParams[2];
+	ret->HasMore = *(bool*)rawRespParams[3];
 
 	if (auto pData = (CThostFtdcInstrumentField*)rawRespParams[0])
 	{

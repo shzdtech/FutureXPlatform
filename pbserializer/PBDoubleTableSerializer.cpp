@@ -23,15 +23,22 @@ using namespace Micro::Future::Message::Business;
 dataobj_ptr PBDoubleTableSerializer::Deserialize(const data_buffer& rawdata)
 {
 	auto nameTbl = new DoubleTableDO;
+	dataobj_ptr ret(nameTbl);
+
 	SimpleDoubleTable simpleTbl;
 	if (!simpleTbl.ParseFromArray(rawdata.get(), rawdata.size()))
 		throw BizError(INVALID_DATAFORMAT_CODE, INVALID_DATAFORMAT_DESC);
 
+	if (simpleTbl.has_hearder())
+	{
+		nameTbl->SerialId = simpleTbl.hearder().serialid();
+		nameTbl->HasMore = simpleTbl.hearder().hasmore();
+	}
 	for (auto& col : simpleTbl.columns()) {
 		std::vector<double> vec(col.entry().begin(), col.entry().end());
 		nameTbl->Data[col.name()] = std::move(vec);
 	}
-	return dataobj_ptr(nameTbl);
+	return ret;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -46,6 +53,15 @@ data_buffer PBDoubleTableSerializer::Serialize(const dataobj_ptr abstractDO)
 {
 	auto nameTbl = (DoubleTableDO*)abstractDO.get();
 	SimpleDoubleTable simpleTbl;
+	if (nameTbl->SerialId != 0)
+	{
+		auto pHeader = new DataHeader();
+		pHeader->set_serialid(nameTbl->SerialId);
+		if (nameTbl->HasMore)
+			pHeader->set_hasmore(nameTbl->HasMore);
+
+		simpleTbl.set_allocated_hearder(pHeader);
+	}
 	for (auto& it : nameTbl->Data) {
 		auto namedVec = simpleTbl.mutable_columns()->Add();
 		namedVec->set_name(it.first);

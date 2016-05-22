@@ -27,6 +27,16 @@ data_buffer PBOrderSerializer::Serialize(const dataobj_ptr abstractDO)
 	PBOrderInfo PB;
 	auto pDO = (OrderDO*)abstractDO.get();
 
+	if (pDO->SerialId != 0)
+	{
+		auto pHeader = new DataHeader();
+		pHeader->set_serialid(pDO->SerialId);
+		if (pDO->HasMore)
+			pHeader->set_hasmore(pDO->HasMore);
+
+		PB.set_allocated_header(pHeader);
+	}
+
 	PB.set_orderid(pDO->OrderID);
 	PB.set_ordersysid(pDO->OrderSysID);
 	PB.set_exchange(pDO->ExchangeID());

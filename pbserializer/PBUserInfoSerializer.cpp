@@ -21,9 +21,12 @@
 
 data_buffer PBUserInfoSerializer::Serialize(const dataobj_ptr abstractDO)
 {
-	Micro::Future::Message::Business::PBUserInfo PB;
+	using namespace Micro::Future::Message::Business;
+	
+	PBUserInfo PB;
 
 	auto pDO = (UserInfoDO*)abstractDO.get();
+
 	PB.set_address(pDO->Address);
 	PB.set_company(pDO->Company);
 	PB.set_contactnum(pDO->ContactNum);

@@ -136,7 +136,7 @@ int TemplateMessageProcessor::OnResponse(const uint msgId, param_vector& rawResp
 void TemplateMessageProcessor::SendErrorMsg(uint msgId, BizError& bizError)
 {
 	dataobj_ptr dataobj(new BizErrorDO
-		(msgId, bizError.ErrorCode(), bizError.what(), bizError.SysErrCode()));
+		(msgId, bizError.ErrorCode(), bizError.what(), bizError.SysErrCode(), bizError.SerialId()));
 	data_buffer msg = BizErrorSerializer::Instance()->Serialize(dataobj);
 	if (auto session_ptr = getSession())
 		session_ptr->WriteMessage(MSG_ID_ERROR, msg);

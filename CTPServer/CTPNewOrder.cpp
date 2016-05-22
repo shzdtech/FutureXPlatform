@@ -75,7 +75,7 @@ dataobj_ptr CTPNewOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI,
 	// 自动挂起标志
 	req.IsAutoSuspend = false;
 
-	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqOrderInsert(&req, ++_requestIdGen);
+	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqOrderInsert(&req, pDO->SerialId);
 	CTPUtility::CheckReturnError(iRet);
 
 	return nullptr;

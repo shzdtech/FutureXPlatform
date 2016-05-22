@@ -11,19 +11,22 @@
 #include "ExceptionDef.h"
 #include "../dataobject/ResultDO.h"
 
-////////////////////////////////////////////////////////////////////////
-// Name:       PBResultSerializer::Serialize(const dataobj_ptr abstractDO)
-// Purpose:    Implementation of PBResultSerializer::Serialize()
-// Parameters:
-// - abstractDO
-// Return:     data_buffer
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       PBResultSerializer::Serialize(const dataobj_ptr abstractDO)
+ // Purpose:    Implementation of PBResultSerializer::Serialize()
+ // Parameters:
+ // - abstractDO
+ // Return:     data_buffer
+ ////////////////////////////////////////////////////////////////////////
 
 data_buffer PBResultSerializer::Serialize(const dataobj_ptr abstractDO)
 {
 	Micro::Future::Message::Business::Result PB;
 
 	auto pDO = (ResultDO*)abstractDO.get();
+
+	if (pDO->SerialId != 0)
+		PB.set_serialid(pDO->SerialId);
 
 	PB.set_code(pDO->Code);
 
@@ -50,6 +53,9 @@ dataobj_ptr PBResultSerializer::Deserialize(const data_buffer& rawdata)
 
 	if (!PB.ParseFromArray(rawdata.get(), rawdata.size()))
 		throw BizError(INVALID_DATAFORMAT_CODE, INVALID_DATAFORMAT_DESC);
+
+	if(PB.serialid() != 0)
+		ret->SerialId = PB.serialid();
 
 	ret->Code = PB.code();
 

@@ -48,6 +48,16 @@ data_buffer PBComplexTableSerializer::Serialize(const dataobj_ptr abstractDO)
 {
 	auto ctDO = (ComplexTableDO*)abstractDO.get();
 	ComplexTable ct;
+	if (ctDO->SerialId != 0)
+	{
+		auto pHeader = new DataHeader();
+		pHeader->set_serialid(ctDO->SerialId);
+		if (ctDO->HasMore)
+			pHeader->set_hasmore(ctDO->HasMore);
+
+		ct.set_allocated_hearder(pHeader);
+	}
+
 	fillTable(ctDO, &ct);
 	ComplexTableDO* nestDO = ctDO;
 	ComplexTable* nestTbl = &ct;
@@ -95,9 +105,17 @@ void fillDO(ComplexTable& ct, ComplexTableDO* ctDO)
 dataobj_ptr PBComplexTableSerializer::Deserialize(const data_buffer& rawdata)
 {
 	auto ctDO = new ComplexTableDO;
+	dataobj_ptr ret(ctDO);
+
 	ComplexTable ct;
 	if (!ct.ParseFromArray(rawdata.get(), rawdata.size()))
 		throw BizError(INVALID_DATAFORMAT_CODE, INVALID_DATAFORMAT_DESC);
+
+	if (ct.has_hearder())
+	{
+		ctDO->SerialId = ct.hearder().serialid();
+		ctDO->HasMore = ct.hearder().hasmore();
+	}
 
 	fillDO(ct, ctDO);
 	ComplexTableDO* nestDO = ctDO;
@@ -108,5 +126,5 @@ dataobj_ptr PBComplexTableSerializer::Deserialize(const data_buffer& rawdata)
 		fillDO(nestTbl, nestDO);
 	}
 
-	return dataobj_ptr(ctDO);
+	return ret;
 }

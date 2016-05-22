@@ -39,7 +39,7 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 	CThostFtdcQryExchangeField req;
 	std::memset(&req, 0, sizeof(req));
 	std::strcpy(req.ExchangeID, exchangeid.data());
-	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryExchange(&req, ++_requestIdGen);
+	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryExchange(&req, stdo->SerialId);
 	CTPUtility::CheckReturnError(iRet);
 
 	return nullptr;
@@ -66,7 +66,7 @@ dataobj_ptr CTPQueryExchange::HandleResponse(param_vector& rawRespParams, IRawAP
 		auto pDO = new ExchangeDO;
 		ret.reset(pDO);
 
-		pDO->EOFFlag = *((bool*)rawRespParams[3]) ? 1 : 0;
+		pDO->HasMore = !(*((bool*)rawRespParams[3]));
 		pDO->ExchangeID = Encoding::ToUTF8(pData->ExchangeID, CHARSET_GB2312);
 		pDO->Name = Encoding::ToUTF8(pData->ExchangeName, CHARSET_GB2312);
 		pDO->Property = pData->ExchangeProperty;

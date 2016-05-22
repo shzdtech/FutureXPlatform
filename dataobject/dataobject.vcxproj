@@ -167,7 +167,6 @@
     <ClInclude Include="IDataSerializer.h" />
     <ClInclude Include="IDataSerializerFactory.h" />
     <ClInclude Include="InstrumentDO.h" />
-    <ClInclude Include="MultiRecordDO.h" />
     <ClInclude Include="OrderDO.h" />
     <ClInclude Include="PortfolioDO.h" />
     <ClInclude Include="PricingDO.h" />

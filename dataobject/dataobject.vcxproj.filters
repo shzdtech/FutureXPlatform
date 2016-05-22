@@ -60,9 +60,6 @@
     <ClInclude Include="MarketDataDO.h">
       <Filter>头文件\DO</Filter>
     </ClInclude>
-    <ClInclude Include="MultiRecordDO.h">
-      <Filter>头文件\DO</Filter>
-    </ClInclude>
     <ClInclude Include="OrderDO.h">
       <Filter>头文件\DO</Filter>
     </ClInclude>

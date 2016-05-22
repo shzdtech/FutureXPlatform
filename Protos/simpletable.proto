@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "commondefine.proto";
+
 package Micro.Future.Message.Business;
 
 message NamedStringVector
@@ -22,41 +24,27 @@ repeated double entry = 2;
 
 message SimpleIntTable
 {
-repeated NamedIntVector columns = 1;
+DataHeader hearder = 1;
+repeated NamedIntVector columns = 2;
 }
 
 message SimpleStringTable
 {
-repeated NamedStringVector columns = 1;
+DataHeader hearder = 1;
+repeated NamedStringVector columns = 2;
 }
 
 message SimpleDoubleTable
 {
-repeated NamedDoubleVector columns = 1;
+DataHeader hearder = 1;
+repeated NamedDoubleVector columns = 2;
 }
 
 message ComplexTable
 {
-SimpleIntTable    intTable = 1;
-SimpleDoubleTable doubleTable = 2;
-SimpleStringTable stringTable = 3;
-ComplexTable nestTable = 4;
-}
-
-message StringResponse
-{
-string Value = 1;
-int32 EOF = 2;
-}
-
-message IntResponse
-{
-int32  Value = 1;
-int32 EOF = 2;
-}
-
-message DoubleResponse
-{
-double Value = 1;
-int32 EOF = 2;
+DataHeader hearder = 1;
+SimpleIntTable     intTable = 2;
+SimpleDoubleTable  doubleTable = 3;
+SimpleStringTable stringTable = 4;
+ComplexTable	   nestTable = 5;
 }

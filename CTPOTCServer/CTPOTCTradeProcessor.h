@@ -24,7 +24,7 @@ public:
 	~CTPOTCTradeProcessor();
 	bool OnSessionClosing(void);
 	int LoginIfNeed(void);
-	void RegisterOrderListener(const int orderID, IMessageSession* pMsgSession);
+	void RegisterOrderListener(const uint64_t orderID, IMessageSession* pMsgSession);
 	void TriggerOrderUpdating(const StrategyContractDO& strategyDO);
 	inline void DispatchMessage(const int msgId, const OrderDO* pOrderDO);
 
