@@ -20,8 +20,8 @@ public:
 	virtual dataobj_ptr HandleRequest(const uint msgId, const dataobj_ptr reqDO, const bool sendRsp);
 
 	int OnRecvMsg(const uint msgId, const data_buffer& msg);
-	int OnResponse(const uint msgId, param_vector& rawRespParams);
-	void SendErrorMsg(const uint msgId, BizError& bizError);
+	int OnResponse(const uint msgId, const uint serailId, param_vector& rawRespParams);
+	void SendErrorMsg(const uint msgId, BizError& bizError, uint serialId);
 
 protected:
 

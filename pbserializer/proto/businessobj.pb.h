@@ -1115,12 +1115,22 @@ class PBStrategyList : public ::google::protobuf::Message {
   const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBStrategy >&
       strategy() const;
 
+  // optional .Micro.Future.Message.Business.DataHeader header = 2;
+  bool has_header() const;
+  void clear_header();
+  static const int kHeaderFieldNumber = 2;
+  const ::Micro::Future::Message::Business::DataHeader& header() const;
+  ::Micro::Future::Message::Business::DataHeader* mutable_header();
+  ::Micro::Future::Message::Business::DataHeader* release_header();
+  void set_allocated_header(::Micro::Future::Message::Business::DataHeader* header);
+
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.PBStrategyList)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   bool _is_default_instance_;
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBStrategy > strategy_;
+  ::Micro::Future::Message::Business::DataHeader* header_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
@@ -1308,12 +1318,22 @@ class PBContractParamList : public ::google::protobuf::Message {
   const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBContractParam >&
       params() const;
 
+  // optional .Micro.Future.Message.Business.DataHeader header = 2;
+  bool has_header() const;
+  void clear_header();
+  static const int kHeaderFieldNumber = 2;
+  const ::Micro::Future::Message::Business::DataHeader& header() const;
+  ::Micro::Future::Message::Business::DataHeader* mutable_header();
+  ::Micro::Future::Message::Business::DataHeader* release_header();
+  void set_allocated_header(::Micro::Future::Message::Business::DataHeader* header);
+
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.PBContractParamList)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   bool _is_default_instance_;
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBContractParam > params_;
+  ::Micro::Future::Message::Business::DataHeader* header_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
@@ -1494,12 +1514,22 @@ class PBOTCUserParamList : public ::google::protobuf::Message {
   const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBOTCUserParam >&
       params() const;
 
+  // optional .Micro.Future.Message.Business.DataHeader header = 2;
+  bool has_header() const;
+  void clear_header();
+  static const int kHeaderFieldNumber = 2;
+  const ::Micro::Future::Message::Business::DataHeader& header() const;
+  ::Micro::Future::Message::Business::DataHeader* mutable_header();
+  ::Micro::Future::Message::Business::DataHeader* release_header();
+  void set_allocated_header(::Micro::Future::Message::Business::DataHeader* header);
+
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.PBOTCUserParamList)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   bool _is_default_instance_;
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBOTCUserParam > params_;
+  ::Micro::Future::Message::Business::DataHeader* header_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
@@ -4460,6 +4490,44 @@ PBStrategyList::strategy() const {
   return strategy_;
 }
 
+// optional .Micro.Future.Message.Business.DataHeader header = 2;
+inline bool PBStrategyList::has_header() const {
+  return !_is_default_instance_ && header_ != NULL;
+}
+inline void PBStrategyList::clear_header() {
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
+}
+inline const ::Micro::Future::Message::Business::DataHeader& PBStrategyList::header() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategyList.header)
+  return header_ != NULL ? *header_ : *default_instance_->header_;
+}
+inline ::Micro::Future::Message::Business::DataHeader* PBStrategyList::mutable_header() {
+  
+  if (header_ == NULL) {
+    header_ = new ::Micro::Future::Message::Business::DataHeader;
+  }
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBStrategyList.header)
+  return header_;
+}
+inline ::Micro::Future::Message::Business::DataHeader* PBStrategyList::release_header() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBStrategyList.header)
+  
+  ::Micro::Future::Message::Business::DataHeader* temp = header_;
+  header_ = NULL;
+  return temp;
+}
+inline void PBStrategyList::set_allocated_header(::Micro::Future::Message::Business::DataHeader* header) {
+  delete header_;
+  header_ = header;
+  if (header) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBStrategyList.header)
+}
+
 // -------------------------------------------------------------------
 
 // PBContractParam
@@ -4614,6 +4682,44 @@ PBContractParamList::params() const {
   return params_;
 }
 
+// optional .Micro.Future.Message.Business.DataHeader header = 2;
+inline bool PBContractParamList::has_header() const {
+  return !_is_default_instance_ && header_ != NULL;
+}
+inline void PBContractParamList::clear_header() {
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
+}
+inline const ::Micro::Future::Message::Business::DataHeader& PBContractParamList::header() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBContractParamList.header)
+  return header_ != NULL ? *header_ : *default_instance_->header_;
+}
+inline ::Micro::Future::Message::Business::DataHeader* PBContractParamList::mutable_header() {
+  
+  if (header_ == NULL) {
+    header_ = new ::Micro::Future::Message::Business::DataHeader;
+  }
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBContractParamList.header)
+  return header_;
+}
+inline ::Micro::Future::Message::Business::DataHeader* PBContractParamList::release_header() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBContractParamList.header)
+  
+  ::Micro::Future::Message::Business::DataHeader* temp = header_;
+  header_ = NULL;
+  return temp;
+}
+inline void PBContractParamList::set_allocated_header(::Micro::Future::Message::Business::DataHeader* header) {
+  delete header_;
+  header_ = header;
+  if (header) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBContractParamList.header)
+}
+
 // -------------------------------------------------------------------
 
 // PBOTCUserParam
@@ -4752,6 +4858,44 @@ inline const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Bus
 PBOTCUserParamList::params() const {
   // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBOTCUserParamList.params)
   return params_;
+}
+
+// optional .Micro.Future.Message.Business.DataHeader header = 2;
+inline bool PBOTCUserParamList::has_header() const {
+  return !_is_default_instance_ && header_ != NULL;
+}
+inline void PBOTCUserParamList::clear_header() {
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
+}
+inline const ::Micro::Future::Message::Business::DataHeader& PBOTCUserParamList::header() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOTCUserParamList.header)
+  return header_ != NULL ? *header_ : *default_instance_->header_;
+}
+inline ::Micro::Future::Message::Business::DataHeader* PBOTCUserParamList::mutable_header() {
+  
+  if (header_ == NULL) {
+    header_ = new ::Micro::Future::Message::Business::DataHeader;
+  }
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBOTCUserParamList.header)
+  return header_;
+}
+inline ::Micro::Future::Message::Business::DataHeader* PBOTCUserParamList::release_header() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBOTCUserParamList.header)
+  
+  ::Micro::Future::Message::Business::DataHeader* temp = header_;
+  header_ = NULL;
+  return temp;
+}
+inline void PBOTCUserParamList::set_allocated_header(::Micro::Future::Message::Business::DataHeader* header) {
+  delete header_;
+  header_ = header;
+  if (header) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBOTCUserParamList.header)
 }
 
 // -------------------------------------------------------------------

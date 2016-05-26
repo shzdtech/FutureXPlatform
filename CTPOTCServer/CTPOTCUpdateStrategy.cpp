@@ -77,8 +77,8 @@ dataobj_ptr CTPOTCUpdateStrategy::HandleRequest(const dataobj_ptr reqDO, IRawAPI
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCUpdateStrategy::HandleResponse(param_vector rawRespParams, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTPOTCUpdateStrategy::HandleResponse()
+// Name:       CTPOTCUpdateStrategy::HandleResponse(const uint32_t serialId, param_vector rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Purpose:    Implementation of CTPOTCUpdateStrategy::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
 // - rawAPI
@@ -86,7 +86,7 @@ dataobj_ptr CTPOTCUpdateStrategy::HandleRequest(const dataobj_ptr reqDO, IRawAPI
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCUpdateStrategy::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOTCUpdateStrategy::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	return nullptr;
 }

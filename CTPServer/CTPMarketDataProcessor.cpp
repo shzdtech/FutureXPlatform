@@ -73,26 +73,26 @@ void CTPMarketDataProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUse
 	CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
 	if (!CTPUtility::HasError(pRspInfo))
 		_isLogged = true;
-	OnResponseMacro(MSG_ID_LOGIN, pRspUserLogin, pRspInfo, &nRequestID, &bIsLast)
+	OnResponseMacro(MSG_ID_LOGIN, nRequestID, pRspUserLogin, pRspInfo, &nRequestID, &bIsLast)
 }
 
 void CTPMarketDataProcessor::OnRspUserLogout(CThostFtdcUserLogoutField *pUserLogout,
 	CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
 	_isLogged = false;
-	OnResponseMacro(MSG_ID_LOGOUT, pUserLogout, pRspInfo, &nRequestID, &bIsLast)
+	OnResponseMacro(MSG_ID_LOGOUT, nRequestID, pUserLogout, pRspInfo, &nRequestID, &bIsLast)
 };
 
 void CTPMarketDataProcessor::OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument,
 	CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
-	OnResponseMacro(MSG_ID_SUB_MARKETDATA, pSpecificInstrument, pRspInfo, &nRequestID, &bIsLast)
+	OnResponseMacro(MSG_ID_SUB_MARKETDATA, nRequestID, pSpecificInstrument, pRspInfo, &nRequestID, &bIsLast)
 }
 
 void CTPMarketDataProcessor::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument,
 	CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
-	OnResponseMacro(MSG_ID_UNSUB_MARKETDATA, pSpecificInstrument, pRspInfo, &nRequestID, &bIsLast)
+	OnResponseMacro(MSG_ID_UNSUB_MARKETDATA, nRequestID, pSpecificInstrument, pRspInfo, &nRequestID, &bIsLast)
 }
 
 void CTPMarketDataProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData) {
-	OnResponseMacro(MSG_ID_RET_MARKETDATA, pDepthMarketData)
+	OnResponseMacro(MSG_ID_RET_MARKETDATA, 0, pDepthMarketData)
 }

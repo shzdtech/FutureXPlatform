@@ -19,12 +19,12 @@ class DATAOBJECT_CLASS_EXPORT AbstractDataSerializerFactory : public IDataSerial
 {
 public:
 	//virtual std::map<unsigned int, IDataSerializer_Ptr> CreateDataSerializers(void) = 0;
-	IDataSerializer_Ptr Find(unsigned int msgId);
+	IDataSerializer_Ptr Find(uint32_t msgId);
 	static std::shared_ptr<AbstractDataSerializerFactory> Instance(void);
 	static MessageSerializerConfig DefaultMessageSerializerConfig;
 
 protected:
-	std::map<unsigned int, IDataSerializer_Ptr> _serializer_map;
+	std::map<uint32_t, IDataSerializer_Ptr> _serializer_map;
 
 private:
 };

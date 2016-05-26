@@ -7,8 +7,7 @@
 
 #include "PBIntTableSerializer.h"
 #include "../dataobject/TemplateDO.h"
-#include "../message/BizError.h"
-#include "ExceptionDef.h"
+#include "pbmacros.h"
 #include "proto/simpletable.pb.h"
 
 using namespace Micro::Future::Message::Business;
@@ -22,18 +21,12 @@ using namespace Micro::Future::Message::Business;
 
 dataobj_ptr PBIntTableSerializer::Deserialize(const data_buffer& rawdata)
 {
+	SimpleIntTable simpleTbl;
+	ParseWithThrow(simpleTbl, rawdata);
+
 	auto nameTbl = new IntTableDO;
 	dataobj_ptr ret(nameTbl);
-
-	SimpleIntTable simpleTbl;
-	if (!simpleTbl.ParseFromArray(rawdata.get(), rawdata.size()))
-		throw BizError(INVALID_DATAFORMAT_CODE, INVALID_DATAFORMAT_DESC);
-
-	if (simpleTbl.has_hearder())
-	{
-		nameTbl->SerialId = simpleTbl.hearder().serialid();
-		nameTbl->HasMore = simpleTbl.hearder().hasmore();
-	}
+	FillDOHeader(nameTbl, simpleTbl);
 
 	for (auto& col : simpleTbl.columns()) {
 		std::vector<int> vec(col.entry().begin(), col.entry().end());
@@ -54,15 +47,7 @@ data_buffer PBIntTableSerializer::Serialize(const dataobj_ptr abstractDO)
 {
 	auto nameTbl = (IntTableDO*)abstractDO.get();
 	SimpleIntTable simpleTbl;
-	if (nameTbl->SerialId != 0)
-	{
-		auto pHeader = new DataHeader();
-		pHeader->set_serialid(nameTbl->SerialId);
-		if (nameTbl->HasMore)
-			pHeader->set_hasmore(nameTbl->HasMore);
-
-		simpleTbl.set_allocated_hearder(pHeader);
-	}
+	FillPBHeader(simpleTbl, nameTbl);
 
 	for (auto& it : nameTbl->Data) {
 		auto namedVec = simpleTbl.mutable_columns()->Add();

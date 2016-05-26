@@ -38,7 +38,7 @@ enum OrderTIFType
 	IOC = 1,
 };
 
-class OrderBaseDO : public AbstractDataObj
+class OrderBaseDO : public dataobjectbase
 {
 public:
 	OrderBaseDO(const uint64_t orderID) : OrderID(orderID){}

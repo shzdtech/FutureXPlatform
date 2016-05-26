@@ -6,7 +6,8 @@
  ***********************************************************************/
 
 #include "PBExchangeSerializer.h"
-#include "PBStringTableSerializer.h"
+#include "PBStringMapSerializer.h"
+#include "pbmacros.h"
 #include "proto/businessobj.pb.h"
 #include "../dataobject/ExchangeDO.h"
 
@@ -24,16 +25,7 @@ data_buffer PBExchangeSerializer::Serialize(const dataobj_ptr abstractDO)
 
 	PBMarketInfo PB;
 	auto pDO = (ExchangeDO*)abstractDO.get();
-
-	if (pDO->SerialId != 0)
-	{
-		auto pHeader = new DataHeader();
-		pHeader->set_serialid(pDO->SerialId);
-		if (pDO->HasMore)
-			pHeader->set_hasmore(pDO->HasMore);
-
-		PB.set_allocated_header(pHeader);
-	}
+	FillPBHeader(PB, pDO)
 
 	PB.set_exchange(pDO->ExchangeID);
 	PB.set_name(pDO->Name);
@@ -55,5 +47,5 @@ data_buffer PBExchangeSerializer::Serialize(const dataobj_ptr abstractDO)
 
 dataobj_ptr PBExchangeSerializer::Deserialize(const data_buffer& rawdata)
 {
-	return PBStringTableSerializer::Instance()->Deserialize(rawdata);
+	return PBStringMapSerializer::Instance()->Deserialize(rawdata);
 }

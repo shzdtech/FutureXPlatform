@@ -6,8 +6,7 @@
  ***********************************************************************/
 
 #include "PBUserParamSerializer.h"
-#include "../message/BizError.h"
-#include "ExceptionDef.h"
+#include "pbmacros.h"
 #include "proto/businessobj.pb.h"
 #include "../dataobject/TemplateDO.h"
 
@@ -24,8 +23,8 @@
 data_buffer PBUserParamSerializer::Serialize(const dataobj_ptr abstractDO)
 {
 	Micro::Future::Message::Business::PBOTCUserParamList PB;
-
 	auto pDO = (VectorDO<UserContractParam>*)abstractDO.get();
+	FillPBHeader(PB, pDO);
 
 	for (auto& ucp : *pDO)
 	{
@@ -53,11 +52,10 @@ data_buffer PBUserParamSerializer::Serialize(const dataobj_ptr abstractDO)
 dataobj_ptr PBUserParamSerializer::Deserialize(const data_buffer& rawdata)
 {
 	Micro::Future::Message::Business::PBOTCUserParamList PB;
+	ParseWithThrow(PB, rawdata);
 
 	auto ret = std::make_shared<VectorDO<UserContractParam>>();
-
-	if (!PB.ParseFromArray(rawdata.get(), rawdata.size()))
-		throw BizError(INVALID_DATAFORMAT_CODE, INVALID_DATAFORMAT_DESC);
+	FillDOHeader(ret, PB);
 
 	auto& params = PB.params();
 

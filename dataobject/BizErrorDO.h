@@ -9,19 +9,19 @@
 #define __data_BizErrorDO_h
 
 #include <string>
-#include "AbstractDataObj.h"
+#include "dataobjectbase.h"
 
-class BizErrorDO : public AbstractDataObj
+class BizErrorDO : public dataobjectbase
 {
 public:
 	BizErrorDO() { };
-	BizErrorDO(unsigned msgId, int errcode, const std::string& errmsg, int syserrcode, uint32_t serialId = 0) :
+	BizErrorDO(uint32_t msgId, int errcode, const std::string& errmsg, int syserrcode, uint serialId = 0) :
 		MessgeId(msgId), ErrorCode(errcode), ErrorMessage(errmsg), SysErrCode(syserrcode)
 	{
 		SerialId = serialId;
 	};
 
-	unsigned MessgeId = 0;
+	uint32_t MessgeId = 0;
 	int ErrorCode = 0;
 	int SysErrCode = 0;
 	std::string ErrorMessage;

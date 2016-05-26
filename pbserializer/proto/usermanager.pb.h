@@ -27,6 +27,7 @@
 #include <google/protobuf/repeated_field.h>
 #include <google/protobuf/extension_set.h>
 #include <google/protobuf/unknown_field_set.h>
+#include "commondefine.pb.h"
 // @@protoc_insertion_point(includes)
 
 namespace Micro {
@@ -228,6 +229,15 @@ class PBUserInfo : public ::google::protobuf::Message {
   ::google::protobuf::int32 permission() const;
   void set_permission(::google::protobuf::int32 value);
 
+  // optional .Micro.Future.Message.Business.DataHeader header = 14;
+  bool has_header() const;
+  void clear_header();
+  static const int kHeaderFieldNumber = 14;
+  const ::Micro::Future::Message::Business::DataHeader& header() const;
+  ::Micro::Future::Message::Business::DataHeader* mutable_header();
+  ::Micro::Future::Message::Business::DataHeader* release_header();
+  void set_allocated_header(::Micro::Future::Message::Business::DataHeader* header);
+
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.PBUserInfo)
  private:
 
@@ -245,6 +255,7 @@ class PBUserInfo : public ::google::protobuf::Message {
   ::google::protobuf::internal::ArenaStringPtr identitynum_;
   ::google::protobuf::internal::ArenaStringPtr address_;
   ::google::protobuf::internal::ArenaStringPtr zipcode_;
+  ::Micro::Future::Message::Business::DataHeader* header_;
   ::google::protobuf::int32 permission_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_usermanager_2eproto();
@@ -324,12 +335,22 @@ class PBUserInfoList : public ::google::protobuf::Message {
   const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBUserInfo >&
       userinfo() const;
 
+  // optional .Micro.Future.Message.Business.DataHeader header = 2;
+  bool has_header() const;
+  void clear_header();
+  static const int kHeaderFieldNumber = 2;
+  const ::Micro::Future::Message::Business::DataHeader& header() const;
+  ::Micro::Future::Message::Business::DataHeader* mutable_header();
+  ::Micro::Future::Message::Business::DataHeader* release_header();
+  void set_allocated_header(::Micro::Future::Message::Business::DataHeader* header);
+
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.PBUserInfoList)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   bool _is_default_instance_;
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBUserInfo > userinfo_;
+  ::Micro::Future::Message::Business::DataHeader* header_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_usermanager_2eproto();
   friend void protobuf_AssignDesc_usermanager_2eproto();
@@ -376,6 +397,7 @@ inline ::std::string* PBUserInfo::mutable_userid() {
   return userid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBUserInfo::release_userid() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserInfo.userId)
   
   return userid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -419,6 +441,7 @@ inline ::std::string* PBUserInfo::mutable_password() {
   return password_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBUserInfo::release_password() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserInfo.password)
   
   return password_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -462,6 +485,7 @@ inline ::std::string* PBUserInfo::mutable_firstname() {
   return firstname_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBUserInfo::release_firstname() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserInfo.firstName)
   
   return firstname_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -505,6 +529,7 @@ inline ::std::string* PBUserInfo::mutable_lastname() {
   return lastname_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBUserInfo::release_lastname() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserInfo.lastName)
   
   return lastname_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -562,6 +587,7 @@ inline ::std::string* PBUserInfo::mutable_company() {
   return company_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBUserInfo::release_company() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserInfo.company)
   
   return company_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -605,6 +631,7 @@ inline ::std::string* PBUserInfo::mutable_email() {
   return email_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBUserInfo::release_email() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserInfo.email)
   
   return email_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -648,6 +675,7 @@ inline ::std::string* PBUserInfo::mutable_contactnum() {
   return contactnum_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBUserInfo::release_contactnum() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserInfo.contactNum)
   
   return contactnum_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -691,6 +719,7 @@ inline ::std::string* PBUserInfo::mutable_identitynum() {
   return identitynum_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBUserInfo::release_identitynum() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserInfo.identityNum)
   
   return identitynum_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -734,6 +763,7 @@ inline ::std::string* PBUserInfo::mutable_address() {
   return address_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBUserInfo::release_address() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserInfo.address)
   
   return address_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -777,6 +807,7 @@ inline ::std::string* PBUserInfo::mutable_zipcode() {
   return zipcode_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* PBUserInfo::release_zipcode() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserInfo.zipcode)
   
   return zipcode_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -818,6 +849,44 @@ inline void PBUserInfo::set_permission(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBUserInfo.permission)
 }
 
+// optional .Micro.Future.Message.Business.DataHeader header = 14;
+inline bool PBUserInfo::has_header() const {
+  return !_is_default_instance_ && header_ != NULL;
+}
+inline void PBUserInfo::clear_header() {
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
+}
+inline const ::Micro::Future::Message::Business::DataHeader& PBUserInfo::header() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBUserInfo.header)
+  return header_ != NULL ? *header_ : *default_instance_->header_;
+}
+inline ::Micro::Future::Message::Business::DataHeader* PBUserInfo::mutable_header() {
+  
+  if (header_ == NULL) {
+    header_ = new ::Micro::Future::Message::Business::DataHeader;
+  }
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBUserInfo.header)
+  return header_;
+}
+inline ::Micro::Future::Message::Business::DataHeader* PBUserInfo::release_header() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserInfo.header)
+  
+  ::Micro::Future::Message::Business::DataHeader* temp = header_;
+  header_ = NULL;
+  return temp;
+}
+inline void PBUserInfo::set_allocated_header(::Micro::Future::Message::Business::DataHeader* header) {
+  delete header_;
+  header_ = header;
+  if (header) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBUserInfo.header)
+}
+
 // -------------------------------------------------------------------
 
 // PBUserInfoList
@@ -850,6 +919,44 @@ inline const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Bus
 PBUserInfoList::userinfo() const {
   // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBUserInfoList.userInfo)
   return userinfo_;
+}
+
+// optional .Micro.Future.Message.Business.DataHeader header = 2;
+inline bool PBUserInfoList::has_header() const {
+  return !_is_default_instance_ && header_ != NULL;
+}
+inline void PBUserInfoList::clear_header() {
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
+}
+inline const ::Micro::Future::Message::Business::DataHeader& PBUserInfoList::header() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBUserInfoList.header)
+  return header_ != NULL ? *header_ : *default_instance_->header_;
+}
+inline ::Micro::Future::Message::Business::DataHeader* PBUserInfoList::mutable_header() {
+  
+  if (header_ == NULL) {
+    header_ = new ::Micro::Future::Message::Business::DataHeader;
+  }
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBUserInfoList.header)
+  return header_;
+}
+inline ::Micro::Future::Message::Business::DataHeader* PBUserInfoList::release_header() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserInfoList.header)
+  
+  ::Micro::Future::Message::Business::DataHeader* temp = header_;
+  header_ = NULL;
+  return temp;
+}
+inline void PBUserInfoList::set_allocated_header(::Micro::Future::Message::Business::DataHeader* header) {
+  delete header_;
+  header_ = header;
+  if (header) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBUserInfoList.header)
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS

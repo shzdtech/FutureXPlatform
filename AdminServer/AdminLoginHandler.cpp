@@ -42,11 +42,10 @@ dataobj_ptr AdminLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* r
 
 	if (!session->IsLogin())
 	{
-		auto stdo = (StringTableDO*)reqDO.get();
-		auto& data = stdo->Data;
+		auto stdo = (MapDO<std::string>*)reqDO.get();
 
-		auto& userid = TUtil::FirstNamedEntry(STR_USER_ID, data, EMPTY_STRING);
-		auto& password = TUtil::FirstNamedEntry(STR_PASSWORD, data, EMPTY_STRING);
+		auto& userid = stdo->TryFind(STR_USER_ID, EMPTY_STRING);
+		auto& password = stdo->TryFind(STR_PASSWORD, EMPTY_STRING);
 		auto userInfo_Ptr = UserInfoDAO::FindUser(userid);
 
 		if (!userInfo_Ptr)
@@ -86,6 +85,7 @@ dataobj_ptr AdminLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* r
 	}
 
 	ret = std::static_pointer_cast<UserInfoDO>(pUserInfo->getAttribute(STR_KEY_USER_INFO_DETAIL));
+	ret->SerialId = reqDO->SerialId;
 
 	return ret;
 }

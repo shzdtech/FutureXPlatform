@@ -9,9 +9,9 @@
 #define __dataobject_MarketDataDO_h
 
 #include "ContractKey.h"
-#include "AbstractDataObj.h"
+#include "dataobjectbase.h"
 
-class MarketDataDO : public ContractKey, public AbstractDataObj
+class MarketDataDO : public ContractKey, public dataobjectbase
 {
 public:
 	MarketDataDO(const std::string& exchangeID, const std::string& instrumentID)

@@ -14,7 +14,7 @@ class CTSNewOrder : public IMessageHandler
 {
 public:
    dataobj_ptr HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session);
-   dataobj_ptr HandleResponse(param_vector& rawParams, IRawAPI* rawAPI, ISession* session);
+   dataobj_ptr HandleResponse(const uint32_t serialId, param_vector& rawParams, IRawAPI* rawAPI, ISession* session);
 
 protected:
 private:

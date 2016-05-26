@@ -30,16 +30,15 @@
 
 dataobj_ptr CTPQueryOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
-	auto stdo = (StringTableDO*)reqDO.get();
-	auto& data = stdo->Data;
+	auto stdo = (MapDO<std::string>*)reqDO.get();
 
 	auto& brokeid = session->getUserInfo()->getBrokerId();
 	auto& userid = session->getUserInfo()->getInvestorId();
-	auto& instrumentid = TUtil::FirstNamedEntry(STR_INSTRUMENT_ID, data, EMPTY_STRING);
-	auto& exchangeid = TUtil::FirstNamedEntry(STR_EXCHANGE_ID, data, EMPTY_STRING);
-	auto& orderid = TUtil::FirstNamedEntry(STR_ORDER_ID, data, EMPTY_STRING);
-	auto& tmstart = TUtil::FirstNamedEntry(STR_TIME_START, data, EMPTY_STRING);
-	auto& tmend = TUtil::FirstNamedEntry(STR_TIME_END, data, EMPTY_STRING);
+	auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
+	auto& exchangeid = stdo->TryFind(STR_EXCHANGE_ID, EMPTY_STRING);
+	auto& orderid = stdo->TryFind(STR_ORDER_ID, EMPTY_STRING);
+	auto& tmstart = stdo->TryFind(STR_TIME_START, EMPTY_STRING);
+	auto& tmend = stdo->TryFind(STR_TIME_END, EMPTY_STRING);
 
 	CThostFtdcQryOrderField req;
 	std::memset(&req, 0, sizeof(CThostFtdcQryOrderField));
@@ -50,15 +49,15 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAP
 	std::strcpy(req.OrderSysID, orderid.data());
 	std::strcpy(req.InsertTimeStart, tmstart.data());
 	std::strcpy(req.InsertTimeEnd, tmend.data());
-	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryOrder(&req, stdo->SerialId);
+	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryOrder(&req, reqDO->SerialId);
 	CTPUtility::CheckReturnError(iRet);
 
 	return nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPQueryOrder::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTPQueryOrder::HandleResponse()
+// Name:       CTPQueryOrder::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Purpose:    Implementation of CTPQueryOrder::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
 // - rawAPI
@@ -66,13 +65,13 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAP
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryOrder::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryOrder::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	OrderDO_Ptr ret;
 	if (auto pData = (CThostFtdcOrderField*)rawRespParams[0])
 	{
 		ret = CTPUtility::ParseRawOrder(pData);
-		ret->SerialId = *(uint32_t*)rawRespParams[2];
+		ret->SerialId = serialId;
 		ret->HasMore = *(bool*)rawRespParams[3];
 
 		if (rawRespParams.size() > 1)

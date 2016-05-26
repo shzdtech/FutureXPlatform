@@ -8,9 +8,9 @@
 #if !defined(__dataobject_AccountInfoDO_h)
 #define __dataobject_AccountInfoDO_h
 
-#include "AbstractDataObj.h"
+#include "dataobjectbase.h"
 
-class AccountInfoDO : public AbstractDataObj
+class AccountInfoDO : public dataobjectbase
 {
 public:
 	std::string AccountID;

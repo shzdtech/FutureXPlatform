@@ -144,10 +144,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="atomicutil.h" />
-    <ClInclude Include="AutoFillMap.h" />
+    <ClInclude Include="autofillmap.h" />
     <ClInclude Include="commonconst.h" />
     <ClInclude Include="ElementMutex.h" />
     <ClInclude Include="Encoding.h" />
+    <ClInclude Include="epsdouble.h" />
+    <ClInclude Include="epsvaluetype.h" />
     <ClInclude Include="semaphore.h" />
     <ClInclude Include="singleton_templ.h" />
     <ClInclude Include="singleton_templ_mt.h" />

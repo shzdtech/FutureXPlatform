@@ -2,18 +2,18 @@
  * Module:  AutoMap.h
  * Author:  milk
  * Modified: 2015年10月28日 14:33:18
- * Purpose: Declaration of the class AutoMap
+ * Purpose: Declaration of the class autofillmap
  ***********************************************************************/
 
-#if !defined(__utility_AutoFillMap_h)
-#define __utility_AutoFillMap_h
+#if !defined(__utility_autofillmap_h)
+#define __utility_autofillmap_h
 #include <map>
 #include <mutex>
 #include <thread>
 #include <functional>
 
 template <class K, class V>
-class AutoFillMap : public std::map < K, V >
+class autofillmap : public std::map < K, V >
 {
 public:
 	V& getorfill(const K& key)

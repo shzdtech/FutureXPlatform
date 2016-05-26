@@ -8,13 +8,13 @@
 #if !defined(__dataobject_Result_h)
 #define __dataobject_Result_h
 
-#include "AbstractDataObj.h"
+#include "dataobjectbase.h"
 
-class ResultDO : public AbstractDataObj
+class ResultDO : public dataobjectbase
 {
 public:
-	ResultDO(const int code) : Code(code){}
-	ResultDO() : Code(0){}
+	ResultDO(const int code, const int serailId) : Code(code) { SerialId = serailId; }
+	ResultDO(const int serailId) : Code(0){ SerialId = serailId; }
 
    int Code;
 

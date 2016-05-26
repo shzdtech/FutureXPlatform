@@ -1,3 +1,4 @@
+
 /***********************************************************************
  * Module:  PBBizErrorSerializer.cpp
  * Author:  milk
@@ -7,7 +8,7 @@
 
 #include "../message/BizError.h"
 #include "PBBizErrorSerializer.h"
-#include "ExceptionDef.h"
+#include "pbmacros.h"
 #include "proto/errormsg.pb.h"
 
 using namespace Micro::Future::Message::Business;
@@ -23,8 +24,7 @@ using namespace Micro::Future::Message::Business;
 dataobj_ptr PBBizErrorSerializer::Deserialize(const data_buffer& rawdata)
 {
 	BizErrorMsg bizMsg;
-	if(!bizMsg.ParseFromArray(rawdata.get(), rawdata.size()))
-		throw BizError(INVALID_DATAFORMAT_CODE, INVALID_DATAFORMAT_DESC);
+	ParseWithThrow(bizMsg, rawdata)
 
 	auto ret = std::make_shared<BizErrorDO>
 		(bizMsg.messageid(), bizMsg.errorcode(), bizMsg.description(), 

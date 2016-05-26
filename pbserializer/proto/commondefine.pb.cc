@@ -27,6 +27,10 @@ namespace {
 const ::google::protobuf::Descriptor* DataHeader_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   DataHeader_reflection_ = NULL;
+const ::google::protobuf::Descriptor* StringMap_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  StringMap_reflection_ = NULL;
+const ::google::protobuf::Descriptor* StringMap_EntryEntry_descriptor_ = NULL;
 
 }  // namespace
 
@@ -53,6 +57,23 @@ void protobuf_AssignDesc_commondefine_2eproto() {
       sizeof(DataHeader),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DataHeader, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DataHeader, _is_default_instance_));
+  StringMap_descriptor_ = file->message_type(1);
+  static const int StringMap_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StringMap, header_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StringMap, entry_),
+  };
+  StringMap_reflection_ =
+    ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
+      StringMap_descriptor_,
+      StringMap::default_instance_,
+      StringMap_offsets_,
+      -1,
+      -1,
+      -1,
+      sizeof(StringMap),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StringMap, _internal_metadata_),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StringMap, _is_default_instance_));
+  StringMap_EntryEntry_descriptor_ = StringMap_descriptor_->nested_type(0);
 }
 
 namespace {
@@ -67,6 +88,17 @@ void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
       DataHeader_descriptor_, &DataHeader::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+      StringMap_descriptor_, &StringMap::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+        StringMap_EntryEntry_descriptor_,
+        ::google::protobuf::internal::MapEntry<
+            ::std::string,
+            ::std::string,
+            ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
+            ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
+            0>::CreateDefaultInstance(
+                StringMap_EntryEntry_descriptor_));
 }
 
 }  // namespace
@@ -74,6 +106,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
 void protobuf_ShutdownFile_commondefine_2eproto() {
   delete DataHeader::default_instance_;
   delete DataHeader_reflection_;
+  delete StringMap::default_instance_;
+  delete StringMap_reflection_;
 }
 
 void protobuf_AddDesc_commondefine_2eproto() {
@@ -85,11 +119,18 @@ void protobuf_AddDesc_commondefine_2eproto() {
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\022commondefine.proto\022\035Micro.Future.Messa"
     "ge.Business\"/\n\nDataHeader\022\020\n\010serialId\030\001 "
-    "\001(\r\022\017\n\007hasMore\030\002 \001(\010b\006proto3", 108);
+    "\001(\r\022\017\n\007hasMore\030\002 \001(\010\"\270\001\n\tStringMap\0229\n\006he"
+    "ader\030\001 \001(\0132).Micro.Future.Message.Busine"
+    "ss.DataHeader\022B\n\005entry\030\002 \003(\01323.Micro.Fut"
+    "ure.Message.Business.StringMap.EntryEntr"
+    "y\032,\n\nEntryEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 "
+    "\001(\t:\0028\001b\006proto3", 295);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "commondefine.proto", &protobuf_RegisterTypes);
   DataHeader::default_instance_ = new DataHeader();
+  StringMap::default_instance_ = new StringMap();
   DataHeader::default_instance_->InitAsDefaultInstance();
+  StringMap::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_commondefine_2eproto);
 }
 
@@ -410,6 +451,376 @@ void DataHeader::clear_hasmore() {
   
   hasmore_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.DataHeader.hasMore)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int StringMap::kHeaderFieldNumber;
+const int StringMap::kEntryFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+StringMap::StringMap()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:Micro.Future.Message.Business.StringMap)
+}
+
+void StringMap::InitAsDefaultInstance() {
+  _is_default_instance_ = true;
+  header_ = const_cast< ::Micro::Future::Message::Business::DataHeader*>(&::Micro::Future::Message::Business::DataHeader::default_instance());
+}
+
+StringMap::StringMap(const StringMap& from)
+  : ::google::protobuf::Message(),
+    _internal_metadata_(NULL) {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:Micro.Future.Message.Business.StringMap)
+}
+
+void StringMap::SharedCtor() {
+    _is_default_instance_ = false;
+  _cached_size_ = 0;
+  header_ = NULL;
+  entry_.SetAssignDescriptorCallback(
+      protobuf_AssignDescriptorsOnce);
+  entry_.SetEntryDescriptor(
+      &::Micro::Future::Message::Business::StringMap_EntryEntry_descriptor_);
+}
+
+StringMap::~StringMap() {
+  // @@protoc_insertion_point(destructor:Micro.Future.Message.Business.StringMap)
+  SharedDtor();
+}
+
+void StringMap::SharedDtor() {
+  if (this != default_instance_) {
+    delete header_;
+  }
+}
+
+void StringMap::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* StringMap::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return StringMap_descriptor_;
+}
+
+const StringMap& StringMap::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_commondefine_2eproto();
+  return *default_instance_;
+}
+
+StringMap* StringMap::default_instance_ = NULL;
+
+StringMap* StringMap::New(::google::protobuf::Arena* arena) const {
+  StringMap* n = new StringMap;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void StringMap::Clear() {
+// @@protoc_insertion_point(message_clear_start:Micro.Future.Message.Business.StringMap)
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
+  entry_.Clear();
+}
+
+bool StringMap::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:Micro.Future.Message.Business.StringMap)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional .Micro.Future.Message.Business.DataHeader header = 1;
+      case 1: {
+        if (tag == 10) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_header()));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(18)) goto parse_entry;
+        break;
+      }
+
+      // map<string, string> entry = 2;
+      case 2: {
+        if (tag == 18) {
+         parse_entry:
+          DO_(input->IncrementRecursionDepth());
+         parse_loop_entry:
+          ::google::protobuf::scoped_ptr<StringMap_EntryEntry> entry(entry_.NewEntry());
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+              input, entry.get()));
+          (*mutable_entry())[entry->key()] = *entry->mutable_value();
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            entry->key().data(), entry->key().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.StringMap.EntryEntry.key"));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            entry->mutable_value()->data(),
+            entry->mutable_value()->length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.StringMap.EntryEntry.value"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(18)) goto parse_loop_entry;
+        input->UnsafeDecrementRecursionDepth();
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:Micro.Future.Message.Business.StringMap)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:Micro.Future.Message.Business.StringMap)
+  return false;
+#undef DO_
+}
+
+void StringMap::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:Micro.Future.Message.Business.StringMap)
+  // optional .Micro.Future.Message.Business.DataHeader header = 1;
+  if (this->has_header()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, *this->header_, output);
+  }
+
+  // map<string, string> entry = 2;
+  {
+    ::google::protobuf::scoped_ptr<StringMap_EntryEntry> entry;
+    for (::google::protobuf::Map< ::std::string, ::std::string >::const_iterator
+        it = this->entry().begin();
+        it != this->entry().end(); ++it) {
+      entry.reset(entry_.NewEntryWrapper(it->first, it->second));
+      ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+          2, *entry, output);
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        it->first.data(), it->first.length(),
+        ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+        "Micro.Future.Message.Business.StringMap.EntryEntry.key");
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        it->second.data(), it->second.length(),
+        ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+        "Micro.Future.Message.Business.StringMap.EntryEntry.value");
+    }
+  }
+
+  // @@protoc_insertion_point(serialize_end:Micro.Future.Message.Business.StringMap)
+}
+
+::google::protobuf::uint8* StringMap::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:Micro.Future.Message.Business.StringMap)
+  // optional .Micro.Future.Message.Business.DataHeader header = 1;
+  if (this->has_header()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        1, *this->header_, target);
+  }
+
+  // map<string, string> entry = 2;
+  {
+    ::google::protobuf::scoped_ptr<StringMap_EntryEntry> entry;
+    for (::google::protobuf::Map< ::std::string, ::std::string >::const_iterator
+        it = this->entry().begin();
+        it != this->entry().end(); ++it) {
+      entry.reset(entry_.NewEntryWrapper(it->first, it->second));
+      target = ::google::protobuf::internal::WireFormatLite::
+          WriteMessageNoVirtualToArray(
+              2, *entry, target);
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        it->first.data(), it->first.length(),
+        ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+        "Micro.Future.Message.Business.StringMap.EntryEntry.key");
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        it->second.data(), it->second.length(),
+        ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+        "Micro.Future.Message.Business.StringMap.EntryEntry.value");
+    }
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.Business.StringMap)
+  return target;
+}
+
+int StringMap::ByteSize() const {
+// @@protoc_insertion_point(message_byte_size_start:Micro.Future.Message.Business.StringMap)
+  int total_size = 0;
+
+  // optional .Micro.Future.Message.Business.DataHeader header = 1;
+  if (this->has_header()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->header_);
+  }
+
+  // map<string, string> entry = 2;
+  total_size += 1 * this->entry_size();
+  {
+    ::google::protobuf::scoped_ptr<StringMap_EntryEntry> entry;
+    for (::google::protobuf::Map< ::std::string, ::std::string >::const_iterator
+        it = this->entry().begin();
+        it != this->entry().end(); ++it) {
+      entry.reset(entry_.NewEntryWrapper(it->first, it->second));
+      total_size += ::google::protobuf::internal::WireFormatLite::
+          MessageSizeNoVirtual(*entry);
+    }
+  }
+
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void StringMap::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Micro.Future.Message.Business.StringMap)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  const StringMap* source = 
+      ::google::protobuf::internal::DynamicCastToGenerated<const StringMap>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Micro.Future.Message.Business.StringMap)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Micro.Future.Message.Business.StringMap)
+    MergeFrom(*source);
+  }
+}
+
+void StringMap::MergeFrom(const StringMap& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Micro.Future.Message.Business.StringMap)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  entry_.MergeFrom(from.entry_);
+  if (from.has_header()) {
+    mutable_header()->::Micro::Future::Message::Business::DataHeader::MergeFrom(from.header());
+  }
+}
+
+void StringMap::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Micro.Future.Message.Business.StringMap)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void StringMap::CopyFrom(const StringMap& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Micro.Future.Message.Business.StringMap)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool StringMap::IsInitialized() const {
+
+  return true;
+}
+
+void StringMap::Swap(StringMap* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void StringMap::InternalSwap(StringMap* other) {
+  std::swap(header_, other->header_);
+  entry_.Swap(&other->entry_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata StringMap::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = StringMap_descriptor_;
+  metadata.reflection = StringMap_reflection_;
+  return metadata;
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// StringMap
+
+// optional .Micro.Future.Message.Business.DataHeader header = 1;
+bool StringMap::has_header() const {
+  return !_is_default_instance_ && header_ != NULL;
+}
+void StringMap::clear_header() {
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
+}
+const ::Micro::Future::Message::Business::DataHeader& StringMap::header() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.StringMap.header)
+  return header_ != NULL ? *header_ : *default_instance_->header_;
+}
+::Micro::Future::Message::Business::DataHeader* StringMap::mutable_header() {
+  
+  if (header_ == NULL) {
+    header_ = new ::Micro::Future::Message::Business::DataHeader;
+  }
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.StringMap.header)
+  return header_;
+}
+::Micro::Future::Message::Business::DataHeader* StringMap::release_header() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.StringMap.header)
+  
+  ::Micro::Future::Message::Business::DataHeader* temp = header_;
+  header_ = NULL;
+  return temp;
+}
+void StringMap::set_allocated_header(::Micro::Future::Message::Business::DataHeader* header) {
+  delete header_;
+  header_ = header;
+  if (header) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.StringMap.header)
+}
+
+// map<string, string> entry = 2;
+int StringMap::entry_size() const {
+  return entry_.size();
+}
+void StringMap::clear_entry() {
+  entry_.Clear();
+}
+ const ::google::protobuf::Map< ::std::string, ::std::string >&
+StringMap::entry() const {
+  // @@protoc_insertion_point(field_map:Micro.Future.Message.Business.StringMap.entry)
+  return entry_.GetMap();
+}
+ ::google::protobuf::Map< ::std::string, ::std::string >*
+StringMap::mutable_entry() {
+  // @@protoc_insertion_point(field_mutable_map:Micro.Future.Message.Business.StringMap.entry)
+  return entry_.MutableMap();
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

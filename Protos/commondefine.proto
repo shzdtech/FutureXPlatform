@@ -7,3 +7,9 @@ message DataHeader
 	uint32 serialId = 1;
 	bool hasMore = 2;
 }
+
+message StringMap
+{
+DataHeader header = 1; 
+map<string,string> entry = 2;
+}

@@ -2,9 +2,7 @@
 #define __utility_atomicutil_h
 
 #include <atomic>
-
-const double EPSILON = 1e-5;
-const double ONE_MINUS_EPS = 1 - 1e-5;
+#include "epsdouble.h"
 
 class atomicutil
 {

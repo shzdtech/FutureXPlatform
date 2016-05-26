@@ -15,6 +15,7 @@
     </Filter>
     <Filter Include="protos">
       <UniqueIdentifier>{499f391e-531f-4866-ac70-cb6cfd14f0ef}</UniqueIdentifier>
+      <Extensions>proto;pb.cc;pb.h</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -111,6 +112,12 @@
     <ClInclude Include="proto\commondefine.pb.h">
       <Filter>protos</Filter>
     </ClInclude>
+    <ClInclude Include="PBStringMapSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="pbmacros.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PBBizErrorSerializer.cpp">
@@ -200,6 +207,9 @@
     <ClCompile Include="proto\commondefine.pb.cc">
       <Filter>protos</Filter>
     </ClCompile>
+    <ClCompile Include="PBStringMapSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\Protos\businessobj.proto">
@@ -214,10 +224,8 @@
     <CustomBuild Include="..\Protos\commondefine.proto">
       <Filter>protos</Filter>
     </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Protos\usermanager.proto">
+    <CustomBuild Include="..\Protos\usermanager.proto">
       <Filter>protos</Filter>
-    </None>
+    </CustomBuild>
   </ItemGroup>
 </Project>

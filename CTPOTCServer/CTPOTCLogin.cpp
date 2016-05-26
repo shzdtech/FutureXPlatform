@@ -41,13 +41,11 @@
 
 dataobj_ptr CTPOTCLogin::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
+	auto stdo = (MapDO<std::string>*)reqDO.get();
 	if (!session->IsLogin())
 	{
-		auto stdo = (StringTableDO*)reqDO.get();
-		auto& data = stdo->Data;
-
-		auto& userid = TUtil::FirstNamedEntry(STR_USER_ID, data, EMPTY_STRING);
-		auto& password = TUtil::FirstNamedEntry(STR_PASSWORD, data, EMPTY_STRING);
+		auto& userid = stdo->TryFind(STR_USER_ID, EMPTY_STRING);
+		auto& password = stdo->TryFind(STR_PASSWORD, EMPTY_STRING);
 
 		bool userInCache = false;
 		std::shared_ptr<UserInfoDO> userInfo_Ptr;
@@ -92,13 +90,16 @@ dataobj_ptr CTPOTCLogin::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI,
 		session->setLoginStatus(true);
 	}
 
-	return std::static_pointer_cast<UserInfoDO>
+	auto userInfoDO_Ptr = std::static_pointer_cast<UserInfoDO>
 		(session->getUserInfo()->getAttribute(STR_KEY_USER_INFO_DETAIL));
+	userInfoDO_Ptr->SerialId = stdo->SerialId;
+
+	return userInfoDO_Ptr;
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCLogin::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, IMessageProcessor* session)
-// Purpose:    Implementation of CTPOTCLogin::HandleResponse()
+// Name:       CTPOTCLogin::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, IMessageProcessor* session)
+// Purpose:    Implementation of CTPOTCLogin::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
 // - rawAPI
@@ -106,7 +107,7 @@ dataobj_ptr CTPOTCLogin::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI,
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCLogin::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOTCLogin::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	return nullptr;
 }

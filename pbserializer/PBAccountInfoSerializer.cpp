@@ -6,8 +6,9 @@
  ***********************************************************************/
 
 #include "PBAccountInfoSerializer.h"
-#include "PBStringTableSerializer.h"
+#include "PBStringMapSerializer.h"
 #include "proto/businessobj.pb.h"
+#include "pbmacros.h"
 #include "../dataobject/AccountInfoDO.h"
 
 ////////////////////////////////////////////////////////////////////////
@@ -25,20 +26,14 @@ data_buffer PBAccountInfoSerializer::Serialize(const dataobj_ptr abstractDO)
 	PBAccountInfo PB;
 	auto pDO = (AccountInfoDO*)abstractDO.get();
 
-	if (pDO->SerialId != 0)
-	{
-		auto pHeader = new DataHeader();
-		pHeader->set_serialid(pDO->SerialId);
-		if (pDO->HasMore)
-			pHeader->set_hasmore(pDO->HasMore);
+	FillPBHeader(PB, pDO);
 
-		PB.set_allocated_header(pHeader);
-	}
 	PB.set_brokerid(pDO->BrokerID);
 	PB.set_accountid(pDO->AccountID);
 	PB.set_premortgage(pDO->PreMortgage);
 	PB.set_precredit(pDO->PreCredit);
 	PB.set_predeposit(pDO->PreDeposit);
+
 	PB.set_prebalance(pDO->PreBalance);
 	PB.set_premargin(pDO->PreMargin);
 	PB.set_interestbase(pDO->InterestBase);
@@ -82,5 +77,5 @@ data_buffer PBAccountInfoSerializer::Serialize(const dataobj_ptr abstractDO)
 
 dataobj_ptr PBAccountInfoSerializer::Deserialize(const data_buffer& rawdata)
 {
-	return PBStringTableSerializer::Instance()->Deserialize(rawdata);
+	return PBStringMapSerializer::Instance()->Deserialize(rawdata);
 }

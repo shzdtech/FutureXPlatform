@@ -8,7 +8,7 @@
 #if !defined(__dataobject_PortfolioDO_h)
 #define __dataobject_PortfolioDO_h
 
-#include "AbstractDataObj.h"
+#include "dataobjectbase.h"
 #include "ContractKey.h"
 #include <chrono>
 
@@ -53,7 +53,7 @@ private:
 };
 
 
-class PortfolioDO : public PortfolioKey, public AbstractDataObj
+class PortfolioDO : public PortfolioKey, public dataobjectbase
 {
 public:
 	PortfolioDO(const std::string& portfolioID, const std::string& userID) :

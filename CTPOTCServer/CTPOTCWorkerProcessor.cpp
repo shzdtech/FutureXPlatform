@@ -22,13 +22,13 @@
 #include "../databaseop/ContractDAO.h"
 
 #include "../ordermanager/OrderSeqGen.h"
-////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCWorkerProcessor::CTPOTCWorkerProcessor(const std::map<std::string, std::string>& configMap)
-// Purpose:    Implementation of CTPOTCWorkerProcessor::CTPOTCWorkerProcessor()
-// Parameters:
-// - frontserver
-// Return:     
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       CTPOTCWorkerProcessor::CTPOTCWorkerProcessor(const std::map<std::string, std::string>& configMap)
+ // Purpose:    Implementation of CTPOTCWorkerProcessor::CTPOTCWorkerProcessor()
+ // Parameters:
+ // - frontserver
+ // Return:     
+ ////////////////////////////////////////////////////////////////////////
 
 CTPOTCWorkerProcessor::CTPOTCWorkerProcessor(const std::map<std::string, std::string>& configMap,
 	IPricingDataContext* pricingCtx)
@@ -169,7 +169,7 @@ void CTPOTCWorkerProcessor::TriggerPricing(const StrategyContractDO& strategyDO)
 			for (auto pSession : *pNotiferSet)
 			{
 				OnResponseProcMacro(pSession->getProcessor(), MSG_ID_RTN_PRICING,
-					&strategyDO);
+					strategyDO.SerialId, &strategyDO);
 			}
 		}
 	}
@@ -206,7 +206,8 @@ void CTPOTCWorkerProcessor::TriggerOTCOrderUpdating(const StrategyContractDO& st
 			{
 				for (auto pSession : *pNotiferSet)
 				{
-					OnResponseProcMacro(pSession->getProcessor(), MSG_ID_ORDER_UPDATE, &order);
+					OnResponseProcMacro(pSession->getProcessor(), MSG_ID_ORDER_UPDATE,
+						order.SerialId, &order);
 				}
 			}
 		}

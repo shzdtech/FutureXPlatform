@@ -6,8 +6,7 @@
 ***********************************************************************/
 
 #include "../dataobject/ComplexTableDO.h"
-#include "../message/BizError.h"
-#include "ExceptionDef.h"
+#include "pbmacros.h"
 #include "PBComplexTableSerializer.h"
 #include "proto/simpletable.pb.h"
 
@@ -48,22 +47,14 @@ data_buffer PBComplexTableSerializer::Serialize(const dataobj_ptr abstractDO)
 {
 	auto ctDO = (ComplexTableDO*)abstractDO.get();
 	ComplexTable ct;
-	if (ctDO->SerialId != 0)
-	{
-		auto pHeader = new DataHeader();
-		pHeader->set_serialid(ctDO->SerialId);
-		if (ctDO->HasMore)
-			pHeader->set_hasmore(ctDO->HasMore);
-
-		ct.set_allocated_hearder(pHeader);
-	}
+	FillPBHeader(ct, ctDO)
 
 	fillTable(ctDO, &ct);
 	ComplexTableDO* nestDO = ctDO;
 	ComplexTable* nestTbl = &ct;
-	while (nestDO->nestTable){
-		nestDO = nestDO->nestTable.get();
-		nestTbl = nestTbl->mutable_nesttable();
+	while (nestDO->NestedTable){
+		nestDO = nestDO->NestedTable.get();
+		nestTbl = nestTbl->mutable_nestedtable();
 		fillTable(nestDO, nestTbl);
 	}
 
@@ -104,25 +95,19 @@ void fillDO(ComplexTable& ct, ComplexTableDO* ctDO)
 
 dataobj_ptr PBComplexTableSerializer::Deserialize(const data_buffer& rawdata)
 {
+	ComplexTable ct;
+	ParseWithThrow(ct, rawdata);
+
 	auto ctDO = new ComplexTableDO;
 	dataobj_ptr ret(ctDO);
-
-	ComplexTable ct;
-	if (!ct.ParseFromArray(rawdata.get(), rawdata.size()))
-		throw BizError(INVALID_DATAFORMAT_CODE, INVALID_DATAFORMAT_DESC);
-
-	if (ct.has_hearder())
-	{
-		ctDO->SerialId = ct.hearder().serialid();
-		ctDO->HasMore = ct.hearder().hasmore();
-	}
+	FillDOHeader(ctDO, ct);
 
 	fillDO(ct, ctDO);
 	ComplexTableDO* nestDO = ctDO;
 	ComplexTable &nestTbl = ct;
-	while (nestTbl.has_nesttable()){
-		nestTbl = nestTbl.nesttable();
-		nestDO = nestDO->nestTable.get();
+	while (nestTbl.has_nestedtable()){
+		nestTbl = nestTbl.nestedtable();
+		nestDO = nestDO->NestedTable.get();
 		fillDO(nestTbl, nestDO);
 	}
 

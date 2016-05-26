@@ -24,8 +24,8 @@ dataobj_ptr CTSQueryOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAP
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTSQueryOrder::HandleResponse(param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTSQueryOrder::HandleResponse()
+// Name:       CTSQueryOrder::HandleResponse(const uint32_t serialId, param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
+// Purpose:    Implementation of CTSQueryOrder::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawParams
 // - rawAPI
@@ -33,7 +33,7 @@ dataobj_ptr CTSQueryOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAP
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTSQueryOrder::HandleResponse(param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTSQueryOrder::HandleResponse(const uint32_t serialId, param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
 {
 	OrderDO_Ptr order_ptr = *((OrderDO_Ptr*)rawParams[0]);
 

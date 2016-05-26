@@ -25,12 +25,11 @@
 
 dataobj_ptr TestingLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
-	auto stdo = (StringTableDO*)reqDO.get();
-	auto& data = stdo->Data;
+	auto stdo = (MapDO<std::string>*)reqDO.get();
 
-	auto& brokeid = TUtil::FirstNamedEntry(STR_BROKER_ID, data, EMPTY_STRING);
-	auto& userid = TUtil::FirstNamedEntry(STR_USER_ID, data, EMPTY_STRING);
-	auto& password = TUtil::FirstNamedEntry(STR_PASSWORD, data, EMPTY_STRING);
+	auto& brokeid = stdo->TryFind(STR_BROKER_ID, EMPTY_STRING);
+	auto& userid = stdo->TryFind(STR_USER_ID, EMPTY_STRING);
+	auto& password = stdo->TryFind(STR_PASSWORD, EMPTY_STRING);
 	
 	auto pUserInfo = session->getUserInfo();
 	pUserInfo->setInvestorId(userid);
@@ -45,6 +44,7 @@ dataobj_ptr TestingLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 
 	//
 	auto pDO = std::make_shared<UserInfoDO>();
+	pDO->SerialId = reqDO->SerialId;
 
 	pDO->BrokerId = pUserInfo->getBrokerId();;
 	pDO->FirstName = pUserInfo->getName();

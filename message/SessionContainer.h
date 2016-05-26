@@ -9,7 +9,7 @@
 #define __message_SessionContainer_h
 #include <set>
 #include <memory>
-#include "../utility/AutoFillMap.h"
+#include "../utility/autofillmap.h"
 #include "../utility/ElementMutex.h"
 #include "IMessageSession.h"
 
@@ -145,8 +145,8 @@ protected:
 	}
 
 private:
-	AutoFillMap<K, ElementMutex_Ptr< std::set<IMessageSession*>>> _sessionMap;
-	AutoFillMap<IMessageSession*, std::set<K>> _reverseMap;
+	autofillmap<K, ElementMutex_Ptr< std::set<IMessageSession*>>> _sessionMap;
+	autofillmap<IMessageSession*, std::set<K>> _reverseMap;
 	std::mutex _delMutex;
 };
 

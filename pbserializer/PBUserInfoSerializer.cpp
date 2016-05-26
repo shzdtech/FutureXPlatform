@@ -7,8 +7,7 @@
 
 #include "PBUserInfoSerializer.h"
 #include "proto/usermanager.pb.h"
-#include "../message/BizError.h"
-#include "ExceptionDef.h"
+#include "pbmacros.h"
 #include "../dataobject/UserInfoDO.h"
 
 ////////////////////////////////////////////////////////////////////////
@@ -24,8 +23,8 @@ data_buffer PBUserInfoSerializer::Serialize(const dataobj_ptr abstractDO)
 	using namespace Micro::Future::Message::Business;
 	
 	PBUserInfo PB;
-
 	auto pDO = (UserInfoDO*)abstractDO.get();
+	FillPBHeader(PB, pDO);
 
 	PB.set_address(pDO->Address);
 	PB.set_company(pDO->Company);
@@ -60,11 +59,10 @@ data_buffer PBUserInfoSerializer::Serialize(const dataobj_ptr abstractDO)
 dataobj_ptr PBUserInfoSerializer::Deserialize(const data_buffer& rawdata)
 {
 	Micro::Future::Message::Business::PBUserInfo PB;
+	ParseWithThrow(PB, rawdata);
 
 	auto ret = std::make_shared<UserInfoDO>();
-
-	if (!PB.ParseFromArray(rawdata.get(), rawdata.size()))
-		throw BizError(INVALID_DATAFORMAT_CODE, INVALID_DATAFORMAT_DESC);
+	FillDOHeader(ret, PB);
 
 	ret->Address = PB.address();
 	ret->Company = PB.company();

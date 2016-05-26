@@ -6,14 +6,10 @@
  ***********************************************************************/
 
 #include "PBStrategySerializer.h"
-#include "PBStringTableSerializer.h"
 #include "proto/businessobj.pb.h"
-#include "../message/BizError.h"
-#include "ExceptionDef.h"
+#include "pbmacros.h"
 #include "../dataobject/TemplateDO.h"
-
-#include "../databaseop/ContractDAO.h"
-#include "../databaseop/StrategyContractDAO.h"
+#include "../dataobject/StrategyContractDO.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       PBStrategySerializer::Serialize(const dataobj_ptr abstractDO)
@@ -26,8 +22,8 @@
 data_buffer PBStrategySerializer::Serialize(const dataobj_ptr abstractDO)
 {
 	Micro::Future::Message::Business::PBStrategyList PB;
-
 	auto pDO = (VectorDO<StrategyContractDO>*)abstractDO.get();
+	FillPBHeader(PB, pDO);
 
 	for (auto& sdo : *pDO)
 	{
@@ -81,11 +77,10 @@ data_buffer PBStrategySerializer::Serialize(const dataobj_ptr abstractDO)
 dataobj_ptr PBStrategySerializer::Deserialize(const data_buffer& rawdata)
 {
 	Micro::Future::Message::Business::PBStrategyList PB;
+	ParseWithThrow(PB, rawdata);
 
 	auto ret = std::make_shared<VectorDO<StrategyContractDO>>();
-
-	if (!PB.ParseFromArray(rawdata.get(), rawdata.size()))
-		throw BizError(INVALID_DATAFORMAT_CODE, INVALID_DATAFORMAT_DESC);
+	FillDOHeader(ret, PB);
 
 	auto& strategyList = PB.strategy();
 

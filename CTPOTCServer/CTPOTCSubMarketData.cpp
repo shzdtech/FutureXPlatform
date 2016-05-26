@@ -49,6 +49,7 @@ dataobj_ptr CTPOTCSubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 		std::make_shared < UserContractParamMap >();
 
 	auto ret = std::make_shared<VectorDO<PricingDO>>();
+	ret->SerialId = reqDO->SerialId;
 
 	for (auto& it : *otcContractVec)
 	{
@@ -75,8 +76,8 @@ dataobj_ptr CTPOTCSubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCSubMarketData::HandleResponse(param_vector rawRespParams, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTPOTCSubMarketData::HandleResponse()
+// Name:       CTPOTCSubMarketData::HandleResponse(const uint32_t serialId, param_vector rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Purpose:    Implementation of CTPOTCSubMarketData::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
 // - rawAPI
@@ -84,7 +85,7 @@ dataobj_ptr CTPOTCSubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCSubMarketData::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOTCSubMarketData::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	if (CTPUtility::HasError(rawRespParams[1]))
 	{

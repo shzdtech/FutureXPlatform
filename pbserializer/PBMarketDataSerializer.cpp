@@ -6,6 +6,7 @@
  ***********************************************************************/
 
 #include "PBMarketDataSerializer.h"
+#include "pbmacros.h"
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/MarketDataDO.h"
 #include "proto/businessobj.pb.h"
@@ -24,16 +25,7 @@ data_buffer PBMarketDataSerializer::Serialize(const dataobj_ptr abstractDO)
 	
 	PBMarketDataList PBList;
 	auto pVecDO = (VectorDO<MarketDataDO>*)abstractDO.get();
-
-	if (pVecDO->SerialId != 0)
-	{
-		auto pHeader = new DataHeader();
-		pHeader->set_serialid(pVecDO->SerialId);
-		if (pVecDO->HasMore)
-			pHeader->set_hasmore(pVecDO->HasMore);
-
-		PBList.set_allocated_header(pHeader);
-	}
+	FillPBHeader(PBList, pVecDO);
 
 	for (auto& pDO : *pVecDO)
 	{

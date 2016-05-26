@@ -10,7 +10,7 @@
 
 #include <memory>
 #include "data_buffer.h"
-#include "AbstractDataObj.h"
+#include "dataobjectbase.h"
 
 class ISerializer
 {

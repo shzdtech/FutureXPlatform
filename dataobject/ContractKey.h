@@ -24,11 +24,6 @@ public:
 	ContractKey(const std::string& exchangeID, const std::string& instrumentID) :
 		_exchangeID(exchangeID), _instrumentID(instrumentID){}
 
-	ContractKey& operator= (const ContractKey& contractKey)
-	{
-		return *this;
-	}
-
 	inline int compare(const ContractKey& contractKey) const
 	{
 		int cmp = stringutility::compare(_instrumentID.data(), contractKey._instrumentID.data());
@@ -37,12 +32,12 @@ public:
 			stringutility::compare(_exchangeID.data(), contractKey._exchangeID.data());
 	}
 
-	bool operator< (const ContractKey& contractKey) const
+	inline bool operator< (const ContractKey& contractKey) const
 	{
 		return compare(contractKey) < 0;
 	}
 
-	bool operator== (const ContractKey& contractKey) const
+	inline bool operator== (const ContractKey& contractKey) const
 	{
 		return compare(contractKey) == 0;
 	}

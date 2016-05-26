@@ -7,6 +7,8 @@
 
 #include "CTSSubscribeMarketData.h"
 #include "CTSAPIWrapper.h"
+#include "../common/BizErrorIDs.h"
+#include "../dataobject/MarketDataDO.h"
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/FieldName.h"
 
@@ -24,6 +26,9 @@
 dataobj_ptr CTSSubscribeMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	auto stdo = (StringTableDO*)reqDO.get();
+	auto mdVec = std::make_shared<VectorDO<MarketDataDO>>();
+	mdVec->SerialId = reqDO->SerialId;
+
 	if (stdo->Data.size() > 0)
 	{
 		auto& exchangeList = stdo->Data[STR_EXCHANGE_ID];
@@ -32,16 +37,18 @@ dataobj_ptr CTSSubscribeMarketData::HandleRequest(const dataobj_ptr reqDO, IRawA
 		auto api = (CTSAPIWrapper*)rawAPI;
 		for (int i = 0; i < nInst; i++)
 		{
-			api->Impl()->Subscribe(exchangeList[i].data(), instList[i].data());
+			if( api->Impl()->Subscribe(exchangeList[i].data(), instList[i].data(), reqDO->SerialId) 
+				== NO_ERROR)
+				mdVec->push_back(MarketDataDO(exchangeList[i], instList[i]));
 		}
 	}
 
-	return nullptr;
+	return mdVec;
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTSSubscribeMarketData::HandleResponse(param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTSSubscribeMarketData::HandleResponse()
+// Name:       CTSSubscribeMarketData::HandleResponse(const uint32_t serialId, param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
+// Purpose:    Implementation of CTSSubscribeMarketData::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawParams
 // - rawAPI
@@ -49,7 +56,7 @@ dataobj_ptr CTSSubscribeMarketData::HandleRequest(const dataobj_ptr reqDO, IRawA
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTSSubscribeMarketData::HandleResponse(param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTSSubscribeMarketData::HandleResponse(const uint32_t serialId, param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
 {
 	return nullptr;
 }

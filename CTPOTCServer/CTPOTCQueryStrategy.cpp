@@ -46,6 +46,7 @@ dataobj_ptr CTPOTCQueryStrategy::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 		session->getContext()->getAttribute(STR_KEY_USER_STRATEGY));
 
 	auto sDOVec_Ptr = std::make_shared<VectorDO<StrategyContractDO>>();
+	sDOVec_Ptr->SerialId = reqDO->SerialId;
 
 	auto wkProcPtr = std::static_pointer_cast<CTPOTCWorkerProcessor>
 		(GlobalProcessorRegistry::FindProcessor(CTPWorkProcessorID::WORKPROCESSOR_OTC));
@@ -74,8 +75,8 @@ dataobj_ptr CTPOTCQueryStrategy::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCQueryStrategy::HandleResponse(paramvector& rawRespParams, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTPOTCQueryStrategy::HandleResponse()
+// Name:       CTPOTCQueryStrategy::HandleResponse(const uint32_t serialId, paramvector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Purpose:    Implementation of CTPOTCQueryStrategy::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
 // - rawAPI
@@ -83,7 +84,7 @@ dataobj_ptr CTPOTCQueryStrategy::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCQueryStrategy::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOTCQueryStrategy::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	return nullptr;
 }

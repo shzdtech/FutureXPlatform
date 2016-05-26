@@ -9,10 +9,10 @@
 #define __dataobject_TradeRecordDO_h
 
 #include "ContractKey.h"
-#include "AbstractDataObj.h"
+#include "dataobjectbase.h"
 #include "OrderDO.h"
 
-class TradeRecordDO : public ContractKey, public AbstractDataObj
+class TradeRecordDO : public ContractKey, public dataobjectbase
 {
 public:
 	TradeRecordDO(const std::string& exchangeID, const std::string& instrumentID)

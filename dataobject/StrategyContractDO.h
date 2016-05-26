@@ -8,12 +8,12 @@
 #if !defined(__dataobject_StrategyContractDO_h)
 #define __dataobject_StrategyContractDO_h
 
-#include "AbstractDataObj.h"
+#include "dataobjectbase.h"
 #include "ContractParam.h"
 #include "ContractKey.h"
 #include "PortfolioDO.h"
 
-class StrategyContractDO : public UserContractKey, public PortfolioKey, public AbstractDataObj
+class StrategyContractDO : public UserContractKey, public PortfolioKey, public dataobjectbase
 {
 public:
 	StrategyContractDO(const std::string& exchangeID, const std::string& instrumentID,

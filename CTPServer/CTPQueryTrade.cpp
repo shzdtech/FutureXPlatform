@@ -29,16 +29,15 @@
 
 dataobj_ptr CTPQueryTrade::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
-	auto stdo = (StringTableDO*)reqDO.get();
-	auto data = stdo->Data;
+	auto stdo = (MapDO<std::string>*)reqDO.get();
 
 	auto& brokeid = session->getUserInfo()->getBrokerId();
 	auto& userid = session->getUserInfo()->getInvestorId();
-	auto& instrid = TUtil::FirstNamedEntry(STR_INSTRUMENT_ID, data, EMPTY_STRING);
-	auto& exchangeid = TUtil::FirstNamedEntry(STR_EXCHANGE_ID, data, EMPTY_STRING);
-	auto& tradeid = TUtil::FirstNamedEntry(STR_TRADE_ID, data, EMPTY_STRING);
-	auto& tmstart = TUtil::FirstNamedEntry(STR_TIME_START, data, EMPTY_STRING);
-	auto& tmend = TUtil::FirstNamedEntry(STR_TIME_END, data, EMPTY_STRING);
+	auto& instrid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
+	auto& exchangeid = stdo->TryFind(STR_EXCHANGE_ID, EMPTY_STRING);
+	auto& tradeid = stdo->TryFind(STR_TRADE_ID, EMPTY_STRING);
+	auto& tmstart = stdo->TryFind(STR_TIME_START, EMPTY_STRING);
+	auto& tmend = stdo->TryFind(STR_TIME_END, EMPTY_STRING);
 
 
 	CThostFtdcQryTradeField req;
@@ -50,15 +49,15 @@ dataobj_ptr CTPQueryTrade::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAP
 	std::strcpy(req.TradeID, tradeid.data());
 	std::strcpy(req.TradeTimeStart, tmstart.data());
 	std::strcpy(req.TradeTimeEnd, tmend.data());
-	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryTrade(&req, stdo->SerialId);
+	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryTrade(&req, reqDO->SerialId);
 	CTPUtility::CheckReturnError(iRet);
 
 	return nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPQueryTrade::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTPQueryTrade::HandleResponse()
+// Name:       CTPQueryTrade::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Purpose:    Implementation of CTPQueryTrade::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
 // - rawAPI
@@ -66,7 +65,7 @@ dataobj_ptr CTPQueryTrade::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAP
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryTrade::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryTrade::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	CTPUtility::CheckError(rawRespParams[1]);
 
@@ -75,7 +74,7 @@ dataobj_ptr CTPQueryTrade::HandleResponse(param_vector& rawRespParams, IRawAPI* 
 	{
 		auto pDO = new TradeRecordDO(pData->ExchangeID, pData->InstrumentID);
 		ret.reset(pDO);
-		pDO->SerialId = *(uint32_t*)rawRespParams[2];
+		pDO->SerialId = serialId;
 		pDO->HasMore = *(bool*)rawRespParams[3];
 
 		pDO->OrderID = std::strtoull(pData->OrderRef, nullptr, 0);

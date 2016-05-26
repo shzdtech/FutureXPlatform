@@ -46,14 +46,15 @@ dataobj_ptr CTPOCTUnSubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAP
 	dataobj_ptr ret;
 	auto stDO = new TDataObject<std::string>;
 	ret.reset(stDO);
+	stDO->SerialId = reqDO->SerialId;
 	DLOG(INFO) << "OTCUnsubMarketData successful." << std::endl;
 
 	return ret;
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOCTUnSubMarketData::HandleResponse(param_vector rawParams, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTPOCTUnSubMarketData::HandleResponse()
+// Name:       CTPOCTUnSubMarketData::HandleResponse(const uint32_t serialId, param_vector rawParams, IRawAPI* rawAPI, ISession* session)
+// Purpose:    Implementation of CTPOCTUnSubMarketData::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawParams
 // - rawAPI
@@ -61,7 +62,7 @@ dataobj_ptr CTPOCTUnSubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAP
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOCTUnSubMarketData::HandleResponse(param_vector rawParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOCTUnSubMarketData::HandleResponse(const uint32_t serialId, param_vector rawParams, IRawAPI* rawAPI, ISession* session)
 {
 	return nullptr;
 }

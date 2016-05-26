@@ -19,9 +19,11 @@ message PBUserInfo
    string zipcode = 11;
    int32 role = 12;
    int32 permission = 13;
+   DataHeader header = 14;
 }
 
 message PBUserInfoList
 {
 	repeated PBUserInfo userInfo = 1;
+	DataHeader header = 2;
 }

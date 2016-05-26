@@ -1,19 +1,19 @@
 /***********************************************************************
- * Module:  AbstractDataObj.h
+ * Module:  dataobjectbase.h
  * Author:  milk
  * Modified: 2014年10月4日 0:57:49
- * Purpose: Declaration of the class AbstractDataObj
+ * Purpose: Declaration of the class dataobjectbase
  ***********************************************************************/
 
-#if !defined(__data_AbstractDataObj_h)
-#define __data_AbstractDataObj_h
+#if !defined(__dataobject_dataobjectbase_h)
+#define __dataobject_dataobjectbase_h
 
 #include <string>
 #include <vector>
 #include <memory>
 #include <map>
 
-class AbstractDataObj
+class dataobjectbase
 {
 public:
 	uint32_t SerialId = 0;
@@ -25,7 +25,7 @@ private:
 
 };
 
-typedef std::shared_ptr<AbstractDataObj> dataobj_ptr;
+typedef std::shared_ptr<dataobjectbase> dataobj_ptr;
 
 typedef std::map<std::string, std::vector<int>> MapIntVector;
 typedef std::map<std::string, std::vector<double>> MapDoubleVector;

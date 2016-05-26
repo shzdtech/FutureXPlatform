@@ -41,7 +41,7 @@ void protobuf_AssignDesc_usermanager_2eproto() {
       "usermanager.proto");
   GOOGLE_CHECK(file != NULL);
   PBUserInfo_descriptor_ = file->message_type(0);
-  static const int PBUserInfo_offsets_[13] = {
+  static const int PBUserInfo_offsets_[14] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserInfo, userid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserInfo, password_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserInfo, firstname_),
@@ -55,6 +55,7 @@ void protobuf_AssignDesc_usermanager_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserInfo, zipcode_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserInfo, role_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserInfo, permission_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserInfo, header_),
   };
   PBUserInfo_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
@@ -68,8 +69,9 @@ void protobuf_AssignDesc_usermanager_2eproto() {
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserInfo, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserInfo, _is_default_instance_));
   PBUserInfoList_descriptor_ = file->message_type(1);
-  static const int PBUserInfoList_offsets_[1] = {
+  static const int PBUserInfoList_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserInfoList, userinfo_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserInfoList, header_),
   };
   PBUserInfoList_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
@@ -115,17 +117,21 @@ void protobuf_AddDesc_usermanager_2eproto() {
   already_here = true;
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
+  ::Micro::Future::Message::Business::protobuf_AddDesc_commondefine_2eproto();
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\021usermanager.proto\022\035Micro.Future.Messag"
-    "e.Business\"\360\001\n\nPBUserInfo\022\016\n\006userId\030\001 \001("
-    "\t\022\020\n\010password\030\002 \001(\t\022\021\n\tfirstName\030\003 \001(\t\022\020"
-    "\n\010lastName\030\004 \001(\t\022\016\n\006gender\030\005 \001(\005\022\017\n\007comp"
-    "any\030\006 \001(\t\022\r\n\005email\030\007 \001(\t\022\022\n\ncontactNum\030\010"
-    " \001(\t\022\023\n\013identityNum\030\t \001(\t\022\017\n\007address\030\n \001"
-    "(\t\022\017\n\007zipcode\030\013 \001(\t\022\014\n\004role\030\014 \001(\005\022\022\n\nper"
-    "mission\030\r \001(\005\"M\n\016PBUserInfoList\022;\n\010userI"
+    "e.Business\032\022commondefine.proto\"\253\002\n\nPBUse"
+    "rInfo\022\016\n\006userId\030\001 \001(\t\022\020\n\010password\030\002 \001(\t\022"
+    "\021\n\tfirstName\030\003 \001(\t\022\020\n\010lastName\030\004 \001(\t\022\016\n\006"
+    "gender\030\005 \001(\005\022\017\n\007company\030\006 \001(\t\022\r\n\005email\030\007"
+    " \001(\t\022\022\n\ncontactNum\030\010 \001(\t\022\023\n\013identityNum\030"
+    "\t \001(\t\022\017\n\007address\030\n \001(\t\022\017\n\007zipcode\030\013 \001(\t\022"
+    "\014\n\004role\030\014 \001(\005\022\022\n\npermission\030\r \001(\005\0229\n\006hea"
+    "der\030\016 \001(\0132).Micro.Future.Message.Busines"
+    "s.DataHeader\"\210\001\n\016PBUserInfoList\022;\n\010userI"
     "nfo\030\001 \003(\0132).Micro.Future.Message.Busines"
-    "s.PBUserInfob\006proto3", 380);
+    "s.PBUserInfo\0229\n\006header\030\002 \001(\0132).Micro.Fut"
+    "ure.Message.Business.DataHeaderb\006proto3", 519);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "usermanager.proto", &protobuf_RegisterTypes);
   PBUserInfo::default_instance_ = new PBUserInfo();
@@ -168,6 +174,7 @@ const int PBUserInfo::kAddressFieldNumber;
 const int PBUserInfo::kZipcodeFieldNumber;
 const int PBUserInfo::kRoleFieldNumber;
 const int PBUserInfo::kPermissionFieldNumber;
+const int PBUserInfo::kHeaderFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 PBUserInfo::PBUserInfo()
@@ -178,6 +185,7 @@ PBUserInfo::PBUserInfo()
 
 void PBUserInfo::InitAsDefaultInstance() {
   _is_default_instance_ = true;
+  header_ = const_cast< ::Micro::Future::Message::Business::DataHeader*>(&::Micro::Future::Message::Business::DataHeader::default_instance());
 }
 
 PBUserInfo::PBUserInfo(const PBUserInfo& from)
@@ -205,6 +213,7 @@ void PBUserInfo::SharedCtor() {
   zipcode_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   role_ = 0;
   permission_ = 0;
+  header_ = NULL;
 }
 
 PBUserInfo::~PBUserInfo() {
@@ -224,6 +233,7 @@ void PBUserInfo::SharedDtor() {
   address_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   zipcode_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != default_instance_) {
+    delete header_;
   }
 }
 
@@ -253,6 +263,7 @@ PBUserInfo* PBUserInfo::New(::google::protobuf::Arena* arena) const {
 }
 
 void PBUserInfo::Clear() {
+// @@protoc_insertion_point(message_clear_start:Micro.Future.Message.Business.PBUserInfo)
   userid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   password_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   firstname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
@@ -266,11 +277,13 @@ void PBUserInfo::Clear() {
   zipcode_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   role_ = 0;
   permission_ = 0;
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
 }
 
 bool PBUserInfo::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
   // @@protoc_insertion_point(parse_start:Micro.Future.Message.Business.PBUserInfo)
   for (;;) {
@@ -488,6 +501,19 @@ bool PBUserInfo::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
+        if (input->ExpectTag(114)) goto parse_header;
+        break;
+      }
+
+      // optional .Micro.Future.Message.Business.DataHeader header = 14;
+      case 14: {
+        if (tag == 114) {
+         parse_header:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_header()));
+        } else {
+          goto handle_unusual;
+        }
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -631,6 +657,12 @@ void PBUserInfo::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(13, this->permission(), output);
   }
 
+  // optional .Micro.Future.Message.Business.DataHeader header = 14;
+  if (this->has_header()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      14, *this->header_, output);
+  }
+
   // @@protoc_insertion_point(serialize_end:Micro.Future.Message.Business.PBUserInfo)
 }
 
@@ -762,11 +794,19 @@ void PBUserInfo::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(13, this->permission(), target);
   }
 
+  // optional .Micro.Future.Message.Business.DataHeader header = 14;
+  if (this->has_header()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        14, *this->header_, target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.Business.PBUserInfo)
   return target;
 }
 
 int PBUserInfo::ByteSize() const {
+// @@protoc_insertion_point(message_byte_size_start:Micro.Future.Message.Business.PBUserInfo)
   int total_size = 0;
 
   // optional string userId = 1;
@@ -860,6 +900,13 @@ int PBUserInfo::ByteSize() const {
         this->permission());
   }
 
+  // optional .Micro.Future.Message.Business.DataHeader header = 14;
+  if (this->has_header()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->header_);
+  }
+
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = total_size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
@@ -867,18 +914,22 @@ int PBUserInfo::ByteSize() const {
 }
 
 void PBUserInfo::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Micro.Future.Message.Business.PBUserInfo)
   if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
   const PBUserInfo* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const PBUserInfo>(
           &from);
   if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Micro.Future.Message.Business.PBUserInfo)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Micro.Future.Message.Business.PBUserInfo)
     MergeFrom(*source);
   }
 }
 
 void PBUserInfo::MergeFrom(const PBUserInfo& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Micro.Future.Message.Business.PBUserInfo)
   if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
   if (from.userid().size() > 0) {
 
@@ -929,15 +980,20 @@ void PBUserInfo::MergeFrom(const PBUserInfo& from) {
   if (from.permission() != 0) {
     set_permission(from.permission());
   }
+  if (from.has_header()) {
+    mutable_header()->::Micro::Future::Message::Business::DataHeader::MergeFrom(from.header());
+  }
 }
 
 void PBUserInfo::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Micro.Future.Message.Business.PBUserInfo)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 void PBUserInfo::CopyFrom(const PBUserInfo& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Micro.Future.Message.Business.PBUserInfo)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -966,6 +1022,7 @@ void PBUserInfo::InternalSwap(PBUserInfo* other) {
   zipcode_.Swap(&other->zipcode_);
   std::swap(role_, other->role_);
   std::swap(permission_, other->permission_);
+  std::swap(header_, other->header_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -1011,6 +1068,7 @@ void PBUserInfo::clear_userid() {
   return userid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  ::std::string* PBUserInfo::release_userid() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserInfo.userId)
   
   return userid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1054,6 +1112,7 @@ void PBUserInfo::clear_password() {
   return password_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  ::std::string* PBUserInfo::release_password() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserInfo.password)
   
   return password_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1097,6 +1156,7 @@ void PBUserInfo::clear_firstname() {
   return firstname_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  ::std::string* PBUserInfo::release_firstname() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserInfo.firstName)
   
   return firstname_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1140,6 +1200,7 @@ void PBUserInfo::clear_lastname() {
   return lastname_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  ::std::string* PBUserInfo::release_lastname() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserInfo.lastName)
   
   return lastname_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1197,6 +1258,7 @@ void PBUserInfo::clear_company() {
   return company_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  ::std::string* PBUserInfo::release_company() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserInfo.company)
   
   return company_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1240,6 +1302,7 @@ void PBUserInfo::clear_email() {
   return email_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  ::std::string* PBUserInfo::release_email() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserInfo.email)
   
   return email_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1283,6 +1346,7 @@ void PBUserInfo::clear_contactnum() {
   return contactnum_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  ::std::string* PBUserInfo::release_contactnum() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserInfo.contactNum)
   
   return contactnum_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1326,6 +1390,7 @@ void PBUserInfo::clear_identitynum() {
   return identitynum_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  ::std::string* PBUserInfo::release_identitynum() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserInfo.identityNum)
   
   return identitynum_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1369,6 +1434,7 @@ void PBUserInfo::clear_address() {
   return address_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  ::std::string* PBUserInfo::release_address() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserInfo.address)
   
   return address_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1412,6 +1478,7 @@ void PBUserInfo::clear_zipcode() {
   return zipcode_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
  ::std::string* PBUserInfo::release_zipcode() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserInfo.zipcode)
   
   return zipcode_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1453,12 +1520,51 @@ void PBUserInfo::clear_permission() {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBUserInfo.permission)
 }
 
+// optional .Micro.Future.Message.Business.DataHeader header = 14;
+bool PBUserInfo::has_header() const {
+  return !_is_default_instance_ && header_ != NULL;
+}
+void PBUserInfo::clear_header() {
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
+}
+const ::Micro::Future::Message::Business::DataHeader& PBUserInfo::header() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBUserInfo.header)
+  return header_ != NULL ? *header_ : *default_instance_->header_;
+}
+::Micro::Future::Message::Business::DataHeader* PBUserInfo::mutable_header() {
+  
+  if (header_ == NULL) {
+    header_ = new ::Micro::Future::Message::Business::DataHeader;
+  }
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBUserInfo.header)
+  return header_;
+}
+::Micro::Future::Message::Business::DataHeader* PBUserInfo::release_header() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserInfo.header)
+  
+  ::Micro::Future::Message::Business::DataHeader* temp = header_;
+  header_ = NULL;
+  return temp;
+}
+void PBUserInfo::set_allocated_header(::Micro::Future::Message::Business::DataHeader* header) {
+  delete header_;
+  header_ = header;
+  if (header) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBUserInfo.header)
+}
+
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
 
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int PBUserInfoList::kUserInfoFieldNumber;
+const int PBUserInfoList::kHeaderFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 PBUserInfoList::PBUserInfoList()
@@ -1469,6 +1575,7 @@ PBUserInfoList::PBUserInfoList()
 
 void PBUserInfoList::InitAsDefaultInstance() {
   _is_default_instance_ = true;
+  header_ = const_cast< ::Micro::Future::Message::Business::DataHeader*>(&::Micro::Future::Message::Business::DataHeader::default_instance());
 }
 
 PBUserInfoList::PBUserInfoList(const PBUserInfoList& from)
@@ -1482,6 +1589,7 @@ PBUserInfoList::PBUserInfoList(const PBUserInfoList& from)
 void PBUserInfoList::SharedCtor() {
     _is_default_instance_ = false;
   _cached_size_ = 0;
+  header_ = NULL;
 }
 
 PBUserInfoList::~PBUserInfoList() {
@@ -1491,6 +1599,7 @@ PBUserInfoList::~PBUserInfoList() {
 
 void PBUserInfoList::SharedDtor() {
   if (this != default_instance_) {
+    delete header_;
   }
 }
 
@@ -1520,12 +1629,15 @@ PBUserInfoList* PBUserInfoList::New(::google::protobuf::Arena* arena) const {
 }
 
 void PBUserInfoList::Clear() {
+// @@protoc_insertion_point(message_clear_start:Micro.Future.Message.Business.PBUserInfoList)
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
   userinfo_.Clear();
 }
 
 bool PBUserInfoList::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
   // @@protoc_insertion_point(parse_start:Micro.Future.Message.Business.PBUserInfoList)
   for (;;) {
@@ -1545,6 +1657,19 @@ bool PBUserInfoList::MergePartialFromCodedStream(
         }
         if (input->ExpectTag(10)) goto parse_loop_userInfo;
         input->UnsafeDecrementRecursionDepth();
+        if (input->ExpectTag(18)) goto parse_header;
+        break;
+      }
+
+      // optional .Micro.Future.Message.Business.DataHeader header = 2;
+      case 2: {
+        if (tag == 18) {
+         parse_header:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_header()));
+        } else {
+          goto handle_unusual;
+        }
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -1579,6 +1704,12 @@ void PBUserInfoList::SerializeWithCachedSizes(
       1, this->userinfo(i), output);
   }
 
+  // optional .Micro.Future.Message.Business.DataHeader header = 2;
+  if (this->has_header()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      2, *this->header_, output);
+  }
+
   // @@protoc_insertion_point(serialize_end:Micro.Future.Message.Business.PBUserInfoList)
 }
 
@@ -1592,12 +1723,27 @@ void PBUserInfoList::SerializeWithCachedSizes(
         1, this->userinfo(i), target);
   }
 
+  // optional .Micro.Future.Message.Business.DataHeader header = 2;
+  if (this->has_header()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        2, *this->header_, target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.Business.PBUserInfoList)
   return target;
 }
 
 int PBUserInfoList::ByteSize() const {
+// @@protoc_insertion_point(message_byte_size_start:Micro.Future.Message.Business.PBUserInfoList)
   int total_size = 0;
+
+  // optional .Micro.Future.Message.Business.DataHeader header = 2;
+  if (this->has_header()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->header_);
+  }
 
   // repeated .Micro.Future.Message.Business.PBUserInfo userInfo = 1;
   total_size += 1 * this->userinfo_size();
@@ -1614,29 +1760,38 @@ int PBUserInfoList::ByteSize() const {
 }
 
 void PBUserInfoList::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Micro.Future.Message.Business.PBUserInfoList)
   if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
   const PBUserInfoList* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const PBUserInfoList>(
           &from);
   if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Micro.Future.Message.Business.PBUserInfoList)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Micro.Future.Message.Business.PBUserInfoList)
     MergeFrom(*source);
   }
 }
 
 void PBUserInfoList::MergeFrom(const PBUserInfoList& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Micro.Future.Message.Business.PBUserInfoList)
   if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
   userinfo_.MergeFrom(from.userinfo_);
+  if (from.has_header()) {
+    mutable_header()->::Micro::Future::Message::Business::DataHeader::MergeFrom(from.header());
+  }
 }
 
 void PBUserInfoList::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Micro.Future.Message.Business.PBUserInfoList)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 void PBUserInfoList::CopyFrom(const PBUserInfoList& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Micro.Future.Message.Business.PBUserInfoList)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -1653,6 +1808,7 @@ void PBUserInfoList::Swap(PBUserInfoList* other) {
 }
 void PBUserInfoList::InternalSwap(PBUserInfoList* other) {
   userinfo_.UnsafeArenaSwap(&other->userinfo_);
+  std::swap(header_, other->header_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -1696,6 +1852,44 @@ const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::
 PBUserInfoList::userinfo() const {
   // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBUserInfoList.userInfo)
   return userinfo_;
+}
+
+// optional .Micro.Future.Message.Business.DataHeader header = 2;
+bool PBUserInfoList::has_header() const {
+  return !_is_default_instance_ && header_ != NULL;
+}
+void PBUserInfoList::clear_header() {
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
+}
+const ::Micro::Future::Message::Business::DataHeader& PBUserInfoList::header() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBUserInfoList.header)
+  return header_ != NULL ? *header_ : *default_instance_->header_;
+}
+::Micro::Future::Message::Business::DataHeader* PBUserInfoList::mutable_header() {
+  
+  if (header_ == NULL) {
+    header_ = new ::Micro::Future::Message::Business::DataHeader;
+  }
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBUserInfoList.header)
+  return header_;
+}
+::Micro::Future::Message::Business::DataHeader* PBUserInfoList::release_header() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserInfoList.header)
+  
+  ::Micro::Future::Message::Business::DataHeader* temp = header_;
+  header_ = NULL;
+  return temp;
+}
+void PBUserInfoList::set_allocated_header(::Micro::Future::Message::Business::DataHeader* header) {
+  delete header_;
+  header_ = header;
+  if (header) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBUserInfoList.header)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

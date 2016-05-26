@@ -38,12 +38,12 @@ dataobj_ptr CTPSubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 		{
 			std::transform(inst.begin(), inst.end(), inst.begin(), ::tolower);
 			pContract[0] = const_cast<char*>(inst.data());
-			ret = ((CTPRawAPI*)rawAPI)->MdAPI->SubscribeMarketData(pContract, 1);
+			ret = ((CTPRawAPI*)rawAPI)->MdAPI->SubscribeMarketData(pContract, reqDO->SerialId);
 			CTPUtility::CheckReturnError(ret);
 
 			std::transform(inst.begin(), inst.end(), inst.begin(), ::toupper);
 			pContract[0] = const_cast<char*>(inst.data());
-			ret = ((CTPRawAPI*)rawAPI)->MdAPI->SubscribeMarketData(pContract, stdo->SerialId);
+			ret = ((CTPRawAPI*)rawAPI)->MdAPI->SubscribeMarketData(pContract, reqDO->SerialId);
 			CTPUtility::CheckReturnError(ret);
 		}
 	}
@@ -53,8 +53,8 @@ dataobj_ptr CTPSubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPSubMarketData::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTPSubMarketData::HandleResponse()
+// Name:       CTPSubMarketData::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Purpose:    Implementation of CTPSubMarketData::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
 // - rawAPI
@@ -62,12 +62,12 @@ dataobj_ptr CTPSubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPSubMarketData::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPSubMarketData::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	CTPUtility::CheckError(rawRespParams[1]);
 
 	VectorDO_Ptr<MarketDataDO> ret = std::make_shared<VectorDO<MarketDataDO>>();
-	ret->SerialId = *(uint32_t*)rawRespParams[2];
+	ret->SerialId = serialId;
 	ret->HasMore = *(bool*)rawRespParams[3];
 
 	auto pRspInstr = (CThostFtdcSpecificInstrumentField*)rawRespParams[0];

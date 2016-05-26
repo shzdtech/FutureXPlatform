@@ -73,7 +73,7 @@ void TestingServerMessageProcessor::_mdGenerator()
 					marketDataDO.UpperLimitPrice = marketDataDO.AskPrice * 1.1;
 					marketDataDO.LowerLimitPrice = marketDataDO.BidVolume * 0.9;
 
-					OnResponseMacro(MSG_ID_RET_MARKETDATA, &marketDataDO);
+					OnResponseMacro(MSG_ID_RET_MARKETDATA, 0, &marketDataDO);
 				}
 			}
 		}

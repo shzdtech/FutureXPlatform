@@ -169,6 +169,7 @@
     <ClInclude Include="PBExchangeSerializer.h" />
     <ClInclude Include="PBInstrumentSerializer.h" />
     <ClInclude Include="PBIntTableSerializer.h" />
+    <ClInclude Include="pbmacros.h" />
     <ClInclude Include="PBMarketDataSerializer.h" />
     <ClInclude Include="PBMessageSerializerFactory.h" />
     <ClInclude Include="PBOrderSerializer.h" />
@@ -177,6 +178,7 @@
     <ClInclude Include="pbserializers.h" />
     <ClInclude Include="pbserializer_exp.h" />
     <ClInclude Include="PBStrategySerializer.h" />
+    <ClInclude Include="PBStringMapSerializer.h" />
     <ClInclude Include="PBStringTableSerializer.h" />
     <ClInclude Include="PBSubMarketDataSerializer.h" />
     <ClInclude Include="PBTradeRecordSerializer.h" />
@@ -208,6 +210,7 @@
     <ClCompile Include="PBResultSerializer.cpp" />
     <ClCompile Include="pbserializer_exp.cpp" />
     <ClCompile Include="PBStrategySerializer.cpp" />
+    <ClCompile Include="PBStringMapSerializer.cpp" />
     <ClCompile Include="PBStringTableSerializer.cpp" />
     <ClCompile Include="PBSubMarketDataSerializer.cpp" />
     <ClCompile Include="PBTradeRecordSerializer.cpp" />
@@ -289,7 +292,21 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Protos\usermanager.proto" />
+    <CustomBuild Include="..\Protos\usermanager.proto">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(ProjectDir)proto  %(FullPath)</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%Identity%</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(ProjectDir)proto  %(FullPath)</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%Identity%</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(ProjectDir)proto  %(FullPath)</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%Identity%</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(ProjectDir)proto  %(FullPath)</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%Identity%</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)proto/%(Filename).pb.h;$(ProjectDir)proto/%(Filename).pb.cc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)proto/%(Filename).pb.h;$(ProjectDir)proto/%(Filename).pb.cc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)proto/%(Filename).pb.h;$(ProjectDir)proto/%(Filename).pb.cc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)proto/%(Filename).pb.h;$(ProjectDir)proto/%(Filename).pb.cc;%(Outputs)</Outputs>
+    </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

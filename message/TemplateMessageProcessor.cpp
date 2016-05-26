@@ -42,7 +42,7 @@ dataobj_ptr TemplateMessageProcessor::HandleRequest(const uint msgId, const data
 		}
 	}
 	catch (BizError& bizErr) {
-		SendErrorMsg(msgId, bizErr);
+		SendErrorMsg(msgId, bizErr, ret ? ret->SerialId : 0);
 	}
 	catch (std::exception& ex) {
 		LOG(ERROR) << __FUNCTION__ << " MsgId: " << msgId << ", Error: " << ex.what() << std::endl;
@@ -92,7 +92,7 @@ int TemplateMessageProcessor::OnRecvMsg(const uint msgId, const data_buffer& msg
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-int TemplateMessageProcessor::OnResponse(const uint msgId, param_vector& rawRespParams) {
+int TemplateMessageProcessor::OnResponse(const uint msgId, const uint serialId, param_vector& rawRespParams) {
 	try {
 		if (_svc_locator_ptr)
 		{
@@ -100,7 +100,7 @@ int TemplateMessageProcessor::OnResponse(const uint msgId, param_vector& rawResp
 			{
 				if (auto pMsgSession = getSession())
 				{
-					if (auto dataobj = msgHandler->HandleResponse(rawRespParams, getRawAPI(), pMsgSession))
+					if (auto dataobj = msgHandler->HandleResponse(serialId, rawRespParams, getRawAPI(), pMsgSession))
 					{
 						if (auto msgSerilzer = _svc_locator_ptr->FindDataSerializer(msgId))
 						{
@@ -113,7 +113,7 @@ int TemplateMessageProcessor::OnResponse(const uint msgId, param_vector& rawResp
 		}
 	}
 	catch (BizError& bizErr) {
-		SendErrorMsg(msgId, bizErr);
+		SendErrorMsg(msgId, bizErr, serialId);
 	}
 	catch (std::exception& ex) {
 		LOG(ERROR) << __FUNCTION__ << " MsgId: " << msgId << ", Error: " << ex.what() << std::endl;
@@ -133,10 +133,10 @@ int TemplateMessageProcessor::OnResponse(const uint msgId, param_vector& rawResp
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void TemplateMessageProcessor::SendErrorMsg(uint msgId, BizError& bizError)
+void TemplateMessageProcessor::SendErrorMsg(uint msgId, BizError& bizError, uint serialId)
 {
 	dataobj_ptr dataobj(new BizErrorDO
-		(msgId, bizError.ErrorCode(), bizError.what(), bizError.SysErrCode(), bizError.SerialId()));
+		(msgId, bizError.ErrorCode(), bizError.what(), bizError.SysErrCode(), serialId));
 	data_buffer msg = BizErrorSerializer::Instance()->Serialize(dataobj);
 	if (auto session_ptr = getSession())
 		session_ptr->WriteMessage(MSG_ID_ERROR, msg);

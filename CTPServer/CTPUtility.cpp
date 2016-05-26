@@ -189,7 +189,7 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(CThostFtdcOrderField *pOrder)
 	pDO->InsertTime = timebuf;
 	pDO->UpdateTime = pOrder->UpdateTime;
 	pDO->CancelTime = pOrder->CancelTime;
-	pDO->TradingDay = std::strtoull(pOrder->TradingDay, nullptr, 0);
+	pDO->TradingDay = std::strtoul(pOrder->TradingDay, nullptr, 0);
 	pDO->Message = std::move(Encoding::ToUTF8(pOrder->StatusMsg, CHARSET_GB2312));
 
 	return ret;

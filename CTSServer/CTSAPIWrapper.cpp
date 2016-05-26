@@ -14,16 +14,19 @@ CTSAPIWrapperImpl::CTSAPIWrapperImpl(IMessageProcessor* pMsgProcessor,
 	_pMsgProcessor = pMsgProcessor;
 	_configMap = new std::map<std::string, std::string>(configMap);
 	_contractMap = new std::map<ContractKey, gcroot<Market^>>();
+	_loginQueue = new std::queue<uint32_t>;
 }
 
 CTSAPIWrapperImpl::~CTSAPIWrapperImpl()
 {
 	delete _configMap;
 	delete _contractMap;
+	delete _loginQueue;
 }
 
-void CTSAPIWrapperImpl::Login(const char* broker, const char* user, const char* passowrd)
+void CTSAPIWrapperImpl::Login(const char* broker, const char* user, const char* passowrd, uint32_t serailId)
 {
+	_loginQueue->push(serailId);
 	auto appName = UUID_MICROFUTURE_CTS;
 	auto license = _configMap->at(CTS_LICENSE).data();
 	auto servertype = _configMap->at(CTS_SERVER_TYPE);
@@ -43,14 +46,14 @@ bool CTSAPIWrapperImpl::IsLogged()
 	return _isLogged;
 }
 
-int CTSAPIWrapperImpl::Subscribe(const char* exchangeID, const char* contractID)
+int CTSAPIWrapperImpl::Subscribe(const char* exchangeID, const char* contractID, uint32_t serailId)
 {
-	return Subscribe(ContractKey(exchangeID, contractID));
+	return Subscribe(ContractKey(exchangeID, contractID), serailId);
 }
 
-int CTSAPIWrapperImpl::Subscribe(const ContractKey& contractKey)
+int CTSAPIWrapperImpl::Subscribe(const ContractKey& contractKey, uint32_t serailId)
 {
-	int ret = -1;
+	int ret = NO_ERROR;
 
 	if (!IsSubscribed(contractKey))
 	{
@@ -78,8 +81,6 @@ int CTSAPIWrapperImpl::Subscribe(const ContractKey& contractKey)
 				gcnew Market::MarketSettlementEventHandler(this, &CTSAPIWrapperImpl::OnMarketDataUpdated);
 			//marketList->MarketTradeVolume += 
 			//	gcnew MarketList::MarketTradeVolumeEventHandler(_callback, &CTSMDCallback::OnMarketDataUpdated);
-
-			ret = NO_ERROR;
 		}
 	}
 
@@ -93,7 +94,7 @@ bool CTSAPIWrapperImpl::IsSubscribed(const ContractKey& contractKey)
 
 int CTSAPIWrapperImpl::CreateOrder(OrderDO& orderDO)
 {
-	int ret = Subscribe(orderDO);
+	int ret = Subscribe(orderDO, orderDO.SerialId);
 
 	if (ret <= 0)
 	{
@@ -132,7 +133,7 @@ int CTSAPIWrapperImpl::CreateOrder(OrderDO& orderDO)
 
 			OrderDO_Ptr order_ptr = CTSUtility::ParseRawOrder(pOrder);
 
-			OnResponseProcMacro(_pMsgProcessor, MSG_ID_ORDER_NEW, &order_ptr);
+			OnResponseProcMacro(_pMsgProcessor, MSG_ID_ORDER_NEW, orderDO.SerialId, &order_ptr);
 
 			ret = NO_ERROR;
 		}
@@ -152,9 +153,13 @@ int CTSAPIWrapperImpl::CancelOrder(OrderDO& orderDO)
 		if (order->Pull())
 			ret = NO_ERROR;
 		else if (!order->IsWorking)
+		{
 			ret = ORDER_IS_CLOSED;
+		}
+		orderDO = *CTSUtility::ParseRawOrder(order);
 	}
 
+	OnResponseProcMacro(_pMsgProcessor, MSG_ID_ORDER_CANCEL, orderDO.SerialId, &orderDO);
 	return ret;
 }
 
@@ -170,7 +175,8 @@ void CTSAPIWrapperImpl::OnLoginSuccess()
 	_account->Subscribe();
 
 	int errCode = 0;
-	OnResponseProcMacro(_pMsgProcessor, MSG_ID_LOGIN, &errCode);
+	OnResponseProcMacro(_pMsgProcessor, MSG_ID_LOGIN, _loginQueue->front(), &errCode);
+	_loginQueue->pop();
 }
 
 void CTSAPIWrapperImpl::OnLoginFailure(LoginResult loginResult)
@@ -179,7 +185,8 @@ void CTSAPIWrapperImpl::OnLoginFailure(LoginResult loginResult)
 	{
 		_isLogged = false;
 		int errCode = (int)loginResult;
-		OnResponseProcMacro(_pMsgProcessor, MSG_ID_LOGIN, &errCode);
+		OnResponseProcMacro(_pMsgProcessor, MSG_ID_LOGIN, _loginQueue->front(), &errCode);
+		_loginQueue->pop();
 	}
 }
 
@@ -200,7 +207,7 @@ void CTSAPIWrapperImpl::OnMarketDataUpdated(Market^ poMarket)
 	mdDO.SettlementPrice = poMarket->ConvertTicksToDecimal(poMarket->LastSettlement->Ticks);
 	mdDO.Volume = poMarket->LastTradeVolume->Count;
 
-	OnResponseProcMacro(_pMsgProcessor, MSG_ID_RET_MARKETDATA, &mdDO);
+	OnResponseProcMacro(_pMsgProcessor, MSG_ID_RET_MARKETDATA, 0, &mdDO);
 }
 
 
@@ -229,5 +236,7 @@ void CTSAPIWrapperImpl::OnOrderUpdated(Order^ pOrder)
 		default:
 			return;
 		}
+
+		OnResponseProcMacro(_pMsgProcessor, msgId, 0, &(*order_ptr));
 	}
 }

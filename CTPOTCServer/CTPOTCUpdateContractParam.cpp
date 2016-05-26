@@ -60,12 +60,12 @@ dataobj_ptr CTPOTCUpdateContractParam::HandleRequest(const dataobj_ptr reqDO, IR
 		proc->TriggerUpdating(mdDO);
 	}	
 
-	return std::make_shared<ResultDO>();
+	return std::make_shared<ResultDO>(reqDO->SerialId);
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCUpdateContractParam::HandleResponse(paramvector& rawRespParams, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTPOTCUpdateContractParam::HandleResponse()
+// Name:       CTPOTCUpdateContractParam::HandleResponse(const uint32_t serialId, paramvector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Purpose:    Implementation of CTPOTCUpdateContractParam::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
 // - rawAPI
@@ -73,7 +73,7 @@ dataobj_ptr CTPOTCUpdateContractParam::HandleRequest(const dataobj_ptr reqDO, IR
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCUpdateContractParam::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOTCUpdateContractParam::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	return nullptr;
 }

@@ -9,7 +9,7 @@
 #include <set>
 #include <map>
 #include "../message/SessionContainer.h"
-
+#include "../utility/epsdouble.h"
 
 void testCollection()
 {
@@ -49,7 +49,7 @@ void testConnectHelper()
 
 void testAutoFillMap()
 {
-	AutoFillMap< int, UserOrderContext > autoMap;
+	autofillmap< int, UserOrderContext > autoMap;
 	auto& vec = autoMap.getorfillfunc(1, [](int a){ return UserOrderContext(); }, 123);
 }
 
@@ -60,6 +60,19 @@ void testSessionContainer()
 	sc.getwithlock(1, ptr);
 }
 
+void testepsilondouble(const epsdouble& epsdbl)
+{
+	std::cout << "sizeof(epsdouble)" << sizeof(epsdouble) <<std::endl;
+	std::cout << epsdbl.value() << std::endl;
+}
+
+void testepsdouble()
+{
+	epsdouble a = 9;
+	testepsilondouble(4.1);
+	a = epsdouble(32.1);
+	testepsilondouble(a);
+}
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -67,6 +80,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		testCollection();
 		testAutoFillMap();
+		testepsdouble();
 		testSessionContainer();
 		testConnectHelper();
 	}

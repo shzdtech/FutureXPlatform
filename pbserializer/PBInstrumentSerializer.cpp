@@ -6,7 +6,8 @@
  ***********************************************************************/
 
 #include "PBInstrumentSerializer.h"
-#include "PBStringTableSerializer.h"
+#include "PBStringMapSerializer.h"
+#include "pbmacros.h"
 #include "proto/businessobj.pb.h"
 #include "../dataobject/InstrumentDO.h"
 #include "../dataobject/TemplateDO.h"
@@ -25,16 +26,7 @@ data_buffer PBInstrumentSerializer::Serialize(const dataobj_ptr abstractDO)
 	
 	PBContractInfoList PBList;
 	auto pVecDO = (VectorDO<InstrumentDO>*)abstractDO.get();
-
-	if (pVecDO->SerialId != 0)
-	{
-		auto pHeader = new DataHeader();
-		pHeader->set_serialid(pVecDO->SerialId);
-		if (pVecDO->HasMore)
-			pHeader->set_hasmore(pVecDO->HasMore);
-
-		PBList.set_allocated_header(pHeader);
-	}
+	FillPBHeader(PBList, pVecDO)
 
 	for (auto& insDO : *pVecDO)
 	{
@@ -82,5 +74,5 @@ data_buffer PBInstrumentSerializer::Serialize(const dataobj_ptr abstractDO)
 
 dataobj_ptr PBInstrumentSerializer::Deserialize(const data_buffer& rawdata)
 {
-	return PBStringTableSerializer::Instance()->Deserialize(rawdata);
+	return PBStringMapSerializer::Instance()->Deserialize(rawdata);
 }

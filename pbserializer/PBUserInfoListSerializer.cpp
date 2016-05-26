@@ -6,9 +6,9 @@
  ***********************************************************************/
 
 #include "PBUserInfoListSerializer.h"
+#include "PBStringMapSerializer.h"
 #include "proto/usermanager.pb.h"
-#include "../message/BizError.h"
-#include "ExceptionDef.h"
+#include "pbmacros.h"
 #include "../dataobject/UserInfoDO.h"
 #include "../dataobject/TemplateDO.h"
 ////////////////////////////////////////////////////////////////////////
@@ -22,8 +22,8 @@
 data_buffer PBUserInfoListSerializer::Serialize(const dataobj_ptr abstractDO)
 {
 	Micro::Future::Message::Business::PBUserInfoList PB;
-
 	auto pDO = (VectorDO<UserInfoDO>*)abstractDO.get();
+	FillPBHeader(PB, pDO);
 
 	for (auto& userDO : *pDO)
 	{
@@ -60,5 +60,5 @@ data_buffer PBUserInfoListSerializer::Serialize(const dataobj_ptr abstractDO)
 
 dataobj_ptr PBUserInfoListSerializer::Deserialize(const data_buffer& rawdata)
 {
-	return nullptr;
+	return PBStringMapSerializer::Instance()->Deserialize(rawdata);
 }

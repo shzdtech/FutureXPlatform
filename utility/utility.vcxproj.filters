@@ -48,6 +48,12 @@
     <ClInclude Include="commonconst.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="epsdouble.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="epsvaluetype.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Encoding.cpp">

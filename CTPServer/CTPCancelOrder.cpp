@@ -51,15 +51,15 @@ dataobj_ptr CTPCancelOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawA
 		std::sprintf(req.OrderRef, FMT_PADDING_ORDERREF, pDO->OrderID);
 	}
 
-	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqOrderAction(&req, pDO->SerialId);
+	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqOrderAction(&req, reqDO->SerialId);
 	CTPUtility::CheckReturnError(iRet);
 
 	return nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPCancelOrder::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTPCancleOrder::HandleResponse()
+// Name:       CTPCancelOrder::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Purpose:    Implementation of CTPCancleOrder::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
 // - rawAPI
@@ -67,7 +67,7 @@ dataobj_ptr CTPCancelOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawA
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPCancelOrder::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPCancelOrder::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	dataobj_ptr ret;
 
@@ -84,5 +84,6 @@ dataobj_ptr CTPCancelOrder::HandleResponse(param_vector& rawRespParams, IRawAPI*
 		ret = CTPUtility::ParseRawOrder(pData);
 	}
 
+	ret->SerialId = serialId;
 	return ret;
 }

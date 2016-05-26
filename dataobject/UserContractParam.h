@@ -9,9 +9,9 @@
 #define __dataobject_UserContractParam_h
 
 #include "ContractKey.h"
-#include "AbstractDataObj.h"
+#include "dataobjectbase.h"
 
-class UserContractParam : public ContractKey, public AbstractDataObj
+class UserContractParam : public ContractKey, public dataobjectbase
 {
 public:
 	UserContractParam(const std::string& exchangeID, const std::string& instrumentID,

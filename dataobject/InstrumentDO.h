@@ -9,10 +9,10 @@
 #define __dataobject_InstrumentDO_h
 
 #include "ContractKey.h"
-#include "AbstractDataObj.h"
+#include "dataobjectbase.h"
 #include "EnumTypes.h"
 
-class InstrumentDO : public ContractKey, public AbstractDataObj
+class InstrumentDO : public ContractKey, public dataobjectbase
 {
 public:
 	InstrumentDO() {}

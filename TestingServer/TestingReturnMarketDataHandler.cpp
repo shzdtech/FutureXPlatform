@@ -10,8 +10,8 @@
 #include "../dataobject/TemplateDO.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       TestingReturnMarketDataHandler::HandleResponse(param_vector rawParams, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of TestingReturnMarketDataHandler::HandleResponse()
+// Name:       TestingReturnMarketDataHandler::HandleResponse(const uint32_t serialId, const uint32_t serialId, param_vector rawParams, IRawAPI* rawAPI, ISession* session)
+// Purpose:    Implementation of TestingReturnMarketDataHandler::HandleResponse(const uint32_t serialId, const uint32_t serialId, )
 // Parameters:
 // - rawParams
 // - rawAPI
@@ -19,7 +19,7 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr TestingReturnMarketDataHandler::HandleResponse(param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr TestingReturnMarketDataHandler::HandleResponse(const uint32_t serialId, param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
 {
 	auto pDOVec = new VectorDO<MarketDataDO>;
 	dataobj_ptr ret(pDOVec);

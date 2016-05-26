@@ -33,12 +33,11 @@
 
 dataobj_ptr CTPLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
-	auto stdo = (StringTableDO*)reqDO.get();
-	auto& data = stdo->Data;
+	auto stdo = (MapDO<std::string>*)reqDO.get();
 	
-	auto& brokeid = TUtil::FirstNamedEntry(STR_BROKER_ID, data, EMPTY_STRING);
-	auto& userid = TUtil::FirstNamedEntry(STR_USER_ID, data, EMPTY_STRING);
-	auto& password = TUtil::FirstNamedEntry(STR_PASSWORD, data, EMPTY_STRING);
+	auto& brokeid = stdo->TryFind(STR_BROKER_ID, EMPTY_STRING);
+	auto& userid = stdo->TryFind(STR_USER_ID, EMPTY_STRING);
+	auto& password = stdo->TryFind(STR_PASSWORD, EMPTY_STRING);
 
 	CThostFtdcReqUserLoginField req;
 	std::memset(&req, 0, sizeof(req));
@@ -67,8 +66,8 @@ dataobj_ptr CTPLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* raw
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPLoginHandler::HandleResponse(void* bizObj, IRawAPI* rawAPI, IMessageProcessor_Ptr session)
-// Purpose:    Implementation of CTPLoginHandler::HandleResponse()
+// Name:       CTPLoginHandler::HandleResponse(const uint32_t serialId, void* bizObj, IRawAPI* rawAPI, IMessageProcessor_Ptr session)
+// Purpose:    Implementation of CTPLoginHandler::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - bizObj
 // - rawAPI
@@ -76,7 +75,7 @@ dataobj_ptr CTPLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* raw
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPLoginHandler::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPLoginHandler::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	CTPUtility::CheckError(rawRespParams[1]);
 
@@ -84,6 +83,7 @@ dataobj_ptr CTPLoginHandler::HandleResponse(param_vector& rawRespParams, IRawAPI
 	
 	auto pDO = new UserInfoDO;
 	dataobj_ptr ret(pDO);
+	pDO->SerialId = serialId;
 
 	auto pUserInfo = session->getUserInfo();
 

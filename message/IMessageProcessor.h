@@ -10,6 +10,7 @@
 
 #include "IProcessorBase.h"
 #include "IMessageSession.h"
+#include "IRawAPI.h"
 
 class IMessageProcessor : public IProcessorBase
 {
@@ -19,6 +20,7 @@ public:
 	virtual void setServiceLocator(IMessageServiceLocator_Ptr svc_locator_ptr) = 0;
 	virtual void setServerContext(IContextAttribute* serverCtx) = 0;
 	virtual bool OnSessionClosing(void) = 0;
+	virtual IRawAPI* getRawAPI(void) = 0;
 
 protected:
 private:

@@ -31,8 +31,8 @@
 #include "../pricingengine/IPricingDataContext.h"
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       CTPOTCDepthMarketData::HandleResponse(param_vector& rawRespParams, void* rawAPI, ISession* session)
- // Purpose:    Implementation of CTPOTCDepthMarketData::HandleResponse()
+ // Name:       CTPOTCDepthMarketData::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, void* rawAPI, ISession* session)
+ // Purpose:    Implementation of CTPOTCDepthMarketData::HandleResponse(const uint32_t serialId, )
  // Parameters:
  // - rawRespParams
  // - rawAPI
@@ -40,7 +40,7 @@
  // Return:     dataobj_ptr
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCDepthMarketData::HandleResponse(param_vector& rawRespParams, void* rawAPI, ISession* session)
+dataobj_ptr CTPOTCDepthMarketData::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, void* rawAPI, ISession* session)
 {
 	dataobj_ptr ret;
 

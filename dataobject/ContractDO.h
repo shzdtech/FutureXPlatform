@@ -8,10 +8,10 @@
 #if !defined(__dataobject_ContractDO_h)
 #define __dataobject_ContractDO_h
 
-#include "AbstractDataObj.h"
+#include "dataobjectbase.h"
 #include "ContractKey.h"
 
-class ContractDO : public ContractKey, public AbstractDataObj
+class ContractDO : public ContractKey, public dataobjectbase
 {
 public:
 	ContractDO(const std::string& exchangeID, const std::string& instrumentID)

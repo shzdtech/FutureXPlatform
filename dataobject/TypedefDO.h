@@ -2,7 +2,7 @@
 #define __dataobject_TypedefDO_h
 
 
-#include "../utility/AutoFillMap.h"
+#include "../utility/autofillmap.h"
 #include "ContractKey.h"
 #include "ContractDO.h"
 #include "PortfolioDO.h"
@@ -12,16 +12,16 @@
 #include "InstrumentDO.h"
 
 template <typename V>
-using ContractMap = typename AutoFillMap<ContractKey, V>;
+using ContractMap = typename autofillmap<ContractKey, V>;
 
 template <typename V>
 using ContractKeyMap = typename std::map<ContractKey, V>;
 
 template <typename V>
-using UserContractMap = typename AutoFillMap<UserContractKey, V>;
+using UserContractMap = typename autofillmap<UserContractKey, V>;
 
 //template <typename V>
-//using User_ContractMap = typename AutoFillMap<std::string, ContractMap<V>>;
+//using User_ContractMap = typename autofillmap<std::string, ContractMap<V>>;
 
 typedef ContractMap<StrategyContractDO> StrategyContractDOMap;
 
@@ -34,7 +34,7 @@ typedef ContractMap<ContractDO> ContractDOMap;
 typedef std::map<std::string, InstrumentDO> InstrumentDOMap;
 
 template <typename V>
-using PortfolioMap = typename AutoFillMap<PortfolioKey, V>;
+using PortfolioMap = typename autofillmap<PortfolioKey, V>;
 
 typedef PortfolioMap<PortfolioDO> PortfolioDOMap;
 

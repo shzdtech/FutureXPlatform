@@ -11,7 +11,6 @@
 #include "../dataobject/data_buffer.h"
 #include "IMessageProcessor.h"
 #include "IMessageServiceLocator.h"
-#include "IRawAPI.h"
 #include "SessionManager.h"
 #include "message_exp.h"
 
@@ -26,10 +25,6 @@ public:
 	void setSession(IMessageSession* msgSession);
 	IMessageServiceLocator_Ptr getServiceLocator(void);
 	void setServiceLocator(IMessageServiceLocator_Ptr svc_locator_ptr);
-
-	virtual IRawAPI* getRawAPI(void) = 0;
-	virtual int OnRecvMsg(const uint msgId, const data_buffer& msg) = 0;
-	virtual int OnResponse(const uint msgId, param_vector& rawRespParams) = 0;
 
 	virtual void setServerContext(IContextAttribute* serverCtx);
 	virtual IContextAttribute* getServerContext(void);

@@ -7,8 +7,7 @@
 
 #include "PBResultSerializer.h"
 #include "proto/errormsg.pb.h"
-#include "../message/BizError.h"
-#include "ExceptionDef.h"
+#include "pbmacros.h"
 #include "../dataobject/ResultDO.h"
 
  ////////////////////////////////////////////////////////////////////////
@@ -48,16 +47,7 @@ data_buffer PBResultSerializer::Serialize(const dataobj_ptr abstractDO)
 dataobj_ptr PBResultSerializer::Deserialize(const data_buffer& rawdata)
 {
 	Micro::Future::Message::Business::Result PB;
+	ParseWithThrow(PB, rawdata)
 
-	auto ret = std::make_shared<ResultDO>();
-
-	if (!PB.ParseFromArray(rawdata.get(), rawdata.size()))
-		throw BizError(INVALID_DATAFORMAT_CODE, INVALID_DATAFORMAT_DESC);
-
-	if(PB.serialid() != 0)
-		ret->SerialId = PB.serialid();
-
-	ret->Code = PB.code();
-
-	return ret;
+	return std::make_shared<ResultDO>(PB.code(), PB.serialid());
 }

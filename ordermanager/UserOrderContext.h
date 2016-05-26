@@ -11,7 +11,7 @@
 #include <atomic>
 #include "../dataobject/TypedefDO.h"
 #include "../dataobject/OrderDO.h"
-#include "../utility/AutoFillMap.h"
+#include "../utility/autofillmap.h"
 #include "../utility/ElementMutex.h"
 
 class UserOrderContext

@@ -25,8 +25,8 @@
 #include "../pricingengine/PricingUtility.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCReturnPricingData::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTPOTCReturnPricingData::HandleResponse()
+// Name:       CTPOTCReturnPricingData::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Purpose:    Implementation of CTPOTCReturnPricingData::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
 // - rawAPI
@@ -34,7 +34,7 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCReturnPricingData::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOTCReturnPricingData::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	auto pStrategyDO = (StrategyContractDO*)rawRespParams[0];
 

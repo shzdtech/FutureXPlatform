@@ -156,9 +156,11 @@
   <ItemGroup>
     <ClInclude Include="bizutility_exp.h" />
     <ClInclude Include="InstrumentCache.h" />
+    <ClInclude Include="OptionPricingCache.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InstrumentCache.cpp" />
+    <ClCompile Include="OptionPricingCache.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

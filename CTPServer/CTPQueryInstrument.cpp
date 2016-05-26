@@ -37,12 +37,11 @@
 
 dataobj_ptr CTPQueryInstrument::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
-	auto stdo = (StringTableDO*)reqDO.get();
-	auto& data = stdo->Data;
+	auto stdo = (MapDO<std::string>*)reqDO.get();
 
-	auto& instrumentid = TUtil::FirstNamedEntry(STR_INSTRUMENT_ID, data, EMPTY_STRING);
-	auto& exchangeid = TUtil::FirstNamedEntry(STR_EXCHANGE_ID, data, EMPTY_STRING);
-	auto& productid = TUtil::FirstNamedEntry(STR_PRODUCT_ID, data, EMPTY_STRING);
+	auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
+	auto& exchangeid = stdo->TryFind(STR_EXCHANGE_ID, EMPTY_STRING);
+	auto& productid = stdo->TryFind(STR_PRODUCT_ID, EMPTY_STRING);
 
 	VectorDO_Ptr<InstrumentDO> ret = InstrumentCache::QueryInstrument(instrumentid, exchangeid, productid);
 
@@ -53,15 +52,16 @@ dataobj_ptr CTPQueryInstrument::HandleRequest(const dataobj_ptr reqDO, IRawAPI* 
 		std::strcpy(req.ExchangeID, exchangeid.data());
 		std::strcpy(req.InstrumentID, instrumentid.data());
 		std::strcpy(req.ProductID, productid.data());
-		((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryInstrument(&req, stdo->SerialId) == 0;
+		auto retCode = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryInstrument(&req, reqDO->SerialId);
+		CTPUtility::CheckReturnError(retCode);
 	}
 
 	return ret;
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPQueryInstrument::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTPQueryInstrument::HandleResponse()
+// Name:       CTPQueryInstrument::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Purpose:    Implementation of CTPQueryInstrument::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
 // - rawAPI
@@ -69,13 +69,11 @@ dataobj_ptr CTPQueryInstrument::HandleRequest(const dataobj_ptr reqDO, IRawAPI* 
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryInstrument::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryInstrument::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	CTPUtility::CheckError(rawRespParams[1]);
 
 	VectorDO_Ptr<InstrumentDO> ret;
-	ret->SerialId = *(uint32_t*)rawRespParams[2];
-	ret->HasMore = *(bool*)rawRespParams[3];
 
 	if (auto pData = (CThostFtdcInstrumentField*)rawRespParams[0])
 	{
@@ -108,12 +106,16 @@ dataobj_ptr CTPQueryInstrument::HandleResponse(param_vector& rawRespParams, IRaw
 			insDO.ShortMarginRatio = pData->ShortMarginRatio;
 			insDO.MaxMarginSideAlgorithm = pData->MaxMarginSideAlgorithm;
 
-			InstrumentCache::AddToCache(insDO);
+			InstrumentCache::Add(insDO);
 
 			ret = std::make_shared<VectorDO<InstrumentDO>>();
 			ret->push_back(std::move(insDO));
 		}		
 	}
-
+	else
+		ret = std::make_shared<VectorDO<InstrumentDO>>();
+	
+	ret->SerialId = serialId;
+	ret->HasMore = *(bool*)rawRespParams[3];
 	return ret;
 }

@@ -31,8 +31,8 @@ public:
 		std::map<std::string, T>& mapTVec,
 		const T& defaultVal)
 	{
-		auto vecItr = mapTVec.find(name);
-		return (vecItr != mapTVec.end()) ? vecItr->second : defaultVal;
+		auto it = mapTVec.find(name);
+		return (it != mapTVec.end()) ? it->second : defaultVal;
 	};
 
 	template<class T>

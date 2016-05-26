@@ -49,16 +49,18 @@ dataobj_ptr CTPOTCUpdateUserParam::HandleRequest(const dataobj_ptr reqDO, IRawAP
 		{
 			OnResponseProcMacro(
 				session->getProcessor(),
-				MSG_ID_RTN_PRICING, &it->second);
+				MSG_ID_RTN_PRICING, 
+				reqDO->SerialId,
+				&it->second);
 		}
 	}
 
-	return std::make_shared<ResultDO>();
+	return std::make_shared<ResultDO>(reqDO->SerialId);
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCUpdateUserParam::HandleResponse(paramvector& rawRespParams, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTPOTCUpdateUserParam::HandleResponse()
+// Name:       CTPOTCUpdateUserParam::HandleResponse(const uint32_t serialId, paramvector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Purpose:    Implementation of CTPOTCUpdateUserParam::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
 // - rawAPI
@@ -66,7 +68,7 @@ dataobj_ptr CTPOTCUpdateUserParam::HandleRequest(const dataobj_ptr reqDO, IRawAP
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCUpdateUserParam::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOTCUpdateUserParam::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	return nullptr;
 }

@@ -242,8 +242,9 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, _is_default_instance_));
   PBStrategyList_descriptor_ = file->message_type(7);
-  static const int PBStrategyList_offsets_[1] = {
+  static const int PBStrategyList_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategyList, strategy_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategyList, header_),
   };
   PBStrategyList_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
@@ -275,8 +276,9 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBContractParam, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBContractParam, _is_default_instance_));
   PBContractParamList_descriptor_ = file->message_type(9);
-  static const int PBContractParamList_offsets_[1] = {
+  static const int PBContractParamList_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBContractParamList, params_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBContractParamList, header_),
   };
   PBContractParamList_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
@@ -307,8 +309,9 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBOTCUserParam, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBOTCUserParam, _is_default_instance_));
   PBOTCUserParamList_descriptor_ = file->message_type(11);
-  static const int PBOTCUserParamList_offsets_[1] = {
+  static const int PBOTCUserParamList_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBOTCUserParamList, params_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBOTCUserParamList, header_),
   };
   PBOTCUserParamList_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
@@ -684,91 +687,96 @@ void protobuf_AddDesc_businessobj_2eproto() {
     "volatility\030\016 \001(\001\022G\n\016weightContract\030\017 \003(\013"
     "2/.Micro.Future.Message.Business.PBStrat"
     "egyWeight\0226\n\006params\030\020 \003(\0132&.Micro.Future"
-    ".Message.Business.PBParam\"M\n\016PBStrategyL"
-    "ist\022;\n\010strategy\030\001 \003(\0132).Micro.Future.Mes"
-    "sage.Business.PBStrategy\"V\n\017PBContractPa"
-    "ram\022\020\n\010exchange\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022"
-    "\020\n\010depthVol\030\003 \001(\005\022\r\n\005gamma\030\004 \001(\001\"U\n\023PBCo"
-    "ntractParamList\022>\n\006params\030\001 \003(\0132..Micro."
-    "Future.Message.Business.PBContractParam\""
+    ".Message.Business.PBParam\"\210\001\n\016PBStrategy"
+    "List\022;\n\010strategy\030\001 \003(\0132).Micro.Future.Me"
+    "ssage.Business.PBStrategy\0229\n\006header\030\002 \001("
+    "\0132).Micro.Future.Message.Business.DataHe"
+    "ader\"V\n\017PBContractParam\022\020\n\010exchange\030\001 \001("
+    "\t\022\020\n\010contract\030\002 \001(\t\022\020\n\010depthVol\030\003 \001(\005\022\r\n"
+    "\005gamma\030\004 \001(\001\"\220\001\n\023PBContractParamList\022>\n\006"
+    "params\030\001 \003(\0132..Micro.Future.Message.Busi"
+    "ness.PBContractParam\0229\n\006header\030\002 \001(\0132).M"
+    "icro.Future.Message.Business.DataHeader\""
     "F\n\016PBOTCUserParam\022\020\n\010exchange\030\001 \001(\t\022\020\n\010c"
-    "ontract\030\002 \001(\t\022\020\n\010quantity\030\003 \001(\001\"S\n\022PBOTC"
-    "UserParamList\022=\n\006params\030\001 \003(\0132-.Micro.Fu"
-    "ture.Message.Business.PBOTCUserParam\"\246\004\n"
-    "\013PBOrderInfo\022\017\n\007orderID\030\001 \001(\004\022\022\n\norderSy"
-    "sID\030\002 \001(\004\022\020\n\010brokerID\030\003 \001(\t\022\022\n\ninvestorI"
-    "D\030\004 \001(\t\022\020\n\010exchange\030\005 \001(\t\022\020\n\010contract\030\006 "
-    "\001(\t\022\020\n\010execType\030\007 \001(\005\022\013\n\003tif\030\010 \001(\005\022\023\n\013tr"
-    "adingType\030\t \001(\005\022\021\n\tdirection\030\n \001(\005\022\022\n\nli"
-    "mitPrice\030\013 \001(\001\022\021\n\tstopPrice\030\014 \001(\001\022\023\n\013ord"
-    "erStatus\030\r \001(\005\022\021\n\torderType\030\016 \001(\005\022\016\n\006vol"
-    "ume\030\017 \001(\005\022\022\n\ninsertTime\030\021 \001(\t\022\022\n\nupdateT"
-    "ime\030\022 \001(\t\022\022\n\ncancelTime\030\023 \001(\t\022\024\n\014volumeT"
-    "raded\030\024 \001(\005\022\024\n\014volumeRemain\030\025 \001(\005\022\027\n\017vol"
-    "umeCondition\030\026 \001(\005\022\022\n\ntradingDay\030\027 \001(\005\022\016"
-    "\n\006active\030\030 \001(\010\022\021\n\topenclose\030\031 \001(\005\022\017\n\007mes"
-    "sage\030\032 \001(\014\0229\n\006header\030\033 \001(\0132).Micro.Futur"
-    "e.Message.Business.DataHeader\"\375\002\n\013PBTrad"
-    "eInfo\022\017\n\007tradeID\030\001 \001(\004\022\021\n\tdirection\030\002 \001("
-    "\005\022\021\n\topenclose\030\003 \001(\005\022\022\n\norderSysID\030\004 \001(\004"
-    "\022\017\n\007orderID\030\005 \001(\004\022\r\n\005price\030\006 \001(\001\022\016\n\006volu"
-    "me\030\007 \001(\005\022\020\n\010brokerID\030\010 \001(\t\022\022\n\ninvestorID"
-    "\030\t \001(\t\022\020\n\010exchange\030\n \001(\t\022\020\n\010contract\030\013 \001"
-    "(\t\022\016\n\006userID\030\014 \001(\t\022\021\n\ttradeDate\030\r \001(\t\022\021\n"
-    "\ttradeTime\030\016 \001(\t\022\021\n\ttradeType\030\017 \001(\005\022\021\n\th"
-    "edgeFlag\030\020 \001(\005\022\022\n\ncommission\030\021 \001(\001\0229\n\006he"
-    "ader\030\022 \001(\0132).Micro.Future.Message.Busine"
-    "ss.DataHeader\"\367\002\n\nPBPosition\022\020\n\010exchange"
-    "\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022\021\n\tdirection\030\003 "
-    "\001(\005\022\020\n\010position\030\005 \001(\005\022\022\n\nydPosition\030\004 \001("
-    "\005\022\024\n\014positionDate\030\006 \001(\t\022\022\n\nopenVolume\030\007 "
-    "\001(\005\022\023\n\013closeVolume\030\010 \001(\005\022\022\n\nopenAmount\030\t"
-    " \001(\001\022\023\n\013closeAmount\030\n \001(\001\022\014\n\004cost\030\013 \001(\001\022"
-    "\020\n\010openCost\030\014 \001(\001\022\016\n\006profit\030\r \001(\001\022\023\n\013clo"
-    "seProfit\030\016 \001(\001\022\021\n\tuseMargin\030\017 \001(\001\022\021\n\thed"
-    "geFlag\030\020 \001(\005\0229\n\006header\030\021 \001(\0132).Micro.Fut"
-    "ure.Message.Business.DataHeader\"\306\005\n\rPBAc"
-    "countInfo\022\020\n\010brokerID\030\002 \001(\t\022\021\n\taccountID"
-    "\030\003 \001(\t\022\023\n\013preMortgage\030\004 \001(\001\022\021\n\tpreCredit"
-    "\030\005 \001(\001\022\022\n\npreDeposit\030\006 \001(\001\022\022\n\npreBalance"
-    "\030\007 \001(\001\022\021\n\tpreMargin\030\010 \001(\001\022\024\n\014interestBas"
-    "e\030\t \001(\001\022\020\n\010interest\030\n \001(\001\022\017\n\007deposit\030\013 \001"
-    "(\001\022\020\n\010withdraw\030\014 \001(\001\022\024\n\014frozenMargin\030\r \001"
-    "(\001\022\022\n\nfrozenCash\030\016 \001(\001\022\030\n\020frozenCommissi"
-    "on\030\017 \001(\001\022\022\n\ncurrMargin\030\020 \001(\001\022\016\n\006cashIn\030\021"
-    " \001(\001\022\022\n\ncommission\030\022 \001(\001\022\023\n\013closeProfit\030"
-    "\023 \001(\001\022\026\n\016positionProfit\030\024 \001(\001\022\017\n\007balance"
-    "\030\025 \001(\001\022\021\n\tavailable\030\026 \001(\001\022\025\n\rwithdrawQuo"
-    "ta\030\027 \001(\001\022\017\n\007reserve\030\030 \001(\001\022\022\n\ntradingDay\030"
-    "\031 \001(\t\022\024\n\014settlementID\030\032 \001(\005\022\016\n\006credit\030\033 "
-    "\001(\001\022\020\n\010mortgage\030\034 \001(\001\022\026\n\016exchangeMargin\030"
-    "\035 \001(\001\022\026\n\016deliveryMargin\030\036 \001(\001\022\036\n\026exchang"
-    "eDeliveryMargin\030\037 \001(\001\022\026\n\016reserveBalance\030"
-    "  \001(\001\0229\n\006header\030! \001(\0132).Micro.Future.Mes"
-    "sage.Business.DataHeader\"{\n\014PBMarketInfo"
-    "\022\020\n\010exchange\030\001 \001(\t\022\014\n\004name\030\002 \001(\014\022\020\n\010prop"
-    "erty\030\003 \001(\014\0229\n\006header\030\004 \001(\0132).Micro.Futur"
-    "e.Message.Business.DataHeader\"\204\005\n\016PBCont"
-    "ractInfo\022\020\n\010exchange\030\001 \001(\t\022\020\n\010contract\030\002"
-    " \001(\t\022\014\n\004name\030\003 \001(\014\022\021\n\tproductID\030\004 \001(\t\022\023\n"
-    "\013productType\030\005 \001(\005\022\024\n\014deliveryYear\030\006 \001(\005"
-    "\022\025\n\rdeliveryMonth\030\007 \001(\005\022\034\n\024maxMarketOrde"
-    "rVolume\030\010 \001(\005\022\034\n\024minMarketOrderVolume\030\t "
-    "\001(\005\022\033\n\023maxLimitOrderVolume\030\n \001(\005\022\033\n\023minL"
-    "imitOrderVolume\030\013 \001(\005\022\026\n\016volumeMultiple\030"
-    "\014 \001(\005\022\021\n\tpriceTick\030\r \001(\005\022\022\n\ncreateDate\030\016"
-    " \001(\t\022\020\n\010openDate\030\017 \001(\t\022\022\n\nexpireDate\030\020 \001"
-    "(\t\022\026\n\016startDelivDate\030\021 \001(\t\022\024\n\014endDelivDa"
-    "te\030\022 \001(\t\022\021\n\tlifePhase\030\023 \001(\t\022\021\n\tisTrading"
-    "\030\024 \001(\005\022\024\n\014positionType\030\025 \001(\005\022\030\n\020position"
-    "DateType\030\026 \001(\005\022\027\n\017longMarginRatio\030\027 \001(\001\022"
-    "\030\n\020shortMarginRatio\030\030 \001(\001\022\036\n\026maxMarginSi"
-    "deAlgorithm\030\031 \001(\t\0229\n\006header\030\032 \001(\0132).Micr"
-    "o.Future.Message.Business.DataHeader\"\224\001\n"
-    "\022PBContractInfoList\022C\n\014contractInfo\030\001 \003("
-    "\0132-.Micro.Future.Message.Business.PBCont"
-    "ractInfo\0229\n\006header\030\002 \001(\0132).Micro.Future."
-    "Message.Business.DataHeaderb\006proto3", 4875);
+    "ontract\030\002 \001(\t\022\020\n\010quantity\030\003 \001(\001\"\216\001\n\022PBOT"
+    "CUserParamList\022=\n\006params\030\001 \003(\0132-.Micro.F"
+    "uture.Message.Business.PBOTCUserParam\0229\n"
+    "\006header\030\002 \001(\0132).Micro.Future.Message.Bus"
+    "iness.DataHeader\"\246\004\n\013PBOrderInfo\022\017\n\007orde"
+    "rID\030\001 \001(\004\022\022\n\norderSysID\030\002 \001(\004\022\020\n\010brokerI"
+    "D\030\003 \001(\t\022\022\n\ninvestorID\030\004 \001(\t\022\020\n\010exchange\030"
+    "\005 \001(\t\022\020\n\010contract\030\006 \001(\t\022\020\n\010execType\030\007 \001("
+    "\005\022\013\n\003tif\030\010 \001(\005\022\023\n\013tradingType\030\t \001(\005\022\021\n\td"
+    "irection\030\n \001(\005\022\022\n\nlimitPrice\030\013 \001(\001\022\021\n\tst"
+    "opPrice\030\014 \001(\001\022\023\n\013orderStatus\030\r \001(\005\022\021\n\tor"
+    "derType\030\016 \001(\005\022\016\n\006volume\030\017 \001(\005\022\022\n\ninsertT"
+    "ime\030\021 \001(\t\022\022\n\nupdateTime\030\022 \001(\t\022\022\n\ncancelT"
+    "ime\030\023 \001(\t\022\024\n\014volumeTraded\030\024 \001(\005\022\024\n\014volum"
+    "eRemain\030\025 \001(\005\022\027\n\017volumeCondition\030\026 \001(\005\022\022"
+    "\n\ntradingDay\030\027 \001(\005\022\016\n\006active\030\030 \001(\010\022\021\n\top"
+    "enclose\030\031 \001(\005\022\017\n\007message\030\032 \001(\014\0229\n\006header"
+    "\030\033 \001(\0132).Micro.Future.Message.Business.D"
+    "ataHeader\"\375\002\n\013PBTradeInfo\022\017\n\007tradeID\030\001 \001"
+    "(\004\022\021\n\tdirection\030\002 \001(\005\022\021\n\topenclose\030\003 \001(\005"
+    "\022\022\n\norderSysID\030\004 \001(\004\022\017\n\007orderID\030\005 \001(\004\022\r\n"
+    "\005price\030\006 \001(\001\022\016\n\006volume\030\007 \001(\005\022\020\n\010brokerID"
+    "\030\010 \001(\t\022\022\n\ninvestorID\030\t \001(\t\022\020\n\010exchange\030\n"
+    " \001(\t\022\020\n\010contract\030\013 \001(\t\022\016\n\006userID\030\014 \001(\t\022\021"
+    "\n\ttradeDate\030\r \001(\t\022\021\n\ttradeTime\030\016 \001(\t\022\021\n\t"
+    "tradeType\030\017 \001(\005\022\021\n\thedgeFlag\030\020 \001(\005\022\022\n\nco"
+    "mmission\030\021 \001(\001\0229\n\006header\030\022 \001(\0132).Micro.F"
+    "uture.Message.Business.DataHeader\"\367\002\n\nPB"
+    "Position\022\020\n\010exchange\030\001 \001(\t\022\020\n\010contract\030\002"
+    " \001(\t\022\021\n\tdirection\030\003 \001(\005\022\020\n\010position\030\005 \001("
+    "\005\022\022\n\nydPosition\030\004 \001(\005\022\024\n\014positionDate\030\006 "
+    "\001(\t\022\022\n\nopenVolume\030\007 \001(\005\022\023\n\013closeVolume\030\010"
+    " \001(\005\022\022\n\nopenAmount\030\t \001(\001\022\023\n\013closeAmount\030"
+    "\n \001(\001\022\014\n\004cost\030\013 \001(\001\022\020\n\010openCost\030\014 \001(\001\022\016\n"
+    "\006profit\030\r \001(\001\022\023\n\013closeProfit\030\016 \001(\001\022\021\n\tus"
+    "eMargin\030\017 \001(\001\022\021\n\thedgeFlag\030\020 \001(\005\0229\n\006head"
+    "er\030\021 \001(\0132).Micro.Future.Message.Business"
+    ".DataHeader\"\306\005\n\rPBAccountInfo\022\020\n\010brokerI"
+    "D\030\002 \001(\t\022\021\n\taccountID\030\003 \001(\t\022\023\n\013preMortgag"
+    "e\030\004 \001(\001\022\021\n\tpreCredit\030\005 \001(\001\022\022\n\npreDeposit"
+    "\030\006 \001(\001\022\022\n\npreBalance\030\007 \001(\001\022\021\n\tpreMargin\030"
+    "\010 \001(\001\022\024\n\014interestBase\030\t \001(\001\022\020\n\010interest\030"
+    "\n \001(\001\022\017\n\007deposit\030\013 \001(\001\022\020\n\010withdraw\030\014 \001(\001"
+    "\022\024\n\014frozenMargin\030\r \001(\001\022\022\n\nfrozenCash\030\016 \001"
+    "(\001\022\030\n\020frozenCommission\030\017 \001(\001\022\022\n\ncurrMarg"
+    "in\030\020 \001(\001\022\016\n\006cashIn\030\021 \001(\001\022\022\n\ncommission\030\022"
+    " \001(\001\022\023\n\013closeProfit\030\023 \001(\001\022\026\n\016positionPro"
+    "fit\030\024 \001(\001\022\017\n\007balance\030\025 \001(\001\022\021\n\tavailable\030"
+    "\026 \001(\001\022\025\n\rwithdrawQuota\030\027 \001(\001\022\017\n\007reserve\030"
+    "\030 \001(\001\022\022\n\ntradingDay\030\031 \001(\t\022\024\n\014settlementI"
+    "D\030\032 \001(\005\022\016\n\006credit\030\033 \001(\001\022\020\n\010mortgage\030\034 \001("
+    "\001\022\026\n\016exchangeMargin\030\035 \001(\001\022\026\n\016deliveryMar"
+    "gin\030\036 \001(\001\022\036\n\026exchangeDeliveryMargin\030\037 \001("
+    "\001\022\026\n\016reserveBalance\030  \001(\001\0229\n\006header\030! \001("
+    "\0132).Micro.Future.Message.Business.DataHe"
+    "ader\"{\n\014PBMarketInfo\022\020\n\010exchange\030\001 \001(\t\022\014"
+    "\n\004name\030\002 \001(\014\022\020\n\010property\030\003 \001(\014\0229\n\006header"
+    "\030\004 \001(\0132).Micro.Future.Message.Business.D"
+    "ataHeader\"\204\005\n\016PBContractInfo\022\020\n\010exchange"
+    "\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022\014\n\004name\030\003 \001(\014\022\021"
+    "\n\tproductID\030\004 \001(\t\022\023\n\013productType\030\005 \001(\005\022\024"
+    "\n\014deliveryYear\030\006 \001(\005\022\025\n\rdeliveryMonth\030\007 "
+    "\001(\005\022\034\n\024maxMarketOrderVolume\030\010 \001(\005\022\034\n\024min"
+    "MarketOrderVolume\030\t \001(\005\022\033\n\023maxLimitOrder"
+    "Volume\030\n \001(\005\022\033\n\023minLimitOrderVolume\030\013 \001("
+    "\005\022\026\n\016volumeMultiple\030\014 \001(\005\022\021\n\tpriceTick\030\r"
+    " \001(\005\022\022\n\ncreateDate\030\016 \001(\t\022\020\n\010openDate\030\017 \001"
+    "(\t\022\022\n\nexpireDate\030\020 \001(\t\022\026\n\016startDelivDate"
+    "\030\021 \001(\t\022\024\n\014endDelivDate\030\022 \001(\t\022\021\n\tlifePhas"
+    "e\030\023 \001(\t\022\021\n\tisTrading\030\024 \001(\005\022\024\n\014positionTy"
+    "pe\030\025 \001(\005\022\030\n\020positionDateType\030\026 \001(\005\022\027\n\017lo"
+    "ngMarginRatio\030\027 \001(\001\022\030\n\020shortMarginRatio\030"
+    "\030 \001(\001\022\036\n\026maxMarginSideAlgorithm\030\031 \001(\t\0229\n"
+    "\006header\030\032 \001(\0132).Micro.Future.Message.Bus"
+    "iness.DataHeader\"\224\001\n\022PBContractInfoList\022"
+    "C\n\014contractInfo\030\001 \003(\0132-.Micro.Future.Mes"
+    "sage.Business.PBContractInfo\0229\n\006header\030\002"
+    " \001(\0132).Micro.Future.Message.Business.Dat"
+    "aHeaderb\006proto3", 5055);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "businessobj.proto", &protobuf_RegisterTypes);
   PBParam::default_instance_ = new PBParam();
@@ -5741,6 +5749,7 @@ PBStrategy::params() const {
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int PBStrategyList::kStrategyFieldNumber;
+const int PBStrategyList::kHeaderFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 PBStrategyList::PBStrategyList()
@@ -5751,6 +5760,7 @@ PBStrategyList::PBStrategyList()
 
 void PBStrategyList::InitAsDefaultInstance() {
   _is_default_instance_ = true;
+  header_ = const_cast< ::Micro::Future::Message::Business::DataHeader*>(&::Micro::Future::Message::Business::DataHeader::default_instance());
 }
 
 PBStrategyList::PBStrategyList(const PBStrategyList& from)
@@ -5764,6 +5774,7 @@ PBStrategyList::PBStrategyList(const PBStrategyList& from)
 void PBStrategyList::SharedCtor() {
     _is_default_instance_ = false;
   _cached_size_ = 0;
+  header_ = NULL;
 }
 
 PBStrategyList::~PBStrategyList() {
@@ -5773,6 +5784,7 @@ PBStrategyList::~PBStrategyList() {
 
 void PBStrategyList::SharedDtor() {
   if (this != default_instance_) {
+    delete header_;
   }
 }
 
@@ -5803,6 +5815,8 @@ PBStrategyList* PBStrategyList::New(::google::protobuf::Arena* arena) const {
 
 void PBStrategyList::Clear() {
 // @@protoc_insertion_point(message_clear_start:Micro.Future.Message.Business.PBStrategyList)
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
   strategy_.Clear();
 }
 
@@ -5828,6 +5842,19 @@ bool PBStrategyList::MergePartialFromCodedStream(
         }
         if (input->ExpectTag(10)) goto parse_loop_strategy;
         input->UnsafeDecrementRecursionDepth();
+        if (input->ExpectTag(18)) goto parse_header;
+        break;
+      }
+
+      // optional .Micro.Future.Message.Business.DataHeader header = 2;
+      case 2: {
+        if (tag == 18) {
+         parse_header:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_header()));
+        } else {
+          goto handle_unusual;
+        }
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -5862,6 +5889,12 @@ void PBStrategyList::SerializeWithCachedSizes(
       1, this->strategy(i), output);
   }
 
+  // optional .Micro.Future.Message.Business.DataHeader header = 2;
+  if (this->has_header()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      2, *this->header_, output);
+  }
+
   // @@protoc_insertion_point(serialize_end:Micro.Future.Message.Business.PBStrategyList)
 }
 
@@ -5875,6 +5908,13 @@ void PBStrategyList::SerializeWithCachedSizes(
         1, this->strategy(i), target);
   }
 
+  // optional .Micro.Future.Message.Business.DataHeader header = 2;
+  if (this->has_header()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        2, *this->header_, target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.Business.PBStrategyList)
   return target;
 }
@@ -5882,6 +5922,13 @@ void PBStrategyList::SerializeWithCachedSizes(
 int PBStrategyList::ByteSize() const {
 // @@protoc_insertion_point(message_byte_size_start:Micro.Future.Message.Business.PBStrategyList)
   int total_size = 0;
+
+  // optional .Micro.Future.Message.Business.DataHeader header = 2;
+  if (this->has_header()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->header_);
+  }
 
   // repeated .Micro.Future.Message.Business.PBStrategy strategy = 1;
   total_size += 1 * this->strategy_size();
@@ -5916,6 +5963,9 @@ void PBStrategyList::MergeFrom(const PBStrategyList& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:Micro.Future.Message.Business.PBStrategyList)
   if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
   strategy_.MergeFrom(from.strategy_);
+  if (from.has_header()) {
+    mutable_header()->::Micro::Future::Message::Business::DataHeader::MergeFrom(from.header());
+  }
 }
 
 void PBStrategyList::CopyFrom(const ::google::protobuf::Message& from) {
@@ -5943,6 +5993,7 @@ void PBStrategyList::Swap(PBStrategyList* other) {
 }
 void PBStrategyList::InternalSwap(PBStrategyList* other) {
   strategy_.UnsafeArenaSwap(&other->strategy_);
+  std::swap(header_, other->header_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -5986,6 +6037,44 @@ const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::
 PBStrategyList::strategy() const {
   // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBStrategyList.strategy)
   return strategy_;
+}
+
+// optional .Micro.Future.Message.Business.DataHeader header = 2;
+bool PBStrategyList::has_header() const {
+  return !_is_default_instance_ && header_ != NULL;
+}
+void PBStrategyList::clear_header() {
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
+}
+const ::Micro::Future::Message::Business::DataHeader& PBStrategyList::header() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategyList.header)
+  return header_ != NULL ? *header_ : *default_instance_->header_;
+}
+::Micro::Future::Message::Business::DataHeader* PBStrategyList::mutable_header() {
+  
+  if (header_ == NULL) {
+    header_ = new ::Micro::Future::Message::Business::DataHeader;
+  }
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBStrategyList.header)
+  return header_;
+}
+::Micro::Future::Message::Business::DataHeader* PBStrategyList::release_header() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBStrategyList.header)
+  
+  ::Micro::Future::Message::Business::DataHeader* temp = header_;
+  header_ = NULL;
+  return temp;
+}
+void PBStrategyList::set_allocated_header(::Micro::Future::Message::Business::DataHeader* header) {
+  delete header_;
+  header_ = header;
+  if (header) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBStrategyList.header)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -6495,6 +6584,7 @@ void PBContractParam::clear_gamma() {
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int PBContractParamList::kParamsFieldNumber;
+const int PBContractParamList::kHeaderFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 PBContractParamList::PBContractParamList()
@@ -6505,6 +6595,7 @@ PBContractParamList::PBContractParamList()
 
 void PBContractParamList::InitAsDefaultInstance() {
   _is_default_instance_ = true;
+  header_ = const_cast< ::Micro::Future::Message::Business::DataHeader*>(&::Micro::Future::Message::Business::DataHeader::default_instance());
 }
 
 PBContractParamList::PBContractParamList(const PBContractParamList& from)
@@ -6518,6 +6609,7 @@ PBContractParamList::PBContractParamList(const PBContractParamList& from)
 void PBContractParamList::SharedCtor() {
     _is_default_instance_ = false;
   _cached_size_ = 0;
+  header_ = NULL;
 }
 
 PBContractParamList::~PBContractParamList() {
@@ -6527,6 +6619,7 @@ PBContractParamList::~PBContractParamList() {
 
 void PBContractParamList::SharedDtor() {
   if (this != default_instance_) {
+    delete header_;
   }
 }
 
@@ -6557,6 +6650,8 @@ PBContractParamList* PBContractParamList::New(::google::protobuf::Arena* arena) 
 
 void PBContractParamList::Clear() {
 // @@protoc_insertion_point(message_clear_start:Micro.Future.Message.Business.PBContractParamList)
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
   params_.Clear();
 }
 
@@ -6582,6 +6677,19 @@ bool PBContractParamList::MergePartialFromCodedStream(
         }
         if (input->ExpectTag(10)) goto parse_loop_params;
         input->UnsafeDecrementRecursionDepth();
+        if (input->ExpectTag(18)) goto parse_header;
+        break;
+      }
+
+      // optional .Micro.Future.Message.Business.DataHeader header = 2;
+      case 2: {
+        if (tag == 18) {
+         parse_header:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_header()));
+        } else {
+          goto handle_unusual;
+        }
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -6616,6 +6724,12 @@ void PBContractParamList::SerializeWithCachedSizes(
       1, this->params(i), output);
   }
 
+  // optional .Micro.Future.Message.Business.DataHeader header = 2;
+  if (this->has_header()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      2, *this->header_, output);
+  }
+
   // @@protoc_insertion_point(serialize_end:Micro.Future.Message.Business.PBContractParamList)
 }
 
@@ -6629,6 +6743,13 @@ void PBContractParamList::SerializeWithCachedSizes(
         1, this->params(i), target);
   }
 
+  // optional .Micro.Future.Message.Business.DataHeader header = 2;
+  if (this->has_header()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        2, *this->header_, target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.Business.PBContractParamList)
   return target;
 }
@@ -6636,6 +6757,13 @@ void PBContractParamList::SerializeWithCachedSizes(
 int PBContractParamList::ByteSize() const {
 // @@protoc_insertion_point(message_byte_size_start:Micro.Future.Message.Business.PBContractParamList)
   int total_size = 0;
+
+  // optional .Micro.Future.Message.Business.DataHeader header = 2;
+  if (this->has_header()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->header_);
+  }
 
   // repeated .Micro.Future.Message.Business.PBContractParam params = 1;
   total_size += 1 * this->params_size();
@@ -6670,6 +6798,9 @@ void PBContractParamList::MergeFrom(const PBContractParamList& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:Micro.Future.Message.Business.PBContractParamList)
   if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
   params_.MergeFrom(from.params_);
+  if (from.has_header()) {
+    mutable_header()->::Micro::Future::Message::Business::DataHeader::MergeFrom(from.header());
+  }
 }
 
 void PBContractParamList::CopyFrom(const ::google::protobuf::Message& from) {
@@ -6697,6 +6828,7 @@ void PBContractParamList::Swap(PBContractParamList* other) {
 }
 void PBContractParamList::InternalSwap(PBContractParamList* other) {
   params_.UnsafeArenaSwap(&other->params_);
+  std::swap(header_, other->header_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -6740,6 +6872,44 @@ const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::
 PBContractParamList::params() const {
   // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBContractParamList.params)
   return params_;
+}
+
+// optional .Micro.Future.Message.Business.DataHeader header = 2;
+bool PBContractParamList::has_header() const {
+  return !_is_default_instance_ && header_ != NULL;
+}
+void PBContractParamList::clear_header() {
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
+}
+const ::Micro::Future::Message::Business::DataHeader& PBContractParamList::header() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBContractParamList.header)
+  return header_ != NULL ? *header_ : *default_instance_->header_;
+}
+::Micro::Future::Message::Business::DataHeader* PBContractParamList::mutable_header() {
+  
+  if (header_ == NULL) {
+    header_ = new ::Micro::Future::Message::Business::DataHeader;
+  }
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBContractParamList.header)
+  return header_;
+}
+::Micro::Future::Message::Business::DataHeader* PBContractParamList::release_header() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBContractParamList.header)
+  
+  ::Micro::Future::Message::Business::DataHeader* temp = header_;
+  header_ = NULL;
+  return temp;
+}
+void PBContractParamList::set_allocated_header(::Micro::Future::Message::Business::DataHeader* header) {
+  delete header_;
+  header_ = header;
+  if (header) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBContractParamList.header)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -7177,6 +7347,7 @@ void PBOTCUserParam::clear_quantity() {
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int PBOTCUserParamList::kParamsFieldNumber;
+const int PBOTCUserParamList::kHeaderFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 PBOTCUserParamList::PBOTCUserParamList()
@@ -7187,6 +7358,7 @@ PBOTCUserParamList::PBOTCUserParamList()
 
 void PBOTCUserParamList::InitAsDefaultInstance() {
   _is_default_instance_ = true;
+  header_ = const_cast< ::Micro::Future::Message::Business::DataHeader*>(&::Micro::Future::Message::Business::DataHeader::default_instance());
 }
 
 PBOTCUserParamList::PBOTCUserParamList(const PBOTCUserParamList& from)
@@ -7200,6 +7372,7 @@ PBOTCUserParamList::PBOTCUserParamList(const PBOTCUserParamList& from)
 void PBOTCUserParamList::SharedCtor() {
     _is_default_instance_ = false;
   _cached_size_ = 0;
+  header_ = NULL;
 }
 
 PBOTCUserParamList::~PBOTCUserParamList() {
@@ -7209,6 +7382,7 @@ PBOTCUserParamList::~PBOTCUserParamList() {
 
 void PBOTCUserParamList::SharedDtor() {
   if (this != default_instance_) {
+    delete header_;
   }
 }
 
@@ -7239,6 +7413,8 @@ PBOTCUserParamList* PBOTCUserParamList::New(::google::protobuf::Arena* arena) co
 
 void PBOTCUserParamList::Clear() {
 // @@protoc_insertion_point(message_clear_start:Micro.Future.Message.Business.PBOTCUserParamList)
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
   params_.Clear();
 }
 
@@ -7264,6 +7440,19 @@ bool PBOTCUserParamList::MergePartialFromCodedStream(
         }
         if (input->ExpectTag(10)) goto parse_loop_params;
         input->UnsafeDecrementRecursionDepth();
+        if (input->ExpectTag(18)) goto parse_header;
+        break;
+      }
+
+      // optional .Micro.Future.Message.Business.DataHeader header = 2;
+      case 2: {
+        if (tag == 18) {
+         parse_header:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_header()));
+        } else {
+          goto handle_unusual;
+        }
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -7298,6 +7487,12 @@ void PBOTCUserParamList::SerializeWithCachedSizes(
       1, this->params(i), output);
   }
 
+  // optional .Micro.Future.Message.Business.DataHeader header = 2;
+  if (this->has_header()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      2, *this->header_, output);
+  }
+
   // @@protoc_insertion_point(serialize_end:Micro.Future.Message.Business.PBOTCUserParamList)
 }
 
@@ -7311,6 +7506,13 @@ void PBOTCUserParamList::SerializeWithCachedSizes(
         1, this->params(i), target);
   }
 
+  // optional .Micro.Future.Message.Business.DataHeader header = 2;
+  if (this->has_header()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        2, *this->header_, target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.Business.PBOTCUserParamList)
   return target;
 }
@@ -7318,6 +7520,13 @@ void PBOTCUserParamList::SerializeWithCachedSizes(
 int PBOTCUserParamList::ByteSize() const {
 // @@protoc_insertion_point(message_byte_size_start:Micro.Future.Message.Business.PBOTCUserParamList)
   int total_size = 0;
+
+  // optional .Micro.Future.Message.Business.DataHeader header = 2;
+  if (this->has_header()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->header_);
+  }
 
   // repeated .Micro.Future.Message.Business.PBOTCUserParam params = 1;
   total_size += 1 * this->params_size();
@@ -7352,6 +7561,9 @@ void PBOTCUserParamList::MergeFrom(const PBOTCUserParamList& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:Micro.Future.Message.Business.PBOTCUserParamList)
   if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
   params_.MergeFrom(from.params_);
+  if (from.has_header()) {
+    mutable_header()->::Micro::Future::Message::Business::DataHeader::MergeFrom(from.header());
+  }
 }
 
 void PBOTCUserParamList::CopyFrom(const ::google::protobuf::Message& from) {
@@ -7379,6 +7591,7 @@ void PBOTCUserParamList::Swap(PBOTCUserParamList* other) {
 }
 void PBOTCUserParamList::InternalSwap(PBOTCUserParamList* other) {
   params_.UnsafeArenaSwap(&other->params_);
+  std::swap(header_, other->header_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -7422,6 +7635,44 @@ const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::
 PBOTCUserParamList::params() const {
   // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBOTCUserParamList.params)
   return params_;
+}
+
+// optional .Micro.Future.Message.Business.DataHeader header = 2;
+bool PBOTCUserParamList::has_header() const {
+  return !_is_default_instance_ && header_ != NULL;
+}
+void PBOTCUserParamList::clear_header() {
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
+}
+const ::Micro::Future::Message::Business::DataHeader& PBOTCUserParamList::header() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOTCUserParamList.header)
+  return header_ != NULL ? *header_ : *default_instance_->header_;
+}
+::Micro::Future::Message::Business::DataHeader* PBOTCUserParamList::mutable_header() {
+  
+  if (header_ == NULL) {
+    header_ = new ::Micro::Future::Message::Business::DataHeader;
+  }
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBOTCUserParamList.header)
+  return header_;
+}
+::Micro::Future::Message::Business::DataHeader* PBOTCUserParamList::release_header() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBOTCUserParamList.header)
+  
+  ::Micro::Future::Message::Business::DataHeader* temp = header_;
+  header_ = NULL;
+  return temp;
+}
+void PBOTCUserParamList::set_allocated_header(::Micro::Future::Message::Business::DataHeader* header) {
+  delete header_;
+  header_ = header;
+  if (header) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBOTCUserParamList.header)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

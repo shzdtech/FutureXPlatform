@@ -27,7 +27,6 @@ dataobj_ptr CTPOTCCancelOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* r
 {
 	CheckLogin(session);
 
-	auto ret = reqDO;
 	auto& orderDO = *((OrderDO*)reqDO.get());
 	
 	if(auto wkProcPtr = std::static_pointer_cast<CTPOTCWorkerProcessor>
@@ -36,12 +35,12 @@ dataobj_ptr CTPOTCCancelOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* r
 		wkProcPtr->OTCCancelOrder(orderDO);
 	}
 
-	return ret;
+	return reqDO;
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCCancelOrder::HandleResponse(param_vector rawRespParams, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTPOTCCancelOrder::HandleResponse()
+// Name:       CTPOTCCancelOrder::HandleResponse(const uint32_t serialId, param_vector rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Purpose:    Implementation of CTPOTCCancelOrder::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
 // - rawAPI
@@ -49,9 +48,10 @@ dataobj_ptr CTPOTCCancelOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* r
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCCancelOrder::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOTCCancelOrder::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	auto& orderDO = *((OrderDO*)rawRespParams[0]);
+	orderDO.SerialId = serialId;
 
 	return std::make_shared<OrderDO>(orderDO);
 }

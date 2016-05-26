@@ -39,6 +39,7 @@ dataobj_ptr CTPOTCQueryContractParam::HandleRequest(const dataobj_ptr reqDO, IRa
 		session->getContext()->getAttribute(STR_KEY_USER_CONTRACT_PARAM));
 
 	auto contractVec_Ptr = std::make_shared<VectorDO<ContractDO>>();
+	contractVec_Ptr->SerialId = reqDO->SerialId;
 
 	auto pricingCtx = AttribPointerCast(session->getProcessor(),
 		STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext);
@@ -55,8 +56,8 @@ dataobj_ptr CTPOTCQueryContractParam::HandleRequest(const dataobj_ptr reqDO, IRa
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCQueryContractParam::HandleResponse(param_vector rawRespParams, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTPOTCQueryContractParam::HandleResponse()
+// Name:       CTPOTCQueryContractParam::HandleResponse(const uint32_t serialId, param_vector rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Purpose:    Implementation of CTPOTCQueryContractParam::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
 // - rawAPI
@@ -64,7 +65,7 @@ dataobj_ptr CTPOTCQueryContractParam::HandleRequest(const dataobj_ptr reqDO, IRa
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCQueryContractParam::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOTCQueryContractParam::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	return nullptr;
 }

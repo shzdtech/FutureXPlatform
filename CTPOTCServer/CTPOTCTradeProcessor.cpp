@@ -116,7 +116,7 @@ void CTPOTCTradeProcessor::DispatchMessage(const int msgId, const OrderDO* pOrde
 	{
 		for (auto pSession : *pNotiferSet)
 		{
-			OnResponseProcMacro(pSession->getProcessor(), msgId, pOrderDO);
+			OnResponseProcMacro(pSession->getProcessor(), msgId, pOrderDO->SerialId, pOrderDO);
 		}
 	}
 }

@@ -6,7 +6,8 @@
  ***********************************************************************/
 
 #include "PBUserPositionSerializer.h"
-#include "PBStringTableSerializer.h"
+#include "PBStringMapSerializer.h"
+#include "pbmacros.h"
 #include "proto/businessobj.pb.h"
 #include "../dataobject/UserPositionDO.h"
 
@@ -23,16 +24,8 @@ data_buffer PBUserPositionSerializer::Serialize(const dataobj_ptr abstractDO)
 	using namespace Micro::Future::Message::Business;
 	PBPosition PB;
 	auto pDO = (UserPositionDO*)abstractDO.get();
+	FillPBHeader(PB, pDO);
 
-	if (pDO->SerialId != 0)
-	{
-		auto pHeader = new DataHeader();
-		pHeader->set_serialid(pDO->SerialId);
-		if (pDO->HasMore)
-			pHeader->set_hasmore(pDO->HasMore);
-
-		PB.set_allocated_header(pHeader);
-	}
 	PB.set_exchange(pDO->ExchangeID().data());
 	PB.set_contract(pDO->InstrumentID().data());
 	PB.set_direction(pDO->Direction);
@@ -89,5 +82,5 @@ data_buffer PBUserPositionSerializer::Serialize(const dataobj_ptr abstractDO)
 
 dataobj_ptr PBUserPositionSerializer::Deserialize(const data_buffer& rawdata)
 {
-	return PBStringTableSerializer::Instance()->Deserialize(rawdata);
+	return PBStringMapSerializer::Instance()->Deserialize(rawdata);
 }

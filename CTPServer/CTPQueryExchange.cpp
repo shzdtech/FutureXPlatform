@@ -32,22 +32,21 @@
 
 dataobj_ptr CTPQueryExchange::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
-	auto stdo = (StringTableDO*)reqDO.get();
-	auto& data = stdo->Data;
-	auto& exchangeid = TUtil::FirstNamedEntry(STR_EXCHANGE_ID, data, EMPTY_STRING);
+	auto stdo = (MapDO<std::string>*)reqDO.get();
+	auto& exchangeid = stdo->TryFind(STR_EXCHANGE_ID, EMPTY_STRING);
 
 	CThostFtdcQryExchangeField req;
 	std::memset(&req, 0, sizeof(req));
 	std::strcpy(req.ExchangeID, exchangeid.data());
-	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryExchange(&req, stdo->SerialId);
+	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryExchange(&req, reqDO->SerialId);
 	CTPUtility::CheckReturnError(iRet);
 
 	return nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPQueryExchange::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTPQueryExchange::HandleResponse()
+// Name:       CTPQueryExchange::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Purpose:    Implementation of CTPQueryExchange::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
 // - rawAPI
@@ -55,7 +54,7 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryExchange::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryExchange::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	CTPUtility::CheckError(rawRespParams[1]);
 
@@ -66,6 +65,7 @@ dataobj_ptr CTPQueryExchange::HandleResponse(param_vector& rawRespParams, IRawAP
 		auto pDO = new ExchangeDO;
 		ret.reset(pDO);
 
+		pDO->SerialId = serialId;
 		pDO->HasMore = !(*((bool*)rawRespParams[3]));
 		pDO->ExchangeID = Encoding::ToUTF8(pData->ExchangeID, CHARSET_GB2312);
 		pDO->Name = Encoding::ToUTF8(pData->ExchangeName, CHARSET_GB2312);

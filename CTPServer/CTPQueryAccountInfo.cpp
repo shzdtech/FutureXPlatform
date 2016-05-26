@@ -29,8 +29,7 @@
 
 dataobj_ptr CTPQueryAccountInfo::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
-	auto stdo = (StringTableDO*)reqDO.get();
-	auto& data = stdo->Data;
+	auto stdo = (MapDO<std::string>*)reqDO.get();
 	auto& brokeid = session->getUserInfo()->getBrokerId();
 	auto& userid = session->getUserInfo()->getInvestorId();
 
@@ -38,15 +37,15 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 	std::memset(&req, 0, sizeof(req));
 	std::strcpy(req.BrokerID, brokeid.data());
 	std::strcpy(req.InvestorID, userid.data());
-	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryTradingAccount(&req, stdo->SerialId);
+	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryTradingAccount(&req, reqDO->SerialId);
 	CTPUtility::CheckReturnError(iRet);
 
 	return nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPQueryAccountInfo::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTPQueryAccountInfo::HandleResponse()
+// Name:       CTPQueryAccountInfo::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Purpose:    Implementation of CTPQueryAccountInfo::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
 // - rawAPI
@@ -54,7 +53,7 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryAccountInfo::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryAccountInfo::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	CTPUtility::CheckError(rawRespParams[1]);
 
@@ -64,7 +63,7 @@ dataobj_ptr CTPQueryAccountInfo::HandleResponse(param_vector& rawRespParams, IRa
 	{
 		auto pDO = new AccountInfoDO;
 		ret.reset(pDO);
-		pDO->SerialId = *(uint32_t*)rawRespParams[2];
+		pDO->SerialId = serialId;
 		pDO->HasMore = *(bool*)rawRespParams[3];
 
 		pDO->BrokerID = pData->BrokerID;

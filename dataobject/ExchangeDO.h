@@ -8,9 +8,9 @@
 #if !defined(__dataobject_ExchangeDO_h)
 #define __dataobject_ExchangeDO_h
 
-#include "AbstractDataObj.h"
+#include "dataobjectbase.h"
 
-class ExchangeDO : public AbstractDataObj
+class ExchangeDO : public dataobjectbase
 {
 public:
    std::string ExchangeID;

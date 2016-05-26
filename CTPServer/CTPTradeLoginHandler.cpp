@@ -16,7 +16,7 @@
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-int CTPTradeLoginHandler::LoginFunction(IRawAPI* rawAPI, CThostFtdcReqUserLoginField* loginInfo, uint32_t requestId)
+int CTPTradeLoginHandler::LoginFunction(IRawAPI* rawAPI, CThostFtdcReqUserLoginField* loginInfo, uint requestId)
 {
 	std::string value;
 

@@ -6,6 +6,8 @@
  ***********************************************************************/
 
 #include "PBPricingDataSerializer.h"
+#include "PBStringTableSerializer.h"
+#include "pbmacros.h"
 #include "../dataobject/PricingDO.h"
 #include "../dataobject/TemplateDO.h"
 #include "proto/businessobj.pb.h"
@@ -24,16 +26,7 @@ data_buffer PBPricingDataSerializer::Serialize(const dataobj_ptr abstractDO)
 	
 	PBPricingDataList PBList;
 	auto pVecDO = (VectorDO<PricingDO>*)abstractDO.get();
-
-	if (pVecDO->SerialId != 0)
-	{
-		auto pHeader = new DataHeader();
-		pHeader->set_serialid(pVecDO->SerialId);
-		if (pVecDO->HasMore)
-			pHeader->set_hasmore(pVecDO->HasMore);
-
-		PBList.set_allocated_header(pHeader);
-	}
+	FillPBHeader(PBList, pVecDO);
 
 	for (auto& pDO : *pVecDO)
 	{
@@ -60,5 +53,5 @@ data_buffer PBPricingDataSerializer::Serialize(const dataobj_ptr abstractDO)
 
 dataobj_ptr PBPricingDataSerializer::Deserialize(const data_buffer& rawdata)
 {
-	return nullptr;
+	return PBStringTableSerializer::Instance()->Deserialize(rawdata);
 }

@@ -30,14 +30,14 @@ std::shared_ptr<AbstractDataSerializerFactory> AbstractDataSerializerFactory::In
 
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       AbstractDataSerializerFactory::Find(unsigned int msgId)
+// Name:       AbstractDataSerializerFactory::Find(uint32_t msgId)
 // Purpose:    Implementation of AbstractDataSerializerFactory::Find()
 // Parameters:
 // - msgId
 // Return:     IDataSerializer_Ptr
 ////////////////////////////////////////////////////////////////////////
 
-IDataSerializer_Ptr AbstractDataSerializerFactory::Find(unsigned int msgId)
+IDataSerializer_Ptr AbstractDataSerializerFactory::Find(uint32_t msgId)
 {
 	return _serializer_map[msgId];
 }

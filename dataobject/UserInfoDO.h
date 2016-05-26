@@ -8,7 +8,7 @@
 #if !defined(__dataobject_UserInfoDO_h)
 #define __dataobject_UserInfoDO_h
 
-#include "AbstractDataObj.h"
+#include "dataobjectbase.h"
 #include <string>
 
 enum GenderType
@@ -18,7 +18,7 @@ enum GenderType
 	GENDER_WOMAN = 2
 };
 
-class UserInfoDO : public AbstractDataObj
+class UserInfoDO : public dataobjectbase
 {
 public:
 	std::string BrokerId;

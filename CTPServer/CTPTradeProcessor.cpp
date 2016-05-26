@@ -103,14 +103,14 @@ void CTPTradeProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogi
 		}
 	}
 
-	OnResponseMacro(MSG_ID_LOGIN, pRspUserLogin, pRspInfo, &nRequestID, &bIsLast)
+	OnResponseMacro(MSG_ID_LOGIN, nRequestID, pRspUserLogin, pRspInfo, &nRequestID, &bIsLast)
 }
 
 ///登出请求响应
 void CTPTradeProcessor::OnRspUserLogout(CThostFtdcUserLogoutField *pUserLogout, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
 	_isLogged = false;
-	OnResponseMacro(MSG_ID_LOGOUT, pUserLogout, pRspInfo, &nRequestID, &bIsLast)
+	OnResponseMacro(MSG_ID_LOGOUT, nRequestID, pUserLogout, pRspInfo, &nRequestID, &bIsLast)
 }
 
 ///用户口令更新请求响应
@@ -122,7 +122,7 @@ void CTPTradeProcessor::OnRspTradingAccountPasswordUpdate(CThostFtdcTradingAccou
 ///报单录入请求响应
 void CTPTradeProcessor::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	OnResponseMacro(MSG_ID_ORDER_NEW, pInputOrder, pRspInfo, &nRequestID, &bIsLast)
+	OnResponseMacro(MSG_ID_ORDER_NEW, nRequestID, pInputOrder, pRspInfo, &nRequestID, &bIsLast)
 }
 
 ///预埋单录入请求响应
@@ -135,7 +135,7 @@ void CTPTradeProcessor::OnRspParkedOrderAction(CThostFtdcParkedOrderActionField 
 void CTPTradeProcessor::OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (pInputOrderAction->ActionFlag == THOST_FTDC_AF_Delete)
-		OnResponseMacro(MSG_ID_ORDER_CANCEL, pInputOrderAction, pRspInfo, &nRequestID, &bIsLast)
+		OnResponseMacro(MSG_ID_ORDER_CANCEL, nRequestID, pInputOrderAction, pRspInfo, &nRequestID, &bIsLast)
 }
 
 ///查询最大报单数量响应
@@ -144,7 +144,7 @@ void CTPTradeProcessor::OnRspQueryMaxOrderVolume(CThostFtdcQueryMaxOrderVolumeFi
 ///投资者结算结果确认响应
 void CTPTradeProcessor::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	OnResponseMacro(MSG_ID_SETTLEMENT_INFO_CONFIRM, pSettlementInfoConfirm, pRspInfo, &nRequestID, &bIsLast)
+	OnResponseMacro(MSG_ID_SETTLEMENT_INFO_CONFIRM, nRequestID, pSettlementInfoConfirm, pRspInfo, &nRequestID, &bIsLast)
 }
 
 ///删除预埋单响应
@@ -156,25 +156,25 @@ void CTPTradeProcessor::OnRspRemoveParkedOrderAction(CThostFtdcRemoveParkedOrder
 ///请求查询报单响应
 void CTPTradeProcessor::OnRspQryOrder(CThostFtdcOrderField *pOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	OnResponseMacro(MSG_ID_QUERY_ORDER, pOrder, pRspInfo, &nRequestID, &bIsLast)
+	OnResponseMacro(MSG_ID_QUERY_ORDER, nRequestID, pOrder, pRspInfo, &nRequestID, &bIsLast)
 }
 
 ///请求查询成交响应
 void CTPTradeProcessor::OnRspQryTrade(CThostFtdcTradeField *pTrade, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	OnResponseMacro(MSG_ID_QUERY_TRADE, pTrade, pRspInfo, &nRequestID, &bIsLast)
+	OnResponseMacro(MSG_ID_QUERY_TRADE, nRequestID, pTrade, pRspInfo, &nRequestID, &bIsLast)
 }
 
 ///请求查询投资者持仓响应
 void CTPTradeProcessor::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	OnResponseMacro(MSG_ID_QUERY_POSITION, pInvestorPosition, pRspInfo, &nRequestID, &bIsLast)
+	OnResponseMacro(MSG_ID_QUERY_POSITION, nRequestID, pInvestorPosition, pRspInfo, &nRequestID, &bIsLast)
 }
 
 ///请求查询资金账户响应
 void CTPTradeProcessor::OnRspQryTradingAccount(CThostFtdcTradingAccountField *pTradingAccount, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	OnResponseMacro(MSG_ID_QUERY_ACCOUNT_INFO, pTradingAccount, pRspInfo, &nRequestID, &bIsLast)
+	OnResponseMacro(MSG_ID_QUERY_ACCOUNT_INFO, nRequestID, pTradingAccount, pRspInfo, &nRequestID, &bIsLast)
 }
 
 ///请求查询投资者响应
@@ -192,13 +192,13 @@ void CTPTradeProcessor::OnRspQryInstrumentCommissionRate(CThostFtdcInstrumentCom
 ///请求查询交易所响应
 void CTPTradeProcessor::OnRspQryExchange(CThostFtdcExchangeField *pExchange, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	OnResponseMacro(MSG_ID_QUERY_EXCHANGE, pExchange, pRspInfo, &nRequestID, &bIsLast)
+	OnResponseMacro(MSG_ID_QUERY_EXCHANGE, nRequestID, pExchange, pRspInfo, &nRequestID, &bIsLast)
 }
 
 ///请求查询合约响应
 void CTPTradeProcessor::OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	OnResponseMacro(MSG_ID_QUERY_INSTRUMENT, pInstrument, pRspInfo, &nRequestID, &bIsLast)
+	OnResponseMacro(MSG_ID_QUERY_INSTRUMENT, nRequestID, pInstrument, pRspInfo, &nRequestID, &bIsLast)
 }
 
 ///请求查询行情响应
@@ -262,7 +262,7 @@ void CTPTradeProcessor::OnRtnOrder(CThostFtdcOrderField *pOrder)
 			return;
 		}
 
-		OnResponseMacro(msgId, pOrder);
+		OnResponseMacro(msgId, 0, pOrder);
 	}
 }
 
@@ -271,13 +271,13 @@ void CTPTradeProcessor::OnRtnTrade(CThostFtdcTradeField *pTrade)
 {
 	bool bIsLast = true;
 	int nRequestID = 0;
-	OnResponseMacro(MSG_ID_TRADE_RTN, pTrade, nullptr, &nRequestID, &bIsLast)
+	OnResponseMacro(MSG_ID_TRADE_RTN, 0, pTrade, nullptr, &nRequestID, &bIsLast)
 }
 
 ///报单录入错误回报
 void CTPTradeProcessor::OnErrRtnOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo)
 {
-	OnResponseMacro(MSG_ID_ORDER_NEW, pInputOrder, pRspInfo);
+	OnResponseMacro(MSG_ID_ORDER_NEW, 0, pInputOrder, pRspInfo);
 }
 
 ///报单操作错误回报

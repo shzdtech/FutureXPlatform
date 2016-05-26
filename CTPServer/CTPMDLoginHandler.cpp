@@ -16,7 +16,7 @@
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-int CTPMDLoginHandler::LoginFunction(IRawAPI* rawAPI, CThostFtdcReqUserLoginField* loginInfo, uint32_t requestId)
+int CTPMDLoginHandler::LoginFunction(IRawAPI* rawAPI, CThostFtdcReqUserLoginField* loginInfo, uint requestId)
 {
 	std::string value;
 

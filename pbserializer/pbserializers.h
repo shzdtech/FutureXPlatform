@@ -1,6 +1,7 @@
 #if !defined(__pbserializer_pbserializers_h)
 #define __pbserializer_pbserializers_h
 
+#include "PBStringMapSerializer.h"
 #include "PBEchoMsgSerializer.h"
 #include "PBAccountInfoSerializer.h"
 #include "PBBizErrorSerializer.h"

@@ -3,7 +3,7 @@
 
 static InstrumentDOMap instrumentDOMap;
 
-void InstrumentCache::AddToCache(const InstrumentDO & instrumentDO)
+void InstrumentCache::Add(const InstrumentDO & instrumentDO)
 {
 	instrumentDOMap[instrumentDO.InstrumentID()] = instrumentDO;
 }

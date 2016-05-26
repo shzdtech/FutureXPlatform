@@ -18,29 +18,28 @@
 #include "../utility/TUtil.h"
 #include <glog/logging.h>
 
-////////////////////////////////////////////////////////////////////////
-// Name:       CTSLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTSLoginHandler::HandleRequest()
-// Parameters:
-// - reqDO
-// - rawAPI
-// - session
-// Return:     dataobj_ptr
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       CTSLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+ // Purpose:    Implementation of CTSLoginHandler::HandleRequest()
+ // Parameters:
+ // - reqDO
+ // - rawAPI
+ // - session
+ // Return:     dataobj_ptr
+ ////////////////////////////////////////////////////////////////////////
 
 dataobj_ptr CTSLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
-	auto stdo = (StringTableDO*)reqDO.get();
-	auto& data = stdo->Data;
+	auto stdo = (MapDO<std::string>*)reqDO.get();
 
-	auto& brokeid = TUtil::FirstNamedEntry(STR_BROKER_ID, data, EMPTY_STRING);
-	auto& userid = TUtil::FirstNamedEntry(STR_USER_ID, data, EMPTY_STRING);
-	auto& password = TUtil::FirstNamedEntry(STR_PASSWORD, data, EMPTY_STRING);
-
-	DLOG(INFO) << "Start login: " << brokeid << ":" << userid << ":" << password << std::endl;
+	auto& brokeid = stdo->TryFind(STR_BROKER_ID, EMPTY_STRING);
+	auto& userid = stdo->TryFind(STR_USER_ID, EMPTY_STRING);
+	auto& password = stdo->TryFind(STR_PASSWORD, EMPTY_STRING);
 
 	CTSAPIWrapper* api = (CTSAPIWrapper*)rawAPI;
-	api->Impl()->Login(brokeid.data(), userid.data(), password.data());
+	api->Impl()->Login(brokeid.data(), userid.data(), password.data(), reqDO->SerialId);
+
+	DLOG(INFO) << "Start login: " << brokeid << ":" << userid << ":" << password << std::endl;
 
 	auto pUserInfo = session->getUserInfo();
 	pUserInfo->setInvestorId(userid);
@@ -55,8 +54,8 @@ dataobj_ptr CTSLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* raw
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTSLoginHandler::HandleResponse(param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTSLoginHandler::HandleResponse()
+// Name:       CTSLoginHandler::HandleResponse(const uint32_t serialId, param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
+// Purpose:    Implementation of CTSLoginHandler::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawParams
 // - rawAPI
@@ -64,7 +63,7 @@ dataobj_ptr CTSLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* raw
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTSLoginHandler::HandleResponse(param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTSLoginHandler::HandleResponse(const uint32_t serialId, param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
 {
 	auto errCode = *(int*)rawParams[0];
 	if (errCode)
@@ -74,6 +73,7 @@ dataobj_ptr CTSLoginHandler::HandleResponse(param_vector& rawParams, IRawAPI* ra
 
 	auto pDO = new UserInfoDO;
 	dataobj_ptr ret(pDO);
+	pDO->SerialId = serialId;
 
 	auto pUserInfo = session->getUserInfo();
 

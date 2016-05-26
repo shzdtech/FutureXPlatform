@@ -9,10 +9,10 @@
 #define __dataobject_UserPositionDO_h
 
 #include "ContractKey.h"
-#include "AbstractDataObj.h"
+#include "dataobjectbase.h"
 #include "EnumTypes.h"
 
-class UserPositionDO : public ContractKey, public AbstractDataObj
+class UserPositionDO : public ContractKey, public dataobjectbase
 {
 public:
 	UserPositionDO(const std::string& exchangeID, const std::string& instrumentID)

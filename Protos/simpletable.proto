@@ -24,27 +24,27 @@ repeated double entry = 2;
 
 message SimpleIntTable
 {
-DataHeader hearder = 1;
+DataHeader header = 1;
 repeated NamedIntVector columns = 2;
 }
 
 message SimpleStringTable
 {
-DataHeader hearder = 1;
+DataHeader header = 1;
 repeated NamedStringVector columns = 2;
 }
 
 message SimpleDoubleTable
 {
-DataHeader hearder = 1;
+DataHeader header = 1;
 repeated NamedDoubleVector columns = 2;
 }
 
 message ComplexTable
 {
-DataHeader hearder = 1;
+DataHeader header = 1;
 SimpleIntTable     intTable = 2;
 SimpleDoubleTable  doubleTable = 3;
-SimpleStringTable stringTable = 4;
-ComplexTable	   nestTable = 5;
+SimpleStringTable  stringTable = 4;
+ComplexTable	   nestedTable = 5;
 }

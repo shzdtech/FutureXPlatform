@@ -1,3 +1,4 @@
+
 /***********************************************************************
  * Module:  PBContractParamSerializer.cpp
  * Author:  milk
@@ -6,8 +7,7 @@
  ***********************************************************************/
 
 #include "PBContractParamSerializer.h"
-#include "../message/BizError.h"
-#include "ExceptionDef.h"
+#include "pbmacros.h"
 #include "proto/businessobj.pb.h"
 #include "../dataobject/TemplateDO.h"
 
@@ -24,8 +24,8 @@
 data_buffer PBContractParamSerializer::Serialize(const dataobj_ptr abstractDO)
 {
 	Micro::Future::Message::Business::PBContractParamList PB;
-
 	auto pDO = (VectorDO<ContractDO>*)abstractDO.get();
+	FillPBHeader(PB, pDO);
 
 	for (auto& cto : *pDO)
 	{
@@ -54,11 +54,10 @@ data_buffer PBContractParamSerializer::Serialize(const dataobj_ptr abstractDO)
 dataobj_ptr PBContractParamSerializer::Deserialize(const data_buffer& rawdata)
 {
 	Micro::Future::Message::Business::PBContractParamList PB;
+	ParseWithThrow(PB, rawdata);
 
 	auto ret = std::make_shared<VectorDO<ContractDO>>();
-
-	if (!PB.ParseFromArray(rawdata.get(), rawdata.size()))
-		throw BizError(INVALID_DATAFORMAT_CODE, INVALID_DATAFORMAT_DESC);
+	FillDOHeader(ret, PB);
 
 	auto& params = PB.params();
 

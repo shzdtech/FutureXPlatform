@@ -28,7 +28,6 @@ dataobj_ptr CTPOTCNewOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawA
 {
 	CheckLogin(session);
 
-	dataobj_ptr ret = reqDO;
 	auto& orderDO = *((OrderDO*)reqDO.get());
 	orderDO.SetUserID(session->getUserInfo()->getUserId());
 	if (auto wkProcPtr = std::static_pointer_cast<CTPOTCWorkerProcessor>
@@ -41,12 +40,12 @@ dataobj_ptr CTPOTCNewOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawA
 		wkProcPtr->RegisterOTCOrderListener(orderDO.OrderID, (IMessageSession*)session);
 	}
 
-	return ret;
+	return reqDO;
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCNewOrder::HandleResponse(param_vector rawRespParams, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTPOTCNewOrder::HandleResponse()
+// Name:       CTPOTCNewOrder::HandleResponse(const uint32_t serialId, param_vector rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Purpose:    Implementation of CTPOTCNewOrder::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
 // - rawAPI
@@ -54,9 +53,10 @@ dataobj_ptr CTPOTCNewOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawA
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCNewOrder::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOTCNewOrder::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	auto& orderDO = *((OrderDO*)rawRespParams[0]);
+	orderDO.SerialId = serialId;
 
 	return std::make_shared<OrderDO>(orderDO);
 }

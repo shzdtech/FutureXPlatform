@@ -37,12 +37,12 @@ dataobj_ptr CTPUnsubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI* 
 		{
 			std::transform(inst.begin(), inst.end(), inst.begin(), ::tolower);
 			pContract[0] = const_cast<char*>(inst.data());
-			ret = ((CTPRawAPI*)rawAPI)->MdAPI->UnSubscribeMarketData(pContract, stdo->SerialId);
+			ret = ((CTPRawAPI*)rawAPI)->MdAPI->UnSubscribeMarketData(pContract, reqDO->SerialId);
 			CTPUtility::CheckReturnError(ret);
 
 			std::transform(inst.begin(), inst.end(), inst.begin(), ::toupper);
 			pContract[0] = const_cast<char*>(inst.data());
-			ret = ((CTPRawAPI*)rawAPI)->MdAPI->UnSubscribeMarketData(pContract, stdo->SerialId);
+			ret = ((CTPRawAPI*)rawAPI)->MdAPI->UnSubscribeMarketData(pContract, reqDO->SerialId);
 			CTPUtility::CheckReturnError(ret);
 		}
 	}
@@ -52,8 +52,8 @@ dataobj_ptr CTPUnsubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI* 
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPUnsubMarketData::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTPUnsubMarketData::HandleResponse()
+// Name:       CTPUnsubMarketData::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Purpose:    Implementation of CTPUnsubMarketData::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
 // - rawAPI
@@ -61,7 +61,7 @@ dataobj_ptr CTPUnsubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI* 
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPUnsubMarketData::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPUnsubMarketData::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	CTPUtility::CheckError(rawRespParams[1]);
 
@@ -71,7 +71,7 @@ dataobj_ptr CTPUnsubMarketData::HandleResponse(param_vector& rawRespParams, IRaw
 	auto stDO = new StringTableDO;
 	ret.reset(stDO);
 	stDO->Data[STR_INSTRUMENT_ID].push_back(pRspInstr->InstrumentID);
-	stDO->SerialId = *(uint32_t*)rawRespParams[2];
+	stDO->SerialId = serialId;
 	stDO->HasMore = *(bool*)rawRespParams[3];
 	DLOG(INFO) << "UnsubMarketData successful." << std::endl;
 

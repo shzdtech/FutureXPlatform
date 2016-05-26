@@ -7,7 +7,7 @@
 
 #include "HedgeOrderManager.h"
 #include "../utility/atomicutil.h"
-
+#include "../utility/epsdouble.h"
 
 HedgeOrderManager::HedgeOrderManager(const std::string& user,
 	IOrderAPI* pOrderAPI, IPricingDataContext* pricingCtx)

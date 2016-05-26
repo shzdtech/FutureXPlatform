@@ -45,5 +45,5 @@ dataobj_ptr RegisterUserHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 			throw BizError(ResultType::SYS_ERROR, "Fail to insert user info.");
 	}
 
-	return dataobj_ptr(new ResultDO());
+	return dataobj_ptr(new ResultDO(reqDO->SerialId));
 }

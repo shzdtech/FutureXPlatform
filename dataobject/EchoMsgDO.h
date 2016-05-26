@@ -8,10 +8,10 @@
 #if !defined(_dataobject__EchoMsgDO_h)
 #define _dataobject__EchoMsgDO_h
 
-#include "AbstractDataObj.h"
+#include "dataobjectbase.h"
 #include "data_buffer.h"
 
-class EchoMsgDO : public AbstractDataObj
+class EchoMsgDO : public dataobjectbase
 {
 public:
     EchoMsgDO(data_buffer databuf):_db(databuf){}

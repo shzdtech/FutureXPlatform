@@ -2,6 +2,7 @@
 
 InteroLogSink::InteroLogSink(Encoding^ encoding)
 {
+	_encoding = encoding;
 	google::AddLogSink(this);
 }
 

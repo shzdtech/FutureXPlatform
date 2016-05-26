@@ -14,6 +14,7 @@
 #include "../dataobject/PricingDO.h"
 #include "../dataobject/ContractDO.h"
 #include "../dataobject/TypedefDO.h"
+#include "../bizutility/OptionPricingCache.h"
 
 using namespace QuantLib;
 
@@ -45,7 +46,11 @@ dataobj_ptr BlackScholesPricing::Compute(
 {
 	dataobj_ptr ret;
 
-	if (sdo.BaseContracts && sdo.BaseContracts->size() > 0)
+	if (auto pPricingDO = OptionPricingCache::Find(sdo, inputVal))
+	{
+		ret.reset(new PricingDO(*pPricingDO));
+	}
+	else
 	{
 		auto& mdDOMap = *(priceCtx.GetMarketDataDOMap());
 		auto& conDOMap = *(priceCtx.GetContractMap());
@@ -111,6 +116,8 @@ dataobj_ptr BlackScholesPricing::Compute(
 
 		pDO->BidPrice = europeanPutOption.NPV();
 		pDO->AskPrice = europeanCallOption.NPV();
+
+		OptionPricingCache::Add(sdo, inputVal, *pDO);
 	}
 
 	return ret;

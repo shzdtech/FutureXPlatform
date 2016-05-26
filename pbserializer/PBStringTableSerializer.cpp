@@ -7,8 +7,7 @@
 
 #include "PBStringTableSerializer.h"
 #include "../dataobject/TemplateDO.h"
-#include "../message/BizError.h"
-#include "ExceptionDef.h"
+#include "pbmacros.h"
 #include <google/protobuf/message.h>
 #include "proto/simpletable.pb.h"
 
@@ -24,17 +23,17 @@ using namespace Micro::Future::Message::Business;
 
 dataobj_ptr PBStringTableSerializer::Deserialize(const data_buffer& rawdata)
 {
+	SimpleStringTable simpleTbl;
+	ParseWithThrow(simpleTbl, rawdata);
+
 	auto nameTbl = new StringTableDO;
 	dataobj_ptr ret(nameTbl);
+	FillDOHeader(nameTbl, simpleTbl);
 
-	SimpleStringTable simpleTbl;
-	if (!simpleTbl.ParseFromArray(rawdata.get(), rawdata.size()))
-		throw BizError(INVALID_DATAFORMAT_CODE, INVALID_DATAFORMAT_DESC);
-
-	if (simpleTbl.has_hearder())
+	if (simpleTbl.has_header())
 	{
-		nameTbl->SerialId = simpleTbl.hearder().serialid();
-		nameTbl->HasMore = simpleTbl.hearder().hasmore();
+		nameTbl->SerialId = simpleTbl.header().serialid();
+		nameTbl->HasMore = simpleTbl.header().hasmore();
 	}
 	for (auto& col : simpleTbl.columns()) {
 		std::vector<std::string> vec(col.entry().begin(), col.entry().end());
@@ -55,15 +54,8 @@ data_buffer PBStringTableSerializer::Serialize(const dataobj_ptr abstractDO)
 {
 	auto nameTbl = (StringTableDO*)abstractDO.get();
 	SimpleStringTable simpleTbl;
-	if (nameTbl->SerialId != 0)
-	{
-		auto pHeader = new DataHeader();
-		pHeader->set_serialid(nameTbl->SerialId);
-		if (nameTbl->HasMore)
-			pHeader->set_hasmore(nameTbl->HasMore);
+	FillPBHeader(simpleTbl, nameTbl);
 
-		simpleTbl.set_allocated_hearder(pHeader);
-	}
 	for (auto& it : nameTbl->Data) {
 		auto namedVec = simpleTbl.mutable_columns()->Add();
 		namedVec->set_name(it.first);

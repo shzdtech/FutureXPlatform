@@ -8,10 +8,10 @@
 #if !defined(__dataobject_PricingDO_h)
 #define __dataobject_PricingDO_h
 
-#include "AbstractDataObj.h"
+#include "dataobjectbase.h"
 #include "ContractKey.h"
 
-class PricingDO : public ContractKey, public AbstractDataObj
+class PricingDO : public ContractKey, public dataobjectbase
 {
 public:
 	PricingDO(const std::string& exchangeID, const std::string& instrumentID)

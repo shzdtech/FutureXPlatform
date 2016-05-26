@@ -40,6 +40,11 @@
     <ClCompile Include="PricingDataContext.cpp" />
     <ClCompile Include="PricingUtility.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\bizutility\bizutility.vcxproj">
+      <Project>{e3f399cf-2d32-49a8-b536-ea7fad14483f}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{001A89A1-70D7-4A9B-A7B2-82D0BE1BA07C}</ProjectGuid>
     <SccProjectName>SAK</SccProjectName>

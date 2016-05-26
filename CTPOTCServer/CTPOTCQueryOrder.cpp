@@ -24,36 +24,39 @@
 #include "../databaseop/OTCOrderDAO.h"
 
 
-////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCQueryOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTPOTCQueryOrder::HandleRequest()
-// Parameters:
-// - reqDO
-// - rawAPI
-// - session
-// Return:     dataobj_ptr
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       CTPOTCQueryOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+ // Purpose:    Implementation of CTPOTCQueryOrder::HandleRequest()
+ // Parameters:
+ // - reqDO
+ // - rawAPI
+ // - session
+ // Return:     dataobj_ptr
+ ////////////////////////////////////////////////////////////////////////
 
 dataobj_ptr CTPOTCQueryOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	CheckLogin(session);
 
-	auto stdo = (StringTableDO*)reqDO.get();
-	auto& data = stdo->Data;
+	auto stdo = (MapDO<std::string>*)reqDO.get();
 
-	auto& instrumentid = TUtil::FirstNamedEntry(STR_INSTRUMENT_ID, data, EMPTY_STRING);
-	
+	auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
+
 	if (auto ordervec_ptr = OTCOrderDAO::QueryTodayOrder(session->getUserInfo()->getUserId(),
 		ContractKey(EMPTY_STRING, instrumentid)))
 	{
 		if (auto proc = std::static_pointer_cast<CTPOTCWorkerProcessor>
 			(GlobalProcessorRegistry::FindProcessor(CTPWorkProcessorID::WORKPROCESSOR_OTC)))
 		{
-			for (auto& it : *ordervec_ptr)
+			auto lastit = std::prev(ordervec_ptr->end());
+			for (auto it = ordervec_ptr->begin();it != ordervec_ptr->end(); it++)
 			{
-				if (it.OrderStatus == OrderStatus::OPENNING)
-					proc->RegisterOTCOrderListener(it.OrderID, (IMessageSession*)session);
-				OnResponseProcMacro(session->getProcessor(), MSG_ID_QUERY_ORDER, &it);
+				if (it->OrderStatus == OrderStatus::OPENNING)
+					proc->RegisterOTCOrderListener(it->OrderID, (IMessageSession*)session);
+				it->SerialId = stdo->SerialId;
+				if(it == lastit)
+					it->HasMore = true;
+				OnResponseProcMacro(session->getProcessor(), MSG_ID_QUERY_ORDER, reqDO->SerialId, &it);
 			}
 		}
 	}
@@ -62,8 +65,8 @@ dataobj_ptr CTPOTCQueryOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCQueryOrder::HandleResponse(param_vector rawRespParams, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTPOTCQueryOrder::HandleResponse()
+// Name:       CTPOTCQueryOrder::HandleResponse(const uint32_t serialId, param_vector rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Purpose:    Implementation of CTPOTCQueryOrder::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
 // - rawAPI
@@ -71,9 +74,10 @@ dataobj_ptr CTPOTCQueryOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCQueryOrder::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOTCQueryOrder::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	auto& orderDO = *((OrderDO*)rawRespParams[0]);
+	orderDO.SerialId = serialId;
 
 	return std::make_shared<OrderDO>(orderDO);
 }

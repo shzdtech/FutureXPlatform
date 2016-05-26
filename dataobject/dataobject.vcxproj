@@ -146,7 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AbstractDataObj.h" />
+    <ClInclude Include="dataobjectbase.h" />
     <ClInclude Include="AbstractDataSerializerFactory.h" />
     <ClInclude Include="AccountInfoDO.h" />
     <ClInclude Include="BizErrorDO.h" />

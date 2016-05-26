@@ -7,6 +7,7 @@
 
 #include "OTCUserPositionContext.h"
 #include "../utility/atomicutil.h"
+#include "../utility/epsdouble.h"
 
 OTCUserPositionContext::OTCUserPositionContext(IPricingDataContext * pricingCtx)
 {
@@ -66,7 +67,7 @@ ContractMap<double> OTCUserPositionContext::GenSpreadPoints(
 			{
 				double pos = bit.Weight*position;
 				auto &mktpos = hedgeMap.getorfill(bit);
-				atomicutil::round_add(mktpos, pos, EPSILON);
+				atomicutil::round_add(mktpos, pos, epsdouble::EPSILON);
 			}
 		}
 	}

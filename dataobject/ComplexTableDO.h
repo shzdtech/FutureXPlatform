@@ -8,15 +8,15 @@
 #if !defined(__dataobject_ComplexTableDO_h)
 #define __dataobject_ComplexTableDO_h
 
-#include "AbstractDataObj.h"
+#include "dataobjectbase.h"
 
-class ComplexTableDO : public AbstractDataObj
+class ComplexTableDO : public dataobjectbase
 {
 public:
 	MapIntVector intColumns;
 	MapDoubleVector doubleColumns;
 	MapStringVector stringColumns;
-	std::shared_ptr<ComplexTableDO> nestTable;
+	std::shared_ptr<ComplexTableDO> NestedTable;
 
 protected:
 

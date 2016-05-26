@@ -21,9 +21,6 @@
     <ClInclude Include="dataobject_exp.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="AbstractDataObj.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="data_buffer.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -115,6 +112,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="AbstractDataSerializerFactory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dataobjectbase.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -75,15 +75,15 @@ dataobj_ptr CTPNewOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI,
 	// 自动挂起标志
 	req.IsAutoSuspend = false;
 
-	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqOrderInsert(&req, pDO->SerialId);
+	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqOrderInsert(&req, reqDO->SerialId);
 	CTPUtility::CheckReturnError(iRet);
 
 	return nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPNewOrder::HandleResponse(param_vector rawRespParams, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTPNewOrder::HandleResponse()
+// Name:       CTPNewOrder::HandleResponse(const uint32_t serialId, param_vector rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Purpose:    Implementation of CTPNewOrder::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
 // - rawAPI
@@ -91,7 +91,7 @@ dataobj_ptr CTPNewOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI,
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPNewOrder::HandleResponse(param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPNewOrder::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	dataobj_ptr ret;
 
@@ -107,6 +107,8 @@ dataobj_ptr CTPNewOrder::HandleResponse(param_vector& rawRespParams, IRawAPI* ra
 		ret = CTPUtility::ParseRawOrder(pData);
 
 	}
+
+	ret->SerialId = serialId;
 
 	return ret;
 }

@@ -14,7 +14,7 @@
 class CTP_CLASS_EXPORT CTPMDLoginHandler : public CTPLoginHandler
 {
 public:
-	int LoginFunction(IRawAPI* rawAPI, CThostFtdcReqUserLoginField* loginInfo, uint32_t requestId);
+	int LoginFunction(IRawAPI* rawAPI, CThostFtdcReqUserLoginField* loginInfo, uint requestId);
 
 protected:
 private:

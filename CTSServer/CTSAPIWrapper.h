@@ -6,6 +6,7 @@
 #include "../message/DefMessageID.h"
 #include "../message/IRawAPI.h"
 #include "CTSConvertor.h"
+#include <queue>
 #include <gcroot.h>
 
 using namespace T4;
@@ -18,11 +19,11 @@ public:
 		const std::map<std::string, std::string>& configMap);
 	~CTSAPIWrapperImpl();
 
-	void Login(const char* broker, const char* user, const char* passowrd);
+	void Login(const char* broker, const char* user, const char* passowrd, uint32_t serailId);
 	bool IsLogged();
 
-	int Subscribe(const char* exchangeID, const char* contractID);
-	int Subscribe(const ContractKey& contractKeyD);
+	int Subscribe(const char* exchangeID, const char* contractID, uint32_t serailId);
+	int Subscribe(const ContractKey& contractKeyD, uint32_t serailId);
 	bool IsSubscribed(const ContractKey& contractKey);
 
 	int CreateOrder(OrderDO& orderDO);
@@ -30,6 +31,7 @@ public:
 
 protected:
 	bool _isLogged;
+	std::queue<uint32_t>* _loginQueue;
 	Host^ _host;
 	Account^ _account;
 	IMessageProcessor* _pMsgProcessor;

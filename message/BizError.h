@@ -22,24 +22,16 @@ public:
 		_errorcode(errcode),
 		_syserrcode(syserrcode),
 		runtime_error(reason) {};
-	BizError(int errcode, const std::string& reason, int syserrcode, int serialId) :
-		_errorcode(errcode),
-		_syserrcode(syserrcode),
-		_serialId(serialId),
-		runtime_error(reason) {};
 	BizError(int errcode, const char* reason) : BizError(errcode, reason, 0) {};
 	BizError(int errcode, const std::string& reason) : BizError(errcode, reason, 0) {};
 
 	int ErrorCode(void) { return _errorcode; };
 	int SysErrCode(void) { return _syserrcode; };
-	int SerialId(void) { return _serialId; };
 
 protected:
 private:
    int _errorcode;
    int _syserrcode;
-   int _serialId;
-
 };
 
 typedef std::shared_ptr<BizError> BizError_Ptr;

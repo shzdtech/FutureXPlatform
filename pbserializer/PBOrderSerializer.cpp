@@ -7,10 +7,10 @@
 
 #include "PBOrderSerializer.h"
 #include "PBStringTableSerializer.h"
+#include "pbmacros.h"
 #include "proto/businessobj.pb.h"
 #include "../dataobject/OrderDO.h"
 #include "../message/BizError.h"
-#include "ExceptionDef.h"
 
 using namespace Micro::Future::Message::Business;
 
@@ -26,16 +26,7 @@ data_buffer PBOrderSerializer::Serialize(const dataobj_ptr abstractDO)
 {
 	PBOrderInfo PB;
 	auto pDO = (OrderDO*)abstractDO.get();
-
-	if (pDO->SerialId != 0)
-	{
-		auto pHeader = new DataHeader();
-		pHeader->set_serialid(pDO->SerialId);
-		if (pDO->HasMore)
-			pHeader->set_hasmore(pDO->HasMore);
-
-		PB.set_allocated_header(pHeader);
-	}
+	FillPBHeader(PB, pDO);
 
 	PB.set_orderid(pDO->OrderID);
 	PB.set_ordersysid(pDO->OrderSysID);
@@ -74,11 +65,11 @@ data_buffer PBOrderSerializer::Serialize(const dataobj_ptr abstractDO)
 dataobj_ptr PBOrderSerializer::Deserialize(const data_buffer& rawdata)
 {
 	Micro::Future::Message::Business::PBOrderInfo PB;
-
-	if (!PB.ParseFromArray(rawdata.get(), rawdata.size()))
-		throw BizError(INVALID_DATAFORMAT_CODE, INVALID_DATAFORMAT_DESC);
+	ParseWithThrow(PB, rawdata);
 
 	auto ret = std::make_shared<OrderDO>(PB.orderid(), PB.exchange(), PB.contract(), "");
+	FillDOHeader(ret, PB);
+
 	ret->OrderSysID = PB.ordersysid();
 	ret->Direction = (DirectionType)PB.direction();
 	ret->LimitPrice = PB.limitprice();
