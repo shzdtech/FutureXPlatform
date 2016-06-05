@@ -154,7 +154,7 @@ int CTSAPIWrapperImpl::CancelOrder(OrderDO& orderDO)
 			ret = NO_ERROR;
 		else if (!order->IsWorking)
 		{
-			ret = ORDER_IS_CLOSED;
+			ret = OBJECT_IS_CLOSED;
 		}
 		orderDO = *CTSUtility::ParseRawOrder(order);
 	}

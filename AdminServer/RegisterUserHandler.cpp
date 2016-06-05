@@ -31,12 +31,12 @@ dataobj_ptr RegisterUserHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 	CheckLogin(session);
 
 	if (session->getUserInfo()->getRole() != ROLE_ADMINCLIENT)
-		throw BizError(APIErrorID::NO_PERMISSION, "You do not have the permission to create a new user.");
+		throw BizError(APIErrorID::NO_PERMISSION, "No permission to create a new user.");
 
 	if (auto* pUserInfoDO = (UserInfoDO*)reqDO.get())
 	{
 		if (UserInfoDAO::FindUser(pUserInfoDO->UserId))
-			throw BizError(UserErrorID::USERID_HAS_EXISTED, "This user name has been registered.");
+			throw BizError(UserErrorID::USERID_HAS_EXISTED, '"' + pUserInfoDO->UserId + "\" has been registered.");
 
 		if (pUserInfoDO->Company.length() < 1)
 			SysParam::TryGet(STR_KEY_DEFAULT_CLIENT_SYMBOL, pUserInfoDO->Company);

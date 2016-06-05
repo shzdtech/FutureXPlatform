@@ -17,7 +17,7 @@
 class MESSAGE_CLASS_EXPORT TemplateMessageProcessor : public MessageProcessor, public std::enable_shared_from_this < TemplateMessageProcessor >
 {
 public:
-	virtual dataobj_ptr HandleRequest(const uint msgId, const dataobj_ptr reqDO, const bool sendRsp);
+	virtual void HandleRequest(const uint msgId, const dataobj_ptr reqDO, const bool sendRsp);
 
 	int OnRecvMsg(const uint msgId, const data_buffer& msg);
 	int OnResponse(const uint msgId, const uint serailId, param_vector& rawRespParams);

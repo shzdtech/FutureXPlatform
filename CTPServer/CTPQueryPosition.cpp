@@ -7,16 +7,20 @@
 
 #include "CTPQueryPosition.h"
 #include "CTPRawAPI.h"
+#include "CTPUtility.h"
+#include "CTPConstant.h"
+
+#include "../dataobject/UserPositionDO.h"
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/FieldName.h"
 #include "../message/BizError.h"
 #include "../utility/Encoding.h"
 #include "../utility/TUtil.h"
+#include "../bizutility/InstrumentCache.h"
+
 #include <glog/logging.h>
 
-#include "../dataobject/UserPositionDO.h"
-#include "CTPUtility.h"
-#include "CTPConstant.h"
+
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPQueryPosition::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPQueryPosition::HandleRequest()
@@ -63,7 +67,14 @@ dataobj_ptr CTPQueryPosition::HandleResponse(const uint32_t serialId, param_vect
 
 	if (auto pData = (CThostFtdcInvestorPositionField*)rawRespParams[0])
 	{
-		auto pDO = new UserPositionExDO(EXCHANGE_CTP, pData->InstrumentID);
+		std::string exchange;
+
+		if (auto instruments = InstrumentCache::QueryInstrument(pData->InstrumentID))
+		{
+			if (instruments->size() > 0)
+				exchange = instruments->at(0).ExchangeID();
+		}
+		auto pDO = new UserPositionExDO(exchange, pData->InstrumentID);
 		ret.reset(pDO);
 		pDO->SerialId = serialId;
 		pDO->HasMore = *(bool*)rawRespParams[3];

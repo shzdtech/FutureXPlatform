@@ -6,7 +6,6 @@
  * Purpose: Implementation of the class PBBizErrorSerializer
  ***********************************************************************/
 
-#include "../message/BizError.h"
 #include "PBBizErrorSerializer.h"
 #include "pbmacros.h"
 #include "proto/errormsg.pb.h"

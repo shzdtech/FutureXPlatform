@@ -13,44 +13,28 @@
 #include "../dataobject/BizErrorSerializer.h"
 
 
-dataobj_ptr TemplateMessageProcessor::HandleRequest(const uint msgId, const dataobj_ptr reqDO, const bool sendRsp)
+void TemplateMessageProcessor::HandleRequest(const uint msgId, const dataobj_ptr reqDO, const bool sendRsp)
 {
-	dataobj_ptr ret;
-
-	try
+	if (_svc_locator_ptr)
 	{
-		if (_svc_locator_ptr)
+		if (auto msgHandler = _svc_locator_ptr->FindMessageHandler(msgId))
 		{
-			if (auto msgHandler = _svc_locator_ptr->FindMessageHandler(msgId))
+			if (auto pMsgSession = getSession())
 			{
-				if (auto pMsgSession = getSession())
+				if (auto dataptr = msgHandler->HandleRequest(reqDO, getRawAPI(), pMsgSession))
 				{
-					if (ret = msgHandler->HandleRequest(reqDO, getRawAPI(), pMsgSession))
+					if (sendRsp)
 					{
-						if (sendRsp)
-						{
-							auto dataSerilzer = _svc_locator_ptr->FindDataSerializer(msgId);
-							if (dataSerilzer) {
-								data_buffer db = dataSerilzer->Serialize(ret);
-								pMsgSession->WriteMessage(msgId, db);
-							}
+						auto dataSerilzer = _svc_locator_ptr->FindDataSerializer(msgId);
+						if (dataSerilzer) {
+							data_buffer db = dataSerilzer->Serialize(dataptr);
+							pMsgSession->WriteMessage(msgId, db);
 						}
-
 					}
 				}
 			}
 		}
 	}
-	catch (BizError& bizErr) {
-		SendErrorMsg(msgId, bizErr, ret ? ret->SerialId : 0);
-	}
-	catch (std::exception& ex) {
-		LOG(ERROR) << __FUNCTION__ << " MsgId: " << msgId << ", Error: " << ex.what() << std::endl;
-	}
-	catch (...) {
-		LOG(ERROR) << __FUNCTION__ << " unknown error occured." << std::endl;
-	}
-	return ret;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -62,16 +46,21 @@ dataobj_ptr TemplateMessageProcessor::HandleRequest(const uint msgId, const data
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-int TemplateMessageProcessor::OnRecvMsg(const uint msgId, const data_buffer& msg) {
+int TemplateMessageProcessor::OnRecvMsg(const uint msgId, const data_buffer& msg)
+{
+	dataobj_ptr reqDO;
 	try
 	{
 		if (_svc_locator_ptr)
 		{
 			auto msgSerilzer = _svc_locator_ptr->FindDataSerializer(msgId);
 			if (msgSerilzer)
-				if (auto reqDO = msgSerilzer->Deserialize(msg))
+				if (reqDO = msgSerilzer->Deserialize(msg))
 					HandleRequest(msgId, reqDO, true);
 		}
+	}
+	catch (BizError& bizErr) {
+		SendErrorMsg(msgId, bizErr, reqDO ? reqDO->SerialId : 0);
 	}
 	catch (std::exception& ex) {
 		LOG(ERROR) << __FUNCTION__ << " MsgId: " << msgId << ", Error: " << ex.what() << std::endl;
@@ -119,7 +108,7 @@ int TemplateMessageProcessor::OnResponse(const uint msgId, const uint serialId, 
 		LOG(ERROR) << __FUNCTION__ << " MsgId: " << msgId << ", Error: " << ex.what() << std::endl;
 	}
 	catch (...) {
-		LOG(ERROR) << __FUNCTION__  << " unknown error occured." << std::endl;
+		LOG(ERROR) << __FUNCTION__ << " unknown error occured." << std::endl;
 	}
 
 	return 0;
@@ -136,7 +125,7 @@ int TemplateMessageProcessor::OnResponse(const uint msgId, const uint serialId, 
 void TemplateMessageProcessor::SendErrorMsg(uint msgId, BizError& bizError, uint serialId)
 {
 	dataobj_ptr dataobj(new BizErrorDO
-		(msgId, bizError.ErrorCode(), bizError.what(), bizError.SysErrCode(), serialId));
+	(msgId, bizError.ErrorCode(), bizError.what(), bizError.SysErrCode(), serialId));
 	data_buffer msg = BizErrorSerializer::Instance()->Serialize(dataobj);
 	if (auto session_ptr = getSession())
 		session_ptr->WriteMessage(MSG_ID_ERROR, msg);

@@ -14,7 +14,7 @@
 class EchoMsgDO : public dataobjectbase
 {
 public:
-    EchoMsgDO(data_buffer databuf):_db(databuf){}
+    EchoMsgDO(const data_buffer& databuf):_db(databuf){}
     data_buffer& getDataBuffer(){return _db;}
 protected:
     data_buffer _db;

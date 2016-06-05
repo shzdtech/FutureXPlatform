@@ -68,11 +68,11 @@ dataobj_ptr CTPOTCLogin::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI,
 
 		if (!userInfo_Ptr)
 		{
-			throw BizError(INVAID_USERNAME, "Invalid Username.");
+			throw BizError(USERID_NOT_EXITS, "UserId: " + userid + " not exists.");
 		}
 		else if (userInfo_Ptr->Password != password)
 		{
-			throw BizError(WRONG_PASSWORD, "Wrong Password.");
+			throw BizError(WRONG_PASSWORD, "Wrong password.");
 		}
 
 		auto pUserInfo = session->getUserInfo();
