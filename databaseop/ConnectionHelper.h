@@ -82,7 +82,7 @@ class DATABASEOP_CLASS_EXPORTS ConnectionHelper : public singleton_mt_ptr < Conn
 public:
 	static ConnectionConfig DEFAULT_CONFIG;
 
-	void LoadConfig(const std::string& config);
+	void LoadConfig(const std::string& config, const std::string& section);
 	Connection_Ptr CreateConnection(void);
 	ManagedSession_Ptr LeaseOrCreate(void);
 	ConnectionHelper();

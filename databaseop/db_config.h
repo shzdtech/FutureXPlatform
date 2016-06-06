@@ -6,6 +6,7 @@
 struct ConnectionConfig
 { 
 	std::string DB_CONFIG_FILE = "system";
+	std::string DB_CONFIG_SECTION = "system.database";
 	std::string DB_URL;
 	std::string DB_USER;
 	std::string DB_PASSWORD;

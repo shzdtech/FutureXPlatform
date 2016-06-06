@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <system>
   <service>
-    <cfg>service.xml</cfg>
+    <config>service.xml</config>
   </service>
   <database>
     <url>tcp://116.255.156.152:3306/otc_db</url>
     <user>zhuyi</user>
     <password>zhuyi!168</password>
     <autocommit>1</autocommit>
-    <pool_size>2</pool_size>
+    <poolsize>2</poolsize>
     <heartbeat>60000</heartbeat>
     <checksql>select 1</checksql>
   </database>

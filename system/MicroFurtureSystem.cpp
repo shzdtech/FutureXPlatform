@@ -53,7 +53,7 @@ bool MicroFurtureSystem::Load(const std::string& config)
 			it->second;
 
 		// Initialize Services
-		std::string serve_cfg = cfgReader->getValue("system.service.cfg");
+		std::string serve_cfg = cfgReader->getValue("system.service.config");
 		if (cfgReader = AbstractConfigReaderFactory::OpenConfigReader(serve_cfg)) {
 			LOG(INFO) << "  Loading Service Config: " << serve_cfg << std::endl;
 			std::vector<std::string> sections;

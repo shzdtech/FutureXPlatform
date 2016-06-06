@@ -26,17 +26,17 @@ ConnectionConfig ConnectionHelper::DEFAULT_CONFIG;
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void ConnectionHelper::LoadConfig(const std::string& config)
+void ConnectionHelper::LoadConfig(const std::string& config, const std::string& section)
 {
 	if (auto cfgReader = AbstractConfigReaderFactory::OpenConfigReader(config)) {
 		std::map<std::string, std::string> cfgMap;
-		if (cfgReader->getMap("system.database", cfgMap)) {
+		if (cfgReader->getMap(section, cfgMap)) {
 			_connCfg.DB_URL = cfgMap["url"];
 			_connCfg.DB_USER = cfgMap["user"];
 			_connCfg.DB_PASSWORD = cfgMap["password"];
 
 			std::string empty;
-			auto& autocommit = TUtil::FirstNamedEntry("timeout", cfgMap, empty);
+			auto& autocommit = TUtil::FirstNamedEntry("autocommit", cfgMap, empty);
 			if (autocommit.length() > 0)
 				_connCfg.DB_AUTOCOMMIT = std::stoi(autocommit, nullptr, 0) != 0;
 
@@ -44,7 +44,7 @@ void ConnectionHelper::LoadConfig(const std::string& config)
 			if (timeout.length() > 0)
 				_connCfg.DB_CONNECT_TIMEOUT = std::stoul(timeout, nullptr, 0);
 
-			auto& spoolsz = TUtil::FirstNamedEntry("pool_size", cfgMap, empty);
+			auto& spoolsz = TUtil::FirstNamedEntry("poolsize", cfgMap, empty);
 			if (spoolsz.length() > 0)
 				_connCfg.DB_POOL_SIZE = std::stoi(spoolsz, nullptr, 0);
 
@@ -142,7 +142,7 @@ void ConnectionHelper::Initialize()
 			_connCfg.DB_USER.length() == 0 ||
 			_connCfg.DB_PASSWORD.length() == 0)
 		{
-			LoadConfig(_connCfg.DB_CONFIG_FILE);
+			LoadConfig(_connCfg.DB_CONFIG_FILE, _connCfg.DB_CONFIG_SECTION);
 		}
 
 		initalPool();

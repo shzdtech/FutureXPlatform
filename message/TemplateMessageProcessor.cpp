@@ -13,7 +13,7 @@
 #include "../dataobject/BizErrorSerializer.h"
 
 
-void TemplateMessageProcessor::HandleRequest(const uint msgId, const dataobj_ptr reqDO, const bool sendRsp)
+void TemplateMessageProcessor::ProcessRequest(const uint msgId, const dataobj_ptr reqDO, const bool sendRsp)
 {
 	if (_svc_locator_ptr)
 	{
@@ -56,7 +56,7 @@ int TemplateMessageProcessor::OnRecvMsg(const uint msgId, const data_buffer& msg
 			auto msgSerilzer = _svc_locator_ptr->FindDataSerializer(msgId);
 			if (msgSerilzer)
 				if (reqDO = msgSerilzer->Deserialize(msg))
-					HandleRequest(msgId, reqDO, true);
+					ProcessRequest(msgId, reqDO, true);
 		}
 	}
 	catch (BizError& bizErr) {
