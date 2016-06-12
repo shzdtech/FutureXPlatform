@@ -1,7 +1,6 @@
 #pragma once
 
 #include <glog/logging.h>
-
 #include <gcroot.h>
 
 using namespace System::Text;

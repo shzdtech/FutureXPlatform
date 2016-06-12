@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -19,6 +21,8 @@ namespace Micro.Future.Server.Monitor
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MonitorForm());
+
+            Process.GetCurrentProcess().Kill();
         }
     }
 }

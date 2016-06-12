@@ -8,7 +8,7 @@
 #include <cstdlib>
 
 #include "Application.h"
-#include "InitLogger.h"
+#include <glog/logging.h>
 #include <iostream>
 #include <string>
 #include <csignal>
@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
 	registsignal();
 	try {
 #ifndef _DEBUG
-		InitLogger(argv[0]);
+		MicroFurtureSystem::InitLogger(argv[0]);
 #endif
 		std::string configFile("system");
 		if (argc > 1)

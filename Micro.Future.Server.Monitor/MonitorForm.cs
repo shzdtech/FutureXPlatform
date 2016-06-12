@@ -39,8 +39,20 @@ namespace Micro.Future.Server.Monitor
 
         private void OnMessageRecv(string message)
         {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new MethodInvoker(() => { AppendText(message); }));
+            }
+            else
+            {
+                AppendText(message);
+            }
+        }
+
+        private void AppendText(string message)
+        {
             richTextBoxLog.AppendText(message);
-            richTextBoxLog.AppendText("\n");
+            richTextBoxLog.AppendText(Environment.NewLine);
         }
 
         private void Form_Closing(object sender, FormClosingEventArgs e)
@@ -56,13 +68,10 @@ namespace Micro.Future.Server.Monitor
 
         private void Form_Load(object sender, EventArgs e)
         {
-
-            if (_system.Load(CONFIG_FILE) &&
-                _system.Run())
+            if (_system.Load(CONFIG_FILE) && _system.Run())
             {
                 toolStripMenuItemStart.Enabled = false;
                 notifyIconStatus.Icon = Resources.GLight;
-
                 timer.Start();
             }
 

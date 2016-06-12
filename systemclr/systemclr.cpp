@@ -7,12 +7,14 @@ namespace Micro {
 		void SystemClr::InitLogger(String^ logPath)
 		{
 			char* path = (char*)Marshal::StringToHGlobalAnsi(logPath).ToPointer();
-			google::InitGoogleLogging(path);
+			MicroFurtureSystem::InitLogger(path);
 			Marshal::FreeHGlobal(IntPtr(path));
 		}
 
 		bool SystemClr::Load(String^ config)
 		{
+			if (!_logSink) _logSink = new InteroLogSink();
+
 			char* cfg = (char*)Marshal::StringToHGlobalAnsi(config).ToPointer();
 			bool ret = _system->Load(cfg);
 			Marshal::FreeHGlobal(IntPtr(cfg));

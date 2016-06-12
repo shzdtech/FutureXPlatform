@@ -16,7 +16,7 @@ namespace Micro {
 			InteroLogSink* _logSink = new InteroLogSink();
 			MicroFurtureSystem* _system = new MicroFurtureSystem();
 
-			~SystemClr() { 
+			~SystemClr() {
 				delete _logSink;
 				delete _system;
 			}

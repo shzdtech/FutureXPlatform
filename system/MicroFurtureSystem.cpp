@@ -15,13 +15,32 @@
 #include "../databaseop/SysParamsDAO.h"
 #include "../dataobject/AbstractDataSerializerFactory.h"
 
- ////////////////////////////////////////////////////////////////////////
- // Name:       MicroFurtureSystem::Load(const std::string& config)
- // Purpose:    Implementation of MicroFurtureSystem::Load()
- // Parameters:
- // - config
- // Return:     void
- ////////////////////////////////////////////////////////////////////////
+void MicroFurtureSystem::InitLogger(const char* logPath)
+{
+	InitLogger(std::string(logPath));
+}
+
+void MicroFurtureSystem::InitLogger(const std::string& logPath)
+{
+	auto idx = logPath.rfind('/');
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
+	if (idx == std::string::npos)  idx = logPath.rfind('\\');
+#endif
+	if (idx != std::string::npos)
+		FLAGS_log_dir = logPath.substr(0, idx + 1);
+	else
+		FLAGS_log_dir = ".";
+
+	google::InitGoogleLogging(logPath.data());
+}
+
+////////////////////////////////////////////////////////////////////////
+// Name:       MicroFurtureSystem::Load(const std::string& config)
+// Purpose:    Implementation of MicroFurtureSystem::Load()
+// Parameters:
+// - config
+// Return:     void
+////////////////////////////////////////////////////////////////////////
 
 bool MicroFurtureSystem::Load(const std::string& config)
 {
@@ -200,6 +219,7 @@ MicroFurtureSystem::~MicroFurtureSystem()
 	{
 		Stop();
 	}
+	google::FlushLogFiles(google::GLOG_INFO);
 }
 
 ////////////////////////////////////////////////////////////////////////

@@ -9,7 +9,6 @@
 #define __server_Application_h
 
 #include <vector>
-#include <glog/logging.h>
 #include "../system/MicroFurtureSystem.h"
 
 class Application
