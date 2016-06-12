@@ -34,6 +34,7 @@ protected:
 private:
 	std::vector<IMessageServer_Ptr> _servers;
 	bool _running;
+	static std::string _logPath;
 };
 
 #endif
