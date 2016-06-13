@@ -16,7 +16,7 @@ namespace Micro.Future.Server.Monitor
     {
         public static string CONFIG_FILE = "system";
         private bool _exiting;
-        private SystemClr _system = new SystemClr();
+        private MicroFurtureSystemClr _system = MicroFurtureSystemClr.Instance;
 
         public MonitorForm()
         {
@@ -105,7 +105,7 @@ namespace Micro.Future.Server.Monitor
 
             _exiting = true;
 
-            if (_system.IsRunning())
+            if (_system.IsRunning)
             {
                 _system.Stop();
             }

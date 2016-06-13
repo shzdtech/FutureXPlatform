@@ -15,11 +15,12 @@
 #include "../databaseop/SysParamsDAO.h"
 #include "../dataobject/AbstractDataSerializerFactory.h"
 
-std::string MicroFurtureSystem::_logPath;
+std::string MicroFurtureSystem::_logPath("./micro.future.system");
 
 void MicroFurtureSystem::InitLogger(const char* logPath)
 {
-	InitLogger(std::string(logPath));
+	std::string strlogPath = logPath ? logPath : _logPath;
+	InitLogger(std::string(strlogPath));
 }
 
 void MicroFurtureSystem::InitLogger(const std::string& logPath)
@@ -32,6 +33,11 @@ void MicroFurtureSystem::InitLogger(const std::string& logPath)
 	FLAGS_log_dir = idx != std::string::npos ? _logPath.substr(0, idx + 1) : ".";
 
 	google::InitGoogleLogging(_logPath.data());
+}
+
+const std::string & MicroFurtureSystem::GetLogPath(void)
+{
+	return _logPath;
 }
 
 ////////////////////////////////////////////////////////////////////////

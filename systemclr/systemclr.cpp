@@ -4,14 +4,25 @@
 
 namespace Micro {
 	namespace Future {
-		void SystemClr::InitLogger(String^ logPath)
+		void MicroFurtureSystemClr::InitLogger(String^ logPath)
 		{
+			if (String::IsNullOrEmpty(logPath))
+			{
+				auto codeBase = System::Reflection::Assembly::GetExecutingAssembly()->CodeBase;
+				logPath = Path::GetFullPath(codeBase);
+			}
+
 			char* path = (char*)Marshal::StringToHGlobalAnsi(logPath).ToPointer();
 			MicroFurtureSystem::InitLogger(path);
 			Marshal::FreeHGlobal(IntPtr(path));
 		}
 
-		bool SystemClr::Load(String^ config)
+		void MicroFurtureSystemClr::InitLogger()
+		{
+			InitLogger(nullptr);
+		}
+
+		bool MicroFurtureSystemClr::Load(String^ config)
 		{
 			if (!_logSink) _logSink = new InteroLogSink();
 
@@ -21,19 +32,14 @@ namespace Micro {
 			return ret;
 		}
 
-		bool SystemClr::Run()
+		bool MicroFurtureSystemClr::Run()
 		{
 			return _system->Run();
 		}
 
-		bool SystemClr::Stop()
+		bool MicroFurtureSystemClr::Stop()
 		{
 			return _system->Stop();
-		}
-
-		bool SystemClr::IsRunning()
-		{
-			return _system->IsRunning();
 		}
 	}
 }

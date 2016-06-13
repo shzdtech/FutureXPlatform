@@ -58,6 +58,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "systemclr", "systemclr\syst
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Micro.Future.Server.Monitor", "Micro.Future.Server.Monitor\Micro.Future.Server.Monitor.csproj", "{540CECC0-F1D9-4D06-B158-BDA1F215A072}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Micro.Future.Wcf.Service", "Micro.Future.Wcf.Service\Micro.Future.Wcf.Service.csproj", "{08BEF5CF-57F8-4E42-A9E3-0156C9ABA76E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -279,6 +281,18 @@ Global
 		{540CECC0-F1D9-4D06-B158-BDA1F215A072}.Release|Win32.Build.0 = Release|Any CPU
 		{540CECC0-F1D9-4D06-B158-BDA1F215A072}.Release|x64.ActiveCfg = Release|Any CPU
 		{540CECC0-F1D9-4D06-B158-BDA1F215A072}.Release|x64.Build.0 = Release|Any CPU
+		{08BEF5CF-57F8-4E42-A9E3-0156C9ABA76E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08BEF5CF-57F8-4E42-A9E3-0156C9ABA76E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08BEF5CF-57F8-4E42-A9E3-0156C9ABA76E}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{08BEF5CF-57F8-4E42-A9E3-0156C9ABA76E}.Debug|Win32.Build.0 = Debug|Any CPU
+		{08BEF5CF-57F8-4E42-A9E3-0156C9ABA76E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{08BEF5CF-57F8-4E42-A9E3-0156C9ABA76E}.Debug|x64.Build.0 = Debug|Any CPU
+		{08BEF5CF-57F8-4E42-A9E3-0156C9ABA76E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08BEF5CF-57F8-4E42-A9E3-0156C9ABA76E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08BEF5CF-57F8-4E42-A9E3-0156C9ABA76E}.Release|Win32.ActiveCfg = Release|Any CPU
+		{08BEF5CF-57F8-4E42-A9E3-0156C9ABA76E}.Release|Win32.Build.0 = Release|Any CPU
+		{08BEF5CF-57F8-4E42-A9E3-0156C9ABA76E}.Release|x64.ActiveCfg = Release|Any CPU
+		{08BEF5CF-57F8-4E42-A9E3-0156C9ABA76E}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -292,5 +306,6 @@ Global
 		{4A30BDB2-7A3A-4436-B227-AE24A517A59A} = {F8045E65-B7D1-4D95-8612-684070C5B511}
 		{ED7D58EA-14CF-4767-BD8F-724866C99909} = {F8045E65-B7D1-4D95-8612-684070C5B511}
 		{540CECC0-F1D9-4D06-B158-BDA1F215A072} = {8B098C8C-8641-40CA-8276-2B13C513DEF9}
+		{08BEF5CF-57F8-4E42-A9E3-0156C9ABA76E} = {8B098C8C-8641-40CA-8276-2B13C513DEF9}
 	EndGlobalSection
 EndGlobal

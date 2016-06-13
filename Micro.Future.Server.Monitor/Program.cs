@@ -16,7 +16,7 @@ namespace Micro.Future.Server.Monitor
         [STAThread]
         static void Main()
         {
-            SystemClr.InitLogger(Application.ExecutablePath);
+            MicroFurtureSystemClr.InitLogger(Application.ExecutablePath);
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
