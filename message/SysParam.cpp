@@ -51,5 +51,6 @@ bool SysParam::TryGet(const std::string& key, std::string& value)
 
 void SysParam::Update(std::map<std::string,std::string>& paramMap)
 {
-	sysparamdata.insert(paramMap.begin(), paramMap.end());
+	for(auto it : paramMap)
+		sysparamdata[it.first] = it.second;
 }
