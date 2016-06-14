@@ -55,9 +55,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="MicroFutureService.svc" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\mfsystemclr\mfsystemclr.vcxproj">
       <Project>{7a3cef4a-18e6-404b-b5ea-8d2a8d336331}</Project>
       <Name>mfsystemclr</Name>
