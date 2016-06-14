@@ -3,19 +3,20 @@
 #include <glog/logging.h>
 #include <gcroot.h>
 
+using namespace System;
 using namespace System::Text;
 using namespace System::IO;
 
 namespace Micro {
 	namespace Future {
 
-		public delegate void DelegateMessageRecv(System::String^ message);
+		public delegate void DelegateMessageRecv(String^ message);
 
 		public ref class InteroLogCallBack
 		{
 		public:
 			event DelegateMessageRecv^ OnMessageRecv;
-			void RaiseEvent(System::String^ message)
+			void RaiseEvent(String^ message)
 			{
 				OnMessageRecv(message);
 			}

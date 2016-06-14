@@ -1,10 +1,22 @@
-// 这是主 DLL 文件。
+#include "SystemWrapper.h"
 
-#include "systemclr.h"
+
+
 
 namespace Micro {
 	namespace Future {
-		void MicroFurtureSystemClr::InitLogger(String^ logPath)
+		SystemWrapper::SystemWrapper()
+		{
+			_logSink = new InteroLogSink();
+			_system = new MicroFurtureSystem();
+		}
+
+		SystemWrapper::~SystemWrapper() {
+			delete _logSink;
+			delete _system;
+		}
+
+		void SystemWrapper::InitLogger(String^ logPath)
 		{
 			if (String::IsNullOrEmpty(logPath))
 			{
@@ -17,27 +29,25 @@ namespace Micro {
 			Marshal::FreeHGlobal(IntPtr(path));
 		}
 
-		void MicroFurtureSystemClr::InitLogger()
+		void SystemWrapper::InitLogger()
 		{
 			InitLogger(nullptr);
 		}
 
-		bool MicroFurtureSystemClr::Load(String^ config)
+		bool SystemWrapper::Load(String^ config)
 		{
-			if (!_logSink) _logSink = new InteroLogSink();
-
 			char* cfg = (char*)Marshal::StringToHGlobalAnsi(config).ToPointer();
 			bool ret = _system->Load(cfg);
 			Marshal::FreeHGlobal(IntPtr(cfg));
 			return ret;
 		}
 
-		bool MicroFurtureSystemClr::Run()
+		bool SystemWrapper::Run()
 		{
 			return _system->Run();
 		}
 
-		bool MicroFurtureSystemClr::Stop()
+		bool SystemWrapper::Stop()
 		{
 			return _system->Stop();
 		}

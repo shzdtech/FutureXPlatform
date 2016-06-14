@@ -1,27 +1,17 @@
-// systemclr.h
+// MicroFurtureSystemClr.h
 
 #pragma once
 
-#include "InteroLogSink.h"
-#include "../system/MicroFurtureSystem.h"
-
-using namespace System;
-using namespace System::Runtime::InteropServices;
+#include "SystemWrapper.h"
 
 namespace Micro {
 	namespace Future {
 		public ref class MicroFurtureSystemClr
 		{
 		private:
-			InteroLogSink* _logSink = new InteroLogSink();
-			MicroFurtureSystem* _system = new MicroFurtureSystem();
+			SystemWrapper^ _systemWrapper = gcnew SystemWrapper();
 
 			static MicroFurtureSystemClr^ _singleton = gcnew MicroFurtureSystemClr();
-
-			~MicroFurtureSystemClr() {
-				delete _logSink;
-				delete _system;
-			}
 
 		public:
 			static property MicroFurtureSystemClr^ Instance {
@@ -32,16 +22,16 @@ namespace Micro {
 
 			static property String^ LogPath {
 				String^ get() {
-					return gcnew String(MicroFurtureSystem::GetLogPath().data());
+					return SystemWrapper::LogPath;
 				}
 			}
 
 			property InteroLogCallBack^ LogCallback {
-				InteroLogCallBack^ get() { return _logSink->LogCallBack; }
+				InteroLogCallBack^ get() { return _systemWrapper->LogCallback; }
 			}
 
 			property bool IsRunning {
-				bool get() { return _system->IsRunning(); }
+				bool get() { return _systemWrapper->IsRunning; }
 			}
 
 			static void InitLogger(String^ logPath);

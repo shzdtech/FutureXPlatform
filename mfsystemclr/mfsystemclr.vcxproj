@@ -92,12 +92,12 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>GLOG_NO_ABBREVIATED_SEVERITIES;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLOG_NO_ABBREVIATED_SEVERITIES</PreprocessorDefinitions>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <AdditionalIncludeDirectories>$(SolutionDir)\include\glog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>libglog.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libglog.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\lib\google;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -105,53 +105,50 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>GLOG_NO_ABBREVIATED_SEVERITIES;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLOG_NO_ABBREVIATED_SEVERITIES</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <AdditionalIncludeDirectories>$(SolutionDir)\include\glog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>libglog.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libglog.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\lib\google;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>GLOG_NO_ABBREVIATED_SEVERITIES;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLOG_NO_ABBREVIATED_SEVERITIES</PreprocessorDefinitions>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <AdditionalIncludeDirectories>$(SolutionDir)\include\glog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>libglog.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libglog.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\lib\google;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>GLOG_NO_ABBREVIATED_SEVERITIES;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLOG_NO_ABBREVIATED_SEVERITIES</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <AdditionalIncludeDirectories>$(SolutionDir)\include\glog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>libglog.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libglog.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\lib\google;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="InteroLogSink.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="systemclr.h" />
+    <ClInclude Include="MicroFurtureSystemClr.h" />
+    <ClInclude Include="SystemWrapper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="InteroLogSink.cpp" />
-    <ClCompile Include="systemclr.cpp" />
+    <ClCompile Include="MicroFurtureSystemClr.cpp" />
+    <ClCompile Include="SystemWrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -163,7 +160,7 @@
     <Image Include="app.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\system\system.vcxproj">
+    <ProjectReference Include="..\mfsystem\mfsystem.vcxproj">
       <Project>{425d08bd-d784-4c63-8855-1f33974161ea}</Project>
     </ProjectReference>
   </ItemGroup>

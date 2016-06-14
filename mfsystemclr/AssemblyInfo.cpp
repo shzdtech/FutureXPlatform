@@ -9,11 +9,11 @@ using namespace System::Security::Permissions;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 //
-[assembly:AssemblyTitleAttribute(L"systemclr")];
+[assembly:AssemblyTitleAttribute(L"mfsystemclr")];
 [assembly:AssemblyDescriptionAttribute(L"")];
 [assembly:AssemblyConfigurationAttribute(L"")];
 [assembly:AssemblyCompanyAttribute(L"")];
-[assembly:AssemblyProductAttribute(L"systemclr")];
+[assembly:AssemblyProductAttribute(L"mfsystemclr")];
 [assembly:AssemblyCopyrightAttribute(L"Copyright (c)  2016")];
 [assembly:AssemblyTrademarkAttribute(L"")];
 [assembly:AssemblyCultureAttribute(L"")];

@@ -9,7 +9,7 @@
 #define __server_Application_h
 
 #include <vector>
-#include "../system/MicroFurtureSystem.h"
+#include "../mfsystem/MicroFurtureSystem.h"
 
 class Application
 {
