@@ -6,7 +6,8 @@
  ***********************************************************************/
 
 #include "SysParamsDAO.h"
-#include "ConnectionHelper.h"
+#include "MySqlConnectionManager.h"
+#include "SqlTemplate.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       SysParamsDAO::FindSysParams(const std::string& key)
@@ -22,7 +23,7 @@ std::shared_ptr<std::map<std::string, std::string>> SysParamsDAO::FindSysParams(
 		"SELECT keycode, val FROM sys_param WHERE keycode LIKE ?");
 
 	std::map<std::string, std::string> sysparams;
-	auto session = ConnectionHelper::Instance()->LeaseOrCreate();
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
 	{
 		AutoClosePreparedStmt_Ptr prestmt(

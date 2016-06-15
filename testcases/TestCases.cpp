@@ -2,12 +2,13 @@
 //
 
 #include "stdafx.h"
-#include "../databaseop/ConnectionHelper.h"
+#include "../databaseop/AbstractConnectionManager.h"
 #include "../dataobject/UserPositionDO.h"
 #include "../ordermanager/UserOrderContext.h"
 #include <thread>
 #include <set>
 #include <map>
+#include <iostream>
 #include "../message/SessionContainer.h"
 #include "../utility/epsdouble.h"
 
@@ -39,12 +40,12 @@ void testConnectHelper()
 	cfg.DB_URL = "tcp://116.255.156.152:3306/otc_db";
 	cfg.DB_USER = "zhuyi";
 	cfg.DB_PASSWORD = "zhuyi!168";
-	ConnectionHelper connHelper(cfg);
-	connHelper.Initialize();
-	auto rawconnection = connHelper.CreateConnection();
-	auto session = connHelper.LeaseOrCreate();
-	AutoCloseStatement_Ptr stmt_ptr(session->getConnection()->createStatement());
-	AutoCloseResultSet_Ptr rs(stmt_ptr->executeQuery(cfg.DB_CHECKSQL));
+	//ConnectionHelper connHelper(cfg);
+	//connHelper.Initialize();
+	//auto rawconnection = ConnectionHelper::Instance()->CreateConnection();
+	//auto session = connHelper.LeaseOrCreate();
+	//AutoCloseStatement_Ptr stmt_ptr(session->getConnection()->createStatement());
+	//AutoCloseResultSet_Ptr rs(stmt_ptr->executeQuery(cfg.DB_CHECKSQL));
 }
 
 void testAutoFillMap()

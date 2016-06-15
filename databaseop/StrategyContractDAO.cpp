@@ -6,7 +6,8 @@
  ***********************************************************************/
 
 #include "StrategyContractDAO.h"
-#include "ConnectionHelper.h"
+#include "MySqlConnectionManager.h"
+#include "SqlTemplate.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       StrategyConstractDAO::FindStrategyContractByKey(const ContractKey& contractID)
@@ -25,7 +26,7 @@ VectorDO_Ptr<StrategyContractDO> StrategyContractDAO::FindStrategyContractByUser
 		"WHERE client_account = ?");
 
 	auto ret = std::make_shared<VectorDO<StrategyContractDO>>();
-	auto session = ConnectionHelper::Instance()->LeaseOrCreate();
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
@@ -68,7 +69,7 @@ VectorDO_Ptr<ContractParam> StrategyContractDAO::FindContractParam(const std::st
 
 	auto ret = std::make_shared<VectorDO<ContractParam>>();
 
-	auto session = ConnectionHelper::Instance()->LeaseOrCreate();
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
@@ -103,7 +104,7 @@ std::shared_ptr<std::map<std::string, double>> StrategyContractDAO::FindStrategy
 
 	auto ret = std::make_shared<std::map<std::string, double>>();
 
-	auto session = ConnectionHelper::Instance()->LeaseOrCreate();
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
 	{
 		AutoClosePreparedStmt_Ptr prestmt(

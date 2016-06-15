@@ -6,7 +6,8 @@
  ***********************************************************************/
 
 #include "OTCOrderDAO.h"
-#include "ConnectionHelper.h"
+#include "MySqlConnectionManager.h"
+#include "SqlTemplate.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       OTCOrderDAO::CreateOrder(OrderDO& orderDO)
@@ -24,7 +25,7 @@ OrderDO_Ptr OTCOrderDAO::CreateOrder(const OrderDO& orderDO, const PricingDO& pr
 
 	auto ret = std::make_shared<OrderDO>(orderDO);
 
-	auto session = ConnectionHelper::Instance()->LeaseOrCreate();
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
@@ -75,7 +76,7 @@ bool OTCOrderDAO::CancelOrder(const OrderBaseDO& orderDO, OrderStatus& status)
 	bool ret = true;
 	status = OrderStatus::UNDEFINED;
 
-	auto session = ConnectionHelper::Instance()->LeaseOrCreate();
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
@@ -112,7 +113,7 @@ bool OTCOrderDAO::AcceptOrder(const OrderBaseDO& orderDO, OrderStatus& status)
 	bool ret = true;
 	status = OrderStatus::UNDEFINED;
 
-	auto session = ConnectionHelper::Instance()->LeaseOrCreate();
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
@@ -148,7 +149,7 @@ bool OTCOrderDAO::RejectOrder(const OrderBaseDO& orderDO, OrderStatus& status)
 	bool ret = true;
 	status = OrderStatus::UNDEFINED;
 
-	auto session = ConnectionHelper::Instance()->LeaseOrCreate();
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
@@ -184,7 +185,7 @@ OrderDOVec_Ptr OTCOrderDAO::QueryTradingOrder(const ContractKey& contractKey)
 	
 	OrderDOVec_Ptr ret;
 
-	auto session = ConnectionHelper::Instance()->LeaseOrCreate();
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
@@ -229,7 +230,7 @@ OrderDOVec_Ptr OTCOrderDAO::QueryTodayOrder(const std::string& userId, const Con
 
 	OrderDOVec_Ptr ret;
 
-	auto session = ConnectionHelper::Instance()->LeaseOrCreate();
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 
 	try
 	{

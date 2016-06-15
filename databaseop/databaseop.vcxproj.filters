@@ -18,9 +18,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ConnectionHelper.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="databaseop_exp.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -54,11 +51,17 @@
     <ClInclude Include="PortfolioDAO.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="SqlTemplate.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractConnectionManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MySqlConnectionManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ConnectionHelper.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="UserInfoDAO.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -81,6 +84,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="PortfolioDAO.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AbstractConnectionManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MySqlConnectionManager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -6,7 +6,8 @@
  ***********************************************************************/
 
 #include "PortfolioDAO.h"
-#include "ConnectionHelper.h"
+#include "MySqlConnectionManager.h"
+#include "SqlTemplate.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       PortfolioDAO::FindPortfolioByUser(const std::string& userID)
@@ -23,7 +24,7 @@ VectorDO_Ptr<PortfolioDO> PortfolioDAO::FindPortfolioByUser(const std::string& u
 		"WHERE client_account = ?");
 
 	auto ret = std::make_shared<VectorDO<PortfolioDO>>();
-	auto session = ConnectionHelper::Instance()->LeaseOrCreate();
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
 	{
 		AutoClosePreparedStmt_Ptr prestmt(

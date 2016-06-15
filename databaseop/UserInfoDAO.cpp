@@ -7,7 +7,8 @@
 
 #include "../message/IUserInfo.h"
 #include "UserInfoDAO.h"
-#include "ConnectionHelper.h"
+#include "MySqlConnectionManager.h"
+#include "SqlTemplate.h"
 
  ////////////////////////////////////////////////////////////////////////
  // Name:       UserInfoDAO::FindUser(const std::string& userId, const std::string& password)
@@ -24,7 +25,7 @@ int UserInfoDAO::InsertUser(const UserInfoDO & userDO)
 
 	static const std::string sql_proc_newuser("CALL User_New(?,?,?,?,?,?,?,?,?,?,?)");
 
-	auto session = ConnectionHelper::Instance()->LeaseOrCreate();
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
@@ -64,7 +65,7 @@ std::shared_ptr<UserInfoDO> UserInfoDAO::FindUser(const std::string& userId)
 
 	std::shared_ptr<UserInfoDO> ret;
 
-	auto session = ConnectionHelper::Instance()->LeaseOrCreate();
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
@@ -109,7 +110,7 @@ VectorDO_Ptr<UserInfoDO> UserInfoDAO::FindAllUserByRole(int role)
 		"FROM vw_client_detail WHERE roletype = ?");
 
 	auto ret = std::make_shared<VectorDO<UserInfoDO>>();
-	auto session = ConnectionHelper::Instance()->LeaseOrCreate();
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
 	{
 		AutoClosePreparedStmt_Ptr prestmt(

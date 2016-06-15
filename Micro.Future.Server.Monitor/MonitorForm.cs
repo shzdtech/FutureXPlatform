@@ -68,13 +68,14 @@ namespace Micro.Future.Server.Monitor
 
         private void Form_Load(object sender, EventArgs e)
         {
+            Task.Run(() => {
             if (_system.Load(CONFIG_FILE) && _system.Run())
             {
                 toolStripMenuItemStart.Enabled = false;
                 notifyIconStatus.Icon = Resources.GLight;
                 timer.Start();
-            }
-
+                }
+            });
         }
 
         private void notifyIconStatus_DoubleClick(object sender, EventArgs e)

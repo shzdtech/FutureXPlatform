@@ -13,6 +13,7 @@
 #include "../message/SysParam.h"
 
 #include "../databaseop/SysParamsDAO.h"
+#include "../databaseop/AbstractConnectionManager.h"
 #include "../dataobject/AbstractDataSerializerFactory.h"
 
 std::string MicroFurtureSystem::_logPath("./micro.future.system");
@@ -54,7 +55,7 @@ bool MicroFurtureSystem::Load(const std::string& config)
 	LOG(INFO) << "Initializing Application:" << std::endl;
 
 	if (auto cfgReader = AbstractConfigReaderFactory::OpenConfigReader(config)) {
-		LOG(INFO) << "  Loading System Config: " << config << std::endl;
+		LOG(INFO) << "\tLoading System Config: " << config << std::endl;
 
 		// Initialize SysParam
 		std::map<std::string, std::string> cfgMap;
@@ -62,6 +63,9 @@ bool MicroFurtureSystem::Load(const std::string& config)
 		SysParam::Update(cfgMap);
 		if (cfgMap.find("mergedbparam") != cfgMap.end())
 		{
+			LOG(INFO) << "\tInitializing Database Pool... " << std::endl;
+			LOG(INFO) << "\t\t" << AbstractConnectionManager::DefaultInstance()->CurrentConfig().DB_POOL_SIZE
+				<<" connections have been created"<< std::endl;
 			auto sysparamMap = SysParamsDAO::FindSysParams("%");
 			SysParam::Update(*sysparamMap);
 		}
@@ -80,7 +84,7 @@ bool MicroFurtureSystem::Load(const std::string& config)
 		// Initialize Services
 		std::string serve_cfg = cfgReader->getValue("system.service.config");
 		if (cfgReader = AbstractConfigReaderFactory::OpenConfigReader(serve_cfg)) {
-			LOG(INFO) << "  Loading Service Config: " << serve_cfg << std::endl;
+			LOG(INFO) << "\tLoading Service Config: " << serve_cfg << std::endl;
 			std::vector<std::string> sections;
 			cfgReader->getVector("service.servercfg", sections);
 
@@ -110,7 +114,7 @@ bool MicroFurtureSystem::Load(const std::string& config)
 							if (server->Initialize(svruri, svrCfg)) {
 								this->_servers.push_back(server);
 								initserver = true;
-								LOG(INFO) << "  Server " << server->getUri() << " initialized." << std::endl;
+								LOG(INFO) << "\tServer " << server->getUri() << " initialized." << std::endl;
 							}
 						}
 					}
@@ -151,11 +155,11 @@ bool MicroFurtureSystem::Run(void)
 			if (svr->Start())
 			{
 				i++;
-				LOG(INFO) << "  " << svr->getUri() << " has started." << std::endl;
+				LOG(INFO) << "\t" << svr->getUri() << " has started." << std::endl;
 			}
 			else
 			{
-				LOG(ERROR) << "  " << svr->getUri() << " failed to start!" << std::endl;
+				LOG(ERROR) << "\t" << svr->getUri() << " failed to start!" << std::endl;
 			}
 		}
 		LOG(INFO) << i << " servers started running." << std::endl;
@@ -184,11 +188,11 @@ bool MicroFurtureSystem::Stop(void)
 		if (svr->Stop())
 		{
 			i++;
-			LOG(INFO) << "  " << svr->getUri() << " has stopped." << std::endl;
+			LOG(INFO) << "\t" << svr->getUri() << " has stopped." << std::endl;
 		}
 		else
 		{
-			LOG(ERROR) << "  " << svr->getUri() << " failed to stop!" << std::endl;
+			LOG(ERROR) << "\t" << svr->getUri() << " failed to stop!" << std::endl;
 		}
 		svr->Stop();
 	}

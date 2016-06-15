@@ -116,8 +116,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>E:\Projects\soci-3.2.3\build\lib\Debug;E:\MySQL\ConnectorC\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>soci_core_3_2.lib;libmysql.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\lib\mysql\$(Platform)\$(Configuration);$(SolutionDir)\lib\google\glog\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>mysqlcppconn.lib;glog.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -157,16 +157,17 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>E:\Projects\soci-3.2.3\build\lib\Release;E:\MySQL\ConnectorC\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>soci_core_3_2.lib;libmysql.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\lib\mysql\$(Platform)\$(Configuration);$(SolutionDir)\lib\google\glog\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>mysqlcppconn.lib;glog.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AbstractConnectionManager.h" />
     <ClInclude Include="BaseContractDAO.h" />
-    <ClInclude Include="ConnectionHelper.h" />
+    <ClInclude Include="MySqlConnectionManager.h" />
     <ClInclude Include="ConnectionPool.h" />
     <ClInclude Include="ContractDAO.h" />
     <ClInclude Include="databaseop_exp.h" />
@@ -174,13 +175,15 @@
     <ClInclude Include="OrderDAO.h" />
     <ClInclude Include="OTCOrderDAO.h" />
     <ClInclude Include="PortfolioDAO.h" />
+    <ClInclude Include="SqlTemplate.h" />
     <ClInclude Include="StrategyContractDAO.h" />
     <ClInclude Include="SysParamsDAO.h" />
     <ClInclude Include="UserInfoDAO.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AbstractConnectionManager.cpp" />
     <ClCompile Include="BaseContractDAO.cpp" />
-    <ClCompile Include="ConnectionHelper.cpp" />
+    <ClCompile Include="MySqlConnectionManager.cpp" />
     <ClCompile Include="ContractDAO.cpp" />
     <ClCompile Include="OrderDAO.cpp" />
     <ClCompile Include="OTCOrderDAO.cpp" />

@@ -6,8 +6,8 @@
  ***********************************************************************/
 
 #include "ContractDAO.h"
-#include "ConnectionHelper.h"
-
+#include "MySqlConnectionManager.h"
+#include "SqlTemplate.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       ContractDAO::FindBaseContractByCompany(const std::string& company)
@@ -26,7 +26,7 @@ VectorDO_Ptr<ContractKey> ContractDAO::FindContractByCompany(const std::string& 
 
 	auto ret = std::make_shared<VectorDO<ContractKey>>();
 
-	auto session = ConnectionHelper::Instance()->LeaseOrCreate();
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
@@ -67,7 +67,7 @@ std::shared_ptr<ContractDOMap> ContractDAO::FindAllContract(void)
 
 	auto ret = std::make_shared<ContractDOMap>();
 
-	auto session = ConnectionHelper::Instance()->LeaseOrCreate();
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
@@ -103,7 +103,7 @@ VectorDO_Ptr<ContractDO> ContractDAO::FindContractParamByUser(const std::string&
 
 	auto ret = std::make_shared<VectorDO<ContractDO>>();
 
-	auto session = ConnectionHelper::Instance()->LeaseOrCreate();
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
 	{
 		AutoClosePreparedStmt_Ptr prestmt(

@@ -6,7 +6,8 @@
  ***********************************************************************/
 
 #include "OrderDAO.h"
-#include "ConnectionHelper.h"
+#include "MySqlConnectionManager.h"
+#include "SqlTemplate.h"
 #include <glog/logging.h>
 
 ////////////////////////////////////////////////////////////////////////
@@ -23,7 +24,7 @@ OrderDO_Ptr OrderDAO::CreateOrder(const OrderDO& orderDO)
 
 	OrderDO_Ptr ret;
 
-	auto session = ConnectionHelper::Instance()->LeaseOrCreate();
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 
 	try
 	{
