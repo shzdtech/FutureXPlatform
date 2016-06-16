@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
-using Micro.Future;
+using System.Configuration;
+using System.Reflection;
 
 namespace Micro.Future.Wcf.Service
 {
@@ -16,12 +15,15 @@ namespace Micro.Future.Wcf.Service
 
         static MicroFutureService()
         {
-            MicroFurtureSystemClr.InitLogger();
+            MicroFurtureSystemClr.InitLogger(Assembly.GetExecutingAssembly().Location);
         }
+
 
         MicroFutureService()
         {
             MicroFurtureSystemClr.Instance.LogCallback.OnMessageRecv += LogCallback_OnMessageRecv;
+            var systemcfg = ConfigurationManager.AppSettings["Micro.Future.System.Config"];
+            MicroFurtureSystemClr.Instance.Load(systemcfg);
         }
 
         public bool IsRunning()

@@ -1,8 +1,6 @@
 #include "SystemWrapper.h"
 
 
-
-
 namespace Micro {
 	namespace Future {
 		SystemWrapper::SystemWrapper()
@@ -19,10 +17,7 @@ namespace Micro {
 		void SystemWrapper::InitLogger(String^ logPath)
 		{
 			if (String::IsNullOrEmpty(logPath))
-			{
-				auto codeBase = System::Reflection::Assembly::GetExecutingAssembly()->CodeBase;
-				logPath = Path::GetFullPath(codeBase);
-			}
+				logPath = System::Reflection::Assembly::GetExecutingAssembly()->Location;
 
 			char* path = (char*)Marshal::StringToHGlobalAnsi(logPath).ToPointer();
 			MicroFurtureSystem::InitLogger(path);
