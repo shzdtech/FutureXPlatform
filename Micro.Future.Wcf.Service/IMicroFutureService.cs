@@ -21,8 +21,10 @@ namespace Micro.Future.Wcf.Service
         [OperationContract]
         bool IsRunning();
 
-        // TODO: 在此添加您的服务操作
         [OperationContract]
         string RetrieveLog(int startIdx, int endIdx = -1);
+
+        [OperationContract]
+        int MaxLogIndex();
     }
 }

@@ -8,7 +8,8 @@ using Micro.Future;
 
 namespace Micro.Future.Wcf.Service
 {
-    // 注意: 使用“重构”菜单上的“重命名”命令，可以同时更改代码和配置文件中的类名“Service1”。
+    // 注意: 使用“重构”菜单上的“重命名”命令，可以同时更改代码和配置文件中的类名“MicroFutureService”。
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class MicroFutureService : IMicroFutureService
     {
         List<string> _logList = new List<string>();
@@ -52,10 +53,15 @@ namespace Micro.Future.Wcf.Service
             if (endIdx < 0 || endIdx > _logList.Count)
                 endIdx = _logList.Count;
 
-            for (int i = startIdx; i <= endIdx; i++)
+            for (int i = startIdx; i < endIdx; i++)
                 strBld.Append(_logList[i]);
 
             return strBld.ToString();
+        }
+
+        public int MaxLogIndex()
+        {
+            return _logList.Count - 1;
         }
     }
 }
