@@ -13,7 +13,7 @@
 #include "../dataobject/BizErrorSerializer.h"
 
 
-void TemplateMessageProcessor::ProcessRequest(const uint msgId, const dataobj_ptr reqDO, const bool sendRsp)
+void TemplateMessageProcessor::ProcessRequest(const uint msgId, const dataobj_ptr reqDO, bool sendRsp)
 {
 	if (_svc_locator_ptr)
 	{
@@ -28,6 +28,30 @@ void TemplateMessageProcessor::ProcessRequest(const uint msgId, const dataobj_pt
 						auto dataSerilzer = _svc_locator_ptr->FindDataSerializer(msgId);
 						if (dataSerilzer) {
 							data_buffer db = dataSerilzer->Serialize(dataptr);
+							pMsgSession->WriteMessage(msgId, db);
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+void TemplateMessageProcessor::ProcessResponse(const uint msgId, const uint serialId, param_vector & rawRespParams, bool sendRsp)
+{
+	if (_svc_locator_ptr)
+	{
+		if (auto msgHandler = _svc_locator_ptr->FindMessageHandler(msgId))
+		{
+			if (auto pMsgSession = getSession())
+			{
+				if (auto dataobj = msgHandler->HandleResponse(serialId, rawRespParams, getRawAPI(), pMsgSession))
+				{
+					if (sendRsp)
+					{
+						if (auto msgSerilzer = _svc_locator_ptr->FindDataSerializer(msgId))
+						{
+							data_buffer db = msgSerilzer->Serialize(dataobj);
 							pMsgSession->WriteMessage(msgId, db);
 						}
 					}
@@ -83,23 +107,7 @@ int TemplateMessageProcessor::OnRecvMsg(const uint msgId, const data_buffer& msg
 
 int TemplateMessageProcessor::OnResponse(const uint msgId, const uint serialId, param_vector& rawRespParams) {
 	try {
-		if (_svc_locator_ptr)
-		{
-			if (auto msgHandler = _svc_locator_ptr->FindMessageHandler(msgId))
-			{
-				if (auto pMsgSession = getSession())
-				{
-					if (auto dataobj = msgHandler->HandleResponse(serialId, rawRespParams, getRawAPI(), pMsgSession))
-					{
-						if (auto msgSerilzer = _svc_locator_ptr->FindDataSerializer(msgId))
-						{
-							data_buffer db = msgSerilzer->Serialize(dataobj);
-							pMsgSession->WriteMessage(msgId, db);
-						}
-					}
-				}
-			}
-		}
+		ProcessResponse(msgId, serialId, rawRespParams, true);
 	}
 	catch (BizError& bizErr) {
 		SendErrorMsg(msgId, bizErr, serialId);

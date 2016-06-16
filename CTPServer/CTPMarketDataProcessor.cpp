@@ -21,7 +21,6 @@
 
 CTPMarketDataProcessor::CTPMarketDataProcessor(const std::map<std::string, std::string>& configMap)
 	: CTPProcessor(configMap) {
-	OnInit();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -42,7 +41,7 @@ CTPMarketDataProcessor::~CTPMarketDataProcessor() {
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void CTPMarketDataProcessor::OnInit(void) {
+void CTPMarketDataProcessor::Initialize(void) {
 	_rawAPI.MdAPI = CThostFtdcMdApi::CreateFtdcMdApi();
 	if (_rawAPI.MdAPI) {
 		_rawAPI.MdAPI->RegisterSpi(this);
@@ -71,8 +70,7 @@ void CTPMarketDataProcessor::OnFrontConnected() {
 
 void CTPMarketDataProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin,
 	CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
-	if (!CTPUtility::HasError(pRspInfo))
-		_isLogged = true;
+	_isLogged = !CTPUtility::HasError(pRspInfo);
 	OnResponseMacro(MSG_ID_LOGIN, nRequestID, pRspUserLogin, pRspInfo, &nRequestID, &bIsLast)
 }
 

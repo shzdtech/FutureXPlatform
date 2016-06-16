@@ -14,6 +14,11 @@
 	processor->OnResponse(MSG_ID, SERIAL_ID, resp_param_vec); \
 }
 
+#define ProcessResponseMacro(processor, MSG_ID, SERIAL_ID, ...){\
+	param_vector resp_param_vec = {__VA_ARGS__}; \
+	processor->ProcessResponse(MSG_ID, SERIAL_ID, resp_param_vec, false); \
+}
+
 #define AttribPointerCast(processor, key, T) \
 	std::static_pointer_cast<T>(processor->getServerContext()->getAttribute(key))
 

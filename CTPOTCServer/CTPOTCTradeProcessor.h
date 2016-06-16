@@ -11,19 +11,18 @@
 #include "../ordermanager/OTCOrderManager.h"
 #include "../ordermanager/AutoOrderManager.h"
 #include "../ordermanager/HedgeOrderManager.h"
-#include "../CTPServer/CTPTradeProcessor.h"
+#include "../CTPServer/CTPTradeWorkerProcessor.h"
 #include "../message/SessionContainer.h"
-#include "../message/UserInfo.h"
 #include "../dataobject/StrategyContractDO.h"
 
-class CTPOTCTradeProcessor : public CTPProcessor, public CThostFtdcTraderSpi,
-	public IOrderAPI
+class CTPOTCTradeProcessor : public CTPTradeWorkerProcessor, public IOrderAPI
 {
 public:
 	CTPOTCTradeProcessor(const std::map<std::string, std::string>& configMap, IPricingDataContext* pricingCtx);
 	~CTPOTCTradeProcessor();
+	void Initialize(void);
+
 	bool OnSessionClosing(void);
-	int LoginIfNeed(void);
 	void RegisterOrderListener(const uint64_t orderID, IMessageSession* pMsgSession);
 	void TriggerOrderUpdating(const StrategyContractDO& strategyDO);
 	inline void DispatchMessage(const int msgId, const OrderDO* pOrderDO);
@@ -35,9 +34,6 @@ public:
 	int CancelOrder(const OrderDO& orderInfo, OrderStatus& currStatus);
 
 protected:
-	void OnInit(void);
-
-	UserInfo _defaultUser;
 
 	SessionContainer_Ptr<uint64_t> _orderNotifier;
 

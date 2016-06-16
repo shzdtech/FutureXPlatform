@@ -72,5 +72,7 @@ std::map<uint, IDataSerializer_Ptr> CTPOTCClientServiceFactory::CreateDataSerial
 
 IMessageProcessor_Ptr CTPOTCClientServiceFactory::CreateMessageProcessor(void)
 {
-	return std::make_shared<CTPProcessor>(_configMap);
+	auto ret = std::make_shared<CTPProcessor>(_configMap);
+	ret->Initialize();
+	return ret;
 }

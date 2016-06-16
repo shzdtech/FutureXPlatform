@@ -36,12 +36,12 @@ CTPOTCTradingDeskProcessor::~CTPOTCTradingDeskProcessor()
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCTradingDeskProcessor::OnInit()
-// Purpose:    Implementation of CTPOTCTradingDeskProcessor::OnInit()
+// Name:       CTPOTCTradingDeskProcessor::Intialize()
+// Purpose:    Implementation of CTPOTCTradingDeskProcessor::Intialize()
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void CTPOTCTradingDeskProcessor::OnInit(void)
+void CTPOTCTradingDeskProcessor::Intialize(void)
 {
 	// TODO : implement
 }

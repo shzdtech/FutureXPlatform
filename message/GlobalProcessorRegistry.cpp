@@ -6,24 +6,23 @@
  ***********************************************************************/
 
 #include "GlobalProcessorRegistry.h"
+#include <map>
 #include <mutex>
 
-static std::vector<IProcessorBase_Ptr> registry;
+static std::map<std::string, IProcessorBase_Ptr> registry;
 
-size_t GlobalProcessorRegistry::RegisterProcessor(IProcessorBase_Ptr proc_ptr)
+void GlobalProcessorRegistry::RegisterProcessor(const std::string& processName, IProcessorBase_Ptr proc_ptr)
 {
-	static std::mutex lockobj;
-	std::lock_guard<std::mutex> guard(lockobj);
-	registry.push_back(proc_ptr);
-
-	return registry.size() - 1;
+	registry[processName] = proc_ptr;
 }
 
-IProcessorBase_Ptr GlobalProcessorRegistry::FindProcessor(size_t id)
+IProcessorBase_Ptr GlobalProcessorRegistry::FindProcessor(const std::string& processName)
 {
 	IProcessorBase_Ptr ret;
-	if (id < registry.size())
-		ret = registry[id];
+
+	auto it = registry.find(processName);
+	if (it != registry.end())
+		ret = it->second;
 
 	return ret;
 }

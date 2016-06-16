@@ -14,8 +14,8 @@
 class MESSAGE_CLASS_EXPORT GlobalProcessorRegistry
 {
 public:
-	static size_t RegisterProcessor(IProcessorBase_Ptr proc_ptr);
-	static IProcessorBase_Ptr FindProcessor(size_t id);
+	static void RegisterProcessor(const std::string& processName, IProcessorBase_Ptr proc_ptr);
+	static IProcessorBase_Ptr FindProcessor(const std::string& processName);
 
 protected:
 	

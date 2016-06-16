@@ -7,6 +7,7 @@
 
 #include "CTPTradeServiceFactory.h"
 #include "CTPTradeProcessor.h"
+#include "CTPTradeWorkerProcessor.h"
 #include "ctp_bizhandlers.h"
 #include "CTPConstant.h"
 
@@ -14,6 +15,7 @@
 #include "../message/EchoMsgSerializer.h"
 #include "../message/DefMessageID.h"
 #include "../message/SysParam.h"
+#include "../message/GlobalProcessorRegistry.h"
 
 #include "../configuration/AbstractConfigReaderFactory.h"
 #include "../dataobject/AbstractDataSerializerFactory.h"
@@ -77,7 +79,9 @@ std::map<uint, IDataSerializer_Ptr> CTPTradeServiceFactory::CreateDataSerializer
 
 IMessageProcessor_Ptr CTPTradeServiceFactory::CreateMessageProcessor(void)
 {
-	return std::make_shared<CTPTradeProcessor>(_configMap);
+	auto ret = std::make_shared<CTPTradeProcessor>(_configMap);
+	ret->Initialize();
+	return ret;
 }
 
 
@@ -91,4 +95,23 @@ bool CTPTradeServiceFactory::Load(const std::string& configFile, const std::stri
 	}
 
 	return ret;
+}
+
+
+std::map<std::string, IProcessorBase_Ptr> CTPTradeServiceFactory::CreateWorkProcessor(void)
+{
+	std::map<std::string, IProcessorBase_Ptr> workerProcMap;
+	IProcessorBase_Ptr prcPtr;
+
+	static std::string workprocessId("CTP.Trade.WorkerProcessor");
+	if (!(prcPtr = GlobalProcessorRegistry::FindProcessor(workprocessId)))
+	{
+		auto worker_ptr = std::make_shared<CTPTradeWorkerProcessor>(_configMap);
+		worker_ptr->Initialize();
+		GlobalProcessorRegistry::RegisterProcessor(workprocessId, worker_ptr);
+		prcPtr = worker_ptr;
+	}
+	workerProcMap[workprocessId] = prcPtr;
+
+	return workerProcMap;
 }

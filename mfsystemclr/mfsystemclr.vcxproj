@@ -98,7 +98,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>libglog.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\lib\google;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib\google;</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -111,7 +111,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>glog.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\lib\google\glog\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib\google\glog\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -123,7 +123,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>libglog.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\lib\google;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib\google;</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -135,7 +135,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>glog.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\lib\google\glog\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib\google\glog\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

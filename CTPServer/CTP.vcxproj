@@ -177,6 +177,7 @@
     <ClInclude Include="CTPTradeProcessor.h" />
     <ClInclude Include="CTPTradeServiceFactory.h" />
     <ClInclude Include="CTPQueryAccountInfo.h" />
+    <ClInclude Include="CTPTradeWorkerProcessor.h" />
     <ClInclude Include="CTPUnsubMarketData.h" />
     <ClInclude Include="CTPUtility.h" />
     <ClInclude Include="ctp_bizhandlers.h" />
@@ -203,6 +204,7 @@
     <ClCompile Include="CTPTradeProcessor.cpp" />
     <ClCompile Include="CTPTradeServiceFactory.cpp" />
     <ClCompile Include="CTPQueryAccountInfo.cpp" />
+    <ClCompile Include="CTPTradeWorkerProcessor.cpp" />
     <ClCompile Include="CTPUnsubMarketData.cpp" />
     <ClCompile Include="CTPUtility.cpp" />
   </ItemGroup>

@@ -117,6 +117,9 @@
     <ClInclude Include="Attribute_Key.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CTPTradeWorkerProcessor.h">
+      <Filter>头文件\CTPHandler\Trader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ctpexport.cpp">
@@ -186,6 +189,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="CTPCancelOrder.cpp">
+      <Filter>源文件\CTPHandler\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPTradeWorkerProcessor.cpp">
       <Filter>源文件\CTPHandler\Trader</Filter>
     </ClCompile>
   </ItemGroup>

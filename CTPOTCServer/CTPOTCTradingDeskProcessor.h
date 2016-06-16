@@ -15,12 +15,11 @@ class CTPOTCTradingDeskProcessor : public CTPProcessor
 public:
 	CTPOTCTradingDeskProcessor(const std::map<std::string, std::string>& configMap);
    ~CTPOTCTradingDeskProcessor();
-   void Close(void);
+   void Intialize(void);
 
 protected:
-   void OnInit(void);
-
    bool OnSessionClosing(void);
+
 private:
 
 };

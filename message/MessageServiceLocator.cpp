@@ -50,10 +50,10 @@ IDataSerializer_Ptr MessageServiceLocator::FindDataSerializer(uint msgId) {
 // Return:     IProcessorBase_Ptr
 ////////////////////////////////////////////////////////////////////////
 
-IProcessorBase_Ptr MessageServiceLocator::FindWorkProccessor(uint processorID)
+IProcessorBase_Ptr MessageServiceLocator::FindWorkProccessor(const std::string& processorName)
 {
 	IProcessorBase_Ptr ret;
-	auto itr = _prcMap.find(processorID);
+	auto itr = _prcMap.find(processorName);
 	if (itr != _prcMap.end())
 		ret = itr->second;
 
@@ -88,7 +88,7 @@ std::map<uint, IDataSerializer_Ptr>& MessageServiceLocator::AllDataSerializer(vo
 	return _dataSerialMap;
 }
 
-std::map<uint, IProcessorBase_Ptr>& MessageServiceLocator::AllWorkProcessor(void)
+std::map<std::string, IProcessorBase_Ptr>& MessageServiceLocator::AllWorkProcessor(void)
 {
 	return _prcMap;
 }

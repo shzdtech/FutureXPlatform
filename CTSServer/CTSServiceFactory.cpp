@@ -55,9 +55,9 @@ std::map<uint, IDataSerializer_Ptr> CTSServiceFactory::CreateDataSerializers(voi
 // Return:     std::map<uint, IProcessorBase_Ptr>
 ////////////////////////////////////////////////////////////////////////
 
-std::map<uint, IProcessorBase_Ptr> CTSServiceFactory::CreateWorkProcessor(void)
+std::map<std::string, IProcessorBase_Ptr> CTSServiceFactory::CreateWorkProcessor(void)
 {
-	std::map<uint, IProcessorBase_Ptr> workproc_map;
+	std::map<std::string, IProcessorBase_Ptr> workproc_map;
 	return workproc_map;
 }
 

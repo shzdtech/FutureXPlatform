@@ -7,10 +7,12 @@
 
 #ifndef __CTP_CTPWORKERPROCESSORID_H
 #define	__CTP_CTPWORKERPROCESSORID_H
+#include <string>
+
 
 namespace CTPWorkProcessorID
 {
-	static int WORKPROCESSOR_OTC = -1;
+	const std::string WORKPROCESSOR_OTC("CTPOTC.WORKPROCESSOR");
 };
 
 #endif	/* __CTP_CTPWORKERPROCESSORID_H */

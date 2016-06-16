@@ -18,7 +18,7 @@ public:
 	virtual void SetServerContext(IContextAttribute* serverCtx);
 	virtual std::map<uint, IMessageHandler_Ptr> CreateMessageHandlers(void);
 	virtual std::map<uint, IDataSerializer_Ptr> CreateDataSerializers(void);
-	virtual std::map<uint, IProcessorBase_Ptr> CreateWorkProcessor(void);
+	virtual std::map<std::string, IProcessorBase_Ptr> CreateWorkProcessor(void);
 	virtual IMessageProcessor_Ptr CreateMessageProcessor(void);
 	virtual bool Load(const std::string& configFile, const std::string& param);
 

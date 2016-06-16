@@ -38,14 +38,6 @@ CTPOTCWorkerProcessor::CTPOTCWorkerProcessor(const std::map<std::string, std::st
 	_pricingNotifers(new SessionContainer<ContractKey>()),
 	_otcOrderNotifers(new SessionContainer<uint64_t>())
 {
-	_isLogged = false;
-	_rawAPI.TrdAPI = ((CTPRawAPI*)(_otcTradeProcessor.getRawAPI()))->TrdAPI;
-	auto pContractMap = _pricingCtx->GetContractMap();
-	if (pContractMap->size() == 0)
-	{
-		*pContractMap = *ContractDAO::FindAllContract();
-	}
-	LoginIfNeed();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -70,6 +62,14 @@ void CTPOTCWorkerProcessor::setSession(IMessageSession* msgSession)
 	_otcTradeProcessor.setSession(msgSession);
 }
 
+void CTPOTCWorkerProcessor::Initialize(void)
+{
+	CTPMarketDataProcessor::Initialize();
+	_otcTradeProcessor.Initialize();
+
+	LoginIfNeed();
+}
+
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPOTCWorkerProcessor::LoginIfNeed()
 // Purpose:    Implementation of CTPOTCWorkerProcessor::LoginIfNeed()
@@ -90,7 +90,8 @@ int CTPOTCWorkerProcessor::LoginIfNeed(void)
 		ret = ((CTPRawAPI*)getRawAPI())->MdAPI->ReqUserLogin(&req, AppContext::GenNextSeq());
 	}
 
-	_otcTradeProcessor.LoginIfNeed();
+	if(ret == 0)
+		ret = _otcTradeProcessor.LoginIfNeed();
 
 	return ret;
 }

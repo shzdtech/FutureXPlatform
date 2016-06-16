@@ -24,6 +24,7 @@ public:
    ~CTPOTCWorkerProcessor();
    bool OnSessionClosing(void);
    void setSession(IMessageSession* msgSession);
+   void Initialize(void);
 
    int LoginIfNeed(void);
   

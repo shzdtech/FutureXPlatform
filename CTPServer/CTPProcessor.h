@@ -23,10 +23,9 @@ class CTP_CLASS_EXPORT CTPProcessor : public TemplateMessageProcessor
 public:
 	CTPProcessor(const std::map<std::string, std::string>& configMap);
 	virtual IRawAPI* getRawAPI(void);
-	
-protected:
-	virtual void OnInit(void);
+	virtual void Initialize(void);
 
+protected:
 	bool _isLogged;
 	std::map<std::string, std::string> _configMap;
 	CTPRawAPI _rawAPI;

@@ -1,1 +1,0 @@
-﻿<%@ ServiceHost Language="C#" Debug="true" Service="Micro.Future.Wcf.Web.MicroFutureService" CodeBehind="MicroFutureService.svc.cs" %>

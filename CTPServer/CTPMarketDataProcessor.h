@@ -15,9 +15,9 @@ class CTP_CLASS_EXPORT CTPMarketDataProcessor : public CTPProcessor, public CTho
 public:
 	CTPMarketDataProcessor(const std::map<std::string, std::string>& configMap);
    ~CTPMarketDataProcessor();
+   void Initialize(void);
 
 protected:
-	void OnInit(void);
 
 private:
     CThostFtdcMdApi* _mdAPI;

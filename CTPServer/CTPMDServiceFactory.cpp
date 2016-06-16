@@ -59,7 +59,9 @@ std::map<uint, IDataSerializer_Ptr> CTPMDServiceFactory::CreateDataSerializers(v
 
 IMessageProcessor_Ptr CTPMDServiceFactory::CreateMessageProcessor(void)
 {
-	return std::make_shared<CTPMarketDataProcessor>(_configMap);
+	auto ret = std::make_shared<CTPMarketDataProcessor>(_configMap);
+	ret->Initialize();
+	return ret;
 }
 
 bool CTPMDServiceFactory::Load(const std::string& configFile, const std::string& param)

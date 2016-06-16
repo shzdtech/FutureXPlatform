@@ -17,7 +17,9 @@
 
 CTPProcessor::CTPProcessor(const std::map<std::string, std::string>& configMap)
 	:_configMap(configMap)
-{}
+{
+	_isLogged = false;
+}
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPProcessor::getRawAPI()
@@ -31,11 +33,11 @@ IRawAPI* CTPProcessor::getRawAPI(void)
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPProcessor::OnInit()
-// Purpose:    Implementation of CTPProcessor::OnInit()
+// Name:       CTPProcessor::Initialize()
+// Purpose:    Implementation of CTPProcessor::Initialize()
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void CTPProcessor::OnInit(void)
+void CTPProcessor::Initialize(void)
 {
 }

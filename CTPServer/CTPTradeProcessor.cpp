@@ -12,8 +12,6 @@
 #include "../message/message_macro.h"
 #include "../bizutility/InstrumentCache.h"
 
-
-bool CTPTradeProcessor::_requestInsInfo = false;
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPTradeProcessor::CTPTradeProcessor(const std::map<std::string, std::string>& configMap)
 // Purpose:    Implementation of CTPTradeProcessor::CTPTradeProcessor()
@@ -25,7 +23,6 @@ bool CTPTradeProcessor::_requestInsInfo = false;
 CTPTradeProcessor::CTPTradeProcessor(const std::map<std::string, std::string>& configMap)
 	: CTPProcessor(configMap)
 {
-	OnInit();
 }
 
 
@@ -49,7 +46,7 @@ CTPTradeProcessor::~CTPTradeProcessor()
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void CTPTradeProcessor::OnInit(void) {
+void CTPTradeProcessor::Initialize(void) {
 	_rawAPI.TrdAPI = CThostFtdcTraderApi::CreateFtdcTraderApi();
 	if (_rawAPI.TrdAPI) {
 		_rawAPI.TrdAPI->RegisterSpi(this);
@@ -90,19 +87,7 @@ void CTPTradeProcessor::OnRspAuthenticate(CThostFtdcRspAuthenticateField *pRspAu
 ///登录请求响应
 void CTPTradeProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	if (!CTPUtility::HasError(pRspInfo))
-	{
-		_isLogged = true;
-
-		if (!_requestInsInfo)
-		{
-			CThostFtdcQryInstrumentField req;
-			std::memset(&req, 0x0, sizeof(CThostFtdcQryInstrumentField));
-
-			_requestInsInfo = _rawAPI.TrdAPI->ReqQryInstrument(&req, 0) == 0;
-		}
-	}
-
+	_isLogged = !CTPUtility::HasError(pRspInfo);
 	OnResponseMacro(MSG_ID_LOGIN, nRequestID, pRspUserLogin, pRspInfo, &nRequestID, &bIsLast)
 }
 

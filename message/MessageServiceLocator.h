@@ -10,6 +10,7 @@
 
 #include "IMessageServiceLocator.h"
 #include "IMessageServiceFactory.h"
+#include <string>
 #include <map>
 #include "message_exp.h"
 
@@ -20,15 +21,15 @@ public:
 
 	IMessageHandler_Ptr FindMessageHandler(uint msgId);
 	IDataSerializer_Ptr FindDataSerializer(uint msgId);
-	IProcessorBase_Ptr FindWorkProccessor(uint processorID);
+	IProcessorBase_Ptr FindWorkProccessor(const std::string& processorName);
 	std::map<uint, IMessageHandler_Ptr>& AllMessageHandler(void);
 	std::map<uint, IDataSerializer_Ptr>& AllDataSerializer(void);
-	std::map<uint, IProcessorBase_Ptr>& AllWorkProcessor(void);
+	std::map<std::string, IProcessorBase_Ptr>& AllWorkProcessor(void);
 
 protected:
 	std::map<uint, IMessageHandler_Ptr> _msghdlMap;
 	std::map<uint, IDataSerializer_Ptr> _dataSerialMap;
-	std::map<uint, IProcessorBase_Ptr> _prcMap;
+	std::map<std::string, IProcessorBase_Ptr> _prcMap;
 
 private:
 

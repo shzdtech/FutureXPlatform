@@ -57,9 +57,9 @@ std::map<uint, IDataSerializer_Ptr> TestingMessageServiceFactory::CreateDataSeri
 // Return:     std::map<uint, IProcessorBase_Ptr>
 ////////////////////////////////////////////////////////////////////////
 
-std::map<uint, IProcessorBase_Ptr> TestingMessageServiceFactory::CreateWorkProcessor(void)
+std::map<std::string, IProcessorBase_Ptr> TestingMessageServiceFactory::CreateWorkProcessor(void)
 {
-	return std::map<uint, IProcessorBase_Ptr>();
+	return std::map<std::string, IProcessorBase_Ptr>();
 }
 
 ////////////////////////////////////////////////////////////////////////

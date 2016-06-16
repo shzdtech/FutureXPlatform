@@ -21,18 +21,12 @@
 
 CTPOTCTradeProcessor::CTPOTCTradeProcessor(const std::map<std::string, std::string>& configMap,
 	IPricingDataContext* pricingCtx)
-	: CTPProcessor(configMap),
+	: CTPTradeWorkerProcessor(configMap),
 	_pricingCtx(pricingCtx),
 	_otcOrderMgr(this, pricingCtx),
 	_autoOrderMgr(this, pricingCtx),
 	_orderNotifier(new SessionContainer<uint64_t>())
 {
-	_isLogged = false;
-	_defaultUser.setBrokerId(SysParam::Get(CTP_TRADER_BROKERID));
-	_defaultUser.setUserId(SysParam::Get(CTP_TRADER_USERID));
-	_defaultUser.setPassword(SysParam::Get(CTP_TRADER_PASSWORD));
-	_defaultUser.setServer(SysParam::Get(CTP_TRADER_SERVER));
-	OnInit();
 }
 
 AutoOrderManager& CTPOTCTradeProcessor::GetAutoOrderManager(void)
@@ -58,6 +52,12 @@ CTPOTCTradeProcessor::~CTPOTCTradeProcessor()
 		_rawAPI.TrdAPI->Release();
 }
 
+void CTPOTCTradeProcessor::Initialize(void)
+{
+	InstrmentsLoaded = true;
+	CTPTradeWorkerProcessor::Initialize();
+}
+
 bool CTPOTCTradeProcessor::OnSessionClosing(void)
 {
 	auto pMap = _pricingCtx->GetStrategyMap();
@@ -72,41 +72,6 @@ bool CTPOTCTradeProcessor::OnSessionClosing(void)
 	_autoOrderMgr.Reset();
 
 	return true;
-}
-
-////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCTradeProcessor::OnInit()
-// Purpose:    Implementation of CTPOTCTradeProcessor::OnInit()
-// Return:     void
-////////////////////////////////////////////////////////////////////////
-
-void CTPOTCTradeProcessor::OnInit(void)
-{
-	_rawAPI.TrdAPI = CThostFtdcTraderApi::CreateFtdcTraderApi();
-	if (_rawAPI.TrdAPI) {
-		_rawAPI.TrdAPI->RegisterSpi(this);
-		_rawAPI.TrdAPI->RegisterFront(const_cast<char*> (_defaultUser.getServer().data()));
-		_rawAPI.TrdAPI->SubscribePrivateTopic(THOST_TERT_RESUME);
-		_rawAPI.TrdAPI->SubscribePublicTopic(THOST_TERT_RESUME);
-		_rawAPI.TrdAPI->Init();
-	}
-}
-
-int CTPOTCTradeProcessor::LoginIfNeed(void)
-{
-	int ret = 0;
-
-	if (!_isLogged)
-	{
-		CThostFtdcReqUserLoginField req;
-		std::memset(&req, 0, sizeof(req));
-		std::strcpy(req.BrokerID, _defaultUser.getBrokerId().data());
-		std::strcpy(req.UserID, _defaultUser.getUserId().data());
-		std::strcpy(req.Password, _defaultUser.getPassword().data());
-		ret = _rawAPI.TrdAPI->ReqUserLogin(&req, AppContext::GenNextSeq());
-	}
-
-	return ret;
 }
 
 void CTPOTCTradeProcessor::DispatchMessage(const int msgId, const OrderDO* pOrderDO)
