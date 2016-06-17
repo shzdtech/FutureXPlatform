@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Micro.Future.Server.NetCore": {
+      "commandName": "Project",
+      "workingDirectory": "../Bin/x64/Release"
+    }
+  }
+}

@@ -5,8 +5,8 @@
  * Purpose: Declaration of the class MicroFurtureSystem
  ***********************************************************************/
 
-#if !defined(__message_AppDomain_h)
-#define __message_AppDomain_h
+#if !defined(__message_MicroFurtureSystem_h)
+#define __message_MicroFurtureSystem_h
 
 #include "ISystem.h"
 #include <map>

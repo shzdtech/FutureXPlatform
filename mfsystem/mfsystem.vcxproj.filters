@@ -36,9 +36,18 @@
     <ClInclude Include="MicroFurtureSystem.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="MicroFutureLogSink.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MicroFurtureSystem.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="system_exp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MicroFutureLogSink.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

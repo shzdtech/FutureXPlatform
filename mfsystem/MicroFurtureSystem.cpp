@@ -34,6 +34,8 @@ void MicroFurtureSystem::InitLogger(const std::string& logPath)
 	FLAGS_log_dir = idx != std::string::npos ? _logPath.substr(0, idx + 1) : ".";
 
 	google::InitGoogleLogging(_logPath.data());
+
+	LOG(INFO) << "Log path: " << logPath << std::endl;
 }
 
 const std::string & MicroFurtureSystem::GetLogPath(void)
