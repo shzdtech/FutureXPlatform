@@ -145,7 +145,7 @@ bool MicroFurtureSystem::Load(const char* config)
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-bool MicroFurtureSystem::Run(void)
+bool MicroFurtureSystem::Start(void)
 {
 	bool ret = _running;
 

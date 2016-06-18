@@ -69,7 +69,7 @@ namespace Micro.Future.Server.Monitor
         private void Form_Load(object sender, EventArgs e)
         {
             Task.Run(() => {
-            if (_system.Load(CONFIG_FILE) && _system.Run())
+            if (_system.Load(CONFIG_FILE) && _system.Start())
             {
                 toolStripMenuItemStart.Enabled = false;
                 notifyIconStatus.Icon = Resources.GLight;
@@ -88,7 +88,7 @@ namespace Micro.Future.Server.Monitor
 
         private void toolStripMenuItemStart_Click(object sender, EventArgs e)
         {
-            _system.Run();
+            _system.Start();
             toolStripMenuItemStart.Enabled = false;
             toolStripMenuItemStop.Enabled = true;
             notifyIconStatus.Icon = Resources.GLight;

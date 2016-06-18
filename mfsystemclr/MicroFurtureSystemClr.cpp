@@ -17,9 +17,9 @@ namespace Micro {
 			return _systemWrapper->Load(config);
 		}
 
-		bool MicroFurtureSystemClr::Run()
+		bool MicroFurtureSystemClr::Start()
 		{
-			return _systemWrapper->Run();
+			return _systemWrapper->Start();
 		}
 
 		bool MicroFurtureSystemClr::Stop()

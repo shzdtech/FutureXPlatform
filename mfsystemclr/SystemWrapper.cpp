@@ -37,9 +37,9 @@ namespace Micro {
 			return ret;
 		}
 
-		bool SystemWrapper::Run()
+		bool SystemWrapper::Start()
 		{
-			return _system->Run();
+			return _system->Start();
 		}
 
 		bool SystemWrapper::Stop()

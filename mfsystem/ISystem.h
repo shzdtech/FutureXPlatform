@@ -16,7 +16,7 @@ class ISystem
 public:
    virtual bool Load(const std::string& config)=0;
    virtual bool IsRunning(void) = 0;
-   virtual bool Run(void) = 0;
+   virtual bool Start(void) = 0;
    virtual bool Stop(void) = 0;
 
 protected:

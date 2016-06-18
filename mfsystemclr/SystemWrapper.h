@@ -39,7 +39,7 @@ namespace Micro {
 
 			bool Load(String^ config);
 
-			bool Run();
+			bool Start();
 
 			bool Stop();
 		};

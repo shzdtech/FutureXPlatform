@@ -17,7 +17,7 @@ extern "C" {
 	}
 
 	SYSTEM_CLASS_EXPORT bool MicroFutureSystem_Start() {
-		return MicroFurtureSystem::Instance()->Run();
+		return MicroFurtureSystem::Instance()->Start();
 	}
 
 	SYSTEM_CLASS_EXPORT bool MicroFutureSystem_Stop() {

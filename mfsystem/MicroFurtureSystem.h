@@ -28,7 +28,7 @@ public:
 	bool Load(const char* config = MICROFUTURE_DEFAULT_CONFIG_NAME);
 	bool Load(const std::string& config = MICROFUTURE_DEFAULT_CONFIG_NAME);
 	bool IsRunning(void);
-	bool Run(void);
+	bool Start(void);
 	bool Stop(void);
 
 protected:

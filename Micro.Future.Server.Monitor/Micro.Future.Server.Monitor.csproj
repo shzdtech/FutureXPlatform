@@ -82,15 +82,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\Exit.ico" />
+    <Content Include="Resources\GLight.ico" />
+    <Content Include="Resources\RLight.ico" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\mfsystemclr\mfsystemclr.vcxproj">
       <Project>{7a3cef4a-18e6-404b-b5ea-8d2a8d336331}</Project>
       <Name>mfsystemclr</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Resources\Exit.ico" />
-    <Content Include="Resources\GLight.ico" />
-    <Content Include="Resources\RLight.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
