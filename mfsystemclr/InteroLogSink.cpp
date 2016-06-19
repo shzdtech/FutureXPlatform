@@ -24,7 +24,8 @@ namespace Micro {
 			const struct tm* tm_time,
 			const char* message, size_t message_len)
 		{
-			LogCallBack->RaiseEvent(gcnew System::String(message, 0, message_len));
+			LogCallBack->RaiseEvent((LogSeverityType)severity,
+				gcnew System::String(message, 0, message_len));
 		}
 	}
 }

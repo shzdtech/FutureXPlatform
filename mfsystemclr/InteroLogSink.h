@@ -9,16 +9,23 @@ using namespace System::IO;
 
 namespace Micro {
 	namespace Future {
-
-		public delegate void DelegateMessageRecv(String^ message);
+		public enum class LogSeverityType
+		{
+			Info = 0,
+			Warning = 1,
+			Error = 2,
+			Fatal = 3
+		}; 
+			
+		public delegate void DelegateMessageRecv(LogSeverityType severity, String^ message);
 
 		public ref class InteroLogCallBack
 		{
 		public:
 			event DelegateMessageRecv^ OnMessageRecv;
-			void RaiseEvent(String^ message)
+			void RaiseEvent(LogSeverityType severity, String^ message)
 			{
-				OnMessageRecv(message);
+				OnMessageRecv(severity, message);
 			}
 		};
 

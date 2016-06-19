@@ -37,20 +37,21 @@ namespace Micro.Future.Server.Monitor
             notifyIconStatus.Icon = Resources.RLight;
         }
 
-        private void OnMessageRecv(string message)
+        private void OnMessageRecv(LogSeverityType severity, string message)
         {
             if (InvokeRequired)
             {
-                BeginInvoke(new MethodInvoker(() => { AppendText(message); }));
+                BeginInvoke(new MethodInvoker(() => { AppendText(severity, message); }));
             }
             else
             {
-                AppendText(message);
+                AppendText(severity, message);
             }
         }
 
-        private void AppendText(string message)
+        private void AppendText(LogSeverityType severity, string message)
         {
+            richTextBoxLog.AppendText("[" + severity + "] ");
             richTextBoxLog.AppendText(message);
             richTextBoxLog.AppendText(Environment.NewLine);
         }
