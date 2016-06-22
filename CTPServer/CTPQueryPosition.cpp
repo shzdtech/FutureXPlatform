@@ -10,6 +10,7 @@
 #include "CTPUtility.h"
 #include "CTPConstant.h"
 
+#include "../common/Attribute_Key.h"
 #include "../dataobject/UserPositionDO.h"
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/FieldName.h"
@@ -17,6 +18,7 @@
 #include "../utility/Encoding.h"
 #include "../utility/TUtil.h"
 #include "../bizutility/InstrumentCache.h"
+
 
 #include <glog/logging.h>
 
@@ -38,6 +40,19 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 	auto& brokeid = session->getUserInfo()->getBrokerId();
 	auto& userid = session->getUserInfo()->getInvestorId();
 	auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
+
+	if (instrumentid != EMPTY_STRING)
+	{
+		if (auto positionPtr = std::static_pointer_cast<UserPositionExDOMap>(
+			session->getUserInfo()->getAttribute(STR_KEY_USER_POSITION)))
+		{
+			auto it = positionPtr->find(instrumentid);
+			if (it != positionPtr->end())
+			{
+				return dataobj_ptr(new UserPositionExDO(it->second));
+			}
+		}
+	}
 
 	CThostFtdcQryInvestorPositionField req;
 	std::memset(&req, 0, sizeof(req));
@@ -116,6 +131,13 @@ dataobj_ptr CTPQueryPosition::HandleResponse(const uint32_t serialId, param_vect
 		//pDO->TodayPosition = pData->TodayPosition;
 		pDO->MarginRateByMoney = pData->MarginRateByMoney;
 		pDO->MarginRateByVolume = pData->MarginRateByVolume;
+
+		if (auto positionPtr = std::static_pointer_cast<UserPositionExDOMap>(
+			session->getUserInfo()->getAttribute(STR_KEY_USER_POSITION)))
+		{
+			auto& position = positionPtr->getorfill(pDO->InstrumentID(), *pDO);
+			position = *pDO;
+		}
 	}
 
 	return ret;

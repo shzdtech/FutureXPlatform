@@ -15,6 +15,7 @@
 class UserPositionDO : public ContractKey, public dataobjectbase
 {
 public:
+	UserPositionDO() {}
 	UserPositionDO(const std::string& exchangeID, const std::string& instrumentID)
 		: ContractKey(exchangeID, instrumentID)	{}
 

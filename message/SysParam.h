@@ -17,6 +17,7 @@ public:
 	static bool TryGet(const std::string& key, std::string& value);
 	static const std::string& Get(const std::string& key);
 	static void Update(std::map<std::string, std::string>& paramMap);
+	static void Merge(std::map<std::string, std::string>& paramMap);
 
 protected:
 

@@ -8,6 +8,7 @@
 #include "MicroFurtureSystem.h"
 #include <glog/logging.h>
 #include "../utility/TUtil.h"
+#include "../utility/stringutility.h"
 #include "../configuration/AbstractConfigReaderFactory.h"
 #include "../dynamicloader/ConfigBasedCreator.h"
 #include "../message/SysParam.h"
@@ -62,19 +63,24 @@ bool MicroFurtureSystem::Load(const std::string& config)
 		// Initialize SysParam
 		std::map<std::string, std::string> cfgMap;
 		cfgReader->getMap("system.sysparam", cfgMap);
-		SysParam::Update(cfgMap);
-		if (cfgMap.find("mergedbparam") != cfgMap.end())
+		SysParam::Merge(cfgMap);
+		auto it = cfgMap.find("mergedbparam");
+		if (it != cfgMap.end())
 		{
 			LOG(INFO) << "\tInitializing Database Pool... " << std::endl;
 			LOG(INFO) << "\t\t" << AbstractConnectionManager::DefaultInstance()->CurrentConfig().DB_POOL_SIZE
 				<<" connections have been created"<< std::endl;
 			auto sysparamMap = SysParamsDAO::FindSysParams("%");
-			SysParam::Update(*sysparamMap);
+
+			if(stringutility::compare(it->second.data(), "override") == 0)
+				SysParam::Update(*sysparamMap);
+			else
+				SysParam::Merge(*sysparamMap);
 		}
 
 		// Initialize Serializers
 		cfgReader->getMap("system.serializer", cfgMap);
-		auto it = cfgMap.find("module.uuid");
+		it = cfgMap.find("module.uuid");
 		if (it != cfgMap.end())
 			AbstractDataSerializerFactory::DefaultMessageSerializerConfig.MODULE_UUID =
 			it->second;

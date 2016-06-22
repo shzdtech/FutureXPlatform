@@ -17,7 +17,7 @@
       "module.path": "pbserializer.dll"
     },
     "sysparam": {
-      "mergedbparam": true,
+      "mergedbparam": "override",
       "CTP.MD.LOGIN.USERID": "031237",
       "CTP.MD.SERVER": "tcp://180.168.212.228:41213",
       "CTP.TRADER.SERVER": "tcp://180.168.146.187:10000"

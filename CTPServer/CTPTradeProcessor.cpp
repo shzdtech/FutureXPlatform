@@ -256,7 +256,18 @@ void CTPTradeProcessor::OnRtnTrade(CThostFtdcTradeField *pTrade)
 {
 	bool bIsLast = true;
 	int nRequestID = 0;
-	OnResponseMacro(MSG_ID_TRADE_RTN, 0, pTrade, nullptr, &nRequestID, &bIsLast)
+	OnResponseMacro(MSG_ID_TRADE_RTN, 0, pTrade, nullptr, &nRequestID, &bIsLast);
+
+	CThostFtdcQryInvestorPositionField req;
+	std::memset(&req, 0, sizeof(req));
+	std::strcpy(req.InstrumentID, pTrade->InstrumentID);
+
+	for (int i = 0; i < 5; i++) {
+		int iRet = _rawAPI.TrdAPI->ReqQryInvestorPosition(&req, 0);
+		if (iRet != -3) // Too many requests, wait for 1s
+			break;
+		std::this_thread::sleep_for(std::chrono::seconds(1));
+	}
 }
 
 ///报单录入错误回报

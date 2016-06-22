@@ -7,6 +7,11 @@
 
 #include "CTPQueryTrade.h"
 #include "CTPRawAPI.h"
+
+#include "../common/Attribute_Key.h"
+#include "../dataobject/TradeRecordDO.h"
+#include "../dataobject/UserPositionDO.h"
+#include "../dataobject/TypedefDO.h"
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/FieldName.h"
 #include "../message/BizError.h"
@@ -14,7 +19,6 @@
 #include "../utility/TUtil.h"
 #include <glog/logging.h>
 
-#include "../dataobject/TradeRecordDO.h"
 #include "CTPUtility.h"
 #include "CTPConstant.h"
 ////////////////////////////////////////////////////////////////////////

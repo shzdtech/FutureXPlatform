@@ -30,26 +30,29 @@ VectorDO_Ptr<InstrumentDO> InstrumentCache::QueryInstrument(const std::string & 
 
 		if (instrumentId != EMPTY_STRING)
 		{
-			auto enumerator = from(*ret).where([&instrumentId](const InstrumentDO& insDO)
-			{ return insDO.InstrumentID().find_first_of(instrumentId) == 0; })._enumerator;
+			auto enumerator = from(instrumentDOMap)
+				.where([&instrumentId](const std::pair<const std::string, InstrumentDO>& pair)
+			{ return pair.first.find_first_of(instrumentId) == 0; })._enumerator;
 
-			try { for (;;) ret->push_back(enumerator.nextObject()); }
+			try { for (;;) ret->push_back(enumerator.nextObject().second); }
 			catch (EnumeratorEndException &) {}
 		}
 		else if (productId != EMPTY_STRING)
 		{
-			auto enumerator = from(*ret).where([&productId](const InstrumentDO& insDO)
-			{ return insDO.ProductID.find_first_of(productId) == 0; })._enumerator;
+			auto enumerator = from(instrumentDOMap)
+				.where([&productId](const std::pair<const std::string, InstrumentDO>& pair)
+			{ return  pair.second.ProductID.find_first_of(productId) == 0; })._enumerator;
 
-			try { for (;;) ret->push_back(enumerator.nextObject()); }
+			try { for (;;) ret->push_back(enumerator.nextObject().second); }
 			catch (EnumeratorEndException &) {}
 		}
 		else if (exchangeId != EMPTY_STRING)
 		{
-			auto enumerator = from(*ret).where([&exchangeId](const InstrumentDO& insDO)
-			{ return stringutility::compare(insDO.ExchangeID().data(), exchangeId.data()) == 0; })._enumerator;
+			auto enumerator = from(instrumentDOMap)
+				.where([&exchangeId](const std::pair<const std::string, InstrumentDO>& pair)
+			{ return stringutility::compare(pair.second.ExchangeID().data(), exchangeId.data()) == 0; })._enumerator;
 
-			try { for (;;) ret->push_back(enumerator.nextObject()); }
+			try { for (;;) ret->push_back(enumerator.nextObject().second); }
 			catch (EnumeratorEndException &) {}
 		}
 	}

@@ -54,3 +54,8 @@ void SysParam::Update(std::map<std::string,std::string>& paramMap)
 	for(auto it : paramMap)
 		sysparamdata[it.first] = it.second;
 }
+
+void SysParam::Merge(std::map<std::string, std::string>& paramMap)
+{
+	sysparamdata.insert(paramMap.begin(), paramMap.end());
+}

@@ -5,6 +5,7 @@
 static const std::string STR_KEY_USER_CONTRACTS = "USER:CONTRACTS";
 static const std::string STR_KEY_USER_STRATEGY = "USER:STRATEGY";
 static const std::string STR_KEY_USER_PORTFOLIO = "USER:PORTFOLIO";
+static const std::string STR_KEY_USER_POSITION = "USER:POSITION";
 static const std::string STR_KEY_USER_CONTRACT_PARAM = "USER:CONTRACTPARAM";
 static const std::string STR_KEY_SERVER_PRICING_DATACONTEXT = "SERVER:PRICING.DATACONTEXT";
 static const std::string STR_KEY_SERVER_CONTRACT_DETAIL = "SERVER:CONTRACT.DETAIL";

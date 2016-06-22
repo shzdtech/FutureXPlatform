@@ -9,6 +9,8 @@
 #include "CTPRawAPI.h"
 #include "CTPConstant.h"
 #include "../utility/TUtil.h"
+#include "../common/Attribute_Key.h"
+#include "../dataobject/TypedefDO.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPTradeLoginHandler::LoginFunction()
@@ -38,4 +40,13 @@ int CTPTradeLoginHandler::LoginFunction(IRawAPI* rawAPI, CThostFtdcReqUserLoginF
 	}
 
 	return ((CTPRawAPI*)rawAPI)->TrdAPI->ReqUserLogin(loginInfo, requestId);
+}
+
+dataobj_ptr CTPTradeLoginHandler::HandleResponse(const uint32_t serialId, param_vector & rawRespParams, IRawAPI * rawAPI, ISession * session)
+{
+	auto ret = CTPLoginHandler::HandleResponse(serialId, rawRespParams, rawAPI, session);
+
+	session->getUserInfo()->setAttribute(STR_KEY_USER_CONTRACTS, std::make_shared<UserPositionExDOMap>());
+
+	return ret;
 }

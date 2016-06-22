@@ -10,6 +10,7 @@
 #include "UserContractParam.h"
 #include "MarketDataDO.h"
 #include "InstrumentDO.h"
+#include "UserPositionDO.h"
 
 template <typename V>
 using ContractMap = typename autofillmap<ContractKey, V>;
@@ -25,13 +26,15 @@ using UserContractMap = typename autofillmap<UserContractKey, V>;
 
 typedef ContractMap<StrategyContractDO> StrategyContractDOMap;
 
-typedef std::map<std::string, MarketDataDO> MarketDataDOMap;
+typedef autofillmap<std::string, MarketDataDO> MarketDataDOMap;
 
 typedef ContractMap<UserContractParam> UserContractParamMap;
 
 typedef ContractMap<ContractDO> ContractDOMap;
 
 typedef std::map<std::string, InstrumentDO> InstrumentDOMap;
+
+typedef autofillmap<std::string, UserPositionExDO> UserPositionExDOMap;
 
 template <typename V>
 using PortfolioMap = typename autofillmap<PortfolioKey, V>;
