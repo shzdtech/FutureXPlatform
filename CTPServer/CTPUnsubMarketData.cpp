@@ -37,12 +37,12 @@ dataobj_ptr CTPUnsubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI* 
 		{
 			std::transform(inst.begin(), inst.end(), inst.begin(), ::tolower);
 			pContract[0] = const_cast<char*>(inst.data());
-			ret = ((CTPRawAPI*)rawAPI)->MdAPI->UnSubscribeMarketData(pContract, reqDO->SerialId);
+			ret = ((CTPRawAPI*)rawAPI)->MdAPI->UnSubscribeMarketData(pContract, 1);
 			CTPUtility::CheckReturnError(ret);
 
 			std::transform(inst.begin(), inst.end(), inst.begin(), ::toupper);
 			pContract[0] = const_cast<char*>(inst.data());
-			ret = ((CTPRawAPI*)rawAPI)->MdAPI->UnSubscribeMarketData(pContract, reqDO->SerialId);
+			ret = ((CTPRawAPI*)rawAPI)->MdAPI->UnSubscribeMarketData(pContract, 1);
 			CTPUtility::CheckReturnError(ret);
 		}
 	}

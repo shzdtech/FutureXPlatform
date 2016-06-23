@@ -72,12 +72,12 @@ dataobj_ptr CTPQueryOrder::HandleResponse(const uint32_t serialId, param_vector&
 	{
 		ret = CTPUtility::ParseRawOrder(pData);
 		ret->SerialId = serialId;
-		ret->HasMore = *(bool*)rawRespParams[3];
-
+		
 		if (rawRespParams.size() > 1)
 		{
 			if (auto pRsp = (CThostFtdcRspInfoField*)rawRespParams[1])
 				ret->ErrorCode = pRsp->ErrorID;
+			ret->HasMore = *(bool*)rawRespParams[3];
 		}
 	}
 

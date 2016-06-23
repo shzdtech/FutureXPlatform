@@ -35,20 +35,19 @@ dataobj_ptr CTPSubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 		auto& instList = stdo->Data[STR_INSTRUMENT_ID];
 		if (instList.size() > 0)
 		{
-			auto pContract = std::unique_ptr<char*[]>(new char*[instList.size() * 2]);
-			int i = 0;
+			char* pContract[1];
 			for (auto& inst : instList)
 			{
 				std::transform(inst.begin(), inst.end(), inst.begin(), ::tolower);
-				pContract[i++] = const_cast<char*>(inst.data());
+				pContract[0] = const_cast<char*>(inst.data());
+				ret = ((CTPRawAPI*)rawAPI)->MdAPI->SubscribeMarketData(pContract, 1);
+				CTPUtility::CheckReturnError(ret);
 
 				std::transform(inst.begin(), inst.end(), inst.begin(), ::toupper);
-				pContract[i++] = const_cast<char*>(inst.data());
+				pContract[0] = const_cast<char*>(inst.data());
+				ret = ((CTPRawAPI*)rawAPI)->MdAPI->SubscribeMarketData(pContract, 1);
+				CTPUtility::CheckReturnError(ret);
 			}
-
-			ret = ((CTPRawAPI*)rawAPI)->MdAPI->
-				SubscribeMarketData(pContract.get(), reqDO->SerialId);
-			CTPUtility::CheckReturnError(ret);
 		}
 	}
 	DLOG(INFO) << "SubMarketData" << std::endl;
