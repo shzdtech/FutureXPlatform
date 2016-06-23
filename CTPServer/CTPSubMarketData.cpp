@@ -16,15 +16,15 @@
 #include <glog/logging.h>
 #include <algorithm>
 #include "CTPUtility.h"
-////////////////////////////////////////////////////////////////////////
-// Name:       CTPSubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTPSubMarketData::HandleRequest()
-// Parameters:
-// - reqDO
-// - rawAPI
-// - session
-// Return:     void
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       CTPSubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+ // Purpose:    Implementation of CTPSubMarketData::HandleRequest()
+ // Parameters:
+ // - reqDO
+ // - rawAPI
+ // - session
+ // Return:     void
+ ////////////////////////////////////////////////////////////////////////
 
 dataobj_ptr CTPSubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
@@ -33,17 +33,21 @@ dataobj_ptr CTPSubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 	if (stdo->Data.size() > 0)
 	{
 		auto& instList = stdo->Data[STR_INSTRUMENT_ID];
-		char* pContract[1];
-		for (auto& inst : instList)
+		if (instList.size() > 0)
 		{
-			std::transform(inst.begin(), inst.end(), inst.begin(), ::tolower);
-			pContract[0] = const_cast<char*>(inst.data());
-			ret = ((CTPRawAPI*)rawAPI)->MdAPI->SubscribeMarketData(pContract, reqDO->SerialId);
-			CTPUtility::CheckReturnError(ret);
+			auto pContract = std::unique_ptr<char*[]>(new char*[instList.size() * 2]);
+			int i = 0;
+			for (auto& inst : instList)
+			{
+				std::transform(inst.begin(), inst.end(), inst.begin(), ::tolower);
+				pContract[i++] = const_cast<char*>(inst.data());
 
-			std::transform(inst.begin(), inst.end(), inst.begin(), ::toupper);
-			pContract[0] = const_cast<char*>(inst.data());
-			ret = ((CTPRawAPI*)rawAPI)->MdAPI->SubscribeMarketData(pContract, reqDO->SerialId);
+				std::transform(inst.begin(), inst.end(), inst.begin(), ::toupper);
+				pContract[i++] = const_cast<char*>(inst.data());
+			}
+
+			ret = ((CTPRawAPI*)rawAPI)->MdAPI->
+				SubscribeMarketData(pContract.get(), reqDO->SerialId);
 			CTPUtility::CheckReturnError(ret);
 		}
 	}
@@ -70,19 +74,20 @@ dataobj_ptr CTPSubMarketData::HandleResponse(const uint32_t serialId, param_vect
 	ret->SerialId = serialId;
 	ret->HasMore = *(bool*)rawRespParams[3];
 
-	auto pRspInstr = (CThostFtdcSpecificInstrumentField*)rawRespParams[0];
-
-	std::string exchange;
-
-	if (auto instruments = InstrumentCache::QueryInstrument(pRspInstr->InstrumentID))
+	if (auto pRspInstr = (CThostFtdcSpecificInstrumentField*)rawRespParams[0])
 	{
-		if (instruments->size() > 0)
-			exchange = instruments->at(0).ExchangeID();
+		std::string exchange;
+
+		if (auto instruments = InstrumentCache::QueryInstrument(pRspInstr->InstrumentID))
+		{
+			if (instruments->size() > 0)
+				exchange = instruments->at(0).ExchangeID();
+		}
+
+		ret->push_back(MarketDataDO(exchange, pRspInstr->InstrumentID));
+
+		DLOG(INFO) << "Subcrible InstID: " << pRspInstr->InstrumentID << std::endl;
 	}
-
-	ret->push_back(MarketDataDO(exchange, pRspInstr->InstrumentID));
-
-	DLOG(INFO) << "Subcrible InstID: " << pRspInstr->InstrumentID << std::endl;
 
 	return ret;
 }

@@ -8,6 +8,7 @@
 #include "CTPMDLoginHandler.h"
 #include "CTPRawAPI.h"
 #include "CTPConstant.h"
+#include "CTPMarketDataProcessor.h"
 #include "../utility/TUtil.h"
 
 ////////////////////////////////////////////////////////////////////////
@@ -16,7 +17,7 @@
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-int CTPMDLoginHandler::LoginFunction(IRawAPI* rawAPI, CThostFtdcReqUserLoginField* loginInfo, uint requestId)
+int CTPMDLoginHandler::LoginFunction(IRawAPI* rawAPI, ISession* session, CThostFtdcReqUserLoginField* loginInfo, uint requestId)
 {
 	std::string value;
 
@@ -36,5 +37,6 @@ int CTPMDLoginHandler::LoginFunction(IRawAPI* rawAPI, CThostFtdcReqUserLoginFiel
 		std::strcpy(loginInfo->Password, value.data());
 	}
 
-	return ((CTPRawAPI*)rawAPI)->MdAPI->ReqUserLogin(loginInfo, requestId);
+	return ((CTPMarketDataProcessor*)session->getProcessor().get())->
+		Login(loginInfo, requestId);
 }

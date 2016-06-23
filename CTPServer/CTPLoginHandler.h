@@ -18,7 +18,8 @@ class CTP_CLASS_EXPORT CTPLoginHandler : public LoginHandler
 public:
 	dataobj_ptr HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session);
 	dataobj_ptr HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session);
-	virtual int LoginFunction(IRawAPI* rawAPI, CThostFtdcReqUserLoginField* loginInfo, uint requestId) = 0;
+	virtual int LoginFunction(IRawAPI* rawAPI, ISession* session, 
+		CThostFtdcReqUserLoginField* loginInfo, uint requestId) = 0;
 
 protected:
 private:

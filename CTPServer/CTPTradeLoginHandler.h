@@ -13,7 +13,8 @@
 class CTPTradeLoginHandler : public CTPLoginHandler
 {
 public:
-	int LoginFunction(IRawAPI* rawAPI, CThostFtdcReqUserLoginField* loginInfo, uint requestId);
+	int LoginFunction(IRawAPI* rawAPI, ISession* session, 
+		CThostFtdcReqUserLoginField* loginInfo, uint requestId);
 	dataobj_ptr HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session);
 
 protected:

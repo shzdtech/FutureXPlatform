@@ -51,6 +51,12 @@ void CTPMarketDataProcessor::Initialize(void) {
 	}
 }
 
+int CTPMarketDataProcessor::Login(CThostFtdcReqUserLoginField* loginInfo, uint32_t serialId)
+{
+	_lastLoginSerialId = serialId;
+	return _rawAPI.MdAPI->ReqUserLogin(loginInfo, _lastLoginSerialId);
+}
+
 void CTPMarketDataProcessor::OnRspError(CThostFtdcRspInfoField *pRspInfo,
 	int nRequestID, bool bIsLast) {
 	DLOG(INFO) << __FUNCTION__ << ':' << pRspInfo->ErrorMsg << std::endl;
@@ -71,7 +77,8 @@ void CTPMarketDataProcessor::OnFrontConnected() {
 void CTPMarketDataProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin,
 	CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
 	_isLogged = !CTPUtility::HasError(pRspInfo);
-	OnResponseMacro(MSG_ID_LOGIN, nRequestID, pRspUserLogin, pRspInfo, &nRequestID, &bIsLast)
+	OnResponseMacro(MSG_ID_LOGIN, _lastLoginSerialId,
+		pRspUserLogin, pRspInfo, &nRequestID, &bIsLast)
 }
 
 void CTPMarketDataProcessor::OnRspUserLogout(CThostFtdcUserLogoutField *pUserLogout,
