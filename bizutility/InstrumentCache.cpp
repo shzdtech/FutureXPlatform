@@ -8,7 +8,7 @@ void InstrumentCache::Add(const InstrumentDO & instrumentDO)
 	instrumentDOMap[instrumentDO.InstrumentID()] = instrumentDO;
 }
 
-VectorDO_Ptr<InstrumentDO> InstrumentCache::QueryInstrument(const std::string & instrumentId, 
+VectorDO_Ptr<InstrumentDO> InstrumentCache::QueryInstrument(const std::string & instrumentId,
 	const std::string & exchangeId, const std::string & productId)
 {
 
@@ -17,17 +17,15 @@ VectorDO_Ptr<InstrumentDO> InstrumentCache::QueryInstrument(const std::string & 
 	if (instrumentId == EMPTY_STRING && exchangeId == EMPTY_STRING && productId == EMPTY_STRING)
 		return ret;
 
-	ret = std::make_shared<VectorDO<InstrumentDO>>();
-
-	auto it = instrumentDOMap.find(instrumentId);
-	if (it != instrumentDOMap.end())
+	if (auto pInstrument = QueryInstrumentById(instrumentId))
 	{
-		ret->push_back(it->second);
+		ret = std::make_shared<VectorDO<InstrumentDO>>();
+		ret->push_back(*pInstrument);
 	}
 	else
 	{
 		using namespace boolinq;
-
+		ret = std::make_shared<VectorDO<InstrumentDO>>();
 		if (instrumentId != EMPTY_STRING)
 		{
 			auto enumerator = from(instrumentDOMap)
@@ -56,6 +54,16 @@ VectorDO_Ptr<InstrumentDO> InstrumentCache::QueryInstrument(const std::string & 
 			catch (EnumeratorEndException &) {}
 		}
 	}
+
+	return ret;
+}
+
+InstrumentDO * InstrumentCache::QueryInstrumentById(const std::string & instrumentId)
+{
+	InstrumentDO* ret = nullptr;
+	auto it = instrumentDOMap.find(instrumentId);
+	if (it != instrumentDOMap.end())
+		ret = &it->second;
 
 	return ret;
 }

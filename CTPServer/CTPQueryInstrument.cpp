@@ -77,8 +77,7 @@ dataobj_ptr CTPQueryInstrument::HandleResponse(const uint32_t serialId, param_ve
 
 	if (auto pData = (CThostFtdcInstrumentField*)rawRespParams[0])
 	{
-		ret = InstrumentCache::QueryInstrument(pData->InstrumentID);
-		if (TUtil::IsNullOrEmpty(ret))
+		if (!InstrumentCache::QueryInstrumentById(pData->InstrumentID))
 		{
 			InstrumentDO insDO(pData->ExchangeID, pData->InstrumentID);
 

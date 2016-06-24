@@ -33,21 +33,32 @@ dataobj_ptr CTPSubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 	if (stdo->Data.size() > 0)
 	{
 		auto& instList = stdo->Data[STR_INSTRUMENT_ID];
-		if (instList.size() > 0)
+		auto nInstrument = instList.size();
+		if (nInstrument > 0)
 		{
-			char* pContract[1];
+			std::unique_ptr<char*[]> ppInstrments(new char* [nInstrument]);
+			int i = 0;
 			for (auto& inst : instList)
 			{
-				std::transform(inst.begin(), inst.end(), inst.begin(), ::tolower);
-				pContract[0] = const_cast<char*>(inst.data());
-				ret = ((CTPRawAPI*)rawAPI)->MdAPI->SubscribeMarketData(pContract, 1);
-				CTPUtility::CheckReturnError(ret);
-
-				std::transform(inst.begin(), inst.end(), inst.begin(), ::toupper);
-				pContract[0] = const_cast<char*>(inst.data());
-				ret = ((CTPRawAPI*)rawAPI)->MdAPI->SubscribeMarketData(pContract, 1);
-				CTPUtility::CheckReturnError(ret);
+				ppInstrments[i] = const_cast<char*>(inst.data());
+				std::string instrument(inst);
+				std::transform(inst.begin(), inst.end(), instrument.begin(), ::tolower);
+				if (auto pInstumentDO = InstrumentCache::QueryInstrumentById(instrument))
+				{
+						ppInstrments[i] = const_cast<char*>(pInstumentDO->InstrumentID().data());
+				}
+				else
+				{
+					std::transform(inst.begin(), inst.end(), instrument.begin(), ::toupper);
+					if (auto pInstumentDO = InstrumentCache::QueryInstrumentById(instrument))
+					{
+						ppInstrments[i] = const_cast<char*>(pInstumentDO->InstrumentID().data());
+					}
+				}
+				i++;
 			}
+			ret = ((CTPRawAPI*)rawAPI)->MdAPI->SubscribeMarketData(ppInstrments.get(), nInstrument);
+			CTPUtility::CheckReturnError(ret);
 		}
 	}
 	DLOG(INFO) << "SubMarketData" << std::endl;
@@ -76,12 +87,8 @@ dataobj_ptr CTPSubMarketData::HandleResponse(const uint32_t serialId, param_vect
 	if (auto pRspInstr = (CThostFtdcSpecificInstrumentField*)rawRespParams[0])
 	{
 		std::string exchange;
-
-		if (auto instruments = InstrumentCache::QueryInstrument(pRspInstr->InstrumentID))
-		{
-			if (instruments->size() > 0)
-				exchange = instruments->at(0).ExchangeID();
-		}
+		if (auto pInstumentDO = InstrumentCache::QueryInstrumentById(pRspInstr->InstrumentID))
+			exchange = pInstumentDO->ExchangeID();
 
 		ret->push_back(MarketDataDO(exchange, pRspInstr->InstrumentID));
 

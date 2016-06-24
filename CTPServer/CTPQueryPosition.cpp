@@ -23,15 +23,15 @@
 #include <glog/logging.h>
 
 
-////////////////////////////////////////////////////////////////////////
-// Name:       CTPQueryPosition::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTPQueryPosition::HandleRequest()
-// Parameters:
-// - reqDO
-// - rawAPI
-// - session
-// Return:     void
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       CTPQueryPosition::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+ // Purpose:    Implementation of CTPQueryPosition::HandleRequest()
+ // Parameters:
+ // - reqDO
+ // - rawAPI
+ // - session
+ // Return:     void
+ ////////////////////////////////////////////////////////////////////////
 
 dataobj_ptr CTPQueryPosition::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
@@ -84,10 +84,9 @@ dataobj_ptr CTPQueryPosition::HandleResponse(const uint32_t serialId, param_vect
 	{
 		std::string exchange;
 
-		if (auto instruments = InstrumentCache::QueryInstrument(pData->InstrumentID))
+		if (auto pInstrumentDO = InstrumentCache::QueryInstrumentById(pData->InstrumentID))
 		{
-			if (instruments->size() > 0)
-				exchange = instruments->at(0).ExchangeID();
+			exchange = pInstrumentDO->ExchangeID();
 		}
 		auto pDO = new UserPositionExDO(exchange, pData->InstrumentID);
 		ret.reset(pDO);
