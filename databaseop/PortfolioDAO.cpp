@@ -7,7 +7,6 @@
 
 #include "PortfolioDAO.h"
 #include "MySqlConnectionManager.h"
-#include "SqlTemplate.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       PortfolioDAO::FindPortfolioByUser(const std::string& userID)

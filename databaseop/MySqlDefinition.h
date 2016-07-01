@@ -1,10 +1,17 @@
 #if !defined(__databaseop_SqlTemplate_h)
 #define __databaseop_SqlTemplate_h
 
+#include <memory>
+#include <cppconn/connection.h>
 #include <cppconn/exception.h>
 #include <cppconn/resultset.h>
 #include <cppconn/statement.h>
 #include <cppconn/prepared_statement.h>
+#include "ConnectionPool.h"
+
+typedef std::shared_ptr<sql::Connection> Connection_Ptr;
+typedef managedsession<sql::Connection> ManagedSession;
+typedef std::shared_ptr<ManagedSession> ManagedSession_Ptr;
 
 template <typename P>
 class DBAutoClosePtr

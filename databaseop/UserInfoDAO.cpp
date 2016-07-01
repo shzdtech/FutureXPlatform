@@ -8,7 +8,6 @@
 #include "../message/IUserInfo.h"
 #include "UserInfoDAO.h"
 #include "MySqlConnectionManager.h"
-#include "SqlTemplate.h"
 
  ////////////////////////////////////////////////////////////////////////
  // Name:       UserInfoDAO::FindUser(const std::string& userId, const std::string& password)

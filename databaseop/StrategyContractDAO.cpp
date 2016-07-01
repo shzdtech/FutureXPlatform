@@ -7,7 +7,6 @@
 
 #include "StrategyContractDAO.h"
 #include "MySqlConnectionManager.h"
-#include "SqlTemplate.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       StrategyConstractDAO::FindStrategyContractByKey(const ContractKey& contractID)

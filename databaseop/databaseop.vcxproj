@@ -175,7 +175,7 @@
     <ClInclude Include="OrderDAO.h" />
     <ClInclude Include="OTCOrderDAO.h" />
     <ClInclude Include="PortfolioDAO.h" />
-    <ClInclude Include="SqlTemplate.h" />
+    <ClInclude Include="MySqlDefinition.h" />
     <ClInclude Include="StrategyContractDAO.h" />
     <ClInclude Include="SysParamsDAO.h" />
     <ClInclude Include="UserInfoDAO.h" />

@@ -7,7 +7,6 @@
 
 #include "OTCOrderDAO.h"
 #include "MySqlConnectionManager.h"
-#include "SqlTemplate.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       OTCOrderDAO::CreateOrder(OrderDO& orderDO)

@@ -58,6 +58,8 @@ void CTPTradeProcessor::Initialize(void) {
 		_rawAPI.TrdAPI->SubscribePrivateTopic(THOST_TERT_RESUME);
 		_rawAPI.TrdAPI->SubscribePublicTopic(THOST_TERT_RESUME);
 		_rawAPI.TrdAPI->Init();
+
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
 }
 

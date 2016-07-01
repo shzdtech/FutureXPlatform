@@ -13,6 +13,14 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="头文件\DAO">
+      <UniqueIdentifier>{6ef9f2b4-25a1-4413-b9ee-3c301bd5f0dc}</UniqueIdentifier>
+      <Extensions>*DAO.h</Extensions>
+    </Filter>
+    <Filter Include="源文件\DAO">
+      <UniqueIdentifier>{2347d59b-44f7-4c0c-b51b-09179d471e31}</UniqueIdentifier>
+      <Extensions>*DAO.cpp</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -21,37 +29,10 @@
     <ClInclude Include="databaseop_exp.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="UserInfoDAO.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseContractDAO.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="SysParamsDAO.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ContractDAO.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="db_config.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="StrategyContractDAO.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="OTCOrderDAO.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="OrderDAO.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="ConnectionPool.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="PortfolioDAO.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="SqlTemplate.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="AbstractConnectionManager.h">
@@ -60,37 +41,64 @@
     <ClInclude Include="MySqlConnectionManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="MySqlDefinition.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseContractDAO.h">
+      <Filter>头文件\DAO</Filter>
+    </ClInclude>
+    <ClInclude Include="ContractDAO.h">
+      <Filter>头文件\DAO</Filter>
+    </ClInclude>
+    <ClInclude Include="OrderDAO.h">
+      <Filter>头文件\DAO</Filter>
+    </ClInclude>
+    <ClInclude Include="OTCOrderDAO.h">
+      <Filter>头文件\DAO</Filter>
+    </ClInclude>
+    <ClInclude Include="PortfolioDAO.h">
+      <Filter>头文件\DAO</Filter>
+    </ClInclude>
+    <ClInclude Include="StrategyContractDAO.h">
+      <Filter>头文件\DAO</Filter>
+    </ClInclude>
+    <ClInclude Include="SysParamsDAO.h">
+      <Filter>头文件\DAO</Filter>
+    </ClInclude>
+    <ClInclude Include="UserInfoDAO.h">
+      <Filter>头文件\DAO</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="UserInfoDAO.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="BaseContractDAO.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="SysParamsDAO.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="ContractDAO.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="StrategyContractDAO.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="OTCOrderDAO.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="OrderDAO.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="PortfolioDAO.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="AbstractConnectionManager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="MySqlConnectionManager.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseContractDAO.cpp">
+      <Filter>源文件\DAO</Filter>
+    </ClCompile>
+    <ClCompile Include="ContractDAO.cpp">
+      <Filter>源文件\DAO</Filter>
+    </ClCompile>
+    <ClCompile Include="OrderDAO.cpp">
+      <Filter>源文件\DAO</Filter>
+    </ClCompile>
+    <ClCompile Include="OTCOrderDAO.cpp">
+      <Filter>源文件\DAO</Filter>
+    </ClCompile>
+    <ClCompile Include="PortfolioDAO.cpp">
+      <Filter>源文件\DAO</Filter>
+    </ClCompile>
+    <ClCompile Include="StrategyContractDAO.cpp">
+      <Filter>源文件\DAO</Filter>
+    </ClCompile>
+    <ClCompile Include="SysParamsDAO.cpp">
+      <Filter>源文件\DAO</Filter>
+    </ClCompile>
+    <ClCompile Include="UserInfoDAO.cpp">
+      <Filter>源文件\DAO</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

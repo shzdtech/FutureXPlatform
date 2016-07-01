@@ -7,7 +7,6 @@
 
 #include "BaseContractDAO.h"
 #include "MySqlConnectionManager.h"
-#include "SqlTemplate.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       BaseContractDAO::FindBaseContractByParentID(ContractKey& contractID)

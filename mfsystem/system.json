@@ -4,9 +4,9 @@
       "config": "service.json"
     },
     "database": {
-      "url": "tcp://116.255.156.152:3306/otc_db",
+      "url": "tcp://139.196.202.235:3306/otc_db",
       "user": "zhuyi",
-      "password": "zhuyi!168",
+      "password": "Bocifco123",
       "autocommit": "1",
       "poolsize": "2",
       "heartbeat": "60000",
@@ -18,9 +18,15 @@
     },
     "sysparam": {
       "mergedbparam": "override",
+      "DEFAULT.CLIENT.SYMBOL": "boc_otc",
+      "CTP.MD.SERVER": "tcp://218.202.237.33:10012",
+      "CTP.MD.LOGIN.BROKERID": "9999",
       "CTP.MD.LOGIN.USERID": "031237",
-      "CTP.MD.SERVER": "tcp://180.168.212.228:41213",
-      "CTP.TRADER.SERVER": "tcp://180.168.146.187:10000"
+      "CTP.MD.LOGIN.PASSWORD": "",
+      "CTP.TRADER.SERVER": "tcp://218.202.237.33:10002",
+      "CTP.TRADER.LOGIN.BROKERID": "9999",
+      "CTP.TRADER.LOGIN.USERID": "031237",
+      "CTP.TRADER.LOGIN.PASSWORD": "12345678"
     }
   }
 }

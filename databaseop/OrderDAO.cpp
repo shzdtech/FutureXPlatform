@@ -7,8 +7,6 @@
 
 #include "OrderDAO.h"
 #include "MySqlConnectionManager.h"
-#include "SqlTemplate.h"
-#include <glog/logging.h>
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       OrderDAO::CreateOrder(const OrderDO& orderDO)

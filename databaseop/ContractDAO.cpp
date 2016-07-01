@@ -7,7 +7,6 @@
 
 #include "ContractDAO.h"
 #include "MySqlConnectionManager.h"
-#include "SqlTemplate.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       ContractDAO::FindBaseContractByCompany(const std::string& company)

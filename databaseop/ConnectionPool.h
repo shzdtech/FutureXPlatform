@@ -6,8 +6,29 @@
 #include <chrono>
 #include <vector>
 #include <deque>
-#include <glog/logging.h>
+//#include <glog/logging.h>
 #include "../utility/semaphore.h"
+
+template<typename CONNTYPE>
+class managedsession
+{
+public:
+	managedsession() = default;
+
+	managedsession(std::shared_ptr<CONNTYPE> conn) : _conn(conn)
+	{}
+
+	managedsession(const managedsession&) = delete;
+
+	std::shared_ptr<CONNTYPE> getConnection()
+	{
+		return _conn;
+	}
+
+protected:
+	std::shared_ptr<CONNTYPE> _conn;
+};
+
 
 template <typename CONNTYPE>
 class connection_pool
@@ -20,51 +41,41 @@ private:
 	std::vector<std::pair<volatile bool, std::shared_ptr<CONNTYPE>>> _statedconns;
 
 public:
-	class managedsession
+	class managedsession4pool : public managedsession<CONNTYPE>
 	{
 		friend class connection_pool;
 	private:
-		managedsession(connection_pool* pool,
+		managedsession4pool(connection_pool* pool,
 			std::chrono::milliseconds millisec = std::chrono::milliseconds(0)
-			) : _pool(pool)
+		) : _pool(pool)
 		{
 			if (pool)
 				_conn = pool->try_lease(_pos, millisec);
 
 		}
 
-		managedsession(connection_pool* pool, int pos) : _pool(pool), _pos(pos)
+		managedsession4pool(connection_pool* pool, int pos) : _pool(pool), _pos(pos)
 		{
 			if (_conn = pool->try_lease_at(pos))
 				_pos = pos;
 		}
 
 	public:
-		managedsession(std::shared_ptr<CONNTYPE> conn) : _conn(conn)
-		{}
-
-		managedsession(const managedsession&) = delete;
-
-		std::shared_ptr<CONNTYPE> getConnection()
-		{
-			return _conn;
-		}
-
-		bool managed(){ return _pos >= 0; }
-
-		~managedsession()
+		~managedsession4pool()
 		{
 			if (_pos >= 0)
+			{
 				_pool->release(_pos);
+				_pos = -1;
+			}
 		}
 
 	private:
 		connection_pool* _pool;
-		std::shared_ptr < CONNTYPE > _conn;
 		int _pos = -1;
 	};
 
-	typedef std::shared_ptr<managedsession> managedsession_ptr;
+	typedef std::shared_ptr<managedsession<CONNTYPE>> managedsession_ptr;
 
 public:
 
@@ -76,7 +87,7 @@ public:
 		{
 			throw std::runtime_error("Pool size must be greater than zero.");
 		}
-		
+
 		_statedconns.resize(_poolsize);
 		for (int i = 0; i < _poolsize; ++i)
 		{
@@ -103,12 +114,12 @@ public:
 	managedsession_ptr lease(
 		std::chrono::milliseconds millisecs = std::chrono::milliseconds(0))
 	{
-		return managedsession_ptr(new managedsession(this, millisecs));
+		return managedsession_ptr(new managedsession4pool(this, millisecs));
 	}
 
 	managedsession_ptr lease_at(int pos)
 	{
-		return managedsession_ptr(new managedsession(this, pos));
+		return managedsession_ptr(new managedsession4pool(this, pos));
 	}
 
 	std::shared_ptr<CONNTYPE> try_lease_at(int pos)
@@ -168,7 +179,7 @@ public:
 				//_statedconns[pos].second->reconnect();
 				_activeconns.push_back(pos);
 				_statedconns[pos].first = true;
-				DLOG(INFO) << "released connection: " << pos << ": " << _activeconns.size();
+				//DLOG(INFO) << "released connection at: " << pos << ", pool size: " << _activeconns.size();
 				//Release semaphore
 				_semaphore.Signal();
 			}

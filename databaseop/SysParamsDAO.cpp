@@ -7,7 +7,6 @@
 
 #include "SysParamsDAO.h"
 #include "MySqlConnectionManager.h"
-#include "SqlTemplate.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       SysParamsDAO::FindSysParams(const std::string& key)

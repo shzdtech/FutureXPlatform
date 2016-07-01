@@ -10,20 +10,14 @@
 
 #include "AbstractConnectionManager.h"
 
-#include <cppconn/connection.h>
-
 #include <string>
 #include <memory>
 #include <future>
+#include <glog/logging.h>
 #include "../message/BizError.h"
 #include "../common/BizErrorIDs.h"
-
-#include "ConnectionPool.h"
 #include "../utility/singleton_templ_mt.h"
-
-typedef std::shared_ptr<sql::Connection> Connection_Ptr;
-typedef connection_pool<sql::Connection>::managedsession ManagedSession;
-typedef std::shared_ptr<ManagedSession> ManagedSession_Ptr;
+#include "MySqlDefinition.h"
 
 class MySqlConnectionManager : public AbstractConnectionManager,
 	public singleton_mt_ptr < MySqlConnectionManager >

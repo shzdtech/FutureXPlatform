@@ -6,7 +6,6 @@
  ***********************************************************************/
 
 #include "MySqlConnectionManager.h"
-#include "SqlTemplate.h"
 #include "../configuration/AbstractConfigReaderFactory.h"
 #include "../utility/TUtil.h"
 #include <cppconn/driver.h>
@@ -168,7 +167,7 @@ void MySqlConnectionManager::initalPool()
 	}
 	catch (std::exception& ex)
 	{
-		LOG(ERROR) << "Cannot create db pool: " << ex.what() << std::endl;
+		LOG(FATAL) << "Cannot create db pool: " << ex.what() << std::endl;
 	}
 	_runing = true;
 
