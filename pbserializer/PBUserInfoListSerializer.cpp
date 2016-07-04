@@ -7,7 +7,7 @@
 
 #include "PBUserInfoListSerializer.h"
 #include "PBStringMapSerializer.h"
-#include "proto/usermanager.pb.h"
+#include "../Protos/usermanager.pb.h"
 #include "pbmacros.h"
 #include "../dataobject/UserInfoDO.h"
 #include "../dataobject/TemplateDO.h"
@@ -21,7 +21,7 @@
 
 data_buffer PBUserInfoListSerializer::Serialize(const dataobj_ptr abstractDO)
 {
-	Micro::Future::Message::Business::PBUserInfoList PB;
+	Micro::Future::Message::PBUserInfoList PB;
 	auto pDO = (VectorDO<UserInfoDO>*)abstractDO.get();
 	FillPBHeader(PB, pDO);
 

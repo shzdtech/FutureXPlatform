@@ -88,6 +88,7 @@ dataobj_ptr CTPQueryTrade::HandleResponse(const uint32_t serialId, param_vector&
 		pDO->OpenClose = (OrderOpenCloseType)(pData->OffsetFlag - THOST_FTDC_OF_Open);
 		pDO->Price = pData->Price;
 		pDO->Volume = pData->Volume;
+		pDO->TradeID = std::strtoull(pData->TradeID, nullptr, 0);
 		pDO->TradeDate = pData->TradeDate;
 		pDO->TradeTime = pData->TradeTime;
 		pDO->TradeType = (TradingType)pData->TradeType;

@@ -8,7 +8,8 @@
 #include "AbstractDataSerializerFactory.h"
 #include "../dynamicloader/ConfigBasedCreator.h"
 
-MessageSerializerConfig AbstractDataSerializerFactory::DefaultMessageSerializerConfig;
+std::vector<MessageSerializerConfig>
+AbstractDataSerializerFactory::MessageSerializerConfigs;
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       AbstractDataSerializerFactory::Instance()
@@ -16,14 +17,26 @@ MessageSerializerConfig AbstractDataSerializerFactory::DefaultMessageSerializerC
 // Return:     IMessageSerializerFactory_Ptr
 ////////////////////////////////////////////////////////////////////////
 
-std::shared_ptr<AbstractDataSerializerFactory> AbstractDataSerializerFactory::Instance(void)
+std::shared_ptr<AbstractDataSerializerFactory>
+AbstractDataSerializerFactory::Instance(void)
 {
-	static std::shared_ptr<AbstractDataSerializerFactory> instance(
-		std::static_pointer_cast<AbstractDataSerializerFactory>
-		(ConfigBasedCreator::CreateInstance(
-			DefaultMessageSerializerConfig.MODULE_UUID,
-			DefaultMessageSerializerConfig.MODULE_PATH,
-		CLASS_UUID_MSG_SERIALIZER_FACTORY)));
+	static bool once_flag = true;
+	static std::shared_ptr<AbstractDataSerializerFactory>
+		instance(new AbstractDataSerializerFactory);
+
+	if (once_flag)
+	{
+		for (auto& config : MessageSerializerConfigs)
+		{
+			std::shared_ptr<AbstractDataSerializerFactory> serializerFactory(
+				std::static_pointer_cast<AbstractDataSerializerFactory>
+				(ConfigBasedCreator::CreateInstance
+				(config.MODULE_UUID, config.MODULE_PATH, config.CLASS_UUID)));
+			auto serializerMap = serializerFactory->CreateDataSerializers();
+			instance->_serializer_map.insert(serializerMap.begin(), serializerMap.end());
+		}
+		once_flag = false;
+	}
 
 	return instance;
 }
@@ -40,4 +53,10 @@ std::shared_ptr<AbstractDataSerializerFactory> AbstractDataSerializerFactory::In
 IDataSerializer_Ptr AbstractDataSerializerFactory::Find(uint32_t msgId)
 {
 	return _serializer_map[msgId];
+}
+
+std::map<unsigned int, IDataSerializer_Ptr>
+AbstractDataSerializerFactory::CreateDataSerializers(void)
+{
+	return _serializer_map;
 }

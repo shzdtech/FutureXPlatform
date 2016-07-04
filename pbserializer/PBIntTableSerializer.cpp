@@ -8,9 +8,9 @@
 #include "PBIntTableSerializer.h"
 #include "../dataobject/TemplateDO.h"
 #include "pbmacros.h"
-#include "proto/simpletable.pb.h"
+#include "../Protos/simpletable.pb.h"
 
-using namespace Micro::Future::Message::Business;
+using namespace Micro::Future::Message;
 ////////////////////////////////////////////////////////////////////////
 // Name:       PBIntTableSerializer::Deserialize(const data_buffer& rawdata)
 // Purpose:    Implementation of PBIntTableSerializer::Deserialize()

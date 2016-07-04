@@ -8,9 +8,9 @@
 #include "PBDoubleTableSerializer.h"
 #include "pbmacros.h"
 #include "../dataobject/TemplateDO.h"
-#include "proto/simpletable.pb.h"
+#include "../Protos/simpletable.pb.h"
 
-using namespace Micro::Future::Message::Business;
+using namespace Micro::Future::Message;
 ////////////////////////////////////////////////////////////////////////
 // Name:       PBDoubleTableSerializer::Deserialize(const data_buffer& rawdata)
 // Purpose:    Implementation of PBDoubleTableSerializer::Deserialize()

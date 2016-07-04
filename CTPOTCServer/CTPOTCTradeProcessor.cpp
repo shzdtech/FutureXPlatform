@@ -55,6 +55,11 @@ CTPOTCTradeProcessor::~CTPOTCTradeProcessor()
 void CTPOTCTradeProcessor::Initialize(void)
 {
 	InstrmentsLoaded = true;
+	_otcOrderMgr.OrderStatusUpdated = [this](OrderDO& orderDO)
+	{
+		DispatchMessage(MSG_ID_ORDER_UPDATE, &orderDO);
+	};
+
 	CTPTradeWorkerProcessor::Initialize();
 }
 

@@ -1,13 +1,13 @@
 #ifndef __pbserializer_pbmacro_h
 #define __pbserializer_pbmacro_h
 
-#include "proto/commondefine.pb.h"
+#include "../Protos/commondefine.pb.h"
 #include "../message/BizError.h"
 #include "ExceptionDef.h"
 
 #define FillPBHeader(PbO, pDO)\
 if (pDO->SerialId != 0) { \
-	auto pHeader = new Micro::Future::Message::Business::DataHeader(); \
+	auto pHeader = new Micro::Future::Message::DataHeader(); \
 	pHeader->set_serialid(pDO->SerialId); \
 	if (pDO->HasMore) \
 		pHeader->set_hasmore(pDO->HasMore); \

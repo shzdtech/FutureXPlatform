@@ -9,9 +9,9 @@
 #include "../dataobject/TemplateDO.h"
 #include "pbmacros.h"
 #include <google/protobuf/message.h>
-#include "proto/simpletable.pb.h"
+#include "../Protos/simpletable.pb.h"
 
-using namespace Micro::Future::Message::Business;
+using namespace Micro::Future::Message;
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       PBStringTableSerializer::Deserialize(const data_buffer& rawdata)

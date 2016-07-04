@@ -40,55 +40,10 @@
     <ClInclude Include="ExceptionDef.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="PBMarketDataSerializer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="PBExchangeSerializer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="PBInstrumentSerializer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="PBOrderSerializer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="PBTradeRecordSerializer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="PBUserPositionSerializer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="PBAccountInfoSerializer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="pbserializers.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="proto\simpletable.pb.h">
-      <Filter>protos</Filter>
-    </ClInclude>
-    <ClInclude Include="PBSubMarketDataSerializer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="proto\errormsg.pb.h">
-      <Filter>protos</Filter>
-    </ClInclude>
-    <ClInclude Include="proto\businessobj.pb.h">
-      <Filter>protos</Filter>
-    </ClInclude>
     <ClInclude Include="PBCombineSerializer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="PBPricingDataSerializer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="PBStrategySerializer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="PBContractParamSerializer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="PBUserParamSerializer.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="PBResultSerializer.h">
@@ -106,17 +61,23 @@
     <ClInclude Include="PBEchoMsgSerializer.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="proto\usermanager.pb.h">
-      <Filter>protos</Filter>
-    </ClInclude>
-    <ClInclude Include="proto\commondefine.pb.h">
-      <Filter>protos</Filter>
-    </ClInclude>
     <ClInclude Include="PBStringMapSerializer.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="pbmacros.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Protos\commondefine.pb.h">
+      <Filter>protos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Protos\errormsg.pb.h">
+      <Filter>protos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Protos\simpletable.pb.h">
+      <Filter>protos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Protos\usermanager.pb.h">
+      <Filter>protos</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -135,52 +96,7 @@
     <ClCompile Include="PBStringTableSerializer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="PBMarketDataSerializer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="PBAccountInfoSerializer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="PBExchangeSerializer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="PBInstrumentSerializer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="PBOrderSerializer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="PBTradeRecordSerializer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="PBUserPositionSerializer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="proto\simpletable.pb.cc">
-      <Filter>protos</Filter>
-    </ClCompile>
-    <ClCompile Include="PBSubMarketDataSerializer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="proto\errormsg.pb.cc">
-      <Filter>protos</Filter>
-    </ClCompile>
-    <ClCompile Include="proto\businessobj.pb.cc">
-      <Filter>protos</Filter>
-    </ClCompile>
     <ClCompile Include="PBCombineSerializer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="PBPricingDataSerializer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="PBStrategySerializer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="PBContractParamSerializer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="PBUserParamSerializer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="PBResultSerializer.cpp">
@@ -201,20 +117,23 @@
     <ClCompile Include="PBEchoMsgSerializer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="proto\usermanager.pb.cc">
-      <Filter>protos</Filter>
-    </ClCompile>
-    <ClCompile Include="proto\commondefine.pb.cc">
-      <Filter>protos</Filter>
-    </ClCompile>
     <ClCompile Include="PBStringMapSerializer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="..\Protos\commondefine.pb.cc">
+      <Filter>protos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Protos\errormsg.pb.cc">
+      <Filter>protos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Protos\simpletable.pb.cc">
+      <Filter>protos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Protos\usermanager.pb.cc">
+      <Filter>protos</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\Protos\businessobj.proto">
-      <Filter>protos</Filter>
-    </CustomBuild>
     <CustomBuild Include="..\Protos\errormsg.proto">
       <Filter>protos</Filter>
     </CustomBuild>

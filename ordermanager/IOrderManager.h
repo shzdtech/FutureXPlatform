@@ -13,10 +13,18 @@
 #include "../dataobject/PricingDO.h"
 #include "../dataobject/TradeRecordDO.h"
 #include "../dataobject/TemplateDO.h"
+#include <functional>
 
 class IOrderUpdatedEvent
 {
+public:
 	virtual int OnOrderUpdated(OrderDO& orderInfo) = 0;
+};
+
+class IOrderListener
+{
+public:
+	std::function<void(OrderDO& orderDO)> OrderStatusUpdated = nullptr;
 };
 
 class IOrderManager : public IOrderUpdatedEvent
@@ -36,5 +44,7 @@ private:
 };
 
 typedef std::shared_ptr<IOrderManager> IOrderManager_Ptr;
+
+typedef std::shared_ptr<IOrderListener> IOrderListener_Ptr;
 
 #endif

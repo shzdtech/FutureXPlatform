@@ -8,9 +8,9 @@
 
 #include "PBBizErrorSerializer.h"
 #include "pbmacros.h"
-#include "proto/errormsg.pb.h"
+#include "../Protos/errormsg.pb.h"
 
-using namespace Micro::Future::Message::Business;
+using namespace Micro::Future::Message;
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       PBBizErrorSerializer::Deserialize(const data_buffer& rawdata)

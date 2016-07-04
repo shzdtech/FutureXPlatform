@@ -69,25 +69,34 @@ bool MicroFurtureSystem::Load(const std::string& config)
 		{
 			LOG(INFO) << "\tInitializing Database Pool... " << std::endl;
 			LOG(INFO) << "\t\t" << AbstractConnectionManager::DefaultInstance()->CurrentConfig().DB_POOL_SIZE
-				<<" connections have been created"<< std::endl;
+				<< " connections have been created" << std::endl;
 			auto sysparamMap = SysParamsDAO::FindSysParams("%");
 
-			if(stringutility::compare(it->second.data(), "override") == 0)
+			if (stringutility::compare(it->second.data(), "override") == 0)
 				SysParam::Update(*sysparamMap);
 			else
 				SysParam::Merge(*sysparamMap);
 		}
 
 		// Initialize Serializers
-		cfgReader->getMap("system.serializer", cfgMap);
-		it = cfgMap.find("module.uuid");
-		if (it != cfgMap.end())
-			AbstractDataSerializerFactory::DefaultMessageSerializerConfig.MODULE_UUID =
-			it->second;
-		it = cfgMap.find("module.path");
-		if (it != cfgMap.end())
-			AbstractDataSerializerFactory::DefaultMessageSerializerConfig.MODULE_PATH =
-			it->second;
+		LOG(INFO) << "\tInitializing DataSerializer..." << std::endl;
+		std::vector<std::string> serialCfgs;
+		cfgReader->getVector("system.serializers.modules", serialCfgs);
+		for (auto& cfg : serialCfgs)
+		{
+			std::map<std::string, std::string> cfgMap;
+			cfgReader->getMap("system.serializers." + cfg, cfgMap);
+
+			MessageSerializerConfig msgSlzCfg;
+			msgSlzCfg.MODULE_UUID = cfgMap["module.uuid"];
+			msgSlzCfg.MODULE_PATH = cfgMap["module.path"];
+			msgSlzCfg.CLASS_UUID = cfgMap["class.uuid"];
+
+			AbstractDataSerializerFactory::MessageSerializerConfigs.push_back(std::move(msgSlzCfg));
+		}
+
+		LOG(INFO) << '\t' << AbstractDataSerializerFactory::Instance()->CreateDataSerializers().size()
+			<< " DataSerializers have initialized." << std::endl;
 
 		// Initialize Services
 		std::string serve_cfg = cfgReader->getValue("system.service.config");

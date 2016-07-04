@@ -65,6 +65,7 @@ void TestingServerMessageProcessor::_mdGenerator()
 				if (std::rand() > std::rand())
 				{
 					auto& marketDataDO = it->second;
+					marketDataDO.LastPrice = (marketDataDO.BidPrice + marketDataDO.AskPrice) / 2;
 					marketDataDO.BidPrice = std::rand();
 					marketDataDO.BidVolume = 1 + std::rand() % 100;
 					marketDataDO.AskPrice = marketDataDO.BidPrice + std::rand() % 100;

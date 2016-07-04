@@ -8,9 +8,9 @@
 #include "../dataobject/ComplexTableDO.h"
 #include "pbmacros.h"
 #include "PBComplexTableSerializer.h"
-#include "proto/simpletable.pb.h"
+#include "../Protos/simpletable.pb.h"
 
-using namespace Micro::Future::Message::Business;
+using namespace Micro::Future::Message;
 
 void fillTable(ComplexTableDO* ctDO, ComplexTable* ct)
 {

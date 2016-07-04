@@ -12,10 +12,20 @@
       "heartbeat": "60000",
       "checksql": "select 1"
     },
-    "serializer": {
-      "module.uuid": "com.micro.future.message.serializer.dll",
-      "module.path": "pbserializer.dll"
+    "serializers": {
+      "modules": [ "default", "business" ],
+      "default": {
+        "module.uuid": "com.micro.future.message.serializer.dll",
+        "module.path": "pbserializer.dll",
+        "class.uuid": "factory.message.serializer"
+      },
+      "business": {
+        "module.uuid": "com.micro.future.message.biz.serializer.dll",
+        "module.path": "pbbizserializer.dll",
+        "class.uuid": "factory.message.biz.serializer"
+      }
     },
+
     "sysparam": {
       "mergedbparam": "override",
       "DEFAULT.CLIENT.SYMBOL": "boc_otc",

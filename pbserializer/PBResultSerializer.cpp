@@ -6,7 +6,7 @@
  ***********************************************************************/
 
 #include "PBResultSerializer.h"
-#include "proto/errormsg.pb.h"
+#include "../Protos/errormsg.pb.h"
 #include "pbmacros.h"
 #include "../dataobject/ResultDO.h"
 
@@ -20,7 +20,7 @@
 
 data_buffer PBResultSerializer::Serialize(const dataobj_ptr abstractDO)
 {
-	Micro::Future::Message::Business::Result PB;
+	Micro::Future::Message::Result PB;
 
 	auto pDO = (ResultDO*)abstractDO.get();
 
@@ -46,7 +46,7 @@ data_buffer PBResultSerializer::Serialize(const dataobj_ptr abstractDO)
 
 dataobj_ptr PBResultSerializer::Deserialize(const data_buffer& rawdata)
 {
-	Micro::Future::Message::Business::Result PB;
+	Micro::Future::Message::Result PB;
 	ParseWithThrow(PB, rawdata)
 
 	return std::make_shared<ResultDO>(PB.code(), PB.serialid());

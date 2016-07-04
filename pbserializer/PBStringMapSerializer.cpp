@@ -1,8 +1,8 @@
 #include "PBStringMapSerializer.h"
-#include "proto/commondefine.pb.h"
+#include "../Protos/commondefine.pb.h"
 #include "pbmacros.h"
 
-using namespace Micro::Future::Message::Business;
+using namespace Micro::Future::Message;
 
 dataobj_ptr PBStringMapSerializer::Deserialize(const data_buffer & rawdata)
 {

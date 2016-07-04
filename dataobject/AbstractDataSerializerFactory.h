@@ -18,10 +18,10 @@ static const char* CLASS_UUID_MSG_SERIALIZER_FACTORY = "factory.message.serializ
 class DATAOBJECT_CLASS_EXPORT AbstractDataSerializerFactory : public IDataSerializerFactory
 {
 public:
-	//virtual std::map<unsigned int, IDataSerializer_Ptr> CreateDataSerializers(void) = 0;
+	std::map<unsigned int, IDataSerializer_Ptr> CreateDataSerializers(void);
 	IDataSerializer_Ptr Find(uint32_t msgId);
 	static std::shared_ptr<AbstractDataSerializerFactory> Instance(void);
-	static MessageSerializerConfig DefaultMessageSerializerConfig;
+	static std::vector<MessageSerializerConfig> MessageSerializerConfigs;
 
 protected:
 	std::map<uint32_t, IDataSerializer_Ptr> _serializer_map;

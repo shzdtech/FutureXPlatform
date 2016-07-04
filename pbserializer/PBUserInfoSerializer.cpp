@@ -6,7 +6,7 @@
  ***********************************************************************/
 
 #include "PBUserInfoSerializer.h"
-#include "proto/usermanager.pb.h"
+#include "../Protos/usermanager.pb.h"
 #include "pbmacros.h"
 #include "../dataobject/UserInfoDO.h"
 
@@ -20,7 +20,7 @@
 
 data_buffer PBUserInfoSerializer::Serialize(const dataobj_ptr abstractDO)
 {
-	using namespace Micro::Future::Message::Business;
+	using namespace Micro::Future::Message;
 	
 	PBUserInfo PB;
 	auto pDO = (UserInfoDO*)abstractDO.get();
@@ -58,7 +58,7 @@ data_buffer PBUserInfoSerializer::Serialize(const dataobj_ptr abstractDO)
 
 dataobj_ptr PBUserInfoSerializer::Deserialize(const data_buffer& rawdata)
 {
-	Micro::Future::Message::Business::PBUserInfo PB;
+	Micro::Future::Message::PBUserInfo PB;
 	ParseWithThrow(PB, rawdata);
 
 	auto ret = std::make_shared<UserInfoDO>();

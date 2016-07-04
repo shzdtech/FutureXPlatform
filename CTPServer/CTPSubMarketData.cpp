@@ -12,6 +12,7 @@
 #include "../dataobject/FieldName.h"
 #include "../utility/TUtil.h"
 #include "../bizutility/InstrumentCache.h"
+#include "../common/BizErrorIDs.h"
 
 #include <glog/logging.h>
 #include <algorithm>
@@ -88,7 +89,14 @@ dataobj_ptr CTPSubMarketData::HandleResponse(const uint32_t serialId, param_vect
 	{
 		std::string exchange;
 		if (auto pInstumentDO = InstrumentCache::QueryInstrumentById(pRspInstr->InstrumentID))
+		{
 			exchange = pInstumentDO->ExchangeID();
+		}
+		else
+		{ 
+			std::string errmsg("Contract code: ");
+			throw BizError(OBJECT_NOT_FOUND, errmsg + pRspInstr->InstrumentID + " does not exists.");
+		}
 
 		ret->push_back(MarketDataDO(exchange, pRspInstr->InstrumentID));
 

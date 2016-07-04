@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "configuration", "configuration\configuration.vcxproj", "{6CA92597-54A1-435D-B200-41860F096ABC}"
 EndProject
@@ -57,6 +57,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mfsystem", "mfsystem\mfsystem.vcxproj", "{425D08BD-D784-4C63-8855-1F33974161EA}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mfsystemclr", "mfsystemclr\mfsystemclr.vcxproj", "{7A3CEF4A-18E6-404B-B5EA-8D2A8D336331}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pbbizserializer", "pbbizserializer\pbbizserializer.vcxproj", "{F3386CB2-5B6E-48CF-B26C-CAC97A238941}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -280,6 +282,16 @@ Global
 		{7A3CEF4A-18E6-404B-B5EA-8D2A8D336331}.Release|Win32.Build.0 = Release|Win32
 		{7A3CEF4A-18E6-404B-B5EA-8D2A8D336331}.Release|x64.ActiveCfg = Release|x64
 		{7A3CEF4A-18E6-404B-B5EA-8D2A8D336331}.Release|x64.Build.0 = Release|x64
+		{F3386CB2-5B6E-48CF-B26C-CAC97A238941}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{F3386CB2-5B6E-48CF-B26C-CAC97A238941}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F3386CB2-5B6E-48CF-B26C-CAC97A238941}.Debug|Win32.Build.0 = Debug|Win32
+		{F3386CB2-5B6E-48CF-B26C-CAC97A238941}.Debug|x64.ActiveCfg = Debug|x64
+		{F3386CB2-5B6E-48CF-B26C-CAC97A238941}.Debug|x64.Build.0 = Debug|x64
+		{F3386CB2-5B6E-48CF-B26C-CAC97A238941}.Release|Any CPU.ActiveCfg = Release|Win32
+		{F3386CB2-5B6E-48CF-B26C-CAC97A238941}.Release|Win32.ActiveCfg = Release|Win32
+		{F3386CB2-5B6E-48CF-B26C-CAC97A238941}.Release|Win32.Build.0 = Release|Win32
+		{F3386CB2-5B6E-48CF-B26C-CAC97A238941}.Release|x64.ActiveCfg = Release|x64
+		{F3386CB2-5B6E-48CF-B26C-CAC97A238941}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

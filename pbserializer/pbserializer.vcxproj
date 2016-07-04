@@ -159,132 +159,91 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Protos\commondefine.pb.h" />
+    <ClInclude Include="..\Protos\errormsg.pb.h" />
+    <ClInclude Include="..\Protos\simpletable.pb.h" />
+    <ClInclude Include="..\Protos\usermanager.pb.h" />
     <ClInclude Include="ExceptionDef.h" />
-    <ClInclude Include="PBAccountInfoSerializer.h" />
     <ClInclude Include="PBBizErrorSerializer.h" />
     <ClInclude Include="PBCombineSerializer.h" />
     <ClInclude Include="PBComplexTableSerializer.h" />
-    <ClInclude Include="PBContractParamSerializer.h" />
     <ClInclude Include="PBDoubleTableSerializer.h" />
     <ClInclude Include="PBEchoMsgSerializer.h" />
-    <ClInclude Include="PBExchangeSerializer.h" />
-    <ClInclude Include="PBInstrumentSerializer.h" />
     <ClInclude Include="PBIntTableSerializer.h" />
     <ClInclude Include="pbmacros.h" />
-    <ClInclude Include="PBMarketDataSerializer.h" />
     <ClInclude Include="PBMessageSerializerFactory.h" />
-    <ClInclude Include="PBOrderSerializer.h" />
-    <ClInclude Include="PBPricingDataSerializer.h" />
     <ClInclude Include="PBResultSerializer.h" />
     <ClInclude Include="pbserializers.h" />
     <ClInclude Include="pbserializer_exp.h" />
-    <ClInclude Include="PBStrategySerializer.h" />
     <ClInclude Include="PBStringMapSerializer.h" />
     <ClInclude Include="PBStringTableSerializer.h" />
-    <ClInclude Include="PBSubMarketDataSerializer.h" />
-    <ClInclude Include="PBTradeRecordSerializer.h" />
     <ClInclude Include="PBUserInfoListSerializer.h" />
     <ClInclude Include="PBUserInfoSerializer.h" />
-    <ClInclude Include="PBUserParamSerializer.h" />
-    <ClInclude Include="PBUserPositionSerializer.h" />
-    <ClInclude Include="proto\businessobj.pb.h" />
-    <ClInclude Include="proto\commondefine.pb.h" />
-    <ClInclude Include="proto\errormsg.pb.h" />
-    <ClInclude Include="proto\simpletable.pb.h" />
-    <ClInclude Include="proto\usermanager.pb.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="PBAccountInfoSerializer.cpp" />
+    <ClCompile Include="..\Protos\commondefine.pb.cc" />
+    <ClCompile Include="..\Protos\errormsg.pb.cc" />
+    <ClCompile Include="..\Protos\simpletable.pb.cc" />
+    <ClCompile Include="..\Protos\usermanager.pb.cc" />
     <ClCompile Include="PBBizErrorSerializer.cpp" />
     <ClCompile Include="PBCombineSerializer.cpp" />
     <ClCompile Include="PBComplexTableSerializer.cpp" />
-    <ClCompile Include="PBContractParamSerializer.cpp" />
     <ClCompile Include="PBDoubleTableSerializer.cpp" />
     <ClCompile Include="PBEchoMsgSerializer.cpp" />
-    <ClCompile Include="PBExchangeSerializer.cpp" />
-    <ClCompile Include="PBInstrumentSerializer.cpp" />
     <ClCompile Include="PBIntTableSerializer.cpp" />
-    <ClCompile Include="PBMarketDataSerializer.cpp" />
     <ClCompile Include="PBMessageSerializerFactory.cpp" />
-    <ClCompile Include="PBOrderSerializer.cpp" />
-    <ClCompile Include="PBPricingDataSerializer.cpp" />
     <ClCompile Include="PBResultSerializer.cpp" />
     <ClCompile Include="pbserializer_exp.cpp" />
-    <ClCompile Include="PBStrategySerializer.cpp" />
     <ClCompile Include="PBStringMapSerializer.cpp" />
     <ClCompile Include="PBStringTableSerializer.cpp" />
-    <ClCompile Include="PBSubMarketDataSerializer.cpp" />
-    <ClCompile Include="PBTradeRecordSerializer.cpp" />
     <ClCompile Include="PBUserInfoListSerializer.cpp" />
     <ClCompile Include="PBUserInfoSerializer.cpp" />
-    <ClCompile Include="PBUserParamSerializer.cpp" />
-    <ClCompile Include="PBUserPositionSerializer.cpp" />
-    <ClCompile Include="proto\businessobj.pb.cc" />
-    <ClCompile Include="proto\commondefine.pb.cc" />
-    <ClCompile Include="proto\errormsg.pb.cc" />
-    <ClCompile Include="proto\simpletable.pb.cc" />
-    <ClCompile Include="proto\usermanager.pb.cc" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\Protos\commondefine.proto">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(ProjectDir)proto  %(FullPath)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(ProjectDir)proto  %(FullPath)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(ProjectDir)proto  %(FullPath)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(ProjectDir)proto  %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(SolutionDir)Protos  %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(SolutionDir)Protos  %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(SolutionDir)Protos  %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(SolutionDir)Protos  %(FullPath)</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(Identity)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Identity)</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)proto/%(Filename).pb.h;$(ProjectDir)proto/%(Filename).pb.cc;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)proto/%(Filename).pb.h;$(ProjectDir)proto/%(Filename).pb.cc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)Protos/%(Filename).pb.h;$(SolutionDir)Protos/%(Filename).pb.cc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)Protos/%(Filename).pb.h;$(SolutionDir)Protos/%(Filename).pb.cc;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(Identity)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Identity)</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)proto/%(Filename).pb.h;$(ProjectDir)proto/%(Filename).pb.cc;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)proto/%(Filename).pb.h;$(ProjectDir)proto/%(Filename).pb.cc;%(Outputs)</Outputs>
-    </CustomBuild>
-    <CustomBuild Include="..\Protos\businessobj.proto">
-      <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(ProjectDir)proto  %(FullPath)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(ProjectDir)proto  %(FullPath)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(ProjectDir)proto  %(FullPath)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(ProjectDir)proto  %(FullPath)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(Identity)</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Identity)</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)proto/%(Filename).pb.h;$(ProjectDir)proto/%(Filename).pb.cc;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)proto/%(Filename).pb.h;$(ProjectDir)proto/%(Filename).pb.cc;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(Identity)</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Identity)</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)proto/%(Filename).pb.h;$(ProjectDir)proto/%(Filename).pb.cc;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)proto/%(Filename).pb.h;$(ProjectDir)proto/%(Filename).pb.cc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)Protos/%(Filename).pb.h;$(SolutionDir)Protos/%(Filename).pb.cc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)Protos/%(Filename).pb.h;$(SolutionDir)Protos/%(Filename).pb.cc;%(Outputs)</Outputs>
     </CustomBuild>
     <CustomBuild Include="..\Protos\errormsg.proto">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(ProjectDir)proto  %(FullPath)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(ProjectDir)proto  %(FullPath)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(ProjectDir)proto  %(FullPath)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(ProjectDir)proto  %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(SolutionDir)Protos  %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(SolutionDir)Protos  %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(SolutionDir)Protos  %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(SolutionDir)Protos  %(FullPath)</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(Identity)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Identity)</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)proto/%(Filename).pb.h;$(ProjectDir)proto/%(Filename).pb.cc;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)proto/%(Filename).pb.h;$(ProjectDir)proto/%(Filename).pb.cc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)Protos/%(Filename).pb.h;$(SolutionDir)Protos/%(Filename).pb.cc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)Protos/%(Filename).pb.h;$(SolutionDir)Protos/%(Filename).pb.cc;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(Identity)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Identity)</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)proto/%(Filename).pb.h;$(ProjectDir)proto/%(Filename).pb.cc;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)proto/%(Filename).pb.h;$(ProjectDir)proto/%(Filename).pb.cc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)Protos/%(Filename).pb.h;$(SolutionDir)Protos/%(Filename).pb.cc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)Protos/%(Filename).pb.h;$(SolutionDir)Protos/%(Filename).pb.cc;%(Outputs)</Outputs>
     </CustomBuild>
     <CustomBuild Include="..\Protos\simpletable.proto">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(ProjectDir)proto  %(FullPath)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(ProjectDir)proto  %(FullPath)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(ProjectDir)proto  %(FullPath)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(ProjectDir)proto  %(FullPath)</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(Identity)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Identity)</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)proto/%(Filename).pb.h;$(ProjectDir)proto/%(Filename).pb.cc;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)proto/%(Filename).pb.h;$(ProjectDir)proto/%(Filename).pb.cc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)Protos/%(Filename).pb.h;$(SolutionDir)Protos/%(Filename).pb.cc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)Protos/%(Filename).pb.h;$(SolutionDir)Protos/%(Filename).pb.cc;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(Identity)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Identity)</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)proto/%(Filename).pb.h;$(ProjectDir)proto/%(Filename).pb.cc;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)proto/%(Filename).pb.h;$(ProjectDir)proto/%(Filename).pb.cc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)Protos/%(Filename).pb.h;$(SolutionDir)Protos/%(Filename).pb.cc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)Protos/%(Filename).pb.h;$(SolutionDir)Protos/%(Filename).pb.cc;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(SolutionDir)Protos  %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(SolutionDir)Protos  %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(SolutionDir)Protos  %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(SolutionDir)Protos  %(FullPath)</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -295,18 +254,18 @@
   <ItemGroup>
     <CustomBuild Include="..\Protos\usermanager.proto">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(ProjectDir)proto  %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(SolutionDir)Protos  %(FullPath)</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%Identity%</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(ProjectDir)proto  %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(SolutionDir)Protos  %(FullPath)</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%Identity%</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(ProjectDir)proto  %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(SolutionDir)Protos  %(FullPath)</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%Identity%</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(ProjectDir)proto  %(FullPath)</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(SolutionDir)Protos  %(FullPath)</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%Identity%</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)proto/%(Filename).pb.h;$(ProjectDir)proto/%(Filename).pb.cc;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)proto/%(Filename).pb.h;$(ProjectDir)proto/%(Filename).pb.cc;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)proto/%(Filename).pb.h;$(ProjectDir)proto/%(Filename).pb.cc;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)proto/%(Filename).pb.h;$(ProjectDir)proto/%(Filename).pb.cc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)Protos/%(Filename).pb.h;$(SolutionDir)Protos/%(Filename).pb.cc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)Protos/%(Filename).pb.h;$(SolutionDir)Protos/%(Filename).pb.cc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)Protos/%(Filename).pb.h;$(SolutionDir)Protos/%(Filename).pb.cc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)Protos/%(Filename).pb.h;$(SolutionDir)Protos/%(Filename).pb.cc;%(Outputs)</Outputs>
     </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

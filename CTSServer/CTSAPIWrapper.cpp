@@ -201,6 +201,7 @@ void CTSAPIWrapperImpl::OnMarketDataUpdated(Market^ poMarket)
 	mdDO.BidPrice = poMarket->LastDepth->Bids[0]->Ticks;
 	mdDO.AskVolume = poMarket->LastDepth->Offers[0]->Volume;
 	mdDO.AskPrice = poMarket->LastDepth->Offers[0]->Ticks;
+	mdDO.LastPrice = poMarket->StrikePrice.Value;
 
 	mdDO.HighestPrice = poMarket->ConvertTicksToDecimal(poMarket->LastHighLow->HighTicks);
 	mdDO.LowestPrice = poMarket->ConvertTicksToDecimal(poMarket->LastHighLow->LowTicks);

@@ -13,8 +13,7 @@
 #include "OTCUserPositionContext.h"
 #include "ordermgr_export.h"
 
-
-class ORDERMGR_CLASS_EXPORT OTCOrderManager : public OrderManager
+class ORDERMGR_CLASS_EXPORT OTCOrderManager : public OrderManager, public IOrderListener
 {
 public:
 	OTCOrderManager(IOrderAPI* pOrderAPI, IPricingDataContext* pricingCtx);
@@ -39,7 +38,6 @@ protected:
 
 private:
 	HedgeOrderManager_Ptr initHedgeOrderMgr(const std::string& userID);
-
 };
 
 #endif

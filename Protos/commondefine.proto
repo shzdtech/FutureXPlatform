@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package Micro.Future.Message.Business;
+package Micro.Future.Message;
 
 message DataHeader
 {
