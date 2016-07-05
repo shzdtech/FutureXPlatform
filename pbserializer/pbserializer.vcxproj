@@ -179,6 +179,7 @@
     <ClInclude Include="PBStringTableSerializer.h" />
     <ClInclude Include="PBUserInfoListSerializer.h" />
     <ClInclude Include="PBUserInfoSerializer.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Protos\commondefine.pb.cc" />
@@ -267,6 +268,9 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)Protos/%(Filename).pb.h;$(SolutionDir)Protos/%(Filename).pb.cc;%(Outputs)</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)Protos/%(Filename).pb.h;$(SolutionDir)Protos/%(Filename).pb.cc;%(Outputs)</Outputs>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="pbserializer.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

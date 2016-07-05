@@ -150,6 +150,7 @@
     <ClInclude Include="Encoding.h" />
     <ClInclude Include="epsdouble.h" />
     <ClInclude Include="epsvaluetype.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="semaphore.h" />
     <ClInclude Include="singleton_templ.h" />
     <ClInclude Include="singleton_templ_mt.h" />
@@ -159,6 +160,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Encoding.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="utility.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

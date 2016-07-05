@@ -33,13 +33,3 @@ CTPMDTraderProcessor::~CTPMDTraderProcessor()
 {
    // TODO : implement
 }
-
-////////////////////////////////////////////////////////////////////////
-// Name:       CTPMDTraderProcessor::Initialize()
-// Purpose:    Implementation of CTPMDTraderProcessor::Initialize()
-// Return:     void
-////////////////////////////////////////////////////////////////////////
-
-void CTPMDTraderProcessor::OnInit(void)
-{
-}

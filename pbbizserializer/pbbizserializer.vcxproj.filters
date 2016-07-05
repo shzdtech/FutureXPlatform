@@ -21,11 +21,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Protos\businessobj.proto">
-      <Filter>protos</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="..\Protos\businessobj.pb.cc">
       <Filter>protos</Filter>
     </ClCompile>
@@ -139,5 +134,18 @@
     <ClInclude Include="..\Protos\commondefine.pb.h">
       <Filter>protos</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\Protos\businessobj.proto">
+      <Filter>protos</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="pbbizserializer.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

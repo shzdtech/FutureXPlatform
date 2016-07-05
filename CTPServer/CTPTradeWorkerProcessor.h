@@ -11,11 +11,11 @@
 #include "CTPTradeProcessor.h"
 #include <future>
 #include "../message/UserInfo.h"
-
+#include "../ordermanager/IOrderAPI.h"
 
 #include "ctpexport.h"
 
-class CTP_CLASS_EXPORT CTPTradeWorkerProcessor : public CTPTradeProcessor
+class CTP_CLASS_EXPORT CTPTradeWorkerProcessor : public CTPTradeProcessor, public IOrderAPI
 {
 public:
    CTPTradeWorkerProcessor(const std::map<std::string, std::string>& configMap);
@@ -26,6 +26,9 @@ public:
    
    int RetryInterval = 60000;
    bool InstrmentsLoaded;
+
+   int CreateOrder(const OrderDO& orderInfo, OrderStatus& currStatus);
+   int CancelOrder(const OrderDO& orderInfo, OrderStatus& currStatus);
 
 protected:
    UserInfo _defaultUser;

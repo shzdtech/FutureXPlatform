@@ -172,6 +172,7 @@
     <ClInclude Include="OrderDO.h" />
     <ClInclude Include="PortfolioDO.h" />
     <ClInclude Include="PricingDO.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="ResultDO.h" />
     <ClInclude Include="StrategyContractDO.h" />
     <ClInclude Include="TemplateDO.h" />
@@ -194,6 +195,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="dataobject.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

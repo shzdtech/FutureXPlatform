@@ -39,6 +39,9 @@
     <ClInclude Include="MicroFutureLogSink.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MicroFurtureSystem.cpp">
@@ -78,5 +81,10 @@
     <None Include="system.json">
       <Filter>config\json</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="mfsystem.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

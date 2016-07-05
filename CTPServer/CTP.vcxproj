@@ -181,6 +181,7 @@
     <ClInclude Include="CTPUnsubMarketData.h" />
     <ClInclude Include="CTPUtility.h" />
     <ClInclude Include="ctp_bizhandlers.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CTPCancelOrder.cpp" />
@@ -240,5 +241,8 @@
       <Command>$(SolutionDir)BuildTool\protoc --proto_path=$(ProjectDir) --cpp_out=$(ProjectDir) %(FullPath)</Command>
       <Outputs>$(ProjectDir)%(Filename).pb.h;$(ProjectDir)%(Filename).pb.cc</Outputs>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="CTPServer.rc" />
   </ItemGroup>
 </Project>

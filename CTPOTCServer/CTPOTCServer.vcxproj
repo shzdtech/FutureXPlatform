@@ -218,6 +218,7 @@
     <ClInclude Include="ctpotc_bizhandlers.h" />
     <ClInclude Include="CTPWorkerProcessorID.h" />
     <ClInclude Include="ctpotc_export.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="TradingDeskContextBuilder.h" />
   </ItemGroup>
   <ItemGroup>
@@ -248,6 +249,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="CTPOTCServer.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -148,6 +148,7 @@
     <ClInclude Include="IConfigReader.h" />
     <ClInclude Include="configuration_exp.h" />
     <ClInclude Include="JsonConfigReader.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="SysConfig.h" />
     <ClInclude Include="SysConfigConst.h" />
     <ClInclude Include="SysConfigImpl.h" />
@@ -163,6 +164,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="configuration.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

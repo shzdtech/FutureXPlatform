@@ -120,6 +120,9 @@
     <ClInclude Include="CTPTradeWorkerProcessor.h">
       <Filter>头文件\CTPHandler\Trader</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ctpexport.cpp">
@@ -194,5 +197,10 @@
     <ClCompile Include="CTPTradeWorkerProcessor.cpp">
       <Filter>源文件\CTPHandler\Trader</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="CTPServer.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

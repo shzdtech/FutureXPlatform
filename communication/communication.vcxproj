@@ -160,6 +160,7 @@
     <ClInclude Include="ASIOTCPServer.h" />
     <ClInclude Include="ASIOTCPSession.h" />
     <ClInclude Include="communication_exp.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ASIOSessionManager.cpp" />
@@ -169,6 +170,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="communication.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

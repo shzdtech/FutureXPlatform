@@ -55,7 +55,7 @@ const std::string & MicroFurtureSystem::GetLogPath(void)
 bool MicroFurtureSystem::Load(const std::string& config)
 {
 	bool ret = false;
-	LOG(INFO) << "Initializing Application:" << std::endl;
+	LOG(INFO) << "Initializing system..." << std::endl;
 
 	if (auto cfgReader = AbstractConfigReaderFactory::OpenConfigReader(config)) {
 		LOG(INFO) << "\tLoading System Config: " << config << std::endl;

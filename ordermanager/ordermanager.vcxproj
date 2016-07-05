@@ -167,6 +167,7 @@
     <ClInclude Include="IOrderAPI.h" />
     <ClInclude Include="MarketPositionContext.h" />
     <ClInclude Include="OTCUserPositionContext.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="UserOrderContext.h" />
     <ClInclude Include="IOrderManager.h" />
     <ClInclude Include="OrderManager.h" />
@@ -187,6 +188,9 @@
     <ProjectReference Include="..\pricingengine\pricingengine.vcxproj">
       <Project>{001a89a1-70d7-4a9b-a7b2-82d0be1ba07c}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ordermanager.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

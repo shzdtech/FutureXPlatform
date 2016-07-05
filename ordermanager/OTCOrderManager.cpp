@@ -97,9 +97,6 @@ OrderDOVec_Ptr OTCOrderManager::UpdateOrderByStrategy(const StrategyContractDO& 
 								(OrderOpenCloseType)orderDO.OpenClose,
 								orderDO.Volume);
 							_userOrderCtx.RemoveOrder(orderDO.OrderID);
-
-							if (OrderStatusUpdated)
-								OrderStatusUpdated(orderDO);
 						}
 					}
 				}

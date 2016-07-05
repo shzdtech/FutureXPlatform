@@ -157,10 +157,14 @@
     <ClInclude Include="bizutility_exp.h" />
     <ClInclude Include="InstrumentCache.h" />
     <ClInclude Include="OptionPricingCache.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InstrumentCache.cpp" />
     <ClCompile Include="OptionPricingCache.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="bizutility.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -23,7 +23,7 @@ public:
 	~CTPMDTraderProcessor();
 
 protected:
-	void OnInit(void);
+
 
 private:
 	std::shared_ptr<CTPMarketDataProcessor> _mdproc;

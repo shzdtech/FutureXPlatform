@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("Micro.Future.Server.Monitor")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Micro.Future.Server.Monitor")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Micro.Future.Server.Monitor")]
+[assembly: AssemblyCompany("上海栈道信息技术有限公司")]
+[assembly: AssemblyProduct("Micro Future")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyTrademark("Micro Future")]
 [assembly: AssemblyCulture("")]
 
 //将 ComVisible 设置为 false 将使此程序集中的类型

@@ -176,6 +176,10 @@
     <ClInclude Include="AdminServerExport.h" />
     <ClInclude Include="AdminServerMessageProcessor.h" />
     <ClInclude Include="RegisterUserHandler.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="AdminServer.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

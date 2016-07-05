@@ -138,6 +138,7 @@
     <ClInclude Include="AbstractDynamicLoader.h" />
     <ClInclude Include="ConfigBasedCreator.h" />
     <ClInclude Include="dynamicloader_exp.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="SODynamicLoader.h" />
     <ClInclude Include="WinDynamicLoader.h" />
   </ItemGroup>
@@ -151,6 +152,9 @@
     <ProjectReference Include="..\configuration\configuration.vcxproj">
       <Project>{6ca92597-54a1-435d-b200-41860f096abc}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="dynamicloader.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

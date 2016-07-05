@@ -13,7 +13,7 @@
 #include "OTCUserPositionContext.h"
 #include "ordermgr_export.h"
 
-class ORDERMGR_CLASS_EXPORT OTCOrderManager : public OrderManager, public IOrderListener
+class ORDERMGR_CLASS_EXPORT OTCOrderManager : public OrderManager
 {
 public:
 	OTCOrderManager(IOrderAPI* pOrderAPI, IPricingDataContext* pricingCtx);

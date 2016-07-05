@@ -68,6 +68,9 @@
     <ClInclude Include="UserInfoDAO.h">
       <Filter>头文件\DAO</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AbstractConnectionManager.cpp">
@@ -100,5 +103,10 @@
     <ClCompile Include="UserInfoDAO.cpp">
       <Filter>源文件\DAO</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="databaseop.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

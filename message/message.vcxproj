@@ -186,6 +186,7 @@
     <ClInclude Include="message_macro.h" />
     <ClInclude Include="NopHandler.h" />
     <ClInclude Include="GlobalProcessorRegistry.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="ServerSessionManager.h" />
     <ClInclude Include="SessionContainer.h" />
     <ClInclude Include="ContextAttribute.h" />
@@ -221,6 +222,9 @@
     <ProjectReference Include="..\dataobject\dataobject.vcxproj">
       <Project>{6257959c-c51c-47ba-9b4c-b40e83f8453a}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="message.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

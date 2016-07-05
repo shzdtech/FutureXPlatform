@@ -173,6 +173,7 @@
     <ClInclude Include="MicroFurtureSystem.h" />
     <ClInclude Include="ISystem.h" />
     <ClInclude Include="MicroFutureLogSink.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="system_exp.h" />
   </ItemGroup>
   <ItemGroup>
@@ -225,6 +226,9 @@
     <None Include="server.json" />
     <None Include="service.json" />
     <None Include="system.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="mfsystem.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

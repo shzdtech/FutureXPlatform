@@ -15,7 +15,7 @@
 #include "../message/SessionContainer.h"
 #include "../dataobject/StrategyContractDO.h"
 
-class CTPOTCTradeProcessor : public CTPTradeWorkerProcessor, public IOrderAPI, public IOrderListener
+class CTPOTCTradeProcessor : public CTPTradeWorkerProcessor
 {
 public:
 	CTPOTCTradeProcessor(const std::map<std::string, std::string>& configMap, IPricingDataContext* pricingCtx);
@@ -30,9 +30,6 @@ public:
 
 	AutoOrderManager& GetAutoOrderManager(void);
 	OTCOrderManager& GetOTCOrderManager(void);
-
-	int CreateOrder(const OrderDO& orderInfo, OrderStatus& currStatus);
-	int CancelOrder(const OrderDO& orderInfo, OrderStatus& currStatus);
 
 protected:
 
