@@ -73,26 +73,11 @@ dataobj_ptr CTPQueryTrade::HandleResponse(const uint32_t serialId, param_vector&
 {
 	CTPUtility::CheckError(rawRespParams[1]);
 
-	dataobj_ptr ret;
-	if (auto pData = (CThostFtdcTradeField*)rawRespParams[0])
+	TradeRecordDO_Ptr ret;
+	if (ret = CTPUtility::ParseRawTrade((CThostFtdcTradeField*)rawRespParams[0]))
 	{
-		auto pDO = new TradeRecordDO(pData->ExchangeID, pData->InstrumentID);
-		ret.reset(pDO);
-		pDO->SerialId = serialId;
-		pDO->HasMore = *(bool*)rawRespParams[3];
-
-		pDO->OrderID = std::strtoull(pData->OrderRef, nullptr, 0);
-		pDO->OrderSysID = std::strtoull(pData->OrderSysID, nullptr, 0);
-		pDO->Direction = pData->Direction == THOST_FTDC_D_Buy ?
-			DirectionType::BUY : DirectionType::SELL;
-		pDO->OpenClose = (OrderOpenCloseType)(pData->OffsetFlag - THOST_FTDC_OF_Open);
-		pDO->Price = pData->Price;
-		pDO->Volume = pData->Volume;
-		pDO->TradeID = std::strtoull(pData->TradeID, nullptr, 0);
-		pDO->TradeDate = pData->TradeDate;
-		pDO->TradeTime = pData->TradeTime;
-		pDO->TradeType = (TradingType)pData->TradeType;
-		pDO->HedgeFlag = (HedgeType)(pData->HedgeFlag - THOST_FTDC_HF_Speculation);
+		ret->SerialId = serialId;
+		ret->HasMore = !*(bool*)rawRespParams[3];
 	}
 
 	return ret;

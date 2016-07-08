@@ -239,3 +239,27 @@ OrderDO_Ptr CTPUtility::ParseRawOrderInput(
 
 	return ret;
 }
+
+TradeRecordDO_Ptr CTPUtility::ParseRawTrade(CThostFtdcTradeField * pTrade)
+{
+	TradeRecordDO_Ptr ret;
+	if (pTrade)
+	{
+		auto pDO = new TradeRecordDO(pTrade->ExchangeID, pTrade->InstrumentID);
+		ret.reset(pDO);
+		pDO->OrderID = std::strtoull(pTrade->OrderRef, nullptr, 0);
+		pDO->OrderSysID = std::strtoull(pTrade->OrderSysID, nullptr, 0);
+		pDO->Direction = pTrade->Direction == THOST_FTDC_D_Buy ?
+			DirectionType::BUY : DirectionType::SELL;
+		pDO->OpenClose = (OrderOpenCloseType)(pTrade->OffsetFlag - THOST_FTDC_OF_Open);
+		pDO->Price = pTrade->Price;
+		pDO->Volume = pTrade->Volume;
+		pDO->TradeID = std::strtoull(pTrade->TradeID, nullptr, 0);
+		pDO->TradeDate = pTrade->TradeDate;
+		pDO->TradeTime = pTrade->TradeTime;
+		pDO->TradeType = (TradingType)pTrade->TradeType;
+		pDO->HedgeFlag = (HedgeType)(pTrade->HedgeFlag - THOST_FTDC_HF_Speculation);
+	}
+
+	return ret;
+}

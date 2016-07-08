@@ -58,13 +58,14 @@ class OrderDO : public UserContractKey, public OrderBaseDO
 public:
 	OrderDO(const uint64_t orderID, const char* exchangeID, const char* instrumentID,
 		const char* userID) : OrderBaseDO(orderID),
-		UserContractKey(exchangeID, instrumentID, userID){}
+		UserKey(userID), UserContractKey(exchangeID, instrumentID, userID){}
 
 	OrderDO(const uint64_t orderID, const std::string& exchangeID, const std::string& instrumentID,
-		const std::string& userID) : OrderBaseDO(orderID), 
-		UserContractKey(exchangeID, instrumentID, userID){}
+		const std::string& userID) : OrderBaseDO(orderID),
+		UserKey(userID), UserContractKey(exchangeID, instrumentID, userID){}
 
-	OrderDO(const UserContractKey& userContractKey) : OrderBaseDO(0), UserContractKey(userContractKey){}
+	OrderDO(const UserContractKey& userContractKey) : OrderBaseDO(0), 
+		UserKey(userContractKey), UserContractKey(userContractKey){}
 
 	OrderDO(const uint64_t orderID) : OrderDO(orderID, "", "", ""){}
 

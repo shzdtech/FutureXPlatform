@@ -17,7 +17,7 @@
 
 data_buffer PBOrderNewSerializer::Serialize(const dataobj_ptr abstractDO)
 {
-   // TODO : implement
+	return data_buffer(nullptr, 0);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -30,5 +30,5 @@ data_buffer PBOrderNewSerializer::Serialize(const dataobj_ptr abstractDO)
 
 dataobj_ptr PBOrderNewSerializer::Deserialize(const data_buffer& rawdata)
 {
-   // TODO : implement
+	return nullptr;
 }

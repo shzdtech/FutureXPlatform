@@ -6,7 +6,6 @@
  ***********************************************************************/
 
 #include "MySqlConnectionManager.h"
-#include "../configuration/AbstractConfigReaderFactory.h"
 #include "../utility/TUtil.h"
 #include <cppconn/driver.h>
 #include <glog/logging.h>
@@ -26,37 +25,36 @@ std::shared_ptr<MySqlConnectionManager> MySqlConnectionManager::_instance;
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void MySqlConnectionManager::LoadConfig(const std::string& config, const std::string& section)
+bool MySqlConnectionManager::LoadDbConfig(const std::map<std::string, std::string>& cfgMap)
 {
-	if (auto cfgReader = AbstractConfigReaderFactory::OpenConfigReader(config)) {
-		std::map<std::string, std::string> cfgMap;
-		if (cfgReader->getMap(section, cfgMap)) {
-			_connConfig.DB_URL = cfgMap["url"];
-			_connConfig.DB_USER = cfgMap["user"];
-			_connConfig.DB_PASSWORD = cfgMap["password"];
+	_connConfig.KEY = cfgMap.at("key");
+	_connConfig.DB_TYPE = DbType::MYSQL;
+	_connConfig.DB_URL = cfgMap.at("url");
+	_connConfig.DB_USER = cfgMap.at("user");
+	_connConfig.DB_PASSWORD = cfgMap.at("password");
 
-			std::string empty;
-			auto& autocommit = TUtil::FirstNamedEntry("autocommit", cfgMap, empty);
-			if (autocommit.length() > 0)
-				_connConfig.DB_AUTOCOMMIT = std::stoi(autocommit, nullptr, 0) != 0;
+	std::string empty;
+	auto& autocommit = TUtil::FirstNamedEntry("autocommit", cfgMap, empty);
+	if (autocommit.length() > 0)
+		_connConfig.DB_AUTOCOMMIT = std::stoi(autocommit, nullptr, 0) != 0;
 
-			auto& timeout = TUtil::FirstNamedEntry("timeout", cfgMap, empty);
-			if (timeout.length() > 0)
-				_connConfig.DB_CONNECT_TIMEOUT = std::stoul(timeout, nullptr, 0);
+	auto& timeout = TUtil::FirstNamedEntry("timeout", cfgMap, empty);
+	if (timeout.length() > 0)
+		_connConfig.DB_CONNECT_TIMEOUT = std::stoul(timeout, nullptr, 0);
 
-			auto& spoolsz = TUtil::FirstNamedEntry("poolsize", cfgMap, empty);
-			if (spoolsz.length() > 0)
-				_connConfig.DB_POOL_SIZE = std::stoi(spoolsz, nullptr, 0);
+	auto& spoolsz = TUtil::FirstNamedEntry("poolsize", cfgMap, empty);
+	if (spoolsz.length() > 0)
+		_connConfig.DB_POOL_SIZE = std::stoi(spoolsz, nullptr, 0);
 
-			auto& checksql = TUtil::FirstNamedEntry("checksql", cfgMap, empty);
-			if (checksql.length() > 0)
-				_connConfig.DB_CHECKSQL = checksql;
+	auto& checksql = TUtil::FirstNamedEntry("checksql", cfgMap, empty);
+	if (checksql.length() > 0)
+		_connConfig.DB_CHECKSQL = checksql;
 
-			auto& shb = TUtil::FirstNamedEntry("heartbeat", cfgMap, empty);
-			if (shb.length())
-				_connConfig.DB_HEARTBEAT = std::stoi(shb, nullptr, 0);
-		}
-	}
+	auto& shb = TUtil::FirstNamedEntry("heartbeat", cfgMap, empty);
+	if (shb.length())
+		_connConfig.DB_HEARTBEAT = std::stoi(shb, nullptr, 0);
+
+	return true;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -130,26 +128,21 @@ MySqlConnectionManager::MySqlConnectionManager(const ConnectionConfig& connCfg)
 	: AbstractConnectionManager(connCfg)
 {
 	_runing = false;
-	initalPool();
 }
 
 void MySqlConnectionManager::Initialize()
 {
 	if (!_connpool_ptr)
 	{
-		if (_connConfig.DB_URL.length() == 0 ||
-			_connConfig.DB_USER.length() == 0 ||
-			_connConfig.DB_PASSWORD.length() == 0)
-		{
-			LoadConfig(_connConfig.DB_CONFIG_FILE, _connConfig.DB_CONFIG_SECTION);
-		}
-
-		initalPool();
+		InitPool();
 	}
-
 }
 
-void MySqlConnectionManager::initalPool()
+void MySqlConnectionManager::InitializeInstance()
+{
+}
+
+void MySqlConnectionManager::InitPool()
 {
 	std::vector<Connection_Ptr> connvec(_connConfig.DB_POOL_SIZE);
 

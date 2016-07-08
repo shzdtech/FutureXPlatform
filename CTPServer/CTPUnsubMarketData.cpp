@@ -72,7 +72,7 @@ dataobj_ptr CTPUnsubMarketData::HandleResponse(const uint32_t serialId, param_ve
 	ret.reset(stDO);
 	stDO->Data[STR_INSTRUMENT_ID].push_back(pRspInstr->InstrumentID);
 	stDO->SerialId = serialId;
-	stDO->HasMore = *(bool*)rawRespParams[3];
+	stDO->HasMore = !*(bool*)rawRespParams[3];
 	DLOG(INFO) << "UnsubMarketData successful." << std::endl;
 
 	return ret;

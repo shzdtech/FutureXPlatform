@@ -67,7 +67,7 @@ void CTPOTCWorkerProcessor::Initialize(void)
 	CTPMarketDataProcessor::Initialize();
 	_otcTradeProcessor.Initialize();
 
-	LoginIfNeed();
+	LoginSystemUserIfNeed();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -76,7 +76,7 @@ void CTPOTCWorkerProcessor::Initialize(void)
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-int CTPOTCWorkerProcessor::LoginIfNeed(void)
+int CTPOTCWorkerProcessor::LoginSystemUserIfNeed(void)
 {
 	int ret = 0;
 
@@ -90,8 +90,8 @@ int CTPOTCWorkerProcessor::LoginIfNeed(void)
 		ret = ((CTPRawAPI*)getRawAPI())->MdAPI->ReqUserLogin(&req, AppContext::GenNextSeq());
 	}
 
-	if(ret == 0)
-		ret = _otcTradeProcessor.LoginIfNeed();
+	if (ret == 0)
+		ret = _otcTradeProcessor.LoginSystemUserIfNeed();
 
 	return ret;
 }
@@ -131,7 +131,7 @@ int CTPOTCWorkerProcessor::RefreshStrategy(const StrategyContractDO& strategyDO)
 
 		instPtr[i++] = const_cast<char*>(bsContract.InstrumentID().data());
 	}
-	ret = _rawAPI.MdAPI->SubscribeMarketData(instPtr.get(), i);
+	ret = _rawAPI->MdAPI->SubscribeMarketData(instPtr.get(), i);
 
 	return ret;
 }
@@ -142,37 +142,23 @@ void CTPOTCWorkerProcessor::RegisterPricingListener(const ContractKey& contractI
 	_pricingNotifers->add(contractId, pMsgSession);
 }
 
-void CTPOTCWorkerProcessor::UnRegisterPricingListener(const ContractKey & contractId, IMessageSession * pMsgSession)
+void CTPOTCWorkerProcessor::UnregisterPricingListener(const ContractKey & contractId, IMessageSession * pMsgSession)
 {
 	_pricingNotifers->remove(contractId, pMsgSession);
 }
 
-void CTPOTCWorkerProcessor::RegisterOTCOrderListener(const uint64_t orderID,
-	IMessageSession* pMsgSession)
+void CTPOTCWorkerProcessor::RegisterLoggedSession(IMessageSession * pMessageSession)
 {
-	_otcOrderNotifers->add(orderID, pMsgSession);
+	_otcTradeProcessor.RegisterLoggedSession(pMessageSession);
 }
-
-void CTPOTCWorkerProcessor::RegisterOrderListener(const uint64_t orderID,
-	IMessageSession* pMsgSession)
-{
-	_otcTradeProcessor.RegisterOrderListener(orderID, pMsgSession);
-}
-
 
 void CTPOTCWorkerProcessor::TriggerPricing(const StrategyContractDO& strategyDO)
 {
 	if (strategyDO.Enabled)
 	{
-		ScopeLockContext sclcctx;
-		if (auto pNotiferSet = _pricingNotifers->getwithlock(strategyDO, sclcctx))
-		{
-			for (auto pSession : *pNotiferSet)
-			{
-				OnResponseProcMacro(pSession->getProcessor(), MSG_ID_RTN_PRICING,
-					strategyDO.SerialId, &strategyDO);
-			}
-		}
+		_pricingNotifers->foreach(strategyDO, [&strategyDO](IMessageSession* pSession)
+		{OnResponseProcMacro(pSession->getProcessor(),
+			MSG_ID_RTN_PRICING, strategyDO.SerialId, &strategyDO); });
 	}
 }
 
@@ -202,15 +188,10 @@ void CTPOTCWorkerProcessor::TriggerOTCOrderUpdating(const StrategyContractDO& st
 	{
 		for (auto& order : *updatedOrders)
 		{
-			ScopeLockContext sclcctx;
-			if (auto pNotiferSet = _otcOrderNotifers->getwithlock(order.OrderID, sclcctx))
-			{
-				for (auto pSession : *pNotiferSet)
-				{
-					OnResponseProcMacro(pSession->getProcessor(), MSG_ID_ORDER_UPDATE,
-						order.SerialId, &order);
-				}
-			}
+			_otcOrderNotifers->foreach(order.OrderID,
+				[&order](IMessageSession* pSession)
+				{OnResponseProcMacro(pSession->getProcessor(), MSG_ID_ORDER_UPDATE,
+				order.SerialId, &order); });
 		}
 	}
 }

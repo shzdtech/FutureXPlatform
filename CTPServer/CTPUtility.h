@@ -11,6 +11,7 @@
 #include "../message/ISession.h"
 #include "../message/BizError.h"
 #include "../dataobject/OrderDO.h"
+#include "../dataobject/TradeRecordDO.h"
 #include "tradeapi/ThostFtdcUserApiStruct.h"
 #include "ctpexport.h"
 
@@ -26,6 +27,7 @@ public:
 	static OrderDO_Ptr ParseRawOrder(CThostFtdcOrderField *pOrder);
 	static OrderDO_Ptr ParseRawOrderAction(CThostFtdcInputOrderActionField *pOrder, CThostFtdcRspInfoField *pRsp, OrderStatus orderstatus);
 	static OrderDO_Ptr ParseRawOrderInput(CThostFtdcInputOrderField *pOrder, CThostFtdcRspInfoField *pRsp, OrderStatus orderstatus);
+	static TradeRecordDO_Ptr ParseRawTrade(CThostFtdcTradeField *pTrade);
 
 protected:
 private:

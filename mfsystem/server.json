@@ -3,7 +3,7 @@
     "admin": {
       "manage": {
         "port": "31234",
-        "workerthread": "2",
+        "workerthread": "1",
         "timeout": "120",
         "max_msg_size": "0x10000"
       }
@@ -25,13 +25,13 @@
     "otc": {
       "client": {
         "port": "31002",
-        "workerthread": "2",
+        "workerthread": "1",
         "timeout": "120",
         "max_msg_size": "0x10000"
       },
       "tradingdesk": {
         "port": "31003",
-        "workerthread": "2",
+        "workerthread": "1",
         "timeout": "120",
         "max_msg_size": "0x10000"
       }
@@ -39,7 +39,7 @@
     "cts": {
       "client": {
         "port": "31004",
-        "workerthread": "2",
+        "workerthread": "1",
         "timeout": "120",
         "max_msg_size": "0x10000"
       }

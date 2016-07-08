@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "../message/GlobalProcessorRegistry.h"
-#include "CTPWorkerProcessorID.h"
+#include "../CTPServer/CTPWorkerProcessorID.h"
 #include "CTPOTCWorkerProcessor.h"
 #include "../dataobject/OrderDO.h"
 
@@ -31,13 +31,11 @@ dataobj_ptr CTPOTCNewOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawA
 	auto& orderDO = *((OrderDO*)reqDO.get());
 	orderDO.SetUserID(session->getUserInfo()->getUserId());
 	if (auto wkProcPtr = std::static_pointer_cast<CTPOTCWorkerProcessor>
-		(GlobalProcessorRegistry::FindProcessor(CTPWorkProcessorID::WORKPROCESSOR_OTC)))
+		(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::WORKPROCESSOR_OTC)))
 	{
 		int rtn = wkProcPtr->OTCNewOrder(orderDO);
 		if (rtn != 0)
 			throw BizError(rtn, "Creating OTC Order failed", orderDO.SerialId);
-			
-		wkProcPtr->RegisterOTCOrderListener(orderDO.OrderID, (IMessageSession*)session);
 	}
 
 	return reqDO;

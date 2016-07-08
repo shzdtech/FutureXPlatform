@@ -108,9 +108,6 @@
     <ClInclude Include="CTPConstant.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="CTPMDTraderProcessor.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="CTPCancelOrder.h">
       <Filter>头文件\CTPHandler\Trader</Filter>
     </ClInclude>
@@ -121,6 +118,9 @@
       <Filter>头文件\CTPHandler\Trader</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPWorkerProcessorID.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -187,9 +187,6 @@
     </ClCompile>
     <ClCompile Include="CTPNewOrder.cpp">
       <Filter>源文件\CTPHandler\Trader</Filter>
-    </ClCompile>
-    <ClCompile Include="CTPMDTraderProcessor.cpp">
-      <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="CTPCancelOrder.cpp">
       <Filter>源文件\CTPHandler\Trader</Filter>

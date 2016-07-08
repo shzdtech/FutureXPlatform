@@ -58,7 +58,26 @@ bool MicroFurtureSystem::Load(const std::string& config)
 	LOG(INFO) << "Initializing system..." << std::endl;
 
 	if (auto cfgReader = AbstractConfigReaderFactory::OpenConfigReader(config)) {
-		LOG(INFO) << "\tLoading System Config: " << config << std::endl;
+		LOG(INFO) << "  Loading System Config: " << config << std::endl;
+
+		std::vector<std::string> section_vec;
+		// Initialize Databases
+		cfgReader->getVector("system.databases.configs", section_vec);
+		for (auto& dbsection : section_vec)
+		{
+			std::map<std::string, std::string> dbCfgMap;
+			LOG(INFO) << "  Loading database: " << dbsection << " ("<< dbCfgMap["key"] <<")..."<< std::endl;
+			if (cfgReader->getMap("system.databases." + dbsection, dbCfgMap) > 0)
+				AbstractConnectionManager::DefaultInstance()->LoadDbConfig(dbCfgMap);
+			
+			if(auto pConnMgr = AbstractConnectionManager::DefaultInstance()->
+				FindConnectionManager(dbCfgMap["key"]))
+			{
+				pConnMgr->Initialize();
+				LOG(INFO) << "    " << pConnMgr->DBConfig().DB_POOL_SIZE
+					<< " connections have been created in pool." << std::endl;
+			}
+		}
 
 		// Initialize SysParam
 		std::map<std::string, std::string> cfgMap;
@@ -67,9 +86,6 @@ bool MicroFurtureSystem::Load(const std::string& config)
 		auto it = cfgMap.find("mergedbparam");
 		if (it != cfgMap.end())
 		{
-			LOG(INFO) << "\tInitializing Database Pool... " << std::endl;
-			LOG(INFO) << "\t\t" << AbstractConnectionManager::DefaultInstance()->CurrentConfig().DB_POOL_SIZE
-				<< " connections have been created" << std::endl;
 			auto sysparamMap = SysParamsDAO::FindSysParams("%");
 
 			if (stringutility::compare(it->second.data(), "override") == 0)
@@ -79,12 +95,12 @@ bool MicroFurtureSystem::Load(const std::string& config)
 		}
 
 		// Initialize Serializers
-		LOG(INFO) << "\tInitializing DataSerializer..." << std::endl;
-		std::vector<std::string> serialCfgs;
-		cfgReader->getVector("system.serializers.modules", serialCfgs);
-		for (auto& cfg : serialCfgs)
+		LOG(INFO) << "  Initializing DataSerializer..." << std::endl;
+		section_vec.clear();
+		cfgReader->getVector("system.serializers.modules", section_vec);
+		for (auto& cfg : section_vec)
 		{
-			std::map<std::string, std::string> cfgMap;
+			cfgMap.clear();
 			cfgReader->getMap("system.serializers." + cfg, cfgMap);
 
 			MessageSerializerConfig msgSlzCfg;
@@ -95,21 +111,22 @@ bool MicroFurtureSystem::Load(const std::string& config)
 			AbstractDataSerializerFactory::MessageSerializerConfigs.push_back(std::move(msgSlzCfg));
 		}
 
-		LOG(INFO) << '\t' << AbstractDataSerializerFactory::Instance()->CreateDataSerializers().size()
-			<< " DataSerializers have initialized." << std::endl;
+		AbstractDataSerializerFactory::Instance();
+
+		LOG(INFO) << "  DataSerializers have initialized." << std::endl;
 
 		// Initialize Services
 		std::string serve_cfg = cfgReader->getValue("system.service.config");
 		if (cfgReader = AbstractConfigReaderFactory::OpenConfigReader(serve_cfg)) {
-			LOG(INFO) << "\tLoading Service Config: " << serve_cfg << std::endl;
+			LOG(INFO) << "  Loading Service Config: " << serve_cfg << std::endl;
 			std::vector<std::string> sections;
 			cfgReader->getVector("service.servercfg", sections);
 
 			ret = true;
 			for (auto& sec : sections) {
 				bool initserver = false;
-
 				// Initialize Handler Factory
+				cfgMap.clear();
 				cfgReader->getMap(sec, cfgMap);
 				std::string facCfg = cfgMap["factory.config"];
 				std::string facCfgSec = cfgMap["factory.config.section"];
@@ -122,19 +139,34 @@ bool MicroFurtureSystem::Load(const std::string& config)
 						std::string svrClass = cfgMap["server.class.uuid"];
 						std::string svrCfg = cfgMap["server.config"];
 						std::string svrCfgSec = cfgMap["server.config.section"];
-
+						std::string svruri = cfgMap["server.uri"];
+						
 						// Initialize Server
 						if (auto srvPtr = ConfigBasedCreator::CreateInstance(svrUUID, svrModule, svrClass)) {
 							auto server = std::static_pointer_cast<IMessageServer>(srvPtr);
+
 							server->RegisterServiceFactory(msgsvcfactory);
-							std::string svruri = cfgMap["server.uri"];
+							
 							if (server->Initialize(svruri, svrCfg)) {
 								this->_servers.push_back(server);
 								initserver = true;
-								LOG(INFO) << "\tServer " << server->getUri() << " initialized." << std::endl;
+								LOG(INFO) << "  Server " << server->getUri() << " initialized." << std::endl;
+							}
+							else
+							{
+								LOG(ERROR) << "  Server " << server->getUri() << " failed to initialize." << std::endl;
 							}
 						}
+						else
+						{
+							LOG(ERROR) << "  Failed to create server: " << svrUUID  << std::endl;
+						}
 					}
+				}
+				else
+				{
+					LOG(ERROR) << "  Failed to create service factory: " << facCfgSec 
+						<< " from " << facCfg <<std::endl;
 				}
 
 				ret = ret && initserver;
@@ -172,11 +204,11 @@ bool MicroFurtureSystem::Start(void)
 			if (svr->Start())
 			{
 				i++;
-				LOG(INFO) << "\t" << svr->getUri() << " has started." << std::endl;
+				LOG(INFO) << "  " << svr->getUri() << " has started." << std::endl;
 			}
 			else
 			{
-				LOG(ERROR) << "\t" << svr->getUri() << " failed to start!" << std::endl;
+				LOG(ERROR) << "  " << svr->getUri() << " failed to start!" << std::endl;
 			}
 		}
 		LOG(INFO) << i << " servers started running." << std::endl;
@@ -205,11 +237,11 @@ bool MicroFurtureSystem::Stop(void)
 		if (svr->Stop())
 		{
 			i++;
-			LOG(INFO) << "\t" << svr->getUri() << " has stopped." << std::endl;
+			LOG(INFO) << "  " << svr->getUri() << " has stopped." << std::endl;
 		}
 		else
 		{
-			LOG(ERROR) << "\t" << svr->getUri() << " failed to stop!" << std::endl;
+			LOG(ERROR) << "  " << svr->getUri() << " failed to stop!" << std::endl;
 		}
 		svr->Stop();
 	}

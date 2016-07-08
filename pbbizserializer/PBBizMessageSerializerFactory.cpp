@@ -69,7 +69,7 @@ PBBizMessageSerializerFactory::~PBBizMessageSerializerFactory()
 // Return:     std::map<uint, IDataSerializer_Ptr>
 ////////////////////////////////////////////////////////////////////////
 
-std::map<unsigned int, IDataSerializer_Ptr> PBBizMessageSerializerFactory::CreateDataSerializers(void)
+void PBBizMessageSerializerFactory::CreateDataSerializers(std::map<uint32_t, IDataSerializer_Ptr>& serializerMap)
 {
-	return _serializer_map;
+	serializerMap.insert(_serializer_map.begin(), _serializer_map.end());
 }

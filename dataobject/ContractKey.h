@@ -67,8 +67,6 @@ private:
 class UserKey
 {
 public:
-	UserKey() {};
-
 	UserKey(const std::string& userID) : _userID(userID) {};
 	UserKey(const char* userID) : _userID(userID) {};
 

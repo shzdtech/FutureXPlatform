@@ -46,7 +46,9 @@ std::map<uint, IMessageHandler_Ptr> CTSServiceFactory::CreateMessageHandlers(voi
 
 std::map<uint, IDataSerializer_Ptr> CTSServiceFactory::CreateDataSerializers(void)
 {
-	return AbstractDataSerializerFactory::Instance()->CreateDataSerializers();
+	std::map<uint, IDataSerializer_Ptr> ret;
+	AbstractDataSerializerFactory::Instance()->CreateDataSerializers(ret);
+	return ret;
 }
 
 ////////////////////////////////////////////////////////////////////////

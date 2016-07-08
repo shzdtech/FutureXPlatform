@@ -10,7 +10,7 @@
 #include "../common/Attribute_Key.h"
 #include "../message/GlobalProcessorRegistry.h"
 #include "CTPOTCWorkerProcessor.h"
-#include "CTPWorkerProcessorID.h"
+#include "../CTPServer/CTPWorkerProcessorID.h"
 
 #include "../message/BizError.h"
 #include "../message/message_macro.h"
@@ -38,7 +38,7 @@ dataobj_ptr CTPOTCUpdateStrategy::HandleRequest(const dataobj_ptr reqDO, IRawAPI
 	auto strategyVec = (VectorDO<StrategyContractDO>*)reqDO.get();
 
 	auto proc = std::static_pointer_cast<CTPOTCWorkerProcessor>
-		(GlobalProcessorRegistry::FindProcessor(CTPWorkProcessorID::WORKPROCESSOR_OTC));
+		(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::WORKPROCESSOR_OTC));
 
 	auto userContractMap_Ptr = std::static_pointer_cast<UserContractParamMap>
 		(session->getContext()->getAttribute(STR_KEY_USER_CONTRACTS));

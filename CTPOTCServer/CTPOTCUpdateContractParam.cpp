@@ -7,7 +7,7 @@
 
 #include "CTPOTCUpdateContractParam.h"
 #include "CTPOTCWorkerProcessor.h"
-#include "CTPWorkerProcessorID.h"
+#include "../CTPServer/CTPWorkerProcessorID.h"
 
 
 #include "../message/GlobalProcessorRegistry.h"
@@ -48,7 +48,7 @@ dataobj_ptr CTPOTCUpdateContractParam::HandleRequest(const dataobj_ptr reqDO, IR
 	auto contractMap = pricingCtx->GetContractMap();
 
 	auto proc = std::static_pointer_cast<CTPOTCWorkerProcessor>
-		(GlobalProcessorRegistry::FindProcessor(CTPWorkProcessorID::WORKPROCESSOR_OTC));
+		(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::WORKPROCESSOR_OTC));
 
 	for (auto& conDO : *vecConDO_Ptr)
 	{

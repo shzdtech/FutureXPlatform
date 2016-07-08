@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "../message/GlobalProcessorRegistry.h"
-#include "CTPWorkerProcessorID.h"
+#include "../CTPServer/CTPWorkerProcessorID.h"
 #include "CTPOTCWorkerProcessor.h"
 #include "../dataobject/OrderDO.h"
 
@@ -30,7 +30,7 @@ dataobj_ptr CTPOTCCancelOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* r
 	auto& orderDO = *((OrderDO*)reqDO.get());
 	
 	if(auto wkProcPtr = std::static_pointer_cast<CTPOTCWorkerProcessor>
-		(GlobalProcessorRegistry::FindProcessor(CTPWorkProcessorID::WORKPROCESSOR_OTC)))
+		(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::WORKPROCESSOR_OTC)))
 	{
 		wkProcPtr->OTCCancelOrder(orderDO);
 	}

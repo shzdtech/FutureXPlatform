@@ -45,7 +45,9 @@ std::map<uint, IMessageHandler_Ptr> AdminMessageServiceFactory::CreateMessageHan
 
 std::map<uint, IDataSerializer_Ptr> AdminMessageServiceFactory::CreateDataSerializers(void)
 {
-	return AbstractDataSerializerFactory::Instance()->CreateDataSerializers();
+	std::map<uint, IDataSerializer_Ptr> ret;
+	AbstractDataSerializerFactory::Instance()->CreateDataSerializers(ret);
+	return ret;
 }
 
 ////////////////////////////////////////////////////////////////////////

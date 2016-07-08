@@ -23,19 +23,20 @@ class MySqlConnectionManager : public AbstractConnectionManager,
 	public singleton_mt_ptr < MySqlConnectionManager >
 {
 public:
-	void LoadConfig(const std::string& config, const std::string& section);
+	bool LoadDbConfig(const std::map<std::string, std::string>& cfgMap);
 	Connection_Ptr CreateConnection(void);
 	ManagedSession_Ptr LeaseOrCreate(void);
 	MySqlConnectionManager();
 	~MySqlConnectionManager();
 	MySqlConnectionManager(const ConnectionConfig& connCfg);
 	virtual void Initialize();
+	virtual void InitializeInstance();
 	void CheckStatus();
 
 protected:
 
 private:
-	void initalPool();
+	void InitPool();
 
 	std::shared_ptr<connection_pool<sql::Connection>> _connpool_ptr;
 	bool _runing;

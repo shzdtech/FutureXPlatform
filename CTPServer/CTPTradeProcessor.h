@@ -15,11 +15,11 @@ class CTP_CLASS_EXPORT CTPTradeProcessor : public CTPProcessor, public CThostFtd
 {
 public:
 	CTPTradeProcessor(const std::map<std::string, std::string>& configMap);
+	CTPTradeProcessor(const CTPRawAPI_Ptr& rawAPI);
 	~CTPTradeProcessor();
 	void Initialize(void);
 
 protected:
-	
 
 private:
 

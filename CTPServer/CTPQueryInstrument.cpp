@@ -97,7 +97,7 @@ dataobj_ptr CTPQueryInstrument::HandleResponse(const uint32_t serialId, param_ve
 			insDO.ExpireDate = pData->ExpireDate;
 			insDO.StartDelivDate = pData->StartDelivDate;
 			insDO.EndDelivDate = pData->EndDelivDate;
-			insDO.LifePhase = pData->InstLifePhase;
+			insDO.LifePhase = (LifePhaseType)(pData->InstLifePhase - THOST_FTDC_IP_NotStart);
 			insDO.IsTrading = pData->IsTrading;
 			insDO.PositionType = (PositionType)(pData->PositionType - THOST_FTDC_PT_Net);
 			insDO.PositionDateType = (PositionDateType)(pData->PositionDateType - THOST_FTDC_PDT_UseHistory);
@@ -115,6 +115,6 @@ dataobj_ptr CTPQueryInstrument::HandleResponse(const uint32_t serialId, param_ve
 		ret = std::make_shared<VectorDO<InstrumentDO>>();
 	
 	ret->SerialId = serialId;
-	ret->HasMore = *(bool*)rawRespParams[3];
+	ret->HasMore = !*(bool*)rawRespParams[3];
 	return ret;
 }

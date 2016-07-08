@@ -26,7 +26,7 @@ public:
    void setSession(IMessageSession* msgSession);
    void Initialize(void);
 
-   int LoginIfNeed(void);
+   int LoginSystemUserIfNeed(void);
   
    int RefreshStrategy(const StrategyContractDO& strategyDO);
    void AddContractToMonitor(const ContractKey& contractId);
@@ -38,12 +38,10 @@ public:
    
    void RegisterPricingListener(const ContractKey& contractId,
 	   IMessageSession* pMsgSession);
-   void UnRegisterPricingListener(const ContractKey& contractId,
+   void UnregisterPricingListener(const ContractKey& contractId,
 	   IMessageSession* pMsgSession);
-   void RegisterOTCOrderListener(const uint64_t orderID,
-	   IMessageSession* pMsgSession);
-   void RegisterOrderListener(const uint64_t orderID,
-	   IMessageSession* pMsgSession);
+
+   void RegisterLoggedSession(IMessageSession* pMessageSession);
 
    void CancelAutoOrder(const UserContractKey& userContractKey);
    int OTCNewOrder(OrderDO& orderReq);

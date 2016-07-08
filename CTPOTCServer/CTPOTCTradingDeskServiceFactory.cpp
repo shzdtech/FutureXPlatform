@@ -9,7 +9,7 @@
 #include "CTPOTCWorkerProcessor.h"
 #include "CTPOTCTradingDeskProcessor.h"
 
-#include "CTPWorkerProcessorID.h"
+#include "../CTPServer/CTPWorkerProcessorID.h"
 #include "ctpotc_bizhandlers.h"
 #include "../CTPServer/ctp_bizhandlers.h"
 #include "../message/GlobalProcessorRegistry.h"
@@ -71,7 +71,9 @@ std::map<uint, IMessageHandler_Ptr> CTPOTCTradingDeskServiceFactory::CreateMessa
 
 std::map<uint, IDataSerializer_Ptr> CTPOTCTradingDeskServiceFactory::CreateDataSerializers(void)
 {
-	return AbstractDataSerializerFactory::Instance()->CreateDataSerializers();
+	std::map<uint, IDataSerializer_Ptr> ret;
+	AbstractDataSerializerFactory::Instance()->CreateDataSerializers(ret);
+	return ret;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -83,7 +85,7 @@ std::map<uint, IDataSerializer_Ptr> CTPOTCTradingDeskServiceFactory::CreateDataS
 IMessageProcessor_Ptr CTPOTCTradingDeskServiceFactory::CreateMessageProcessor(void)
 {
 	auto ret = std::make_shared<CTPOTCTradingDeskProcessor>(_configMap);
-	ret->Intialize();
+	ret->Initialize();
 	return ret;
 }
 
@@ -98,16 +100,16 @@ std::map<std::string, IProcessorBase_Ptr> CTPOTCTradingDeskServiceFactory::Creat
 	std::map<std::string, IProcessorBase_Ptr> workerProcMap;
 	IProcessorBase_Ptr prcPtr;
 
-	if (!(prcPtr = GlobalProcessorRegistry::FindProcessor(CTPWorkProcessorID::WORKPROCESSOR_OTC)))
+	if (!(prcPtr = GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::WORKPROCESSOR_OTC)))
 	{
 		auto worker_ptr = std::make_shared<CTPOTCWorkerProcessor>(_configMap, 
 			std::static_pointer_cast<IPricingDataContext>
 			(_serverCtx->getAttribute(STR_KEY_SERVER_PRICING_DATACONTEXT)).get());
 		worker_ptr->Initialize();
-		GlobalProcessorRegistry::RegisterProcessor(CTPWorkProcessorID::WORKPROCESSOR_OTC, worker_ptr);
+		GlobalProcessorRegistry::RegisterProcessor(CTPWorkerProcessorID::WORKPROCESSOR_OTC, worker_ptr);
 		prcPtr = worker_ptr;
 	}
-	workerProcMap[CTPWorkProcessorID::WORKPROCESSOR_OTC] = prcPtr;
+	workerProcMap[CTPWorkerProcessorID::WORKPROCESSOR_OTC] = prcPtr;
 
 	return workerProcMap;
 }

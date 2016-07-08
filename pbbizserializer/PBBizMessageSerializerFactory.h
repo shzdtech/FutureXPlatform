@@ -18,7 +18,7 @@ class PBBIZSERIALIZER_CLASS_EXPORTS PBBizMessageSerializerFactory : public Abstr
 public:
 	PBBizMessageSerializerFactory();
 	~PBBizMessageSerializerFactory();
-	std::map<unsigned int, IDataSerializer_Ptr> CreateDataSerializers(void);
+	void CreateDataSerializers(std::map<uint32_t, IDataSerializer_Ptr>& serializerMap);
 
 protected:
 private:

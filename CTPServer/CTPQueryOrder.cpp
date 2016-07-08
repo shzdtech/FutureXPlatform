@@ -77,7 +77,7 @@ dataobj_ptr CTPQueryOrder::HandleResponse(const uint32_t serialId, param_vector&
 		{
 			if (auto pRsp = (CThostFtdcRspInfoField*)rawRespParams[1])
 				ret->ErrorCode = pRsp->ErrorID;
-			ret->HasMore = *(bool*)rawRespParams[3];
+			ret->HasMore = !*(bool*)rawRespParams[3];
 		}
 	}
 

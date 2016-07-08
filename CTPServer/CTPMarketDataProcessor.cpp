@@ -6,6 +6,7 @@
  ***********************************************************************/
 
 #include <glog/logging.h>
+#include <thread>
 #include "CTPMarketDataProcessor.h"
 #include "CTPUtility.h"
 #include "../message/DefMessageID.h"
@@ -31,8 +32,6 @@ CTPMarketDataProcessor::CTPMarketDataProcessor(const std::map<std::string, std::
 
 CTPMarketDataProcessor::~CTPMarketDataProcessor() {
 	DLOG(INFO) << __FUNCTION__ << std::endl;
-	if (_rawAPI.MdAPI)
-		_rawAPI.MdAPI->Release();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -42,19 +41,20 @@ CTPMarketDataProcessor::~CTPMarketDataProcessor() {
 ////////////////////////////////////////////////////////////////////////
 
 void CTPMarketDataProcessor::Initialize(void) {
-	_rawAPI.MdAPI = CThostFtdcMdApi::CreateFtdcMdApi();
-	if (_rawAPI.MdAPI) {
-		_rawAPI.MdAPI->RegisterSpi(this);
+	if (!_rawAPI->MdAPI) {
+		_rawAPI->MdAPI = CThostFtdcMdApi::CreateFtdcMdApi();
+		_rawAPI->MdAPI->RegisterSpi(this);
 		std::string frontserver = _configMap[STR_FRONT_SERVER];
-		_rawAPI.MdAPI->RegisterFront(const_cast<char*> (frontserver.data()));
-		_rawAPI.MdAPI->Init();
+		_rawAPI->MdAPI->RegisterFront(const_cast<char*> (frontserver.data()));
+		_rawAPI->MdAPI->Init();
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
 }
 
 int CTPMarketDataProcessor::Login(CThostFtdcReqUserLoginField* loginInfo, uint32_t serialId)
 {
 	_lastLoginSerialId = serialId;
-	return _rawAPI.MdAPI->ReqUserLogin(loginInfo, _lastLoginSerialId);
+	return _rawAPI->MdAPI->ReqUserLogin(loginInfo, _lastLoginSerialId);
 }
 
 void CTPMarketDataProcessor::OnRspError(CThostFtdcRspInfoField *pRspInfo,

@@ -9,7 +9,7 @@
 #include "ctpotc_bizhandlers.h"
 #include "../CTPServer/CTPMarketDataProcessor.h"
 #include "CTPOTCWorkerProcessor.h"
-#include "CTPWorkerProcessorID.h"
+#include "../CTPServer/CTPWorkerProcessorID.h"
 #include "../CTPServer/ctp_bizhandlers.h"
 
 #include "../message/EchoMsgHandler.h"
@@ -61,7 +61,9 @@ std::map<uint, IMessageHandler_Ptr> CTPOTCClientServiceFactory::CreateMessageHan
 
 std::map<uint, IDataSerializer_Ptr> CTPOTCClientServiceFactory::CreateDataSerializers(void)
 {
-	return AbstractDataSerializerFactory::Instance()->CreateDataSerializers();
+	std::map<uint, IDataSerializer_Ptr> ret;
+	AbstractDataSerializerFactory::Instance()->CreateDataSerializers(ret);
+	return ret;
 }
 
 ////////////////////////////////////////////////////////////////////////

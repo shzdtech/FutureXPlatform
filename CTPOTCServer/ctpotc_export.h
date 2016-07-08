@@ -20,6 +20,7 @@
 
 static const char* UUID_OTC_CLIENT_FACTORY = "factory.otc.client.service";
 static const char* UUID_OTC_TRADINGDESK_FACTORY = "factory.otc.tradingdesk.service";
+static const char* UUID_SINGLE_ACCOUNT_CTP_TRADE_FACTORY = "factory.singleaccount.ctp.trade.service";
 
 #endif	/* CTPEXPORT_H */
 

@@ -12,13 +12,13 @@ public:
 		if (!_instance) {
 			std::call_once(_instance_flag, []{
 				_instance.reset(new T);
-				_instance->Initialize();
+				_instance->InitializeInstance();
 			});
 		}
 		return _instance;
 	}
 
-	virtual void Initialize() = 0;
+	virtual void InitializeInstance() = 0;
 
 protected:
 	singleton_mt_ptr(){}

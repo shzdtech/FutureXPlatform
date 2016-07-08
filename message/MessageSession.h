@@ -28,8 +28,8 @@ public:
 	void RegistProcessor(IMessageProcessor_Ptr msgprocessor_ptr);
 	bool Start(void) { return false; }
 	bool Close(void);
-	int WriteMessage(const uint msgId, const data_buffer& msg) { return 0; }
-	int WriteMessage(const data_buffer& msg) { return 0; }
+	virtual int WriteMessage(const uint msgId, const data_buffer& msg) { return 0; }
+	virtual int WriteMessage(const data_buffer& msg) { return 0; }
 	void setTimeout(long seconds);
 	IContextAttribute_Ptr getContext(void);
 	bool IsLogin(void);

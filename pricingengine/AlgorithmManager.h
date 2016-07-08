@@ -17,7 +17,7 @@ class PRICINGENGINE_CLASS_EXPORTS AlgorithmManager : public singleton_mt_ptr<Alg
 {
 public:
    IAlgorithm_Ptr FindAlgorithm(const std::string& name) const;
-   void Initialize();
+   void InitializeInstance();
 
 protected:
 

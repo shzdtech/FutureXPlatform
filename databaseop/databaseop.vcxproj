@@ -194,11 +194,6 @@
     <ClCompile Include="UserInfoDAO.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\configuration\configuration.vcxproj">
-      <Project>{6ca92597-54a1-435d-b200-41860f096abc}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="databaseop.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

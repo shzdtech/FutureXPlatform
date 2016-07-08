@@ -56,7 +56,7 @@ dataobj_ptr CTPLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* raw
 	pUserInfo->setBrokerId(req.BrokerID);
 	pUserInfo->setName(userid);
 	pUserInfo->setPassword(password);
-	pUserInfo->setUserId(userid);
+	pUserInfo->setUserId(req.UserID);
 	pUserInfo->setRole(ROLE_CLIENT);
 	pUserInfo->setPermission(ALLOW_TRADING);
 

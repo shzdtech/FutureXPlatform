@@ -7,12 +7,18 @@
 
 #include "CTPQueryExchange.h"
 #include "CTPRawAPI.h"
+#include "CTPTradeWorkerProcessor.h"
+#include "CTPWorkerProcessorID.h"
+
+#include "../message/GlobalProcessorRegistry.h"
+#include "../common/BizErrorIDs.h"
 
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/FieldName.h"
 #include "../dataobject/ExchangeDO.h"
 
 #include "../message/BizError.h"
+#include "../message/DefMessageID.h"
 
 #include "../utility/Encoding.h"
 #include "../utility/TUtil.h"
@@ -20,15 +26,15 @@
 
 
 #include "CTPUtility.h"
-////////////////////////////////////////////////////////////////////////
-// Name:       CTPQueryExchange::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTPQueryExchange::HandleRequest()
-// Parameters:
-// - reqDO
-// - rawAPI
-// - session
-// Return:     void
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       CTPQueryExchange::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+ // Purpose:    Implementation of CTPQueryExchange::HandleRequest()
+ // Parameters:
+ // - reqDO
+ // - rawAPI
+ // - session
+ // Return:     void
+ ////////////////////////////////////////////////////////////////////////
 
 dataobj_ptr CTPQueryExchange::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
@@ -37,9 +43,57 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 
 	CThostFtdcQryExchangeField req;
 	std::memset(&req, 0, sizeof(req));
-	std::strcpy(req.ExchangeID, exchangeid.data());
-	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryExchange(&req, reqDO->SerialId);
-	CTPUtility::CheckReturnError(iRet);
+
+	if (auto wkProcPtr = std::static_pointer_cast<CTPTradeWorkerProcessor>
+		(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT)))
+	{
+		auto& exchangeInfo = wkProcPtr->GetExchangeInfo();
+
+		if (exchangeInfo.size() < 1)
+		{
+			int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryExchange(&req, reqDO->SerialId);
+			CTPUtility::CheckReturnError(iRet);
+
+			std::this_thread::sleep_for(std::chrono::seconds(3));
+		}
+
+		if (exchangeInfo.size() > 0)
+		{
+			if (exchangeid != EMPTY_STRING)
+			{
+				ExchangeDO exchangeDO;
+				exchangeDO.ExchangeID = exchangeid;
+				auto it = exchangeInfo.find(exchangeDO);
+				if (it != exchangeInfo.end())
+				{ 
+					wkProcPtr->SendDataObject(session, MSG_ID_QUERY_EXCHANGE,
+						std::make_shared<ExchangeDO>(*it));
+				}
+				else
+				{
+					throw BizError(OBJECT_NOT_FOUND, exchangeid + " does not exist!");
+				}
+			}
+			else
+			{
+				auto lastit = std::prev(exchangeInfo.end());
+				for (auto it = exchangeInfo.begin(); it != exchangeInfo.end(); it++)
+				{
+					auto exchangeDO_Ptr = std::make_shared<ExchangeDO>(*it);
+					exchangeDO_Ptr->SerialId = stdo->SerialId;
+					if (it == lastit)
+						exchangeDO_Ptr->HasMore = true;
+					wkProcPtr->SendDataObject(session, MSG_ID_QUERY_EXCHANGE, exchangeDO_Ptr);
+				}
+			}
+		}
+	}
+	else
+	{
+		int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryExchange(&req, reqDO->SerialId);
+		CTPUtility::CheckReturnError(iRet);
+	}
+
 
 	return nullptr;
 }
@@ -70,6 +124,16 @@ dataobj_ptr CTPQueryExchange::HandleResponse(const uint32_t serialId, param_vect
 		pDO->ExchangeID = Encoding::ToUTF8(pData->ExchangeID, CHARSET_GB2312);
 		pDO->Name = Encoding::ToUTF8(pData->ExchangeName, CHARSET_GB2312);
 		pDO->Property = pData->ExchangeProperty;
+
+		if (auto wkProcPtr = std::static_pointer_cast<CTPTradeWorkerProcessor>
+			(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT)))
+		{
+			auto& exchangeSet = wkProcPtr->GetExchangeInfo();
+			if (exchangeSet.find(*pDO) == exchangeSet.end())
+			{
+				exchangeSet.insert(*pDO);
+			}
+		}
 	}
 
 	return ret;

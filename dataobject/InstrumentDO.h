@@ -28,7 +28,7 @@ public:
 	std::string ExpireDate;
 	std::string StartDelivDate;
 	std::string EndDelivDate;
-	std::string LifePhase;
+	LifePhaseType LifePhase;
 	PositionType PositionType;
 	PositionDateType PositionDateType;
 	std::string MaxMarginSideAlgorithm;

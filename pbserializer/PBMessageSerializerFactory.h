@@ -16,7 +16,7 @@ class PBSERIALIZER_CLASS_EXPORTS PBMessageSerializerFactory : public AbstractDat
 public:
 	PBMessageSerializerFactory();
 	~PBMessageSerializerFactory();
-	std::map<unsigned int, IDataSerializer_Ptr> CreateDataSerializers(void);
+	void CreateDataSerializers(std::map<uint32_t, IDataSerializer_Ptr>& serializerMap);
 
 protected:
 private:

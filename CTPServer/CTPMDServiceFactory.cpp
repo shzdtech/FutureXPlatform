@@ -48,7 +48,9 @@ std::map<uint, IMessageHandler_Ptr> CTPMDServiceFactory::CreateMessageHandlers(v
 
 std::map<uint, IDataSerializer_Ptr> CTPMDServiceFactory::CreateDataSerializers(void)
 {
-	return AbstractDataSerializerFactory::Instance()->CreateDataSerializers();
+	std::map<uint, IDataSerializer_Ptr> ret;
+	AbstractDataSerializerFactory::Instance()->CreateDataSerializers(ret);
+	return ret;
 }
 
 ////////////////////////////////////////////////////////////////////////

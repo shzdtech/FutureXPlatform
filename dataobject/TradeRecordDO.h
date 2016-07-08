@@ -40,4 +40,6 @@ private:
 
 };
 
+typedef std::shared_ptr<TradeRecordDO> TradeRecordDO_Ptr;
+
 #endif

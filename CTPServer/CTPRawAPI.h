@@ -8,6 +8,7 @@
 #if !defined(__CTP_CTPRawAPI_h)
 #define __CTP_CTPRawAPI_h
 
+#include <memory>
 #include "../message/IRawAPI.h"
 #include "tradeapi/ThostFtdcMdApi.h"
 #include "tradeapi/ThostFtdcTraderApi.h"
@@ -15,14 +16,20 @@
 class CTPRawAPI : public IRawAPI
 {
 public:
-	CTPRawAPI(){ MdAPI = nullptr; TrdAPI = nullptr; }
+	~CTPRawAPI()
+	{
+		if (MdAPI) MdAPI->Release();
+		if (TrdAPI) TrdAPI->Release();
+	}
 
-	CThostFtdcMdApi* MdAPI;
-	CThostFtdcTraderApi* TrdAPI;
+	CThostFtdcMdApi* MdAPI = nullptr;
+	CThostFtdcTraderApi* TrdAPI = nullptr;
 
 protected:
 private:
 
 };
+
+typedef std::shared_ptr<CTPRawAPI> CTPRawAPI_Ptr;
 
 #endif

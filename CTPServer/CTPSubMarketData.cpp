@@ -83,7 +83,7 @@ dataobj_ptr CTPSubMarketData::HandleResponse(const uint32_t serialId, param_vect
 
 	VectorDO_Ptr<MarketDataDO> ret = std::make_shared<VectorDO<MarketDataDO>>();
 	ret->SerialId = serialId;
-	ret->HasMore = *(bool*)rawRespParams[3];
+	ret->HasMore = !*(bool*)rawRespParams[3];
 
 	if (auto pRspInstr = (CThostFtdcSpecificInstrumentField*)rawRespParams[0])
 	{

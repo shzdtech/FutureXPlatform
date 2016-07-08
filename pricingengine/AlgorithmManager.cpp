@@ -30,7 +30,7 @@ IAlgorithm_Ptr AlgorithmManager::FindAlgorithm(const std::string& name) const
 	return ret;
 }
 
-void AlgorithmManager::Initialize()
+void AlgorithmManager::InitializeInstance()
 {
 	auto algVect = PricingAlgorithmFactory().CreateAlgorithms();
 

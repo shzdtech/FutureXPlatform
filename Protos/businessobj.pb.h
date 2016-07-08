@@ -2918,16 +2918,11 @@ class PBContractInfo : public ::google::protobuf::Message {
   ::std::string* release_enddelivdate();
   void set_allocated_enddelivdate(::std::string* enddelivdate);
 
-  // optional string lifePhase = 19;
+  // optional int32 lifePhase = 19;
   void clear_lifephase();
   static const int kLifePhaseFieldNumber = 19;
-  const ::std::string& lifephase() const;
-  void set_lifephase(const ::std::string& value);
-  void set_lifephase(const char* value);
-  void set_lifephase(const char* value, size_t size);
-  ::std::string* mutable_lifephase();
-  ::std::string* release_lifephase();
-  void set_allocated_lifephase(::std::string* lifephase);
+  ::google::protobuf::int32 lifephase() const;
+  void set_lifephase(::google::protobuf::int32 value);
 
   // optional int32 isTrading = 20;
   void clear_istrading();
@@ -3000,16 +2995,16 @@ class PBContractInfo : public ::google::protobuf::Message {
   ::google::protobuf::internal::ArenaStringPtr opendate_;
   ::google::protobuf::internal::ArenaStringPtr expiredate_;
   ::google::protobuf::int32 pricetick_;
-  ::google::protobuf::int32 istrading_;
+  ::google::protobuf::int32 lifephase_;
   ::google::protobuf::internal::ArenaStringPtr startdelivdate_;
   ::google::protobuf::internal::ArenaStringPtr enddelivdate_;
-  ::google::protobuf::internal::ArenaStringPtr lifephase_;
+  ::google::protobuf::int32 istrading_;
   ::google::protobuf::int32 positiontype_;
-  ::google::protobuf::int32 positiondatetype_;
   double longmarginratio_;
   double shortmarginratio_;
   ::google::protobuf::internal::ArenaStringPtr maxmarginsidealgorithm_;
   ::Micro::Future::Message::DataHeader* header_;
+  ::google::protobuf::int32 positiondatetype_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
@@ -7642,48 +7637,18 @@ inline void PBContractInfo::set_allocated_enddelivdate(::std::string* enddelivda
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBContractInfo.endDelivDate)
 }
 
-// optional string lifePhase = 19;
+// optional int32 lifePhase = 19;
 inline void PBContractInfo::clear_lifephase() {
-  lifephase_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  lifephase_ = 0;
 }
-inline const ::std::string& PBContractInfo::lifephase() const {
+inline ::google::protobuf::int32 PBContractInfo::lifephase() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBContractInfo.lifePhase)
-  return lifephase_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  return lifephase_;
 }
-inline void PBContractInfo::set_lifephase(const ::std::string& value) {
+inline void PBContractInfo::set_lifephase(::google::protobuf::int32 value) {
   
-  lifephase_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  lifephase_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBContractInfo.lifePhase)
-}
-inline void PBContractInfo::set_lifephase(const char* value) {
-  
-  lifephase_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBContractInfo.lifePhase)
-}
-inline void PBContractInfo::set_lifephase(const char* value, size_t size) {
-  
-  lifephase_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBContractInfo.lifePhase)
-}
-inline ::std::string* PBContractInfo::mutable_lifephase() {
-  
-  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBContractInfo.lifePhase)
-  return lifephase_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* PBContractInfo::release_lifephase() {
-  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBContractInfo.lifePhase)
-  
-  return lifephase_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void PBContractInfo::set_allocated_lifephase(::std::string* lifephase) {
-  if (lifephase != NULL) {
-    
-  } else {
-    
-  }
-  lifephase_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), lifephase);
-  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBContractInfo.lifePhase)
 }
 
 // optional int32 isTrading = 20;

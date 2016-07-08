@@ -2,6 +2,8 @@
 #define __databaseop_AbstractConnectionManager_h
 
 #include <memory>
+#include <vector>
+#include <map>
 #include "db_config.h"
 #include "databaseop_exp.h"
 
@@ -12,15 +14,14 @@ public:
 	AbstractConnectionManager(const ConnectionConfig& connCfg);
 	~AbstractConnectionManager();
 
+	static AbstractConnectionManager* FindConnectionManager(const std::string& key);
 	static AbstractConnectionManager* DefaultInstance();
 
-	static ConnectionConfig DEFAULT_CONFIG;
+	const ConnectionConfig& DBConfig();
 
-	virtual void LoadConfig(const std::string& config, const std::string& section) = 0;
-	const ConnectionConfig& CurrentConfig();
-
-	virtual void Initialize() = 0;
-	virtual void CheckStatus() = 0;
+	virtual bool LoadDbConfig(const std::map<std::string, std::string>& cfgMap);
+	virtual void Initialize();
+	virtual void CheckStatus();
 
 protected:
 	ConnectionConfig _connConfig;

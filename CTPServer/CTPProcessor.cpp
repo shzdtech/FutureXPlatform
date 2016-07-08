@@ -16,10 +16,14 @@
 ////////////////////////////////////////////////////////////////////////
 
 CTPProcessor::CTPProcessor(const std::map<std::string, std::string>& configMap)
-	:_configMap(configMap)
+	:_isLogged(false), _configMap(configMap), _rawAPI(new CTPRawAPI)
 {
-	_isLogged = false;
 }
+
+ CTPProcessor::CTPProcessor(const CTPRawAPI_Ptr& rawAPI)
+ {
+	 _rawAPI = rawAPI;
+ }
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPProcessor::getRawAPI()
@@ -29,7 +33,7 @@ CTPProcessor::CTPProcessor(const std::map<std::string, std::string>& configMap)
 
 IRawAPI* CTPProcessor::getRawAPI(void)
 {
-	return &_rawAPI;
+	return _rawAPI.get();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -40,4 +44,14 @@ IRawAPI* CTPProcessor::getRawAPI(void)
 
 void CTPProcessor::Initialize(void)
 {
+}
+
+bool CTPProcessor::HasLogged(void)
+{
+	return _isLogged;
+}
+
+CTPRawAPI_Ptr& CTPProcessor::RawAPI_Ptr(void)
+{
+	return _rawAPI;
 }

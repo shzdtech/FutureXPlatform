@@ -9,6 +9,7 @@
 #define __dataobject_AbstractDataSerializerFactory_h
 
 #include <memory>
+#include <vector>
 #include "IDataSerializerFactory.h"
 #include "databoject_config.h"
 #include "dataobject_exp.h"
@@ -18,13 +19,14 @@ static const char* CLASS_UUID_MSG_SERIALIZER_FACTORY = "factory.message.serializ
 class DATAOBJECT_CLASS_EXPORT AbstractDataSerializerFactory : public IDataSerializerFactory
 {
 public:
-	std::map<unsigned int, IDataSerializer_Ptr> CreateDataSerializers(void);
+	void CreateDataSerializers(std::map<uint32_t, IDataSerializer_Ptr>& serializerMap);
 	IDataSerializer_Ptr Find(uint32_t msgId);
 	static std::shared_ptr<AbstractDataSerializerFactory> Instance(void);
 	static std::vector<MessageSerializerConfig> MessageSerializerConfigs;
 
 protected:
 	std::map<uint32_t, IDataSerializer_Ptr> _serializer_map;
+	std::vector<std::shared_ptr<AbstractDataSerializerFactory>> _abstractSerialFactories;
 
 private:
 };

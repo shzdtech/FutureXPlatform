@@ -48,7 +48,9 @@ std::map<uint, IMessageHandler_Ptr> TestingMessageServiceFactory::CreateMessageH
 
 std::map<uint, IDataSerializer_Ptr> TestingMessageServiceFactory::CreateDataSerializers(void)
 {
-	return AbstractDataSerializerFactory::Instance()->CreateDataSerializers();
+	std::map<uint, IDataSerializer_Ptr> ret;
+	AbstractDataSerializerFactory::Instance()->CreateDataSerializers(ret);
+	return ret;
 }
 
 ////////////////////////////////////////////////////////////////////////

@@ -84,4 +84,16 @@ enum ProductType
 	PRODUCT_SPOTOPTION = 5
 };
 
+enum LifePhaseType
+{
+	///未上市
+	PHASE_NOTSTART = 0,
+	///上市
+	PHASE_STARTED = 1,
+	///停牌
+	PHASE_PAUSE = 2,
+	///到期
+	PHASE_EXPIRED = 3,
+};
+
 #endif

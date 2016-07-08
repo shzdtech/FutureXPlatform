@@ -162,7 +162,6 @@
     <ClInclude Include="CTPMarketDataProcessor.h" />
     <ClInclude Include="CTPMDLoginHandler.h" />
     <ClInclude Include="CTPMDServiceFactory.h" />
-    <ClInclude Include="CTPMDTraderProcessor.h" />
     <ClInclude Include="CTPNewOrder.h" />
     <ClInclude Include="CTPProcessor.h" />
     <ClInclude Include="CTPQueryExchange.h" />
@@ -180,6 +179,7 @@
     <ClInclude Include="CTPTradeWorkerProcessor.h" />
     <ClInclude Include="CTPUnsubMarketData.h" />
     <ClInclude Include="CTPUtility.h" />
+    <ClInclude Include="CTPWorkerProcessorID.h" />
     <ClInclude Include="ctp_bizhandlers.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
@@ -191,7 +191,6 @@
     <ClCompile Include="CTPMarketDataProcessor.cpp" />
     <ClCompile Include="CTPMDLoginHandler.cpp" />
     <ClCompile Include="CTPMDServiceFactory.cpp" />
-    <ClCompile Include="CTPMDTraderProcessor.cpp" />
     <ClCompile Include="CTPNewOrder.cpp" />
     <ClCompile Include="CTPProcessor.cpp" />
     <ClCompile Include="CTPQueryExchange.cpp" />

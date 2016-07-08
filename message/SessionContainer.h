@@ -42,6 +42,16 @@ public:
 		return ret;
 	}
 
+	void foreach(const K& key, std::function<void(IMessageSession*)> func)
+	{
+		ScopeLockContext lock;
+		if(auto pSessionSet = getwithlock(key, lock))
+		{
+			for (auto pSession : *pSessionSet)
+				func(pSession);
+		}
+	}
+
 	int add(const K& key, IMessageSession* pSession)
 	{
 		int ret = -1;

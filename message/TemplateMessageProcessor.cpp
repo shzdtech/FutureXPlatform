@@ -21,15 +21,11 @@ void TemplateMessageProcessor::ProcessRequest(const uint msgId, const dataobj_pt
 		{
 			if (auto pMsgSession = getSession())
 			{
-				if (auto dataptr = msgHandler->HandleRequest(reqDO, getRawAPI(), pMsgSession))
+				if (auto dataobj_ptr = msgHandler->HandleRequest(reqDO, getRawAPI(), pMsgSession))
 				{
 					if (sendRsp)
 					{
-						auto dataSerilzer = _svc_locator_ptr->FindDataSerializer(msgId);
-						if (dataSerilzer) {
-							data_buffer db = dataSerilzer->Serialize(dataptr);
-							pMsgSession->WriteMessage(msgId, db);
-						}
+						SendDataObject(pMsgSession, msgId, dataobj_ptr);
 					}
 				}
 			}
@@ -45,20 +41,28 @@ void TemplateMessageProcessor::ProcessResponse(const uint msgId, const uint seri
 		{
 			if (auto pMsgSession = getSession())
 			{
-				if (auto dataobj = msgHandler->HandleResponse(serialId, rawRespParams, getRawAPI(), pMsgSession))
+				if (auto dataobj_ptr = msgHandler->HandleResponse(serialId, rawRespParams, getRawAPI(), pMsgSession))
 				{
 					if (sendRsp)
 					{
-						if (auto msgSerilzer = _svc_locator_ptr->FindDataSerializer(msgId))
-						{
-							data_buffer db = msgSerilzer->Serialize(dataobj);
-							pMsgSession->WriteMessage(msgId, db);
-						}
+						SendDataObject(pMsgSession, msgId, dataobj_ptr);
 					}
 				}
 			}
 		}
 	}
+}
+
+int TemplateMessageProcessor::SendDataObject(ISession* session,
+	const uint msgId, const dataobj_ptr dataobj)
+{
+	int ret = 0;
+	if (auto msgSerilzer = _svc_locator_ptr->FindDataSerializer(msgId))
+	{
+		data_buffer db = msgSerilzer->Serialize(dataobj);
+		ret = session->WriteMessage(msgId, db);
+	}
+	return ret;
 }
 
 ////////////////////////////////////////////////////////////////////////

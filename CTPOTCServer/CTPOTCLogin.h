@@ -8,14 +8,13 @@
 #if !defined(__CTP_CTPOTCLogin_h)
 #define __CTP_CTPOTCLogin_h
 
-#include "../message/LoginHandler.h"
+#include "CTPAccountLogin.h"
 #include "../dataobject/UserInfoDO.h"
 
-class CTPOTCLogin : public LoginHandler
+class CTPOTCLogin : public CTPAccountLogin
 {
 public:
 	dataobj_ptr HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session);
-	dataobj_ptr HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session);
 
 protected:
 

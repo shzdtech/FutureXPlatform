@@ -8,7 +8,7 @@
 #include "CTPOTCQueryStrategy.h"
 
 
-#include "CTPWorkerProcessorID.h"
+#include "../CTPServer/CTPWorkerProcessorID.h"
 #include "CTPOTCWorkerProcessor.h"
 
 #include <glog/logging.h>
@@ -49,7 +49,7 @@ dataobj_ptr CTPOTCQueryStrategy::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 	sDOVec_Ptr->SerialId = reqDO->SerialId;
 
 	auto wkProcPtr = std::static_pointer_cast<CTPOTCWorkerProcessor>
-		(GlobalProcessorRegistry::FindProcessor(CTPWorkProcessorID::WORKPROCESSOR_OTC));
+		(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::WORKPROCESSOR_OTC));
 
 	auto pricingCtx = AttribPointerCast(session->getProcessor(),
 		STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext);

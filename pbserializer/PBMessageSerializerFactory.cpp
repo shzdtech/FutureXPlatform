@@ -50,7 +50,7 @@ PBMessageSerializerFactory::~PBMessageSerializerFactory()
 // Return:     std::map<uint, IDataSerializer_Ptr>
 ////////////////////////////////////////////////////////////////////////
 
-std::map<unsigned int, IDataSerializer_Ptr> PBMessageSerializerFactory::CreateDataSerializers(void)
+void PBMessageSerializerFactory::CreateDataSerializers(std::map<uint32_t, IDataSerializer_Ptr>& serializerMap)
 {
-	return _serializer_map;
+	serializerMap.insert(_serializer_map.begin(), _serializer_map.end());
 }

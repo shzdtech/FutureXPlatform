@@ -764,7 +764,7 @@ void protobuf_AddDesc_businessobj_2eproto() {
     "priceTick\030\r \001(\005\022\022\n\ncreateDate\030\016 \001(\t\022\020\n\010o"
     "penDate\030\017 \001(\t\022\022\n\nexpireDate\030\020 \001(\t\022\026\n\016sta"
     "rtDelivDate\030\021 \001(\t\022\024\n\014endDelivDate\030\022 \001(\t\022"
-    "\021\n\tlifePhase\030\023 \001(\t\022\021\n\tisTrading\030\024 \001(\005\022\024\n"
+    "\021\n\tlifePhase\030\023 \001(\005\022\021\n\tisTrading\030\024 \001(\005\022\024\n"
     "\014positionType\030\025 \001(\005\022\030\n\020positionDateType\030"
     "\026 \001(\005\022\027\n\017longMarginRatio\030\027 \001(\001\022\030\n\020shortM"
     "arginRatio\030\030 \001(\001\022\036\n\026maxMarginSideAlgorit"
@@ -14937,7 +14937,7 @@ void PBContractInfo::SharedCtor() {
   expiredate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   startdelivdate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   enddelivdate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  lifephase_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  lifephase_ = 0;
   istrading_ = 0;
   positiontype_ = 0;
   positiondatetype_ = 0;
@@ -14962,7 +14962,6 @@ void PBContractInfo::SharedDtor() {
   expiredate_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   startdelivdate_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   enddelivdate_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  lifephase_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   maxmarginsidealgorithm_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != default_instance_) {
     delete header_;
@@ -15022,11 +15021,11 @@ void PBContractInfo::Clear() {
   createdate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   opendate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   expiredate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ZR_(positiontype_, shortmarginratio_);
+  ZR_(istrading_, shortmarginratio_);
   startdelivdate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   enddelivdate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  lifephase_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  istrading_ = 0;
+  lifephase_ = 0;
+  positiondatetype_ = 0;
   maxmarginsidealgorithm_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
   header_ = NULL;
@@ -15325,20 +15324,18 @@ bool PBContractInfo::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(154)) goto parse_lifePhase;
+        if (input->ExpectTag(152)) goto parse_lifePhase;
         break;
       }
 
-      // optional string lifePhase = 19;
+      // optional int32 lifePhase = 19;
       case 19: {
-        if (tag == 154) {
+        if (tag == 152) {
          parse_lifePhase:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_lifephase()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->lifephase().data(), this->lifephase().length(),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "Micro.Future.Message.Business.PBContractInfo.lifePhase"));
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &lifephase_)));
+
         } else {
           goto handle_unusual;
         }
@@ -15606,14 +15603,9 @@ void PBContractInfo::SerializeWithCachedSizes(
       18, this->enddelivdate(), output);
   }
 
-  // optional string lifePhase = 19;
-  if (this->lifephase().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->lifephase().data(), this->lifephase().length(),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "Micro.Future.Message.Business.PBContractInfo.lifePhase");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      19, this->lifephase(), output);
+  // optional int32 lifePhase = 19;
+  if (this->lifephase() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(19, this->lifephase(), output);
   }
 
   // optional int32 isTrading = 20;
@@ -15803,15 +15795,9 @@ void PBContractInfo::SerializeWithCachedSizes(
         18, this->enddelivdate(), target);
   }
 
-  // optional string lifePhase = 19;
-  if (this->lifephase().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->lifephase().data(), this->lifephase().length(),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "Micro.Future.Message.Business.PBContractInfo.lifePhase");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        19, this->lifephase(), target);
+  // optional int32 lifePhase = 19;
+  if (this->lifephase() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(19, this->lifephase(), target);
   }
 
   // optional int32 isTrading = 20;
@@ -15991,10 +15977,10 @@ int PBContractInfo::ByteSize() const {
         this->enddelivdate());
   }
 
-  // optional string lifePhase = 19;
-  if (this->lifephase().size() > 0) {
+  // optional int32 lifePhase = 19;
+  if (this->lifephase() != 0) {
     total_size += 2 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->lifephase());
   }
 
@@ -16130,9 +16116,8 @@ void PBContractInfo::MergeFrom(const PBContractInfo& from) {
 
     enddelivdate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.enddelivdate_);
   }
-  if (from.lifephase().size() > 0) {
-
-    lifephase_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.lifephase_);
+  if (from.lifephase() != 0) {
+    set_lifephase(from.lifephase());
   }
   if (from.istrading() != 0) {
     set_istrading(from.istrading());
@@ -16200,7 +16185,7 @@ void PBContractInfo::InternalSwap(PBContractInfo* other) {
   expiredate_.Swap(&other->expiredate_);
   startdelivdate_.Swap(&other->startdelivdate_);
   enddelivdate_.Swap(&other->enddelivdate_);
-  lifephase_.Swap(&other->lifephase_);
+  std::swap(lifephase_, other->lifephase_);
   std::swap(istrading_, other->istrading_);
   std::swap(positiontype_, other->positiontype_);
   std::swap(positiondatetype_, other->positiondatetype_);
@@ -16745,48 +16730,18 @@ void PBContractInfo::clear_enddelivdate() {
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBContractInfo.endDelivDate)
 }
 
-// optional string lifePhase = 19;
+// optional int32 lifePhase = 19;
 void PBContractInfo::clear_lifephase() {
-  lifephase_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  lifephase_ = 0;
 }
- const ::std::string& PBContractInfo::lifephase() const {
+ ::google::protobuf::int32 PBContractInfo::lifephase() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBContractInfo.lifePhase)
-  return lifephase_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  return lifephase_;
 }
- void PBContractInfo::set_lifephase(const ::std::string& value) {
+ void PBContractInfo::set_lifephase(::google::protobuf::int32 value) {
   
-  lifephase_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  lifephase_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBContractInfo.lifePhase)
-}
- void PBContractInfo::set_lifephase(const char* value) {
-  
-  lifephase_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBContractInfo.lifePhase)
-}
- void PBContractInfo::set_lifephase(const char* value, size_t size) {
-  
-  lifephase_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBContractInfo.lifePhase)
-}
- ::std::string* PBContractInfo::mutable_lifephase() {
-  
-  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBContractInfo.lifePhase)
-  return lifephase_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
- ::std::string* PBContractInfo::release_lifephase() {
-  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBContractInfo.lifePhase)
-  
-  return lifephase_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
- void PBContractInfo::set_allocated_lifephase(::std::string* lifephase) {
-  if (lifephase != NULL) {
-    
-  } else {
-    
-  }
-  lifephase_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), lifephase);
-  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBContractInfo.lifePhase)
 }
 
 // optional int32 isTrading = 20;

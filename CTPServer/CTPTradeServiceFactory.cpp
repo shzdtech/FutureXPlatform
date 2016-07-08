@@ -68,7 +68,9 @@ std::map<uint, IMessageHandler_Ptr> CTPTradeServiceFactory::CreateMessageHandler
 
 std::map<uint, IDataSerializer_Ptr> CTPTradeServiceFactory::CreateDataSerializers(void)
 {
-	return AbstractDataSerializerFactory::Instance()->CreateDataSerializers();
+	std::map<uint, IDataSerializer_Ptr> ret;
+	AbstractDataSerializerFactory::Instance()->CreateDataSerializers(ret);
+	return ret;
 }
 
 ////////////////////////////////////////////////////////////////////////

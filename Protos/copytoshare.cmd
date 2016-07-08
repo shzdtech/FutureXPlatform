@@ -1,2 +1,2 @@
-copy *.proto ..\..\FutureXShare\Communicators\Micro.Future.Message.ProtoBuf\protos
-copy *.proto ..\..\FutureXShare\Communicators\Micro.Future.Message.ProtoBuf3\protos
+copy *.proto ..\..\FutureXShare\src\Micro.Future.Message.ProtoBuf\protos
+copy *.proto ..\..\FutureXShare\src\Micro.Future.Message.ProtoBuf\protos

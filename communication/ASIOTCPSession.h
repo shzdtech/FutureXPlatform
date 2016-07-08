@@ -28,8 +28,8 @@ public:
    ~ASIOTCPSession();
    void setMaxMessageSize(uint maxMsgSize);
    void RegistProcessor(IMessageProcessor_Ptr msgprocessor);
-   int WriteMessage(const uint msgId, const data_buffer& msg);
-   int WriteMessage(const data_buffer& msg);
+   virtual int WriteMessage(const uint msgId, const data_buffer& msg);
+   virtual int WriteMessage(const data_buffer& msg);
    bool Start(void);
    bool Close(void);
 

@@ -8,11 +8,13 @@
 #include "CTPTradeWorkerProcessor.h"
 #include "CTPUtility.h"
 #include "CTPConstant.h"
-
+#include "../dataobject/TradeRecordDO.h"
 #include "../common/Attribute_Key.h"
 #include "../message/AppContext.h"
 #include "../message/DefMessageID.h"
 #include "../message/message_macro.h"
+
+#include "glog/logging.h"
 
  ////////////////////////////////////////////////////////////////////////
  // Name:       CTPTradeWorkerProcessor::CTPTradeWorkerProcessor()
@@ -21,13 +23,14 @@
  ////////////////////////////////////////////////////////////////////////
 
 CTPTradeWorkerProcessor::CTPTradeWorkerProcessor(const std::map<std::string, std::string>& configMap)
-	: CTPTradeProcessor(configMap)
+	: CTPTradeProcessor(configMap), _userSessionCtn_Ptr(new SessionContainer<std::string>)
 {
 	InstrmentsLoaded = false;
-	_defaultUser.setBrokerId(SysParam::Get(CTP_TRADER_BROKERID));
-	_defaultUser.setUserId(SysParam::Get(CTP_TRADER_USERID));
-	_defaultUser.setPassword(SysParam::Get(CTP_TRADER_PASSWORD));
-	_defaultUser.setServer(SysParam::Get(CTP_TRADER_SERVER));
+	_systemUser.setBrokerId(SysParam::Get(CTP_TRADER_BROKERID));
+	_systemUser.setInvestorId(SysParam::Get(CTP_TRADER_USERID));
+	_systemUser.setUserId(SysParam::Get(CTP_TRADER_USERID));
+	_systemUser.setPassword(SysParam::Get(CTP_TRADER_PASSWORD));
+	_systemUser.setServer(SysParam::Get(CTP_TRADER_SERVER));
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -38,7 +41,7 @@ CTPTradeWorkerProcessor::CTPTradeWorkerProcessor(const std::map<std::string, std
 
 CTPTradeWorkerProcessor::~CTPTradeWorkerProcessor()
 {
-	// TODO : implement
+	DLOG(INFO) << __FUNCTION__ << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -49,42 +52,49 @@ CTPTradeWorkerProcessor::~CTPTradeWorkerProcessor()
 
 void CTPTradeWorkerProcessor::Initialize(void)
 {
-	_rawAPI.TrdAPI = CThostFtdcTraderApi::CreateFtdcTraderApi();
-	if (_rawAPI.TrdAPI) {
-		_rawAPI.TrdAPI->RegisterSpi(this);
-		_rawAPI.TrdAPI->RegisterFront(const_cast<char*> (_defaultUser.getServer().data()));
-		_rawAPI.TrdAPI->SubscribePrivateTopic(THOST_TERT_RESUME);
-		_rawAPI.TrdAPI->SubscribePublicTopic(THOST_TERT_RESUME);
-		_rawAPI.TrdAPI->Init();
+	if (!_rawAPI->TrdAPI) {
+		_rawAPI->TrdAPI = CThostFtdcTraderApi::CreateFtdcTraderApi();
+		_rawAPI->TrdAPI->RegisterSpi(this);
+		_rawAPI->TrdAPI->RegisterFront(const_cast<char*> (_systemUser.getServer().data()));
+		_rawAPI->TrdAPI->SubscribePrivateTopic(THOST_TERT_RESUME);
+		_rawAPI->TrdAPI->SubscribePublicTopic(THOST_TERT_RESUME);
+		_rawAPI->TrdAPI->Init();
 	}
 
 	_initializer = std::async(std::launch::async, [this]() {
-		std::this_thread::sleep_for(std::chrono::seconds(std::rand() % 10)); //wait some secs for connecting to CTP server
-		LoginDefault();
+		std::this_thread::sleep_for(std::chrono::seconds(1)); //wait 1 secs for connecting to CTP server
+		LoginSystemUserIfNeed();
+		std::this_thread::sleep_for(std::chrono::seconds(5)); //wait 5 secs for login CTP server
 		while (!this->InstrmentsLoaded)
 		{
+			if (this->HasLogged() && !InstrmentsLoaded)
+			{
+				CThostFtdcQryInstrumentField req;
+				std::memset(&req, 0x0, sizeof(CThostFtdcQryInstrumentField));
+				_rawAPI->TrdAPI->ReqQryInstrument(&req, 0);
+			}
 			std::this_thread::sleep_for(std::chrono::milliseconds(this->RetryInterval));
-			LoginDefault();
+			LoginSystemUserIfNeed();
 		}
 	});
 }
 
-int CTPTradeWorkerProcessor::LoginDefault(void)
+int CTPTradeWorkerProcessor::LoginSystemUser(void)
 {
 	CThostFtdcReqUserLoginField req;
 	std::memset(&req, 0, sizeof(req));
-	std::strcpy(req.BrokerID, _defaultUser.getBrokerId().data());
-	std::strcpy(req.UserID, _defaultUser.getUserId().data());
-	std::strcpy(req.Password, _defaultUser.getPassword().data());
-	return _rawAPI.TrdAPI->ReqUserLogin(&req, AppContext::GenNextSeq());
+	std::strcpy(req.BrokerID, _systemUser.getBrokerId().data());
+	std::strcpy(req.UserID, _systemUser.getUserId().data());
+	std::strcpy(req.Password, _systemUser.getPassword().data());
+	return _rawAPI->TrdAPI->ReqUserLogin(&req, AppContext::GenNextSeq());
 }
 
-int CTPTradeWorkerProcessor::LoginIfNeed(void)
+int CTPTradeWorkerProcessor::LoginSystemUserIfNeed(void)
 {
 	int ret = 0;
 
 	if (!_isLogged)
-		ret = LoginDefault();
+		ret = LoginSystemUser();
 
 	return ret;
 }
@@ -94,14 +104,25 @@ void CTPTradeWorkerProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUs
 {
 	if (!CTPUtility::HasError(pRspInfo))
 	{
-		_isLogged = true;
-
-		if (!InstrmentsLoaded)
+		if (auto session = getSession())
 		{
-			CThostFtdcQryInstrumentField req;
-			std::memset(&req, 0x0, sizeof(CThostFtdcQryInstrumentField));
-			_rawAPI.TrdAPI->ReqQryInstrument(&req, 0);
+			session->setLoginStatus(true);
+			auto userinfo_ptr = session->getUserInfo();
+			userinfo_ptr->setBrokerId(pRspUserLogin->BrokerID);
+			userinfo_ptr->setInvestorId(pRspUserLogin->UserID);
+			userinfo_ptr->setUserId(pRspUserLogin->UserID);
+			userinfo_ptr->setPermission(ALLOW_TRADING);
+			userinfo_ptr->setFrontId(pRspUserLogin->FrontID);
+			userinfo_ptr->setSessionId(pRspUserLogin->SessionID);
 		}
+
+		_isLogged = true;
+		CThostFtdcSettlementInfoConfirmField req;
+		std::memset(&req, 0, sizeof(req));
+		std::strcpy(req.BrokerID, _systemUser.getBrokerId().data());
+		std::strcpy(req.InvestorID, _systemUser.getInvestorId().data());
+
+		_rawAPI->TrdAPI->ReqSettlementInfoConfirm(&req, 0);
 	}
 }
 
@@ -115,6 +136,91 @@ void CTPTradeWorkerProcessor::OnRspQryInstrument(CThostFtdcInstrumentField * pIn
 	catch (...) {}
 }
 
+///报单录入请求响应
+void CTPTradeWorkerProcessor::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	if (pInputOrder)
+	{
+		auto orderptr = CTPUtility::ParseRawOrderInput(pInputOrder, pRspInfo, OrderStatus::OPEN_REJECTED);
+		orderptr->SerialId = nRequestID;
+		orderptr->HasMore = !bIsLast;
+		DispatchUserMessage(MSG_ID_ORDER_NEW, orderptr->UserID(), orderptr);
+	}
+}
+
+void CTPTradeWorkerProcessor::OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	if (pInputOrderAction)
+	{
+		if (pInputOrderAction->ActionFlag == THOST_FTDC_AF_Delete)
+		{
+			auto orderptr = CTPUtility::ParseRawOrderAction(pInputOrderAction, pRspInfo, OrderStatus::CANCEL_REJECTED);
+			orderptr->SerialId = nRequestID;
+			orderptr->HasMore = !bIsLast;
+			DispatchUserMessage(MSG_ID_ORDER_CANCEL, orderptr->UserID(), orderptr);
+		}
+	}
+}
+
+///请求查询报单响应
+void CTPTradeWorkerProcessor::OnRspQryOrder(CThostFtdcOrderField *pOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	if (pOrder)
+	{
+		auto orderptr = CTPUtility::ParseRawOrder(pOrder);
+		orderptr->SerialId = nRequestID;
+		orderptr->HasMore = !bIsLast;
+		DispatchUserMessage(MSG_ID_QUERY_ORDER, orderptr->UserID(), orderptr);
+	}
+}
+
+void CTPTradeWorkerProcessor::OnRtnOrder(CThostFtdcOrderField *pOrder)
+{
+	if (pOrder)
+	{
+		int msgId;
+
+		switch (CTPUtility::CheckOrderStatus(pOrder->OrderStatus, pOrder->OrderSubmitStatus))
+		{
+		case OrderStatus::CANCELED:
+		case OrderStatus::CANCEL_REJECTED:
+			msgId = MSG_ID_ORDER_CANCEL;
+			break;
+		case OrderStatus::OPENNING:
+		case OrderStatus::OPEN_REJECTED:
+			msgId = MSG_ID_ORDER_NEW;
+			break;
+		case OrderStatus::PARTIAL_TRADING:
+		case OrderStatus::ALL_TRADED:
+			msgId = MSG_ID_ORDER_UPDATE;
+			break;
+		default:
+			return;
+		}
+
+		auto orderptr = CTPUtility::ParseRawOrder(pOrder);
+		DispatchUserMessage(msgId, orderptr->UserID(), orderptr);
+	}
+}
+
+void CTPTradeWorkerProcessor::OnRtnTrade(CThostFtdcTradeField * pTrade)
+{
+	if (auto trdDO_Ptr = CTPUtility::ParseRawTrade(pTrade))
+		DispatchUserMessage(MSG_ID_TRADE_RTN, pTrade->UserID, trdDO_Ptr);
+}
+
+
+///请求查询成交响应
+void CTPTradeWorkerProcessor::OnRspQryTrade(CThostFtdcTradeField *pTrade, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	if (auto trdDO_Ptr = CTPUtility::ParseRawTrade(pTrade))
+	{
+		trdDO_Ptr->SerialId = nRequestID;
+		trdDO_Ptr->HasMore = !bIsLast;
+		DispatchUserMessage(MSG_ID_TRADE_RTN, pTrade->UserID, trdDO_Ptr);
+	}
+}
+
 
 int CTPTradeWorkerProcessor::CreateOrder(const OrderDO& orderInfo, OrderStatus& currStatus)
 {
@@ -124,9 +230,9 @@ int CTPTradeWorkerProcessor::CreateOrder(const OrderDO& orderInfo, OrderStatus& 
 	std::memset(&req, 0, sizeof(req));
 
 	//经纪公司代码
-	std::strcpy(req.BrokerID, _defaultUser.getBrokerId().data());
+	std::strcpy(req.BrokerID, _systemUser.getBrokerId().data());
 	//投资者代码
-	std::strcpy(req.InvestorID, _defaultUser.getUserId().data());
+	std::strcpy(req.InvestorID, _systemUser.getInvestorId().data());
 	// 合约代码
 	std::strcpy(req.InstrumentID, orderInfo.InstrumentID().data());
 	///报单引用
@@ -162,7 +268,7 @@ int CTPTradeWorkerProcessor::CreateOrder(const OrderDO& orderInfo, OrderStatus& 
 
 	currStatus = OrderStatus::OPENNING;
 
-	return _rawAPI.TrdAPI->ReqOrderInsert(&req, AppContext::GenNextSeq());
+	return _rawAPI->TrdAPI->ReqOrderInsert(&req, AppContext::GenNextSeq());
 }
 
 
@@ -175,8 +281,8 @@ int CTPTradeWorkerProcessor::CancelOrder(const OrderDO& orderInfo, OrderStatus& 
 
 	req.ActionFlag = THOST_FTDC_AF_Delete;
 	//经纪公司代码
-	std::strcpy(req.BrokerID, _defaultUser.getBrokerId().data());
-	std::strcpy(req.InvestorID, _defaultUser.getUserId().data());
+	std::strcpy(req.BrokerID, _systemUser.getBrokerId().data());
+	std::strcpy(req.InvestorID, _systemUser.getUserId().data());
 	std::strcpy(req.UserID, orderInfo.UserID().data());
 	if (orderInfo.OrderSysID != 0)
 	{
@@ -194,7 +300,42 @@ int CTPTradeWorkerProcessor::CancelOrder(const OrderDO& orderInfo, OrderStatus& 
 
 	currStatus = OrderStatus::CANCELING;
 
-	return _rawAPI.TrdAPI->ReqOrderAction(&req, AppContext::GenNextSeq());
+	return _rawAPI->TrdAPI->ReqOrderAction(&req, AppContext::GenNextSeq());
+}
+
+void CTPTradeWorkerProcessor::RegisterLoggedSession(IMessageSession * pMessageSession)
+{
+	if (pMessageSession->IsLogin() && _isLogged)
+	{
+		if (auto userInfoPtr = pMessageSession->getUserInfo())
+		{
+			userInfoPtr->setBrokerId(_systemUser.getBrokerId());
+			userInfoPtr->setInvestorId(_systemUser.getInvestorId());
+			_userSessionCtn_Ptr->add(userInfoPtr->getUserId(), pMessageSession);
+		}
+	}
+}
+
+std::vector<AccountInfoDO>& CTPTradeWorkerProcessor::GetAccountInfo(const std::string userId)
+{
+	return _accountInfoMap.getorfill(userId);
+}
+
+std::set<ExchangeDO>& CTPTradeWorkerProcessor::GetExchangeInfo()
+{
+	return _exchangeInfo_Set;
+}
+
+UserPositionExDOMap& CTPTradeWorkerProcessor::GetUserPositionMap()
+{
+	return _userPositionMap;
+}
+
+void CTPTradeWorkerProcessor::DispatchUserMessage(int msgId, const std::string& userId,
+	dataobj_ptr dataobj_ptr)
+{
+	_userSessionCtn_Ptr->foreach(userId, [msgId, dataobj_ptr, this](IMessageSession* pSession)
+	{this->SendDataObject(pSession, msgId, dataobj_ptr); });
 }
 
 

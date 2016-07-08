@@ -375,7 +375,7 @@ message PBContractInfo {
 	///结束交割日
 	string endDelivDate = 18;
 	///合约生命周期状态
-	string lifePhase = 19;
+	int32 lifePhase = 19;
 	///当前是否交易
 	int32 isTrading = 20;
 	///持仓类型

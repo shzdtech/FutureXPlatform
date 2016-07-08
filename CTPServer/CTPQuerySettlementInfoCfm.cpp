@@ -67,7 +67,7 @@ dataobj_ptr CTPQuerySettlementInfoCfm::HandleResponse(const uint32_t serialId, p
 	if (auto pData = (CThostFtdcSettlementInfoConfirmField*)rawRespParams[0])
 	{
 		pDO->SerialId = serialId;
-		pDO->HasMore = *(bool*)rawRespParams[3];
+		pDO->HasMore = !*(bool*)rawRespParams[3];
 		(*pDO)[STR_BROKER_ID] = pData->BrokerID;
 		(*pDO)[STR_USER_ID] = pData->InvestorID;
 		(*pDO)[STR_DATE] = pData->ConfirmDate;

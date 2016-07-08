@@ -24,8 +24,7 @@ CTPOTCTradeProcessor::CTPOTCTradeProcessor(const std::map<std::string, std::stri
 	: CTPTradeWorkerProcessor(configMap),
 	_pricingCtx(pricingCtx),
 	_otcOrderMgr(this, pricingCtx),
-	_autoOrderMgr(this, pricingCtx),
-	_orderNotifier(new SessionContainer<uint64_t>())
+	_autoOrderMgr(this, pricingCtx)
 {
 }
 
@@ -48,14 +47,19 @@ OTCOrderManager& CTPOTCTradeProcessor::GetOTCOrderManager(void)
 CTPOTCTradeProcessor::~CTPOTCTradeProcessor()
 {
 	DLOG(INFO) << __FUNCTION__ << std::endl;
-	if (_rawAPI.TrdAPI)
-		_rawAPI.TrdAPI->Release();
 }
 
 void CTPOTCTradeProcessor::Initialize(void)
 {
-	InstrmentsLoaded = true;
-	CTPTradeWorkerProcessor::Initialize();
+	if (!_rawAPI->TrdAPI) {
+		_rawAPI->TrdAPI = CThostFtdcTraderApi::CreateFtdcTraderApi();
+		_rawAPI->TrdAPI->RegisterSpi(this);
+		_rawAPI->TrdAPI->RegisterFront(const_cast<char*> (_systemUser.getServer().data()));
+		_rawAPI->TrdAPI->SubscribePrivateTopic(THOST_TERT_RESUME);
+		_rawAPI->TrdAPI->SubscribePublicTopic(THOST_TERT_RESUME);
+		_rawAPI->TrdAPI->Init();
+		std::this_thread::sleep_for(std::chrono::seconds(1)); //wait 1 secs for connecting to CTP server
+	}
 }
 
 bool CTPOTCTradeProcessor::OnSessionClosing(void)
@@ -74,24 +78,6 @@ bool CTPOTCTradeProcessor::OnSessionClosing(void)
 	return true;
 }
 
-void CTPOTCTradeProcessor::DispatchMessage(const int msgId, const OrderDO* pOrderDO)
-{
-	ScopeLockContext sclcctx;
-	if (auto pNotiferSet = _orderNotifier->getwithlock(pOrderDO->OrderID, sclcctx))
-	{
-		for (auto pSession : *pNotiferSet)
-		{
-			OnResponseProcMacro(pSession->getProcessor(), msgId, pOrderDO->SerialId, pOrderDO);
-		}
-	}
-}
-
-void CTPOTCTradeProcessor::RegisterOrderListener(const uint64_t orderID,
-	IMessageSession* pMsgSession)
-{
-	_orderNotifier->add(orderID, pMsgSession);
-}
-
 
 void CTPOTCTradeProcessor::TriggerOrderUpdating(const StrategyContractDO& strategyDO)
 {
@@ -99,7 +85,8 @@ void CTPOTCTradeProcessor::TriggerOrderUpdating(const StrategyContractDO& strate
 	{
 		for (auto& order : *updatedOrders)
 		{
-			DispatchMessage(MSG_ID_ORDER_UPDATE, &order);
+			auto orderptr = std::make_shared<OrderDO>(order);
+			DispatchUserMessage(MSG_ID_ORDER_UPDATE, orderptr->UserID(), orderptr);
 		}
 	}
 }
@@ -129,7 +116,7 @@ void CTPOTCTradeProcessor::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrd
 
 		int ret = _autoOrderMgr.OnOrderUpdated(*orderptr);
 
-		DispatchMessage(MSG_ID_ORDER_CANCEL, orderptr.get());
+		DispatchUserMessage(MSG_ID_ORDER_CANCEL, orderptr->UserID(), orderptr);
 	}
 }
 
@@ -141,7 +128,7 @@ void CTPOTCTradeProcessor::OnRspOrderAction(CThostFtdcInputOrderActionField *pIn
 
 		int ret = _autoOrderMgr.OnOrderUpdated(*orderptr);
 
-		DispatchMessage(MSG_ID_ORDER_CANCEL, orderptr.get());
+		DispatchUserMessage(MSG_ID_ORDER_CANCEL, orderptr->UserID(), orderptr);
 	}
 }
 
@@ -172,7 +159,7 @@ void CTPOTCTradeProcessor::OnRtnOrder(CThostFtdcOrderField *pOrder)
 				return;
 			}
 
-			DispatchMessage(msgId, orderptr.get());
+			DispatchUserMessage(msgId, orderptr->UserID(), orderptr);
 		}
 	}
 }

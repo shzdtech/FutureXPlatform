@@ -57,7 +57,7 @@ class PortfolioDO : public PortfolioKey, public dataobjectbase
 {
 public:
 	PortfolioDO(const std::string& portfolioID, const std::string& userID) :
-		PortfolioKey(portfolioID, userID) {}
+		PortfolioKey(portfolioID, userID), UserKey(userID) {}
 
 	long HedgeDelay;
 	std::chrono::steady_clock::time_point LastHedge;

@@ -119,7 +119,7 @@
       <FileName>CTPOTCWorkerProcessor.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Enum Name="CTPWorkProcessorID" Collapsed="true">
+  <Enum Name="CTPWorkerProcessorID" Collapsed="true">
     <Position X="3" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAQAAAAA=</HashCode>

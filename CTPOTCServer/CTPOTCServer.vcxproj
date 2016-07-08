@@ -169,6 +169,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CTPAccountLogin.cpp" />
     <ClCompile Include="CTPOCTUnSubMarketData.cpp" />
     <ClCompile Include="CTPOTCCancelOrder.cpp" />
     <ClCompile Include="CTPOTCClientServiceFactory.cpp" />
@@ -191,9 +192,11 @@
     <ClCompile Include="CTPOTCUserContextBuilder.cpp" />
     <ClCompile Include="CTPOTCWorkerProcessor.cpp" />
     <ClCompile Include="ctpotc_export.cpp" />
+    <ClCompile Include="CTPAccountTradeServiceFactory.cpp" />
     <ClCompile Include="TradingDeskContextBuilder.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CTPAccountLogin.h" />
     <ClInclude Include="CTPOCTUnSubMarketData.h" />
     <ClInclude Include="CTPOTCCancelOrder.h" />
     <ClInclude Include="CTPOTCClientServiceFactory.h" />
@@ -216,7 +219,7 @@
     <ClInclude Include="CTPOTCUserContextBuilder.h" />
     <ClInclude Include="CTPOTCWorkerProcessor.h" />
     <ClInclude Include="ctpotc_bizhandlers.h" />
-    <ClInclude Include="CTPWorkerProcessorID.h" />
+    <ClInclude Include="CTPAccountTradeServiceFactory.h" />
     <ClInclude Include="ctpotc_export.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="TradingDeskContextBuilder.h" />

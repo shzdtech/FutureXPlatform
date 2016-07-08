@@ -83,7 +83,7 @@ int ASIOTCPSession::WriteMessage(const uint msgId, const data_buffer& msg) {
 		buffer(msg.get(), msg.size()),
 		buffer(buf_exinfo, EXINFO_SIZE)
 	};
-	DLOG(INFO) << "Sending size:" << packetSz << std::endl;
+	DLOG(INFO) << "Sending message: Id: "<< msgId << " Size:" << packetSz << std::endl;
 	async_write(_socket, packet,
 		[this, msg_header, msg, msg_exinfo](boost::system::error_code ec, std::size_t /*length*/) {
 		if (ec && ec != error::operation_aborted) {

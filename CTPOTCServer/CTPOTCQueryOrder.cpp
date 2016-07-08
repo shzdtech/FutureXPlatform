@@ -8,7 +8,7 @@
 #include "CTPOTCQueryOrder.h"
 
 #include "../message/GlobalProcessorRegistry.h"
-#include "CTPWorkerProcessorID.h"
+#include "../CTPServer/CTPWorkerProcessorID.h"
 #include "CTPOTCWorkerProcessor.h"
 
 #include "../dataobject/FieldName.h"
@@ -46,17 +46,15 @@ dataobj_ptr CTPOTCQueryOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 		ContractKey(EMPTY_STRING, instrumentid)))
 	{
 		if (auto proc = std::static_pointer_cast<CTPOTCWorkerProcessor>
-			(GlobalProcessorRegistry::FindProcessor(CTPWorkProcessorID::WORKPROCESSOR_OTC)))
+			(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::WORKPROCESSOR_OTC)))
 		{
 			auto lastit = std::prev(ordervec_ptr->end());
 			for (auto it = ordervec_ptr->begin();it != ordervec_ptr->end(); it++)
 			{
-				if (it->OrderStatus == OrderStatus::OPENNING)
-					proc->RegisterOTCOrderListener(it->OrderID, (IMessageSession*)session);
 				it->SerialId = stdo->SerialId;
 				if(it == lastit)
 					it->HasMore = true;
-				OnResponseProcMacro(session->getProcessor(), MSG_ID_QUERY_ORDER, reqDO->SerialId, &it);
+				proc->SendDataObject(session, MSG_ID_QUERY_ORDER, std::make_shared<OrderDO>(*it));
 			}
 		}
 	}

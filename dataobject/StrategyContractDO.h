@@ -18,7 +18,7 @@ class StrategyContractDO : public UserContractKey, public PortfolioKey, public d
 public:
 	StrategyContractDO(const std::string& exchangeID, const std::string& instrumentID,
 		const std::string& userID, const std::string& portfolioID)
-		: UserContractKey(exchangeID, instrumentID, userID), PortfolioKey(portfolioID, userID){}
+		: UserKey(userID), UserContractKey(exchangeID, instrumentID, userID), PortfolioKey(portfolioID, userID){}
 
 	StrategyContractDO(const std::string& exchangeID, const std::string& instrumentID)
 		: StrategyContractDO(exchangeID, instrumentID, "", "") {}

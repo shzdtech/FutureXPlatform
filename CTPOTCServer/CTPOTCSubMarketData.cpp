@@ -13,7 +13,7 @@
 #include "../common/Attribute_Key.h"
 #include "../message/GlobalProcessorRegistry.h"
 #include "CTPOTCWorkerProcessor.h"
-#include "CTPWorkerProcessorID.h"
+#include "../CTPServer/CTPWorkerProcessorID.h"
 
 #include <glog/logging.h>
 #include <set>
@@ -65,7 +65,7 @@ dataobj_ptr CTPOTCSubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 	session->getContext()->setAttribute(STR_KEY_USER_CONTRACTS, userContractMap_Ptr);
 
 	if (auto workPrc = GlobalProcessorRegistry::FindProcessor
-		(CTPWorkProcessorID::WORKPROCESSOR_OTC))
+		(CTPWorkerProcessorID::WORKPROCESSOR_OTC))
 	{
 		auto otcworkproc = (std::static_pointer_cast<CTPOTCWorkerProcessor>(workPrc));
 		for (auto& it : *ret)

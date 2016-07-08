@@ -7,7 +7,7 @@
 
 #include "CTPOTCTradingDeskProcessor.h"
 #include "CTPOTCWorkerProcessor.h"
-#include "CTPWorkerProcessorID.h"
+#include "../CTPServer/CTPWorkerProcessorID.h"
 #include "../common/Attribute_Key.h"
 #include "../message/GlobalProcessorRegistry.h"
 
@@ -36,12 +36,12 @@ CTPOTCTradingDeskProcessor::~CTPOTCTradingDeskProcessor()
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCTradingDeskProcessor::Intialize()
-// Purpose:    Implementation of CTPOTCTradingDeskProcessor::Intialize()
+// Name:       CTPOTCTradingDeskProcessor::Initialize()
+// Purpose:    Implementation of CTPOTCTradingDeskProcessor::Initialize()
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void CTPOTCTradingDeskProcessor::Intialize(void)
+void CTPOTCTradingDeskProcessor::Initialize(void)
 {
 	// TODO : implement
 }
@@ -50,7 +50,7 @@ void CTPOTCTradingDeskProcessor::Intialize(void)
 bool CTPOTCTradingDeskProcessor::OnSessionClosing(void)
 {
 	if (auto proc = std::static_pointer_cast<CTPOTCWorkerProcessor>
-		(GlobalProcessorRegistry::FindProcessor(CTPWorkProcessorID::WORKPROCESSOR_OTC)))
+		(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::WORKPROCESSOR_OTC)))
 	{
 		auto pStrategyMap = AttribPointerCast(this, STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext)
 			->GetStrategyMap();

@@ -14,15 +14,15 @@
 #include <glog/logging.h>
 #include "CTPUtility.h"
 
-////////////////////////////////////////////////////////////////////////
-// Name:       CTPDepthMarketData::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTPDepthMarketData::HandleResponse(const uint32_t serialId, )
-// Parameters:
-// - rawRespParams
-// - rawAPI
-// - session
-// Return:     dataobj_ptr
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       CTPDepthMarketData::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+ // Purpose:    Implementation of CTPDepthMarketData::HandleResponse(const uint32_t serialId, )
+ // Parameters:
+ // - rawRespParams
+ // - rawAPI
+ // - session
+ // Return:     dataobj_ptr
+ ////////////////////////////////////////////////////////////////////////
 
 dataobj_ptr CTPDepthMarketData::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
@@ -32,23 +32,30 @@ dataobj_ptr CTPDepthMarketData::HandleResponse(const uint32_t serialId, param_ve
 
 	MarketDataDO mdo(pData->ExchangeID, pData->InstrumentID);
 	mdo.PreClosePrice = pData->PreClosePrice;
-	mdo.OpenPrice = pData->OpenPrice;
-	mdo.HighestPrice = pData->HighestPrice;
-	mdo.LowestPrice = pData->LowestPrice;
-	mdo.LastPrice = pData->LastPrice;
-	mdo.Volume = pData->Volume;
-	mdo.Turnover = pData->Turnover;
-	mdo.BidPrice = pData->BidPrice1;
-	mdo.AskPrice = pData->AskPrice1;
-	mdo.BidVolume = pData->BidVolume1;
-	mdo.AskVolume = pData->AskVolume1;
 	mdo.UpperLimitPrice = pData->UpperLimitPrice;
 	mdo.LowerLimitPrice = pData->LowerLimitPrice;
 	mdo.PreSettlementPrice = pData->PreSettlementPrice;
-	mdo.SettlementPrice = pData->SettlementPrice;
+
 	mdo.PreOpenInterest = pData->PreOpenInterest;
 	mdo.OpenInterest = pData->OpenInterest;
-	mdo.AveragePrice = pData->AveragePrice;
+	mdo.LastPrice = pData->LastPrice;
+	mdo.Volume = pData->Volume;
+
+	if (pData->OpenPrice < 1e32)
+	{
+		mdo.OpenPrice = pData->OpenPrice;
+		mdo.SettlementPrice = pData->SettlementPrice;
+
+		mdo.HighestPrice = pData->HighestPrice;
+		mdo.LowestPrice = pData->LowestPrice;
+		mdo.Turnover = pData->Turnover;
+		mdo.AveragePrice = pData->AveragePrice;
+
+		mdo.BidPrice = pData->BidPrice1;
+		mdo.AskPrice = pData->AskPrice1;
+		mdo.BidVolume = pData->BidVolume1;
+		mdo.AskVolume = pData->AskVolume1;
+	}
 
 	pDOVec->push_back(std::move(mdo));
 

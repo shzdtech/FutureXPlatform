@@ -12,16 +12,21 @@
 #include "../message/message_macro.h"
 #include "../bizutility/InstrumentCache.h"
 
-////////////////////////////////////////////////////////////////////////
-// Name:       CTPTradeProcessor::CTPTradeProcessor(const std::map<std::string, std::string>& configMap)
-// Purpose:    Implementation of CTPTradeProcessor::CTPTradeProcessor()
-// Parameters:
-// - frontserver
-// Return:     
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       CTPTradeProcessor::CTPTradeProcessor(const std::map<std::string, std::string>& configMap)
+ // Purpose:    Implementation of CTPTradeProcessor::CTPTradeProcessor()
+ // Parameters:
+ // - frontserver
+ // Return:     
+ ////////////////////////////////////////////////////////////////////////
 
 CTPTradeProcessor::CTPTradeProcessor(const std::map<std::string, std::string>& configMap)
 	: CTPProcessor(configMap)
+{
+}
+
+CTPTradeProcessor::CTPTradeProcessor(const CTPRawAPI_Ptr& rawAPI)
+	: CTPProcessor(rawAPI)
 {
 }
 
@@ -35,8 +40,6 @@ CTPTradeProcessor::CTPTradeProcessor(const std::map<std::string, std::string>& c
 CTPTradeProcessor::~CTPTradeProcessor()
 {
 	DLOG(INFO) << __FUNCTION__ << std::endl;
-	if (_rawAPI.TrdAPI)
-		_rawAPI.TrdAPI->Release();
 }
 
 
@@ -47,17 +50,18 @@ CTPTradeProcessor::~CTPTradeProcessor()
 ////////////////////////////////////////////////////////////////////////
 
 void CTPTradeProcessor::Initialize(void) {
-	_rawAPI.TrdAPI = CThostFtdcTraderApi::CreateFtdcTraderApi();
-	if (_rawAPI.TrdAPI) {
-		_rawAPI.TrdAPI->RegisterSpi(this);
+	if (!_rawAPI->TrdAPI)
+	{
+		_rawAPI->TrdAPI = CThostFtdcTraderApi::CreateFtdcTraderApi();
+		_rawAPI->TrdAPI->RegisterSpi(this);
 
 		std::string frontserver = _configMap[STR_FRONT_SERVER];
 		DLOG(INFO) << __FUNCTION__ << ":" << frontserver;
 
-		_rawAPI.TrdAPI->RegisterFront(const_cast<char*> (frontserver.data()));
-		_rawAPI.TrdAPI->SubscribePrivateTopic(THOST_TERT_RESUME);
-		_rawAPI.TrdAPI->SubscribePublicTopic(THOST_TERT_RESUME);
-		_rawAPI.TrdAPI->Init();
+		_rawAPI->TrdAPI->RegisterFront(const_cast<char*> (frontserver.data()));
+		_rawAPI->TrdAPI->SubscribePrivateTopic(THOST_TERT_RESUME);
+		_rawAPI->TrdAPI->SubscribePublicTopic(THOST_TERT_RESUME);
+		_rawAPI->TrdAPI->Init();
 
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
@@ -265,8 +269,8 @@ void CTPTradeProcessor::OnRtnTrade(CThostFtdcTradeField *pTrade)
 	std::strcpy(req.InstrumentID, pTrade->InstrumentID);
 
 	for (int i = 0; i < 5; i++) {
-		int iRet = _rawAPI.TrdAPI->ReqQryInvestorPosition(&req, 0);
-		if (iRet != -3) // Too many requests, wait for 1s
+		int iRet = _rawAPI->TrdAPI->ReqQryInvestorPosition(&req, 0);
+		if (iRet == 0) // Too many requests, wait for 1s
 			break;
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}

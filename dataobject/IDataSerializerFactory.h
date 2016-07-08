@@ -15,7 +15,7 @@
 class IDataSerializerFactory
 {
 public:
-	virtual std::map<uint32_t, IDataSerializer_Ptr> CreateDataSerializers(void) = 0;
+	virtual void CreateDataSerializers(std::map<uint32_t, IDataSerializer_Ptr>& serializerMap) = 0;
 
 protected:
 private:
