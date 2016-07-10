@@ -2,13 +2,13 @@
 #define _SYSTEM_EXP_H_
 
 #if defined (_MSC_VER)
-#if defined (SYSTEM_LIBRARY_EXPORTS)
-#define SYSTEM_CLASS_EXPORT __declspec(dllexport)
+#if defined (MFSYSTEM_LIBRARY_EXPORTS)
+#define MFSYSTEM_CLASS_EXPORT __declspec(dllexport)
 #else
-#define SYSTEM_CLASS_EXPORT __declspec(dllimport)
+#define MFSYSTEM_CLASS_EXPORT __declspec(dllimport)
 #endif
 #else
-#define SYSTEM_CLASS_EXPORT
+#define MFSYSTEM_CLASS_EXPORT
 #endif
 
 #endif

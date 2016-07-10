@@ -7,7 +7,6 @@
 
 #include <string>
 #include <iostream>
-#include <glog/logging.h>
 
 #include "EchoMsgSerializer.h"
 #include "../dataobject/EchoMsgDO.h"

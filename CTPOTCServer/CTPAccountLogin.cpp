@@ -31,8 +31,6 @@
 
 #include "../common/Attribute_Key.h"
 
-#include <glog/logging.h>
-
 
  ////////////////////////////////////////////////////////////////////////
  // Name:       CTPAccountLogin::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, IMessageProcessor* session)

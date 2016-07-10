@@ -8,10 +8,11 @@
 #include <cstdlib>
 
 #include "Application.h"
-#include <glog/logging.h>
 #include <iostream>
 #include <string>
 #include <csignal>
+
+#include "../utility/LiteLogger.h"
 
 using namespace std;
 
@@ -24,16 +25,16 @@ void sigtermhandler(int code)
 
 void siginthandler(int code)
 {
-	std::cout << "Are you sure to exit? (Y/N):";
+	//std::cout << "Are you sure to exit? (Y/N):";
 	std::string instr;
-	std::getline(std::cin, instr);
+	//std::getline(std::cin, instr);
 	if (instr == "Y") {
 		int retcode = app.Exit();
-		std::cout << "Server has exited.";
+		//std::cout << "Server has exited.";
 		std::exit(retcode);
 	}
 	else {
-		std::cout << "Server will continue running..." << std::endl;
+		//std::cout << "Server will continue running..." << std::endl;
 		std::signal(SIGINT, siginthandler);
 	}
 
@@ -68,10 +69,10 @@ int main(int argc, char** argv) {
 	}
 	catch (std::exception& ex)
 	{
-		LOG(FATAL) << "Fatal erorr occured, application is exiting: " << ex.what() << std::endl;
+		LiteLogger::Fatal(std::string("Fatal erorr occured, application is exiting: ") + ex.what() + '\n');
 	}
 	catch (...) {
-		LOG(FATAL) << "Unknown fatal erorr occured, application is exiting: " << std::endl;
+		LiteLogger::Fatal("Unknown fatal erorr occured, application is exiting!\n");
 	}
 	return 0;
 }

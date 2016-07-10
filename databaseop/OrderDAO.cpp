@@ -47,7 +47,7 @@ OrderDO_Ptr OrderDAO::CreateOrder(const OrderDO& orderDO)
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LOG(ERROR) << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		LiteLogger::Error(std::string(__FUNCTION__) + ": " + sqlEx.getSQLStateCStr());
 		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
 	}
 

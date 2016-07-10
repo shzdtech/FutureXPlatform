@@ -11,8 +11,6 @@
 #include "../CTPServer/CTPWorkerProcessorID.h"
 #include "CTPOTCWorkerProcessor.h"
 
-#include <glog/logging.h>
-
 #include "../message/GlobalProcessorRegistry.h"
 #include "../common/Attribute_Key.h"
 

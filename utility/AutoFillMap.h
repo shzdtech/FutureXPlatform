@@ -23,7 +23,7 @@ public:
 			return it->second;
 		else
 		{
-			auto iter = emplace(key, V{});
+			auto iter = emplace(key, std::move(V{}));
 			return (iter.first)->second;
 		}
 	}
@@ -36,7 +36,7 @@ public:
 			return it->second;
 		else
 		{
-			auto iter = emplace(key, T{});
+			auto iter = emplace(key, std::move(T{}));
 			return (iter.first)->second;
 		}
 	}

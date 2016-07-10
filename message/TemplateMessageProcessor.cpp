@@ -6,7 +6,7 @@
  ***********************************************************************/
 
 #include <iostream>
-#include <glog/logging.h>
+#include "../utility/LiteLogger.h"
 #include "DefMessageID.h"
 #include "message_macro.h"
 #include "TemplateMessageProcessor.h"
@@ -91,10 +91,12 @@ int TemplateMessageProcessor::OnRecvMsg(const uint msgId, const data_buffer& msg
 		SendErrorMsg(msgId, bizErr, reqDO ? reqDO->SerialId : 0);
 	}
 	catch (std::exception& ex) {
-		LOG(ERROR) << __FUNCTION__ << " MsgId: " << msgId << ", Error: " << ex.what() << std::endl;
+		std::string error(__FUNCTION__);
+		LiteLogger::Error(error + " MsgId: " + std::to_string(msgId) + ", Error: " + ex.what() + '\n');
 	}
 	catch (...) {
-		LOG(ERROR) << "OnRecvMsg unknown error occured." << std::endl;
+		std::string error(__FUNCTION__);
+		LiteLogger::Error(error + ": Unknown error occured.\n");
 	}
 
 	return 0;
@@ -117,10 +119,12 @@ int TemplateMessageProcessor::OnResponse(const uint msgId, const uint serialId, 
 		SendErrorMsg(msgId, bizErr, serialId);
 	}
 	catch (std::exception& ex) {
-		LOG(ERROR) << __FUNCTION__ << " MsgId: " << msgId << ", Error: " << ex.what() << std::endl;
+		std::string error(__FUNCTION__);
+		LiteLogger::Error(error + " MsgId: " + std::to_string(msgId) + ", Error: " + ex.what() + '\n');
 	}
 	catch (...) {
-		LOG(ERROR) << __FUNCTION__ << " unknown error occured." << std::endl;
+		std::string error(__FUNCTION__);
+		LiteLogger::Error(error + ": Unknown error occured.\n");
 	}
 
 	return 0;

@@ -17,7 +17,7 @@
 #include "../message/DefMessageID.h"
 #include "../utility/Encoding.h"
 #include "../utility/TUtil.h"
-#include <glog/logging.h>
+
 #include <thread>
 
 #include "../dataobject/AccountInfoDO.h"
@@ -39,8 +39,7 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 	auto& brokeid = session->getUserInfo()->getBrokerId();
 	auto& userid = session->getUserInfo()->getInvestorId();
 
-	CThostFtdcQryTradingAccountField req;
-	std::memset(&req, 0, sizeof(req));
+	CThostFtdcQryTradingAccountField req{};
 	std::strcpy(req.BrokerID, brokeid.data());
 	std::strcpy(req.InvestorID, userid.data());
 

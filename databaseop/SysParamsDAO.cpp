@@ -36,7 +36,7 @@ std::shared_ptr<std::map<std::string, std::string>> SysParamsDAO::FindSysParams(
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LOG(ERROR) << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		LiteLogger::Error(std::string(__FUNCTION__) + ": " + sqlEx.getSQLStateCStr());
 		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
 	}
 

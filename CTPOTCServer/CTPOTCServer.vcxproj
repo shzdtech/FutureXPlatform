@@ -74,7 +74,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)Bin\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -82,7 +82,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)Bin\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -96,14 +96,15 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>CTP_OTC_LIBRARY_EXPORTS;WIN32;_DEBUG;_WINDOWS;_USRDLL;CTPOTCSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include;$(SolutionDir)\include\glog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-D_CRT_SECURE_NO_WARNINGS -D_DEMO %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\ctp\tradeapi;$(SolutionDir)lib\google</AdditionalLibraryDirectories>
-      <AdditionalDependencies>thostmduserapi.lib;thosttraderapi.lib;libglog.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>thostmduserapi.lib;thosttraderapi.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -114,14 +115,15 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>CTP_OTC_LIBRARY_EXPORTS;WIN32;_DEBUG;_WINDOWS;_USRDLL;CTPOTCSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include;$(SolutionDir)\include\glog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-D_CRT_SECURE_NO_WARNINGS -D_DEMO %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)lib\google\glog\$(Platform)\$(Configuration);$(SolutionDir)lib\ctp\tradeapi\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>thostmduserapi.lib;thosttraderapi.lib;glog.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib\ctp\tradeapi\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>thostmduserapi.lib;thosttraderapi.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -134,8 +136,9 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>CTP_OTC_LIBRARY_EXPORTS;WIN32;NDEBUG;_WINDOWS;_USRDLL;CTPOTCSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include;$(SolutionDir)\include\glog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-D_CRT_SECURE_NO_WARNINGS -D_DEMO %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -143,7 +146,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\ctp\tradeapi;$(SolutionDir)lib\google</AdditionalLibraryDirectories>
-      <AdditionalDependencies>thostmduserapi.lib;thosttraderapi.lib;libglog.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>thostmduserapi.lib;thosttraderapi.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -156,16 +159,17 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>CTP_OTC_LIBRARY_EXPORTS;WIN32;NDEBUG;_WINDOWS;_USRDLL;CTPOTCSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include;$(SolutionDir)\include\glog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-D_CRT_SECURE_NO_WARNINGS -D_DEMO %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)lib\google\glog\$(Platform)\$(Configuration);$(SolutionDir)lib\ctp\tradeapi\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>thostmduserapi.lib;thosttraderapi.lib;glog.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib\ctp\tradeapi\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>thostmduserapi.lib;thosttraderapi.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

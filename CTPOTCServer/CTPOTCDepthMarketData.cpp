@@ -23,7 +23,6 @@
 #include "../message/AppContext.h"
 
 #include "../utility/Encoding.h"
-#include <glog/logging.h>
 #include "../pricingengine/AlgorithmManager.h"
 
 #include "../common/Attribute_Key.h"

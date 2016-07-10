@@ -6,7 +6,7 @@
  ***********************************************************************/
 
 #include "MicroFurtureSystem.h"
-#include <glog/logging.h>
+#include "../utility/LiteLogger.h"
 #include "../utility/TUtil.h"
 #include "../utility/stringutility.h"
 #include "../configuration/AbstractConfigReaderFactory.h"
@@ -17,31 +17,21 @@
 #include "../databaseop/AbstractConnectionManager.h"
 #include "../dataobject/AbstractDataSerializerFactory.h"
 
-std::string MicroFurtureSystem::_logPath("./micro.future.system");
-
 void MicroFurtureSystem::InitLogger(const char* logPath)
 {
-	std::string strlogPath = logPath ? logPath : _logPath;
-	InitLogger(std::string(strlogPath));
+	InitLogger(std::string(logPath));
 }
 
 void MicroFurtureSystem::InitLogger(const std::string& logPath)
 {
-	_logPath = logPath;
-	auto idx = _logPath.rfind('/');
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
-	if (idx == std::string::npos)  idx = _logPath.rfind('\\');
-#endif
-	FLAGS_log_dir = idx != std::string::npos ? _logPath.substr(0, idx + 1) : ".";
+	LiteLogger::InitLogger(logPath);
 
-	google::InitGoogleLogging(_logPath.data());
-
-	LOG(INFO) << "Log path: " << logPath << std::endl;
+	LiteLogger::Info("Log path: " + logPath + '\n');
 }
 
 const std::string & MicroFurtureSystem::GetLogPath(void)
 {
-	return _logPath;
+	return LiteLogger::LogPath();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -55,10 +45,12 @@ const std::string & MicroFurtureSystem::GetLogPath(void)
 bool MicroFurtureSystem::Load(const std::string& config)
 {
 	bool ret = false;
-	LOG(INFO) << "Initializing system..." << std::endl;
-
+	
 	if (auto cfgReader = AbstractConfigReaderFactory::OpenConfigReader(config)) {
-		LOG(INFO) << "  Loading System Config: " << config << std::endl;
+		LiteLogger::Info("Initializing system (ver. " 
+			+ cfgReader->getValue("system.version")  + ")...\n");
+
+		LiteLogger::Info("  Loading System Config: " + config + '\n');
 
 		std::vector<std::string> section_vec;
 		// Initialize Databases
@@ -66,16 +58,16 @@ bool MicroFurtureSystem::Load(const std::string& config)
 		for (auto& dbsection : section_vec)
 		{
 			std::map<std::string, std::string> dbCfgMap;
-			LOG(INFO) << "  Loading database: " << dbsection << " ("<< dbCfgMap["key"] <<")..."<< std::endl;
 			if (cfgReader->getMap("system.databases." + dbsection, dbCfgMap) > 0)
 				AbstractConnectionManager::DefaultInstance()->LoadDbConfig(dbCfgMap);
 			
+			LiteLogger::Info("  Loading database: " + dbsection + " (" + dbCfgMap["key"] + ")...\n");
 			if(auto pConnMgr = AbstractConnectionManager::DefaultInstance()->
 				FindConnectionManager(dbCfgMap["key"]))
 			{
 				pConnMgr->Initialize();
-				LOG(INFO) << "    " << pConnMgr->DBConfig().DB_POOL_SIZE
-					<< " connections have been created in pool." << std::endl;
+				LiteLogger::Info("    " + std::to_string(pConnMgr->DBConfig().DB_POOL_SIZE)
+					+ " connections have been created in pool.\n");
 			}
 		}
 
@@ -95,7 +87,7 @@ bool MicroFurtureSystem::Load(const std::string& config)
 		}
 
 		// Initialize Serializers
-		LOG(INFO) << "  Initializing DataSerializer..." << std::endl;
+		LiteLogger::Info("  Initializing DataSerializer...\n");
 		section_vec.clear();
 		cfgReader->getVector("system.serializers.modules", section_vec);
 		for (auto& cfg : section_vec)
@@ -113,12 +105,12 @@ bool MicroFurtureSystem::Load(const std::string& config)
 
 		AbstractDataSerializerFactory::Instance();
 
-		LOG(INFO) << "  DataSerializers have initialized." << std::endl;
+		LiteLogger::Info("  DataSerializers have initialized.\n");
 
 		// Initialize Services
 		std::string serve_cfg = cfgReader->getValue("system.service.config");
 		if (cfgReader = AbstractConfigReaderFactory::OpenConfigReader(serve_cfg)) {
-			LOG(INFO) << "  Loading Service Config: " << serve_cfg << std::endl;
+			LiteLogger::Info("  Loading Service Config: " + serve_cfg + '\n');
 			std::vector<std::string> sections;
 			cfgReader->getVector("service.servercfg", sections);
 
@@ -150,23 +142,23 @@ bool MicroFurtureSystem::Load(const std::string& config)
 							if (server->Initialize(svruri, svrCfg)) {
 								this->_servers.push_back(server);
 								initserver = true;
-								LOG(INFO) << "  Server " << server->getUri() << " initialized." << std::endl;
+								LiteLogger::Info("  Server " + server->getUri() + " initialized.\n");
 							}
 							else
 							{
-								LOG(ERROR) << "  Server " << server->getUri() << " failed to initialize." << std::endl;
+								LiteLogger::Error("  Server " + server->getUri() + " failed to initialize.\n");
 							}
 						}
 						else
 						{
-							LOG(ERROR) << "  Failed to create server: " << svrUUID  << std::endl;
+							LiteLogger::Error("  Failed to create server: " + svrUUID + '\n');
 						}
 					}
 				}
 				else
 				{
-					LOG(ERROR) << "  Failed to create service factory: " << facCfgSec 
-						<< " from " << facCfg <<std::endl;
+					LiteLogger::Error("  Failed to create service factory: " + facCfgSec 
+						+ " from " + facCfg + '\n');
 				}
 
 				ret = ret && initserver;
@@ -174,9 +166,9 @@ bool MicroFurtureSystem::Load(const std::string& config)
 		}
 	}
 	if (ret)
-		LOG(INFO) << "Succeed to initialize system." << std::endl;
+		LiteLogger::Info("Succeed to initialize system.\n");
 	else
-		LOG(INFO) << "Failed to initialize system." << std::endl;
+		LiteLogger::Info("Failed to initialize system.\n");
 
 	return ret;
 }
@@ -198,20 +190,20 @@ bool MicroFurtureSystem::Start(void)
 
 	if (!_running)
 	{
-		LOG(INFO) << "Starting servers:" << std::endl;
+		LiteLogger::Info("Starting servers:\n");
 		int i = 0;
 		for (auto& svr : _servers) {
 			if (svr->Start())
 			{
 				i++;
-				LOG(INFO) << "  " << svr->getUri() << " has started." << std::endl;
+				LiteLogger::Info("  " + svr->getUri() + " has started.\n");
 			}
 			else
 			{
-				LOG(ERROR) << "  " << svr->getUri() << " failed to start!" << std::endl;
+				LiteLogger::Error("  " + svr->getUri()+ " failed to start!\n");
 			}
 		}
-		LOG(INFO) << i << " servers started running." << std::endl;
+		LiteLogger::Info(std::to_string(i) + " servers started running.\n");
 
 		_running = true;
 
@@ -231,17 +223,17 @@ bool MicroFurtureSystem::Stop(void)
 {
 	bool ret;
 
-	LOG(INFO) << "Stopping servers:" << std::endl;
+	LiteLogger::Info("Stopping servers:\n");
 	int i = 0;
 	for (auto& svr : _servers) {
 		if (svr->Stop())
 		{
 			i++;
-			LOG(INFO) << "  " << svr->getUri() << " has stopped." << std::endl;
+			LiteLogger::Info("  " + svr->getUri() + " has stopped.\n");
 		}
 		else
 		{
-			LOG(ERROR) << "  " << svr->getUri() << " failed to stop!" << std::endl;
+			LiteLogger::Error("  " + svr->getUri() + " failed to stop!\n");
 		}
 		svr->Stop();
 	}
@@ -250,7 +242,7 @@ bool MicroFurtureSystem::Stop(void)
 
 	ret = i == _servers.size();
 
-	LOG(INFO) << i << " servers have stopped." << std::endl;
+	LiteLogger::Info(std::to_string(i) + " servers have stopped.\n");
 
 	return ret;
 }
@@ -278,7 +270,6 @@ MicroFurtureSystem::~MicroFurtureSystem()
 	{
 		Stop();
 	}
-	google::FlushLogFiles(google::GLOG_INFO);
 }
 
 ////////////////////////////////////////////////////////////////////////

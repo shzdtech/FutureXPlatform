@@ -1,31 +1,25 @@
 #include "InteroLogSink.h"
 
+
 namespace Micro {
 	namespace Future {
-		InteroLogSink::InteroLogSink(Encoding^ encoding)
+		extern "C" void LogCallback(int severity, const char* message)
 		{
-			_encoding = encoding;
-			google::AddLogSink(this);
+			InteroLogSink::LogCallBack->RaiseEvent((LogSeverityType)severity,
+				gcnew System::String(message));
 		}
+
+		gcroot<InteroLogCallBack^> InteroLogSink::LogCallBack = gcnew InteroLogCallBack;
 
 		InteroLogSink::InteroLogSink()
 		{
-			_encoding = Encoding::Default;
-			google::AddLogSink(this);
+			_sink = AbstractLogSink::CreateSink(LogCallback);
 		}
 
 		InteroLogSink::~InteroLogSink()
 		{
-			google::RemoveLogSink(this);
-		}
-
-		void InteroLogSink::send(google::LogSeverity severity, const char* full_filename,
-			const char* base_filename, int line,
-			const struct tm* tm_time,
-			const char* message, size_t message_len)
-		{
-			LogCallBack->RaiseEvent((LogSeverityType)severity,
-				gcnew System::String(message, 0, message_len));
+			if (_sink)
+				delete _sink;
 		}
 	}
 }

@@ -25,9 +25,6 @@
 #include "../bizutility/InstrumentCache.h"
 
 
-#include <glog/logging.h>
-
-
  ////////////////////////////////////////////////////////////////////////
  // Name:       CTPQueryPosition::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
  // Purpose:    Implementation of CTPQueryPosition::HandleRequest()
@@ -45,8 +42,7 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 	auto& brokeid = session->getUserInfo()->getBrokerId();
 	auto& userid = session->getUserInfo()->getInvestorId();
 	auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
-	CThostFtdcQryInvestorPositionField req;
-	std::memset(&req, 0, sizeof(req));
+	CThostFtdcQryInvestorPositionField req{};
 	std::strcpy(req.BrokerID, brokeid.data());
 	std::strcpy(req.InvestorID, userid.data());
 	std::strcpy(req.InstrumentID, instrumentid.data());
@@ -68,7 +64,16 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 			auto it = positionMap.find(instrumentid);
 			if (it != positionMap.end())
 			{
-				return dataobj_ptr(new UserPositionExDO(it->second));
+				auto& positions = it->second;
+				auto lastpit = std::prev(positions.end());
+				for (auto pit = positions.begin(); pit != positions.end(); pit++)
+				{
+					auto position_ptr = std::make_shared<UserPositionExDO>(pit->second);
+					position_ptr->SerialId = reqDO->SerialId;
+					if (pit == lastpit)
+						position_ptr->HasMore = true;
+					wkProcPtr->SendDataObject(session, MSG_ID_QUERY_POSITION, position_ptr);
+				}
 			}
 		}
 		else
@@ -76,11 +81,16 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 			auto lastit = std::prev(positionMap.end());
 			for (auto it = positionMap.begin(); it != positionMap.end(); it++)
 			{
-				auto positionDO_Ptr = std::make_shared<UserPositionExDO>(it->second);
-				positionDO_Ptr->SerialId = stdo->SerialId;
-				if (it == lastit)
-					positionDO_Ptr->HasMore = true;
-				wkProcPtr->SendDataObject(session, MSG_ID_QUERY_POSITION, positionDO_Ptr);
+				auto& positions = it->second;
+				auto lastpit = std::prev(positions.end());
+				for (auto pit = positions.begin(); pit != positions.end(); pit++)
+				{
+					auto positionDO_Ptr = std::make_shared<UserPositionExDO>(pit->second);
+					positionDO_Ptr->SerialId = reqDO->SerialId;
+					if (it == lastit && pit == lastpit)
+						positionDO_Ptr->HasMore = true;
+					wkProcPtr->SendDataObject(session, MSG_ID_QUERY_POSITION, positionDO_Ptr);
+				}
 			}
 		}
 	}
@@ -158,7 +168,8 @@ dataobj_ptr CTPQueryPosition::HandleResponse(const uint32_t serialId, param_vect
 			(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT)))
 		{
 			auto& positionMap = wkProcPtr->GetUserPositionMap();
-			auto& position = positionMap.getorfill(pDO->InstrumentID(), *pDO);
+			auto& positions = positionMap.getorfill(pDO->InstrumentID());
+			auto& position = positions.getorfill(pDO->Direction);
 			position = *pDO;
 		}
 	}

@@ -14,7 +14,6 @@
 #include "../bizutility/InstrumentCache.h"
 #include "../common/BizErrorIDs.h"
 
-#include <glog/logging.h>
 #include <algorithm>
 #include "CTPUtility.h"
  ////////////////////////////////////////////////////////////////////////
@@ -62,7 +61,6 @@ dataobj_ptr CTPSubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 			CTPUtility::CheckReturnError(ret);
 		}
 	}
-	DLOG(INFO) << "SubMarketData" << std::endl;
 
 	return nullptr;
 }
@@ -99,8 +97,6 @@ dataobj_ptr CTPSubMarketData::HandleResponse(const uint32_t serialId, param_vect
 		}
 
 		ret->push_back(MarketDataDO(exchange, pRspInstr->InstrumentID));
-
-		DLOG(INFO) << "Subcrible InstID: " << pRspInstr->InstrumentID << std::endl;
 	}
 
 	return ret;

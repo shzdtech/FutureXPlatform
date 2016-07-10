@@ -5,7 +5,7 @@
  * Purpose: Implementation of the class CTPMarketDataProcessor
  ***********************************************************************/
 
-#include <glog/logging.h>
+#include "../utility/LiteLogger.h"
 #include <thread>
 #include "CTPMarketDataProcessor.h"
 #include "CTPUtility.h"
@@ -31,7 +31,7 @@ CTPMarketDataProcessor::CTPMarketDataProcessor(const std::map<std::string, std::
 ////////////////////////////////////////////////////////////////////////
 
 CTPMarketDataProcessor::~CTPMarketDataProcessor() {
-	DLOG(INFO) << __FUNCTION__ << std::endl;
+	DEBUG_INFO(__FUNCTION__);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -59,19 +59,19 @@ int CTPMarketDataProcessor::Login(CThostFtdcReqUserLoginField* loginInfo, uint32
 
 void CTPMarketDataProcessor::OnRspError(CThostFtdcRspInfoField *pRspInfo,
 	int nRequestID, bool bIsLast) {
-	DLOG(INFO) << __FUNCTION__ << ':' << pRspInfo->ErrorMsg << std::endl;
+	DEBUG_INFO(std::string(__FUNCTION__) + pRspInfo->ErrorMsg + '\n');
 }
 
 void CTPMarketDataProcessor::OnFrontDisconnected(int nReason) {
-	DLOG(INFO) << __FUNCTION__ << std::endl;
+	DEBUG_INFO(__FUNCTION__);
 }
 
 void CTPMarketDataProcessor::OnHeartBeatWarning(int nTimeLapse) {
-	DLOG(INFO) << __FUNCTION__ << std::endl;
+	DEBUG_INFO(__FUNCTION__);
 }
 
 void CTPMarketDataProcessor::OnFrontConnected() {
-	DLOG(INFO) << __FUNCTION__ << std::endl;
+	DEBUG_INFO(__FUNCTION__);
 }
 
 void CTPMarketDataProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin,

@@ -30,9 +30,9 @@ int UserOrderContext::RemoveOrder(uint64_t orderID)
 	return ret;
 }
 
-std::mutex& UserOrderContext::GetMutex(const UserContractKey& userContractID)
+std::shared_mutex& UserOrderContext::Mutex(const UserContractKey& userContractID)
 {
-	return _orderMap.getorfill(userContractID).Mutex();
+	return _orderMap.getorfill(userContractID).mutex();
 }
 
 std::map<uint64_t, OrderDO_Ptr>& UserOrderContext::GetAllOrder()

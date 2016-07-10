@@ -18,7 +18,6 @@
 #include "../message/DefMessageID.h"
 #include "../utility/Encoding.h"
 #include "../utility/TUtil.h"
-#include <glog/logging.h>
 
 #include "../dataobject/OrderDO.h"
 #include "../databaseop/OTCOrderDAO.h"

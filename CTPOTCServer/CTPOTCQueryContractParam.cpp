@@ -9,8 +9,6 @@
 
 #include "../common/Attribute_Key.h"
 
-#include <glog/logging.h>
-
 #include "../message/BizError.h"
 
 #include "../message/message_macro.h"

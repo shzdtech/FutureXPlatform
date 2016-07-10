@@ -71,10 +71,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)Bin\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)Bin\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
@@ -87,13 +87,15 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include\glog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLOG_NO_ABBREVIATED_SEVERITIES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\lib\google</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libglog.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -101,49 +103,53 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include\glog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLOG_NO_ABBREVIATED_SEVERITIES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\lib\google\glog\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glog.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include\glog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLOG_NO_ABBREVIATED_SEVERITIES;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)\lib\google</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libglog.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include\glog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLOG_NO_ABBREVIATED_SEVERITIES;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)\lib\google\glog\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glog.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -157,6 +163,9 @@
   <ItemGroup>
     <ProjectReference Include="..\mfsystem\mfsystem.vcxproj">
       <Project>{425d08bd-d784-4c63-8855-1f33974161ea}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\utility\utility.vcxproj">
+      <Project>{35a39434-5d36-4fcc-96dc-632ce0092fa5}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

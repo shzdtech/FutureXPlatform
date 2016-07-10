@@ -7,7 +7,7 @@
 
 #include "CTPTradeProcessor.h"
 #include "CTPUtility.h"
-#include <glog/logging.h>
+#include "../utility/LiteLogger.h"
 #include "../message/DefMessageID.h"
 #include "../message/message_macro.h"
 #include "../bizutility/InstrumentCache.h"
@@ -39,7 +39,7 @@ CTPTradeProcessor::CTPTradeProcessor(const CTPRawAPI_Ptr& rawAPI)
 
 CTPTradeProcessor::~CTPTradeProcessor()
 {
-	DLOG(INFO) << __FUNCTION__ << std::endl;
+	DEBUG_INFO(__FUNCTION__);
 }
 
 
@@ -56,7 +56,7 @@ void CTPTradeProcessor::Initialize(void) {
 		_rawAPI->TrdAPI->RegisterSpi(this);
 
 		std::string frontserver = _configMap[STR_FRONT_SERVER];
-		DLOG(INFO) << __FUNCTION__ << ":" << frontserver;
+		DEBUG_INFO(__FUNCTION__ + ':' + frontserver);
 
 		_rawAPI->TrdAPI->RegisterFront(const_cast<char*> (frontserver.data()));
 		_rawAPI->TrdAPI->SubscribePrivateTopic(THOST_TERT_RESUME);
@@ -264,8 +264,7 @@ void CTPTradeProcessor::OnRtnTrade(CThostFtdcTradeField *pTrade)
 	int nRequestID = 0;
 	OnResponseMacro(MSG_ID_TRADE_RTN, 0, pTrade, nullptr, &nRequestID, &bIsLast);
 
-	CThostFtdcQryInvestorPositionField req;
-	std::memset(&req, 0, sizeof(req));
+	CThostFtdcQryInvestorPositionField req{};
 	std::strcpy(req.InstrumentID, pTrade->InstrumentID);
 
 	for (int i = 0; i < 5; i++) {

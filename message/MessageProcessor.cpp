@@ -7,7 +7,7 @@
 
 #include "MessageProcessor.h"
 #include "ContextAttribute.h"
-#include <glog/logging.h>
+#include "../utility/LiteLogger.h"
 
 MessageProcessor::MessageProcessor()
 {
@@ -16,7 +16,7 @@ MessageProcessor::MessageProcessor()
 
 MessageProcessor::~MessageProcessor()
 {
-	DLOG(INFO) << __FUNCTION__;
+	DEBUG_INFO(__FUNCTION__);
 }
 
 ////////////////////////////////////////////////////////////////////////

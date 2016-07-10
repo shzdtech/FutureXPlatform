@@ -13,42 +13,21 @@
 #include "../utility/ElementMutex.h"
 #include "IMessageSession.h"
 
-struct ScopeLockContext
-{
-	ElementMutex_Ptr< std::set<IMessageSession*>> ElementMutex_Ptr;
-	std::unique_ptr<std::lock_guard<std::mutex>> ScopeLock_Ptr;
-};
-
 template <typename K>
 class SessionContainer : public IMessageSessionEvent, public std::enable_shared_from_this < SessionContainer<K> >
 {
 public:
-	const std::set<IMessageSession*>* getwithlock(const K& key,
-		ScopeLockContext& sclkctx)
+	void foreach(const K& key, std::function<void(IMessageSession*)> func)
 	{
-		std::set<IMessageSession*>* ret = nullptr;
-
 		auto it = _sessionMap.find(key);
 		if (it != _sessionMap.end())
 		{
-			if (sclkctx.ElementMutex_Ptr = it->second)
+			std::shared_lock<std::shared_mutex> read_lock(it->second->mutex());
+			auto sessionSet = it->second->Element;
+			for (auto pSession : sessionSet)
 			{
-				sclkctx.ScopeLock_Ptr.reset(
-					new std::lock_guard<std::mutex>(sclkctx.ElementMutex_Ptr->Mutex()));
-				ret = &sclkctx.ElementMutex_Ptr->Element;
-			}
-		}
-
-		return ret;
-	}
-
-	void foreach(const K& key, std::function<void(IMessageSession*)> func)
-	{
-		ScopeLockContext lock;
-		if(auto pSessionSet = getwithlock(key, lock))
-		{
-			for (auto pSession : *pSessionSet)
 				func(pSession);
+			}
 		}
 	}
 
@@ -62,7 +41,7 @@ public:
 				[](){ return std::make_shared<ElementMutex<std::set<IMessageSession*>>>(); });
 			if (elmutex->Element.find(pSession) == elmutex->Element.end())
 			{
-				std::lock_guard<std::mutex> oplock(elmutex->Mutex());
+				std::lock_guard<std::shared_mutex> write_lock(elmutex->mutex());
 				elmutex->Element.insert(pSession);
 				pSession->addListener(shared_from_this());
 			}
@@ -81,7 +60,7 @@ public:
 			{
 				if (auto elmutex_ptr = it->second)
 				{
-					std::lock_guard<std::mutex> oplock(elmutex_ptr->Mutex());
+					std::lock_guard<std::shared_mutex> write_lock(elmutex_ptr->mutex());
 					auto sit = elmutex_ptr->Element.find(pSession);
 					if (elmutex_ptr->Element.erase(sit) == elmutex_ptr->Element.end())
 						_sessionMap.erase(key);
@@ -101,13 +80,13 @@ public:
 	int removekey(K& key)
 	{
 		int ret = -1;
-		std::lock_guard<std::mutex> removelock(_delMutex);
+		std::lock_guard<std::mutex> delete_lock(_delMutex);
 		auto it = _sessionMap.find(key);
 		if (it != _sessionMap.end())
 		{
 			if (auto elmutex_ptr = it->second)
 			{
-				std::lock_guard<std::mutex> oplock(elmutex_ptr->Element.Mutex());
+				std::lock_guard<std::shared_mutex> write_lock(elmutex_ptr->Element.mutex());
 				for (auto pSession : elmutex_ptr->Element)
 				{
 					auto& keySet = _reverseMap.at(pSession);
@@ -127,7 +106,7 @@ public:
 		int ret = -1;
 		if (pSession)
 		{
-			std::lock_guard<std::mutex> removelock(_delMutex);
+			std::lock_guard<std::mutex> delete_lock(_delMutex);
 			auto it = _reverseMap.find(pSession);
 			if (it != _reverseMap.end())
 			{
@@ -135,7 +114,7 @@ public:
 				{
 					if (auto elmutex_ptr = _sessionMap.at(key))
 					{
-						std::lock_guard<std::mutex> oplock(elmutex_ptr->Mutex());
+						std::lock_guard<std::shared_mutex> write_lock(elmutex_ptr->mutex());
 						auto sit = elmutex_ptr->Element.find(pSession);
 						if (elmutex_ptr->Element.erase(sit) == elmutex_ptr->Element.end())
 							_sessionMap.erase(key);

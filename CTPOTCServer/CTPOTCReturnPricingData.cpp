@@ -8,8 +8,6 @@
 #include "CTPOTCReturnPricingData.h"
 
 #include "../common/Attribute_Key.h"
-#include <glog/logging.h>
-
 #include "../dataobject/MarketDataDO.h"
 #include "../dataobject/UserContractParam.h"
 #include "../dataobject/StrategyContractDO.h"

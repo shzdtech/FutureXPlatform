@@ -9,9 +9,9 @@
 #include "ASIOTCPSession.h"
 #include "ASIOSessionManager.h"
 #include <vector>
-#include <glog/logging.h>
 #include <csignal>
 #include <exception>
+#include "../utility/LiteLogger.h"
 #include "../configuration/AbstractConfigReaderFactory.h"
 
 ASIOTCPServer::ASIOTCPServer() :
@@ -31,7 +31,7 @@ ASIOTCPServer::ASIOTCPServer() :
 }
 
 ASIOTCPServer::~ASIOTCPServer() {
-	DLOG(INFO) << "~ASIOTCPServer:" << _uri << std::endl;
+	DEBUG_INFO("~ASIOTCPServer:" + _uri + '\n');
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -137,7 +137,7 @@ bool ASIOTCPServer::Start(void) {
 			if (ec)
 			{
 				std::string errmsg(ec.message());
-				LOG(ERROR) << "Failed to start " << _uri << ": " << errmsg << std::endl;
+				LiteLogger::Fatal("Failed to start " + _uri + ": " + errmsg + '\n');
 			}
 		}
 	}
@@ -166,15 +166,16 @@ void ASIOTCPServer::work_thread(void) {
 		_iosrv.run(ec);
 		if (ec)
 		{
-			std::string errmsg(ec.message());
-			LOG(ERROR) << _uri << "::" << __FUNCTION__ << ": " << errmsg << std::endl;
+			LiteLogger::Error( _uri + "::" + __FUNCTION__ + ": " + ec.message() + '\n');
 		}
 	}
 	catch (std::exception& ex) {
-		LOG(FATAL) << __FUNCTION__ << ": " << ex.what() << std::endl;
+		std::string msg(__FUNCTION__);
+		LiteLogger::Fatal(msg + ": " + ex.what() + '\n');
 	}
 	catch (...) {
-		LOG(FATAL) << __FUNCTION__ << ": unknown error occured." << std::endl;
+		std::string msg(__FUNCTION__);
+		LiteLogger::Fatal(msg + ": " + ": Unknown error occured.\n");
 	}
 }
 
@@ -189,9 +190,9 @@ void ASIOTCPServer::asyc_accept(void) {
 		[this](boost::system::error_code ec) {
 		if (!ec)
 		{
-			DLOG(INFO) << "Creating session: "
-				<< _socket.remote_endpoint().address().to_string() << ':'
-				<< _socket.remote_endpoint().port() << std::endl;
+			DEBUG_INFO("Creating session: " +
+				_socket.remote_endpoint().address().to_string() + ':'
+				+ std::to_string(_socket.remote_endpoint().port()) + '\n');
 			auto newsessionptr = ((ASIOSessionManager*)_manager_ptr.get())->
 				CreateSession(std::move(_socket));
 			newsessionptr->setMaxMessageSize(this->_max_msg_size);

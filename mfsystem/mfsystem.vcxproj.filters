@@ -36,9 +36,6 @@
     <ClInclude Include="MicroFurtureSystem.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="MicroFutureLogSink.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -48,9 +45,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="system_exp.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="MicroFutureLogSink.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -69,22 +63,22 @@
     </Xml>
   </ItemGroup>
   <ItemGroup>
-    <None Include="factory.json">
-      <Filter>config\json</Filter>
-    </None>
-    <None Include="server.json">
-      <Filter>config\json</Filter>
-    </None>
-    <None Include="service.json">
-      <Filter>config\json</Filter>
-    </None>
-    <None Include="system.json">
-      <Filter>config\json</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="mfsystem.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="factory.json">
+      <Filter>config\json</Filter>
+    </CustomBuild>
+    <CustomBuild Include="server.json">
+      <Filter>config\json</Filter>
+    </CustomBuild>
+    <CustomBuild Include="service.json">
+      <Filter>config\json</Filter>
+    </CustomBuild>
+    <CustomBuild Include="system.json">
+      <Filter>config\json</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>

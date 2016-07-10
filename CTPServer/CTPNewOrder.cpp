@@ -32,8 +32,7 @@ dataobj_ptr CTPNewOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI,
 	auto userinfo = session->getUserInfo();
 
 	// 端登成功,发出报单录入请求
-	CThostFtdcInputOrderField req;
-	std::memset(&req, 0, sizeof(req));
+	CThostFtdcInputOrderField req{};
 
 	//经纪公司代码
 	std::strcpy(req.BrokerID, userinfo->getBrokerId().data());

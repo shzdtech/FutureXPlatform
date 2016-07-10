@@ -57,8 +57,6 @@ void testAutoFillMap()
 void testSessionContainer()
 {
 	SessionContainer<int> sc;
-	ScopeLockContext ptr;
-	sc.getwithlock(1, ptr);
 }
 
 void testepsilondouble(const epsdouble& epsdbl)

@@ -7,7 +7,7 @@
 
 #include <thread>
 #include <array>
-#include <glog/logging.h>
+#include "../utility/LiteLogger.h"
 #include <mutex>
 #include "ASIOTCPSession.h"
 #include "../configuration/AbstractConfigReaderFactory.h"
@@ -34,7 +34,7 @@ _heartbeat_timer(_socket.get_io_service()) {
 ////////////////////////////////////////////////////////////////////////
 
 ASIOTCPSession::~ASIOTCPSession() {
-	DLOG(INFO) << __FUNCTION__ << std::endl;
+	DEBUG_INFO(__FUNCTION__);
 }
 
 void ASIOTCPSession::setMaxMessageSize(uint maxMsgSize)
@@ -83,7 +83,8 @@ int ASIOTCPSession::WriteMessage(const uint msgId, const data_buffer& msg) {
 		buffer(msg.get(), msg.size()),
 		buffer(buf_exinfo, EXINFO_SIZE)
 	};
-	DLOG(INFO) << "Sending message: Id: "<< msgId << " Size:" << packetSz << std::endl;
+
+	DEBUG_INFO("Sending message: Id: " + std::to_string(msgId) + " Size:" + std::to_string(packetSz) + '\n');
 	async_write(_socket, packet,
 		[this, msg_header, msg, msg_exinfo](boost::system::error_code ec, std::size_t /*length*/) {
 		if (ec && ec != error::operation_aborted) {
@@ -130,8 +131,9 @@ bool ASIOTCPSession::Close(void) {
 	if (!_closed) {
 		if (_socket.is_open())
 		{
-			DLOG(INFO) << "Session on " << _socket.remote_endpoint().address().to_string()
-				<< " is closing..." << std::endl;
+			DEBUG_INFO("Session on " + 
+				_socket.remote_endpoint().address().to_string() +
+				" is closing...\n");
 			_socket.shutdown(tcp::socket::shutdown_both);
 			_socket.close();
 		}
@@ -155,10 +157,10 @@ void ASIOTCPSession::asyn_read_header(ASIOTCPSession_Ptr this_ptr) {
 			byte* header = this_ins->_header;
 			if (CTRLCHAR::SOH == header[0] && CTRLCHAR::STX == header[HEADER_LAST]) {
 				uint msg_size = (header[1] | header[2] << 8 | header[3] << 16 | header[4] << 24);
-				DLOG(INFO) << "asyn_read_header: " << msg_size << std::endl;
 				if (msg_size > this_ins->_max_msg_size) {
-					LOG(ERROR) << "Client message exceed max size (" << this_ins->_max_msg_size
-						<< "): " << msg_size << std::endl;
+					LiteLogger::Info("Client message exceed max size ("
+						+ std::to_string(this_ins->_max_msg_size)
+						+ "): "  + std::to_string(msg_size) + '\n');
 					this_ins->Close();
 				}
 				else {
@@ -168,7 +170,7 @@ void ASIOTCPSession::asyn_read_header(ASIOTCPSession_Ptr this_ptr) {
 			}
 		}
 		else {
-			DLOG(INFO) << "asyn_read_header: " << ec.message() << std::endl;
+			DEBUG_INFO("asyn_read_header: " + ec.message() + '\n');
 			this_ins->Close();
 		}
 	});
@@ -188,7 +190,6 @@ void ASIOTCPSession::asyn_read_body(ASIOTCPSession_Ptr this_ptr, uint msgSize) {
 		[this_ptr, msgbuf](boost::system::error_code ec, std::size_t length) {
 		auto this_ins = this_ptr.get();
 		if (!ec && length >= EXINFO_SIZE) {
-			DLOG(INFO) << "asyn_read_body, size: " << length << std::endl;
 			//Start recieve next message
 			this_ins->asyn_read_header(this_ptr);
 			//
@@ -201,7 +202,7 @@ void ASIOTCPSession::asyn_read_body(ASIOTCPSession_Ptr this_ptr, uint msgSize) {
 			}
 		}
 		else {
-			DLOG(INFO) << "asyn_read_body: " << ec.message() << std::endl;
+			DEBUG_INFO("asyn_read_body: " + ec.message() + '\n');
 			this_ins->Close();
 		}
 	});
@@ -227,7 +228,7 @@ void ASIOTCPSession::asyn_timeout(ASIOTCPSession_WkPtr this_wk_ptr) {
 							asyn_timeout(this_ptr);
 						}
 						else {
-							DLOG(INFO) << "Session timeout." << std::endl;
+							DEBUG_INFO("Session timeout.\n");
 							this_ins->Close();
 						}
 					}

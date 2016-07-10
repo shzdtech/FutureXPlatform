@@ -16,7 +16,7 @@
 
 #include "../utility/Encoding.h"
 #include "../utility/TUtil.h"
-#include <glog/logging.h>
+#include "../utility/LiteLogger.h"
 
 #include "CTPUtility.h"
 #include "CTPConstant.h"
@@ -39,8 +39,7 @@ dataobj_ptr CTPLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* raw
 	auto& userid = stdo->TryFind(STR_USER_ID, EMPTY_STRING);
 	auto& password = stdo->TryFind(STR_PASSWORD, EMPTY_STRING);
 
-	CThostFtdcReqUserLoginField req;
-	std::memset(&req, 0, sizeof(req));
+	CThostFtdcReqUserLoginField req{};
 
 	std::strcpy(req.BrokerID, brokeid.data());
 	std::strcpy(req.UserID, userid.data());
@@ -60,7 +59,7 @@ dataobj_ptr CTPLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* raw
 	pUserInfo->setRole(ROLE_CLIENT);
 	pUserInfo->setPermission(ALLOW_TRADING);
 
-	DLOG(INFO) << "Login: " << req.BrokerID << ":" << userid << ":" << password << std::endl;
+	DEBUG_INFO(std::string("Login: ") + req.BrokerID + ":" + userid + ":" + password + '\n');
 
 	return nullptr;
 }
@@ -102,7 +101,7 @@ dataobj_ptr CTPLoginHandler::HandleResponse(const uint32_t serialId, param_vecto
 
 	session->setLoginStatus(true);
 
-	DLOG(INFO) << "Login successful." << std::endl;
+	DEBUG_INFO("Login successful.\n");
 
 	return ret;
 }

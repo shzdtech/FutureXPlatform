@@ -51,9 +51,10 @@ OrderDO_Ptr OTCOrderDAO::CreateOrder(const OrderDO& orderDO, const PricingDO& pr
 			ret->OrderStatus = (OrderStatus)rsout->getInt(3);
 		}
 	}
-	catch (std::exception& ex)
+	catch (sql::SQLException& sqlEx)
 	{
-		LOG(ERROR) << __FUNCTION__ << ": " << ex.what();
+		LiteLogger::Error(std::string(__FUNCTION__) + ": " + sqlEx.getSQLStateCStr());
+		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
 	}
 
 	return ret;
@@ -90,7 +91,7 @@ bool OTCOrderDAO::CancelOrder(const OrderBaseDO& orderDO, OrderStatus& status)
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LOG(ERROR) << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		LiteLogger::Error(std::string(__FUNCTION__) + ": " + sqlEx.getSQLStateCStr());
 		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
 	}
 
@@ -126,7 +127,7 @@ bool OTCOrderDAO::AcceptOrder(const OrderBaseDO& orderDO, OrderStatus& status)
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LOG(ERROR) << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		LiteLogger::Error(std::string(__FUNCTION__) + ": " + sqlEx.getSQLStateCStr());
 		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
 	}
 
@@ -162,7 +163,7 @@ bool OTCOrderDAO::RejectOrder(const OrderBaseDO& orderDO, OrderStatus& status)
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LOG(ERROR) << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		LiteLogger::Error(std::string(__FUNCTION__) + ": " + sqlEx.getSQLStateCStr());
 		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
 	}
 
@@ -207,7 +208,7 @@ OrderDOVec_Ptr OTCOrderDAO::QueryTradingOrder(const ContractKey& contractKey)
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LOG(ERROR) << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		LiteLogger::Error(std::string(__FUNCTION__) + ": " + sqlEx.getSQLStateCStr());
 		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
 	}
 
@@ -259,7 +260,7 @@ OrderDOVec_Ptr OTCOrderDAO::QueryTodayOrder(const std::string& userId, const Con
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LOG(ERROR) << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		LiteLogger::Error(std::string(__FUNCTION__) + ": " + sqlEx.getSQLStateCStr());
 		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
 	}
 

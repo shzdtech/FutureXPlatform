@@ -14,7 +14,7 @@
 #include "../message/DefMessageID.h"
 #include "../message/message_macro.h"
 
-#include "glog/logging.h"
+#include "../utility/LiteLogger.h"
 
  ////////////////////////////////////////////////////////////////////////
  // Name:       CTPTradeWorkerProcessor::CTPTradeWorkerProcessor()
@@ -41,7 +41,7 @@ CTPTradeWorkerProcessor::CTPTradeWorkerProcessor(const std::map<std::string, std
 
 CTPTradeWorkerProcessor::~CTPTradeWorkerProcessor()
 {
-	DLOG(INFO) << __FUNCTION__ << std::endl;
+	DEBUG_INFO(__FUNCTION__);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -69,8 +69,7 @@ void CTPTradeWorkerProcessor::Initialize(void)
 		{
 			if (this->HasLogged() && !InstrmentsLoaded)
 			{
-				CThostFtdcQryInstrumentField req;
-				std::memset(&req, 0x0, sizeof(CThostFtdcQryInstrumentField));
+				CThostFtdcQryInstrumentField req{};
 				_rawAPI->TrdAPI->ReqQryInstrument(&req, 0);
 			}
 			std::this_thread::sleep_for(std::chrono::milliseconds(this->RetryInterval));
@@ -81,8 +80,7 @@ void CTPTradeWorkerProcessor::Initialize(void)
 
 int CTPTradeWorkerProcessor::LoginSystemUser(void)
 {
-	CThostFtdcReqUserLoginField req;
-	std::memset(&req, 0, sizeof(req));
+	CThostFtdcReqUserLoginField req{};
 	std::strcpy(req.BrokerID, _systemUser.getBrokerId().data());
 	std::strcpy(req.UserID, _systemUser.getUserId().data());
 	std::strcpy(req.Password, _systemUser.getPassword().data());
@@ -117,8 +115,7 @@ void CTPTradeWorkerProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUs
 		}
 
 		_isLogged = true;
-		CThostFtdcSettlementInfoConfirmField req;
-		std::memset(&req, 0, sizeof(req));
+		CThostFtdcSettlementInfoConfirmField req{};
 		std::strcpy(req.BrokerID, _systemUser.getBrokerId().data());
 		std::strcpy(req.InvestorID, _systemUser.getInvestorId().data());
 
@@ -226,8 +223,7 @@ int CTPTradeWorkerProcessor::CreateOrder(const OrderDO& orderInfo, OrderStatus& 
 {
 	currStatus = OrderStatus::UNDEFINED;
 	// 端登成功,发出报单录入请求
-	CThostFtdcInputOrderField req;
-	std::memset(&req, 0, sizeof(req));
+	CThostFtdcInputOrderField req{};
 
 	//经纪公司代码
 	std::strcpy(req.BrokerID, _systemUser.getBrokerId().data());
@@ -276,8 +272,7 @@ int CTPTradeWorkerProcessor::CancelOrder(const OrderDO& orderInfo, OrderStatus& 
 {
 	currStatus = OrderStatus::UNDEFINED;
 
-	CThostFtdcInputOrderActionField req;
-	std::memset(&req, 0x0, sizeof(req));
+	CThostFtdcInputOrderActionField req{};
 
 	req.ActionFlag = THOST_FTDC_AF_Delete;
 	//经纪公司代码

@@ -10,8 +10,6 @@
 
 #include "../common/Attribute_Key.h"
 
-#include <glog/logging.h>
-
 #include "../message/DefMessageID.h"
 #include "../message/SysParam.h"
 #include "../message/message_macro.h"
@@ -82,8 +80,7 @@ int CTPOTCWorkerProcessor::LoginSystemUserIfNeed(void)
 
 	if (!_isLogged)
 	{
-		CThostFtdcReqUserLoginField req;
-		std::memset(&req, 0, sizeof(req));
+		CThostFtdcReqUserLoginField req{};
 		std::strcpy(req.BrokerID, SysParam::Get(CTP_MD_BROKERID).data());
 		std::strcpy(req.UserID, SysParam::Get(CTP_MD_USERID).data());
 		std::strcpy(req.Password, SysParam::Get(CTP_MD_PASSWORD).data());

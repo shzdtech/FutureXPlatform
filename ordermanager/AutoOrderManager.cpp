@@ -61,7 +61,7 @@ OrderDOVec_Ptr AutoOrderManager::UpdateOrderByStrategy(
 
 	if (strategyDO.Trading)
 	{
-		std::lock_guard<std::mutex> guard(_userOrderCtx.GetMutex(strategyDO));
+		std::lock_guard<std::shared_mutex> guard(_userOrderCtx.Mutex(strategyDO));
 
 		if (auto pricingDO_ptr = PricingUtility::Pricing(strategyDO, strategyDO.Quantity, _pricingCtx))
 		{
@@ -190,7 +190,7 @@ int AutoOrderManager::OnOrderUpdated(OrderDO& orderInfo)
 
 		if (!orderInfo.Active)
 		{
-			std::lock_guard<std::mutex> guard(_userOrderCtx.GetMutex(orderInfo));
+			std::lock_guard<std::shared_mutex> guard(_userOrderCtx.Mutex(orderInfo));
 			_userOrderCtx.RemoveOrder(orderInfo.OrderID);
 		}
 

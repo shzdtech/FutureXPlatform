@@ -19,7 +19,7 @@ class UserOrderContext
 public:
 	void AddOrder(const OrderDO& orderDO);
 	int RemoveOrder(uint64_t orderID);
-	std::mutex& GetMutex(const UserContractKey& userContractID);
+	std::shared_mutex& Mutex(const UserContractKey& userContractID);
 	std::map<uint64_t, OrderDO_Ptr>& GetAllOrder();
 	std::map<uint64_t, OrderDO_Ptr>& GetTradingOrderMap(const UserContractKey& userContractID);
 	OrderDO_Ptr FindOrder(uint64_t orderID);

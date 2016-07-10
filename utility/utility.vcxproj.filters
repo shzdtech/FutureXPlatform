@@ -57,9 +57,27 @@
     <ClInclude Include="resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="LiteLogger.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractLogSink.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GoogleLogSink.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Encoding.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="LiteLogger.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AbstractLogSink.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GoogleLogSink.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

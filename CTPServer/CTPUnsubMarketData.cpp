@@ -11,7 +11,6 @@
 #include "../dataobject/FieldName.h"
 #include "../message/BizError.h"
 #include "../utility/Encoding.h"
-#include <glog/logging.h>
 #include "CTPUtility.h"
 #include <algorithm>
 
@@ -46,7 +45,6 @@ dataobj_ptr CTPUnsubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI* 
 			CTPUtility::CheckReturnError(ret);
 		}
 	}
-	DLOG(INFO) << "UnsubMarketData" << std::endl;
 
 	return nullptr;
 }
@@ -73,7 +71,6 @@ dataobj_ptr CTPUnsubMarketData::HandleResponse(const uint32_t serialId, param_ve
 	stDO->Data[STR_INSTRUMENT_ID].push_back(pRspInstr->InstrumentID);
 	stDO->SerialId = serialId;
 	stDO->HasMore = !*(bool*)rawRespParams[3];
-	DLOG(INFO) << "UnsubMarketData successful." << std::endl;
 
 	return ret;
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glog/logging.h>
+#include "../utility/AbstractLogSink.h"
 #include <gcroot.h>
 
 using namespace System;
@@ -29,24 +29,18 @@ namespace Micro {
 			}
 		};
 
-		public class InteroLogSink : public google::LogSink
+		public class InteroLogSink
 		{
 		public:
-			InteroLogSink(Encoding^ encoder);
 			InteroLogSink();
 			~InteroLogSink();
 
-			virtual void send(google::LogSeverity severity, const char* full_filename,
-				const char* base_filename, int line,
-				const struct tm* tm_time,
-				const char* message, size_t message_len);
-
 		public:
-			gcroot<InteroLogCallBack^> LogCallBack = gcnew InteroLogCallBack;
+			static gcroot<InteroLogCallBack^> LogCallBack;
 
 		private:
-			gcroot<Encoding^> _encoding;
 			unsigned int _buffsz = 0;
+			AbstractLogSink* _sink;
 
 		};
 	}

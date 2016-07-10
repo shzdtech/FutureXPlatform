@@ -12,7 +12,6 @@
 #include "../message/BizError.h"
 #include "../utility/Encoding.h"
 #include "../utility/TUtil.h"
-#include <glog/logging.h>
 #include "CTPUtility.h"
 
  ////////////////////////////////////////////////////////////////////////
@@ -34,8 +33,7 @@ dataobj_ptr CTPQuerySettlementInfoCfm::HandleRequest(const dataobj_ptr reqDO, IR
 	auto& cfmdate = stdo->TryFind(STR_DATE, EMPTY_STRING);
 	auto& cfmtime = stdo->TryFind(STR_TIME, EMPTY_STRING);
 
-	CThostFtdcSettlementInfoConfirmField req;
-	std::memset(&req, 0, sizeof(req));
+	CThostFtdcSettlementInfoConfirmField req{};
 	std::strcpy(req.BrokerID, brokeid.data());
 	std::strcpy(req.InvestorID, userid.data());
 	std::strcpy(req.ConfirmDate, cfmdate.data());
@@ -72,8 +70,6 @@ dataobj_ptr CTPQuerySettlementInfoCfm::HandleResponse(const uint32_t serialId, p
 		(*pDO)[STR_USER_ID] = pData->InvestorID;
 		(*pDO)[STR_DATE] = pData->ConfirmDate;
 		(*pDO)[STR_TIME] = pData->ConfirmTime;
-
-		DLOG(INFO) << "Settlement Info Confirm" << std::endl;
 	}
 
 	return ret;

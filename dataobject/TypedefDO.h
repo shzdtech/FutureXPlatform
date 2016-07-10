@@ -11,6 +11,7 @@
 #include "MarketDataDO.h"
 #include "InstrumentDO.h"
 #include "UserPositionDO.h"
+#include "EnumTypes.h"
 
 template <typename V>
 using ContractMap = typename autofillmap<ContractKey, V>;
@@ -34,7 +35,8 @@ typedef ContractMap<ContractDO> ContractDOMap;
 
 typedef std::map<std::string, InstrumentDO> InstrumentDOMap;
 
-typedef autofillmap<std::string, UserPositionExDO> UserPositionExDOMap;
+typedef autofillmap<std::string, autofillmap<PositionDirectionType, UserPositionExDO>>
+UserPositionExDOMap;
 
 template <typename V>
 using PortfolioMap = typename autofillmap<PortfolioKey, V>;

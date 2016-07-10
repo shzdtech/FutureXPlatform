@@ -46,7 +46,5 @@ dataobj_ptr CTPTradeLoginHandler::HandleResponse(const uint32_t serialId, param_
 {
 	auto ret = CTPLoginHandler::HandleResponse(serialId, rawRespParams, rawAPI, session);
 
-	session->getUserInfo()->setAttribute(STR_KEY_USER_CONTRACTS, std::make_shared<UserPositionExDOMap>());
-
 	return ret;
 }

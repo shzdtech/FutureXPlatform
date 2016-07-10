@@ -45,6 +45,7 @@ private:
 class UserPositionExDO : public UserPositionDO
 {
 public:
+	UserPositionExDO() {}
 	UserPositionExDO(const std::string& exchangeID, const std::string& instrumentID)
 		: UserPositionDO(exchangeID, instrumentID)	{}
 

@@ -14,7 +14,6 @@
 #include "../message/BizError.h"
 #include "../utility/Encoding.h"
 #include "../utility/TUtil.h"
-#include <glog/logging.h>
 
 #include "../dataobject/OrderDO.h"
 
@@ -40,8 +39,7 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAP
 	auto& tmstart = stdo->TryFind(STR_TIME_START, EMPTY_STRING);
 	auto& tmend = stdo->TryFind(STR_TIME_END, EMPTY_STRING);
 
-	CThostFtdcQryOrderField req;
-	std::memset(&req, 0, sizeof(CThostFtdcQryOrderField));
+	CThostFtdcQryOrderField req{};
 	std::strcpy(req.BrokerID, brokeid.data());
 	std::strcpy(req.InvestorID, userid.data());
 	std::strcpy(req.InstrumentID, instrumentid.data());

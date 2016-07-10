@@ -13,7 +13,7 @@
 #include <string>
 #include <memory>
 #include <future>
-#include <glog/logging.h>
+#include "../utility/LiteLogger.h"
 #include "../message/BizError.h"
 #include "../common/BizErrorIDs.h"
 #include "../utility/singleton_templ_mt.h"

@@ -15,14 +15,15 @@
 #include "../utility/singleton_templ.h"
 
 static const char* MICROFUTURE_DEFAULT_CONFIG_NAME = "system";
+static const char* MICROFUTURE_DEFAULT_LOGPATH = "./micro.future.system";
 
-class SYSTEM_CLASS_EXPORT MicroFurtureSystem : public ISystem, public singleton_ptr < MicroFurtureSystem >
+class MFSYSTEM_CLASS_EXPORT MicroFurtureSystem : public ISystem, public singleton_ptr < MicroFurtureSystem >
 {
 public:
 	MicroFurtureSystem();
 	~MicroFurtureSystem();
 
-	static void InitLogger(const char* logPath = nullptr);
+	static void InitLogger(const char* logPath = MICROFUTURE_DEFAULT_LOGPATH);
 	static void InitLogger(const std::string& logPath);
 	static const std::string& GetLogPath(void);
 	bool Load(const char* config = MICROFUTURE_DEFAULT_CONFIG_NAME);
@@ -35,7 +36,6 @@ protected:
 private:
 	std::vector<IMessageServer_Ptr> _servers;
 	bool _running;
-	static std::string _logPath;
 };
 
 #endif

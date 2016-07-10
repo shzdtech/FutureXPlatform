@@ -22,7 +22,6 @@
 
 #include "../utility/Encoding.h"
 #include "../utility/TUtil.h"
-#include <glog/logging.h>
 
 
 #include "CTPUtility.h"
@@ -41,8 +40,7 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 	auto stdo = (MapDO<std::string>*)reqDO.get();
 	auto& exchangeid = stdo->TryFind(STR_EXCHANGE_ID, EMPTY_STRING);
 
-	CThostFtdcQryExchangeField req;
-	std::memset(&req, 0, sizeof(req));
+	CThostFtdcQryExchangeField req{};
 
 	if (auto wkProcPtr = std::static_pointer_cast<CTPTradeWorkerProcessor>
 		(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT)))

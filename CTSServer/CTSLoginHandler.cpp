@@ -16,7 +16,8 @@
 
 #include "../utility/Encoding.h"
 #include "../utility/TUtil.h"
-#include <glog/logging.h>
+#include "../utility/LiteLogger.h"
+
 
  ////////////////////////////////////////////////////////////////////////
  // Name:       CTSLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
@@ -39,7 +40,7 @@ dataobj_ptr CTSLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* raw
 	CTSAPIWrapper* api = (CTSAPIWrapper*)rawAPI;
 	api->Impl()->Login(brokeid.data(), userid.data(), password.data(), reqDO->SerialId);
 
-	DLOG(INFO) << "Start login: " << brokeid << ":" << userid << ":" << password << std::endl;
+	DEBUG_INFO("Start login: " + brokeid + ":" + userid + ":" + password + '\n');
 
 	auto pUserInfo = session->getUserInfo();
 	pUserInfo->setInvestorId(userid);
@@ -86,7 +87,7 @@ dataobj_ptr CTSLoginHandler::HandleResponse(const uint32_t serialId, param_vecto
 
 	session->setLoginStatus(true);
 
-	DLOG(INFO) << "Login successful." << std::endl;
+	DEBUG_INFO(pDO->UserId + " login successful.\n");
 
 	return ret;
 }

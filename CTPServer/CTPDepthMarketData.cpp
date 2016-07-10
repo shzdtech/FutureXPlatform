@@ -11,7 +11,7 @@
 #include "../dataobject/TemplateDO.h"
 #include "../message/BizError.h"
 #include "../utility/Encoding.h"
-#include <glog/logging.h>
+
 #include "CTPUtility.h"
 
  ////////////////////////////////////////////////////////////////////////

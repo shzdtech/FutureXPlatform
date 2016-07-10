@@ -73,7 +73,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)Bin\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -81,7 +81,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)Bin\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -94,14 +94,15 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;DATABASEOP_LIBRARY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(BOOST_ROOT);$(SolutionDir)\include\glog;$(SolutionDir)include\mysql;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(BOOST_ROOT);$(SolutionDir)include\mysql;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-D_CRT_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)\lib\mysql\debug;$(SolutionDir)\lib\google;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>mysqlcppconn.lib;libglog.lib</AdditionalDependencies>
+      <AdditionalDependencies>mysqlcppconn.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -111,13 +112,14 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;DATABASEOP_LIBRARY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(BOOST_ROOT);$(SolutionDir)\include\glog;$(SolutionDir)include\mysql;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(BOOST_ROOT);$(SolutionDir)include\mysql;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\lib\mysql\$(Platform)\$(Configuration);$(SolutionDir)\lib\google\glog\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>mysqlcppconn.lib;glog.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib\mysql\$(Platform)\$(Configuration);</AdditionalLibraryDirectories>
+      <AdditionalDependencies>mysqlcppconn.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -129,16 +131,17 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;DATABASEOP_LIBRARY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(BOOST_ROOT);$(SolutionDir)\include\glog;$(SolutionDir)include\mysql;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(BOOST_ROOT);$(SolutionDir)include\mysql;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-D_CRT_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)\lib\mysql\release;$(SolutionDir)\lib\google;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>mysqlcppconn.lib;libglog.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\lib\mysql\release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>mysqlcppconn.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -150,15 +153,16 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;DATABASEOP_LIBRARY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(BOOST_ROOT);$(SolutionDir)\include\glog;$(SolutionDir)include\mysql;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(BOOST_ROOT);$(SolutionDir)include\mysql;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)\lib\mysql\$(Platform)\$(Configuration);$(SolutionDir)\lib\google\glog\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>mysqlcppconn.lib;glog.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib\mysql\$(Platform)\$(Configuration);</AdditionalLibraryDirectories>
+      <AdditionalDependencies>mysqlcppconn.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -195,6 +199,11 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="databaseop.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\utility\utility.vcxproj">
+      <Project>{35a39434-5d36-4fcc-96dc-632ce0092fa5}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

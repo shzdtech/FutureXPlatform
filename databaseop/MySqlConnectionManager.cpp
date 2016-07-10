@@ -8,7 +8,6 @@
 #include "MySqlConnectionManager.h"
 #include "../utility/TUtil.h"
 #include <cppconn/driver.h>
-#include <glog/logging.h>
 #include "db_config.h"
 #include <thread>
 #include <future>
@@ -160,7 +159,7 @@ void MySqlConnectionManager::InitPool()
 	}
 	catch (std::exception& ex)
 	{
-		LOG(FATAL) << "Cannot create db pool: " << ex.what() << std::endl;
+		LiteLogger::Fatal(std::string("Cannot create db pool : ") + ex.what() + '\n');
 	}
 	_runing = true;
 
@@ -189,7 +188,7 @@ void MySqlConnectionManager::CheckStatus()
 				catch (std::exception& ex)
 				{
 					hasErr = true;
-					LOG(ERROR) << "Error occurs when checking DB alive: " << ex.what();
+					LiteLogger::Error(std::string("Error occurs when checking DB alive: ") + ex.what() + '\n');
 				}
 				catch (...)
 				{

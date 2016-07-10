@@ -12,8 +12,6 @@
 #include "CTPOTCWorkerProcessor.h"
 #include "../CTPServer/CTPWorkerProcessorID.h"
 
-#include <glog/logging.h>
-
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPOCTUnSubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPOCTUnSubMarketData::HandleRequest()
@@ -47,7 +45,6 @@ dataobj_ptr CTPOCTUnSubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAP
 	auto stDO = new TDataObject<std::string>;
 	ret.reset(stDO);
 	stDO->SerialId = reqDO->SerialId;
-	DLOG(INFO) << "OTCUnsubMarketData successful." << std::endl;
 
 	return ret;
 }

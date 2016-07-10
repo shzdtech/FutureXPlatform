@@ -111,8 +111,7 @@ int HedgeOrderManager::OnOrderUpdated(OrderDO& orderInfo)
 				}
 				else
 				{
-					auto& lock = _contractMutex.getorfill(orderInfo);
-					lock.Mutex().unlock();
+					_contractMutex.getorfill(orderInfo).mutex().unlock();
 				}
 			}
 		}
@@ -123,7 +122,7 @@ int HedgeOrderManager::OnOrderUpdated(OrderDO& orderInfo)
 
 		if (!orderInfo.Active)
 		{
-			std::lock_guard<std::mutex> guard(_userOrderCtx.GetMutex(orderInfo));
+			std::lock_guard<std::shared_mutex> guard(_userOrderCtx.Mutex(orderInfo));
 			_userOrderCtx.RemoveOrder(orderInfo.OrderID);
 		}
 
@@ -146,8 +145,7 @@ int HedgeOrderManager::Hedge(void)
 		double position = it.second;
 		if (position <= -1 || position >= 1)
 		{
-			auto& lock = _contractMutex.getorfill(it.first);
-			if (lock.Mutex().try_lock()) //if hedging for this contract
+			if (_contractMutex.getorfill(it.first).mutex().try_lock()) //if hedging for this contract
 			{
 				// Make new orders
 				OrderDO newOrder(0, it.first.ExchangeID(), it.first.InstrumentID(), _user);

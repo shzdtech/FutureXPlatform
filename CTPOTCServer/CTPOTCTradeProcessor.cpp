@@ -11,12 +11,12 @@
 
 #include "../common/Attribute_Key.h"
 
-#include <glog/logging.h>
-
 #include "../message/message_macro.h"
 #include "../message/DefMessageID.h"
 #include "../message/SysParam.h"
 #include "../message/AppContext.h"
+
+#include "../utility/LiteLogger.h"
 
 
 CTPOTCTradeProcessor::CTPOTCTradeProcessor(const std::map<std::string, std::string>& configMap,
@@ -46,7 +46,7 @@ OTCOrderManager& CTPOTCTradeProcessor::GetOTCOrderManager(void)
 
 CTPOTCTradeProcessor::~CTPOTCTradeProcessor()
 {
-	DLOG(INFO) << __FUNCTION__ << std::endl;
+	DEBUG_INFO(__FUNCTION__);
 }
 
 void CTPOTCTradeProcessor::Initialize(void)

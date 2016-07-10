@@ -18,7 +18,6 @@
 #include "../utility/Encoding.h"
 #include "../utility/TUtil.h"
 #include "../utility/stringutility.h"
-#include <glog/logging.h>
 
 #include "../bizutility/InstrumentCache.h"
 
@@ -47,8 +46,7 @@ dataobj_ptr CTPQueryInstrument::HandleRequest(const dataobj_ptr reqDO, IRawAPI* 
 
 	if (TUtil::IsNullOrEmpty(ret))
 	{
-		CThostFtdcQryInstrumentField req;
-		std::memset(&req, 0x0, sizeof(CThostFtdcQryInstrumentField));
+		CThostFtdcQryInstrumentField req{};
 		std::strcpy(req.ExchangeID, exchangeid.data());
 		std::strcpy(req.InstrumentID, instrumentid.data());
 		std::strcpy(req.ProductID, productid.data());

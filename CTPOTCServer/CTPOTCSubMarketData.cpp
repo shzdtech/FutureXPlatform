@@ -15,7 +15,6 @@
 #include "CTPOTCWorkerProcessor.h"
 #include "../CTPServer/CTPWorkerProcessorID.h"
 
-#include <glog/logging.h>
 #include <set>
 
 #include "../message/BizError.h"

@@ -30,8 +30,7 @@ dataobj_ptr CTPCancelOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawA
 
 	auto userinfo = session->getUserInfo();
 
-	CThostFtdcInputOrderActionField req;
-	std::memset(&req, 0x0, sizeof(req));
+	CThostFtdcInputOrderActionField req{};
 
 	req.ActionFlag = THOST_FTDC_AF_Delete;
 	std::strcpy(req.BrokerID, userinfo->getBrokerId().data());

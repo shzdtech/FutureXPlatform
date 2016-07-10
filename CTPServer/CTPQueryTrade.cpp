@@ -17,7 +17,6 @@
 #include "../message/BizError.h"
 #include "../utility/Encoding.h"
 #include "../utility/TUtil.h"
-#include <glog/logging.h>
 
 #include "CTPUtility.h"
 #include "CTPConstant.h"
@@ -44,8 +43,7 @@ dataobj_ptr CTPQueryTrade::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAP
 	auto& tmend = stdo->TryFind(STR_TIME_END, EMPTY_STRING);
 
 
-	CThostFtdcQryTradeField req;
-	std::memset(&req, 0, sizeof(req));
+	CThostFtdcQryTradeField req{};
 	std::strcpy(req.BrokerID, brokeid.data());
 	std::strcpy(req.InvestorID, userid.data());
 	std::strcpy(req.InstrumentID, instrid.data());

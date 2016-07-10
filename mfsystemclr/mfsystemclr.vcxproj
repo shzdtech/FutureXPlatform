@@ -74,7 +74,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)Bin\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -82,7 +82,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)Bin\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -94,11 +94,12 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>GLOG_NO_ABBREVIATED_SEVERITIES</PreprocessorDefinitions>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include\glog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>libglog.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)lib\google;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -107,11 +108,12 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>GLOG_NO_ABBREVIATED_SEVERITIES</PreprocessorDefinitions>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include\glog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>glog.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)lib\google\glog\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -119,11 +121,12 @@
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>GLOG_NO_ABBREVIATED_SEVERITIES</PreprocessorDefinitions>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include\glog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>libglog.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)lib\google;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -131,11 +134,12 @@
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>GLOG_NO_ABBREVIATED_SEVERITIES</PreprocessorDefinitions>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include\glog;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>glog.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)lib\google\glog\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -163,6 +167,9 @@
     <ProjectReference Include="..\mfsystem\mfsystem.vcxproj">
       <Project>{425d08bd-d784-4c63-8855-1f33974161ea}</Project>
       <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+    <ProjectReference Include="..\utility\utility.vcxproj">
+      <Project>{35a39434-5d36-4fcc-96dc-632ce0092fa5}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
