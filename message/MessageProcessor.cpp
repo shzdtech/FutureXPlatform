@@ -16,7 +16,7 @@ MessageProcessor::MessageProcessor()
 
 MessageProcessor::~MessageProcessor()
 {
-	DEBUG_INFO(__FUNCTION__);
+	LOG_DEBUG << __FUNCTION__;
 }
 
 ////////////////////////////////////////////////////////////////////////

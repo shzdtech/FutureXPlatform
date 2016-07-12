@@ -8,8 +8,7 @@
 #include "AbstractDataSerializerFactory.h"
 #include "../dynamicloader/ConfigBasedCreator.h"
 
-std::vector<MessageSerializerConfig>
-AbstractDataSerializerFactory::MessageSerializerConfigs;
+static std::vector<MessageSerializerConfig> messageSerializerConfigs;
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       AbstractDataSerializerFactory::Instance()
@@ -26,12 +25,11 @@ AbstractDataSerializerFactory::Instance(void)
 
 	if (once_flag)
 	{
-		for (auto& config : MessageSerializerConfigs)
+		for (auto& config : messageSerializerConfigs)
 		{
 			auto serializerFactory_ptr = std::static_pointer_cast<AbstractDataSerializerFactory>
 				(ConfigBasedCreator::CreateInstance(config.MODULE_UUID, config.MODULE_PATH, config.CLASS_UUID));
 			serializerFactory_ptr->CreateDataSerializers(instance->_serializer_map);
-			instance->_abstractSerialFactories.push_back(serializerFactory_ptr);
 		}
 		once_flag = false;
 	}
@@ -56,4 +54,9 @@ IDataSerializer_Ptr AbstractDataSerializerFactory::Find(uint32_t msgId)
 void AbstractDataSerializerFactory::CreateDataSerializers(std::map<uint32_t, IDataSerializer_Ptr>& serializerMap)
 {
 	serializerMap.insert(_serializer_map.begin(), _serializer_map.end());
+}
+
+void AbstractDataSerializerFactory::AddConfigForInstance(const MessageSerializerConfig& config)
+{
+	messageSerializerConfigs.push_back(config);
 }

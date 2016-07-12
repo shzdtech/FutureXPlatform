@@ -159,7 +159,7 @@ void MySqlConnectionManager::InitPool()
 	}
 	catch (std::exception& ex)
 	{
-		LiteLogger::Fatal(std::string("Cannot create db pool : ") + ex.what() + '\n');
+		LOG_FATAL <<"Cannot create db pool : " << ex.what();
 	}
 	_runing = true;
 
@@ -188,7 +188,7 @@ void MySqlConnectionManager::CheckStatus()
 				catch (std::exception& ex)
 				{
 					hasErr = true;
-					LiteLogger::Error(std::string("Error occurs when checking DB alive: ") + ex.what() + '\n');
+					LOG_ERROR << "Error occurs when checking DB alive: " << ex.what();
 				}
 				catch (...)
 				{

@@ -91,12 +91,10 @@ int TemplateMessageProcessor::OnRecvMsg(const uint msgId, const data_buffer& msg
 		SendErrorMsg(msgId, bizErr, reqDO ? reqDO->SerialId : 0);
 	}
 	catch (std::exception& ex) {
-		std::string error(__FUNCTION__);
-		LiteLogger::Error(error + " MsgId: " + std::to_string(msgId) + ", Error: " + ex.what() + '\n');
+		LOG_ERROR << __FUNCTION__ <<": MsgId: " << msgId << ", Error: " << ex.what();
 	}
 	catch (...) {
-		std::string error(__FUNCTION__);
-		LiteLogger::Error(error + ": Unknown error occured.\n");
+		LOG_ERROR << __FUNCTION__ << ": Unknown error occured!";
 	}
 
 	return 0;
@@ -119,12 +117,10 @@ int TemplateMessageProcessor::OnResponse(const uint msgId, const uint serialId, 
 		SendErrorMsg(msgId, bizErr, serialId);
 	}
 	catch (std::exception& ex) {
-		std::string error(__FUNCTION__);
-		LiteLogger::Error(error + " MsgId: " + std::to_string(msgId) + ", Error: " + ex.what() + '\n');
+		LOG_ERROR << __FUNCTION__ << ": MsgId: " << msgId << ", Error: " << ex.what();
 	}
 	catch (...) {
-		std::string error(__FUNCTION__);
-		LiteLogger::Error(error + ": Unknown error occured.\n");
+		LOG_ERROR << __FUNCTION__ << ": Unknown error occured!";
 	}
 
 	return 0;

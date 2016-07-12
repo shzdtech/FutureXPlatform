@@ -66,6 +66,9 @@
     <ClInclude Include="GoogleLogSink.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="GoogleLogger.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Encoding.cpp">
@@ -78,6 +81,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="GoogleLogSink.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GoogleLogger.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -34,7 +34,7 @@ _heartbeat_timer(_socket.get_io_service()) {
 ////////////////////////////////////////////////////////////////////////
 
 ASIOTCPSession::~ASIOTCPSession() {
-	DEBUG_INFO(__FUNCTION__);
+	LOG_DEBUG << __FUNCTION__;
 }
 
 void ASIOTCPSession::setMaxMessageSize(uint maxMsgSize)
@@ -84,7 +84,8 @@ int ASIOTCPSession::WriteMessage(const uint msgId, const data_buffer& msg) {
 		buffer(buf_exinfo, EXINFO_SIZE)
 	};
 
-	DEBUG_INFO("Sending message: Id: " + std::to_string(msgId) + " Size:" + std::to_string(packetSz) + '\n');
+	LOG_DEBUG << "Sending message: Id: " << std::to_string(msgId) <<
+		" Size:" << packetSz;
 	async_write(_socket, packet,
 		[this, msg_header, msg, msg_exinfo](boost::system::error_code ec, std::size_t /*length*/) {
 		if (ec && ec != error::operation_aborted) {
@@ -131,9 +132,8 @@ bool ASIOTCPSession::Close(void) {
 	if (!_closed) {
 		if (_socket.is_open())
 		{
-			DEBUG_INFO("Session on " + 
-				_socket.remote_endpoint().address().to_string() +
-				" is closing...\n");
+			LOG_DEBUG << "Session on " << _socket.remote_endpoint().address().to_string() 
+				<< " is closing...";
 			_socket.shutdown(tcp::socket::shutdown_both);
 			_socket.close();
 		}
@@ -158,9 +158,8 @@ void ASIOTCPSession::asyn_read_header(ASIOTCPSession_Ptr this_ptr) {
 			if (CTRLCHAR::SOH == header[0] && CTRLCHAR::STX == header[HEADER_LAST]) {
 				uint msg_size = (header[1] | header[2] << 8 | header[3] << 16 | header[4] << 24);
 				if (msg_size > this_ins->_max_msg_size) {
-					LiteLogger::Info("Client message exceed max size ("
-						+ std::to_string(this_ins->_max_msg_size)
-						+ "): "  + std::to_string(msg_size) + '\n');
+					LOG_INFO << "Client message exceed max size (" 
+						<<this_ins->_max_msg_size << "): " << msg_size;
 					this_ins->Close();
 				}
 				else {
@@ -170,7 +169,7 @@ void ASIOTCPSession::asyn_read_header(ASIOTCPSession_Ptr this_ptr) {
 			}
 		}
 		else {
-			DEBUG_INFO("asyn_read_header: " + ec.message() + '\n');
+			LOG_DEBUG << "asyn_read_header: " << ec.message();
 			this_ins->Close();
 		}
 	});
@@ -202,7 +201,7 @@ void ASIOTCPSession::asyn_read_body(ASIOTCPSession_Ptr this_ptr, uint msgSize) {
 			}
 		}
 		else {
-			DEBUG_INFO("asyn_read_body: " + ec.message() + '\n');
+			LOG_DEBUG << "asyn_read_body: " << ec.message();
 			this_ins->Close();
 		}
 	});
@@ -228,7 +227,7 @@ void ASIOTCPSession::asyn_timeout(ASIOTCPSession_WkPtr this_wk_ptr) {
 							asyn_timeout(this_ptr);
 						}
 						else {
-							DEBUG_INFO("Session timeout.\n");
+							LOG_DEBUG << "Session timeout.";
 							this_ins->Close();
 						}
 					}

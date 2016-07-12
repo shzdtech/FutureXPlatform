@@ -41,7 +41,7 @@ CTPTradeWorkerProcessor::CTPTradeWorkerProcessor(const std::map<std::string, std
 
 CTPTradeWorkerProcessor::~CTPTradeWorkerProcessor()
 {
-	DEBUG_INFO(__FUNCTION__);
+	LOG_DEBUG << __FUNCTION__;
 }
 
 ////////////////////////////////////////////////////////////////////////

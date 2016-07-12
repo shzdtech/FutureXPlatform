@@ -19,7 +19,7 @@
 bool JsonConfigReader::LoadFromStream(std::istream& is)
 {
 	bool ret = false;
-	read_json(is, _current);
+	read_json(is, _root);
 	ret = true;
 	return ret;
 }
@@ -35,7 +35,7 @@ bool JsonConfigReader::LoadFromStream(std::istream& is)
 bool JsonConfigReader::LoadFromFile(const std::string& configPath)
 {
 	bool ret = false;
-	read_json(configPath, _current);
+	read_json(configPath, _root);
 	ret = true;
 	return ret;
 }

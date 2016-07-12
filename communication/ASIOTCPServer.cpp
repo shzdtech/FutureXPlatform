@@ -31,7 +31,7 @@ ASIOTCPServer::ASIOTCPServer() :
 }
 
 ASIOTCPServer::~ASIOTCPServer() {
-	DEBUG_INFO("~ASIOTCPServer:" + _uri + '\n');
+	LOG_DEBUG << "~ASIOTCPServer:" << _uri;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -137,7 +137,7 @@ bool ASIOTCPServer::Start(void) {
 			if (ec)
 			{
 				std::string errmsg(ec.message());
-				LiteLogger::Fatal("Failed to start " + _uri + ": " + errmsg + '\n');
+				LOG_FATAL << "Failed to start " << _uri << ": " << errmsg;
 			}
 		}
 	}
@@ -166,16 +166,17 @@ void ASIOTCPServer::work_thread(void) {
 		_iosrv.run(ec);
 		if (ec)
 		{
-			LiteLogger::Error( _uri + "::" + __FUNCTION__ + ": " + ec.message() + '\n');
+			LOG_ERROR << _uri << "::" << __FUNCTION__ << ": "
+				<< ec.message();
 		}
 	}
 	catch (std::exception& ex) {
 		std::string msg(__FUNCTION__);
-		LiteLogger::Fatal(msg + ": " + ex.what() + '\n');
+		LOG_FATAL << msg << ": " << ex.what();
 	}
 	catch (...) {
 		std::string msg(__FUNCTION__);
-		LiteLogger::Fatal(msg + ": " + ": Unknown error occured.\n");
+		LOG_FATAL << msg << ": " << ": Unknown error occured.";
 	}
 }
 
@@ -190,9 +191,9 @@ void ASIOTCPServer::asyc_accept(void) {
 		[this](boost::system::error_code ec) {
 		if (!ec)
 		{
-			DEBUG_INFO("Creating session: " +
-				_socket.remote_endpoint().address().to_string() + ':'
-				+ std::to_string(_socket.remote_endpoint().port()) + '\n');
+			LOG_DEBUG << "Creating session: " <<
+				_socket.remote_endpoint().address().to_string() << ':'
+				<< std::to_string(_socket.remote_endpoint().port());
 			auto newsessionptr = ((ASIOSessionManager*)_manager_ptr.get())->
 				CreateSession(std::move(_socket));
 			newsessionptr->setMaxMessageSize(this->_max_msg_size);

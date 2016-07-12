@@ -46,7 +46,7 @@ OTCOrderManager& CTPOTCTradeProcessor::GetOTCOrderManager(void)
 
 CTPOTCTradeProcessor::~CTPOTCTradeProcessor()
 {
-	DEBUG_INFO(__FUNCTION__);
+	LOG_DEBUG << __FUNCTION__;
 }
 
 void CTPOTCTradeProcessor::Initialize(void)

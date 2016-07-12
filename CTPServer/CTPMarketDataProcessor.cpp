@@ -12,13 +12,15 @@
 #include "../message/DefMessageID.h"
 #include "../message/message_macro.h"
 
-////////////////////////////////////////////////////////////////////////
-// Name:       CTPMarketDataProcessor::CTPMarketDataProcessor(const std::map<std::string, std::string>& configMap)
-// Purpose:    Implementation of CTPMarketDataProcessor::CTPMarketDataProcessor()
-// Parameters:
-// - frontserver
-// Return:     
-////////////////////////////////////////////////////////////////////////
+#include <future>
+
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       CTPMarketDataProcessor::CTPMarketDataProcessor(const std::map<std::string, std::string>& configMap)
+ // Purpose:    Implementation of CTPMarketDataProcessor::CTPMarketDataProcessor()
+ // Parameters:
+ // - frontserver
+ // Return:     
+ ////////////////////////////////////////////////////////////////////////
 
 CTPMarketDataProcessor::CTPMarketDataProcessor(const std::map<std::string, std::string>& configMap)
 	: CTPProcessor(configMap) {
@@ -31,7 +33,7 @@ CTPMarketDataProcessor::CTPMarketDataProcessor(const std::map<std::string, std::
 ////////////////////////////////////////////////////////////////////////
 
 CTPMarketDataProcessor::~CTPMarketDataProcessor() {
-	DEBUG_INFO(__FUNCTION__);
+	LOG_DEBUG << __FUNCTION__;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -44,8 +46,7 @@ void CTPMarketDataProcessor::Initialize(void) {
 	if (!_rawAPI->MdAPI) {
 		_rawAPI->MdAPI = CThostFtdcMdApi::CreateFtdcMdApi();
 		_rawAPI->MdAPI->RegisterSpi(this);
-		std::string frontserver = _configMap[STR_FRONT_SERVER];
-		_rawAPI->MdAPI->RegisterFront(const_cast<char*> (frontserver.data()));
+		_rawAPI->MdAPI->RegisterFront(const_cast<char*> (_configMap[STR_FRONT_SERVER].data()));
 		_rawAPI->MdAPI->Init();
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
@@ -59,19 +60,21 @@ int CTPMarketDataProcessor::Login(CThostFtdcReqUserLoginField* loginInfo, uint32
 
 void CTPMarketDataProcessor::OnRspError(CThostFtdcRspInfoField *pRspInfo,
 	int nRequestID, bool bIsLast) {
-	DEBUG_INFO(std::string(__FUNCTION__) + pRspInfo->ErrorMsg + '\n');
-}
-
-void CTPMarketDataProcessor::OnFrontDisconnected(int nReason) {
-	DEBUG_INFO(__FUNCTION__);
-}
-
-void CTPMarketDataProcessor::OnHeartBeatWarning(int nTimeLapse) {
-	DEBUG_INFO(__FUNCTION__);
+	LOG_DEBUG << __FUNCTION__ << ": " << pRspInfo->ErrorMsg << '\n';
 }
 
 void CTPMarketDataProcessor::OnFrontConnected() {
-	DEBUG_INFO(__FUNCTION__);
+	_isConnected = true;
+	LOG_DEBUG << __FUNCTION__;
+}
+
+void CTPMarketDataProcessor::OnFrontDisconnected(int nReason) {
+	_isConnected = false;
+	LOG_DEBUG << __FUNCTION__;
+}
+
+void CTPMarketDataProcessor::OnHeartBeatWarning(int nTimeLapse) {
+	LOG_DEBUG << __FUNCTION__;
 }
 
 void CTPMarketDataProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin,

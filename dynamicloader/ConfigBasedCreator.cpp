@@ -54,10 +54,8 @@ std::shared_ptr<void> ConfigBasedCreator::CreateInstance(const std::string& conf
 	if (auto cfgReader = AbstractConfigReaderFactory::OpenConfigReader(configFile)) {
 		std::map<std::string, std::string> facMap;
 		if (cfgReader->getMap(sectionPath, facMap)) {
-			std::string mPath = facMap["module.path"];
-			std::string mUUID = facMap["module.uuid"];
-			std::string cUUID = facMap["class.uuid"];
-			instancePtr = CreateInstance(mUUID, mPath, cUUID);
+			instancePtr = CreateInstance(facMap["module.uuid"], 
+				facMap["module.path"], facMap["class.uuid"]);
 		}
 	}
 

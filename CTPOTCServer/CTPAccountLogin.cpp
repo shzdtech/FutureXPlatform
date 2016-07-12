@@ -49,7 +49,7 @@ dataobj_ptr CTPAccountLogin::HandleRequest(const dataobj_ptr reqDO, IRawAPI* raw
 	if (auto wkProcPtr = std::static_pointer_cast<CTPTradeWorkerProcessor>
 		(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT)))
 	{
-		if (!wkProcPtr->HasLogged())
+		if (!(wkProcPtr->ConnectedToServer() && wkProcPtr->HasLogged()))
 			throw BizError(CONNECTION_ERROR, "Cannot connect to CTP Trading Server!");
 
 		wkProcPtr->RegisterLoggedSession((IMessageSession*)session);

@@ -21,7 +21,7 @@ public:
    bool Close(void);
 
 protected:
-	boost::property_tree::ptree _current;
+	boost::property_tree::ptree _root;
 
 private:
 

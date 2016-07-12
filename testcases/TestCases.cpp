@@ -11,6 +11,7 @@
 #include <iostream>
 #include "../message/SessionContainer.h"
 #include "../utility/epsdouble.h"
+#include "../utility/LiteLogger.h"
 
 void testCollection()
 {
@@ -61,8 +62,8 @@ void testSessionContainer()
 
 void testepsilondouble(const epsdouble& epsdbl)
 {
-	std::cout << "sizeof(epsdouble)" << sizeof(epsdouble) <<std::endl;
-	std::cout << epsdbl.value() << std::endl;
+	std::cout << "sizeof(epsdouble)" << sizeof(epsdouble) <<'\n';
+	std::cout << epsdbl.value();
 }
 
 void testepsdouble()

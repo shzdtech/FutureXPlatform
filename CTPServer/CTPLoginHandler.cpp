@@ -59,7 +59,7 @@ dataobj_ptr CTPLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* raw
 	pUserInfo->setRole(ROLE_CLIENT);
 	pUserInfo->setPermission(ALLOW_TRADING);
 
-	DEBUG_INFO(std::string("Login: ") + req.BrokerID + ":" + userid + ":" + password + '\n');
+	LOG_DEBUG << "Login: " << req.BrokerID << ":" << userid << ":" << password;
 
 	return nullptr;
 }
@@ -101,7 +101,7 @@ dataobj_ptr CTPLoginHandler::HandleResponse(const uint32_t serialId, param_vecto
 
 	session->setLoginStatus(true);
 
-	DEBUG_INFO("Login successful.\n");
+	LOG_DEBUG << pDO->UserId << " login successful.";
 
 	return ret;
 }

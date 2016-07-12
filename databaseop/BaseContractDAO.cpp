@@ -43,7 +43,7 @@ VectorDO_Ptr<ContractKey> BaseContractDAO::FindBaseContractByParentID(ContractKe
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LiteLogger::Error(std::string(__FUNCTION__) + ": " + sqlEx.getSQLStateCStr());
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
 		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
 	}
 
@@ -88,7 +88,7 @@ VectorDO_Ptr<ContractKey> BaseContractDAO::FindBaseContractByCompany(const std::
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LiteLogger::Error(std::string(__FUNCTION__) + ": " + sqlEx.getSQLStateCStr());
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr(); 
 		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
 	}
 

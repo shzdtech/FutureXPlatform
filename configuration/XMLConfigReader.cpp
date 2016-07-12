@@ -19,7 +19,7 @@
 bool XMLConfigReader::LoadFromStream(std::istream& is)
 {
     bool ret = false;
-    read_xml(is, _current);
+    read_xml(is, _root);
     ret = true;
     return ret;
 }
@@ -35,7 +35,7 @@ bool XMLConfigReader::LoadFromStream(std::istream& is)
 bool XMLConfigReader::LoadFromFile(const std::string& configPath)
 {
 	bool ret = false;
-	read_xml(configPath, _current);
+	read_xml(configPath, _root);
 	ret = true;
 	return ret;
 }

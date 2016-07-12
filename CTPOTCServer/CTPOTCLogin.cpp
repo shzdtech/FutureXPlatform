@@ -48,7 +48,7 @@ dataobj_ptr CTPOTCLogin::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI,
 	if (auto wkProcPtr = std::static_pointer_cast<CTPOTCWorkerProcessor>
 		(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::WORKPROCESSOR_OTC)))
 	{
-		if (!wkProcPtr->HasLogged())
+		if (!(wkProcPtr->ConnectedToServer() && wkProcPtr->HasLogged()))
 			throw BizError(CONNECTION_ERROR, "Cannot connect to CTP Trading Server!");
 		wkProcPtr->RegisterLoggedSession((IMessageSession*)session);
 	}

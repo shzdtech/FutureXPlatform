@@ -159,6 +159,7 @@
     <ClInclude Include="Encoding.h" />
     <ClInclude Include="epsdouble.h" />
     <ClInclude Include="epsvaluetype.h" />
+    <ClInclude Include="GoogleLogger.h" />
     <ClInclude Include="LiteLogger.h" />
     <ClInclude Include="GoogleLogSink.h" />
     <ClInclude Include="resource.h" />
@@ -172,6 +173,7 @@
   <ItemGroup>
     <ClCompile Include="AbstractLogSink.cpp" />
     <ClCompile Include="Encoding.cpp" />
+    <ClCompile Include="GoogleLogger.cpp" />
     <ClCompile Include="LiteLogger.cpp" />
     <ClCompile Include="GoogleLogSink.cpp" />
   </ItemGroup>

@@ -3,13 +3,6 @@
 #include "utility_exp.h"
 #include <string>
 
-
-#if defined(NDEBUG)
-#define DEBUG_INFO(msg) LiteLogger::Info(msg);
-#else
-#define DEBUG_INFO(msg) {}
-#endif
-
 extern "C" { typedef void(*LogCallbackFn)(int severity, const char* message); }
 
 class UTILITY_CLASS_EXPORT AbstractLogSink

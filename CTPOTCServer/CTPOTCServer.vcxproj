@@ -232,7 +232,7 @@
     <ProjectReference Include="..\configuration\configuration.vcxproj">
       <Project>{6ca92597-54a1-435d-b200-41860f096abc}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\CTPServer\CTP.vcxproj">
+    <ProjectReference Include="..\CTPServer\CTPServer.vcxproj">
       <Project>{5cd2baa7-91fe-4a63-80cf-7b25c5597c0f}</Project>
     </ProjectReference>
     <ProjectReference Include="..\databaseop\databaseop.vcxproj">

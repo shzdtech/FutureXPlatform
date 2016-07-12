@@ -22,11 +22,10 @@ public:
 	void CreateDataSerializers(std::map<uint32_t, IDataSerializer_Ptr>& serializerMap);
 	IDataSerializer_Ptr Find(uint32_t msgId);
 	static std::shared_ptr<AbstractDataSerializerFactory> Instance(void);
-	static std::vector<MessageSerializerConfig> MessageSerializerConfigs;
+	static void AddConfigForInstance(const MessageSerializerConfig& config);
 
 protected:
 	std::map<uint32_t, IDataSerializer_Ptr> _serializer_map;
-	std::vector<std::shared_ptr<AbstractDataSerializerFactory>> _abstractSerialFactories;
 
 private:
 };

@@ -53,7 +53,7 @@ OrderDO_Ptr OTCOrderDAO::CreateOrder(const OrderDO& orderDO, const PricingDO& pr
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LiteLogger::Error(std::string(__FUNCTION__) + ": " + sqlEx.getSQLStateCStr());
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
 		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
 	}
 
@@ -91,7 +91,7 @@ bool OTCOrderDAO::CancelOrder(const OrderBaseDO& orderDO, OrderStatus& status)
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LiteLogger::Error(std::string(__FUNCTION__) + ": " + sqlEx.getSQLStateCStr());
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
 		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
 	}
 
@@ -127,7 +127,7 @@ bool OTCOrderDAO::AcceptOrder(const OrderBaseDO& orderDO, OrderStatus& status)
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LiteLogger::Error(std::string(__FUNCTION__) + ": " + sqlEx.getSQLStateCStr());
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
 		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
 	}
 
@@ -163,7 +163,7 @@ bool OTCOrderDAO::RejectOrder(const OrderBaseDO& orderDO, OrderStatus& status)
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LiteLogger::Error(std::string(__FUNCTION__) + ": " + sqlEx.getSQLStateCStr());
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
 		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
 	}
 
@@ -208,7 +208,7 @@ OrderDOVec_Ptr OTCOrderDAO::QueryTradingOrder(const ContractKey& contractKey)
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LiteLogger::Error(std::string(__FUNCTION__) + ": " + sqlEx.getSQLStateCStr());
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
 		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
 	}
 
@@ -260,7 +260,7 @@ OrderDOVec_Ptr OTCOrderDAO::QueryTodayOrder(const std::string& userId, const Con
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LiteLogger::Error(std::string(__FUNCTION__) + ": " + sqlEx.getSQLStateCStr());
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
 		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
 	}
 

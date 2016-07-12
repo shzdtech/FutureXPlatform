@@ -19,7 +19,7 @@ using namespace boost::property_tree;
 
 std::string AbstractConfigReader::getValue(const std::string& expression)
 {
-	return _current.get<std::string>(expression);
+	return _root.get<std::string>(expression);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -33,8 +33,8 @@ std::string AbstractConfigReader::getValue(const std::string& expression)
 
 int AbstractConfigReader::getVector(const std::string& expression, std::vector<std::string>& values)
 {
-	ptree ptc = _current.get_child(expression);
-	for (ptree::value_type v : ptc)
+	ptree ptc = _root.get_child(expression);
+	for (auto& v : ptc)
 	{
 		values.push_back(v.second.get_value<std::string>());
 	}
@@ -52,10 +52,10 @@ int AbstractConfigReader::getVector(const std::string& expression, std::vector<s
 
 int AbstractConfigReader::getMap(const std::string& expression, std::map<std::string, std::string>& values)
 {
-	ptree ptc = _current.get_child(expression);
-	for (ptree::value_type v : ptc)
+	ptree ptc = _root.get_child(expression);
+	for (auto& v : ptc)
 	{
-		values[v.first] = v.second.get_value<std::string>();
+		values.insert_or_assign(v.first, v.second.get_value<std::string>());
 	}
 	return ptc.size();
 }

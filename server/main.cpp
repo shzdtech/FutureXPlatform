@@ -34,7 +34,7 @@ void siginthandler(int code)
 		std::exit(retcode);
 	}
 	else {
-		//std::cout << "Server will continue running..." << std::endl;
+		//std::cout << "Server will continue running...";
 		std::signal(SIGINT, siginthandler);
 	}
 
@@ -69,10 +69,10 @@ int main(int argc, char** argv) {
 	}
 	catch (std::exception& ex)
 	{
-		LiteLogger::Fatal(std::string("Fatal erorr occured, application is exiting: ") + ex.what() + '\n');
+		LOG_FATAL << "Fatal erorr occured, application is exiting: " << ex.what();
 	}
 	catch (...) {
-		LiteLogger::Fatal("Unknown fatal erorr occured, application is exiting!\n");
+		LOG_FATAL << "Unknown fatal erorr occured, application is exiting!";;
 	}
 	return 0;
 }

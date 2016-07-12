@@ -48,7 +48,7 @@ int UserInfoDAO::InsertUser(const UserInfoDO & userDO)
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LiteLogger::Error(std::string(__FUNCTION__) + ": " + sqlEx.getSQLStateCStr());
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
 		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
 	}
 
@@ -94,7 +94,7 @@ std::shared_ptr<UserInfoDO> UserInfoDAO::FindUser(const std::string& userId)
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LiteLogger::Error(std::string(__FUNCTION__) + ": " + sqlEx.getSQLStateCStr());
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
 		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
 	}
 
@@ -139,7 +139,7 @@ VectorDO_Ptr<UserInfoDO> UserInfoDAO::FindAllUserByRole(int role)
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LiteLogger::Error(std::string(__FUNCTION__) + ": " + sqlEx.getSQLStateCStr());
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
 		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
 	}
 

@@ -40,7 +40,7 @@ dataobj_ptr CTSLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* raw
 	CTSAPIWrapper* api = (CTSAPIWrapper*)rawAPI;
 	api->Impl()->Login(brokeid.data(), userid.data(), password.data(), reqDO->SerialId);
 
-	DEBUG_INFO("Start login: " + brokeid + ":" + userid + ":" + password + '\n');
+	LOG_DEBUG << "Start login: " << brokeid << ":" << userid << ":" << password;
 
 	auto pUserInfo = session->getUserInfo();
 	pUserInfo->setInvestorId(userid);
@@ -87,7 +87,7 @@ dataobj_ptr CTSLoginHandler::HandleResponse(const uint32_t serialId, param_vecto
 
 	session->setLoginStatus(true);
 
-	DEBUG_INFO(pDO->UserId + " login successful.\n");
+	LOG_DEBUG << pDO->UserId << " login successful.";
 
 	return ret;
 }
