@@ -20,6 +20,14 @@ const std::string& SysParam::Get(const std::string& key)
 	return sysparamdata[key];
 }
 
+
+bool SysParam::Contains(const std::string& key)
+{
+	bool ret;
+	auto it = sysparamdata.find(key);
+	return it != sysparamdata.end();
+}
+
 ////////////////////////////////////////////////////////////////////////
 // Name:       SysParam::TryGet(const std::string& key, std::string& value)
 // Purpose:    Implementation of SysParam::TryGet()

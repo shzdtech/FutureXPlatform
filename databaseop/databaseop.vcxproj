@@ -201,8 +201,8 @@
     <ResourceCompile Include="databaseop.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\utility\utility.vcxproj">
-      <Project>{35a39434-5d36-4fcc-96dc-632ce0092fa5}</Project>
+    <ProjectReference Include="..\litelogger\litelogger.vcxproj">
+      <Project>{c1d53247-d933-4f39-9b56-09909f6a1c27}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

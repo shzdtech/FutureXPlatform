@@ -16,7 +16,7 @@
 
 #include "../utility/Encoding.h"
 #include "../utility/TUtil.h"
-#include "../utility/LiteLogger.h"
+#include "../litelogger/LiteLogger.h"
 
 
  ////////////////////////////////////////////////////////////////////////

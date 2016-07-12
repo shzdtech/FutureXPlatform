@@ -7,7 +7,7 @@
 
 #include "MessageProcessor.h"
 #include "ContextAttribute.h"
-#include "../utility/LiteLogger.h"
+#include "../litelogger/LiteLogger.h"
 
 MessageProcessor::MessageProcessor()
 {

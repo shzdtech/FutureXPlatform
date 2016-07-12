@@ -1,6 +1,6 @@
 #include "system_exp.h"
 #include "MicroFurtureSystem.h"
-#include "../utility/AbstractLogSink.h"
+#include "../litelogger/AbstractLogSink.h"
 
 extern "C" {
 	MFSYSTEM_CLASS_EXPORT void MicroFutureSystem_InitLogger(const char* logPath) {

@@ -16,7 +16,7 @@
 #include "../message/SysParam.h"
 #include "../message/AppContext.h"
 
-#include "../utility/LiteLogger.h"
+#include "../litelogger/LiteLogger.h"
 
 
 CTPOTCTradeProcessor::CTPOTCTradeProcessor(const std::map<std::string, std::string>& configMap,

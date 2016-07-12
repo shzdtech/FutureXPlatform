@@ -6,7 +6,7 @@
  ***********************************************************************/
 
 #include "MicroFurtureSystem.h"
-#include "../utility/LiteLogger.h"
+#include "../litelogger/LiteLogger.h"
 #include "../utility/TUtil.h"
 #include "../utility/stringutility.h"
 #include "../configuration/AbstractConfigReaderFactory.h"
@@ -139,17 +139,16 @@ bool MicroFurtureSystem::Load(const std::string& config)
 							auto server = std::static_pointer_cast<IMessageServer>(srvPtr);
 
 							server->RegisterServiceFactory(msgsvcfactory);
-
+							auto server_uri = server->getUri();
 							if (server->Initialize(svruri, svrCfg)) {
 								this->_servers.push_back(server);
 								initserver = true;
-								LOG_INFO << "  Server " << server->getUri()
-									<< " initialized.";
+								LOG_INFO << "  Server " << server_uri << " initialized.";
 							}
 							else
 							{
 								LOG_ERROR <<
-									"  Server: " << server->getUri() << " failed to initialize.";
+									"  Server: " << server_uri << " failed to initialize.";
 							}
 						}
 						else

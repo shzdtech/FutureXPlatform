@@ -14,7 +14,7 @@
 #include "../message/DefMessageID.h"
 #include "../message/message_macro.h"
 
-#include "../utility/LiteLogger.h"
+#include "../litelogger/LiteLogger.h"
 
  ////////////////////////////////////////////////////////////////////////
  // Name:       CTPTradeWorkerProcessor::CTPTradeWorkerProcessor()

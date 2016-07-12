@@ -161,11 +161,11 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\litelogger\litelogger.vcxproj">
+      <Project>{c1d53247-d933-4f39-9b56-09909f6a1c27}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\mfsystem\mfsystem.vcxproj">
       <Project>{425d08bd-d784-4c63-8855-1f33974161ea}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\utility\utility.vcxproj">
-      <Project>{35a39434-5d36-4fcc-96dc-632ce0092fa5}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,6 @@
 {
   "system": {
-    "version": "0.8-2016.7.10-21.00",
+    "version": "0.8-2016.7.12-18.00",
     "service": {
       "config": "service.json"
     },

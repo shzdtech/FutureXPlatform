@@ -90,10 +90,9 @@ IMessageProcessor_Ptr CTPTradeServiceFactory::CreateMessageProcessor(void)
 bool CTPTradeServiceFactory::Load(const std::string& configFile, const std::string& param)
 {
 	bool ret = MessageServiceFactory::Load(configFile, param);
-	std::string frontserver;
-	if (SysParam::TryGet(CTP_TRADER_SERVER, frontserver))
+	if (SysParam::Contains(CTP_TRADER_SERVER))
 	{
-		_configMap[STR_FRONT_SERVER] = frontserver;
+		_configMap[STR_FRONT_SERVER] = SysParam::Get(CTP_TRADER_SERVER);
 	}
 
 	return ret;

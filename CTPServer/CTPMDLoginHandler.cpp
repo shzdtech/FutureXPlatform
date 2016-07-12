@@ -23,18 +23,15 @@ int CTPMDLoginHandler::LoginFunction(IRawAPI* rawAPI, ISession* session, CThostF
 
 	if (loginInfo->BrokerID[0] == 0)
 	{
-		SysParam::TryGet(CTP_MD_BROKERID, value);
-		std::strcpy(loginInfo->BrokerID, value.data());
+		std::strcpy(loginInfo->BrokerID, SysParam::Get(CTP_MD_BROKERID).data());
 	}
 	if (loginInfo->UserID[0] == 0)
 	{
-		SysParam::TryGet(CTP_MD_USERID, value);
-		std::strcpy(loginInfo->UserID, value.data());
+		std::strcpy(loginInfo->UserID, SysParam::Get(CTP_MD_USERID).data());
 	}
 	if (loginInfo->Password[0] == 0)
 	{
-		SysParam::TryGet(CTP_MD_PASSWORD, value);
-		std::strcpy(loginInfo->Password, value.data());
+		std::strcpy(loginInfo->Password, SysParam::Get(CTP_MD_PASSWORD).data());
 	}
 
 	return ((CTPMarketDataProcessor*)session->getProcessor().get())->

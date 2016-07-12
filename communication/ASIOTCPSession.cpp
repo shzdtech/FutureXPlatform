@@ -7,7 +7,7 @@
 
 #include <thread>
 #include <array>
-#include "../utility/LiteLogger.h"
+#include "../litelogger/LiteLogger.h"
 #include <mutex>
 #include "ASIOTCPSession.h"
 #include "../configuration/AbstractConfigReaderFactory.h"

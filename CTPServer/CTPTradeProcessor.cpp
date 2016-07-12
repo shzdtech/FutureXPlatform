@@ -7,7 +7,7 @@
 
 #include "CTPTradeProcessor.h"
 #include "CTPUtility.h"
-#include "../utility/LiteLogger.h"
+#include "../litelogger/LiteLogger.h"
 #include "../message/DefMessageID.h"
 #include "../message/message_macro.h"
 #include "../bizutility/InstrumentCache.h"

@@ -1,11 +1,11 @@
-#if !defined(__utility_AbstractLogSink_h)
-#define __utility_AbstractLogSink_h
-#include "utility_exp.h"
+#if !defined(__litelogger_AbstractLogSink_h)
+#define __litelogger_AbstractLogSink_h
+#include "LiteLogger_Export.h"
 #include <string>
 
 extern "C" { typedef void(*LogCallbackFn)(int severity, const char* message); }
 
-class UTILITY_CLASS_EXPORT AbstractLogSink
+class LITELOGGER_CLASS_EXPORTS AbstractLogSink
 {
 public:
 	AbstractLogSink(LogCallbackFn logCallback);

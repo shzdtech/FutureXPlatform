@@ -143,11 +143,11 @@
     <ProjectReference Include="..\dataobject\dataobject.vcxproj">
       <Project>{6257959c-c51c-47ba-9b4c-b40e83f8453a}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\litelogger\litelogger.vcxproj">
+      <Project>{c1d53247-d933-4f39-9b56-09909f6a1c27}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\message\message.vcxproj">
       <Project>{e9adaa2b-1ccb-4111-9ac3-bddb3dc114f2}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\utility\utility.vcxproj">
-      <Project>{35a39434-5d36-4fcc-96dc-632ce0092fa5}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

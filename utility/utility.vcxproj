@@ -32,27 +32,23 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -94,23 +90,27 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(BOOST_ROOT)\stage\lib;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glog.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>$(BOOST_ROOT)\stage\lib;</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>UTILITY_LIBRARY_EXPORTS;GOOGLE_GLOG_DLL_DECL=;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>UTILITY_LIBRARY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(BOOST_ROOT);$(SolutionDir)include;$(SolutionDir)\include\glog;</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(BOOST_ROOT)\stage\lib;$(SolutionDir)\lib\google\glog\$(Platform)\$(Configuration);</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glog.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>$(BOOST_ROOT)\stage\lib;</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -128,8 +128,10 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(BOOST_ROOT)\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glog.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>$(BOOST_ROOT)\stage\lib;</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -139,7 +141,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(BOOST_ROOT);$(SolutionDir)include;$(SolutionDir)\include\glog;</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>UTILITY_LIBRARY_EXPORTS;NDEBUG;GOOGLE_GLOG_DLL_DECL=;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>UTILITY_LIBRARY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -147,11 +149,12 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(BOOST_ROOT)\stage\lib;$(SolutionDir)\lib\google\glog\$(Platform)\$(Configuration);</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glog.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>$(BOOST_ROOT)\stage\lib;</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AbstractLogSink.h" />
     <ClInclude Include="atomicutil.h" />
     <ClInclude Include="autofillmap.h" />
     <ClInclude Include="commonconst.h" />
@@ -159,9 +162,6 @@
     <ClInclude Include="Encoding.h" />
     <ClInclude Include="epsdouble.h" />
     <ClInclude Include="epsvaluetype.h" />
-    <ClInclude Include="GoogleLogger.h" />
-    <ClInclude Include="LiteLogger.h" />
-    <ClInclude Include="GoogleLogSink.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="semaphore.h" />
     <ClInclude Include="singleton_templ.h" />
@@ -171,11 +171,7 @@
     <ClInclude Include="utility_exp.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AbstractLogSink.cpp" />
     <ClCompile Include="Encoding.cpp" />
-    <ClCompile Include="GoogleLogger.cpp" />
-    <ClCompile Include="LiteLogger.cpp" />
-    <ClCompile Include="GoogleLogSink.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="utility.rc" />

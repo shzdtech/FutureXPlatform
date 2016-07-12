@@ -70,9 +70,9 @@ bool CTPMDServiceFactory::Load(const std::string& configFile, const std::string&
 {
 	bool ret = MessageServiceFactory::Load(configFile, param);
 	std::string frontserver;
-	if (SysParam::TryGet(CTP_MD_SERVER, frontserver))
+	if (SysParam::Contains(CTP_MD_SERVER))
 	{
-		_configMap[STR_FRONT_SERVER] = frontserver;
+		_configMap[STR_FRONT_SERVER] = SysParam::Get(CTP_MD_SERVER);
 	}
 
 	return ret;

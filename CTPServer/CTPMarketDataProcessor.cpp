@@ -5,7 +5,7 @@
  * Purpose: Implementation of the class CTPMarketDataProcessor
  ***********************************************************************/
 
-#include "../utility/LiteLogger.h"
+#include "../litelogger/LiteLogger.h"
 #include <thread>
 #include "CTPMarketDataProcessor.h"
 #include "CTPUtility.h"

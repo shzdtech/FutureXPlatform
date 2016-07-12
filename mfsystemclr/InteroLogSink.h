@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../utility/AbstractLogSink.h"
+#include "../litelogger/AbstractLogSink.h"
 #include <gcroot.h>
 
 using namespace System;

@@ -18,7 +18,7 @@ public:
    virtual bool Start(void)=0;
    virtual bool Stop(void)=0;
    virtual bool Stopped(void)=0;
-   virtual std::string getUri(void)=0;;
+   virtual const std::string& getUri(void)=0;;
    virtual void RegisterServiceFactory(IMessageServiceFactory_Ptr msgSvcFactory) = 0;
    virtual IMessageServiceFactory_Ptr GetServiceFactory(void) = 0;
    virtual IContextAttribute* getContext() = 0;

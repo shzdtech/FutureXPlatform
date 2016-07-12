@@ -6,7 +6,7 @@
  ***********************************************************************/
 
 #include <iostream>
-#include "../utility/LiteLogger.h"
+#include "../litelogger/LiteLogger.h"
 #include "DefMessageID.h"
 #include "message_macro.h"
 #include "TemplateMessageProcessor.h"

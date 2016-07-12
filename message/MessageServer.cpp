@@ -13,7 +13,7 @@
 // Return:     std::string
 ////////////////////////////////////////////////////////////////////////
 
-std::string MessageServer::getUri(void)
+const std::string& MessageServer::getUri(void)
 {
    return _uri;
 }

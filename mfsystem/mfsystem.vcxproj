@@ -192,11 +192,11 @@
     <ProjectReference Include="..\dynamicloader\dynamicloader.vcxproj">
       <Project>{8c2b597d-93ee-47ec-82ee-515b999a1feb}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\litelogger\litelogger.vcxproj">
+      <Project>{c1d53247-d933-4f39-9b56-09909f6a1c27}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\message\message.vcxproj">
       <Project>{e9adaa2b-1ccb-4111-9ac3-bddb3dc114f2}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\utility\utility.vcxproj">
-      <Project>{35a39434-5d36-4fcc-96dc-632ce0092fa5}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

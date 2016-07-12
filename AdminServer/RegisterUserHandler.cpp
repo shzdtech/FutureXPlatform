@@ -39,7 +39,7 @@ dataobj_ptr RegisterUserHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 			throw BizError(UserErrorID::USERID_HAS_EXISTED, '"' + pUserInfoDO->UserId + "\" has been registered.");
 
 		if (pUserInfoDO->Company.length() < 1)
-			SysParam::TryGet(STR_KEY_DEFAULT_CLIENT_SYMBOL, pUserInfoDO->Company);
+			pUserInfoDO->Company = SysParam::Get(STR_KEY_DEFAULT_CLIENT_SYMBOL);
 
 		if (UserInfoDAO::InsertUser(*pUserInfoDO) != 0)
 			throw BizError(ResultType::SYS_ERROR, "Fail to insert user info.");

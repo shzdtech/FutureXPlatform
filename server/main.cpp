@@ -12,7 +12,7 @@
 #include <string>
 #include <csignal>
 
-#include "../utility/LiteLogger.h"
+#include "../litelogger/LiteLogger.h"
 
 using namespace std;
 

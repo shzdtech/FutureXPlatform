@@ -1,5 +1,5 @@
-#if !defined(__utility_GoogleLogger_h)
-#define __utility_GoogleLogger_h
+#if !defined(__litelogger_GoogleLogger_h)
+#define __litelogger_GoogleLogger_h
 
 #include "LiteLogger.h"
 #include <glog/logging.h>

@@ -11,7 +11,7 @@
 #include <iostream>
 #include "../message/SessionContainer.h"
 #include "../utility/epsdouble.h"
-#include "../utility/LiteLogger.h"
+#include "../litelogger/LiteLogger.h"
 
 void testCollection()
 {

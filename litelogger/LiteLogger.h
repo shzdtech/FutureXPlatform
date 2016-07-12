@@ -1,6 +1,6 @@
-#if !defined(__utility_LiteLogger_h)
-#define __utility_LiteLogger_h
-#include "utility_exp.h"
+#if !defined(__litelogger_LiteLogger_h)
+#define __litelogger_LiteLogger_h
+#include "LiteLogger_Export.h"
 #include <string>
 #include <memory>
 
@@ -16,10 +16,10 @@
 #endif
 
 
-class UTILITY_CLASS_EXPORT LiteLogger
+class LITELOGGER_CLASS_EXPORTS LiteLogger
 {
 public:
-	class UTILITY_CLASS_EXPORT LiteLogMessage
+	class LITELOGGER_CLASS_EXPORTS LiteLogMessage
 	{
 	public:
 		virtual std::ostream& Stream() = 0;
