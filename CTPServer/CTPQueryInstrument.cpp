@@ -42,7 +42,12 @@ dataobj_ptr CTPQueryInstrument::HandleRequest(const dataobj_ptr reqDO, IRawAPI* 
 	auto& exchangeid = stdo->TryFind(STR_EXCHANGE_ID, EMPTY_STRING);
 	auto& productid = stdo->TryFind(STR_PRODUCT_ID, EMPTY_STRING);
 
-	VectorDO_Ptr<InstrumentDO> ret = InstrumentCache::QueryInstrument(instrumentid, exchangeid, productid);
+	VectorDO_Ptr<InstrumentDO> ret;
+
+	if (instrumentid == EMPTY_STRING && exchangeid == EMPTY_STRING && productid == EMPTY_STRING)
+		ret = InstrumentCache::AllInstruments();
+	else
+		ret = InstrumentCache::QueryInstrument(instrumentid, exchangeid, productid);
 
 	if (TUtil::IsNullOrEmpty(ret))
 	{
@@ -52,8 +57,11 @@ dataobj_ptr CTPQueryInstrument::HandleRequest(const dataobj_ptr reqDO, IRawAPI* 
 		std::strcpy(req.ProductID, productid.data());
 		auto retCode = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryInstrument(&req, reqDO->SerialId);
 		CTPUtility::CheckReturnError(retCode);
+
+		ret = std::make_shared<VectorDO<InstrumentDO>>();
 	}
 
+	ret->SerialId = reqDO->SerialId;
 	return ret;
 }
 
@@ -71,48 +79,45 @@ dataobj_ptr CTPQueryInstrument::HandleResponse(const uint32_t serialId, param_ve
 {
 	CTPUtility::CheckError(rawRespParams[1]);
 
-	VectorDO_Ptr<InstrumentDO> ret;
+	VectorDO_Ptr<InstrumentDO> ret = std::make_shared<VectorDO<InstrumentDO>>();
+	ret->SerialId = serialId;
+	ret->HasMore = !*(bool*)rawRespParams[3];
 
 	if (auto pData = (CThostFtdcInstrumentField*)rawRespParams[0])
 	{
+		InstrumentDO insDO(pData->ExchangeID, pData->InstrumentID);
+
+		insDO.Name = Encoding::ToUTF8(pData->InstrumentName, CHARSET_GB2312);
+		insDO.ProductID = pData->ProductID;
+		insDO.ProductType = (ProductType)(pData->ProductClass - THOST_FTDC_PC_Futures);
+		insDO.DeliveryYear = pData->DeliveryYear;
+		insDO.DeliveryMonth = pData->DeliveryMonth;
+		insDO.MaxMarketOrderVolume = pData->MaxMarketOrderVolume;
+		insDO.MinMarketOrderVolume = pData->MinMarketOrderVolume;
+		insDO.MaxLimitOrderVolume = pData->MaxLimitOrderVolume;
+		insDO.MinLimitOrderVolume = pData->MinLimitOrderVolume;
+		insDO.VolumeMultiple = pData->VolumeMultiple;
+		insDO.PriceTick = pData->PriceTick;
+		insDO.CreateDate = pData->CreateDate;
+		insDO.OpenDate = pData->OpenDate;
+		insDO.ExpireDate = pData->ExpireDate;
+		insDO.StartDelivDate = pData->StartDelivDate;
+		insDO.EndDelivDate = pData->EndDelivDate;
+		insDO.LifePhase = (LifePhaseType)(pData->InstLifePhase - THOST_FTDC_IP_NotStart);
+		insDO.IsTrading = pData->IsTrading;
+		insDO.PositionType = (PositionType)(pData->PositionType - THOST_FTDC_PT_Net);
+		insDO.PositionDateType = (PositionDateType)(pData->PositionDateType - THOST_FTDC_PDT_UseHistory);
+		insDO.LongMarginRatio = pData->LongMarginRatio;
+		insDO.ShortMarginRatio = pData->ShortMarginRatio;
+		insDO.MaxMarginSideAlgorithm = pData->MaxMarginSideAlgorithm;
+
 		if (!InstrumentCache::QueryInstrumentById(pData->InstrumentID))
 		{
-			InstrumentDO insDO(pData->ExchangeID, pData->InstrumentID);
-
-			insDO.Name = Encoding::ToUTF8(pData->InstrumentName, CHARSET_GB2312);
-			insDO.ProductID = pData->ProductID;
-			insDO.ProductType = (ProductType)(pData->ProductClass - THOST_FTDC_PC_Futures);
-			insDO.DeliveryYear = pData->DeliveryYear;
-			insDO.DeliveryMonth = pData->DeliveryMonth;
-			insDO.MaxMarketOrderVolume = pData->MaxMarketOrderVolume;
-			insDO.MinMarketOrderVolume = pData->MinMarketOrderVolume;
-			insDO.MaxLimitOrderVolume = pData->MaxLimitOrderVolume;
-			insDO.MinLimitOrderVolume = pData->MinLimitOrderVolume;
-			insDO.VolumeMultiple = pData->VolumeMultiple;
-			insDO.PriceTick = pData->PriceTick;
-			insDO.CreateDate = pData->CreateDate;
-			insDO.OpenDate = pData->OpenDate;
-			insDO.ExpireDate = pData->ExpireDate;
-			insDO.StartDelivDate = pData->StartDelivDate;
-			insDO.EndDelivDate = pData->EndDelivDate;
-			insDO.LifePhase = (LifePhaseType)(pData->InstLifePhase - THOST_FTDC_IP_NotStart);
-			insDO.IsTrading = pData->IsTrading;
-			insDO.PositionType = (PositionType)(pData->PositionType - THOST_FTDC_PT_Net);
-			insDO.PositionDateType = (PositionDateType)(pData->PositionDateType - THOST_FTDC_PDT_UseHistory);
-			insDO.LongMarginRatio = pData->LongMarginRatio;
-			insDO.ShortMarginRatio = pData->ShortMarginRatio;
-			insDO.MaxMarginSideAlgorithm = pData->MaxMarginSideAlgorithm;
-
 			InstrumentCache::Add(insDO);
+		}
 
-			ret = std::make_shared<VectorDO<InstrumentDO>>();
-			ret->push_back(std::move(insDO));
-		}		
+		ret->push_back(std::move(insDO));
 	}
-	else
-		ret = std::make_shared<VectorDO<InstrumentDO>>();
-	
-	ret->SerialId = serialId;
-	ret->HasMore = !*(bool*)rawRespParams[3];
+
 	return ret;
 }

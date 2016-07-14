@@ -18,7 +18,7 @@
  // Return:     std::shared_ptr<UserInfoDO>
  ////////////////////////////////////////////////////////////////////////
 
-int UserInfoDAO::InsertUser(const UserInfoDO & userDO)
+int UserInfoDAO::InsertUser(UserInfoDO & userDO)
 {
 	int ret = -1;
 
@@ -30,7 +30,7 @@ int UserInfoDAO::InsertUser(const UserInfoDO & userDO)
 		AutoClosePreparedStmt_Ptr prestmt(
 			session->getConnection()->prepareStatement(sql_proc_newuser));
 
-		prestmt->setString(1, userDO.UserId);
+		prestmt->setString(1, userDO.UserName);
 		prestmt->setString(2, userDO.Password);
 		prestmt->setString(3, userDO.FirstName);
 		prestmt->setString(4, userDO.LastName);
@@ -55,10 +55,10 @@ int UserInfoDAO::InsertUser(const UserInfoDO & userDO)
 	return ret;
 }
 
-std::shared_ptr<UserInfoDO> UserInfoDAO::FindUser(const std::string& userId)
+std::shared_ptr<UserInfoDO> UserInfoDAO::FindUser(const std::string& userName)
 {
 	static const std::string sql_finduser(
-		"SELECT account_password,firstname,lastname,client_symbol,is_trading_allowed,"
+		"SELECT account_id,account_password,firstname,lastname,client_symbol,is_trading_allowed,"
 		"email,gender,contactnum,address,zipcode,roletype "
 		"FROM vw_client_detail WHERE account_username = ?");
 
@@ -69,7 +69,7 @@ std::shared_ptr<UserInfoDO> UserInfoDAO::FindUser(const std::string& userId)
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
 			session->getConnection()->prepareStatement(sql_finduser));
-		prestmt->setString(1, userId);
+		prestmt->setString(1, userName);
 
 		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
 
@@ -77,19 +77,20 @@ std::shared_ptr<UserInfoDO> UserInfoDAO::FindUser(const std::string& userId)
 		{
 			auto userDO = new UserInfoDO;
 			ret.reset(userDO);
-			userDO->UserId = userId;
-			userDO->Password = rs->getString(1);
-			userDO->FirstName = rs->getString(2);
-			userDO->LastName = rs->getString(3);
-			userDO->Company = rs->getString(4);
-			bool allowTrading = rs->getBoolean(5);
+			userDO->UserId = rs->getString(1);
+			userDO->UserName = userName;
+			userDO->Password = rs->getString(2);
+			userDO->FirstName = rs->getString(3);
+			userDO->LastName = rs->getString(4);
+			userDO->Company = rs->getString(5);
+			bool allowTrading = rs->getBoolean(6);
 			userDO->Permission = allowTrading ? ALLOW_TRADING : 0;
-			userDO->Email = rs->getString(6);
-			userDO->Gender = (GenderType)rs->getInt(7);
-			userDO->ContactNum = rs->getString(8);
-			userDO->Address = rs->getString(9);
-			userDO->ZipCode = rs->getString(10);
-			userDO->Role = rs->getInt(11);
+			userDO->Email = rs->getString(7);
+			userDO->Gender = (GenderType)rs->getInt(8);
+			userDO->ContactNum = rs->getString(9);
+			userDO->Address = rs->getString(10);
+			userDO->ZipCode = rs->getString(11);
+			userDO->Role = rs->getInt(12);
 		}
 	}
 	catch (sql::SQLException& sqlEx)
@@ -104,7 +105,7 @@ std::shared_ptr<UserInfoDO> UserInfoDAO::FindUser(const std::string& userId)
 VectorDO_Ptr<UserInfoDO> UserInfoDAO::FindAllUserByRole(int role)
 {
 	static const std::string sql_findalluser(
-		"SELECT account_username,firstname,lastname,client_symbol,is_trading_allowed,"
+		"SELECT account_id,account_username,firstname,lastname,client_symbol,is_trading_allowed,"
 		"email,gender,contactnum,address,zipcode "
 		"FROM vw_client_detail WHERE roletype = ?");
 
@@ -122,16 +123,17 @@ VectorDO_Ptr<UserInfoDO> UserInfoDAO::FindAllUserByRole(int role)
 		{
 			UserInfoDO userDO;
 			userDO.UserId = rs->getString(1);
-			userDO.FirstName = rs->getString(2);
-			userDO.LastName = rs->getString(3);
-			userDO.Company = rs->getString(4);
-			bool allowTrading = rs->getBoolean(5);
+			userDO.UserName = rs->getString(2);
+			userDO.FirstName = rs->getString(3);
+			userDO.LastName = rs->getString(4);
+			userDO.Company = rs->getString(5);
+			bool allowTrading = rs->getBoolean(6);
 			userDO.Permission = allowTrading ? ALLOW_TRADING : 0;
-			userDO.Email = rs->getString(6);
-			userDO.Gender = (GenderType)rs->getInt(7);
-			userDO.ContactNum = rs->getString(8);
-			userDO.Address = rs->getString(9);
-			userDO.ZipCode = rs->getString(10);
+			userDO.Email = rs->getString(7);
+			userDO.Gender = (GenderType)rs->getInt(8);
+			userDO.ContactNum = rs->getString(9);
+			userDO.Address = rs->getString(10);
+			userDO.ZipCode = rs->getString(11);
 			userDO.Role = role;
 
 			ret->push_back(std::move(userDO));

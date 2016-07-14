@@ -33,8 +33,8 @@ CTPOTCWorkerProcessor::CTPOTCWorkerProcessor(const std::map<std::string, std::st
 	: CTPMarketDataProcessor(configMap),
 	_pricingCtx(pricingCtx),
 	_otcTradeProcessor(configMap, pricingCtx),
-	_pricingNotifers(new SessionContainer<ContractKey>()),
-	_otcOrderNotifers(new SessionContainer<uint64_t>())
+	_pricingNotifers(SessionContainer<ContractKey>::NewInstance()),
+	_otcOrderNotifers(SessionContainer<uint64_t>::NewInstance())
 {
 }
 

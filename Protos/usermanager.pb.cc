@@ -40,8 +40,10 @@ void protobuf_AssignDesc_usermanager_2eproto() {
       "usermanager.proto");
   GOOGLE_CHECK(file != NULL);
   PBUserInfo_descriptor_ = file->message_type(0);
-  static const int PBUserInfo_offsets_[14] = {
+  static const int PBUserInfo_offsets_[15] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserInfo, header_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserInfo, userid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserInfo, username_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserInfo, password_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserInfo, firstname_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserInfo, lastname_),
@@ -54,7 +56,6 @@ void protobuf_AssignDesc_usermanager_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserInfo, zipcode_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserInfo, role_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserInfo, permission_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserInfo, header_),
   };
   PBUserInfo_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
@@ -69,8 +70,8 @@ void protobuf_AssignDesc_usermanager_2eproto() {
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserInfo, _is_default_instance_));
   PBUserInfoList_descriptor_ = file->message_type(1);
   static const int PBUserInfoList_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserInfoList, userinfo_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserInfoList, header_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserInfoList, userinfo_),
   };
   PBUserInfoList_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
@@ -119,18 +120,18 @@ void protobuf_AddDesc_usermanager_2eproto() {
   ::Micro::Future::Message::protobuf_AddDesc_commondefine_2eproto();
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\021usermanager.proto\022\024Micro.Future.Messag"
-    "e\032\022commondefine.proto\"\242\002\n\nPBUserInfo\022\016\n\006"
-    "userId\030\001 \001(\t\022\020\n\010password\030\002 \001(\t\022\021\n\tfirstN"
-    "ame\030\003 \001(\t\022\020\n\010lastName\030\004 \001(\t\022\016\n\006gender\030\005 "
-    "\001(\005\022\017\n\007company\030\006 \001(\t\022\r\n\005email\030\007 \001(\t\022\022\n\nc"
-    "ontactNum\030\010 \001(\t\022\023\n\013identityNum\030\t \001(\t\022\017\n\007"
-    "address\030\n \001(\t\022\017\n\007zipcode\030\013 \001(\t\022\014\n\004role\030\014"
-    " \001(\005\022\022\n\npermission\030\r \001(\005\0220\n\006header\030\016 \001(\013"
-    "2 .Micro.Future.Message.DataHeader\"v\n\016PB"
-    "UserInfoList\0222\n\010userInfo\030\001 \003(\0132 .Micro.F"
-    "uture.Message.PBUserInfo\0220\n\006header\030\002 \001(\013"
-    "2 .Micro.Future.Message.DataHeaderb\006prot"
-    "o3", 482);
+    "e\032\022commondefine.proto\"\264\002\n\nPBUserInfo\0220\n\006"
+    "header\030\001 \001(\0132 .Micro.Future.Message.Data"
+    "Header\022\016\n\006userId\030\002 \001(\t\022\020\n\010userName\030\003 \001(\t"
+    "\022\020\n\010password\030\004 \001(\t\022\021\n\tfirstName\030\005 \001(\t\022\020\n"
+    "\010lastName\030\006 \001(\t\022\016\n\006gender\030\007 \001(\005\022\017\n\007compa"
+    "ny\030\010 \001(\t\022\r\n\005email\030\t \001(\t\022\022\n\ncontactNum\030\n "
+    "\001(\t\022\023\n\013identityNum\030\013 \001(\t\022\017\n\007address\030\014 \001("
+    "\t\022\017\n\007zipcode\030\r \001(\t\022\014\n\004role\030\016 \001(\005\022\022\n\nperm"
+    "ission\030\017 \001(\005\"v\n\016PBUserInfoList\0220\n\006header"
+    "\030\001 \001(\0132 .Micro.Future.Message.DataHeader"
+    "\0222\n\010userInfo\030\002 \003(\0132 .Micro.Future.Messag"
+    "e.PBUserInfob\006proto3", 500);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "usermanager.proto", &protobuf_RegisterTypes);
   PBUserInfo::default_instance_ = new PBUserInfo();
@@ -160,7 +161,9 @@ static void MergeFromFail(int line) {
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int PBUserInfo::kHeaderFieldNumber;
 const int PBUserInfo::kUserIdFieldNumber;
+const int PBUserInfo::kUserNameFieldNumber;
 const int PBUserInfo::kPasswordFieldNumber;
 const int PBUserInfo::kFirstNameFieldNumber;
 const int PBUserInfo::kLastNameFieldNumber;
@@ -173,7 +176,6 @@ const int PBUserInfo::kAddressFieldNumber;
 const int PBUserInfo::kZipcodeFieldNumber;
 const int PBUserInfo::kRoleFieldNumber;
 const int PBUserInfo::kPermissionFieldNumber;
-const int PBUserInfo::kHeaderFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 PBUserInfo::PBUserInfo()
@@ -199,7 +201,9 @@ void PBUserInfo::SharedCtor() {
     _is_default_instance_ = false;
   ::google::protobuf::internal::GetEmptyString();
   _cached_size_ = 0;
+  header_ = NULL;
   userid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  username_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   password_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   firstname_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   lastname_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
@@ -212,7 +216,6 @@ void PBUserInfo::SharedCtor() {
   zipcode_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   role_ = 0;
   permission_ = 0;
-  header_ = NULL;
 }
 
 PBUserInfo::~PBUserInfo() {
@@ -222,6 +225,7 @@ PBUserInfo::~PBUserInfo() {
 
 void PBUserInfo::SharedDtor() {
   userid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  username_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   password_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   firstname_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   lastname_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
@@ -263,7 +267,10 @@ PBUserInfo* PBUserInfo::New(::google::protobuf::Arena* arena) const {
 
 void PBUserInfo::Clear() {
 // @@protoc_insertion_point(message_clear_start:Micro.Future.Message.PBUserInfo)
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
   userid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  username_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   password_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   firstname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   lastname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
@@ -276,8 +283,6 @@ void PBUserInfo::Clear() {
   zipcode_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   role_ = 0;
   permission_ = 0;
-  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
-  header_ = NULL;
 }
 
 bool PBUserInfo::MergePartialFromCodedStream(
@@ -290,9 +295,22 @@ bool PBUserInfo::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional string userId = 1;
+      // optional .Micro.Future.Message.DataHeader header = 1;
       case 1: {
         if (tag == 10) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_header()));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(18)) goto parse_userId;
+        break;
+      }
+
+      // optional string userId = 2;
+      case 2: {
+        if (tag == 18) {
+         parse_userId:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_userid()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -302,13 +320,30 @@ bool PBUserInfo::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(18)) goto parse_password;
+        if (input->ExpectTag(26)) goto parse_userName;
         break;
       }
 
-      // optional string password = 2;
-      case 2: {
-        if (tag == 18) {
+      // optional string userName = 3;
+      case 3: {
+        if (tag == 26) {
+         parse_userName:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_username()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->username().data(), this->username().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.PBUserInfo.userName"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(34)) goto parse_password;
+        break;
+      }
+
+      // optional string password = 4;
+      case 4: {
+        if (tag == 34) {
          parse_password:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_password()));
@@ -319,13 +354,13 @@ bool PBUserInfo::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(26)) goto parse_firstName;
+        if (input->ExpectTag(42)) goto parse_firstName;
         break;
       }
 
-      // optional string firstName = 3;
-      case 3: {
-        if (tag == 26) {
+      // optional string firstName = 5;
+      case 5: {
+        if (tag == 42) {
          parse_firstName:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_firstname()));
@@ -336,13 +371,13 @@ bool PBUserInfo::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(34)) goto parse_lastName;
+        if (input->ExpectTag(50)) goto parse_lastName;
         break;
       }
 
-      // optional string lastName = 4;
-      case 4: {
-        if (tag == 34) {
+      // optional string lastName = 6;
+      case 6: {
+        if (tag == 50) {
          parse_lastName:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_lastname()));
@@ -353,13 +388,13 @@ bool PBUserInfo::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(40)) goto parse_gender;
+        if (input->ExpectTag(56)) goto parse_gender;
         break;
       }
 
-      // optional int32 gender = 5;
-      case 5: {
-        if (tag == 40) {
+      // optional int32 gender = 7;
+      case 7: {
+        if (tag == 56) {
          parse_gender:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
@@ -368,13 +403,13 @@ bool PBUserInfo::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(50)) goto parse_company;
+        if (input->ExpectTag(66)) goto parse_company;
         break;
       }
 
-      // optional string company = 6;
-      case 6: {
-        if (tag == 50) {
+      // optional string company = 8;
+      case 8: {
+        if (tag == 66) {
          parse_company:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_company()));
@@ -385,13 +420,13 @@ bool PBUserInfo::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(58)) goto parse_email;
+        if (input->ExpectTag(74)) goto parse_email;
         break;
       }
 
-      // optional string email = 7;
-      case 7: {
-        if (tag == 58) {
+      // optional string email = 9;
+      case 9: {
+        if (tag == 74) {
          parse_email:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_email()));
@@ -402,13 +437,13 @@ bool PBUserInfo::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(66)) goto parse_contactNum;
+        if (input->ExpectTag(82)) goto parse_contactNum;
         break;
       }
 
-      // optional string contactNum = 8;
-      case 8: {
-        if (tag == 66) {
+      // optional string contactNum = 10;
+      case 10: {
+        if (tag == 82) {
          parse_contactNum:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_contactnum()));
@@ -419,13 +454,13 @@ bool PBUserInfo::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(74)) goto parse_identityNum;
+        if (input->ExpectTag(90)) goto parse_identityNum;
         break;
       }
 
-      // optional string identityNum = 9;
-      case 9: {
-        if (tag == 74) {
+      // optional string identityNum = 11;
+      case 11: {
+        if (tag == 90) {
          parse_identityNum:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_identitynum()));
@@ -436,13 +471,13 @@ bool PBUserInfo::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(82)) goto parse_address;
+        if (input->ExpectTag(98)) goto parse_address;
         break;
       }
 
-      // optional string address = 10;
-      case 10: {
-        if (tag == 82) {
+      // optional string address = 12;
+      case 12: {
+        if (tag == 98) {
          parse_address:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_address()));
@@ -453,13 +488,13 @@ bool PBUserInfo::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(90)) goto parse_zipcode;
+        if (input->ExpectTag(106)) goto parse_zipcode;
         break;
       }
 
-      // optional string zipcode = 11;
-      case 11: {
-        if (tag == 90) {
+      // optional string zipcode = 13;
+      case 13: {
+        if (tag == 106) {
          parse_zipcode:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_zipcode()));
@@ -470,13 +505,13 @@ bool PBUserInfo::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(96)) goto parse_role;
+        if (input->ExpectTag(112)) goto parse_role;
         break;
       }
 
-      // optional int32 role = 12;
-      case 12: {
-        if (tag == 96) {
+      // optional int32 role = 14;
+      case 14: {
+        if (tag == 112) {
          parse_role:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
@@ -485,31 +520,18 @@ bool PBUserInfo::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(104)) goto parse_permission;
+        if (input->ExpectTag(120)) goto parse_permission;
         break;
       }
 
-      // optional int32 permission = 13;
-      case 13: {
-        if (tag == 104) {
+      // optional int32 permission = 15;
+      case 15: {
+        if (tag == 120) {
          parse_permission:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, &permission_)));
 
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(114)) goto parse_header;
-        break;
-      }
-
-      // optional .Micro.Future.Message.DataHeader header = 14;
-      case 14: {
-        if (tag == 114) {
-         parse_header:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_header()));
         } else {
           goto handle_unusual;
         }
@@ -541,125 +563,135 @@ failure:
 void PBUserInfo::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:Micro.Future.Message.PBUserInfo)
-  // optional string userId = 1;
+  // optional .Micro.Future.Message.DataHeader header = 1;
+  if (this->has_header()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, *this->header_, output);
+  }
+
+  // optional string userId = 2;
   if (this->userid().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->userid().data(), this->userid().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "Micro.Future.Message.PBUserInfo.userId");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      1, this->userid(), output);
+      2, this->userid(), output);
   }
 
-  // optional string password = 2;
+  // optional string userName = 3;
+  if (this->username().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->username().data(), this->username().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.PBUserInfo.userName");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      3, this->username(), output);
+  }
+
+  // optional string password = 4;
   if (this->password().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->password().data(), this->password().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "Micro.Future.Message.PBUserInfo.password");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      2, this->password(), output);
+      4, this->password(), output);
   }
 
-  // optional string firstName = 3;
+  // optional string firstName = 5;
   if (this->firstname().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->firstname().data(), this->firstname().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "Micro.Future.Message.PBUserInfo.firstName");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      3, this->firstname(), output);
+      5, this->firstname(), output);
   }
 
-  // optional string lastName = 4;
+  // optional string lastName = 6;
   if (this->lastname().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->lastname().data(), this->lastname().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "Micro.Future.Message.PBUserInfo.lastName");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      4, this->lastname(), output);
+      6, this->lastname(), output);
   }
 
-  // optional int32 gender = 5;
+  // optional int32 gender = 7;
   if (this->gender() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->gender(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(7, this->gender(), output);
   }
 
-  // optional string company = 6;
+  // optional string company = 8;
   if (this->company().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->company().data(), this->company().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "Micro.Future.Message.PBUserInfo.company");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      6, this->company(), output);
+      8, this->company(), output);
   }
 
-  // optional string email = 7;
+  // optional string email = 9;
   if (this->email().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->email().data(), this->email().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "Micro.Future.Message.PBUserInfo.email");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      7, this->email(), output);
+      9, this->email(), output);
   }
 
-  // optional string contactNum = 8;
+  // optional string contactNum = 10;
   if (this->contactnum().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->contactnum().data(), this->contactnum().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "Micro.Future.Message.PBUserInfo.contactNum");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      8, this->contactnum(), output);
+      10, this->contactnum(), output);
   }
 
-  // optional string identityNum = 9;
+  // optional string identityNum = 11;
   if (this->identitynum().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->identitynum().data(), this->identitynum().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "Micro.Future.Message.PBUserInfo.identityNum");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      9, this->identitynum(), output);
+      11, this->identitynum(), output);
   }
 
-  // optional string address = 10;
+  // optional string address = 12;
   if (this->address().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->address().data(), this->address().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "Micro.Future.Message.PBUserInfo.address");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      10, this->address(), output);
+      12, this->address(), output);
   }
 
-  // optional string zipcode = 11;
+  // optional string zipcode = 13;
   if (this->zipcode().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->zipcode().data(), this->zipcode().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "Micro.Future.Message.PBUserInfo.zipcode");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      11, this->zipcode(), output);
+      13, this->zipcode(), output);
   }
 
-  // optional int32 role = 12;
+  // optional int32 role = 14;
   if (this->role() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(12, this->role(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(14, this->role(), output);
   }
 
-  // optional int32 permission = 13;
+  // optional int32 permission = 15;
   if (this->permission() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(13, this->permission(), output);
-  }
-
-  // optional .Micro.Future.Message.DataHeader header = 14;
-  if (this->has_header()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      14, *this->header_, output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(15, this->permission(), output);
   }
 
   // @@protoc_insertion_point(serialize_end:Micro.Future.Message.PBUserInfo)
@@ -668,7 +700,14 @@ void PBUserInfo::SerializeWithCachedSizes(
 ::google::protobuf::uint8* PBUserInfo::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // @@protoc_insertion_point(serialize_to_array_start:Micro.Future.Message.PBUserInfo)
-  // optional string userId = 1;
+  // optional .Micro.Future.Message.DataHeader header = 1;
+  if (this->has_header()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        1, *this->header_, target);
+  }
+
+  // optional string userId = 2;
   if (this->userid().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->userid().data(), this->userid().length(),
@@ -676,10 +715,21 @@ void PBUserInfo::SerializeWithCachedSizes(
       "Micro.Future.Message.PBUserInfo.userId");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->userid(), target);
+        2, this->userid(), target);
   }
 
-  // optional string password = 2;
+  // optional string userName = 3;
+  if (this->username().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->username().data(), this->username().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.PBUserInfo.userName");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->username(), target);
+  }
+
+  // optional string password = 4;
   if (this->password().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->password().data(), this->password().length(),
@@ -687,10 +737,10 @@ void PBUserInfo::SerializeWithCachedSizes(
       "Micro.Future.Message.PBUserInfo.password");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->password(), target);
+        4, this->password(), target);
   }
 
-  // optional string firstName = 3;
+  // optional string firstName = 5;
   if (this->firstname().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->firstname().data(), this->firstname().length(),
@@ -698,10 +748,10 @@ void PBUserInfo::SerializeWithCachedSizes(
       "Micro.Future.Message.PBUserInfo.firstName");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        3, this->firstname(), target);
+        5, this->firstname(), target);
   }
 
-  // optional string lastName = 4;
+  // optional string lastName = 6;
   if (this->lastname().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->lastname().data(), this->lastname().length(),
@@ -709,15 +759,15 @@ void PBUserInfo::SerializeWithCachedSizes(
       "Micro.Future.Message.PBUserInfo.lastName");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        4, this->lastname(), target);
+        6, this->lastname(), target);
   }
 
-  // optional int32 gender = 5;
+  // optional int32 gender = 7;
   if (this->gender() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->gender(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(7, this->gender(), target);
   }
 
-  // optional string company = 6;
+  // optional string company = 8;
   if (this->company().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->company().data(), this->company().length(),
@@ -725,10 +775,10 @@ void PBUserInfo::SerializeWithCachedSizes(
       "Micro.Future.Message.PBUserInfo.company");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        6, this->company(), target);
+        8, this->company(), target);
   }
 
-  // optional string email = 7;
+  // optional string email = 9;
   if (this->email().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->email().data(), this->email().length(),
@@ -736,10 +786,10 @@ void PBUserInfo::SerializeWithCachedSizes(
       "Micro.Future.Message.PBUserInfo.email");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        7, this->email(), target);
+        9, this->email(), target);
   }
 
-  // optional string contactNum = 8;
+  // optional string contactNum = 10;
   if (this->contactnum().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->contactnum().data(), this->contactnum().length(),
@@ -747,10 +797,10 @@ void PBUserInfo::SerializeWithCachedSizes(
       "Micro.Future.Message.PBUserInfo.contactNum");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        8, this->contactnum(), target);
+        10, this->contactnum(), target);
   }
 
-  // optional string identityNum = 9;
+  // optional string identityNum = 11;
   if (this->identitynum().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->identitynum().data(), this->identitynum().length(),
@@ -758,10 +808,10 @@ void PBUserInfo::SerializeWithCachedSizes(
       "Micro.Future.Message.PBUserInfo.identityNum");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        9, this->identitynum(), target);
+        11, this->identitynum(), target);
   }
 
-  // optional string address = 10;
+  // optional string address = 12;
   if (this->address().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->address().data(), this->address().length(),
@@ -769,10 +819,10 @@ void PBUserInfo::SerializeWithCachedSizes(
       "Micro.Future.Message.PBUserInfo.address");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        10, this->address(), target);
+        12, this->address(), target);
   }
 
-  // optional string zipcode = 11;
+  // optional string zipcode = 13;
   if (this->zipcode().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->zipcode().data(), this->zipcode().length(),
@@ -780,24 +830,17 @@ void PBUserInfo::SerializeWithCachedSizes(
       "Micro.Future.Message.PBUserInfo.zipcode");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        11, this->zipcode(), target);
+        13, this->zipcode(), target);
   }
 
-  // optional int32 role = 12;
+  // optional int32 role = 14;
   if (this->role() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(12, this->role(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(14, this->role(), target);
   }
 
-  // optional int32 permission = 13;
+  // optional int32 permission = 15;
   if (this->permission() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(13, this->permission(), target);
-  }
-
-  // optional .Micro.Future.Message.DataHeader header = 14;
-  if (this->has_header()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteMessageNoVirtualToArray(
-        14, *this->header_, target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(15, this->permission(), target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.PBUserInfo)
@@ -808,102 +851,109 @@ int PBUserInfo::ByteSize() const {
 // @@protoc_insertion_point(message_byte_size_start:Micro.Future.Message.PBUserInfo)
   int total_size = 0;
 
-  // optional string userId = 1;
+  // optional .Micro.Future.Message.DataHeader header = 1;
+  if (this->has_header()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->header_);
+  }
+
+  // optional string userId = 2;
   if (this->userid().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->userid());
   }
 
-  // optional string password = 2;
+  // optional string userName = 3;
+  if (this->username().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->username());
+  }
+
+  // optional string password = 4;
   if (this->password().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->password());
   }
 
-  // optional string firstName = 3;
+  // optional string firstName = 5;
   if (this->firstname().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->firstname());
   }
 
-  // optional string lastName = 4;
+  // optional string lastName = 6;
   if (this->lastname().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->lastname());
   }
 
-  // optional int32 gender = 5;
+  // optional int32 gender = 7;
   if (this->gender() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->gender());
   }
 
-  // optional string company = 6;
+  // optional string company = 8;
   if (this->company().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->company());
   }
 
-  // optional string email = 7;
+  // optional string email = 9;
   if (this->email().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->email());
   }
 
-  // optional string contactNum = 8;
+  // optional string contactNum = 10;
   if (this->contactnum().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->contactnum());
   }
 
-  // optional string identityNum = 9;
+  // optional string identityNum = 11;
   if (this->identitynum().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->identitynum());
   }
 
-  // optional string address = 10;
+  // optional string address = 12;
   if (this->address().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->address());
   }
 
-  // optional string zipcode = 11;
+  // optional string zipcode = 13;
   if (this->zipcode().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->zipcode());
   }
 
-  // optional int32 role = 12;
+  // optional int32 role = 14;
   if (this->role() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->role());
   }
 
-  // optional int32 permission = 13;
+  // optional int32 permission = 15;
   if (this->permission() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->permission());
-  }
-
-  // optional .Micro.Future.Message.DataHeader header = 14;
-  if (this->has_header()) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-        *this->header_);
   }
 
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
@@ -930,9 +980,16 @@ void PBUserInfo::MergeFrom(const ::google::protobuf::Message& from) {
 void PBUserInfo::MergeFrom(const PBUserInfo& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:Micro.Future.Message.PBUserInfo)
   if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (from.has_header()) {
+    mutable_header()->::Micro::Future::Message::DataHeader::MergeFrom(from.header());
+  }
   if (from.userid().size() > 0) {
 
     userid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.userid_);
+  }
+  if (from.username().size() > 0) {
+
+    username_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.username_);
   }
   if (from.password().size() > 0) {
 
@@ -979,9 +1036,6 @@ void PBUserInfo::MergeFrom(const PBUserInfo& from) {
   if (from.permission() != 0) {
     set_permission(from.permission());
   }
-  if (from.has_header()) {
-    mutable_header()->::Micro::Future::Message::DataHeader::MergeFrom(from.header());
-  }
 }
 
 void PBUserInfo::CopyFrom(const ::google::protobuf::Message& from) {
@@ -1008,7 +1062,9 @@ void PBUserInfo::Swap(PBUserInfo* other) {
   InternalSwap(other);
 }
 void PBUserInfo::InternalSwap(PBUserInfo* other) {
+  std::swap(header_, other->header_);
   userid_.Swap(&other->userid_);
+  username_.Swap(&other->username_);
   password_.Swap(&other->password_);
   firstname_.Swap(&other->firstname_);
   lastname_.Swap(&other->lastname_);
@@ -1021,7 +1077,6 @@ void PBUserInfo::InternalSwap(PBUserInfo* other) {
   zipcode_.Swap(&other->zipcode_);
   std::swap(role_, other->role_);
   std::swap(permission_, other->permission_);
-  std::swap(header_, other->header_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -1037,7 +1092,45 @@ void PBUserInfo::InternalSwap(PBUserInfo* other) {
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
 // PBUserInfo
 
-// optional string userId = 1;
+// optional .Micro.Future.Message.DataHeader header = 1;
+bool PBUserInfo::has_header() const {
+  return !_is_default_instance_ && header_ != NULL;
+}
+void PBUserInfo::clear_header() {
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
+}
+const ::Micro::Future::Message::DataHeader& PBUserInfo::header() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.PBUserInfo.header)
+  return header_ != NULL ? *header_ : *default_instance_->header_;
+}
+::Micro::Future::Message::DataHeader* PBUserInfo::mutable_header() {
+  
+  if (header_ == NULL) {
+    header_ = new ::Micro::Future::Message::DataHeader;
+  }
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.PBUserInfo.header)
+  return header_;
+}
+::Micro::Future::Message::DataHeader* PBUserInfo::release_header() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.PBUserInfo.header)
+  
+  ::Micro::Future::Message::DataHeader* temp = header_;
+  header_ = NULL;
+  return temp;
+}
+void PBUserInfo::set_allocated_header(::Micro::Future::Message::DataHeader* header) {
+  delete header_;
+  header_ = header;
+  if (header) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.PBUserInfo.header)
+}
+
+// optional string userId = 2;
 void PBUserInfo::clear_userid() {
   userid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1081,7 +1174,51 @@ void PBUserInfo::clear_userid() {
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.PBUserInfo.userId)
 }
 
-// optional string password = 2;
+// optional string userName = 3;
+void PBUserInfo::clear_username() {
+  username_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBUserInfo::username() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.PBUserInfo.userName)
+  return username_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBUserInfo::set_username(const ::std::string& value) {
+  
+  username_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.PBUserInfo.userName)
+}
+ void PBUserInfo::set_username(const char* value) {
+  
+  username_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.PBUserInfo.userName)
+}
+ void PBUserInfo::set_username(const char* value, size_t size) {
+  
+  username_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.PBUserInfo.userName)
+}
+ ::std::string* PBUserInfo::mutable_username() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.PBUserInfo.userName)
+  return username_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBUserInfo::release_username() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.PBUserInfo.userName)
+  
+  return username_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBUserInfo::set_allocated_username(::std::string* username) {
+  if (username != NULL) {
+    
+  } else {
+    
+  }
+  username_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), username);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.PBUserInfo.userName)
+}
+
+// optional string password = 4;
 void PBUserInfo::clear_password() {
   password_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1125,7 +1262,7 @@ void PBUserInfo::clear_password() {
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.PBUserInfo.password)
 }
 
-// optional string firstName = 3;
+// optional string firstName = 5;
 void PBUserInfo::clear_firstname() {
   firstname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1169,7 +1306,7 @@ void PBUserInfo::clear_firstname() {
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.PBUserInfo.firstName)
 }
 
-// optional string lastName = 4;
+// optional string lastName = 6;
 void PBUserInfo::clear_lastname() {
   lastname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1213,7 +1350,7 @@ void PBUserInfo::clear_lastname() {
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.PBUserInfo.lastName)
 }
 
-// optional int32 gender = 5;
+// optional int32 gender = 7;
 void PBUserInfo::clear_gender() {
   gender_ = 0;
 }
@@ -1227,7 +1364,7 @@ void PBUserInfo::clear_gender() {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.PBUserInfo.gender)
 }
 
-// optional string company = 6;
+// optional string company = 8;
 void PBUserInfo::clear_company() {
   company_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1271,7 +1408,7 @@ void PBUserInfo::clear_company() {
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.PBUserInfo.company)
 }
 
-// optional string email = 7;
+// optional string email = 9;
 void PBUserInfo::clear_email() {
   email_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1315,7 +1452,7 @@ void PBUserInfo::clear_email() {
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.PBUserInfo.email)
 }
 
-// optional string contactNum = 8;
+// optional string contactNum = 10;
 void PBUserInfo::clear_contactnum() {
   contactnum_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1359,7 +1496,7 @@ void PBUserInfo::clear_contactnum() {
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.PBUserInfo.contactNum)
 }
 
-// optional string identityNum = 9;
+// optional string identityNum = 11;
 void PBUserInfo::clear_identitynum() {
   identitynum_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1403,7 +1540,7 @@ void PBUserInfo::clear_identitynum() {
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.PBUserInfo.identityNum)
 }
 
-// optional string address = 10;
+// optional string address = 12;
 void PBUserInfo::clear_address() {
   address_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1447,7 +1584,7 @@ void PBUserInfo::clear_address() {
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.PBUserInfo.address)
 }
 
-// optional string zipcode = 11;
+// optional string zipcode = 13;
 void PBUserInfo::clear_zipcode() {
   zipcode_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1491,7 +1628,7 @@ void PBUserInfo::clear_zipcode() {
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.PBUserInfo.zipcode)
 }
 
-// optional int32 role = 12;
+// optional int32 role = 14;
 void PBUserInfo::clear_role() {
   role_ = 0;
 }
@@ -1505,7 +1642,7 @@ void PBUserInfo::clear_role() {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.PBUserInfo.role)
 }
 
-// optional int32 permission = 13;
+// optional int32 permission = 15;
 void PBUserInfo::clear_permission() {
   permission_ = 0;
 }
@@ -1519,51 +1656,13 @@ void PBUserInfo::clear_permission() {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.PBUserInfo.permission)
 }
 
-// optional .Micro.Future.Message.DataHeader header = 14;
-bool PBUserInfo::has_header() const {
-  return !_is_default_instance_ && header_ != NULL;
-}
-void PBUserInfo::clear_header() {
-  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
-  header_ = NULL;
-}
-const ::Micro::Future::Message::DataHeader& PBUserInfo::header() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.PBUserInfo.header)
-  return header_ != NULL ? *header_ : *default_instance_->header_;
-}
-::Micro::Future::Message::DataHeader* PBUserInfo::mutable_header() {
-  
-  if (header_ == NULL) {
-    header_ = new ::Micro::Future::Message::DataHeader;
-  }
-  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.PBUserInfo.header)
-  return header_;
-}
-::Micro::Future::Message::DataHeader* PBUserInfo::release_header() {
-  // @@protoc_insertion_point(field_release:Micro.Future.Message.PBUserInfo.header)
-  
-  ::Micro::Future::Message::DataHeader* temp = header_;
-  header_ = NULL;
-  return temp;
-}
-void PBUserInfo::set_allocated_header(::Micro::Future::Message::DataHeader* header) {
-  delete header_;
-  header_ = header;
-  if (header) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.PBUserInfo.header)
-}
-
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
 
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int PBUserInfoList::kUserInfoFieldNumber;
 const int PBUserInfoList::kHeaderFieldNumber;
+const int PBUserInfoList::kUserInfoFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 PBUserInfoList::PBUserInfoList()
@@ -1644,9 +1743,22 @@ bool PBUserInfoList::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // repeated .Micro.Future.Message.PBUserInfo userInfo = 1;
+      // optional .Micro.Future.Message.DataHeader header = 1;
       case 1: {
         if (tag == 10) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_header()));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(18)) goto parse_userInfo;
+        break;
+      }
+
+      // repeated .Micro.Future.Message.PBUserInfo userInfo = 2;
+      case 2: {
+        if (tag == 18) {
+         parse_userInfo:
           DO_(input->IncrementRecursionDepth());
          parse_loop_userInfo:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtualNoRecursionDepth(
@@ -1654,21 +1766,8 @@ bool PBUserInfoList::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(10)) goto parse_loop_userInfo;
+        if (input->ExpectTag(18)) goto parse_loop_userInfo;
         input->UnsafeDecrementRecursionDepth();
-        if (input->ExpectTag(18)) goto parse_header;
-        break;
-      }
-
-      // optional .Micro.Future.Message.DataHeader header = 2;
-      case 2: {
-        if (tag == 18) {
-         parse_header:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_header()));
-        } else {
-          goto handle_unusual;
-        }
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -1697,16 +1796,16 @@ failure:
 void PBUserInfoList::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:Micro.Future.Message.PBUserInfoList)
-  // repeated .Micro.Future.Message.PBUserInfo userInfo = 1;
-  for (unsigned int i = 0, n = this->userinfo_size(); i < n; i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, this->userinfo(i), output);
-  }
-
-  // optional .Micro.Future.Message.DataHeader header = 2;
+  // optional .Micro.Future.Message.DataHeader header = 1;
   if (this->has_header()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      2, *this->header_, output);
+      1, *this->header_, output);
+  }
+
+  // repeated .Micro.Future.Message.PBUserInfo userInfo = 2;
+  for (unsigned int i = 0, n = this->userinfo_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      2, this->userinfo(i), output);
   }
 
   // @@protoc_insertion_point(serialize_end:Micro.Future.Message.PBUserInfoList)
@@ -1715,18 +1814,18 @@ void PBUserInfoList::SerializeWithCachedSizes(
 ::google::protobuf::uint8* PBUserInfoList::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // @@protoc_insertion_point(serialize_to_array_start:Micro.Future.Message.PBUserInfoList)
-  // repeated .Micro.Future.Message.PBUserInfo userInfo = 1;
-  for (unsigned int i = 0, n = this->userinfo_size(); i < n; i++) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteMessageNoVirtualToArray(
-        1, this->userinfo(i), target);
-  }
-
-  // optional .Micro.Future.Message.DataHeader header = 2;
+  // optional .Micro.Future.Message.DataHeader header = 1;
   if (this->has_header()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        2, *this->header_, target);
+        1, *this->header_, target);
+  }
+
+  // repeated .Micro.Future.Message.PBUserInfo userInfo = 2;
+  for (unsigned int i = 0, n = this->userinfo_size(); i < n; i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        2, this->userinfo(i), target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.PBUserInfoList)
@@ -1737,14 +1836,14 @@ int PBUserInfoList::ByteSize() const {
 // @@protoc_insertion_point(message_byte_size_start:Micro.Future.Message.PBUserInfoList)
   int total_size = 0;
 
-  // optional .Micro.Future.Message.DataHeader header = 2;
+  // optional .Micro.Future.Message.DataHeader header = 1;
   if (this->has_header()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
         *this->header_);
   }
 
-  // repeated .Micro.Future.Message.PBUserInfo userInfo = 1;
+  // repeated .Micro.Future.Message.PBUserInfo userInfo = 2;
   total_size += 1 * this->userinfo_size();
   for (int i = 0; i < this->userinfo_size(); i++) {
     total_size +=
@@ -1806,8 +1905,8 @@ void PBUserInfoList::Swap(PBUserInfoList* other) {
   InternalSwap(other);
 }
 void PBUserInfoList::InternalSwap(PBUserInfoList* other) {
-  userinfo_.UnsafeArenaSwap(&other->userinfo_);
   std::swap(header_, other->header_);
+  userinfo_.UnsafeArenaSwap(&other->userinfo_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -1823,37 +1922,7 @@ void PBUserInfoList::InternalSwap(PBUserInfoList* other) {
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
 // PBUserInfoList
 
-// repeated .Micro.Future.Message.PBUserInfo userInfo = 1;
-int PBUserInfoList::userinfo_size() const {
-  return userinfo_.size();
-}
-void PBUserInfoList::clear_userinfo() {
-  userinfo_.Clear();
-}
-const ::Micro::Future::Message::PBUserInfo& PBUserInfoList::userinfo(int index) const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.PBUserInfoList.userInfo)
-  return userinfo_.Get(index);
-}
-::Micro::Future::Message::PBUserInfo* PBUserInfoList::mutable_userinfo(int index) {
-  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.PBUserInfoList.userInfo)
-  return userinfo_.Mutable(index);
-}
-::Micro::Future::Message::PBUserInfo* PBUserInfoList::add_userinfo() {
-  // @@protoc_insertion_point(field_add:Micro.Future.Message.PBUserInfoList.userInfo)
-  return userinfo_.Add();
-}
-::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::PBUserInfo >*
-PBUserInfoList::mutable_userinfo() {
-  // @@protoc_insertion_point(field_mutable_list:Micro.Future.Message.PBUserInfoList.userInfo)
-  return &userinfo_;
-}
-const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::PBUserInfo >&
-PBUserInfoList::userinfo() const {
-  // @@protoc_insertion_point(field_list:Micro.Future.Message.PBUserInfoList.userInfo)
-  return userinfo_;
-}
-
-// optional .Micro.Future.Message.DataHeader header = 2;
+// optional .Micro.Future.Message.DataHeader header = 1;
 bool PBUserInfoList::has_header() const {
   return !_is_default_instance_ && header_ != NULL;
 }
@@ -1889,6 +1958,36 @@ void PBUserInfoList::set_allocated_header(::Micro::Future::Message::DataHeader* 
     
   }
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.PBUserInfoList.header)
+}
+
+// repeated .Micro.Future.Message.PBUserInfo userInfo = 2;
+int PBUserInfoList::userinfo_size() const {
+  return userinfo_.size();
+}
+void PBUserInfoList::clear_userinfo() {
+  userinfo_.Clear();
+}
+const ::Micro::Future::Message::PBUserInfo& PBUserInfoList::userinfo(int index) const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.PBUserInfoList.userInfo)
+  return userinfo_.Get(index);
+}
+::Micro::Future::Message::PBUserInfo* PBUserInfoList::mutable_userinfo(int index) {
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.PBUserInfoList.userInfo)
+  return userinfo_.Mutable(index);
+}
+::Micro::Future::Message::PBUserInfo* PBUserInfoList::add_userinfo() {
+  // @@protoc_insertion_point(field_add:Micro.Future.Message.PBUserInfoList.userInfo)
+  return userinfo_.Add();
+}
+::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::PBUserInfo >*
+PBUserInfoList::mutable_userinfo() {
+  // @@protoc_insertion_point(field_mutable_list:Micro.Future.Message.PBUserInfoList.userInfo)
+  return &userinfo_;
+}
+const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::PBUserInfo >&
+PBUserInfoList::userinfo() const {
+  // @@protoc_insertion_point(field_list:Micro.Future.Message.PBUserInfoList.userInfo)
+  return userinfo_;
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

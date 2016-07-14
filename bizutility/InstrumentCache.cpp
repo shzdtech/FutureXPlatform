@@ -68,6 +68,17 @@ InstrumentDO * InstrumentCache::QueryInstrumentById(const std::string & instrume
 	return ret;
 }
 
+VectorDO_Ptr<InstrumentDO> InstrumentCache::AllInstruments(void)
+{
+	auto ret = std::make_shared<VectorDO<InstrumentDO>>();
+	for (auto pair : instrumentDOMap)
+	{
+		ret->push_back(pair.second);
+	}
+
+	return ret;
+}
+
 void InstrumentCache::Clear(void)
 {
 	instrumentDOMap.clear();

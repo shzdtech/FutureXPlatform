@@ -34,7 +34,7 @@ dataobj_ptr CTSLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* raw
 	auto stdo = (MapDO<std::string>*)reqDO.get();
 
 	auto& brokeid = stdo->TryFind(STR_BROKER_ID, EMPTY_STRING);
-	auto& userid = stdo->TryFind(STR_USER_ID, EMPTY_STRING);
+	auto& userid = stdo->TryFind(STR_USER_NAME, EMPTY_STRING);
 	auto& password = stdo->TryFind(STR_PASSWORD, EMPTY_STRING);
 
 	CTSAPIWrapper* api = (CTSAPIWrapper*)rawAPI;
@@ -81,7 +81,7 @@ dataobj_ptr CTSLoginHandler::HandleResponse(const uint32_t serialId, param_vecto
 	pDO->UserId = pUserInfo->getUserId();
 	pDO->BrokerId = pUserInfo->getBrokerId();
 	//pDO->Password = pUserInfo->getPassword();
-	pDO->FirstName = pUserInfo->getName();
+	pDO->UserName = pUserInfo->getName();
 	pDO->Role = pUserInfo->getRole();
 	pDO->Permission = pUserInfo->getPermission();
 

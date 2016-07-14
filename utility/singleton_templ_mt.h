@@ -8,7 +8,7 @@ template <typename T>
 class singleton_mt_ptr
 {
 public:
-	static std::shared_ptr<T> Instance() {
+	static std::shared_ptr<T>& Instance() {
 		if (!_instance) {
 			std::call_once(_instance_flag, []{
 				_instance.reset(new T);

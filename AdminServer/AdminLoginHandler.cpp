@@ -44,7 +44,7 @@ dataobj_ptr AdminLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* r
 	{
 		auto stdo = (MapDO<std::string>*)reqDO.get();
 
-		auto& userid = stdo->TryFind(STR_USER_ID, EMPTY_STRING);
+		auto& userid = stdo->TryFind(STR_USER_NAME, EMPTY_STRING);
 		auto& password = stdo->TryFind(STR_PASSWORD, EMPTY_STRING);
 		auto userInfo_Ptr = UserInfoDAO::FindUser(userid);
 

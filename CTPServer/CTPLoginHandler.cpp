@@ -36,7 +36,7 @@ dataobj_ptr CTPLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* raw
 	auto stdo = (MapDO<std::string>*)reqDO.get();
 	
 	auto& brokeid = stdo->TryFind(STR_BROKER_ID, EMPTY_STRING);
-	auto& userid = stdo->TryFind(STR_USER_ID, EMPTY_STRING);
+	auto& userid = stdo->TryFind(STR_USER_NAME, EMPTY_STRING);
 	auto& password = stdo->TryFind(STR_PASSWORD, EMPTY_STRING);
 
 	CThostFtdcReqUserLoginField req{};
@@ -93,7 +93,7 @@ dataobj_ptr CTPLoginHandler::HandleResponse(const uint32_t serialId, param_vecto
 
 	pDO->BrokerId = pUserInfo->getBrokerId();
 	pDO->Company = pUserInfo->getBrokerId();
-	pDO->FirstName = pUserInfo->getName();
+	pDO->UserName = pUserInfo->getName();
 	//pDO->Password = pUserInfo->getPassword();
 	pDO->Permission = pUserInfo->getPermission();
 	pDO->Role = pUserInfo->getRole();

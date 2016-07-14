@@ -12,21 +12,21 @@
 #include "../dataobject/TypedefDO.h"
 #include "../dataobject/OrderDO.h"
 #include "../utility/autofillmap.h"
-#include "../utility/ElementMutex.h"
+#include "../utility/entrywisemutex.h"
 
 class UserOrderContext
 {
 public:
 	void AddOrder(const OrderDO& orderDO);
 	int RemoveOrder(uint64_t orderID);
-	std::shared_mutex& Mutex(const UserContractKey& userContractID);
+	std::mutex& Mutex(const UserContractKey& userContractID);
 	std::map<uint64_t, OrderDO_Ptr>& GetAllOrder();
 	std::map<uint64_t, OrderDO_Ptr>& GetTradingOrderMap(const UserContractKey& userContractID);
 	OrderDO_Ptr FindOrder(uint64_t orderID);
 
 private:
 	std::map<uint64_t, OrderDO_Ptr> _activeOrders;
-	UserContractMap<ElementMutex<std::map<uint64_t, OrderDO_Ptr>>> _orderMap;
+	UserContractMap<entrywisemutex<std::map<uint64_t, OrderDO_Ptr>, std::mutex>> _orderMap;
 };
 
 #endif

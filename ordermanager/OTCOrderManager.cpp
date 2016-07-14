@@ -34,7 +34,7 @@ int OTCOrderManager::CreateOrder(OrderDO& orderInfo)
 			orderInfo = *orderptr;
 			if (orderInfo.OrderStatus == OrderStatus::OPENNING)
 			{
-				std::lock_guard<std::shared_mutex> guard(_userOrderCtx.Mutex(orderInfo));
+				std::lock_guard<std::mutex> guard(_userOrderCtx.Mutex(orderInfo));
 				_userOrderCtx.AddOrder(orderInfo);
 			}
 			ret = 0;
@@ -58,7 +58,7 @@ OrderDOVec_Ptr OTCOrderManager::UpdateOrderByStrategy(const StrategyContractDO& 
 
 	if (strategyDO.Enabled)
 	{
-		std::lock_guard<std::shared_mutex> guard(_userOrderCtx.Mutex(strategyDO));
+		std::lock_guard<std::mutex> guard(_userOrderCtx.Mutex(strategyDO));
 
 		auto& tradingMap = _userOrderCtx.GetTradingOrderMap(strategyDO);
 
@@ -138,7 +138,7 @@ int OTCOrderManager::CancelOrder(OrderDO& orderInfo)
 	OrderStatus currStatus;
 	OTCOrderDAO::CancelOrder(orderInfo, currStatus);
 	orderInfo.OrderStatus = currStatus;
-	std::lock_guard<std::shared_mutex> guard(_userOrderCtx.Mutex(orderInfo));
+	std::lock_guard<std::mutex> guard(_userOrderCtx.Mutex(orderInfo));
 	_userOrderCtx.RemoveOrder(orderInfo.OrderID);
 
 	return currStatus == OrderStatus::UNDEFINED;
@@ -158,7 +158,7 @@ int OTCOrderManager::RejectOrder(OrderDO& orderInfo)
 	OrderStatus currStatus;
 	OTCOrderDAO::RejectOrder(orderInfo, currStatus);
 	orderInfo.OrderStatus = currStatus;
-	std::lock_guard<std::shared_mutex> guard(_userOrderCtx.Mutex(orderInfo));
+	std::lock_guard<std::mutex> guard(_userOrderCtx.Mutex(orderInfo));
 	_userOrderCtx.RemoveOrder(orderInfo.OrderID);
 
 	return currStatus == OrderStatus::UNDEFINED;

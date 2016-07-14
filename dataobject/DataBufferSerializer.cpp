@@ -33,6 +33,5 @@ data_buffer DataBufferSerializer::Serialize(const dataobj_ptr abstractDO)
 dataobj_ptr DataBufferSerializer::Deserialize(const data_buffer& rawdata)
 {
 	size_t bufSz = rawdata.size();
-	auto databufDO = new DataBufferDO(rawdata);
-	return dataobj_ptr(databufDO);
+	return dataobj_ptr(new DataBufferDO(rawdata));
 }

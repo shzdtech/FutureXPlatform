@@ -6,24 +6,25 @@ package Micro.Future.Message;
 
 message PBUserInfo
 {
-   string userId = 1;
-   string password = 2;
-   string firstName = 3;
-   string lastName = 4;
-   int32 gender = 5;
-   string company = 6;
-   string email = 7;
-   string contactNum = 8;
-   string identityNum = 9;
-   string address = 10;
-   string zipcode = 11;
-   int32 role = 12;
-   int32 permission = 13;
-   DataHeader header = 14;
+   DataHeader header = 1;
+   string userId = 2;
+   string userName = 3;
+   string password = 4;
+   string firstName = 5;
+   string lastName = 6;
+   int32 gender = 7;
+   string company = 8;
+   string email = 9;
+   string contactNum = 10;
+   string identityNum = 11;
+   string address = 12;
+   string zipcode = 13;
+   int32 role = 14;
+   int32 permission = 15;
 }
 
 message PBUserInfoList
 {
-	repeated PBUserInfo userInfo = 1;
-	DataHeader header = 2;
+	DataHeader header = 1;
+	repeated PBUserInfo userInfo = 2;
 }

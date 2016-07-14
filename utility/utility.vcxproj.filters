@@ -33,9 +33,6 @@
     <ClInclude Include="AutoFillMap.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="ElementMutex.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="semaphore.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -55,6 +52,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="entrywisemutex.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

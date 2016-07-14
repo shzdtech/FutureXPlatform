@@ -34,7 +34,7 @@ public:
 
 protected:
 	const std::string& _user;
-	ContractMap<movable_shared_mutex> _contractMutex;
+	ContractMap<movable_mutex<std::mutex>> _contractMutex;
 	ContractMap<std::atomic<double>> _contractPosition;
 	MarketPositionContext _mktPosCtx;
 

@@ -16,9 +16,9 @@
 class DATABASEOP_CLASS_EXPORTS UserInfoDAO
 {
 public:
-	static int InsertUser(const UserInfoDO& userDO);
+	static int InsertUser(UserInfoDO& userDO);
 
-	static std::shared_ptr<UserInfoDO> FindUser(const std::string& userId);
+	static std::shared_ptr<UserInfoDO> FindUser(const std::string& userName);
 
 	static VectorDO_Ptr<UserInfoDO> FindAllUserByRole(int role);
 

@@ -47,13 +47,17 @@ dataobj_ptr CTPOTCQueryOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 		if (auto proc = std::static_pointer_cast<CTPOTCWorkerProcessor>
 			(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::WORKPROCESSOR_OTC)))
 		{
-			auto lastit = std::prev(ordervec_ptr->end());
-			for (auto it = ordervec_ptr->begin();it != ordervec_ptr->end(); it++)
+			if (ordervec_ptr->begin() != ordervec_ptr->end())
 			{
-				it->SerialId = stdo->SerialId;
-				if(it == lastit)
-					it->HasMore = true;
-				proc->SendDataObject(session, MSG_ID_QUERY_ORDER, std::make_shared<OrderDO>(*it));
+				auto lastit = std::prev(ordervec_ptr->end());
+				for (auto it = ordervec_ptr->begin(); it != ordervec_ptr->end(); it++)
+				{
+					auto order_ptr = std::make_shared<OrderDO>(*it);
+					order_ptr->SerialId = reqDO->SerialId;
+					order_ptr->HasMore = it != lastit;
+
+					proc->SendDataObject(session, MSG_ID_QUERY_ORDER, order_ptr);
+				}
 			}
 		}
 	}

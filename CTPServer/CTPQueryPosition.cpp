@@ -65,31 +65,43 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 			if (it != positionMap.end())
 			{
 				auto& positions = it->second;
-				auto lastpit = std::prev(positions.end());
-				for (auto pit = positions.begin(); pit != positions.end(); pit++)
+				if (positions.begin() != positions.end())
 				{
-					auto position_ptr = std::make_shared<UserPositionExDO>(pit->second);
-					position_ptr->SerialId = reqDO->SerialId;
-					if (pit == lastpit)
-						position_ptr->HasMore = true;
-					wkProcPtr->SendDataObject(session, MSG_ID_QUERY_POSITION, position_ptr);
+					if (positions.begin() != positions.end())
+					{
+						auto lastpit = std::prev(positions.end());
+						for (auto pit = positions.begin(); pit != positions.end(); pit++)
+						{
+							auto position_ptr = std::make_shared<UserPositionExDO>(pit->second);
+							position_ptr->SerialId = reqDO->SerialId;
+							position_ptr->HasMore = pit != lastpit;
+
+							wkProcPtr->SendDataObject(session, MSG_ID_QUERY_POSITION, position_ptr);
+						}
+					}
 				}
 			}
 		}
 		else
 		{
-			auto lastit = std::prev(positionMap.end());
-			for (auto it = positionMap.begin(); it != positionMap.end(); it++)
+			if (positionMap.begin() != positionMap.end())
 			{
-				auto& positions = it->second;
-				auto lastpit = std::prev(positions.end());
-				for (auto pit = positions.begin(); pit != positions.end(); pit++)
+				auto lastit = std::prev(positionMap.end());
+				for (auto it = positionMap.begin(); it != positionMap.end(); it++)
 				{
-					auto positionDO_Ptr = std::make_shared<UserPositionExDO>(pit->second);
-					positionDO_Ptr->SerialId = reqDO->SerialId;
-					if (it == lastit && pit == lastpit)
-						positionDO_Ptr->HasMore = true;
-					wkProcPtr->SendDataObject(session, MSG_ID_QUERY_POSITION, positionDO_Ptr);
+					auto& positions = it->second;
+					if (positions.begin() != positions.end())
+					{
+						auto lastpit = std::prev(positions.end());
+						for (auto pit = positions.begin(); pit != positions.end(); pit++)
+						{
+							auto positionDO_Ptr = std::make_shared<UserPositionExDO>(pit->second);
+							positionDO_Ptr->SerialId = reqDO->SerialId;
+							positionDO_Ptr->HasMore = (it != lastit || pit != lastpit);
+
+							wkProcPtr->SendDataObject(session, MSG_ID_QUERY_POSITION, positionDO_Ptr);
+						}
+					}
 				}
 			}
 		}

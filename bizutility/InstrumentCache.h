@@ -16,6 +16,8 @@ public:
 
 	static InstrumentDO* QueryInstrumentById(const std::string& instrumentId);
 
+	static VectorDO_Ptr<InstrumentDO> AllInstruments(void);
+
 	static void Clear(void);
 };
 

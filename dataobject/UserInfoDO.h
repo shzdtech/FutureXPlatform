@@ -23,6 +23,7 @@ class UserInfoDO : public dataobjectbase
 public:
 	std::string BrokerId;
 	std::string UserId;
+	std::string UserName;
 	std::string Password;
 	std::string FirstName;
 	std::string LastName;

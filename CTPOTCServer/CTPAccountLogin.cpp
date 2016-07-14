@@ -78,7 +78,7 @@ std::shared_ptr<UserInfoDO> CTPAccountLogin::Login(const dataobj_ptr reqDO, IRaw
 	auto stdo = (MapDO<std::string>*)reqDO.get();
 	if (!session->IsLogin())
 	{
-		auto& userid = stdo->TryFind(STR_USER_ID, EMPTY_STRING);
+		auto& userid = stdo->TryFind(STR_USER_NAME, EMPTY_STRING);
 		auto& password = stdo->TryFind(STR_PASSWORD, EMPTY_STRING);
 
 		bool userInCache = false;
@@ -111,7 +111,7 @@ std::shared_ptr<UserInfoDO> CTPAccountLogin::Login(const dataobj_ptr reqDO, IRaw
 
 		auto pUserInfo = session->getUserInfo();
 		pUserInfo->setBrokerId(userInfo_Ptr->Company);
-		pUserInfo->setName(userInfo_Ptr->FirstName);
+		pUserInfo->setName(userInfo_Ptr->UserName);
 		pUserInfo->setPassword(userInfo_Ptr->Password);
 		pUserInfo->setUserId(userInfo_Ptr->UserId);
 		pUserInfo->setRole(userInfo_Ptr->Role);

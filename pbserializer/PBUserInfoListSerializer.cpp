@@ -38,7 +38,7 @@ data_buffer PBUserInfoListSerializer::Serialize(const dataobj_ptr abstractDO)
 		pUserInfo->set_identitynum(userDO.IdentityNum);
 		pUserInfo->set_zipcode(userDO.ZipCode);
 		pUserInfo->set_userid(userDO.UserId);
-
+		pUserInfo->set_username(userDO.UserName);
 		pUserInfo->set_permission(userDO.Permission);
 		pUserInfo->set_role(userDO.Role);
 	}

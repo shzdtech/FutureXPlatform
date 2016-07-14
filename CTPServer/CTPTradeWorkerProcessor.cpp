@@ -23,7 +23,7 @@
  ////////////////////////////////////////////////////////////////////////
 
 CTPTradeWorkerProcessor::CTPTradeWorkerProcessor(const std::map<std::string, std::string>& configMap)
-	: CTPTradeProcessor(configMap), _userSessionCtn_Ptr(new SessionContainer<std::string>)
+	: CTPTradeProcessor(configMap), _userSessionCtn_Ptr(SessionContainer<std::string>::NewInstance())
 {
 	InstrmentsLoaded = false;
 	_systemUser.setBrokerId(SysParam::Get(CTP_TRADER_BROKERID));

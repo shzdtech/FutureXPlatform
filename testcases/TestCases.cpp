@@ -57,7 +57,7 @@ void testAutoFillMap()
 
 void testSessionContainer()
 {
-	SessionContainer<int> sc;
+	auto sc = SessionContainer<int>::NewInstance();
 }
 
 void testepsilondouble(const epsdouble& epsdbl)

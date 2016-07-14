@@ -137,18 +137,16 @@ bool MicroFurtureSystem::Load(const std::string& config)
 						// Initialize Server
 						if (auto srvPtr = ConfigBasedCreator::CreateInstance(svrUUID, svrModule, svrClass)) {
 							auto server = std::static_pointer_cast<IMessageServer>(srvPtr);
-
 							server->RegisterServiceFactory(msgsvcfactory);
-							auto server_uri = server->getUri();
 							if (server->Initialize(svruri, svrCfg)) {
 								this->_servers.push_back(server);
 								initserver = true;
-								LOG_INFO << "  Server " << server_uri << " initialized.";
+								LOG_INFO << "  Server " << svruri << " initialized.";
 							}
 							else
 							{
 								LOG_ERROR <<
-									"  Server: " << server_uri << " failed to initialize.";
+									"  Server: " << svruri << " failed to initialize.";
 							}
 						}
 						else

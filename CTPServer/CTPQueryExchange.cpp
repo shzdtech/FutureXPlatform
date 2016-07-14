@@ -63,9 +63,10 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 				exchangeDO.ExchangeID = exchangeid;
 				auto it = exchangeInfo.find(exchangeDO);
 				if (it != exchangeInfo.end())
-				{ 
-					wkProcPtr->SendDataObject(session, MSG_ID_QUERY_EXCHANGE,
-						std::make_shared<ExchangeDO>(*it));
+				{
+					auto exchangeDO_Ptr = std::make_shared<ExchangeDO>(*it);
+					exchangeDO_Ptr->SerialId = reqDO->SerialId;
+					wkProcPtr->SendDataObject(session, MSG_ID_QUERY_EXCHANGE, exchangeDO_Ptr);
 				}
 				else
 				{
@@ -74,14 +75,17 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 			}
 			else
 			{
-				auto lastit = std::prev(exchangeInfo.end());
-				for (auto it = exchangeInfo.begin(); it != exchangeInfo.end(); it++)
+				if (exchangeInfo.begin() != exchangeInfo.end())
 				{
-					auto exchangeDO_Ptr = std::make_shared<ExchangeDO>(*it);
-					exchangeDO_Ptr->SerialId = stdo->SerialId;
-					if (it == lastit)
-						exchangeDO_Ptr->HasMore = true;
-					wkProcPtr->SendDataObject(session, MSG_ID_QUERY_EXCHANGE, exchangeDO_Ptr);
+					auto lastit = std::prev(exchangeInfo.end());
+					for (auto it = exchangeInfo.begin(); it != exchangeInfo.end(); it++)
+					{
+						auto exchangeDO_Ptr = std::make_shared<ExchangeDO>(*it);
+						exchangeDO_Ptr->SerialId = reqDO->SerialId;
+						exchangeDO_Ptr->HasMore = it != lastit;
+
+						wkProcPtr->SendDataObject(session, MSG_ID_QUERY_EXCHANGE, exchangeDO_Ptr);
+					}
 				}
 			}
 		}
@@ -110,15 +114,13 @@ dataobj_ptr CTPQueryExchange::HandleResponse(const uint32_t serialId, param_vect
 {
 	CTPUtility::CheckError(rawRespParams[1]);
 
-	dataobj_ptr ret;
+	auto pDO = new ExchangeDO;
+	dataobj_ptr ret(pDO);
+	pDO->SerialId = serialId;
+	pDO->HasMore = !(*((bool*)rawRespParams[3]));
 
 	if (auto pData = (CThostFtdcExchangeField*)rawRespParams[0])
 	{
-		auto pDO = new ExchangeDO;
-		ret.reset(pDO);
-
-		pDO->SerialId = serialId;
-		pDO->HasMore = !(*((bool*)rawRespParams[3]));
 		pDO->ExchangeID = Encoding::ToUTF8(pData->ExchangeID, CHARSET_GB2312);
 		pDO->Name = Encoding::ToUTF8(pData->ExchangeName, CHARSET_GB2312);
 		pDO->Property = pData->ExchangeProperty;

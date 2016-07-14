@@ -26,6 +26,8 @@ data_buffer PBUserInfoSerializer::Serialize(const dataobj_ptr abstractDO)
 	auto pDO = (UserInfoDO*)abstractDO.get();
 	FillPBHeader(PB, pDO);
 
+	PB.set_userid(pDO->UserId);
+	PB.set_username(pDO->UserName);
 	PB.set_address(pDO->Address);
 	PB.set_company(pDO->Company);
 	PB.set_contactnum(pDO->ContactNum);
@@ -73,7 +75,8 @@ dataobj_ptr PBUserInfoSerializer::Deserialize(const data_buffer& rawdata)
 	ret->Gender = (GenderType)PB.gender();
 	ret->IdentityNum = PB.identitynum();
 	ret->ZipCode = PB.zipcode();
-	ret->UserId = PB.userid();
+	//ret->UserId = PB.userid();
+	ret->UserName = PB.username();
 	ret->Password = PB.password();
 
 	ret->Role = PB.role();

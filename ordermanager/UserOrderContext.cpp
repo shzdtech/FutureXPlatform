@@ -11,7 +11,7 @@ void UserOrderContext::AddOrder(const OrderDO& orderDO)
 {
 	auto orderptr = std::make_shared<OrderDO>(orderDO);
 	_activeOrders.emplace(orderDO.OrderID, orderptr);
-	_orderMap.getorfill(orderDO).Element.emplace(orderDO.OrderID, orderptr);
+	_orderMap.getorfill(orderDO).entry.emplace(orderDO.OrderID, orderptr);
 }
 
 int UserOrderContext::RemoveOrder(uint64_t orderID)
@@ -30,7 +30,7 @@ int UserOrderContext::RemoveOrder(uint64_t orderID)
 	return ret;
 }
 
-std::shared_mutex& UserOrderContext::Mutex(const UserContractKey& userContractID)
+std::mutex& UserOrderContext::Mutex(const UserContractKey& userContractID)
 {
 	return _orderMap.getorfill(userContractID).mutex();
 }
@@ -42,7 +42,7 @@ std::map<uint64_t, OrderDO_Ptr>& UserOrderContext::GetAllOrder()
 
 std::map<uint64_t, OrderDO_Ptr>& UserOrderContext::GetTradingOrderMap(const UserContractKey& userContractID)
 {
-	return _orderMap.getorfill(userContractID).Element;
+	return _orderMap.getorfill(userContractID).entry;
 }
 
 OrderDO_Ptr UserOrderContext::FindOrder(uint64_t orderID)

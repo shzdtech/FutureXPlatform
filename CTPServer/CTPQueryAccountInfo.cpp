@@ -57,13 +57,15 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 
 		if (accountInfoVec.size() > 0)
 		{
-			auto lastit = std::prev(accountInfoVec.end());
-			for (auto it = accountInfoVec.begin(); it != accountInfoVec.end(); it++)
+			if (accountInfoVec.begin() != accountInfoVec.end())
 			{
-				it->SerialId = stdo->SerialId;
-				if (it == lastit)
-					it->HasMore = true;
-				wkProcPtr->SendDataObject(session, MSG_ID_QUERY_ACCOUNT_INFO, std::make_shared<AccountInfoDO>(*it));
+				auto lastit = std::prev(accountInfoVec.end());
+				for (auto it = accountInfoVec.begin(); it != accountInfoVec.end(); it++)
+				{
+					it->SerialId = stdo->SerialId;
+					it->HasMore = it != lastit;
+					wkProcPtr->SendDataObject(session, MSG_ID_QUERY_ACCOUNT_INFO, std::make_shared<AccountInfoDO>(*it));
+				}
 			}
 		}
 	}

@@ -122,7 +122,7 @@ int HedgeOrderManager::OnOrderUpdated(OrderDO& orderInfo)
 
 		if (!orderInfo.Active)
 		{
-			std::lock_guard<std::shared_mutex> guard(_userOrderCtx.Mutex(orderInfo));
+			std::lock_guard<std::mutex> guard(_userOrderCtx.Mutex(orderInfo));
 			_userOrderCtx.RemoveOrder(orderInfo.OrderID);
 		}
 
