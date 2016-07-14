@@ -23,9 +23,8 @@ void CTPUtility::CheckError(const void* pRspInfo)
 	if (HasError(pRspInfo))
 	{
 		auto pRsp = (CThostFtdcRspInfoField*)pRspInfo;
-		throw BizError(API_INNER_ERROR,
-			std::move(Encoding::ToUTF8(pRsp->ErrorMsg, CHARSET_GB2312)),
-			pRsp->ErrorID);
+		throw ApiException(pRsp->ErrorID,
+			std::move(Encoding::ToUTF8(pRsp->ErrorMsg, CHARSET_GB2312)));
 	}
 }
 
@@ -36,6 +35,14 @@ void CTPUtility::CheckError(const void* pRspInfo)
 // - pRespInfo
 // Return:     bool
 ////////////////////////////////////////////////////////////////////////
+
+void CTPUtility::CheckNotFound(const void * pRspInfo)
+{
+	if (!pRspInfo)
+	{
+		throw NotFoundException();
+	}
+}
 
 bool CTPUtility::HasError(const void* pRspInfo)
 {
@@ -76,18 +83,18 @@ void CTPUtility::CheckReturnError(const int rtnCode)
 // Return:     bool
 ////////////////////////////////////////////////////////////////////////
 
-BizError_Ptr CTPUtility::HasReturnError(const int rtnCode)
+std::shared_ptr<ApiException> CTPUtility::HasReturnError(const int rtnCode)
 {
 	switch (rtnCode)
 	{
 	case 0:
 		return nullptr;
 	case -1:
-		return std::make_shared<BizError>(CONNECTION_ERROR, "Cannot connect to CTP server");
+		return std::make_shared<ApiException>(CONNECTION_ERROR, "Cannot connect to CTP server");
 	case -2:
-		return std::make_shared<BizError>(NO_PERMISSION, "Unresolved requests exeeding permission");
+		return std::make_shared<ApiException>(NO_PERMISSION, "Unresolved requests exeeding permission");
 	case -3:
-		return std::make_shared<BizError>(TOO_MANY_REQUEST, "The number of requests sent per second exeeding permission");
+		return std::make_shared<ApiException>(TOO_MANY_REQUEST, "The number of requests sent per second exeeding permission");
 	default:
 		break;
 	}

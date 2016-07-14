@@ -49,7 +49,7 @@ dataobj_ptr CTPOTCLogin::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI,
 		(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::WORKPROCESSOR_OTC)))
 	{
 		if (!(wkProcPtr->ConnectedToServer() && wkProcPtr->HasLogged()))
-			throw BizError(CONNECTION_ERROR, "Cannot connect to CTP Trading Server!");
+			throw SystemException(CONNECTION_ERROR, "Cannot connect to CTP Trading Server!");
 		wkProcPtr->RegisterLoggedSession((IMessageSession*)session);
 	}
 	

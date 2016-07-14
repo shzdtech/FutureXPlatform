@@ -10,7 +10,7 @@ bool MessageHandler::CheckLogin(ISession* session, bool throwBizErr)
 
 	if (!ret && throwBizErr)
 	{
-		throw BizError(STATUS_NOT_LOGIN, "NOT LOGIN!");
+		throw UserException(STATUS_NOT_LOGIN, "NOT LOGIN!");
 	}
 
 	return ret;

@@ -155,8 +155,8 @@
     <ClInclude Include="dataobjectbase.h" />
     <ClInclude Include="AbstractDataSerializerFactory.h" />
     <ClInclude Include="AccountInfoDO.h" />
-    <ClInclude Include="BizErrorDO.h" />
-    <ClInclude Include="BizErrorSerializer.h" />
+    <ClInclude Include="MessageExceptionDO.h" />
+    <ClInclude Include="ExceptionSerializer.h" />
     <ClInclude Include="ComplexTableDO.h" />
     <ClInclude Include="ContractDO.h" />
     <ClInclude Include="ContractKey.h" />
@@ -189,7 +189,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AbstractDataSerializerFactory.cpp" />
-    <ClCompile Include="BizErrorSerializer.cpp" />
+    <ClCompile Include="ExceptionSerializer.cpp" />
     <ClCompile Include="DataBufferSerializer.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -31,18 +31,18 @@ dataobj_ptr RegisterUserHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 	CheckLogin(session);
 
 	if (session->getUserInfo()->getRole() != ROLE_ADMINCLIENT)
-		throw BizError(APIErrorID::NO_PERMISSION, "No permission to create a new user.");
+		throw ApiException(APIErrorID::NO_PERMISSION, "No permission to create a new user.");
 
 	if (auto* pUserInfoDO = (UserInfoDO*)reqDO.get())
 	{
 		if (UserInfoDAO::FindUser(pUserInfoDO->UserId))
-			throw BizError(UserErrorID::USERID_HAS_EXISTED, '"' + pUserInfoDO->UserId + "\" has been registered.");
+			throw UserException(UserErrorID::USERID_HAS_EXISTED, '"' + pUserInfoDO->UserId + "\" has been registered.");
 
 		if (pUserInfoDO->Company.length() < 1)
 			pUserInfoDO->Company = SysParam::Get(STR_KEY_DEFAULT_CLIENT_SYMBOL);
 
 		if (UserInfoDAO::InsertUser(*pUserInfoDO) != 0)
-			throw BizError(ResultType::SYS_ERROR, "Fail to insert user info.");
+			throw DatabaseException("Fail to insert user info.");
 	}
 
 	return dataobj_ptr(new ResultDO(reqDO->SerialId));

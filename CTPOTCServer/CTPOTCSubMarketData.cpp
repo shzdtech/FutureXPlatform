@@ -88,7 +88,7 @@ dataobj_ptr CTPOTCSubMarketData::HandleResponse(const uint32_t serialId, param_v
 {
 	if (CTPUtility::HasError(rawRespParams[1]))
 	{
-		throw BizError(SYS_ERROR, "Fail to subscribe OTC market data.");
+		throw BizException("Fail to subscribe OTC market data.");
 	}
 
 	dataobj_ptr ret;

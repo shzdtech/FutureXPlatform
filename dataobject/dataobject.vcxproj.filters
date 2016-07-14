@@ -24,9 +24,6 @@
     <ClInclude Include="data_buffer.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="BizErrorSerializer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="IDataSerializer.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -40,9 +37,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="AccountInfoDO.h">
-      <Filter>头文件\DO</Filter>
-    </ClInclude>
-    <ClInclude Include="BizErrorDO.h">
       <Filter>头文件\DO</Filter>
     </ClInclude>
     <ClInclude Include="ComplexTableDO.h">
@@ -120,15 +114,21 @@
     <ClInclude Include="resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="ExceptionSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageExceptionDO.h">
+      <Filter>头文件\DO</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BizErrorSerializer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="DataBufferSerializer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="AbstractDataSerializerFactory.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ExceptionSerializer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -43,7 +43,7 @@ VectorDO_Ptr<PortfolioDO> PortfolioDAO::FindPortfolioByUser(const std::string& u
 	catch (sql::SQLException& sqlEx)
 	{
 		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
-		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
+		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
 	}
 
 	return ret;

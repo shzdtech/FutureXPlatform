@@ -5,14 +5,14 @@
  * Purpose: Declaration of the class BizErrorSerializer
  ***********************************************************************/
 
-#if !defined(__dataobject_BizErrorSerializer_h)
-#define __dataobject_BizErrorSerializer_h
+#if !defined(__dataobject_ExceptionSerializer_h)
+#define __dataobject_ExceptionSerializer_h
 
 #include "dataobject_exp.h"
 #include "IDataSerializer.h"
-#include "BizErrorDO.h"
+#include "MessageExceptionDO.h"
 
-class DATAOBJECT_CLASS_EXPORT BizErrorSerializer : public IDataSerializer
+class DATAOBJECT_CLASS_EXPORT ExceptionSerializer : public IDataSerializer
 {
 public:
 	static IDataSerializer_Ptr Instance(void);

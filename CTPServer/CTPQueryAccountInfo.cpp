@@ -55,18 +55,19 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 			std::this_thread::sleep_for(std::chrono::seconds(3));
 		}
 
-		if (accountInfoVec.size() > 0)
+		if (accountInfoVec.begin() != accountInfoVec.end())
 		{
-			if (accountInfoVec.begin() != accountInfoVec.end())
+			auto lastit = std::prev(accountInfoVec.end());
+			for (auto it = accountInfoVec.begin(); it != accountInfoVec.end(); it++)
 			{
-				auto lastit = std::prev(accountInfoVec.end());
-				for (auto it = accountInfoVec.begin(); it != accountInfoVec.end(); it++)
-				{
-					it->SerialId = stdo->SerialId;
-					it->HasMore = it != lastit;
-					wkProcPtr->SendDataObject(session, MSG_ID_QUERY_ACCOUNT_INFO, std::make_shared<AccountInfoDO>(*it));
-				}
+				it->SerialId = stdo->SerialId;
+				it->HasMore = it != lastit;
+				wkProcPtr->SendDataObject(session, MSG_ID_QUERY_ACCOUNT_INFO, std::make_shared<AccountInfoDO>(*it));
 			}
+		}
+		else
+		{
+			throw NotFoundException();
 		}
 	}
 	else
@@ -90,6 +91,7 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 
 dataobj_ptr CTPQueryAccountInfo::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
+	CTPUtility::CheckNotFound(rawRespParams[0]);
 	CTPUtility::CheckError(rawRespParams[1]);
 
 	dataobj_ptr ret;

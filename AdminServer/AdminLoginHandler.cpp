@@ -50,11 +50,11 @@ dataobj_ptr AdminLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* r
 
 		if (!userInfo_Ptr)
 		{
-			throw BizError(USERID_NOT_EXITS, "UserId: " + userid + " not exists.");
+			throw UserException(USERID_NOT_EXITS, "UserId: " + userid + " not exists.");
 		}
 		else if (userInfo_Ptr->Password != password)
 		{
-			throw BizError(WRONG_PASSWORD, "Wrong password.");
+			throw UserException(WRONG_PASSWORD, "Wrong password.");
 		}
 
 		auto now = std::time(nullptr);

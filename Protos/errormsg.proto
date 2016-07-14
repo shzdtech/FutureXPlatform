@@ -2,12 +2,12 @@ syntax = "proto3";
 
 package Micro.Future.Message;
 
-message BizErrorMsg {
+message ExceptionMessage {
 	uint32 serialId = 1;
 	uint32 messageId = 2;
-	int32 errorcode = 3;
-	bytes description = 4;
-	int32 syserrcode = 5;
+	int32 errortype = 3;
+	int32 errorcode = 4;
+	bytes description = 5;
 }
 
 message Result

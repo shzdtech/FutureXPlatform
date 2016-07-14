@@ -53,7 +53,7 @@ VectorDO_Ptr<StrategyContractDO> StrategyContractDAO::FindStrategyContractByUser
 	catch (sql::SQLException& sqlEx)
 	{
 		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
-		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
+		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
 	}
 
 	return ret;
@@ -89,7 +89,7 @@ VectorDO_Ptr<ContractParam> StrategyContractDAO::FindContractParam(const std::st
 	catch (sql::SQLException& sqlEx)
 	{
 		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
-		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
+		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
 	}
 
 	return ret;
@@ -120,7 +120,7 @@ std::shared_ptr<std::map<std::string, double>> StrategyContractDAO::FindStrategy
 	catch (sql::SQLException& sqlEx)
 	{
 		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
-		throw BizError(DB_ERROR, sqlEx.getSQLStateCStr(), sqlEx.getErrorCode());
+		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
 	}
 
 	return ret;

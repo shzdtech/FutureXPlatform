@@ -10,7 +10,7 @@
 #include "DefMessageID.h"
 #include "message_macro.h"
 #include "TemplateMessageProcessor.h"
-#include "../dataobject/BizErrorSerializer.h"
+#include "../dataobject/ExceptionSerializer.h"
 
 
 void TemplateMessageProcessor::ProcessRequest(const uint msgId, const dataobj_ptr reqDO, bool sendRsp)
@@ -87,8 +87,8 @@ int TemplateMessageProcessor::OnRecvMsg(const uint msgId, const data_buffer& msg
 					ProcessRequest(msgId, reqDO, true);
 		}
 	}
-	catch (BizError& bizErr) {
-		SendErrorMsg(msgId, bizErr, reqDO ? reqDO->SerialId : 0);
+	catch (MessageException& msgEx) {
+		SendErrorMsg(msgId, msgEx, reqDO ? reqDO->SerialId : 0);
 	}
 	catch (std::exception& ex) {
 		LOG_ERROR << __FUNCTION__ <<": MsgId: " << msgId << ", Error: " << ex.what();
@@ -113,8 +113,8 @@ int TemplateMessageProcessor::OnResponse(const uint msgId, const uint serialId, 
 	try {
 		ProcessResponse(msgId, serialId, rawRespParams, true);
 	}
-	catch (BizError& bizErr) {
-		SendErrorMsg(msgId, bizErr, serialId);
+	catch (MessageException& msgEx) {
+		SendErrorMsg(msgId, msgEx, serialId);
 	}
 	catch (std::exception& ex) {
 		LOG_ERROR << __FUNCTION__ << ": MsgId: " << msgId << ", Error: " << ex.what();
@@ -134,11 +134,11 @@ int TemplateMessageProcessor::OnResponse(const uint msgId, const uint serialId, 
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void TemplateMessageProcessor::SendErrorMsg(uint msgId, BizError& bizError, uint serialId)
+void TemplateMessageProcessor::SendErrorMsg(uint msgId, MessageException& msgException, uint serialId)
 {
-	dataobj_ptr dataobj(new BizErrorDO
-	(msgId, bizError.ErrorCode(), bizError.what(), bizError.SysErrCode(), serialId));
-	data_buffer msg = BizErrorSerializer::Instance()->Serialize(dataobj);
+	dataobj_ptr dataobj(new MessageExceptionDO(msgId, msgException.ErrorType(), msgException.ErrorCode(),
+		msgException.what(), serialId));
+	data_buffer msg = ExceptionSerializer::Instance()->Serialize(dataobj);
 	if (auto session_ptr = getSession())
 		session_ptr->WriteMessage(MSG_ID_ERROR, msg);
 }

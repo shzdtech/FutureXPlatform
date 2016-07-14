@@ -69,7 +69,7 @@ dataobj_ptr CTSLoginHandler::HandleResponse(const uint32_t serialId, param_vecto
 	auto errCode = *(int*)rawParams[0];
 	if (errCode)
 	{
-		throw BizError(errCode, "");
+		throw BizException(errCode);
 	}
 
 	auto pDO = new UserInfoDO;

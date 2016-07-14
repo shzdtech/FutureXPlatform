@@ -111,7 +111,7 @@ bool MicroFurtureSystem::Load(const std::string& config)
 		// Initialize Services
 		std::string serve_cfg = cfgReader->getValue("system.service.config");
 		if (cfgReader = AbstractConfigReaderFactory::OpenConfigReader(serve_cfg)) {
-			LOG_INFO << "  Loading service config: " << serve_cfg;
+			LOG_INFO << "  Initializing services (" << serve_cfg << ')';
 			std::vector<std::string> sections;
 			cfgReader->getVector("service.servercfg", sections);
 
@@ -141,12 +141,12 @@ bool MicroFurtureSystem::Load(const std::string& config)
 							if (server->Initialize(svruri, svrCfg)) {
 								this->_servers.push_back(server);
 								initserver = true;
-								LOG_INFO << "  Server " << svruri << " initialized.";
+								LOG_INFO << "    " << svruri << " initialized.";
 							}
 							else
 							{
 								LOG_ERROR <<
-									"  Server: " << svruri << " failed to initialize.";
+									"    " << svruri << " failed to initialize.";
 							}
 						}
 						else
@@ -203,7 +203,7 @@ bool MicroFurtureSystem::Start(void)
 				LOG_ERROR << "  " << svr->getUri() << " failed to start!";
 			}
 		}
-		LOG_INFO << i << " servers started running.";
+		LOG_INFO << i << " servers have started running.";
 
 		_running = true;
 

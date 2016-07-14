@@ -19,9 +19,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PBBizErrorSerializer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="PBComplexTableSerializer.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -82,11 +79,11 @@
     <ClInclude Include="resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="PBExceptionSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="PBBizErrorSerializer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="PBComplexTableSerializer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -134,6 +131,9 @@
     </ClCompile>
     <ClCompile Include="..\Protos\usermanager.pb.cc">
       <Filter>protos</Filter>
+    </ClCompile>
+    <ClCompile Include="PBExceptionSerializer.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

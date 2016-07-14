@@ -53,12 +53,8 @@ int CTSAPIWrapperImpl::Subscribe(const char* exchangeID, const char* contractID,
 
 int CTSAPIWrapperImpl::Subscribe(const ContractKey& contractKey, uint32_t serailId)
 {
-	int ret = NO_ERROR;
-
 	if (!IsSubscribed(contractKey))
 	{
-		ret = OBJECT_NOT_FOUND;
-
 		System::String^ exchange = gcnew System::String(contractKey.ExchangeID().data());
 		System::String^ contract = gcnew System::String(contractKey.InstrumentID().data());
 		auto marketList = _host->MarketData->CreateMarketFilter(exchange, contract);
@@ -68,23 +64,24 @@ int CTSAPIWrapperImpl::Subscribe(const ContractKey& contractKey, uint32_t serail
 			Threading::Thread::Sleep(50);
 		}
 
-		if (marketList->Count > 0)
+		if (marketList->Count == 0)
 		{
-			gcroot<Market^> market = marketList[0];
-			_contractMap->emplace(contractKey, market);
-
-			market->MarketDepthUpdate +=
-				gcnew Market::MarketDepthUpdateEventHandler(this, &CTSAPIWrapperImpl::OnMarketDataUpdated);
-			market->MarketHighLow +=
-				gcnew Market::MarketHighLowEventHandler(this, &CTSAPIWrapperImpl::OnMarketDataUpdated);
-			market->MarketSettlement +=
-				gcnew Market::MarketSettlementEventHandler(this, &CTSAPIWrapperImpl::OnMarketDataUpdated);
-			//marketList->MarketTradeVolume += 
-			//	gcnew MarketList::MarketTradeVolumeEventHandler(_callback, &CTSMDCallback::OnMarketDataUpdated);
+			throw NotFoundException(OBJECT_NOT_FOUND);
 		}
+		gcroot<Market^> market = marketList[0];
+		_contractMap->emplace(contractKey, market);
+
+		market->MarketDepthUpdate +=
+			gcnew Market::MarketDepthUpdateEventHandler(this, &CTSAPIWrapperImpl::OnMarketDataUpdated);
+		market->MarketHighLow +=
+			gcnew Market::MarketHighLowEventHandler(this, &CTSAPIWrapperImpl::OnMarketDataUpdated);
+		market->MarketSettlement +=
+			gcnew Market::MarketSettlementEventHandler(this, &CTSAPIWrapperImpl::OnMarketDataUpdated);
+		//marketList->MarketTradeVolume += 
+		//	gcnew MarketList::MarketTradeVolumeEventHandler(_callback, &CTSMDCallback::OnMarketDataUpdated);
 	}
 
-	return ret;
+	return NO_ERROR;
 }
 
 bool CTSAPIWrapperImpl::IsSubscribed(const ContractKey& contractKey)
@@ -109,7 +106,7 @@ int CTSAPIWrapperImpl::CreateOrder(OrderDO& orderDO)
 
 			auto& market = it->second;
 			auto pOrder = _account->SubmitNewOrder
-				(
+			(
 				market,
 				orderDO.Direction == DirectionType::SELL ? BuySell::Sell : BuySell::Buy,
 				PriceType::Limit,
@@ -124,7 +121,7 @@ int CTSAPIWrapperImpl::CreateOrder(OrderDO& orderDO)
 				String::Empty,
 				nullptr,
 				account
-				);
+			);
 
 			pOrder->OrderUpdate +=
 				gcnew Order::OrderUpdateEventHandler(this, &CTSAPIWrapperImpl::OnOrderUpdated);
@@ -145,16 +142,16 @@ int CTSAPIWrapperImpl::CreateOrder(OrderDO& orderDO)
 
 int CTSAPIWrapperImpl::CancelOrder(OrderDO& orderDO)
 {
-	int ret = OBJECT_NOT_FOUND;
+	int ret = -1;
 
 	Order^ order;
 	if (_orderMap->TryGetValue(orderDO.OrderID, order))
 	{
 		if (order->Pull())
-			ret = NO_ERROR;
+			ret = 0;
 		else if (!order->IsWorking)
 		{
-			ret = OBJECT_IS_CLOSED;
+			throw BizException(OBJECT_IS_CLOSED);
 		}
 		orderDO = *CTSUtility::ParseRawOrder(order);
 	}

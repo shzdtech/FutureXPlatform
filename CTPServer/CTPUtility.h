@@ -18,9 +18,10 @@
 class CTP_CLASS_EXPORT CTPUtility
 {
 public:
+	static void CheckNotFound(const void* pRspInfo);
 	static bool HasError(const void* pRspInfo);
 	static void CheckError(const void* pRspInfo);
-	static BizError_Ptr HasReturnError(const int rtnCode);
+	static std::shared_ptr<ApiException> HasReturnError(const int rtnCode);
 	static void CheckReturnError(const int rtncode);
 	static bool IsOrderActive(const int status);
 	static OrderStatus CheckOrderStatus(const int status, const int submitStatus);

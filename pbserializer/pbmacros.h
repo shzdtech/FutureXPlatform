@@ -20,6 +20,6 @@ if (PbO.has_header()) { \
 
 #define ParseWithThrow(PbO, rawdata) \
 if (!PbO.ParseFromArray(rawdata.get(), rawdata.size())) \
-	throw BizError(INVALID_DATAFORMAT_CODE, INVALID_DATAFORMAT_DESC); \
+	throw ApiException(INVALID_DATAFORMAT_CODE, INVALID_DATAFORMAT_DESC); \
 
 #endif

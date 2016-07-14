@@ -164,7 +164,7 @@
     <ClInclude Include="..\Protos\simpletable.pb.h" />
     <ClInclude Include="..\Protos\usermanager.pb.h" />
     <ClInclude Include="ExceptionDef.h" />
-    <ClInclude Include="PBBizErrorSerializer.h" />
+    <ClInclude Include="PBExceptionSerializer.h" />
     <ClInclude Include="PBCombineSerializer.h" />
     <ClInclude Include="PBComplexTableSerializer.h" />
     <ClInclude Include="PBDoubleTableSerializer.h" />
@@ -186,7 +186,7 @@
     <ClCompile Include="..\Protos\errormsg.pb.cc" />
     <ClCompile Include="..\Protos\simpletable.pb.cc" />
     <ClCompile Include="..\Protos\usermanager.pb.cc" />
-    <ClCompile Include="PBBizErrorSerializer.cpp" />
+    <ClCompile Include="PBExceptionSerializer.cpp" />
     <ClCompile Include="PBCombineSerializer.cpp" />
     <ClCompile Include="PBComplexTableSerializer.cpp" />
     <ClCompile Include="PBDoubleTableSerializer.cpp" />

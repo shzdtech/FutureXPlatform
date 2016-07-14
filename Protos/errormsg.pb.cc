@@ -23,9 +23,9 @@ namespace Message {
 
 namespace {
 
-const ::google::protobuf::Descriptor* BizErrorMsg_descriptor_ = NULL;
+const ::google::protobuf::Descriptor* ExceptionMessage_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  BizErrorMsg_reflection_ = NULL;
+  ExceptionMessage_reflection_ = NULL;
 const ::google::protobuf::Descriptor* Result_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   Result_reflection_ = NULL;
@@ -42,25 +42,25 @@ void protobuf_AssignDesc_errormsg_2eproto() {
     ::google::protobuf::DescriptorPool::generated_pool()->FindFileByName(
       "errormsg.proto");
   GOOGLE_CHECK(file != NULL);
-  BizErrorMsg_descriptor_ = file->message_type(0);
-  static const int BizErrorMsg_offsets_[5] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BizErrorMsg, serialid_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BizErrorMsg, messageid_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BizErrorMsg, errorcode_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BizErrorMsg, description_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BizErrorMsg, syserrcode_),
+  ExceptionMessage_descriptor_ = file->message_type(0);
+  static const int ExceptionMessage_offsets_[5] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ExceptionMessage, serialid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ExceptionMessage, messageid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ExceptionMessage, errortype_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ExceptionMessage, errorcode_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ExceptionMessage, description_),
   };
-  BizErrorMsg_reflection_ =
+  ExceptionMessage_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
-      BizErrorMsg_descriptor_,
-      BizErrorMsg::default_instance_,
-      BizErrorMsg_offsets_,
+      ExceptionMessage_descriptor_,
+      ExceptionMessage::default_instance_,
+      ExceptionMessage_offsets_,
       -1,
       -1,
       -1,
-      sizeof(BizErrorMsg),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BizErrorMsg, _internal_metadata_),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BizErrorMsg, _is_default_instance_));
+      sizeof(ExceptionMessage),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ExceptionMessage, _internal_metadata_),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ExceptionMessage, _is_default_instance_));
   Result_descriptor_ = file->message_type(1);
   static const int Result_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Result, code_),
@@ -105,7 +105,7 @@ inline void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-      BizErrorMsg_descriptor_, &BizErrorMsg::default_instance());
+      ExceptionMessage_descriptor_, &ExceptionMessage::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
       Result_descriptor_, &Result::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
@@ -115,8 +115,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
 }  // namespace
 
 void protobuf_ShutdownFile_errormsg_2eproto() {
-  delete BizErrorMsg::default_instance_;
-  delete BizErrorMsg_reflection_;
+  delete ExceptionMessage::default_instance_;
+  delete ExceptionMessage_reflection_;
   delete Result::default_instance_;
   delete Result_reflection_;
   delete RawData::default_instance_;
@@ -130,18 +130,18 @@ void protobuf_AddDesc_errormsg_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\016errormsg.proto\022\024Micro.Future.Message\"n"
-    "\n\013BizErrorMsg\022\020\n\010serialId\030\001 \001(\r\022\021\n\tmessa"
-    "geId\030\002 \001(\r\022\021\n\terrorcode\030\003 \001(\005\022\023\n\013descrip"
-    "tion\030\004 \001(\014\022\022\n\nsyserrcode\030\005 \001(\005\"(\n\006Result"
-    "\022\014\n\004code\030\001 \001(\005\022\020\n\010serialId\030\002 \001(\r\"\027\n\007RawD"
-    "ata\022\014\n\004data\030\001 \001(\014b\006proto3", 225);
+    "\n\016errormsg.proto\022\024Micro.Future.Message\"r"
+    "\n\020ExceptionMessage\022\020\n\010serialId\030\001 \001(\r\022\021\n\t"
+    "messageId\030\002 \001(\r\022\021\n\terrortype\030\003 \001(\005\022\021\n\ter"
+    "rorcode\030\004 \001(\005\022\023\n\013description\030\005 \001(\014\"(\n\006Re"
+    "sult\022\014\n\004code\030\001 \001(\005\022\020\n\010serialId\030\002 \001(\r\"\027\n\007"
+    "RawData\022\014\n\004data\030\001 \001(\014b\006proto3", 229);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "errormsg.proto", &protobuf_RegisterTypes);
-  BizErrorMsg::default_instance_ = new BizErrorMsg();
+  ExceptionMessage::default_instance_ = new ExceptionMessage();
   Result::default_instance_ = new Result();
   RawData::default_instance_ = new RawData();
-  BizErrorMsg::default_instance_->InitAsDefaultInstance();
+  ExceptionMessage::default_instance_->InitAsDefaultInstance();
   Result::default_instance_->InitAsDefaultInstance();
   RawData::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_errormsg_2eproto);
@@ -167,89 +167,89 @@ static void MergeFromFail(int line) {
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int BizErrorMsg::kSerialIdFieldNumber;
-const int BizErrorMsg::kMessageIdFieldNumber;
-const int BizErrorMsg::kErrorcodeFieldNumber;
-const int BizErrorMsg::kDescriptionFieldNumber;
-const int BizErrorMsg::kSyserrcodeFieldNumber;
+const int ExceptionMessage::kSerialIdFieldNumber;
+const int ExceptionMessage::kMessageIdFieldNumber;
+const int ExceptionMessage::kErrortypeFieldNumber;
+const int ExceptionMessage::kErrorcodeFieldNumber;
+const int ExceptionMessage::kDescriptionFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-BizErrorMsg::BizErrorMsg()
+ExceptionMessage::ExceptionMessage()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:Micro.Future.Message.BizErrorMsg)
+  // @@protoc_insertion_point(constructor:Micro.Future.Message.ExceptionMessage)
 }
 
-void BizErrorMsg::InitAsDefaultInstance() {
+void ExceptionMessage::InitAsDefaultInstance() {
   _is_default_instance_ = true;
 }
 
-BizErrorMsg::BizErrorMsg(const BizErrorMsg& from)
+ExceptionMessage::ExceptionMessage(const ExceptionMessage& from)
   : ::google::protobuf::Message(),
     _internal_metadata_(NULL) {
   SharedCtor();
   MergeFrom(from);
-  // @@protoc_insertion_point(copy_constructor:Micro.Future.Message.BizErrorMsg)
+  // @@protoc_insertion_point(copy_constructor:Micro.Future.Message.ExceptionMessage)
 }
 
-void BizErrorMsg::SharedCtor() {
+void ExceptionMessage::SharedCtor() {
     _is_default_instance_ = false;
   ::google::protobuf::internal::GetEmptyString();
   _cached_size_ = 0;
   serialid_ = 0u;
   messageid_ = 0u;
+  errortype_ = 0;
   errorcode_ = 0;
   description_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  syserrcode_ = 0;
 }
 
-BizErrorMsg::~BizErrorMsg() {
-  // @@protoc_insertion_point(destructor:Micro.Future.Message.BizErrorMsg)
+ExceptionMessage::~ExceptionMessage() {
+  // @@protoc_insertion_point(destructor:Micro.Future.Message.ExceptionMessage)
   SharedDtor();
 }
 
-void BizErrorMsg::SharedDtor() {
+void ExceptionMessage::SharedDtor() {
   description_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != default_instance_) {
   }
 }
 
-void BizErrorMsg::SetCachedSize(int size) const {
+void ExceptionMessage::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* BizErrorMsg::descriptor() {
+const ::google::protobuf::Descriptor* ExceptionMessage::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return BizErrorMsg_descriptor_;
+  return ExceptionMessage_descriptor_;
 }
 
-const BizErrorMsg& BizErrorMsg::default_instance() {
+const ExceptionMessage& ExceptionMessage::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_errormsg_2eproto();
   return *default_instance_;
 }
 
-BizErrorMsg* BizErrorMsg::default_instance_ = NULL;
+ExceptionMessage* ExceptionMessage::default_instance_ = NULL;
 
-BizErrorMsg* BizErrorMsg::New(::google::protobuf::Arena* arena) const {
-  BizErrorMsg* n = new BizErrorMsg;
+ExceptionMessage* ExceptionMessage::New(::google::protobuf::Arena* arena) const {
+  ExceptionMessage* n = new ExceptionMessage;
   if (arena != NULL) {
     arena->Own(n);
   }
   return n;
 }
 
-void BizErrorMsg::Clear() {
-// @@protoc_insertion_point(message_clear_start:Micro.Future.Message.BizErrorMsg)
+void ExceptionMessage::Clear() {
+// @@protoc_insertion_point(message_clear_start:Micro.Future.Message.ExceptionMessage)
 #if defined(__clang__)
 #define ZR_HELPER_(f) \
   _Pragma("clang diagnostic push") \
   _Pragma("clang diagnostic ignored \"-Winvalid-offsetof\"") \
-  __builtin_offsetof(BizErrorMsg, f) \
+  __builtin_offsetof(ExceptionMessage, f) \
   _Pragma("clang diagnostic pop")
 #else
 #define ZR_HELPER_(f) reinterpret_cast<char*>(\
-  &reinterpret_cast<BizErrorMsg*>(16)->f)
+  &reinterpret_cast<ExceptionMessage*>(16)->f)
 #endif
 
 #define ZR_(first, last) do {\
@@ -257,8 +257,7 @@ void BizErrorMsg::Clear() {
            ZR_HELPER_(last) - ZR_HELPER_(first) + sizeof(last));\
 } while (0)
 
-  ZR_(serialid_, messageid_);
-  ZR_(errorcode_, syserrcode_);
+  ZR_(serialid_, errorcode_);
   description_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 
 #undef ZR_HELPER_
@@ -266,11 +265,11 @@ void BizErrorMsg::Clear() {
 
 }
 
-bool BizErrorMsg::MergePartialFromCodedStream(
+bool ExceptionMessage::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:Micro.Future.Message.BizErrorMsg)
+  // @@protoc_insertion_point(parse_start:Micro.Future.Message.ExceptionMessage)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
     tag = p.first;
@@ -301,13 +300,28 @@ bool BizErrorMsg::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(24)) goto parse_errorcode;
+        if (input->ExpectTag(24)) goto parse_errortype;
         break;
       }
 
-      // optional int32 errorcode = 3;
+      // optional int32 errortype = 3;
       case 3: {
         if (tag == 24) {
+         parse_errortype:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &errortype_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(32)) goto parse_errorcode;
+        break;
+      }
+
+      // optional int32 errorcode = 4;
+      case 4: {
+        if (tag == 32) {
          parse_errorcode:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
@@ -316,31 +330,16 @@ bool BizErrorMsg::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(34)) goto parse_description;
+        if (input->ExpectTag(42)) goto parse_description;
         break;
       }
 
-      // optional bytes description = 4;
-      case 4: {
-        if (tag == 34) {
+      // optional bytes description = 5;
+      case 5: {
+        if (tag == 42) {
          parse_description:
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_description()));
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(40)) goto parse_syserrcode;
-        break;
-      }
-
-      // optional int32 syserrcode = 5;
-      case 5: {
-        if (tag == 40) {
-         parse_syserrcode:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &syserrcode_)));
-
         } else {
           goto handle_unusual;
         }
@@ -361,17 +360,17 @@ bool BizErrorMsg::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:Micro.Future.Message.BizErrorMsg)
+  // @@protoc_insertion_point(parse_success:Micro.Future.Message.ExceptionMessage)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:Micro.Future.Message.BizErrorMsg)
+  // @@protoc_insertion_point(parse_failure:Micro.Future.Message.ExceptionMessage)
   return false;
 #undef DO_
 }
 
-void BizErrorMsg::SerializeWithCachedSizes(
+void ExceptionMessage::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:Micro.Future.Message.BizErrorMsg)
+  // @@protoc_insertion_point(serialize_start:Micro.Future.Message.ExceptionMessage)
   // optional uint32 serialId = 1;
   if (this->serialid() != 0) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->serialid(), output);
@@ -382,28 +381,28 @@ void BizErrorMsg::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->messageid(), output);
   }
 
-  // optional int32 errorcode = 3;
-  if (this->errorcode() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->errorcode(), output);
+  // optional int32 errortype = 3;
+  if (this->errortype() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->errortype(), output);
   }
 
-  // optional bytes description = 4;
+  // optional int32 errorcode = 4;
+  if (this->errorcode() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->errorcode(), output);
+  }
+
+  // optional bytes description = 5;
   if (this->description().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
-      4, this->description(), output);
+      5, this->description(), output);
   }
 
-  // optional int32 syserrcode = 5;
-  if (this->syserrcode() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->syserrcode(), output);
-  }
-
-  // @@protoc_insertion_point(serialize_end:Micro.Future.Message.BizErrorMsg)
+  // @@protoc_insertion_point(serialize_end:Micro.Future.Message.ExceptionMessage)
 }
 
-::google::protobuf::uint8* BizErrorMsg::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* ExceptionMessage::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:Micro.Future.Message.BizErrorMsg)
+  // @@protoc_insertion_point(serialize_to_array_start:Micro.Future.Message.ExceptionMessage)
   // optional uint32 serialId = 1;
   if (this->serialid() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->serialid(), target);
@@ -414,29 +413,29 @@ void BizErrorMsg::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->messageid(), target);
   }
 
-  // optional int32 errorcode = 3;
-  if (this->errorcode() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->errorcode(), target);
+  // optional int32 errortype = 3;
+  if (this->errortype() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->errortype(), target);
   }
 
-  // optional bytes description = 4;
+  // optional int32 errorcode = 4;
+  if (this->errorcode() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->errorcode(), target);
+  }
+
+  // optional bytes description = 5;
   if (this->description().size() > 0) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        4, this->description(), target);
+        5, this->description(), target);
   }
 
-  // optional int32 syserrcode = 5;
-  if (this->syserrcode() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->syserrcode(), target);
-  }
-
-  // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.BizErrorMsg)
+  // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.ExceptionMessage)
   return target;
 }
 
-int BizErrorMsg::ByteSize() const {
-// @@protoc_insertion_point(message_byte_size_start:Micro.Future.Message.BizErrorMsg)
+int ExceptionMessage::ByteSize() const {
+// @@protoc_insertion_point(message_byte_size_start:Micro.Future.Message.ExceptionMessage)
   int total_size = 0;
 
   // optional uint32 serialId = 1;
@@ -453,25 +452,25 @@ int BizErrorMsg::ByteSize() const {
         this->messageid());
   }
 
-  // optional int32 errorcode = 3;
+  // optional int32 errortype = 3;
+  if (this->errortype() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->errortype());
+  }
+
+  // optional int32 errorcode = 4;
   if (this->errorcode() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->errorcode());
   }
 
-  // optional bytes description = 4;
+  // optional bytes description = 5;
   if (this->description().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::BytesSize(
         this->description());
-  }
-
-  // optional int32 syserrcode = 5;
-  if (this->syserrcode() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->syserrcode());
   }
 
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
@@ -480,29 +479,32 @@ int BizErrorMsg::ByteSize() const {
   return total_size;
 }
 
-void BizErrorMsg::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:Micro.Future.Message.BizErrorMsg)
+void ExceptionMessage::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Micro.Future.Message.ExceptionMessage)
   if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
-  const BizErrorMsg* source = 
-      ::google::protobuf::internal::DynamicCastToGenerated<const BizErrorMsg>(
+  const ExceptionMessage* source = 
+      ::google::protobuf::internal::DynamicCastToGenerated<const ExceptionMessage>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Micro.Future.Message.BizErrorMsg)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Micro.Future.Message.ExceptionMessage)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:Micro.Future.Message.BizErrorMsg)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Micro.Future.Message.ExceptionMessage)
     MergeFrom(*source);
   }
 }
 
-void BizErrorMsg::MergeFrom(const BizErrorMsg& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:Micro.Future.Message.BizErrorMsg)
+void ExceptionMessage::MergeFrom(const ExceptionMessage& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Micro.Future.Message.ExceptionMessage)
   if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
   if (from.serialid() != 0) {
     set_serialid(from.serialid());
   }
   if (from.messageid() != 0) {
     set_messageid(from.messageid());
+  }
+  if (from.errortype() != 0) {
+    set_errortype(from.errortype());
   }
   if (from.errorcode() != 0) {
     set_errorcode(from.errorcode());
@@ -511,153 +513,150 @@ void BizErrorMsg::MergeFrom(const BizErrorMsg& from) {
 
     description_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.description_);
   }
-  if (from.syserrcode() != 0) {
-    set_syserrcode(from.syserrcode());
-  }
 }
 
-void BizErrorMsg::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:Micro.Future.Message.BizErrorMsg)
+void ExceptionMessage::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Micro.Future.Message.ExceptionMessage)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void BizErrorMsg::CopyFrom(const BizErrorMsg& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:Micro.Future.Message.BizErrorMsg)
+void ExceptionMessage::CopyFrom(const ExceptionMessage& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Micro.Future.Message.ExceptionMessage)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool BizErrorMsg::IsInitialized() const {
+bool ExceptionMessage::IsInitialized() const {
 
   return true;
 }
 
-void BizErrorMsg::Swap(BizErrorMsg* other) {
+void ExceptionMessage::Swap(ExceptionMessage* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void BizErrorMsg::InternalSwap(BizErrorMsg* other) {
+void ExceptionMessage::InternalSwap(ExceptionMessage* other) {
   std::swap(serialid_, other->serialid_);
   std::swap(messageid_, other->messageid_);
+  std::swap(errortype_, other->errortype_);
   std::swap(errorcode_, other->errorcode_);
   description_.Swap(&other->description_);
-  std::swap(syserrcode_, other->syserrcode_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
-::google::protobuf::Metadata BizErrorMsg::GetMetadata() const {
+::google::protobuf::Metadata ExceptionMessage::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = BizErrorMsg_descriptor_;
-  metadata.reflection = BizErrorMsg_reflection_;
+  metadata.descriptor = ExceptionMessage_descriptor_;
+  metadata.reflection = ExceptionMessage_reflection_;
   return metadata;
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
-// BizErrorMsg
+// ExceptionMessage
 
 // optional uint32 serialId = 1;
-void BizErrorMsg::clear_serialid() {
+void ExceptionMessage::clear_serialid() {
   serialid_ = 0u;
 }
- ::google::protobuf::uint32 BizErrorMsg::serialid() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.BizErrorMsg.serialId)
+ ::google::protobuf::uint32 ExceptionMessage::serialid() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.ExceptionMessage.serialId)
   return serialid_;
 }
- void BizErrorMsg::set_serialid(::google::protobuf::uint32 value) {
+ void ExceptionMessage::set_serialid(::google::protobuf::uint32 value) {
   
   serialid_ = value;
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.BizErrorMsg.serialId)
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.ExceptionMessage.serialId)
 }
 
 // optional uint32 messageId = 2;
-void BizErrorMsg::clear_messageid() {
+void ExceptionMessage::clear_messageid() {
   messageid_ = 0u;
 }
- ::google::protobuf::uint32 BizErrorMsg::messageid() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.BizErrorMsg.messageId)
+ ::google::protobuf::uint32 ExceptionMessage::messageid() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.ExceptionMessage.messageId)
   return messageid_;
 }
- void BizErrorMsg::set_messageid(::google::protobuf::uint32 value) {
+ void ExceptionMessage::set_messageid(::google::protobuf::uint32 value) {
   
   messageid_ = value;
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.BizErrorMsg.messageId)
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.ExceptionMessage.messageId)
 }
 
-// optional int32 errorcode = 3;
-void BizErrorMsg::clear_errorcode() {
+// optional int32 errortype = 3;
+void ExceptionMessage::clear_errortype() {
+  errortype_ = 0;
+}
+ ::google::protobuf::int32 ExceptionMessage::errortype() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.ExceptionMessage.errortype)
+  return errortype_;
+}
+ void ExceptionMessage::set_errortype(::google::protobuf::int32 value) {
+  
+  errortype_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.ExceptionMessage.errortype)
+}
+
+// optional int32 errorcode = 4;
+void ExceptionMessage::clear_errorcode() {
   errorcode_ = 0;
 }
- ::google::protobuf::int32 BizErrorMsg::errorcode() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.BizErrorMsg.errorcode)
+ ::google::protobuf::int32 ExceptionMessage::errorcode() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.ExceptionMessage.errorcode)
   return errorcode_;
 }
- void BizErrorMsg::set_errorcode(::google::protobuf::int32 value) {
+ void ExceptionMessage::set_errorcode(::google::protobuf::int32 value) {
   
   errorcode_ = value;
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.BizErrorMsg.errorcode)
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.ExceptionMessage.errorcode)
 }
 
-// optional bytes description = 4;
-void BizErrorMsg::clear_description() {
+// optional bytes description = 5;
+void ExceptionMessage::clear_description() {
   description_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
- const ::std::string& BizErrorMsg::description() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.BizErrorMsg.description)
+ const ::std::string& ExceptionMessage::description() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.ExceptionMessage.description)
   return description_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
- void BizErrorMsg::set_description(const ::std::string& value) {
+ void ExceptionMessage::set_description(const ::std::string& value) {
   
   description_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.BizErrorMsg.description)
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.ExceptionMessage.description)
 }
- void BizErrorMsg::set_description(const char* value) {
+ void ExceptionMessage::set_description(const char* value) {
   
   description_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.BizErrorMsg.description)
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.ExceptionMessage.description)
 }
- void BizErrorMsg::set_description(const void* value, size_t size) {
+ void ExceptionMessage::set_description(const void* value, size_t size) {
   
   description_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.BizErrorMsg.description)
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.ExceptionMessage.description)
 }
- ::std::string* BizErrorMsg::mutable_description() {
+ ::std::string* ExceptionMessage::mutable_description() {
   
-  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.BizErrorMsg.description)
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.ExceptionMessage.description)
   return description_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
- ::std::string* BizErrorMsg::release_description() {
-  // @@protoc_insertion_point(field_release:Micro.Future.Message.BizErrorMsg.description)
+ ::std::string* ExceptionMessage::release_description() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.ExceptionMessage.description)
   
   return description_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
- void BizErrorMsg::set_allocated_description(::std::string* description) {
+ void ExceptionMessage::set_allocated_description(::std::string* description) {
   if (description != NULL) {
     
   } else {
     
   }
   description_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), description);
-  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.BizErrorMsg.description)
-}
-
-// optional int32 syserrcode = 5;
-void BizErrorMsg::clear_syserrcode() {
-  syserrcode_ = 0;
-}
- ::google::protobuf::int32 BizErrorMsg::syserrcode() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.BizErrorMsg.syserrcode)
-  return syserrcode_;
-}
- void BizErrorMsg::set_syserrcode(::google::protobuf::int32 value) {
-  
-  syserrcode_ = value;
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.BizErrorMsg.syserrcode)
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.ExceptionMessage.description)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

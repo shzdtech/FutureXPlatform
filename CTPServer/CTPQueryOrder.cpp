@@ -65,6 +65,8 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAP
 
 dataobj_ptr CTPQueryOrder::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
+	CTPUtility::CheckNotFound(rawRespParams[0]);
+
 	OrderDO_Ptr ret;
 	if (auto pData = (CThostFtdcOrderField*)rawRespParams[0])
 	{

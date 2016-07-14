@@ -3,7 +3,7 @@
 
 #include "PBStringMapSerializer.h"
 #include "PBEchoMsgSerializer.h"
-#include "PBBizErrorSerializer.h"
+#include "PBExceptionSerializer.h"
 #include "PBComplexTableSerializer.h"
 #include "PBDoubleTableSerializer.h"
 #include "PBIntTableSerializer.h"

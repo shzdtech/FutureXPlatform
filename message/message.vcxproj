@@ -164,6 +164,7 @@
     <ClInclude Include="IUserInfo.h" />
     <ClInclude Include="LoginHandler.h" />
     <ClInclude Include="LogoutHandler.h" />
+    <ClInclude Include="MessageException.h" />
     <ClInclude Include="MessageHandler.h" />
     <ClInclude Include="MessageProcessor.h" />
     <ClInclude Include="MessageServiceLocator.h" />

@@ -35,7 +35,7 @@ dataobj_ptr CTPOTCNewOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawA
 	{
 		int rtn = wkProcPtr->OTCNewOrder(orderDO);
 		if (rtn != 0)
-			throw BizError(rtn, "Creating OTC Order failed", orderDO.SerialId);
+			throw BizException(rtn, "Creating OTC Order failed");
 	}
 
 	return reqDO;

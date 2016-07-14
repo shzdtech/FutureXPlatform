@@ -93,7 +93,7 @@ dataobj_ptr CTPSubMarketData::HandleResponse(const uint32_t serialId, param_vect
 		else
 		{ 
 			std::string errmsg("Contract code: ");
-			throw BizError(OBJECT_NOT_FOUND, errmsg + pRspInstr->InstrumentID + " does not exists.");
+			throw NotFoundException(errmsg + pRspInstr->InstrumentID + " does not exists.");
 		}
 
 		ret->push_back(MarketDataDO(exchange, pRspInstr->InstrumentID));

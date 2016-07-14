@@ -84,11 +84,11 @@ int ASIOTCPSession::WriteMessage(const uint msgId, const data_buffer& msg) {
 		buffer(buf_exinfo, EXINFO_SIZE)
 	};
 
-	LOG_DEBUG << "Sending message: Id: " << std::to_string(msgId) <<
-		" Size:" << packetSz;
+	LOG_DEBUG << "Sending message: Id: " << msgId << " Size:" << packetSz;
 	async_write(_socket, packet,
 		[this, msg_header, msg, msg_exinfo](boost::system::error_code ec, std::size_t /*length*/) {
-		if (ec && ec != error::operation_aborted) {
+		if (ec) {
+			LOG_DEBUG << ec.message();
 			//this->Close();
 		}
 	});

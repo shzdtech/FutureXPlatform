@@ -5,17 +5,17 @@
  * Purpose: Implementation of the class BizErrorSerializer
  ***********************************************************************/
 
-#include "BizErrorSerializer.h"
+#include "ExceptionSerializer.h"
 #include "AbstractDataSerializerFactory.h"
 #include "../message/DefMessageID.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       BizErrorSerializer::Instance()
+// Name:       ExceptionSerializer::Instance()
 // Purpose:    Implementation of BizErrorSerializer::Instance()
-// Return:     BizErrorSerializer&
+// Return:     ExceptionSerializer&
 ////////////////////////////////////////////////////////////////////////
 
-IDataSerializer_Ptr BizErrorSerializer::Instance(void)
+IDataSerializer_Ptr ExceptionSerializer::Instance(void)
 {
 	static IDataSerializer_Ptr instance
 		(AbstractDataSerializerFactory::Instance()->Find(MSG_ID_ERROR));

@@ -1,13 +1,6 @@
 #ifndef _common_BizErrorIDs_h_
 #define _common_BizErrorIDs_h_
 
-enum ResultType
-{
-	DB_ERROR = -2,
-	SYS_ERROR = -1,
-	NO_ERROR = 0,
-};
-
 enum APIErrorID
 {
 	API_INNER_ERROR = 1,
@@ -27,6 +20,7 @@ enum UserErrorID
 
 enum CommonErrorID
 {
+	NO_ERROR = 0,
 	OBJECT_NOT_FOUND = 1,
 	OBJECT_HAS_EXISTED = 2,
 	OBJECT_IS_CLOSED = 3,

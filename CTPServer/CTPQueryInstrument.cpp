@@ -58,10 +58,11 @@ dataobj_ptr CTPQueryInstrument::HandleRequest(const dataobj_ptr reqDO, IRawAPI* 
 		auto retCode = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryInstrument(&req, reqDO->SerialId);
 		CTPUtility::CheckReturnError(retCode);
 
-		ret = std::make_shared<VectorDO<InstrumentDO>>();
+		throw NotFoundException();
 	}
 
 	ret->SerialId = reqDO->SerialId;
+	ret->HasMore = false;
 	return ret;
 }
 
@@ -77,6 +78,7 @@ dataobj_ptr CTPQueryInstrument::HandleRequest(const dataobj_ptr reqDO, IRawAPI* 
 
 dataobj_ptr CTPQueryInstrument::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
+	CTPUtility::CheckNotFound(rawRespParams[0]);
 	CTPUtility::CheckError(rawRespParams[1]);
 
 	VectorDO_Ptr<InstrumentDO> ret = std::make_shared<VectorDO<InstrumentDO>>();

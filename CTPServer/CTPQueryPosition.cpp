@@ -46,7 +46,7 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 	std::strcpy(req.BrokerID, brokeid.data());
 	std::strcpy(req.InvestorID, userid.data());
 	std::strcpy(req.InstrumentID, instrumentid.data());
-	
+
 	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryInvestorPosition(&req, reqDO->SerialId);
 	CTPUtility::CheckReturnError(iRet);
 
@@ -59,32 +59,36 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 			std::this_thread::sleep_for(std::chrono::seconds(3));
 		}
 
-		if (instrumentid != EMPTY_STRING)
+		if (positionMap.begin() != positionMap.end())
 		{
-			auto it = positionMap.find(instrumentid);
-			if (it != positionMap.end())
+			if (instrumentid != EMPTY_STRING)
 			{
-				auto& positions = it->second;
-				if (positions.begin() != positions.end())
+				auto it = positionMap.find(instrumentid);
+				if (it != positionMap.end())
 				{
+					auto& positions = it->second;
 					if (positions.begin() != positions.end())
 					{
-						auto lastpit = std::prev(positions.end());
-						for (auto pit = positions.begin(); pit != positions.end(); pit++)
+						if (positions.begin() != positions.end())
 						{
-							auto position_ptr = std::make_shared<UserPositionExDO>(pit->second);
-							position_ptr->SerialId = reqDO->SerialId;
-							position_ptr->HasMore = pit != lastpit;
+							auto lastpit = std::prev(positions.end());
+							for (auto pit = positions.begin(); pit != positions.end(); pit++)
+							{
+								auto position_ptr = std::make_shared<UserPositionExDO>(pit->second);
+								position_ptr->SerialId = reqDO->SerialId;
+								position_ptr->HasMore = pit != lastpit;
 
-							wkProcPtr->SendDataObject(session, MSG_ID_QUERY_POSITION, position_ptr);
+								wkProcPtr->SendDataObject(session, MSG_ID_QUERY_POSITION, position_ptr);
+							}
 						}
 					}
 				}
+				else
+				{
+					throw NotFoundException();
+				}
 			}
-		}
-		else
-		{
-			if (positionMap.begin() != positionMap.end())
+			else
 			{
 				auto lastit = std::prev(positionMap.end());
 				for (auto it = positionMap.begin(); it != positionMap.end(); it++)
@@ -105,6 +109,10 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 				}
 			}
 		}
+		else
+		{
+			throw NotFoundException();
+		}
 	}
 
 	return nullptr;
@@ -122,6 +130,7 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 
 dataobj_ptr CTPQueryPosition::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
+	CTPUtility::CheckNotFound(rawRespParams[0]);
 	CTPUtility::CheckError(rawRespParams[1]);
 	dataobj_ptr ret;
 

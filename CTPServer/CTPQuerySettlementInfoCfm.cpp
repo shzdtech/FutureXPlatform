@@ -57,6 +57,7 @@ dataobj_ptr CTPQuerySettlementInfoCfm::HandleRequest(const dataobj_ptr reqDO, IR
 
 dataobj_ptr CTPQuerySettlementInfoCfm::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
+	CTPUtility::CheckNotFound(rawRespParams[0]);
 	CTPUtility::CheckError(rawRespParams[1]);
 	
 	auto pDO = new MapDO<std::string>();

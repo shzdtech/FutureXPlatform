@@ -50,7 +50,7 @@ dataobj_ptr CTPAccountLogin::HandleRequest(const dataobj_ptr reqDO, IRawAPI* raw
 		(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT)))
 	{
 		if (!(wkProcPtr->ConnectedToServer() && wkProcPtr->HasLogged()))
-			throw BizError(CONNECTION_ERROR, "Cannot connect to CTP Trading Server!");
+			throw SystemException(CONNECTION_ERROR, "Cannot connect to CTP Trading Server!");
 
 		wkProcPtr->RegisterLoggedSession((IMessageSession*)session);
 	}
@@ -102,11 +102,11 @@ std::shared_ptr<UserInfoDO> CTPAccountLogin::Login(const dataobj_ptr reqDO, IRaw
 
 		if (!userInfo_Ptr)
 		{
-			throw BizError(USERID_NOT_EXITS, "UserId: " + userid + " not exists.");
+			throw UserException(USERID_NOT_EXITS, "UserId: " + userid + " not exists.");
 		}
 		else if (userInfo_Ptr->Password != password)
 		{
-			throw BizError(WRONG_PASSWORD, "Wrong password.");
+			throw UserException(WRONG_PASSWORD, "Wrong password.");
 		}
 
 		auto pUserInfo = session->getUserInfo();

@@ -37,8 +37,7 @@ dataobj_ptr CTSSubscribeMarketData::HandleRequest(const dataobj_ptr reqDO, IRawA
 		auto api = (CTSAPIWrapper*)rawAPI;
 		for (int i = 0; i < nInst; i++)
 		{
-			if( api->Impl()->Subscribe(exchangeList[i].data(), instList[i].data(), reqDO->SerialId) 
-				== NO_ERROR)
+			if( api->Impl()->Subscribe(exchangeList[i].data(), instList[i].data(), reqDO->SerialId) == 0)
 				mdVec->push_back(MarketDataDO(exchangeList[i], instList[i]));
 		}
 	}

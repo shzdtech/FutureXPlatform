@@ -12,8 +12,8 @@
 #include "MessageProcessor.h"
 #include "ISession.h"
 #include "../dataobject/data_buffer.h"
-#include "BizError.h"
-#include "../dataobject/BizErrorDO.h"
+#include "MessageException.h"
+#include "../dataobject/MessageExceptionDO.h"
 
 class MESSAGE_CLASS_EXPORT TemplateMessageProcessor : public MessageProcessor, public std::enable_shared_from_this < TemplateMessageProcessor >
 {
@@ -25,7 +25,7 @@ public:
 
 	int OnRecvMsg(const uint msgId, const data_buffer& msg);
 	int OnResponse(const uint msgId, const uint serailId, param_vector& rawRespParams);
-	void SendErrorMsg(const uint msgId, BizError& bizError, uint serialId);
+	void SendErrorMsg(const uint msgId, MessageException& msgException, uint serialId);
 
 protected:
 
