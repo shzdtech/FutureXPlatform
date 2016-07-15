@@ -38,13 +38,13 @@ public:
 	template<class T>
 	static inline bool IsNullOrEmpty(const T* pContainer)
 	{
-		return !pContainer || pContainer->size() < 1;
+		return !pContainer || pContainer->begin() == pContainer->end();
 	};
 
 	template<class T>
 	static inline bool IsNullOrEmpty(const std::shared_ptr<T>& containerPtr)
 	{
-		return !containerPtr || containerPtr->size() < 1;
+		return !containerPtr || containerPtr->begin() == containerPtr->end();
 	};
 };
 

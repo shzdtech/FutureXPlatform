@@ -59,59 +59,45 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 			std::this_thread::sleep_for(std::chrono::seconds(3));
 		}
 
-		if (positionMap.begin() != positionMap.end())
+		ThrowNotFoundException(&positionMap);
+
+		if (instrumentid != EMPTY_STRING)
 		{
-			if (instrumentid != EMPTY_STRING)
-			{
-				auto it = positionMap.find(instrumentid);
-				if (it != positionMap.end())
-				{
-					auto& positions = it->second;
-					if (positions.begin() != positions.end())
-					{
-						if (positions.begin() != positions.end())
-						{
-							auto lastpit = std::prev(positions.end());
-							for (auto pit = positions.begin(); pit != positions.end(); pit++)
-							{
-								auto position_ptr = std::make_shared<UserPositionExDO>(pit->second);
-								position_ptr->SerialId = reqDO->SerialId;
-								position_ptr->HasMore = pit != lastpit;
+			auto it = positionMap.find(instrumentid);
 
-								wkProcPtr->SendDataObject(session, MSG_ID_QUERY_POSITION, position_ptr);
-							}
-						}
-					}
-				}
-				else
-				{
-					throw NotFoundException();
-				}
-			}
-			else
-			{
-				auto lastit = std::prev(positionMap.end());
-				for (auto it = positionMap.begin(); it != positionMap.end(); it++)
-				{
-					auto& positions = it->second;
-					if (positions.begin() != positions.end())
-					{
-						auto lastpit = std::prev(positions.end());
-						for (auto pit = positions.begin(); pit != positions.end(); pit++)
-						{
-							auto positionDO_Ptr = std::make_shared<UserPositionExDO>(pit->second);
-							positionDO_Ptr->SerialId = reqDO->SerialId;
-							positionDO_Ptr->HasMore = (it != lastit || pit != lastpit);
+			if (it == positionMap.end())
+				throw NotFoundException();
 
-							wkProcPtr->SendDataObject(session, MSG_ID_QUERY_POSITION, positionDO_Ptr);
-						}
-					}
-				}
+			auto& positions = it->second;
+			auto lastpit = std::prev(positions.end());
+			for (auto pit = positions.begin(); pit != positions.end(); pit++)
+			{
+				auto position_ptr = std::make_shared<UserPositionExDO>(pit->second);
+				position_ptr->SerialId = reqDO->SerialId;
+				position_ptr->HasMore = pit != lastpit;
+
+				wkProcPtr->SendDataObject(session, MSG_ID_QUERY_POSITION, position_ptr);
 			}
 		}
 		else
 		{
-			throw NotFoundException();
+			auto lastit = std::prev(positionMap.end());
+			for (auto it = positionMap.begin(); it != positionMap.end(); it++)
+			{
+				auto& positions = it->second;
+				if (positions.begin() != positions.end())
+				{
+					auto lastpit = std::prev(positions.end());
+					for (auto pit = positions.begin(); pit != positions.end(); pit++)
+					{
+						auto positionDO_Ptr = std::make_shared<UserPositionExDO>(pit->second);
+						positionDO_Ptr->SerialId = reqDO->SerialId;
+						positionDO_Ptr->HasMore = (it != lastit || pit != lastpit);
+
+						wkProcPtr->SendDataObject(session, MSG_ID_QUERY_POSITION, positionDO_Ptr);
+					}
+				}
+			}
 		}
 	}
 

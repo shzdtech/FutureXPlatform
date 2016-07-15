@@ -42,8 +42,10 @@ dataobj_ptr CTPOTCSubMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 {
 	CheckLogin(session);
 
-	auto company = session->getUserInfo()->getBrokerId();
-	auto otcContractVec = ContractDAO::FindContractByCompany(company);
+	auto otcContractVec = ContractDAO::FindContractByClient(session->getUserInfo()->getName());
+
+	ThrowNotFoundException(otcContractVec);
+
 	auto userContractMap_Ptr =
 		std::make_shared < UserContractParamMap >();
 

@@ -30,7 +30,7 @@ dataobj_ptr RegisterUserHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 {
 	CheckLogin(session);
 
-	if (session->getUserInfo()->getRole() != ROLE_ADMINCLIENT)
+	if (session->getUserInfo()->getRole() < ROLE_ADMIN)
 		throw ApiException(APIErrorID::NO_PERMISSION, "No permission to create a new user.");
 
 	if (auto* pUserInfoDO = (UserInfoDO*)reqDO.get())

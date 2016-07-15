@@ -55,40 +55,35 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 			std::this_thread::sleep_for(std::chrono::seconds(3));
 		}
 
-		if (exchangeInfo.begin() != exchangeInfo.end())
+		ThrowNotFoundException(&exchangeInfo);
+
+		if (exchangeid != EMPTY_STRING)
 		{
-			if (exchangeid != EMPTY_STRING)
+			ExchangeDO exchangeDO;
+			exchangeDO.ExchangeID = exchangeid;
+			auto it = exchangeInfo.find(exchangeDO);
+			if (it != exchangeInfo.end())
 			{
-				ExchangeDO exchangeDO;
-				exchangeDO.ExchangeID = exchangeid;
-				auto it = exchangeInfo.find(exchangeDO);
-				if (it != exchangeInfo.end())
-				{
-					auto exchangeDO_Ptr = std::make_shared<ExchangeDO>(*it);
-					exchangeDO_Ptr->SerialId = reqDO->SerialId;
-					wkProcPtr->SendDataObject(session, MSG_ID_QUERY_EXCHANGE, exchangeDO_Ptr);
-				}
-				else
-				{
-					throw NotFoundException(exchangeid + " does not exist!");
-				}
+				auto exchangeDO_Ptr = std::make_shared<ExchangeDO>(*it);
+				exchangeDO_Ptr->SerialId = reqDO->SerialId;
+				wkProcPtr->SendDataObject(session, MSG_ID_QUERY_EXCHANGE, exchangeDO_Ptr);
 			}
 			else
 			{
-				auto lastit = std::prev(exchangeInfo.end());
-				for (auto it = exchangeInfo.begin(); it != exchangeInfo.end(); it++)
-				{
-					auto exchangeDO_Ptr = std::make_shared<ExchangeDO>(*it);
-					exchangeDO_Ptr->SerialId = reqDO->SerialId;
-					exchangeDO_Ptr->HasMore = it != lastit;
-
-					wkProcPtr->SendDataObject(session, MSG_ID_QUERY_EXCHANGE, exchangeDO_Ptr);
-				}
+				throw NotFoundException(exchangeid + " does not exist!");
 			}
 		}
 		else
 		{
-			throw NotFoundException();
+			auto lastit = std::prev(exchangeInfo.end());
+			for (auto it = exchangeInfo.begin(); it != exchangeInfo.end(); it++)
+			{
+				auto exchangeDO_Ptr = std::make_shared<ExchangeDO>(*it);
+				exchangeDO_Ptr->SerialId = reqDO->SerialId;
+				exchangeDO_Ptr->HasMore = it != lastit;
+
+				wkProcPtr->SendDataObject(session, MSG_ID_QUERY_EXCHANGE, exchangeDO_Ptr);
+			}
 		}
 	}
 	else

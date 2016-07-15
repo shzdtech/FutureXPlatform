@@ -15,7 +15,7 @@
 class DATABASEOP_CLASS_EXPORTS PortfolioDAO
 {
 public:
-	static VectorDO_Ptr<PortfolioDO> FindPortfolioByUser(const std::string& userID);
+	static VectorDO_Ptr<PortfolioDO> FindPortfolioByClient(const std::string& clientSymbol);
 
 protected:
 private:

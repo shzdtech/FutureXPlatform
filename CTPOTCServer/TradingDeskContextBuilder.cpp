@@ -54,8 +54,8 @@ void TradingDeskContextBuilder::BuildContext(ISession* pSession)
 
 void TradingDeskContextBuilder::LoadPortfolio(ISession* pSession)
 {
-	if (auto portfolioDOVec_Ptr = PortfolioDAO::FindPortfolioByUser(
-		pSession->getUserInfo()->getUserId()))
+	if (auto portfolioDOVec_Ptr = PortfolioDAO::FindPortfolioByClient(
+		pSession->getUserInfo()->getName()))
 	{
 		auto pPortfoliorMap = AttribPointerCast(pSession->getProcessor(),
 			STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext)->GetPortfolioDOMap();
@@ -82,7 +82,7 @@ void TradingDeskContextBuilder::LoadPortfolio(ISession* pSession)
 void TradingDeskContextBuilder::LoadContractParam(ISession* pSession)
 {
 	auto contractVec_Ptr = 
-		ContractDAO::FindContractParamByUser(pSession->getUserInfo()->getUserId());
+		ContractDAO::FindContractParamByClient(pSession->getUserInfo()->getName());
 
 	auto contractMap = AttribPointerCast(pSession->getProcessor(),
 		STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext)->GetContractMap();
@@ -107,8 +107,8 @@ void TradingDeskContextBuilder::LoadContractParam(ISession* pSession)
 
 void TradingDeskContextBuilder::LoadStrategy(ISession* pSession)
 {
-	if (auto sDOVec_Ptr = StrategyContractDAO::FindStrategyContractByUser(
-		pSession->getUserInfo()->getUserId()))
+	if (auto sDOVec_Ptr = StrategyContractDAO::FindStrategyContractByClient(
+		pSession->getUserInfo()->getName()))
 	{
 		auto strategyMap = AttribPointerCast(pSession->getProcessor(),
 			STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext)->GetStrategyMap();

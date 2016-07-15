@@ -41,24 +41,23 @@ dataobj_ptr CTPOTCQueryOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* ra
 
 	auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
 
-	if (auto ordervec_ptr = OTCOrderDAO::QueryTodayOrder(session->getUserInfo()->getUserId(),
-		ContractKey(EMPTY_STRING, instrumentid)))
-	{
-		if (auto proc = std::static_pointer_cast<CTPOTCWorkerProcessor>
-			(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::WORKPROCESSOR_OTC)))
-		{
-			if (ordervec_ptr->begin() != ordervec_ptr->end())
-			{
-				auto lastit = std::prev(ordervec_ptr->end());
-				for (auto it = ordervec_ptr->begin(); it != ordervec_ptr->end(); it++)
-				{
-					auto order_ptr = std::make_shared<OrderDO>(*it);
-					order_ptr->SerialId = reqDO->SerialId;
-					order_ptr->HasMore = it != lastit;
+	auto ordervec_ptr = OTCOrderDAO::QueryTodayOrder(session->getUserInfo()->getUserId(),
+		ContractKey(EMPTY_STRING, instrumentid));
 
-					proc->SendDataObject(session, MSG_ID_QUERY_ORDER, order_ptr);
-				}
-			}
+	ThrowNotFoundException(ordervec_ptr);
+	if (auto proc = std::static_pointer_cast<CTPOTCWorkerProcessor>
+		(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::WORKPROCESSOR_OTC)))
+	{
+		ThrowNotFoundException(ordervec_ptr);
+
+		auto lastit = std::prev(ordervec_ptr->end());
+		for (auto it = ordervec_ptr->begin(); it != ordervec_ptr->end(); it++)
+		{
+			auto order_ptr = std::make_shared<OrderDO>(*it);
+			order_ptr->SerialId = reqDO->SerialId;
+			order_ptr->HasMore = it != lastit;
+
+			proc->SendDataObject(session, MSG_ID_QUERY_ORDER, order_ptr);
 		}
 	}
 

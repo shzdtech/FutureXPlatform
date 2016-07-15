@@ -9,7 +9,7 @@
       "mysql": {
         "key": "default",
         "dbtype": "mysql",
-        "url": "tcp://139.196.202.235:3306/otc_db",
+        "url": "tcp://139.196.202.235:3306/futurexdb",
         "user": "zhuyi",
         "password": "Bocifco123",
         "autocommit": "1",

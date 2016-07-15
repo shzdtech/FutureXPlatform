@@ -66,7 +66,7 @@ int CTSAPIWrapperImpl::Subscribe(const ContractKey& contractKey, uint32_t serail
 
 		if (marketList->Count == 0)
 		{
-			throw NotFoundException(OBJECT_NOT_FOUND);
+			throw NotFoundException();
 		}
 		gcroot<Market^> market = marketList[0];
 		_contractMap->emplace(contractKey, market);

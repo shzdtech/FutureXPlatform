@@ -60,7 +60,7 @@ VectorDO_Ptr<ContractKey> BaseContractDAO::FindBaseContractByParentID(ContractKe
 // Return:     std::shard_ptr<std::vector<ContractKey>>
 ////////////////////////////////////////////////////////////////////////
 
-VectorDO_Ptr<ContractKey> BaseContractDAO::FindBaseContractByCompany(const std::string& company)
+VectorDO_Ptr<ContractKey> BaseContractDAO::FindBaseContractByClient(const std::string& clientSymbol)
 {
 	static const std::string sql_findbasecontract_co(
 		"SELECT DISTINCT c.base_exchange_symbol, c.base_contract_symbol FROM contract_base_contract c "
@@ -76,7 +76,7 @@ VectorDO_Ptr<ContractKey> BaseContractDAO::FindBaseContractByCompany(const std::
 		AutoClosePreparedStmt_Ptr prestmt(
 			session->getConnection()->prepareStatement(sql_findbasecontract_co));
 
-		prestmt->setString(1, company);
+		prestmt->setString(1, clientSymbol);
 
 		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
 

@@ -19,15 +19,15 @@
 
 #include "../pricingengine/IPricingDataContext.h"
 
-////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCQueryContractParam::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTPOTCQueryContractParam::HandleRequest()
-// Parameters:
-// - reqDO
-// - rawAPI
-// - session
-// Return:     dataobj_ptr
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       CTPOTCQueryContractParam::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+ // Purpose:    Implementation of CTPOTCQueryContractParam::HandleRequest()
+ // Parameters:
+ // - reqDO
+ // - rawAPI
+ // - session
+ // Return:     dataobj_ptr
+ ////////////////////////////////////////////////////////////////////////
 
 dataobj_ptr CTPOTCQueryContractParam::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
@@ -35,6 +35,8 @@ dataobj_ptr CTPOTCQueryContractParam::HandleRequest(const dataobj_ptr reqDO, IRa
 
 	auto cpVec_Ptr = std::static_pointer_cast<std::vector<ContractKey>>(
 		session->getContext()->getAttribute(STR_KEY_USER_CONTRACT_PARAM));
+
+	ThrowNotFoundException(cpVec_Ptr);
 
 	auto contractVec_Ptr = std::make_shared<VectorDO<ContractDO>>();
 	contractVec_Ptr->SerialId = reqDO->SerialId;
@@ -49,6 +51,8 @@ dataobj_ptr CTPOTCQueryContractParam::HandleRequest(const dataobj_ptr reqDO, IRa
 		auto& contractDO = contractMap->at(con);
 		contractVec_Ptr->push_back(contractDO);
 	}
+
+	ThrowNotFoundException(contractVec_Ptr);
 
 	return contractVec_Ptr;
 }

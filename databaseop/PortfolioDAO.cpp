@@ -16,11 +16,11 @@
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-VectorDO_Ptr<PortfolioDO> PortfolioDAO::FindPortfolioByUser(const std::string& userID)
+VectorDO_Ptr<PortfolioDO> PortfolioDAO::FindPortfolioByClient(const std::string& clientSymbol)
 {
 	static const std::string sql_findportfolio(
 		"SELECT portfolio_symbol, hedge_delay FROM portfolio "
-		"WHERE client_account = ?");
+		"WHERE client_symbol = ?");
 
 	auto ret = std::make_shared<VectorDO<PortfolioDO>>();
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
@@ -28,13 +28,13 @@ VectorDO_Ptr<PortfolioDO> PortfolioDAO::FindPortfolioByUser(const std::string& u
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
 			session->getConnection()->prepareStatement(sql_findportfolio));
-		prestmt->setString(1, userID);
+		prestmt->setString(1, clientSymbol);
 
 		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
 
 		while (rs->next())
 		{
-			PortfolioDO pfdo(rs->getString(1), userID);
+			PortfolioDO pfdo(rs->getString(1), clientSymbol);
 			pfdo.HedgeDelay = rs->getInt(2);
 
 			ret->push_back(std::move(pfdo));

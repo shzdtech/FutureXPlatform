@@ -26,15 +26,15 @@
 #include "../databaseop/StrategyContractDAO.h"
 
 
-////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCQueryStrategy::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTPOTCQueryStrategy::HandleRequest()
-// Parameters:
-// - reqDO
-// - rawAPI
-// - session
-// Return:     dataobj_ptr
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       CTPOTCQueryStrategy::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+ // Purpose:    Implementation of CTPOTCQueryStrategy::HandleRequest()
+ // Parameters:
+ // - reqDO
+ // - rawAPI
+ // - session
+ // Return:     dataobj_ptr
+ ////////////////////////////////////////////////////////////////////////
 
 dataobj_ptr CTPOTCQueryStrategy::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
 {
@@ -42,6 +42,8 @@ dataobj_ptr CTPOTCQueryStrategy::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 
 	auto strategyVec_Ptr = std::static_pointer_cast<std::vector<ContractKey>>(
 		session->getContext()->getAttribute(STR_KEY_USER_STRATEGY));
+
+	ThrowNotFoundException(strategyVec_Ptr);
 
 	auto sDOVec_Ptr = std::make_shared<VectorDO<StrategyContractDO>>();
 	sDOVec_Ptr->SerialId = reqDO->SerialId;
@@ -68,6 +70,7 @@ dataobj_ptr CTPOTCQueryStrategy::HandleRequest(const dataobj_ptr reqDO, IRawAPI*
 		sDOVec_Ptr->push_back(strategy);
 	}
 
+	ThrowNotFoundException(sDOVec_Ptr);
 
 	return sDOVec_Ptr;
 }

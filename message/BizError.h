@@ -38,6 +38,20 @@ public:
 		MessageException(NOTFOUND_ERROR) {}
 };
 
+template <class T>
+inline void ThrowNotFoundException(const T* pContainer)
+{
+	if (!pContainer || pContainer->begin() == pContainer->end())
+		throw NotFoundException();
+}
+
+template <class T>
+inline void ThrowNotFoundException(const std::shared_ptr<T>& containerptr)
+{
+	if (!containerptr || containerptr->begin() == containerptr->end())
+		throw NotFoundException();
+}
+
 class SystemException : public MessageException
 {
 public:

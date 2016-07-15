@@ -74,7 +74,7 @@ enum UserRoleType
 	ROLE_UNSPECIFIED = 0,
 	ROLE_CLIENT = 1,
 	ROLE_TRADINGDESK = 2,
-	ROLE_ADMINCLIENT = 3,
+	ROLE_ADMIN = 1024,
 };
 
 typedef std::shared_ptr<IUserInfo> IUserInfo_Ptr;

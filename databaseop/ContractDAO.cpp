@@ -16,7 +16,7 @@
 // Return:     std::shared_ptr<std::vector<ContractKey>>
 ////////////////////////////////////////////////////////////////////////
 
-VectorDO_Ptr<ContractKey> ContractDAO::FindContractByCompany(const std::string& company)
+VectorDO_Ptr<ContractKey> ContractDAO::FindContractByClient(const std::string& clientSymbol)
 {
 	static const std::string sql_findcontract(
 		"SELECT exchange_symbol, contract_symbol "
@@ -30,7 +30,7 @@ VectorDO_Ptr<ContractKey> ContractDAO::FindContractByCompany(const std::string& 
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
 			session->getConnection()->prepareStatement(sql_findcontract));
-		prestmt->setString(1, company);
+		prestmt->setString(1, clientSymbol);
 
 		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
 
@@ -93,12 +93,12 @@ std::shared_ptr<ContractDOMap> ContractDAO::FindAllContract(void)
 
 
 
-VectorDO_Ptr<ContractDO> ContractDAO::FindContractParamByUser(const std::string& userID)
+VectorDO_Ptr<ContractDO> ContractDAO::FindContractParamByClient(const std::string& clientSymbol)
 {
 	static const std::string sql_findcontractparam(
 		"SELECT distinct exchange_symbol, contract_symbol, tick_size, multiplier "
 		"FROM vw_pricing_contract_property "
-		"WHERE client_account = ?");
+		"WHERE client_symbol = ?");
 
 	auto ret = std::make_shared<VectorDO<ContractDO>>();
 
@@ -107,7 +107,7 @@ VectorDO_Ptr<ContractDO> ContractDAO::FindContractParamByUser(const std::string&
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
 			session->getConnection()->prepareStatement(sql_findcontractparam));
-		prestmt->setString(1, userID);
+		prestmt->setString(1, clientSymbol);
 
 		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
 

@@ -16,13 +16,14 @@
 // Return:     std::shared_ptr<std::vector<StrategyContractDO>>
 ////////////////////////////////////////////////////////////////////////
 
-VectorDO_Ptr<StrategyContractDO> StrategyContractDAO::FindStrategyContractByUser(const std::string& userID)
+VectorDO_Ptr<StrategyContractDO> StrategyContractDAO::
+FindStrategyContractByClient(const std::string& clientSymbol)
 {
 	static const std::string sql_findstrategy(
 		"SELECT exchange_symbol, contract_symbol, underlying_symbol, tick_size, multiplier, "
-		"strategy_symbol, description, pricing_algorithm, portfolio_symbol "
+		"strategy_symbol, descript, pricing_algorithm, portfolio_symbol "
 		"FROM vw_strategy_contract_info "
-		"WHERE client_account = ?");
+		"WHERE client_symbol = ?");
 
 	auto ret = std::make_shared<VectorDO<StrategyContractDO>>();
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
@@ -30,13 +31,13 @@ VectorDO_Ptr<StrategyContractDO> StrategyContractDAO::FindStrategyContractByUser
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
 			session->getConnection()->prepareStatement(sql_findstrategy));
-		prestmt->setString(1, userID);
+		prestmt->setString(1, clientSymbol);
 
 		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
 
 		while (rs->next())
 		{
-			StrategyContractDO stcdo(rs->getString(1), rs->getString(2), userID, rs->getString(9));
+			StrategyContractDO stcdo(rs->getString(1), rs->getString(2), clientSymbol, rs->getString(9));
 			stcdo.Underlying = rs->getString(3);
 			stcdo.TickSize = rs->getDouble(4);
 			stcdo.Multiplier = rs->getDouble(5);
