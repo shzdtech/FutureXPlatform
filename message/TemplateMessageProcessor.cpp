@@ -13,13 +13,13 @@
 #include "../dataobject/ExceptionSerializer.h"
 
 
-void TemplateMessageProcessor::ProcessRequest(const uint msgId, const dataobj_ptr reqDO, bool sendRsp)
+void TemplateMessageProcessor::ProcessRequest(const uint msgId, const dataobj_ptr& reqDO, bool sendRsp)
 {
 	if (_svc_locator_ptr)
 	{
 		if (auto msgHandler = _svc_locator_ptr->FindMessageHandler(msgId))
 		{
-			if (auto pMsgSession = getSession())
+			if (auto pMsgSession = getSession().get())
 			{
 				if (auto dataobj_ptr = msgHandler->HandleRequest(reqDO, getRawAPI(), pMsgSession))
 				{
@@ -39,7 +39,7 @@ void TemplateMessageProcessor::ProcessResponse(const uint msgId, const uint seri
 	{
 		if (auto msgHandler = _svc_locator_ptr->FindMessageHandler(msgId))
 		{
-			if (auto pMsgSession = getSession())
+			if (auto pMsgSession = getSession().get())
 			{
 				if (auto dataobj_ptr = msgHandler->HandleResponse(serialId, rawRespParams, getRawAPI(), pMsgSession))
 				{
@@ -54,7 +54,7 @@ void TemplateMessageProcessor::ProcessResponse(const uint msgId, const uint seri
 }
 
 int TemplateMessageProcessor::SendDataObject(ISession* session,
-	const uint msgId, const dataobj_ptr dataobj)
+	const uint msgId, const dataobj_ptr& dataobj)
 {
 	int ret = 0;
 	if (auto msgSerilzer = _svc_locator_ptr->FindDataSerializer(msgId))
@@ -66,29 +66,26 @@ int TemplateMessageProcessor::SendDataObject(ISession* session,
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       TemplateMessageProcessor::OnRecvMsg(const uint msgId, const data_buffer msg)
-// Purpose:    Implementation of TemplateMessageProcessor::OnRecvMsg()
+// Name:       TemplateMessageProcessor::OnRequest(const uint msgId, const data_buffer msg)
+// Purpose:    Implementation of TemplateMessageProcessor::OnRequest()
 // Parameters:
 // - msgId
 // - msg
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-int TemplateMessageProcessor::OnRecvMsg(const uint msgId, const data_buffer& msg)
+int TemplateMessageProcessor::OnRequest(const uint msgId, const data_buffer& msg)
 {
 	dataobj_ptr reqDO;
 	try
 	{
 		if (_svc_locator_ptr)
-		{
-			auto msgSerilzer = _svc_locator_ptr->FindDataSerializer(msgId);
-			if (msgSerilzer)
+			if(auto msgSerilzer = _svc_locator_ptr->FindDataSerializer(msgId))
 				if (reqDO = msgSerilzer->Deserialize(msg))
 					ProcessRequest(msgId, reqDO, true);
-		}
 	}
 	catch (MessageException& msgEx) {
-		SendErrorMsg(msgId, msgEx, reqDO ? reqDO->SerialId : 0);
+		SendExceptionMessage(msgId, msgEx, reqDO ? reqDO->SerialId : 0);
 	}
 	catch (std::exception& ex) {
 		LOG_ERROR << __FUNCTION__ <<": MsgId: " << msgId << ", Error: " << ex.what();
@@ -114,7 +111,7 @@ int TemplateMessageProcessor::OnResponse(const uint msgId, const uint serialId, 
 		ProcessResponse(msgId, serialId, rawRespParams, true);
 	}
 	catch (MessageException& msgEx) {
-		SendErrorMsg(msgId, msgEx, serialId);
+		SendExceptionMessage(msgId, msgEx, serialId);
 	}
 	catch (std::exception& ex) {
 		LOG_ERROR << __FUNCTION__ << ": MsgId: " << msgId << ", Error: " << ex.what();
@@ -127,17 +124,17 @@ int TemplateMessageProcessor::OnResponse(const uint msgId, const uint serialId, 
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       TemplateMessageProcessor::SendErrorMsg(BizError& bizError)
-// Purpose:    Implementation of TemplateMessageProcessor::SendErrorMsg()
+// Name:       TemplateMessageProcessor::SendExceptionMessage(BizError& bizError)
+// Purpose:    Implementation of TemplateMessageProcessor::SendExceptionMessage()
 // Parameters:
 // - bizError
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void TemplateMessageProcessor::SendErrorMsg(uint msgId, MessageException& msgException, uint serialId)
+void TemplateMessageProcessor::SendExceptionMessage(uint msgId, MessageException& msgException, uint serialId)
 {
-	dataobj_ptr dataobj(new MessageExceptionDO(msgId, msgException.ErrorType(), msgException.ErrorCode(),
-		msgException.what(), serialId));
+	dataobj_ptr dataobj(new MessageExceptionDO(msgId, serialId, msgException.ErrorType(), msgException.ErrorCode(),
+		msgException.what()));
 	data_buffer msg = ExceptionSerializer::Instance()->Serialize(dataobj);
 	if (auto session_ptr = getSession())
 		session_ptr->WriteMessage(MSG_ID_ERROR, msg);

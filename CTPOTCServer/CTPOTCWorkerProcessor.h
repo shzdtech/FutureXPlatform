@@ -23,7 +23,7 @@ public:
    CTPOTCWorkerProcessor(const std::map<std::string, std::string>& configMap, IPricingDataContext* pricingCtx);
    ~CTPOTCWorkerProcessor();
    bool OnSessionClosing(void);
-   void setSession(IMessageSession* msgSession);
+   void setSession(IMessageSession_WkPtr msgSession_wk_ptr);
    void Initialize(void);
 
    int LoginSystemUserIfNeed(void);

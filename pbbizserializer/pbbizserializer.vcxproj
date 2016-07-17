@@ -204,8 +204,6 @@
     <ClCompile Include="PBExchangeSerializer.cpp" />
     <ClCompile Include="PBInstrumentSerializer.cpp" />
     <ClCompile Include="PBMarketDataSerializer.cpp" />
-    <ClCompile Include="PBOrderCancelSerializer.cpp" />
-    <ClCompile Include="PBOrderNewSerializer.cpp" />
     <ClCompile Include="PBOrderSerializer.cpp" />
     <ClCompile Include="PBPricingDataSerializer.cpp" />
     <ClCompile Include="PBStrategySerializer.cpp" />
@@ -225,8 +223,6 @@
     <ClInclude Include="PBExchangeSerializer.h" />
     <ClInclude Include="PBInstrumentSerializer.h" />
     <ClInclude Include="PBMarketDataSerializer.h" />
-    <ClInclude Include="PBOrderCancelSerializer.h" />
-    <ClInclude Include="PBOrderNewSerializer.h" />
     <ClInclude Include="PBOrderSerializer.h" />
     <ClInclude Include="PBPricingDataSerializer.h" />
     <ClInclude Include="PBStrategySerializer.h" />

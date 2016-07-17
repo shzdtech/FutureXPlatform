@@ -11,14 +11,14 @@
 #include "../dataobject/UserInfoDO.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       PBUserInfoSerializer::Serialize(const dataobj_ptr abstractDO)
+// Name:       PBUserInfoSerializer::Serialize(const dataobj_ptr& abstractDO)
 // Purpose:    Implementation of PBUserInfoSerializer::Serialize()
 // Parameters:
 // - abstractDO
 // Return:     data_buffer
 ////////////////////////////////////////////////////////////////////////
 
-data_buffer PBUserInfoSerializer::Serialize(const dataobj_ptr abstractDO)
+data_buffer PBUserInfoSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	using namespace Micro::Future::Message;
 	

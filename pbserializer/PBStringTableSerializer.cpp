@@ -43,14 +43,14 @@ dataobj_ptr PBStringTableSerializer::Deserialize(const data_buffer& rawdata)
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       PBStringTableSerializer::Serialize(const dataobj_ptr abstractDO)
+// Name:       PBStringTableSerializer::Serialize(const dataobj_ptr& abstractDO)
 // Purpose:    Implementation of PBStringTableSerializer::Serialize()
 // Parameters:
 // - abstractDO
 // Return:     data_buffer
 ////////////////////////////////////////////////////////////////////////
 
-data_buffer PBStringTableSerializer::Serialize(const dataobj_ptr abstractDO)
+data_buffer PBStringTableSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	auto nameTbl = (StringTableDO*)abstractDO.get();
 	SimpleStringTable simpleTbl;

@@ -25,21 +25,21 @@ dataobj_ptr PBExceptionSerializer::Deserialize(const data_buffer& rawdata)
 	ExceptionMessage exceptionMsg;
 	ParseWithThrow(exceptionMsg, rawdata)
 
-	auto ret = std::make_shared<MessageExceptionDO> (exceptionMsg.messageid(), exceptionMsg.errortype(),
-			exceptionMsg.errorcode(), exceptionMsg.description(), exceptionMsg.serialid());
+	auto ret = std::make_shared<MessageExceptionDO> (exceptionMsg.messageid(), exceptionMsg.serialid(),
+		exceptionMsg.errortype(), exceptionMsg.errorcode(), exceptionMsg.description());
 
 	return ret;
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       PBExceptionSerializer::Serialize(const dataobj_ptr abstractDO)
+// Name:       PBExceptionSerializer::Serialize(const dataobj_ptr& abstractDO)
 // Purpose:    Implementation of PBExceptionSerializer::Serialize()
 // Parameters:
 // - abstractDO
 // Return:     data_buffer
 ////////////////////////////////////////////////////////////////////////
 
-data_buffer PBExceptionSerializer::Serialize(const dataobj_ptr abstractDO)
+data_buffer PBExceptionSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	auto pDO = (MessageExceptionDO*)abstractDO.get();
 	ExceptionMessage exceptionMsg;

@@ -13,11 +13,11 @@
 
 #include "../message/message_macro.h"
 
-////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCTradingDeskProcessor::CTPOTCTradingDeskProcessor()
-// Purpose:    Implementation of CTPOTCTradingDeskProcessor::CTPOTCTradingDeskProcessor()
-// Return:     
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       CTPOTCTradingDeskProcessor::CTPOTCTradingDeskProcessor()
+ // Purpose:    Implementation of CTPOTCTradingDeskProcessor::CTPOTCTradingDeskProcessor()
+ // Return:     
+ ////////////////////////////////////////////////////////////////////////
 
 CTPOTCTradingDeskProcessor::CTPOTCTradingDeskProcessor(const std::map<std::string, std::string>& configMap)
 	: CTPProcessor(configMap)
@@ -54,23 +54,25 @@ bool CTPOTCTradingDeskProcessor::OnSessionClosing(void)
 	{
 		auto pStrategyMap = AttribPointerCast(this, STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext)
 			->GetStrategyMap();
-		
-		if (auto strategyVec_Ptr = std::static_pointer_cast<std::vector<ContractKey>>(
-			getSession()->getContext()->getAttribute(STR_KEY_USER_STRATEGY)))
+
+		if (auto sessionptr = getSession())
 		{
-			for (auto& contract : *strategyVec_Ptr)
+			if (auto strategyVec_Ptr = std::static_pointer_cast<std::vector<ContractKey>>(
+				sessionptr->getContext()->getAttribute(STR_KEY_USER_STRATEGY)))
 			{
-				auto& strategy = pStrategyMap->at(contract);
-				strategy.Enabled = false;
-				if (strategy.Trading)
+				for (auto& contract : *strategyVec_Ptr)
 				{
-					strategy.Trading = false;
-					OrderDO orderDO(strategy);
-					proc->CancelAutoOrder(orderDO);
+					auto& strategy = pStrategyMap->at(contract);
+					strategy.Enabled = false;
+					if (strategy.Trading)
+					{
+						strategy.Trading = false;
+						OrderDO orderDO(strategy);
+						proc->CancelAutoOrder(orderDO);
+					}
 				}
 			}
 		}
 	}
-
 	return true;
 }

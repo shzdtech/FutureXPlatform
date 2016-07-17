@@ -40,6 +40,19 @@ public:
 		}
 	}
 
+	void forall(std::function<void(IMessageSession*)> func)
+	{
+		std::shared_lock<std::shared_mutex> read_lock(_mutex);
+		for (auto& pair : _sessionMap)
+		{
+			auto& sessionSet = pair.second;
+			for (auto pSession : sessionSet)
+			{
+				func(pSession);
+			}
+		}
+	}
+
 	int add(const K& key, IMessageSession* pSession)
 	{
 		int ret = -1;

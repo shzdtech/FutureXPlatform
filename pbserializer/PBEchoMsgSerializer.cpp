@@ -9,14 +9,14 @@
 #include "../dataobject/EchoMsgDO.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       PBEchoMsgSerializer::Serialize(const dataobj_ptr abstractDO)
+// Name:       PBEchoMsgSerializer::Serialize(const dataobj_ptr& abstractDO)
 // Purpose:    Implementation of PBEchoMsgSerializer::Serialize()
 // Parameters:
 // - abstractDO
 // Return:     data_buffer
 ////////////////////////////////////////////////////////////////////////
 
-data_buffer PBEchoMsgSerializer::Serialize(const dataobj_ptr abstractDO)
+data_buffer PBEchoMsgSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	return *((data_buffer*)abstractDO.get());
 }

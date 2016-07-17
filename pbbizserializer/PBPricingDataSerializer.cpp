@@ -13,14 +13,14 @@
 #include "../Protos/businessobj.pb.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       PBPricingDataSerializer::Serialize(const dataobj_ptr abstractDO)
+// Name:       PBPricingDataSerializer::Serialize(const dataobj_ptr& abstractDO)
 // Purpose:    Implementation of PBPricingDataSerializer::Serialize()
 // Parameters:
 // - abstractDO
 // Return:     data_buffer
 ////////////////////////////////////////////////////////////////////////
 
-data_buffer PBPricingDataSerializer::Serialize(const dataobj_ptr abstractDO)
+data_buffer PBPricingDataSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	using namespace Micro::Future::Message::Business;
 	

@@ -15,7 +15,7 @@
 class PBSERIALIZER_CLASS_EXPORTS PBResultSerializer : public IDataSerializer, public singleton_ptr<PBResultSerializer>
 {
 public:
-   data_buffer Serialize(const dataobj_ptr abstractDO);
+   data_buffer Serialize(const dataobj_ptr& abstractDO);
    dataobj_ptr Deserialize(const data_buffer& rawdata);
 
 protected:

@@ -39,12 +39,6 @@
     <ClCompile Include="PBMarketDataSerializer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="PBOrderCancelSerializer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="PBOrderNewSerializer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="PBOrderSerializer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -93,12 +87,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="PBMarketDataSerializer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="PBOrderCancelSerializer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="PBOrderNewSerializer.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="PBOrderSerializer.h">

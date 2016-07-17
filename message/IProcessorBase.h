@@ -20,7 +20,7 @@ class IProcessorBase
 {
 public:
    virtual IMessageServiceLocator_Ptr getServiceLocator(void) = 0;
-   virtual int OnRecvMsg(const uint msgId, const data_buffer& msg) = 0;
+   virtual int OnRequest(const uint msgId, const data_buffer& msg) = 0;
    virtual int OnResponse(const uint msgId, const uint serialId, param_vector& rawRespParams) = 0;
    virtual IContextAttribute* getServerContext(void) = 0;
 

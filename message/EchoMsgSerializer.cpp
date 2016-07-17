@@ -12,14 +12,14 @@
 #include "../dataobject/EchoMsgDO.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       EchoMsgSerializer::Serialize(const dataobj_ptr abstractDO)
+// Name:       EchoMsgSerializer::Serialize(const dataobj_ptr& abstractDO)
 // Purpose:    Implementation of EchoMsgSerializer::Serialize()
 // Parameters:
 // - abstractDO
 // Return:     data_buffer
 ////////////////////////////////////////////////////////////////////////
 
-data_buffer EchoMsgSerializer::Serialize(const dataobj_ptr abstractDO)
+data_buffer EchoMsgSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	return data_buffer(nullptr, 0);
 }

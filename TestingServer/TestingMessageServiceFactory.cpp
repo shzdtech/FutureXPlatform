@@ -12,6 +12,10 @@
 #include "TestingUnsubMarketDataHandler.h"
 #include "TestingReturnMarketDataHandler.h"
 
+#include "TestingCreateOrderHandler.h"
+#include "TestingCancelOrderHandler.h"
+#include "TestingPositionHandler.h"
+
 #include "../message/EchoMsgHandler.h"
 #include "../message/EchoMsgSerializer.h"
 #include "../message/DefMessageID.h"
@@ -36,6 +40,12 @@ std::map<uint, IMessageHandler_Ptr> TestingMessageServiceFactory::CreateMessageH
 	msg_hdl_map[MSG_ID_UNSUB_MARKETDATA] = std::make_shared<TestingUnsubMarketDataHandler>();
 
 	msg_hdl_map[MSG_ID_RET_MARKETDATA] = std::make_shared<TestingReturnMarketDataHandler>();
+
+	msg_hdl_map[MSG_ID_ORDER_NEW] = std::make_shared<TestingCreateOrderHandler>();
+
+	msg_hdl_map[MSG_ID_ORDER_CANCEL] = std::make_shared<TestingCancelOrderHandler>();
+
+	msg_hdl_map[MSG_ID_QUERY_POSITION] = std::make_shared<TestingPositionHandler>();
 
 	return msg_hdl_map;
 }

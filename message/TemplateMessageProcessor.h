@@ -18,14 +18,13 @@
 class MESSAGE_CLASS_EXPORT TemplateMessageProcessor : public MessageProcessor, public std::enable_shared_from_this < TemplateMessageProcessor >
 {
 public:
-	virtual void ProcessRequest(const uint msgId, const dataobj_ptr reqDO, bool sendRsp);
+	virtual void ProcessRequest(const uint msgId, const dataobj_ptr& reqDO, bool sendRsp);
 	virtual void ProcessResponse(const uint msgId, const uint serialId, param_vector& rawRespParamsconst, bool sendRsp);
-	virtual int SendDataObject(ISession* pSession,
-		const uint msgId, const dataobj_ptr dataobj);
+	virtual int SendDataObject(ISession* pSession, const uint msgId, const dataobj_ptr& dataobj);
 
-	int OnRecvMsg(const uint msgId, const data_buffer& msg);
+	int OnRequest(const uint msgId, const data_buffer& msg);
 	int OnResponse(const uint msgId, const uint serailId, param_vector& rawRespParams);
-	void SendErrorMsg(const uint msgId, MessageException& msgException, uint serialId);
+	void SendExceptionMessage(const uint msgId, MessageException& msgException, uint serialId);
 
 protected:
 

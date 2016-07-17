@@ -16,7 +16,7 @@
 #include "tradeapi/ThostFtdcTraderApi.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPNewOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPNewOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPNewOrder::HandleRequest()
 // Parameters:
 // - reqDO
@@ -25,7 +25,7 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPNewOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPNewOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	auto pDO = (OrderDO*)reqDO.get();
 

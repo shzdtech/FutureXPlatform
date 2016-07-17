@@ -18,7 +18,7 @@
 #include "../dataobject/ResultDO.h"
 #include "../pricingengine/IPricingDataContext.h"
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCUpdateUserParam::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPOTCUpdateUserParam::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPOTCUpdateUserParam::HandleRequest()
 // Parameters:
 // - reqDO
@@ -27,7 +27,7 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCUpdateUserParam::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOTCUpdateUserParam::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	CheckLogin(session);
 

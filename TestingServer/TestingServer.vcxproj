@@ -151,8 +151,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="TestingCancelOrderHandler.cpp" />
+    <ClCompile Include="TestingCreateOrderHandler.cpp" />
     <ClCompile Include="TestingLoginHandler.cpp" />
     <ClCompile Include="TestingMessageServiceFactory.cpp" />
+    <ClCompile Include="TestingPositionHandler.cpp" />
     <ClCompile Include="TestingReturnMarketDataHandler.cpp" />
     <ClCompile Include="TestingServerExport.cpp" />
     <ClCompile Include="TestingServerMessageProcessor.cpp" />
@@ -160,8 +163,11 @@
     <ClCompile Include="TestingUnsubMarketDataHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="TestingCancelOrderHandler.h" />
+    <ClInclude Include="TestingCreateOrderHandler.h" />
     <ClInclude Include="TestingLoginHandler.h" />
     <ClInclude Include="TestingMessageServiceFactory.h" />
+    <ClInclude Include="TestingPositionHandler.h" />
     <ClInclude Include="TestingReturnMarketDataHandler.h" />
     <ClInclude Include="TestingServerExport.h" />
     <ClInclude Include="TestingServerMessageProcessor.h" />

@@ -15,12 +15,12 @@ class MessageExceptionDO : public dataobjectbase
 {
 public:
 	MessageExceptionDO() { };
-	MessageExceptionDO(int msgId, int errortype, int errorcode, const char* errmsg, uint32_t serialId = 0) :
+	MessageExceptionDO(int msgId, uint32_t serialId, int errortype, int errorcode = 0, const char* errmsg = "") :
 		MessageId(msgId), ErrorType(errortype), ErrorCode(errorcode), ErrorMessage(errmsg)
 	{
 		SerialId = serialId;
 	};
-	MessageExceptionDO(int msgId, int errortype, int errorcode, const std::string& errmsg, uint32_t serialId = 0) :
+	MessageExceptionDO(int msgId, uint32_t serialId, int errortype, int errorcode, const std::string& errmsg) :
 		MessageId(msgId), ErrorType(errortype), ErrorCode(errorcode), ErrorMessage(errmsg)
 	{
 		SerialId = serialId;

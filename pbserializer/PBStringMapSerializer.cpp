@@ -15,7 +15,7 @@ dataobj_ptr PBStringMapSerializer::Deserialize(const data_buffer & rawdata)
 	return ret;
 }
 
-data_buffer PBStringMapSerializer::Serialize(const dataobj_ptr abstractDO)
+data_buffer PBStringMapSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	auto pMapDO = (MapDO<std::string>*)abstractDO.get();
 	StringMap PBMap;

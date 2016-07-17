@@ -14,14 +14,14 @@
 #include "../dataobject/ContractDO.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       PBContractParamSerializer::Serialize(const dataobj_ptr abstractDO)
+// Name:       PBContractParamSerializer::Serialize(const dataobj_ptr& abstractDO)
 // Purpose:    Implementation of PBContractParamSerializer::Serialize()
 // Parameters:
 // - abstractDO
 // Return:     data_buffer
 ////////////////////////////////////////////////////////////////////////
 
-data_buffer PBContractParamSerializer::Serialize(const dataobj_ptr abstractDO)
+data_buffer PBContractParamSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	Micro::Future::Message::Business::PBContractParamList PB;
 	auto pDO = (VectorDO<ContractDO>*)abstractDO.get();

@@ -54,10 +54,10 @@ bool CTPOTCWorkerProcessor::OnSessionClosing(void)
 	return _otcTradeProcessor.OnSessionClosing();
 }
 
-void CTPOTCWorkerProcessor::setSession(IMessageSession* msgSession)
+void CTPOTCWorkerProcessor::setSession(IMessageSession_WkPtr msgSession_wk_ptr)
 {
-	CTPMarketDataProcessor::setSession(msgSession);
-	_otcTradeProcessor.setSession(msgSession);
+	CTPMarketDataProcessor::setSession(msgSession_wk_ptr);
+	_otcTradeProcessor.setSession(msgSession_wk_ptr);
 }
 
 void CTPOTCWorkerProcessor::Initialize(void)

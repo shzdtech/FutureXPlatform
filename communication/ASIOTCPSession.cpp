@@ -197,7 +197,7 @@ void ASIOTCPSession::asyn_read_body(ASIOTCPSession_Ptr this_ptr, uint msgSize) {
 			//Check Sync Flag
 			if (CTRLCHAR::ETX == exinfo[0] && CTRLCHAR::ETB == exinfo[EXINFO_LAST]) {
 				uint msgId = (exinfo[1] | exinfo[2] << 8 | exinfo[3] << 16 | exinfo[4] << 24);
-				this_ins->_messageProcessor_ptr->OnRecvMsg(msgId, data_buffer(msgbuf, bufSz));
+				this_ins->_messageProcessor_ptr->OnRequest(msgId, data_buffer(msgbuf, bufSz));
 			}
 		}
 		else {

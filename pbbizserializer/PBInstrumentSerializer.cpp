@@ -13,14 +13,14 @@
 #include "../dataobject/TemplateDO.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       PBInstrumentSerializer::Serialize(const dataobj_ptr abstractDO)
+// Name:       PBInstrumentSerializer::Serialize(const dataobj_ptr& abstractDO)
 // Purpose:    Implementation of PBInstrumentSerializer::Serialize()
 // Parameters:
 // - abstractDO
 // Return:     data_buffer
 ////////////////////////////////////////////////////////////////////////
 
-data_buffer PBInstrumentSerializer::Serialize(const dataobj_ptr abstractDO)
+data_buffer PBInstrumentSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	using namespace Micro::Future::Message::Business;
 	

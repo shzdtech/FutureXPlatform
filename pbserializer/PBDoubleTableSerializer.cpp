@@ -36,14 +36,14 @@ dataobj_ptr PBDoubleTableSerializer::Deserialize(const data_buffer& rawdata)
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       PBDoubleTableSerializer::Serialize(const dataobj_ptr abstractDO)
+// Name:       PBDoubleTableSerializer::Serialize(const dataobj_ptr& abstractDO)
 // Purpose:    Implementation of PBDoubleTableSerializer::Serialize()
 // Parameters:
 // - abstractDO
 // Return:     data_buffer
 ////////////////////////////////////////////////////////////////////////
 
-data_buffer PBDoubleTableSerializer::Serialize(const dataobj_ptr abstractDO)
+data_buffer PBDoubleTableSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	auto nameTbl = (DoubleTableDO*)abstractDO.get();
 	SimpleDoubleTable simpleTbl;

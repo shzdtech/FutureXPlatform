@@ -33,14 +33,14 @@ PBCombineSerializer::~PBCombineSerializer()
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       PBCombineSerializer::Serialize(const dataobj_ptr abstractDO)
+// Name:       PBCombineSerializer::Serialize(const dataobj_ptr& abstractDO)
 // Purpose:    Implementation of PBCombineSerializer::Serialize()
 // Parameters:
 // - abstractDO
 // Return:     data_buffer
 ////////////////////////////////////////////////////////////////////////
 
-data_buffer PBCombineSerializer::Serialize(const dataobj_ptr abstractDO)
+data_buffer PBCombineSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	return _serializer->Serialize(abstractDO);
 }

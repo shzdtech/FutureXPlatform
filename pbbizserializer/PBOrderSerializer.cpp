@@ -15,14 +15,14 @@
 using namespace Micro::Future::Message::Business;
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       PBOrderSerializer::Serialize(const dataobj_ptr abstractDO)
+// Name:       PBOrderSerializer::Serialize(const dataobj_ptr& abstractDO)
 // Purpose:    Implementation of PBOrderSerializer::Serialize()
 // Parameters:
 // - abstractDO
 // Return:     data_buffer
 ////////////////////////////////////////////////////////////////////////
 
-data_buffer PBOrderSerializer::Serialize(const dataobj_ptr abstractDO)
+data_buffer PBOrderSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	PBOrderInfo PB;
 	auto pDO = (OrderDO*)abstractDO.get();

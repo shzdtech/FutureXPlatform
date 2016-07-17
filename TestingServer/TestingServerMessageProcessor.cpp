@@ -55,26 +55,28 @@ void TestingServerMessageProcessor::_mdGenerator()
 	while (!_exitWorker)
 	{
 		std::this_thread::sleep_for(_mdGenInterval);
-		auto pSession = getSession();
-		if (auto mdMapPtr = std::static_pointer_cast<MarketDataDOMap>
-			(pSession->getContext()->getAttribute(STR_KEY_USER_CONTRACTS)))
+		if (auto pSession = getSession())
 		{
-
-			for (auto it = mdMapPtr->begin(); it != mdMapPtr->end(); it++)
+			if (auto mdMapPtr = std::static_pointer_cast<MarketDataDOMap>
+				(pSession->getContext()->getAttribute(STR_KEY_USER_CONTRACTS)))
 			{
-				if (std::rand() > std::rand())
+
+				for (auto it = mdMapPtr->begin(); it != mdMapPtr->end(); it++)
 				{
-					auto& marketDataDO = it->second;
-					marketDataDO.LastPrice = (marketDataDO.BidPrice + marketDataDO.AskPrice) / 2;
-					marketDataDO.BidPrice = std::rand();
-					marketDataDO.BidVolume = 1 + std::rand() % 100;
-					marketDataDO.AskPrice = marketDataDO.BidPrice + std::rand() % 100;
-					marketDataDO.AskVolume = 1 + std::rand() % 100;
+					if (std::rand() > std::rand())
+					{
+						auto& marketDataDO = it->second;
+						marketDataDO.LastPrice = (marketDataDO.BidPrice + marketDataDO.AskPrice) / 2;
+						marketDataDO.BidPrice = std::rand();
+						marketDataDO.BidVolume = 1 + std::rand() % 100;
+						marketDataDO.AskPrice = marketDataDO.BidPrice + std::rand() % 100;
+						marketDataDO.AskVolume = 1 + std::rand() % 100;
 
-					marketDataDO.UpperLimitPrice = marketDataDO.AskPrice * 1.1;
-					marketDataDO.LowerLimitPrice = marketDataDO.BidVolume * 0.9;
+						marketDataDO.UpperLimitPrice = marketDataDO.AskPrice * 1.1;
+						marketDataDO.LowerLimitPrice = marketDataDO.BidVolume * 0.9;
 
-					OnResponseMacro(MSG_ID_RET_MARKETDATA, 0, &marketDataDO);
+						OnResponseMacro(MSG_ID_RET_MARKETDATA, 0, &marketDataDO);
+					}
 				}
 			}
 		}

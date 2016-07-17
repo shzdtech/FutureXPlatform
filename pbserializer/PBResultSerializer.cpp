@@ -11,14 +11,14 @@
 #include "../dataobject/ResultDO.h"
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       PBResultSerializer::Serialize(const dataobj_ptr abstractDO)
+ // Name:       PBResultSerializer::Serialize(const dataobj_ptr& abstractDO)
  // Purpose:    Implementation of PBResultSerializer::Serialize()
  // Parameters:
  // - abstractDO
  // Return:     data_buffer
  ////////////////////////////////////////////////////////////////////////
 
-data_buffer PBResultSerializer::Serialize(const dataobj_ptr abstractDO)
+data_buffer PBResultSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	Micro::Future::Message::Result PB;
 

@@ -12,14 +12,14 @@
 #include "../dataobject/StrategyContractDO.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       PBStrategySerializer::Serialize(const dataobj_ptr abstractDO)
+// Name:       PBStrategySerializer::Serialize(const dataobj_ptr& abstractDO)
 // Purpose:    Implementation of PBStrategySerializer::Serialize()
 // Parameters:
 // - abstractDO
 // Return:     data_buffer
 ////////////////////////////////////////////////////////////////////////
 
-data_buffer PBStrategySerializer::Serialize(const dataobj_ptr abstractDO)
+data_buffer PBStrategySerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	Micro::Future::Message::Business::PBStrategyList PB;
 	auto pDO = (VectorDO<StrategyContractDO>*)abstractDO.get();

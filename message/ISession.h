@@ -16,7 +16,6 @@
 class IProcessorBase;
 typedef std::shared_ptr<IProcessorBase> IProcessorBase_Ptr;
 
-
 class ISession
 {
 public:
@@ -28,6 +27,7 @@ public:
 	virtual void setLoginStatus(bool status) = 0;
 	virtual IUserInfo_Ptr getUserInfo(void) = 0;
 	virtual IProcessorBase_Ptr getProcessor(void) = 0;
+	virtual std::shared_ptr<ISession> LockThis(void) = 0;
 
 	std::shared_ptr<void> Tag;
 protected:

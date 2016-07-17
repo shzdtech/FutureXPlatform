@@ -57,7 +57,7 @@ MessageSession::~MessageSession()
 void MessageSession::RegistProcessor(IMessageProcessor_Ptr msgProcessor)
 {
 	_messageProcessor_ptr = msgProcessor;
-	_messageProcessor_ptr->setSession(this);
+	_messageProcessor_ptr->setSession(shared_from_this());
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -186,4 +186,9 @@ IUserInfo_Ptr MessageSession::getUserInfo(void)
 IProcessorBase_Ptr MessageSession::getProcessor(void)
 {
 	return _messageProcessor_ptr;
+}
+
+std::shared_ptr<ISession> MessageSession::LockThis(void)
+{
+	return shared_from_this();
 }

@@ -16,7 +16,7 @@ class PBSERIALIZER_CLASS_EXPORTS PBComplexTableSerializer : public IDataSerializ
 {
 public:
    dataobj_ptr Deserialize(const data_buffer& rawdata);
-   data_buffer Serialize(const dataobj_ptr abstractDO);
+   data_buffer Serialize(const dataobj_ptr& abstractDO);
 
 protected:
 private:

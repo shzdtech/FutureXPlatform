@@ -100,10 +100,13 @@ void CTPOTCTradeProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserL
 {
 	if (pRspUserLogin && !CTPUtility::HasError(pRspInfo))
 	{
-		auto pUser = getSession()->getUserInfo();
-		pUser->setSessionId(pRspUserLogin->SessionID);
-		pUser->setFrontId(pRspUserLogin->FrontID);
-		_autoOrderMgr.Reset();
+		if (auto sessionptr = getSession())
+		{
+			auto pUser = sessionptr->getUserInfo();
+			pUser->setSessionId(pRspUserLogin->SessionID);
+			pUser->setFrontId(pRspUserLogin->FrontID);
+			_autoOrderMgr.Reset();
+		}
 	}
 }
 

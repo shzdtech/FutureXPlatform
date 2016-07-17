@@ -12,14 +12,14 @@
 #include "../dataobject/ExchangeDO.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       PBExchangeSerializer::Serialize(const dataobj_ptr abstractDO)
+// Name:       PBExchangeSerializer::Serialize(const dataobj_ptr& abstractDO)
 // Purpose:    Implementation of PBExchangeSerializer::Serialize()
 // Parameters:
 // - abstractDO
 // Return:     data_buffer
 ////////////////////////////////////////////////////////////////////////
 
-data_buffer PBExchangeSerializer::Serialize(const dataobj_ptr abstractDO)
+data_buffer PBExchangeSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	using namespace Micro::Future::Message::Business;
 

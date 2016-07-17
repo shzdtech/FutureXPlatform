@@ -21,7 +21,7 @@
 #include "CTPUtility.h"
 #include "CTPConstant.h"
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPQueryTrade::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPQueryTrade::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPQueryTrade::HandleRequest()
 // Parameters:
 // - reqDO
@@ -30,7 +30,7 @@
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryTrade::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryTrade::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	auto stdo = (MapDO<std::string>*)reqDO.get();
 

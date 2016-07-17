@@ -242,7 +242,7 @@ bool MicroFurtureSystem::Stop(void)
 
 	ret = i == _servers.size();
 
-	LOG_INFO << i + " servers have stopped.";
+	LOG_INFO << i << " servers have stopped.";
 
 	return ret;
 }

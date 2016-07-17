@@ -9,14 +9,14 @@
 #include "TemplateDO.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       DataBufferSerializer::Serialize(const dataobj_ptr abstractDO)
+// Name:       DataBufferSerializer::Serialize(const dataobj_ptr& abstractDO)
 // Purpose:    Implementation of DataBufferSerializer::Serialize()
 // Parameters:
 // - abstractDO
 // Return:     data_buffer
 ////////////////////////////////////////////////////////////////////////
 
-data_buffer DataBufferSerializer::Serialize(const dataobj_ptr abstractDO)
+data_buffer DataBufferSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	auto databufDO = (DataBufferDO*)abstractDO.get();
 	return databufDO->Data;

@@ -36,14 +36,14 @@ dataobj_ptr PBIntTableSerializer::Deserialize(const data_buffer& rawdata)
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       PBIntTableSerializer::Serialize(const dataobj_ptr abstractDO)
+// Name:       PBIntTableSerializer::Serialize(const dataobj_ptr& abstractDO)
 // Purpose:    Implementation of PBIntTableSerializer::Serialize()
 // Parameters:
 // - abstractDO
 // Return:     data_buffer
 ////////////////////////////////////////////////////////////////////////
 
-data_buffer PBIntTableSerializer::Serialize(const dataobj_ptr abstractDO)
+data_buffer PBIntTableSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	auto nameTbl = (IntTableDO*)abstractDO.get();
 	SimpleIntTable simpleTbl;

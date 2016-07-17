@@ -15,7 +15,7 @@
 #include "tradeapi/ThostFtdcTraderApi.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPCancleOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPCancleOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPCancelOrder::HandleRequest()
 // Parameters:
 // - reqDO
@@ -24,7 +24,7 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPCancelOrder::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPCancelOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	auto pDO = (OrderDO*)reqDO.get();
 

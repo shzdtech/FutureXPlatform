@@ -12,14 +12,14 @@
 #include "../dataobject/AccountInfoDO.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       PBAccountInfoSerializer::Serialize(const dataobj_ptr abstractDO)
+// Name:       PBAccountInfoSerializer::Serialize(const dataobj_ptr& abstractDO)
 // Purpose:    Implementation of PBAccountInfoSerializer::Serialize()
 // Parameters:
 // - abstractDO
 // Return:     data_buffer
 ////////////////////////////////////////////////////////////////////////
 
-data_buffer PBAccountInfoSerializer::Serialize(const dataobj_ptr abstractDO)
+data_buffer PBAccountInfoSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	using namespace Micro::Future::Message::Business;
 	

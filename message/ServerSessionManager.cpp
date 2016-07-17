@@ -114,7 +114,7 @@ void ServerSessionManager::OnServerStarting(void)
 		auto msgProc_Ptr = std::static_pointer_cast<IMessageProcessor>(it.second);
 		msgSession_Ptr->RegistProcessor(msgProc_Ptr);
 		msgProc_Ptr->setServiceLocator(_msgsvclocator);
-		msgProc_Ptr->setSession(msgSession_Ptr.get());
+		msgProc_Ptr->setSession(msgSession_Ptr);
 		_sessionSet.insert(msgSession_Ptr);
 	}
 }

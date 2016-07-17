@@ -20,7 +20,7 @@
 #include "../pricingengine/IPricingDataContext.h"
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       CTPOTCQueryContractParam::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       CTPOTCQueryContractParam::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
  // Purpose:    Implementation of CTPOTCQueryContractParam::HandleRequest()
  // Parameters:
  // - reqDO
@@ -29,7 +29,7 @@
  // Return:     dataobj_ptr
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCQueryContractParam::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOTCQueryContractParam::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	CheckLogin(session);
 

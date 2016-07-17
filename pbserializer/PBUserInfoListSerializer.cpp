@@ -12,14 +12,14 @@
 #include "../dataobject/UserInfoDO.h"
 #include "../dataobject/TemplateDO.h"
 ////////////////////////////////////////////////////////////////////////
-// Name:       PBUserInfoListSerializer::Serialize(const dataobj_ptr abstractDO)
+// Name:       PBUserInfoListSerializer::Serialize(const dataobj_ptr& abstractDO)
 // Purpose:    Implementation of PBUserInfoListSerializer::Serialize()
 // Parameters:
 // - abstractDO
 // Return:     data_buffer
 ////////////////////////////////////////////////////////////////////////
 
-data_buffer PBUserInfoListSerializer::Serialize(const dataobj_ptr abstractDO)
+data_buffer PBUserInfoListSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	Micro::Future::Message::PBUserInfoList PB;
 	auto pDO = (VectorDO<UserInfoDO>*)abstractDO.get();

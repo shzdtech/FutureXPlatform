@@ -12,14 +12,14 @@
 #include "../dataobject/UserPositionDO.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       PBUserPositionSerializer::Serialize(const dataobj_ptr abstractDO)
+// Name:       PBUserPositionSerializer::Serialize(const dataobj_ptr& abstractDO)
 // Purpose:    Implementation of PBUserPositionSerializer::Serialize()
 // Parameters:
 // - abstractDO
 // Return:     data_buffer
 ////////////////////////////////////////////////////////////////////////
 
-data_buffer PBUserPositionSerializer::Serialize(const dataobj_ptr abstractDO)
+data_buffer PBUserPositionSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	using namespace Micro::Future::Message::Business;
 	PBPosition PB;

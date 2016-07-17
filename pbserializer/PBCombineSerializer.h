@@ -16,7 +16,7 @@ class PBSERIALIZER_CLASS_EXPORTS PBCombineSerializer : public IDataSerializer
 public:
    PBCombineSerializer(ISerializer_Ptr serializer, IDeserializer_Ptr deserializer);
    ~PBCombineSerializer();
-   data_buffer Serialize(const dataobj_ptr abstractDO);
+   data_buffer Serialize(const dataobj_ptr& abstractDO);
    dataobj_ptr Deserialize(const data_buffer& rawdata);
 
 protected:

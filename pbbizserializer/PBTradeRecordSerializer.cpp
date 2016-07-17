@@ -12,14 +12,14 @@
 #include "../dataobject/TradeRecordDO.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       PBTradeRecordSerializer::Serialize(const dataobj_ptr abstractDO)
+// Name:       PBTradeRecordSerializer::Serialize(const dataobj_ptr& abstractDO)
 // Purpose:    Implementation of PBTradeRecordSerializer::Serialize()
 // Parameters:
 // - abstractDO
 // Return:     data_buffer
 ////////////////////////////////////////////////////////////////////////
 
-data_buffer PBTradeRecordSerializer::Serialize(const dataobj_ptr abstractDO)
+data_buffer PBTradeRecordSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	using namespace Micro::Future::Message::Business;
 	

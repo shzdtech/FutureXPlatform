@@ -169,6 +169,12 @@ void CTPTradeWorkerProcessor::OnRspQryOrder(CThostFtdcOrderField *pOrder, CThost
 		orderptr->HasMore = !bIsLast;
 		DispatchUserMessage(MSG_ID_QUERY_ORDER, orderptr->UserID(), orderptr);
 	}
+	else
+	{
+		_userSessionCtn_Ptr->forall([nRequestID, this](IMessageSession* pSession)
+		{this->SendDataObject(pSession, MSG_ID_ERROR,
+			std::make_shared<MessageExceptionDO>(MSG_ID_QUERY_ORDER, nRequestID, NOTFOUND_ERROR)); });
+	}
 }
 
 void CTPTradeWorkerProcessor::OnRtnOrder(CThostFtdcOrderField *pOrder)
@@ -214,7 +220,13 @@ void CTPTradeWorkerProcessor::OnRspQryTrade(CThostFtdcTradeField *pTrade, CThost
 	{
 		trdDO_Ptr->SerialId = nRequestID;
 		trdDO_Ptr->HasMore = !bIsLast;
-		DispatchUserMessage(MSG_ID_TRADE_RTN, pTrade->UserID, trdDO_Ptr);
+		DispatchUserMessage(MSG_ID_QUERY_TRADE, pTrade->UserID, trdDO_Ptr);
+	}
+	else
+	{
+		_userSessionCtn_Ptr->forall([nRequestID, this](IMessageSession* pSession)
+		{this->SendDataObject(pSession, MSG_ID_ERROR,
+			std::make_shared<MessageExceptionDO>(MSG_ID_QUERY_TRADE, nRequestID, NOTFOUND_ERROR)); });
 	}
 }
 
@@ -286,11 +298,14 @@ int CTPTradeWorkerProcessor::CancelOrder(const OrderDO& orderInfo, OrderStatus& 
 	}
 	else
 	{
-		auto pUser = getSession()->getUserInfo();
-		req.SessionID = pUser->getSessionId();
-		req.FrontID = pUser->getFrontId();
-		std::strcpy(req.InstrumentID, orderInfo.InstrumentID().data());
-		std::sprintf(req.OrderRef, FMT_PADDING_ORDERREF, orderInfo.OrderID);
+		if (auto sessionptr = getSession())
+		{
+			auto pUser = sessionptr->getUserInfo();
+			req.SessionID = pUser->getSessionId();
+			req.FrontID = pUser->getFrontId();
+			std::strcpy(req.InstrumentID, orderInfo.InstrumentID().data());
+			std::sprintf(req.OrderRef, FMT_PADDING_ORDERREF, orderInfo.OrderID);
+		}
 	}
 
 	currStatus = OrderStatus::CANCELING;

@@ -15,7 +15,7 @@
 #include "CTPUtility.h"
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       CTPQuerySettlementInfoCfm::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       CTPQuerySettlementInfoCfm::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
  // Purpose:    Implementation of CTPQuerySettlementInfoCfm::HandleRequest()
  // Parameters:
  // - reqDO
@@ -24,7 +24,7 @@
  // Return:     void
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQuerySettlementInfoCfm::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQuerySettlementInfoCfm::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	auto stdo = (MapDO<std::string>*)reqDO.get();
 

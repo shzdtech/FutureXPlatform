@@ -8,7 +8,7 @@
 #include "CTPOTCQueryTradingDesks.h"
 #include "../databaseop/UserInfoDAO.h"
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCQueryTradingDesks::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPOTCQueryTradingDesks::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPOTCQueryTradingDesks::HandleRequest()
 // Parameters:
 // - reqDO
@@ -17,7 +17,7 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCQueryTradingDesks::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOTCQueryTradingDesks::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	auto userDOVec = UserInfoDAO::FindAllUserByRole(ROLE_TRADINGDESK);
 

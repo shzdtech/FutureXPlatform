@@ -36,6 +36,8 @@ public:
 	void setLoginStatus(bool status);
 	IUserInfo_Ptr getUserInfo(void);
 	IProcessorBase_Ptr getProcessor(void);
+	virtual std::shared_ptr<ISession> LockThis(void);
+
 	void addListener(IMessageSessionEvent_WkPtr listener);
 	void removeListener(IMessageSessionEvent_WkPtr listener);
 

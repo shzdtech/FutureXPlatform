@@ -11,7 +11,7 @@
 #include "../message/BizError.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTSReturnMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       CTSReturnMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTSReturnMarketData::HandleRequest()
 // Parameters:
 // - reqDO
@@ -20,7 +20,7 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTSReturnMarketData::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTSReturnMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	return nullptr;
 }

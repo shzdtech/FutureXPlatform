@@ -22,7 +22,7 @@
 #include "CTPConstant.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, IMessageProcessor_Ptr session)
+// Name:       CTPLoginHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, IMessageProcessor_Ptr session)
 // Purpose:    Implementation of CTPLoginHandler::HandleRequest()
 // Parameters:
 // - reqDO
@@ -31,7 +31,7 @@
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPLoginHandler::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPLoginHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	auto stdo = (MapDO<std::string>*)reqDO.get();
 	

@@ -11,7 +11,6 @@
 
 MessageProcessor::MessageProcessor()
 {
-	_pMsgSession = nullptr;
 }
 
 MessageProcessor::~MessageProcessor()
@@ -25,9 +24,9 @@ MessageProcessor::~MessageProcessor()
 // Return:     session_ptr
 ////////////////////////////////////////////////////////////////////////
 
-IMessageSession* MessageProcessor::getSession(void)
+IMessageSession_Ptr MessageProcessor::getSession(void)
 {
-	return _pMsgSession;
+	return _msgsession_wk_ptr.lock();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -38,9 +37,9 @@ IMessageSession* MessageProcessor::getSession(void)
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void MessageProcessor::setSession(IMessageSession* pMsgSession)
+void MessageProcessor::setSession(IMessageSession_WkPtr msgSession_wk_ptr)
 {
-	_pMsgSession = pMsgSession;
+	_msgsession_wk_ptr = msgSession_wk_ptr;
 }
 
 void MessageProcessor::setServiceLocator(IMessageServiceLocator_Ptr svcLct_Ptr)
@@ -56,6 +55,11 @@ void MessageProcessor::setServerContext(IContextAttribute * serverCtx)
 IContextAttribute * MessageProcessor::getServerContext(void)
 {
 	return _serverCtx;
+}
+
+bool MessageProcessor::OnSessionClosing(void)
+{
+	return true;
 }
 
 ////////////////////////////////////////////////////////////////////////

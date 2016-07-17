@@ -21,8 +21,8 @@ class MESSAGE_CLASS_EXPORT MessageProcessor :
 public:
 	MessageProcessor();
 	~MessageProcessor();
-	IMessageSession* getSession(void);
-	void setSession(IMessageSession* msgSession);
+	IMessageSession_Ptr getSession(void);
+	void setSession(IMessageSession_WkPtr msgSession_wk_ptr);
 	IMessageServiceLocator_Ptr getServiceLocator(void);
 	void setServiceLocator(IMessageServiceLocator_Ptr svc_locator_ptr);
 
@@ -30,11 +30,11 @@ public:
 	virtual IContextAttribute* getServerContext(void);
 
 protected:
-	IMessageSession* _pMsgSession;
+	IMessageSession_WkPtr _msgsession_wk_ptr;
 	IMessageServiceLocator_Ptr _svc_locator_ptr;
 	IContextAttribute* _serverCtx;
 
-	bool OnSessionClosing(void){ return true; };
+	bool OnSessionClosing(void);
 private:
 };
 

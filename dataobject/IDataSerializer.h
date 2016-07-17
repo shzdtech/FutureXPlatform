@@ -15,7 +15,7 @@
 class ISerializer
 {
 public:
-	virtual data_buffer Serialize(const dataobj_ptr abstractDO) = 0;
+	virtual data_buffer Serialize(const dataobj_ptr& abstractDO) = 0;
 };
 
 class IDeserializer

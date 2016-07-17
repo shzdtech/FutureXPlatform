@@ -36,14 +36,14 @@ void fillTable(ComplexTableDO* ctDO, ComplexTable* ct)
 	}
 }
 ////////////////////////////////////////////////////////////////////////
-// Name:       PBComplexTableSerializer::Serialize(const dataobj_ptr abstractDO)
+// Name:       PBComplexTableSerializer::Serialize(const dataobj_ptr& abstractDO)
 // Purpose:    Implementation of PBComplexTableSerializer::Serialize()
 // Parameters:
 // - abstractDO
 // Return:     data_buffer
 ////////////////////////////////////////////////////////////////////////
 
-data_buffer PBComplexTableSerializer::Serialize(const dataobj_ptr abstractDO)
+data_buffer PBComplexTableSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	auto ctDO = (ComplexTableDO*)abstractDO.get();
 	ComplexTable ct;

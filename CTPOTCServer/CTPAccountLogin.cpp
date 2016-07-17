@@ -33,7 +33,7 @@
 
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       CTPAccountLogin::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, IMessageProcessor* session)
+ // Name:       CTPAccountLogin::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, IMessageProcessor* session)
  // Purpose:    Implementation of CTPAccountLogin::HandleRequest()
  // Parameters:
  // - reqDO
@@ -42,7 +42,7 @@
  // Return:     dataobj_ptr
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPAccountLogin::HandleRequest(const dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPAccountLogin::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	auto ret = Login(reqDO, rawAPI, session);
 

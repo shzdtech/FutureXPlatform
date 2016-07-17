@@ -16,7 +16,7 @@
 class PBBIZSERIALIZER_CLASS_EXPORTS PBInstrumentSerializer : public IDataSerializer, public singleton_ptr<PBInstrumentSerializer>
 {
 public:
-   data_buffer Serialize(const dataobj_ptr abstractDO);
+   data_buffer Serialize(const dataobj_ptr& abstractDO);
    dataobj_ptr Deserialize(const data_buffer& rawdata);
 
 protected:

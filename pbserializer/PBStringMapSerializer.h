@@ -11,7 +11,7 @@ class PBSERIALIZER_CLASS_EXPORTS PBStringMapSerializer : public IDataSerializer,
 public:
 	dataobj_ptr Deserialize(const data_buffer& rawdata);
 
-	data_buffer Serialize(const dataobj_ptr abstractDO);
+	data_buffer Serialize(const dataobj_ptr& abstractDO);
 };
 
 #endif

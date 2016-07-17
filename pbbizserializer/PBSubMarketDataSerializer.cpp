@@ -11,14 +11,14 @@
 #include "../dataobject/TemplateDO.h"
 #include "../Protos/simpletable.pb.h"
 ////////////////////////////////////////////////////////////////////////
-// Name:       PBSubMarketDataSerializer::Serialize(const dataobj_ptr abstractDO)
+// Name:       PBSubMarketDataSerializer::Serialize(const dataobj_ptr& abstractDO)
 // Purpose:    Implementation of PBSubMarketDataSerializer::Serialize()
 // Parameters:
 // - abstractDO
 // Return:     data_buffer
 ////////////////////////////////////////////////////////////////////////
 
-data_buffer PBSubMarketDataSerializer::Serialize(const dataobj_ptr abstractDO)
+data_buffer PBSubMarketDataSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	return PBMarketDataSerializer::Instance()->Serialize(abstractDO);
 }
