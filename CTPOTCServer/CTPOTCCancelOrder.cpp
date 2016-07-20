@@ -8,7 +8,7 @@
 #include "CTPOTCCancelOrder.h"
 #include <memory>
 
-#include "../message/GlobalProcessorRegistry.h"
+#include "../message/MessageUtility.h"
 #include "../CTPServer/CTPWorkerProcessorID.h"
 #include "CTPOTCWorkerProcessor.h"
 #include "../dataobject/OrderDO.h"
@@ -29,8 +29,8 @@ dataobj_ptr CTPOTCCancelOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* 
 
 	auto& orderDO = *((OrderDO*)reqDO.get());
 	
-	if(auto wkProcPtr = std::static_pointer_cast<CTPOTCWorkerProcessor>
-		(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::WORKPROCESSOR_OTC)))
+	if (auto wkProcPtr =
+		MessageUtility::FindGlobalProcessor<CTPOTCWorkerProcessor>(CTPWorkerProcessorID::WORKPROCESSOR_OTC))
 	{
 		wkProcPtr->OTCCancelOrder(orderDO);
 	}

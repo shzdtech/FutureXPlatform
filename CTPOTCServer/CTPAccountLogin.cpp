@@ -23,7 +23,7 @@
 #include "../message/BizError.h"
 #include "../message/UserInfo.h"
 #include "../message/SysParam.h"
-#include "../message/GlobalProcessorRegistry.h"
+#include "../message/MessageUtility.h"
 
 #include "../common/BizErrorIDs.h"
 
@@ -46,13 +46,13 @@ dataobj_ptr CTPAccountLogin::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* ra
 {
 	auto ret = Login(reqDO, rawAPI, session);
 
-	if (auto wkProcPtr = std::static_pointer_cast<CTPTradeWorkerProcessor>
-		(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT)))
+	if (auto wkProcPtr = 
+		MessageUtility::FindGlobalProcessor<CTPTradeWorkerProcessor>(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT))
 	{
 		if (!(wkProcPtr->ConnectedToServer() && wkProcPtr->HasLogged()))
 			throw SystemException(CONNECTION_ERROR, "Cannot connect to CTP Trading Server!");
 
-		wkProcPtr->RegisterLoggedSession((IMessageSession*)session);
+		wkProcPtr->RegisterLoggedSession(session->getProcessor()->LockMessageSession().get());
 	}
 	
 	return ret;

@@ -2,7 +2,7 @@
 #define __pbserializer_pbserializers_h
 
 #include "PBStringMapSerializer.h"
-#include "PBEchoMsgSerializer.h"
+#include "PBEchoMessageSerializer.h"
 #include "PBExceptionSerializer.h"
 #include "PBComplexTableSerializer.h"
 #include "PBDoubleTableSerializer.h"

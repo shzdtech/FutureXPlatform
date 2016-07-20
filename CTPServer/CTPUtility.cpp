@@ -202,18 +202,17 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(CThostFtdcOrderField *pOrder)
 	return ret;
 }
 
-OrderDO_Ptr CTPUtility::ParseRawOrderAction(
+OrderDO_Ptr CTPUtility::ParseRawOrderInputAction(
 	CThostFtdcInputOrderActionField *pOrderAction,
-	CThostFtdcRspInfoField *pRsp,
-	OrderStatus orderstatus)
+	CThostFtdcRspInfoField *pRsp)
 {
 	auto pDO = new OrderDO(std::strtoull(pOrderAction->OrderRef, nullptr, 0),
 		pOrderAction->ExchangeID, pOrderAction->InstrumentID, pOrderAction->UserID);
 	OrderDO_Ptr ret(pDO);
 	pDO->OrderSysID = std::strtoull(pOrderAction->OrderSysID, nullptr, 0);
-	pDO->OrderStatus = orderstatus;
 	pDO->LimitPrice = pOrderAction->LimitPrice;
-	pDO->Active = false;
+	pDO->Active = pRsp != nullptr;
+	pDO->OrderStatus = pRsp? OrderStatus::OPEN_REJECTED : OrderStatus::OPENNING;
 
 	if (pRsp) {
 		pDO->ErrorCode = pRsp->ErrorID;
@@ -225,8 +224,7 @@ OrderDO_Ptr CTPUtility::ParseRawOrderAction(
 
 OrderDO_Ptr CTPUtility::ParseRawOrderInput(
 	CThostFtdcInputOrderField *pOrderInput,
-	CThostFtdcRspInfoField *pRsp,
-	OrderStatus orderstatus)
+	CThostFtdcRspInfoField *pRsp)
 {
 	auto pDO = new OrderDO(std::strtoull(pOrderInput->OrderRef, nullptr, 0),
 		"", pOrderInput->InstrumentID, pOrderInput->UserID);
@@ -236,8 +234,26 @@ OrderDO_Ptr CTPUtility::ParseRawOrderInput(
 	pDO->LimitPrice = pOrderInput->LimitPrice;
 	pDO->Volume = pOrderInput->VolumeTotalOriginal;
 	pDO->StopPrice = pOrderInput->StopPrice;
-	pDO->OrderStatus = orderstatus;
-	pDO->Active = false;
+	pDO->Active = pRsp != nullptr;
+	pDO->OrderStatus = pRsp ? OrderStatus::OPEN_REJECTED : OrderStatus::OPENNING;
+
+	if (pRsp) {
+		pDO->ErrorCode = pRsp->ErrorID;
+		pDO->Message = std::move(Encoding::ToUTF8(pRsp->ErrorMsg, CHARSET_GB2312));
+	}
+
+	return ret;
+}
+
+OrderDO_Ptr CTPUtility::ParseRawOrderAction(CThostFtdcOrderActionField * pOrderAction, CThostFtdcRspInfoField * pRsp)
+{
+	auto pDO = new OrderDO(std::strtoull(pOrderAction->OrderRef, nullptr, 0),
+		pOrderAction->ExchangeID, pOrderAction->InstrumentID, pOrderAction->UserID);
+	OrderDO_Ptr ret(pDO);
+	pDO->OrderSysID = std::strtoull(pOrderAction->OrderSysID, nullptr, 0);
+	pDO->LimitPrice = pOrderAction->LimitPrice;
+	pDO->Active = pRsp != nullptr;
+	pDO->OrderStatus = pRsp ? OrderStatus::CANCEL_REJECTED : OrderStatus::CANCELING;
 
 	if (pRsp) {
 		pDO->ErrorCode = pRsp->ErrorID;
@@ -252,7 +268,7 @@ TradeRecordDO_Ptr CTPUtility::ParseRawTrade(CThostFtdcTradeField * pTrade)
 	TradeRecordDO_Ptr ret;
 	if (pTrade)
 	{
-		auto pDO = new TradeRecordDO(pTrade->ExchangeID, pTrade->InstrumentID);
+		auto pDO = new TradeRecordDO(pTrade->ExchangeID, pTrade->InstrumentID, pTrade->UserID);
 		ret.reset(pDO);
 		pDO->OrderID = std::strtoull(pTrade->OrderRef, nullptr, 0);
 		pDO->OrderSysID = std::strtoull(pTrade->OrderSysID, nullptr, 0);

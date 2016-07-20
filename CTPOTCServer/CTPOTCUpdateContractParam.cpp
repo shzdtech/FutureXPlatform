@@ -10,7 +10,7 @@
 #include "../CTPServer/CTPWorkerProcessorID.h"
 
 
-#include "../message/GlobalProcessorRegistry.h"
+#include "../message/MessageUtility.h"
 #include "../common/Attribute_Key.h"
 
 #include "../message/BizError.h"
@@ -45,8 +45,8 @@ dataobj_ptr CTPOTCUpdateContractParam::HandleRequest(const dataobj_ptr& reqDO, I
 	auto mdMap = pricingCtx->GetMarketDataDOMap();
 	auto contractMap = pricingCtx->GetContractMap();
 
-	auto proc = std::static_pointer_cast<CTPOTCWorkerProcessor>
-		(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::WORKPROCESSOR_OTC));
+	auto wkProcPtr =
+		MessageUtility::FindGlobalProcessor<CTPOTCWorkerProcessor>(CTPWorkerProcessorID::WORKPROCESSOR_OTC);
 
 	for (auto& conDO : *vecConDO_Ptr)
 	{
@@ -55,7 +55,7 @@ dataobj_ptr CTPOTCUpdateContractParam::HandleRequest(const dataobj_ptr& reqDO, I
 		contractDO.Gamma = conDO.Gamma;
 
 		auto& mdDO = mdMap->at(conDO.InstrumentID());
-		proc->TriggerUpdating(mdDO);
+		wkProcPtr->TriggerUpdating(mdDO);
 	}	
 
 	return std::make_shared<ResultDO>(reqDO->SerialId);

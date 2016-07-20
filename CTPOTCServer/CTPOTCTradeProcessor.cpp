@@ -100,7 +100,7 @@ void CTPOTCTradeProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserL
 {
 	if (pRspUserLogin && !CTPUtility::HasError(pRspInfo))
 	{
-		if (auto sessionptr = getSession())
+		if (auto sessionptr = LockMessageSession())
 		{
 			auto pUser = sessionptr->getUserInfo();
 			pUser->setSessionId(pRspUserLogin->SessionID);
@@ -115,11 +115,11 @@ void CTPOTCTradeProcessor::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrd
 {
 	if (pInputOrder)
 	{
-		auto orderptr = CTPUtility::ParseRawOrderInput(pInputOrder, pRspInfo, OrderStatus::OPEN_REJECTED);
+		auto orderptr = CTPUtility::ParseRawOrderInput(pInputOrder, pRspInfo);
 
 		int ret = _autoOrderMgr.OnOrderUpdated(*orderptr);
 
-		DispatchUserMessage(MSG_ID_ORDER_CANCEL, orderptr->UserID(), orderptr);
+		DispatchUserMessage(MSG_ID_ORDER_UPDATE, orderptr->UserID(), orderptr);
 	}
 }
 
@@ -127,11 +127,11 @@ void CTPOTCTradeProcessor::OnRspOrderAction(CThostFtdcInputOrderActionField *pIn
 {
 	if (pInputOrderAction)
 	{
-		auto orderptr = CTPUtility::ParseRawOrderAction(pInputOrderAction, pRspInfo, OrderStatus::CANCEL_REJECTED);
+		auto orderptr = CTPUtility::ParseRawOrderInputAction(pInputOrderAction, pRspInfo);
 
 		int ret = _autoOrderMgr.OnOrderUpdated(*orderptr);
 
-		DispatchUserMessage(MSG_ID_ORDER_CANCEL, orderptr->UserID(), orderptr);
+		DispatchUserMessage(MSG_ID_ORDER_UPDATE, orderptr->UserID(), orderptr);
 	}
 }
 
@@ -143,26 +143,7 @@ void CTPOTCTradeProcessor::OnRtnOrder(CThostFtdcOrderField *pOrder)
 		int ret = _autoOrderMgr.OnOrderUpdated(*orderptr);
 		if (ret == 0)
 		{
-			int msgId;
-			switch (orderptr->OrderStatus)
-			{
-			case OrderStatus::CANCELED:
-			case OrderStatus::CANCEL_REJECTED:
-				msgId = MSG_ID_ORDER_CANCEL;
-				break;
-			case OrderStatus::OPENNING:
-			case OrderStatus::OPEN_REJECTED:
-				msgId = MSG_ID_ORDER_NEW;
-				break;
-			case OrderStatus::PARTIAL_TRADING:
-			case OrderStatus::ALL_TRADED:
-				msgId = MSG_ID_ORDER_UPDATE;
-				break;
-			default:
-				return;
-			}
-
-			DispatchUserMessage(msgId, orderptr->UserID(), orderptr);
+			DispatchUserMessage(MSG_ID_ORDER_UPDATE, orderptr->UserID(), orderptr);
 		}
 	}
 }

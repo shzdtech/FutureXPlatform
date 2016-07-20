@@ -10,7 +10,7 @@
 #include "CTPTradeWorkerProcessor.h"
 #include "CTPWorkerProcessorID.h"
 
-#include "../message/GlobalProcessorRegistry.h"
+#include "../message/MessageUtility.h"
 #include "../common/BizErrorIDs.h"
 
 #include "../dataobject/TemplateDO.h"
@@ -42,15 +42,15 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 
 	CThostFtdcQryExchangeField req{};
 
-	if (auto wkProcPtr = std::static_pointer_cast<CTPTradeWorkerProcessor>
-		(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT)))
+	if (auto wkProcPtr =
+		MessageUtility::FindGlobalProcessor<CTPTradeWorkerProcessor>(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT))
 	{
 		auto& exchangeInfo = wkProcPtr->GetExchangeInfo();
 
 		if (exchangeInfo.size() < 1)
 		{
 			int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryExchange(&req, reqDO->SerialId);
-			CTPUtility::CheckReturnError(iRet);
+			// CTPUtility::CheckReturnError(iRet);
 
 			std::this_thread::sleep_for(std::chrono::seconds(2));
 		}
@@ -122,8 +122,8 @@ dataobj_ptr CTPQueryExchange::HandleResponse(const uint32_t serialId, param_vect
 		pDO->Name = Encoding::ToUTF8(pData->ExchangeName, CHARSET_GB2312);
 		pDO->Property = pData->ExchangeProperty;
 
-		if (auto wkProcPtr = std::static_pointer_cast<CTPTradeWorkerProcessor>
-			(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT)))
+		if (auto wkProcPtr =
+			MessageUtility::FindGlobalProcessor<CTPTradeWorkerProcessor>(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT))
 		{
 			auto& exchangeSet = wkProcPtr->GetExchangeInfo();
 			if (exchangeSet.find(*pDO) == exchangeSet.end())

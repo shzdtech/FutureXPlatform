@@ -1,17 +1,17 @@
 /***********************************************************************
- * Module:  EchoMsgSerializer.h
+ * Module:  EchoMessageSerializer.h
  * Author:  milk
  * Modified: 2014年10月8日 13:34:34
- * Purpose: Declaration of the class EchoMsgSerializer
+ * Purpose: Declaration of the class EchoMessageSerializer
  ***********************************************************************/
 
-#if !defined(__dataobject_EchoMsgSerializer_h)
-#define __dataobject_EchoMsgSerializer_h
+#if !defined(__dataobject_EchoMessageSerializer_h)
+#define __dataobject_EchoMessageSerializer_h
 #include "../dataobject/IDataSerializer.h"
 #include "../utility/singleton_templ.h"
 #include "message_exp.h"
 
-class MESSAGE_CLASS_EXPORT EchoMsgSerializer : public IDataSerializer, public singleton_ptr<EchoMsgSerializer>
+class MESSAGE_CLASS_EXPORT EchoMessageSerializer : public IDataSerializer, public singleton_ptr<EchoMessageSerializer>
 {
 public:
    data_buffer Serialize(const dataobj_ptr& abstractDO);

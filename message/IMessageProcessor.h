@@ -15,7 +15,7 @@
 class IMessageProcessor : public IProcessorBase
 {
 public:
-	virtual IMessageSession_Ptr getSession(void) = 0;
+	virtual IMessageSession_Ptr LockMessageSession(void) = 0;
 	virtual void setSession(IMessageSession_WkPtr msgSession_wk_ptr) = 0;
 	virtual void setServiceLocator(IMessageServiceLocator_Ptr svc_locator_ptr) = 0;
 	virtual void setServerContext(IContextAttribute* serverCtx) = 0;

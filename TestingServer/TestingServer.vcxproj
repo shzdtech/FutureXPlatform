@@ -151,6 +151,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="TestingAccountInfoHandler.cpp" />
     <ClCompile Include="TestingCancelOrderHandler.cpp" />
     <ClCompile Include="TestingCreateOrderHandler.cpp" />
     <ClCompile Include="TestingLoginHandler.cpp" />
@@ -163,6 +164,7 @@
     <ClCompile Include="TestingUnsubMarketDataHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="TestingAccountInfoHandler.h" />
     <ClInclude Include="TestingCancelOrderHandler.h" />
     <ClInclude Include="TestingCreateOrderHandler.h" />
     <ClInclude Include="TestingLoginHandler.h" />

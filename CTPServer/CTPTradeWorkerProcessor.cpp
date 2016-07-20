@@ -25,7 +25,7 @@
 CTPTradeWorkerProcessor::CTPTradeWorkerProcessor(const std::map<std::string, std::string>& configMap)
 	: CTPTradeProcessor(configMap), _userSessionCtn_Ptr(SessionContainer<std::string>::NewInstance())
 {
-	InstrmentsLoaded = false;
+	DataLoaded = false;
 	_systemUser.setBrokerId(SysParam::Get(CTP_TRADER_BROKERID));
 	_systemUser.setInvestorId(SysParam::Get(CTP_TRADER_USERID));
 	_systemUser.setUserId(SysParam::Get(CTP_TRADER_USERID));
@@ -61,21 +61,58 @@ void CTPTradeWorkerProcessor::Initialize(void)
 		_rawAPI->TrdAPI->Init();
 	}
 
-	_initializer = std::async(std::launch::async, [this]() {
+	if (_systemUser.getPassword().length() < 1)
+		return;
+
+	auto trdAPI = _rawAPI->TrdAPI;
+	_initializer = std::async(std::launch::async, [trdAPI, this]() {
 		std::this_thread::sleep_for(std::chrono::seconds(1)); //wait 1 secs for connecting to CTP server
-		LoginSystemUserIfNeed();
-		std::this_thread::sleep_for(std::chrono::seconds(5)); //wait 5 secs for login CTP server
-		while (!this->InstrmentsLoaded)
+		while (!this->DataLoaded)
 		{
-			if (this->HasLogged() && !InstrmentsLoaded)
+			if (!this->HasLogged())
 			{
-				CThostFtdcQryInstrumentField req{};
-				_rawAPI->TrdAPI->ReqQryInstrument(&req, 0);
+				LoginSystemUser();
+				std::this_thread::sleep_for(std::chrono::seconds(3)); //wait 5 secs for login CTP server
+			}
+
+			if (!DataLoaded)
+			{
+				LoadSystemData(trdAPI);
 			}
 			std::this_thread::sleep_for(std::chrono::milliseconds(this->RetryInterval));
-			LoginSystemUserIfNeed();
 		}
 	});
+}
+
+int CTPTradeWorkerProcessor::LoadSystemData(CThostFtdcTraderApi * trdAPI)
+{
+	auto delay = std::chrono::seconds(2);
+
+	std::this_thread::sleep_for(delay);
+	CThostFtdcQryTradingAccountField reqaccount{};
+	trdAPI->ReqQryTradingAccount(&reqaccount, 0);
+
+	std::this_thread::sleep_for(delay);
+	CThostFtdcQryInvestorPositionField reqposition{};
+	trdAPI->ReqQryInvestorPosition(&reqposition, 0);
+
+	std::this_thread::sleep_for(delay);
+	CThostFtdcQryTradeField reqtrd{};
+	trdAPI->ReqQryTrade(&reqtrd, 0);
+
+	std::this_thread::sleep_for(delay);
+	CThostFtdcQryOrderField reqorder{};
+	trdAPI->ReqQryOrder(&reqorder, 0);
+
+	std::this_thread::sleep_for(delay);
+	CThostFtdcQryExchangeField reqexchange{};
+	trdAPI->ReqQryExchange(&reqexchange, 0);
+
+	std::this_thread::sleep_for(delay);
+	CThostFtdcQryInstrumentField reqinstr{};
+	trdAPI->ReqQryInstrument(&reqinstr, 0);
+
+	return 0;
 }
 
 int CTPTradeWorkerProcessor::LoginSystemUser(void)
@@ -102,7 +139,7 @@ void CTPTradeWorkerProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUs
 {
 	if (!CTPUtility::HasError(pRspInfo))
 	{
-		if (auto session = getSession())
+		if (auto session = LockMessageSession())
 		{
 			session->setLoginStatus(true);
 			auto userinfo_ptr = session->getUserInfo();
@@ -115,11 +152,12 @@ void CTPTradeWorkerProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUs
 		}
 
 		_isLogged = true;
-		CThostFtdcSettlementInfoConfirmField req{};
-		std::strcpy(req.BrokerID, _systemUser.getBrokerId().data());
-		std::strcpy(req.InvestorID, _systemUser.getInvestorId().data());
+		auto trdAPI = _rawAPI->TrdAPI;
 
-		_rawAPI->TrdAPI->ReqSettlementInfoConfirm(&req, 0);
+		CThostFtdcSettlementInfoConfirmField reqsettle{};
+		std::strcpy(reqsettle.BrokerID, _systemUser.getBrokerId().data());
+		std::strcpy(reqsettle.InvestorID, _systemUser.getInvestorId().data());
+		trdAPI->ReqSettlementInfoConfirm(&reqsettle, 0);
 	}
 }
 
@@ -127,10 +165,33 @@ void CTPTradeWorkerProcessor::OnRspQryInstrument(CThostFtdcInstrumentField * pIn
 {
 	try
 	{
-		InstrmentsLoaded = bIsLast;
+		DataLoaded = bIsLast;
 		ProcessResponseMacro(this, MSG_ID_QUERY_INSTRUMENT, nRequestID, pInstrument, pRspInfo, &nRequestID, &bIsLast);
 	}
 	catch (...) {}
+}
+
+///报单录入错误回报
+void CTPTradeWorkerProcessor::OnErrRtnOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo)
+{
+	if (pInputOrder)
+	{
+		auto orderptr = CTPUtility::ParseRawOrderInput(pInputOrder, pRspInfo);
+		DispatchUserMessage(MSG_ID_ORDER_UPDATE, orderptr->UserID(), orderptr);
+	}
+}
+
+///报单操作错误回报
+void CTPTradeWorkerProcessor::OnErrRtnOrderAction(CThostFtdcOrderActionField *pOrderAction, CThostFtdcRspInfoField *pRspInfo)
+{
+	if (pOrderAction)
+	{
+		if (pOrderAction->ActionFlag == THOST_FTDC_AF_Delete)
+		{
+			auto orderptr = CTPUtility::ParseRawOrderAction(pOrderAction, pRspInfo);
+			DispatchUserMessage(MSG_ID_ORDER_UPDATE, orderptr->UserID(), orderptr);
+		}
+	}
 }
 
 ///报单录入请求响应
@@ -138,10 +199,10 @@ void CTPTradeWorkerProcessor::OnRspOrderInsert(CThostFtdcInputOrderField *pInput
 {
 	if (pInputOrder)
 	{
-		auto orderptr = CTPUtility::ParseRawOrderInput(pInputOrder, pRspInfo, OrderStatus::OPEN_REJECTED);
+		auto orderptr = CTPUtility::ParseRawOrderInput(pInputOrder, pRspInfo);
 		orderptr->SerialId = nRequestID;
 		orderptr->HasMore = !bIsLast;
-		DispatchUserMessage(MSG_ID_ORDER_NEW, orderptr->UserID(), orderptr);
+		DispatchUserMessage(MSG_ID_ORDER_UPDATE, orderptr->UserID(), orderptr);
 	}
 }
 
@@ -151,29 +212,11 @@ void CTPTradeWorkerProcessor::OnRspOrderAction(CThostFtdcInputOrderActionField *
 	{
 		if (pInputOrderAction->ActionFlag == THOST_FTDC_AF_Delete)
 		{
-			auto orderptr = CTPUtility::ParseRawOrderAction(pInputOrderAction, pRspInfo, OrderStatus::CANCEL_REJECTED);
+			auto orderptr = CTPUtility::ParseRawOrderInputAction(pInputOrderAction, pRspInfo);
 			orderptr->SerialId = nRequestID;
 			orderptr->HasMore = !bIsLast;
-			DispatchUserMessage(MSG_ID_ORDER_CANCEL, orderptr->UserID(), orderptr);
+			DispatchUserMessage(MSG_ID_ORDER_UPDATE, orderptr->UserID(), orderptr);
 		}
-	}
-}
-
-///请求查询报单响应
-void CTPTradeWorkerProcessor::OnRspQryOrder(CThostFtdcOrderField *pOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
-{
-	if (pOrder)
-	{
-		auto orderptr = CTPUtility::ParseRawOrder(pOrder);
-		orderptr->SerialId = nRequestID;
-		orderptr->HasMore = !bIsLast;
-		DispatchUserMessage(MSG_ID_QUERY_ORDER, orderptr->UserID(), orderptr);
-	}
-	else
-	{
-		_userSessionCtn_Ptr->forall([nRequestID, this](IMessageSession* pSession)
-		{this->SendDataObject(pSession, MSG_ID_ERROR,
-			std::make_shared<MessageExceptionDO>(MSG_ID_QUERY_ORDER, nRequestID, NOTFOUND_ERROR)); });
 	}
 }
 
@@ -181,52 +224,22 @@ void CTPTradeWorkerProcessor::OnRtnOrder(CThostFtdcOrderField *pOrder)
 {
 	if (pOrder)
 	{
-		int msgId;
-
-		switch (CTPUtility::CheckOrderStatus(pOrder->OrderStatus, pOrder->OrderSubmitStatus))
-		{
-		case OrderStatus::CANCELED:
-		case OrderStatus::CANCEL_REJECTED:
-			msgId = MSG_ID_ORDER_CANCEL;
-			break;
-		case OrderStatus::OPENNING:
-		case OrderStatus::OPEN_REJECTED:
-			msgId = MSG_ID_ORDER_NEW;
-			break;
-		case OrderStatus::PARTIAL_TRADING:
-		case OrderStatus::ALL_TRADED:
-			msgId = MSG_ID_ORDER_UPDATE;
-			break;
-		default:
-			return;
-		}
-
 		auto orderptr = CTPUtility::ParseRawOrder(pOrder);
-		DispatchUserMessage(msgId, orderptr->UserID(), orderptr);
+		auto& orderDO = _userOrderMap.getorfill(orderptr->UserID()).
+			getorfill(orderptr->OrderSysID, *orderptr);
+		orderDO = *orderptr;
+		DispatchUserMessage(MSG_ID_ORDER_UPDATE, orderptr->UserID(), orderptr);
 	}
 }
 
 void CTPTradeWorkerProcessor::OnRtnTrade(CThostFtdcTradeField * pTrade)
 {
-	if (auto trdDO_Ptr = CTPUtility::ParseRawTrade(pTrade))
+	if (pTrade)
+	{
+		auto trdDO_Ptr = CTPUtility::ParseRawTrade(pTrade);
+		_userTradeMap.getorfill(trdDO_Ptr->UserID()).
+			getorfill(trdDO_Ptr->TradeID, *trdDO_Ptr);
 		DispatchUserMessage(MSG_ID_TRADE_RTN, pTrade->UserID, trdDO_Ptr);
-}
-
-
-///请求查询成交响应
-void CTPTradeWorkerProcessor::OnRspQryTrade(CThostFtdcTradeField *pTrade, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
-{
-	if (auto trdDO_Ptr = CTPUtility::ParseRawTrade(pTrade))
-	{
-		trdDO_Ptr->SerialId = nRequestID;
-		trdDO_Ptr->HasMore = !bIsLast;
-		DispatchUserMessage(MSG_ID_QUERY_TRADE, pTrade->UserID, trdDO_Ptr);
-	}
-	else
-	{
-		_userSessionCtn_Ptr->forall([nRequestID, this](IMessageSession* pSession)
-		{this->SendDataObject(pSession, MSG_ID_ERROR,
-			std::make_shared<MessageExceptionDO>(MSG_ID_QUERY_TRADE, nRequestID, NOTFOUND_ERROR)); });
 	}
 }
 
@@ -298,10 +311,10 @@ int CTPTradeWorkerProcessor::CancelOrder(const OrderDO& orderInfo, OrderStatus& 
 	}
 	else
 	{
-		if (auto sessionptr = getSession())
+		if (auto sessionptr = LockMessageSession())
 		{
 			auto pUser = sessionptr->getUserInfo();
-			req.SessionID = pUser->getSessionId();
+			req.SessionID = pUser->LockMessageSessionId();
 			req.FrontID = pUser->getFrontId();
 			std::strcpy(req.InstrumentID, orderInfo.InstrumentID().data());
 			std::sprintf(req.OrderRef, FMT_PADDING_ORDERREF, orderInfo.OrderID);
@@ -341,8 +354,18 @@ UserPositionExDOMap& CTPTradeWorkerProcessor::GetUserPositionMap()
 	return _userPositionMap;
 }
 
+autofillmap<uint64_t, TradeRecordDO>& CTPTradeWorkerProcessor::GetUserTradeMap(const std::string userId)
+{
+	return _userTradeMap.getorfill(userId);
+}
+
+autofillmap<uint64_t, OrderDO>& CTPTradeWorkerProcessor::GetUserOrderMap(const std::string userId)
+{
+	return _userOrderMap.getorfill(userId);
+}
+
 void CTPTradeWorkerProcessor::DispatchUserMessage(int msgId, const std::string& userId,
-	dataobj_ptr dataobj_ptr)
+	const dataobj_ptr& dataobj_ptr)
 {
 	_userSessionCtn_Ptr->foreach(userId, [msgId, dataobj_ptr, this](IMessageSession* pSession)
 	{this->SendDataObject(pSession, msgId, dataobj_ptr); });

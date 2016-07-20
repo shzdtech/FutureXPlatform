@@ -187,8 +187,3 @@ IProcessorBase_Ptr MessageSession::getProcessor(void)
 {
 	return _messageProcessor_ptr;
 }
-
-std::shared_ptr<ISession> MessageSession::LockThis(void)
-{
-	return shared_from_this();
-}

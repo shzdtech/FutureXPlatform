@@ -12,11 +12,11 @@
 #include "dataobjectbase.h"
 #include "OrderDO.h"
 
-class TradeRecordDO : public ContractKey, public dataobjectbase
+class TradeRecordDO : public UserContractKey, public dataobjectbase
 {
 public:
-	TradeRecordDO(const std::string& exchangeID, const std::string& instrumentID)
-		: ContractKey(exchangeID, instrumentID){}
+	TradeRecordDO(const std::string& exchangeID, const std::string& instrumentID, const std::string& userID)
+		: UserKey(userID), UserContractKey(exchangeID, instrumentID, userID) {}
 
 	uint64_t OrderID = 0;
 	uint64_t TradeID = 0;

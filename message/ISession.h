@@ -12,9 +12,7 @@
 #include "../common/typedefs.h"
 #include "IContextAttribute.h"
 #include "IUserInfo.h"
-
-class IProcessorBase;
-typedef std::shared_ptr<IProcessorBase> IProcessorBase_Ptr;
+#include "MessageInterfaceDeclare.h"
 
 class ISession
 {
@@ -27,7 +25,6 @@ public:
 	virtual void setLoginStatus(bool status) = 0;
 	virtual IUserInfo_Ptr getUserInfo(void) = 0;
 	virtual IProcessorBase_Ptr getProcessor(void) = 0;
-	virtual std::shared_ptr<ISession> LockThis(void) = 0;
 
 	std::shared_ptr<void> Tag;
 protected:

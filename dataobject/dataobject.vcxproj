@@ -166,7 +166,7 @@
     <ClInclude Include="dataobject_exp.h" />
     <ClInclude Include="data_buffer.h" />
     <ClInclude Include="data_commondef.h" />
-    <ClInclude Include="EchoMsgDO.h" />
+    <ClInclude Include="EchoMessageDO.h" />
     <ClInclude Include="EnumTypes.h" />
     <ClInclude Include="ExchangeDO.h" />
     <ClInclude Include="FieldName.h" />

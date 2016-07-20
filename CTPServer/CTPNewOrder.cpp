@@ -13,7 +13,9 @@
 #include "../ordermanager/OrderSeqGen.h"
 
 #include "../dataobject/OrderDO.h"
-#include "tradeapi/ThostFtdcTraderApi.h"
+
+#include "../message/message_macro.h"
+#include "../message/DefMessageID.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPNewOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
@@ -74,6 +76,11 @@ dataobj_ptr CTPNewOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI
 	// 自动挂起标志
 	req.IsAutoSuspend = false;
 
+	bool bLast = true;
+	pDO->OrderStatus = OrderStatus::OPENNING;
+	OnResponseProcMacro(session->getProcessor(), MSG_ID_ORDER_NEW, reqDO->SerialId, &req, nullptr, &reqDO->SerialId, &bLast);
+
+
 	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqOrderInsert(&req, reqDO->SerialId);
 	CTPUtility::CheckReturnError(iRet);
 
@@ -94,20 +101,13 @@ dataobj_ptr CTPNewOrder::HandleResponse(const uint32_t serialId, param_vector& r
 {
 	dataobj_ptr ret;
 
-	if (rawRespParams.size() > 1)
+	if (auto pData = (CThostFtdcInputOrderField*)rawRespParams[0])
 	{
 		auto pRsp = (CThostFtdcRspInfoField*)rawRespParams[1];
-		auto pData = (CThostFtdcInputOrderField*)rawRespParams[0];
-		ret = CTPUtility::ParseRawOrderInput(pData, pRsp, OrderStatus::OPEN_REJECTED);
+		ret = CTPUtility::ParseRawOrderInput(pData, pRsp);
+		ret->SerialId = serialId;
+		ret->HasMore = false;
 	}
-	else
-	{
-		auto pData = (CThostFtdcOrderField*)rawRespParams[0];
-		ret = CTPUtility::ParseRawOrder(pData);
-
-	}
-
-	ret->SerialId = serialId;
 
 	return ret;
 }

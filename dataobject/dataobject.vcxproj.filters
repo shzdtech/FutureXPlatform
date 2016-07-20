@@ -87,9 +87,6 @@
     <ClInclude Include="ResultDO.h">
       <Filter>头文件\DO</Filter>
     </ClInclude>
-    <ClInclude Include="EchoMsgDO.h">
-      <Filter>头文件\DO</Filter>
-    </ClInclude>
     <ClInclude Include="databoject_config.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -118,6 +115,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="MessageExceptionDO.h">
+      <Filter>头文件\DO</Filter>
+    </ClInclude>
+    <ClInclude Include="EchoMessageDO.h">
       <Filter>头文件\DO</Filter>
     </ClInclude>
   </ItemGroup>

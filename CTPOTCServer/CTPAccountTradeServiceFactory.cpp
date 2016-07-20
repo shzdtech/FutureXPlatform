@@ -10,11 +10,11 @@
 #include "ctpotc_bizhandlers.h"
 #include "../CTPServer/ctp_bizhandlers.h"
 #include "../CTPServer/CTPTradeWorkerProcessor.h"
-#include "../message/GlobalProcessorRegistry.h"
+#include "../message/MessageUtility.h"
 #include "../common/Attribute_Key.h"
 
-#include "../message/EchoMsgHandler.h"
-#include "../message/EchoMsgSerializer.h"
+#include "../message/EchoMessageHandler.h"
+#include "../message/EchoMessageSerializer.h"
 #include "../message/DefMessageID.h"
 #include "../dataobject/AbstractDataSerializerFactory.h"
 
@@ -55,7 +55,7 @@ std::map<uint, IDataSerializer_Ptr> CTPAccountTradeServiceFactory::CreateDataSer
 
 IMessageProcessor_Ptr CTPAccountTradeServiceFactory::CreateMessageProcessor(void)
 {
-	auto pWorker = (CTPTradeWorkerProcessor*)GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT).get();
+	auto pWorker = MessageUtility::FindGlobalProcessor<CTPTradeWorkerProcessor>(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT);
 	return std::make_shared<CTPProcessor>(pWorker->RawAPI_Ptr());
 }
 

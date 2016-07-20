@@ -29,13 +29,13 @@ dataobj_ptr CTPQuerySettlementInfoCfm::HandleRequest(const dataobj_ptr& reqDO, I
 	auto stdo = (MapDO<std::string>*)reqDO.get();
 
 	auto& brokeid = session->getUserInfo()->getBrokerId();
-	auto& userid = session->getUserInfo()->getInvestorId();
+	auto& investorid = session->getUserInfo()->getInvestorId();
 	auto& cfmdate = stdo->TryFind(STR_DATE, EMPTY_STRING);
 	auto& cfmtime = stdo->TryFind(STR_TIME, EMPTY_STRING);
 
 	CThostFtdcSettlementInfoConfirmField req{};
 	std::strcpy(req.BrokerID, brokeid.data());
-	std::strcpy(req.InvestorID, userid.data());
+	std::strcpy(req.InvestorID, investorid.data());
 	std::strcpy(req.ConfirmDate, cfmdate.data());
 	std::strcpy(req.ConfirmTime, cfmtime.data());
 

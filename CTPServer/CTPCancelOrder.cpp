@@ -12,7 +12,9 @@
 #include "CTPConstant.h"
 
 #include "../dataobject/OrderDO.h"
-#include "tradeapi/ThostFtdcTraderApi.h"
+
+#include "../message/message_macro.h"
+#include "../message/DefMessageID.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPCancleOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
@@ -44,11 +46,15 @@ dataobj_ptr CTPCancelOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* raw
 	}
 	else
 	{
-		req.SessionID = userinfo->getSessionId();
+		req.SessionID = userinfo->LockMessageSessionId();
 		req.FrontID = userinfo->getFrontId();
 		std::strcpy(req.InstrumentID, pDO->InstrumentID().data());
 		std::sprintf(req.OrderRef, FMT_PADDING_ORDERREF, pDO->OrderID);
 	}
+
+	bool bLast = true;
+	pDO->OrderStatus = OrderStatus::CANCELING;
+	OnResponseProcMacro(session->getProcessor(), MSG_ID_ORDER_CANCEL, reqDO->SerialId, &req, nullptr, &reqDO->SerialId, &bLast);
 
 	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqOrderAction(&req, reqDO->SerialId);
 	CTPUtility::CheckReturnError(iRet);
@@ -70,19 +76,21 @@ dataobj_ptr CTPCancelOrder::HandleResponse(const uint32_t serialId, param_vector
 {
 	dataobj_ptr ret;
 
-	if (rawRespParams.size() > 1)
+	if (rawRespParams.size() > 2)
 	{
-		auto pRsp = (CThostFtdcRspInfoField*)rawRespParams[1];
 		auto pData = (CThostFtdcInputOrderActionField*)rawRespParams[0];
-
-		ret = CTPUtility::ParseRawOrderAction(pData, pRsp, OrderStatus::CANCEL_REJECTED);
+		auto pRsp = (CThostFtdcRspInfoField*)rawRespParams[1];
+		ret = CTPUtility::ParseRawOrderInputAction(pData, pRsp);
 	}
 	else
 	{
-		auto pData = (CThostFtdcOrderField*)rawRespParams[0];
-		ret = CTPUtility::ParseRawOrder(pData);
+		auto pData = (CThostFtdcOrderActionField*)rawRespParams[0];
+		auto pRsp = (CThostFtdcRspInfoField*)rawRespParams[1];
+		ret = CTPUtility::ParseRawOrderAction(pData, pRsp);
 	}
 
 	ret->SerialId = serialId;
+	ret->HasMore = false;
+
 	return ret;
 }

@@ -7,7 +7,11 @@
 
 #include "CTPQueryTrade.h"
 #include "CTPRawAPI.h"
-
+#include "CTPConstant.h"
+#include "CTPTradeWorkerProcessor.h"
+#include "CTPWorkerProcessorID.h"
+#include "../message/DefMessageID.h"
+#include "../message/MessageUtility.h"
 #include "../common/Attribute_Key.h"
 #include "../dataobject/TradeRecordDO.h"
 #include "../dataobject/UserPositionDO.h"
@@ -35,7 +39,7 @@ dataobj_ptr CTPQueryTrade::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawA
 	auto stdo = (MapDO<std::string>*)reqDO.get();
 
 	auto& brokeid = session->getUserInfo()->getBrokerId();
-	auto& userid = session->getUserInfo()->getInvestorId();
+	auto& investorid = session->getUserInfo()->getInvestorId();
 	auto& instrid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
 	auto& exchangeid = stdo->TryFind(STR_EXCHANGE_ID, EMPTY_STRING);
 	auto& tradeid = stdo->TryFind(STR_TRADE_ID, EMPTY_STRING);
@@ -45,15 +49,35 @@ dataobj_ptr CTPQueryTrade::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawA
 
 	CThostFtdcQryTradeField req{};
 	std::strcpy(req.BrokerID, brokeid.data());
-	std::strcpy(req.InvestorID, userid.data());
+	std::strcpy(req.InvestorID, investorid.data());
 	std::strcpy(req.InstrumentID, instrid.data());
 	std::strcpy(req.ExchangeID, exchangeid.data());
 	std::strcpy(req.TradeID, tradeid.data());
 	std::strcpy(req.TradeTimeStart, tmstart.data());
 	std::strcpy(req.TradeTimeEnd, tmend.data());
 	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryTrade(&req, reqDO->SerialId);
-	CTPUtility::CheckReturnError(iRet);
+	// CTPUtility::CheckReturnError(iRet);
 
+	if (auto wkProcPtr =
+		MessageUtility::FindGlobalProcessor<CTPTradeWorkerProcessor>(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT))
+	{
+		auto& userMap = wkProcPtr->GetUserTradeMap(session->getUserInfo()->getUserId());
+		if (userMap.size() < 1)
+		{
+			std::this_thread::sleep_for(std::chrono::seconds(2));
+		}
+
+		ThrowNotFoundException(&userMap);
+
+		auto lastit = std::prev(userMap.end());
+		for (auto it = userMap.begin(); it != userMap.end(); it++)
+		{
+			auto tradeptr = std::make_shared<TradeRecordDO>(it->second);
+			tradeptr->SerialId = stdo->SerialId;
+			tradeptr->HasMore = it != lastit;
+			wkProcPtr->SendDataObject(session, MSG_ID_QUERY_TRADE, tradeptr);
+		}
+	}
 	return nullptr;
 }
 
@@ -72,11 +96,20 @@ dataobj_ptr CTPQueryTrade::HandleResponse(const uint32_t serialId, param_vector&
 	CTPUtility::CheckNotFound(rawRespParams[0]);
 	CTPUtility::CheckError(rawRespParams[1]);
 
+	auto pTradeInfo = (CThostFtdcTradeField*)rawRespParams[0];
 	TradeRecordDO_Ptr ret;
-	if (ret = CTPUtility::ParseRawTrade((CThostFtdcTradeField*)rawRespParams[0]))
+	if (ret = CTPUtility::ParseRawTrade(pTradeInfo))
 	{
 		ret->SerialId = serialId;
 		ret->HasMore = !*(bool*)rawRespParams[3];
+
+		if (auto wkProcPtr =
+			MessageUtility::FindGlobalProcessor<CTPTradeWorkerProcessor>(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT))
+		{
+			auto& tradeMap = wkProcPtr->GetUserTradeMap(pTradeInfo->UserID);
+			auto& trade = tradeMap.getorfill(ret->TradeID, *ret);
+			trade = *ret;
+		}
 	}
 
 	return ret;

@@ -18,5 +18,7 @@
 #include "CTPQueryAccountInfo.h"
 #include "CTPNewOrder.h"
 #include "CTPCancelOrder.h"
+#include "CTPOrderUpdated.h"
+#include "CTPTradeUpdated.h"
 
 #endif

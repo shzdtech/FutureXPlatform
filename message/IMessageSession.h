@@ -9,12 +9,7 @@
 #define __message_IMessageSession_h
 
 #include "ISession.h"
-
-class IMessageProcessor;
-class IMessageSessionEvent;
-
-typedef std::shared_ptr<IMessageProcessor> IMessageProcessor_Ptr;
-typedef std::weak_ptr<IMessageSessionEvent> IMessageSessionEvent_WkPtr;
+#include "MessageInterfaceDeclare.h"
 
 class IMessageSession : public ISession
 {
@@ -30,9 +25,6 @@ protected:
 private:
 
 };
-
-typedef std::shared_ptr<IMessageSession> IMessageSession_Ptr;
-typedef std::weak_ptr<IMessageSession> IMessageSession_WkPtr;
 
 class IMessageSessionEvent
 {

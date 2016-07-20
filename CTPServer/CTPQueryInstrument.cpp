@@ -56,7 +56,7 @@ dataobj_ptr CTPQueryInstrument::HandleRequest(const dataobj_ptr& reqDO, IRawAPI*
 		std::strcpy(req.InstrumentID, instrumentid.data());
 		std::strcpy(req.ProductID, productid.data());
 		auto retCode = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryInstrument(&req, reqDO->SerialId);
-		CTPUtility::CheckReturnError(retCode);
+		// CTPUtility::CheckReturnError(retCode);
 
 		throw NotFoundException();
 	}

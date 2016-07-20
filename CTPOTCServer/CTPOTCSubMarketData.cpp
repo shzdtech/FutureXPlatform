@@ -11,7 +11,7 @@
 #include "../common/BizErrorIDs.h"
 
 #include "../common/Attribute_Key.h"
-#include "../message/GlobalProcessorRegistry.h"
+#include "../message/MessageUtility.h"
 #include "CTPOTCWorkerProcessor.h"
 #include "../CTPServer/CTPWorkerProcessorID.h"
 
@@ -65,12 +65,12 @@ dataobj_ptr CTPOTCSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI
 
 	session->getContext()->setAttribute(STR_KEY_USER_CONTRACTS, userContractMap_Ptr);
 
-	if (auto workPrc = GlobalProcessorRegistry::FindProcessor
-		(CTPWorkerProcessorID::WORKPROCESSOR_OTC))
+	if (auto wkProcPtr =
+		MessageUtility::FindGlobalProcessor<CTPOTCWorkerProcessor>(CTPWorkerProcessorID::WORKPROCESSOR_OTC))
 	{
-		auto otcworkproc = (std::static_pointer_cast<CTPOTCWorkerProcessor>(workPrc));
 		for (auto& it : *ret)
-			otcworkproc->RegisterPricingListener(it, (IMessageSession*)session);
+			wkProcPtr->RegisterPricingListener(it,
+				session->getProcessor()->LockMessageSession().get());
 	}
 
 	return ret;

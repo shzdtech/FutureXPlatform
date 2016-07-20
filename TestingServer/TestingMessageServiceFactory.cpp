@@ -15,9 +15,10 @@
 #include "TestingCreateOrderHandler.h"
 #include "TestingCancelOrderHandler.h"
 #include "TestingPositionHandler.h"
+#include "TestingAccountInfoHandler.h"
 
-#include "../message/EchoMsgHandler.h"
-#include "../message/EchoMsgSerializer.h"
+#include "../message/EchoMessageHandler.h"
+#include "../message/EchoMessageSerializer.h"
 #include "../message/DefMessageID.h"
 #include "../dataobject/AbstractDataSerializerFactory.h"
 
@@ -31,7 +32,7 @@ std::map<uint, IMessageHandler_Ptr> TestingMessageServiceFactory::CreateMessageH
 {
 	std::map<uint, IMessageHandler_Ptr> msg_hdl_map;
 
-	msg_hdl_map[MSG_ID_ECHO] = std::make_shared<EchoMsgHandler>();
+	msg_hdl_map[MSG_ID_ECHO] = std::make_shared<EchoMessageHandler>();
 
 	msg_hdl_map[MSG_ID_LOGIN] = std::make_shared<TestingLoginHandler>();
 
@@ -46,6 +47,8 @@ std::map<uint, IMessageHandler_Ptr> TestingMessageServiceFactory::CreateMessageH
 	msg_hdl_map[MSG_ID_ORDER_CANCEL] = std::make_shared<TestingCancelOrderHandler>();
 
 	msg_hdl_map[MSG_ID_QUERY_POSITION] = std::make_shared<TestingPositionHandler>();
+
+	msg_hdl_map[MSG_ID_QUERY_ACCOUNT_INFO] = std::make_shared<TestingAccountInfoHandler>();
 
 	return msg_hdl_map;
 }

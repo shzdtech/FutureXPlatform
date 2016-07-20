@@ -21,7 +21,7 @@ class MESSAGE_CLASS_EXPORT MessageProcessor :
 public:
 	MessageProcessor();
 	~MessageProcessor();
-	IMessageSession_Ptr getSession(void);
+	IMessageSession_Ptr LockMessageSession(void);
 	void setSession(IMessageSession_WkPtr msgSession_wk_ptr);
 	IMessageServiceLocator_Ptr getServiceLocator(void);
 	void setServiceLocator(IMessageServiceLocator_Ptr svc_locator_ptr);

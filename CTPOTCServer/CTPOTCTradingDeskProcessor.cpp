@@ -9,7 +9,7 @@
 #include "CTPOTCWorkerProcessor.h"
 #include "../CTPServer/CTPWorkerProcessorID.h"
 #include "../common/Attribute_Key.h"
-#include "../message/GlobalProcessorRegistry.h"
+#include "../message/MessageUtility.h"
 
 #include "../message/message_macro.h"
 
@@ -49,13 +49,13 @@ void CTPOTCTradingDeskProcessor::Initialize(void)
 
 bool CTPOTCTradingDeskProcessor::OnSessionClosing(void)
 {
-	if (auto proc = std::static_pointer_cast<CTPOTCWorkerProcessor>
-		(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::WORKPROCESSOR_OTC)))
+	if (auto wkProcPtr =
+		MessageUtility::FindGlobalProcessor<CTPOTCWorkerProcessor>(CTPWorkerProcessorID::WORKPROCESSOR_OTC))
 	{
 		auto pStrategyMap = AttribPointerCast(this, STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext)
 			->GetStrategyMap();
 
-		if (auto sessionptr = getSession())
+		if (auto sessionptr = LockMessageSession())
 		{
 			if (auto strategyVec_Ptr = std::static_pointer_cast<std::vector<ContractKey>>(
 				sessionptr->getContext()->getAttribute(STR_KEY_USER_STRATEGY)))
@@ -68,7 +68,7 @@ bool CTPOTCTradingDeskProcessor::OnSessionClosing(void)
 					{
 						strategy.Trading = false;
 						OrderDO orderDO(strategy);
-						proc->CancelAutoOrder(orderDO);
+						wkProcPtr->CancelAutoOrder(orderDO);
 					}
 				}
 			}

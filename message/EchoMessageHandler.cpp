@@ -1,17 +1,17 @@
 /***********************************************************************
- * Module:  EchoMsgHandler.cpp
+ * Module:  EchoMessageHandler.cpp
  * Author:  milk
  * Modified: 2014年10月12日 14:18:04
- * Purpose: Implementation of the class EchoMsgHandler
+ * Purpose: Implementation of the class EchoMessageHandler
  ***********************************************************************/
 
-#include "EchoMsgHandler.h"
-#include "../dataobject/EchoMsgDO.h"
+#include "EchoMessageHandler.h"
+#include "../dataobject/EchoMessageDO.h"
 #include "DefMessageID.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       EchoMsgHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, IMessageProcessor* session)
-// Purpose:    Implementation of EchoMsgHandler::HandleRequest()
+// Name:       EchoMessageHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, IMessageProcessor* session)
+// Purpose:    Implementation of EchoMessageHandler::HandleRequest()
 // Parameters:
 // - reqDO
 // - rawAPI
@@ -19,9 +19,9 @@
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr EchoMsgHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr EchoMessageHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
-   auto kaDO = std::static_pointer_cast<EchoMsgDO>(reqDO);
+   auto kaDO = std::static_pointer_cast<EchoMessageDO>(reqDO);
    session->WriteMessage(MSG_ID_ECHO, kaDO->getDataBuffer());
    return nullptr;
 }

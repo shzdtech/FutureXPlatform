@@ -8,7 +8,7 @@
 #include "CTPOTCUpdateStrategy.h"
 
 #include "../common/Attribute_Key.h"
-#include "../message/GlobalProcessorRegistry.h"
+#include "../message/MessageUtility.h"
 #include "CTPOTCWorkerProcessor.h"
 #include "../CTPServer/CTPWorkerProcessorID.h"
 
@@ -37,8 +37,8 @@ dataobj_ptr CTPOTCUpdateStrategy::HandleRequest(const dataobj_ptr& reqDO, IRawAP
 
 	auto strategyVec = (VectorDO<StrategyContractDO>*)reqDO.get();
 
-	auto proc = std::static_pointer_cast<CTPOTCWorkerProcessor>
-		(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::WORKPROCESSOR_OTC));
+	auto wkProcPtr =
+		MessageUtility::FindGlobalProcessor<CTPOTCWorkerProcessor>(CTPWorkerProcessorID::WORKPROCESSOR_OTC);
 
 	auto userContractMap_Ptr = std::static_pointer_cast<UserContractParamMap>
 		(session->getContext()->getAttribute(STR_KEY_USER_CONTRACTS));
@@ -60,16 +60,16 @@ dataobj_ptr CTPOTCUpdateStrategy::HandleRequest(const dataobj_ptr& reqDO, IRawAP
 			scDO.Volatility = scDO.Volatility;
 
 			if (scDO.Enabled)
-				proc->TriggerPricing(scDO);
+				wkProcPtr->TriggerPricing(scDO);
 			else
 				strategyDO.Trading = false;
 
 			scDO.Trading = strategyDO.Trading;
 
 			if (scDO.Trading)
-				proc->TriggerOrderUpdating(scDO);
+				wkProcPtr->TriggerOrderUpdating(scDO);
 			else
-				proc->CancelAutoOrder(scDO);
+				wkProcPtr->CancelAutoOrder(scDO);
 		}
 	}
 

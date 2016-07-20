@@ -11,11 +11,11 @@
 #include "ctp_bizhandlers.h"
 #include "CTPConstant.h"
 
-#include "../message/EchoMsgHandler.h"
-#include "../message/EchoMsgSerializer.h"
+#include "../message/EchoMessageHandler.h"
+#include "../message/EchoMessageSerializer.h"
 #include "../message/DefMessageID.h"
 #include "../message/SysParam.h"
-#include "../message/GlobalProcessorRegistry.h"
+#include "../message/MessageUtility.h"
 
 #include "../configuration/AbstractConfigReaderFactory.h"
 #include "../dataobject/AbstractDataSerializerFactory.h"
@@ -31,7 +31,7 @@ std::map<uint, IMessageHandler_Ptr> CTPTradeServiceFactory::CreateMessageHandler
 {
 	std::map<uint, IMessageHandler_Ptr> msg_hdl_map;
 
-	msg_hdl_map[MSG_ID_ECHO] = std::make_shared<EchoMsgHandler>();
+	msg_hdl_map[MSG_ID_ECHO] = std::make_shared<EchoMessageHandler>();
 
 	msg_hdl_map[MSG_ID_LOGIN] = std::make_shared<CTPTradeLoginHandler>();;
 
@@ -47,13 +47,13 @@ std::map<uint, IMessageHandler_Ptr> CTPTradeServiceFactory::CreateMessageHandler
 
 	msg_hdl_map[MSG_ID_QUERY_ORDER] = std::make_shared<CTPQueryOrder>();
 
-	msg_hdl_map[MSG_ID_ORDER_UPDATE] = msg_hdl_map[MSG_ID_QUERY_ORDER];
+	msg_hdl_map[MSG_ID_ORDER_UPDATE] = std::make_shared<CTPOrderUpdated>();
 
 	msg_hdl_map[MSG_ID_QUERY_POSITION] = std::make_shared<CTPQueryPosition>();
 
 	msg_hdl_map[MSG_ID_QUERY_TRADE] = std::make_shared<CTPQueryTrade>();
 
-	msg_hdl_map[MSG_ID_TRADE_RTN] = msg_hdl_map[MSG_ID_QUERY_TRADE];
+	msg_hdl_map[MSG_ID_TRADE_RTN] = std::make_shared<CTPTradeUpdated>();
 
 	msg_hdl_map[MSG_ID_SETTLEMENT_INFO_CONFIRM] = std::make_shared<CTPQuerySettlementInfoCfm>();
 

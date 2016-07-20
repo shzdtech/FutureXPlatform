@@ -29,6 +29,7 @@ data_buffer PBTradeRecordSerializer::Serialize(const dataobj_ptr& abstractDO)
 
 	PB.set_exchange(pDO->ExchangeID().data());
 	PB.set_contract(pDO->InstrumentID().data());
+	PB.set_userid(pDO->UserID().data());
 	PB.set_ordersysid(pDO->OrderSysID);
 	PB.set_orderid(pDO->OrderID);
 	PB.set_tradeid(pDO->TradeID);

@@ -7,7 +7,7 @@
 
 #include "CTPOTCQueryOrder.h"
 
-#include "../message/GlobalProcessorRegistry.h"
+#include "../message/MessageUtility.h"
 #include "../CTPServer/CTPWorkerProcessorID.h"
 #include "CTPOTCWorkerProcessor.h"
 
@@ -45,8 +45,8 @@ dataobj_ptr CTPOTCQueryOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 		ContractKey(EMPTY_STRING, instrumentid));
 
 	ThrowNotFoundException(ordervec_ptr);
-	if (auto proc = std::static_pointer_cast<CTPOTCWorkerProcessor>
-		(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::WORKPROCESSOR_OTC)))
+	if (auto wkProcPtr =
+		MessageUtility::FindGlobalProcessor<CTPOTCWorkerProcessor>(CTPWorkerProcessorID::WORKPROCESSOR_OTC))
 	{
 		ThrowNotFoundException(ordervec_ptr);
 
@@ -57,7 +57,7 @@ dataobj_ptr CTPOTCQueryOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 			order_ptr->SerialId = reqDO->SerialId;
 			order_ptr->HasMore = it != lastit;
 
-			proc->SendDataObject(session, MSG_ID_QUERY_ORDER, order_ptr);
+			wkProcPtr->SendDataObject(session, MSG_ID_QUERY_ORDER, order_ptr);
 		}
 	}
 

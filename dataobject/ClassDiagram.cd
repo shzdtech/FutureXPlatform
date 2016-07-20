@@ -105,11 +105,11 @@
       <FileName>ContractParam.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="EchoMsgDO" Collapsed="true">
+  <Class Name="EchoMessageDO" Collapsed="true">
     <Position X="30.75" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAgAAAAAAAABAAAAAAAAAAAAAAAAAAAAAIAAAAAAA=</HashCode>
-      <FileName>EchoMsgDO.h</FileName>
+      <FileName>EchoMessageDO.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ExchangeDO" Collapsed="true">
@@ -343,11 +343,11 @@
       <FileName>contractdo.h</FileName>
     </TypeIdentifier>
   </Typedef>
-  <Typedef Name="echomsgDO_ptr" Collapsed="true">
+  <Typedef Name="EchoMessageDO_ptr" Collapsed="true">
     <Position X="44.75" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>EchoMsgDO.h</FileName>
+      <FileName>EchoMessageDO.h</FileName>
     </TypeIdentifier>
   </Typedef>
   <Typedef Name="StrategyContractDO_Ptr" Collapsed="true">

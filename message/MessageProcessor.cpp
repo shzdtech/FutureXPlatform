@@ -19,12 +19,12 @@ MessageProcessor::~MessageProcessor()
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       MessageProcessor::getSession()
-// Purpose:    Implementation of MessageProcessor::getSession()
+// Name:       MessageProcessor::LockMessageSession()
+// Purpose:    Implementation of MessageProcessor::LockMessageSession()
 // Return:     session_ptr
 ////////////////////////////////////////////////////////////////////////
 
-IMessageSession_Ptr MessageProcessor::getSession(void)
+IMessageSession_Ptr MessageProcessor::LockMessageSession(void)
 {
 	return _msgsession_wk_ptr.lock();
 }

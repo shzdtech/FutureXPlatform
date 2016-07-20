@@ -19,7 +19,7 @@ void TemplateMessageProcessor::ProcessRequest(const uint msgId, const dataobj_pt
 	{
 		if (auto msgHandler = _svc_locator_ptr->FindMessageHandler(msgId))
 		{
-			if (auto pMsgSession = getSession().get())
+			if (auto pMsgSession = LockMessageSession().get())
 			{
 				if (auto dataobj_ptr = msgHandler->HandleRequest(reqDO, getRawAPI(), pMsgSession))
 				{
@@ -39,7 +39,7 @@ void TemplateMessageProcessor::ProcessResponse(const uint msgId, const uint seri
 	{
 		if (auto msgHandler = _svc_locator_ptr->FindMessageHandler(msgId))
 		{
-			if (auto pMsgSession = getSession().get())
+			if (auto pMsgSession = LockMessageSession().get())
 			{
 				if (auto dataobj_ptr = msgHandler->HandleResponse(serialId, rawRespParams, getRawAPI(), pMsgSession))
 				{
@@ -136,6 +136,6 @@ void TemplateMessageProcessor::SendExceptionMessage(uint msgId, MessageException
 	dataobj_ptr dataobj(new MessageExceptionDO(msgId, serialId, msgException.ErrorType(), msgException.ErrorCode(),
 		msgException.what()));
 	data_buffer msg = ExceptionSerializer::Instance()->Serialize(dataobj);
-	if (auto session_ptr = getSession())
+	if (auto session_ptr = LockMessageSession())
 		session_ptr->WriteMessage(MSG_ID_ERROR, msg);
 }

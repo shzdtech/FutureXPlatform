@@ -13,6 +13,7 @@
 #include "IRawAPI.h"
 #include "BizError.h"
 #include "SysParam.h"
+#include "MessageInterfaceDeclare.h"
 
 
 class IMessageHandler
@@ -26,5 +27,4 @@ private:
 
 };
 
-typedef std::shared_ptr<IMessageHandler> IMessageHandler_Ptr;
 #endif

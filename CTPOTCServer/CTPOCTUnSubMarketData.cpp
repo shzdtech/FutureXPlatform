@@ -8,7 +8,7 @@
 #include "CTPOCTUnSubMarketData.h"
 
 #include "../common/Attribute_Key.h"
-#include "../message/GlobalProcessorRegistry.h"
+#include "../message/MessageUtility.h"
 #include "CTPOTCWorkerProcessor.h"
 #include "../CTPServer/CTPWorkerProcessorID.h"
 
@@ -29,13 +29,13 @@ dataobj_ptr CTPOCTUnSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawA
 	auto userContractMap = std::static_pointer_cast<UserContractParamMap>
 		(session->getContext()->getAttribute(STR_KEY_USER_CONTRACTS));
 
-	if (auto workPrc = GlobalProcessorRegistry::FindProcessor
-		(CTPWorkerProcessorID::WORKPROCESSOR_OTC))
+	if (auto wkProcPtr =
+		MessageUtility::FindGlobalProcessor<CTPOTCWorkerProcessor>(CTPWorkerProcessorID::WORKPROCESSOR_OTC))
 	{
-		auto otcworkproc = (std::static_pointer_cast<CTPOTCWorkerProcessor>(workPrc));
 		for (auto it = userContractMap->begin(); it != userContractMap->end(); it++)
 		{
-			otcworkproc->UnregisterPricingListener(it->first, (IMessageSession*)session);
+			wkProcPtr->UnregisterPricingListener(it->first,
+				session->getProcessor()->LockMessageSession().get());
 		}
 
 		userContractMap->clear();

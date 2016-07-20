@@ -10,7 +10,7 @@
 #include "CTPTradeWorkerProcessor.h"
 #include "CTPWorkerProcessorID.h"
 
-#include "../message/GlobalProcessorRegistry.h"
+#include "../message/MessageUtility.h"
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/FieldName.h"
 #include "../message/BizError.h"
@@ -37,21 +37,22 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const dataobj_ptr& reqDO, IRawAPI
 {
 	auto stdo = (MapDO<std::string>*)reqDO.get();
 	auto& brokeid = session->getUserInfo()->getBrokerId();
-	auto& userid = session->getUserInfo()->getInvestorId();
+	auto& investorid = session->getUserInfo()->getInvestorId();
 
 	CThostFtdcQryTradingAccountField req{};
 	std::strcpy(req.BrokerID, brokeid.data());
-	std::strcpy(req.InvestorID, userid.data());
+	std::strcpy(req.InvestorID, investorid.data());
 
-	if (auto wkProcPtr = std::static_pointer_cast<CTPTradeWorkerProcessor>
-		(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT)))
+	if (auto wkProcPtr =
+		MessageUtility::FindGlobalProcessor<CTPTradeWorkerProcessor>(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT))
 	{
 		auto& accountInfoVec = wkProcPtr->GetAccountInfo(session->getUserInfo()->getInvestorId());
 
 		if (accountInfoVec.size() < 1)
 		{
 			int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryTradingAccount(&req, reqDO->SerialId);
-			CTPUtility::CheckReturnError(iRet);
+			// CTPUtility::CheckReturnError(iRet);
+
 			std::this_thread::sleep_for(std::chrono::seconds(2));
 		}
 
@@ -60,9 +61,10 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const dataobj_ptr& reqDO, IRawAPI
 		auto lastit = std::prev(accountInfoVec.end());
 		for (auto it = accountInfoVec.begin(); it != accountInfoVec.end(); it++)
 		{
-			it->SerialId = stdo->SerialId;
-			it->HasMore = it != lastit;
-			wkProcPtr->SendDataObject(session, MSG_ID_QUERY_ACCOUNT_INFO, std::make_shared<AccountInfoDO>(*it));
+			auto accountptr = std::make_shared<AccountInfoDO>(*it);
+			accountptr->SerialId = stdo->SerialId;
+			accountptr->HasMore = it != lastit;
+			wkProcPtr->SendDataObject(session, MSG_ID_QUERY_ACCOUNT_INFO, accountptr);
 		}
 	}
 	else
@@ -130,8 +132,8 @@ dataobj_ptr CTPQueryAccountInfo::HandleResponse(const uint32_t serialId, param_v
 		pDO->ExchangeDeliveryMargin = pData->ExchangeDeliveryMargin;
 		pDO->ReserveBalance = pData->Reserve;
 
-		if (auto wkProcPtr = std::static_pointer_cast<CTPTradeWorkerProcessor>
-			(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT)))
+		if (auto wkProcPtr =
+			MessageUtility::FindGlobalProcessor<CTPTradeWorkerProcessor>(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT))
 		{
 			wkProcPtr->GetAccountInfo(session->getUserInfo()->getUserId()).push_back(*pDO);
 		}

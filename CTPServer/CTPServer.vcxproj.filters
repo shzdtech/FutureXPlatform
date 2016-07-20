@@ -123,6 +123,12 @@
     <ClInclude Include="CTPWorkerProcessorID.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CTPTradeUpdated.h">
+      <Filter>头文件\CTPHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPOrderUpdated.h">
+      <Filter>头文件\CTPHandler\Trader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ctpexport.cpp">
@@ -192,6 +198,12 @@
       <Filter>源文件\CTPHandler\Trader</Filter>
     </ClCompile>
     <ClCompile Include="CTPTradeWorkerProcessor.cpp">
+      <Filter>源文件\CTPHandler\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPOrderUpdated.cpp">
+      <Filter>源文件\CTPHandler\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPTradeUpdated.cpp">
       <Filter>源文件\CTPHandler\Trader</Filter>
     </ClCompile>
   </ItemGroup>

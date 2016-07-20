@@ -8,7 +8,7 @@
 #include "CTPOTCNewOrder.h"
 #include <memory>
 
-#include "../message/GlobalProcessorRegistry.h"
+#include "../message/MessageUtility.h"
 #include "../CTPServer/CTPWorkerProcessorID.h"
 #include "CTPOTCWorkerProcessor.h"
 #include "../dataobject/OrderDO.h"
@@ -30,8 +30,8 @@ dataobj_ptr CTPOTCNewOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* raw
 
 	auto& orderDO = *((OrderDO*)reqDO.get());
 	orderDO.SetUserID(session->getUserInfo()->getUserId());
-	if (auto wkProcPtr = std::static_pointer_cast<CTPOTCWorkerProcessor>
-		(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::WORKPROCESSOR_OTC)))
+	if (auto wkProcPtr =
+		MessageUtility::FindGlobalProcessor<CTPOTCWorkerProcessor>(CTPWorkerProcessorID::WORKPROCESSOR_OTC))
 	{
 		int rtn = wkProcPtr->OTCNewOrder(orderDO);
 		if (rtn != 0)

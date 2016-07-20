@@ -12,11 +12,11 @@
 #include "../CTPServer/CTPWorkerProcessorID.h"
 #include "ctpotc_bizhandlers.h"
 #include "../CTPServer/ctp_bizhandlers.h"
-#include "../message/GlobalProcessorRegistry.h"
+#include "../message/MessageUtility.h"
 #include "../common/Attribute_Key.h"
 
-#include "../message/EchoMsgHandler.h"
-#include "../message/EchoMsgSerializer.h"
+#include "../message/EchoMessageHandler.h"
+#include "../message/EchoMessageSerializer.h"
 #include "../message/DefMessageID.h"
 #include "../dataobject/AbstractDataSerializerFactory.h"
 
@@ -32,7 +32,7 @@ std::map<uint, IMessageHandler_Ptr> CTPOTCTradingDeskServiceFactory::CreateMessa
 {
 	std::map<uint, IMessageHandler_Ptr> msg_hdl_map;
 
-	msg_hdl_map[MSG_ID_ECHO] = std::make_shared<EchoMsgHandler>();
+	msg_hdl_map[MSG_ID_ECHO] = std::make_shared<EchoMessageHandler>();
 
 	msg_hdl_map[MSG_ID_LOGIN] = std::make_shared<CTPOTCTradingDeskLogin>();
 

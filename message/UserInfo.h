@@ -53,7 +53,7 @@ public:
 	virtual unsigned long getNextSeq(void);
 	virtual void setInitSeq(const unsigned long initVal);
 
-	virtual int getSessionId(void) const;
+	virtual int LockMessageSessionId(void) const;
 	virtual void setSessionId(const int sessionId);
 
 	virtual int getFrontId(void) const;

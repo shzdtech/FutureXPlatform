@@ -11,10 +11,7 @@
 #include "../common/typedefs.h"
 #include "IContextAttribute.h"
 #include "../dataobject/data_buffer.h"
-
-class IMessageServiceLocator;
-
-typedef std::shared_ptr<IMessageServiceLocator> IMessageServiceLocator_Ptr;
+#include "MessageInterfaceDeclare.h"
 
 class IProcessorBase
 {
@@ -23,6 +20,7 @@ public:
    virtual int OnRequest(const uint msgId, const data_buffer& msg) = 0;
    virtual int OnResponse(const uint msgId, const uint serialId, param_vector& rawRespParams) = 0;
    virtual IContextAttribute* getServerContext(void) = 0;
+   virtual IMessageSession_Ptr LockMessageSession(void) = 0;
 
 protected:
 private:

@@ -13,7 +13,7 @@
 #include "CTPWorkerProcessorID.h"
 
 #include "../message/DefMessageID.h"
-#include "../message/GlobalProcessorRegistry.h"
+#include "../message/MessageUtility.h"
 #include "../common/BizErrorIDs.h"
 #include "../common/Attribute_Key.h"
 #include "../dataobject/UserPositionDO.h"
@@ -40,18 +40,18 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 	auto stdo = (MapDO<std::string>*)reqDO.get();
 
 	auto& brokeid = session->getUserInfo()->getBrokerId();
-	auto& userid = session->getUserInfo()->getInvestorId();
+	auto& investorid = session->getUserInfo()->getInvestorId();
 	auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
 	CThostFtdcQryInvestorPositionField req{};
 	std::strcpy(req.BrokerID, brokeid.data());
-	std::strcpy(req.InvestorID, userid.data());
+	std::strcpy(req.InvestorID, investorid.data());
 	std::strcpy(req.InstrumentID, instrumentid.data());
 
 	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryInvestorPosition(&req, reqDO->SerialId);
-	CTPUtility::CheckReturnError(iRet);
+	// CTPUtility::CheckReturnError(iRet);
 
-	if (auto wkProcPtr = std::static_pointer_cast<CTPTradeWorkerProcessor>
-		(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT)))
+	if (auto wkProcPtr =
+		MessageUtility::FindGlobalProcessor<CTPTradeWorkerProcessor>(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT))
 	{
 		auto& positionMap = wkProcPtr->GetUserPositionMap();
 		if (positionMap.size() < 1)
@@ -171,8 +171,8 @@ dataobj_ptr CTPQueryPosition::HandleResponse(const uint32_t serialId, param_vect
 		pDO->MarginRateByMoney = pData->MarginRateByMoney;
 		pDO->MarginRateByVolume = pData->MarginRateByVolume;
 
-		if (auto wkProcPtr = std::static_pointer_cast<CTPTradeWorkerProcessor>
-			(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT)))
+		if (auto wkProcPtr =
+			MessageUtility::FindGlobalProcessor<CTPTradeWorkerProcessor>(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT))
 		{
 			auto& positionMap = wkProcPtr->GetUserPositionMap();
 			auto& positions = positionMap.getorfill(pDO->InstrumentID());

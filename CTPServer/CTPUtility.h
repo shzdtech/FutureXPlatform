@@ -25,9 +25,12 @@ public:
 	static void CheckReturnError(const int rtncode);
 	static bool IsOrderActive(const int status);
 	static OrderStatus CheckOrderStatus(const int status, const int submitStatus);
+
+	static OrderDO_Ptr ParseRawOrderInput(CThostFtdcInputOrderField *pOrder, CThostFtdcRspInfoField *pRsp);
 	static OrderDO_Ptr ParseRawOrder(CThostFtdcOrderField *pOrder);
-	static OrderDO_Ptr ParseRawOrderAction(CThostFtdcInputOrderActionField *pOrder, CThostFtdcRspInfoField *pRsp, OrderStatus orderstatus);
-	static OrderDO_Ptr ParseRawOrderInput(CThostFtdcInputOrderField *pOrder, CThostFtdcRspInfoField *pRsp, OrderStatus orderstatus);
+	static OrderDO_Ptr ParseRawOrderInputAction(CThostFtdcInputOrderActionField *pOrderAction, CThostFtdcRspInfoField *pRsp);
+	static OrderDO_Ptr ParseRawOrderAction(CThostFtdcOrderActionField *pOrderAction, CThostFtdcRspInfoField *pRsp);
+	
 	static TradeRecordDO_Ptr ParseRawTrade(CThostFtdcTradeField *pTrade);
 
 protected:

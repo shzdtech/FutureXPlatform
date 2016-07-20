@@ -11,7 +11,7 @@
 #include "../CTPServer/CTPWorkerProcessorID.h"
 #include "CTPOTCWorkerProcessor.h"
 
-#include "../message/GlobalProcessorRegistry.h"
+#include "../message/MessageUtility.h"
 #include "../common/Attribute_Key.h"
 
 #include "../CTPServer/CTPUtility.h"
@@ -48,8 +48,8 @@ dataobj_ptr CTPOTCQueryStrategy::HandleRequest(const dataobj_ptr& reqDO, IRawAPI
 	auto sDOVec_Ptr = std::make_shared<VectorDO<StrategyContractDO>>();
 	sDOVec_Ptr->SerialId = reqDO->SerialId;
 
-	auto wkProcPtr = std::static_pointer_cast<CTPOTCWorkerProcessor>
-		(GlobalProcessorRegistry::FindProcessor(CTPWorkerProcessorID::WORKPROCESSOR_OTC));
+	auto wkProcPtr =
+		MessageUtility::FindGlobalProcessor<CTPOTCWorkerProcessor>(CTPWorkerProcessorID::WORKPROCESSOR_OTC);
 
 	auto pricingCtx = AttribPointerCast(session->getProcessor(),
 		STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext);
@@ -64,7 +64,8 @@ dataobj_ptr CTPOTCQueryStrategy::HandleRequest(const dataobj_ptr& reqDO, IRawAPI
 		{
 			int ret = wkProcPtr->RefreshStrategy(strategy);
 			CTPUtility::HasReturnError(ret);
-			wkProcPtr->RegisterPricingListener(strategy, (IMessageSession*)session);
+			wkProcPtr->RegisterPricingListener(strategy,
+				session->getProcessor()->LockMessageSession().get());
 		}
 
 		sDOVec_Ptr->push_back(strategy);

@@ -147,8 +147,8 @@
     <ClInclude Include="AppContext.h" />
     <ClInclude Include="BizError.h" />
     <ClInclude Include="DefMessageID.h" />
-    <ClInclude Include="EchoMsgHandler.h" />
-    <ClInclude Include="EchoMsgSerializer.h" />
+    <ClInclude Include="EchoMessageHandler.h" />
+    <ClInclude Include="EchoMessageSerializer.h" />
     <ClInclude Include="IMessageHandler.h" />
     <ClInclude Include="IMessageProcessor.h" />
     <ClInclude Include="IMessageServiceLocator.h" />
@@ -164,6 +164,7 @@
     <ClInclude Include="IUserInfo.h" />
     <ClInclude Include="LoginHandler.h" />
     <ClInclude Include="LogoutHandler.h" />
+    <ClInclude Include="MessageInterfaceDeclare.h" />
     <ClInclude Include="MessageException.h" />
     <ClInclude Include="MessageHandler.h" />
     <ClInclude Include="MessageProcessor.h" />
@@ -171,6 +172,7 @@
     <ClInclude Include="MessageServer.h" />
     <ClInclude Include="MessageServiceFactory.h" />
     <ClInclude Include="MessageSession.h" />
+    <ClInclude Include="MessageUtility.h" />
     <ClInclude Include="message_macro.h" />
     <ClInclude Include="NopHandler.h" />
     <ClInclude Include="GlobalProcessorRegistry.h" />
@@ -187,8 +189,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AppContext.cpp" />
-    <ClCompile Include="EchoMsgHandler.cpp" />
-    <ClCompile Include="EchoMsgSerializer.cpp" />
+    <ClCompile Include="EchoMessageHandler.cpp" />
+    <ClCompile Include="EchoMessageSerializer.cpp" />
     <ClCompile Include="MessageHandler.cpp" />
     <ClCompile Include="MessageProcessor.cpp" />
     <ClCompile Include="MessageServiceFactory.cpp" />

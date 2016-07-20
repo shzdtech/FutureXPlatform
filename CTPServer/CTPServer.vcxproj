@@ -167,6 +167,7 @@
     <ClInclude Include="CTPMDLoginHandler.h" />
     <ClInclude Include="CTPMDServiceFactory.h" />
     <ClInclude Include="CTPNewOrder.h" />
+    <ClInclude Include="CTPOrderUpdated.h" />
     <ClInclude Include="CTPProcessor.h" />
     <ClInclude Include="CTPQueryExchange.h" />
     <ClInclude Include="CTPQueryInstrument.h" />
@@ -180,6 +181,7 @@
     <ClInclude Include="CTPTradeProcessor.h" />
     <ClInclude Include="CTPTradeServiceFactory.h" />
     <ClInclude Include="CTPQueryAccountInfo.h" />
+    <ClInclude Include="CTPTradeUpdated.h" />
     <ClInclude Include="CTPTradeWorkerProcessor.h" />
     <ClInclude Include="CTPUnsubMarketData.h" />
     <ClInclude Include="CTPUtility.h" />
@@ -196,6 +198,7 @@
     <ClCompile Include="CTPMDLoginHandler.cpp" />
     <ClCompile Include="CTPMDServiceFactory.cpp" />
     <ClCompile Include="CTPNewOrder.cpp" />
+    <ClCompile Include="CTPOrderUpdated.cpp" />
     <ClCompile Include="CTPProcessor.cpp" />
     <ClCompile Include="CTPQueryExchange.cpp" />
     <ClCompile Include="CTPQueryInstrument.cpp" />
@@ -208,6 +211,7 @@
     <ClCompile Include="CTPTradeProcessor.cpp" />
     <ClCompile Include="CTPTradeServiceFactory.cpp" />
     <ClCompile Include="CTPQueryAccountInfo.cpp" />
+    <ClCompile Include="CTPTradeUpdated.cpp" />
     <ClCompile Include="CTPTradeWorkerProcessor.cpp" />
     <ClCompile Include="CTPUnsubMarketData.cpp" />
     <ClCompile Include="CTPUtility.cpp" />

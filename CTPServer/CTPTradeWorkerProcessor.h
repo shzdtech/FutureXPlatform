@@ -16,7 +16,9 @@
 #include "../utility/autofillmap.h"
 #include "../dataobject/AccountInfoDO.h"
 #include "../dataobject/ExchangeDO.h"
+#include "../dataobject/TradeRecordDO.h"
 #include "../dataobject/TypedefDO.h"
+#include "../dataobject/OrderDO.h"
 
 #include "ctpexport.h"
 
@@ -26,6 +28,7 @@ public:
    CTPTradeWorkerProcessor(const std::map<std::string, std::string>& configMap);
    ~CTPTradeWorkerProcessor();
    virtual void Initialize(void);
+   virtual int LoadSystemData(CThostFtdcTraderApi* trdAPI);
    virtual int LoginSystemUser(void);
    virtual int LoginSystemUserIfNeed(void);
 
@@ -33,13 +36,15 @@ public:
    virtual int CancelOrder(const OrderDO& orderInfo, OrderStatus& currStatus);
 
    virtual void RegisterLoggedSession(IMessageSession* pMessageSession);
-   virtual void DispatchUserMessage(int msgId, const std::string& userId, dataobj_ptr dataobj_ptr);
+   virtual void DispatchUserMessage(int msgId, const std::string& userId, const dataobj_ptr& dataobj_ptr);
    virtual std::vector<AccountInfoDO>& GetAccountInfo(const std::string userId);
    virtual std::set<ExchangeDO>& GetExchangeInfo();
    virtual UserPositionExDOMap& GetUserPositionMap();
+   virtual autofillmap<uint64_t, TradeRecordDO>& GetUserTradeMap(const std::string userId);
+   virtual autofillmap<uint64_t, OrderDO>& GetUserOrderMap(const std::string userId);
 
    int RetryInterval = 60000;
-   bool InstrmentsLoaded;
+   bool DataLoaded;
 
 protected:
    UserInfo _systemUser;
@@ -48,12 +53,19 @@ protected:
    autofillmap<std::string, std::vector<AccountInfoDO>> _accountInfoMap;
    UserPositionExDOMap _userPositionMap;
    std::set<ExchangeDO> _exchangeInfo_Set;
+   autofillmap<std::string, autofillmap<uint64_t, TradeRecordDO>> _userTradeMap;
+   autofillmap<std::string, autofillmap<uint64_t, OrderDO>> _userOrderMap;
+
 
 public:
 	///登录请求响应
 	virtual void OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	///请求查询合约响应
 	virtual void OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+	///报单录入错误回报
+	virtual void OnErrRtnOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo);
+	///报单操作错误回报
+	virtual void OnErrRtnOrderAction(CThostFtdcOrderActionField *pOrderAction, CThostFtdcRspInfoField *pRspInfo);
 
 	virtual void OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
@@ -63,13 +75,6 @@ public:
 
 	///成交通知
 	virtual void OnRtnTrade(CThostFtdcTradeField *pTrade);
-
-	
-	///请求查询报单响应
-	void OnRspQryOrder(CThostFtdcOrderField *pOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-
-	///请求查询成交响应
-	void OnRspQryTrade(CThostFtdcTradeField *pTrade, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 };
 
 #endif

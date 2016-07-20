@@ -115,7 +115,7 @@ void CTPTradeProcessor::OnRspTradingAccountPasswordUpdate(CThostFtdcTradingAccou
 ///报单录入请求响应
 void CTPTradeProcessor::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	OnResponseMacro(MSG_ID_ORDER_NEW, nRequestID, pInputOrder, pRspInfo, &nRequestID, &bIsLast)
+	OnResponseMacro(MSG_ID_ORDER_UPDATE, nRequestID, pInputOrder, pRspInfo, &nRequestID, &bIsLast)
 }
 
 ///预埋单录入请求响应
@@ -128,7 +128,7 @@ void CTPTradeProcessor::OnRspParkedOrderAction(CThostFtdcParkedOrderActionField 
 void CTPTradeProcessor::OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (pInputOrderAction->ActionFlag == THOST_FTDC_AF_Delete)
-		OnResponseMacro(MSG_ID_ORDER_CANCEL, nRequestID, pInputOrderAction, pRspInfo, &nRequestID, &bIsLast)
+		OnResponseMacro(MSG_ID_ORDER_UPDATE, nRequestID, pInputOrderAction, pRspInfo, &nRequestID, &bIsLast)
 }
 
 ///查询最大报单数量响应
@@ -235,27 +235,7 @@ void CTPTradeProcessor::OnRtnOrder(CThostFtdcOrderField *pOrder)
 {
 	if (pOrder)
 	{
-		int msgId;
-
-		switch (CTPUtility::CheckOrderStatus(pOrder->OrderStatus, pOrder->OrderSubmitStatus))
-		{
-		case OrderStatus::CANCELED:
-		case OrderStatus::CANCEL_REJECTED:
-			msgId = MSG_ID_ORDER_CANCEL;
-			break;
-		case OrderStatus::OPENNING:
-		case OrderStatus::OPEN_REJECTED:
-			msgId = MSG_ID_ORDER_NEW;
-			break;
-		case OrderStatus::PARTIAL_TRADING:
-		case OrderStatus::ALL_TRADED:
-			msgId = MSG_ID_ORDER_UPDATE;
-			break;
-		default:
-			return;
-		}
-
-		OnResponseMacro(msgId, 0, pOrder);
+		OnResponseMacro(MSG_ID_ORDER_UPDATE, 0, pOrder);
 	}
 }
 
@@ -280,12 +260,15 @@ void CTPTradeProcessor::OnRtnTrade(CThostFtdcTradeField *pTrade)
 ///报单录入错误回报
 void CTPTradeProcessor::OnErrRtnOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo)
 {
-	OnResponseMacro(MSG_ID_ORDER_NEW, 0, pInputOrder, pRspInfo);
+	OnResponseMacro(MSG_ID_ORDER_UPDATE, 0, pInputOrder, pRspInfo);
 }
 
 ///报单操作错误回报
 void CTPTradeProcessor::OnErrRtnOrderAction(CThostFtdcOrderActionField *pOrderAction, CThostFtdcRspInfoField *pRspInfo)
-{}
+{
+	if (pOrderAction->ActionFlag == THOST_FTDC_AF_Delete)
+		OnResponseMacro(MSG_ID_ORDER_UPDATE, 0, pOrderAction, pRspInfo);
+}
 
 ///合约交易状态通知
 void CTPTradeProcessor::OnRtnInstrumentStatus(CThostFtdcInstrumentStatusField *pInstrumentStatus) {};
