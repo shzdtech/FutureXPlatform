@@ -5,9 +5,9 @@
  * Purpose: Declaration of the class EchoMessageSerializer
  ***********************************************************************/
 
-#if !defined(__dataobject_EchoMessageSerializer_h)
-#define __dataobject_EchoMessageSerializer_h
-#include "../dataobject/IDataSerializer.h"
+#if !defined(__dataserializer_EchoMessageSerializer_h)
+#define __dataserializer_EchoMessageSerializer_h
+#include "../dataserializer/IDataSerializer.h"
 #include "../utility/singleton_templ.h"
 #include "message_exp.h"
 

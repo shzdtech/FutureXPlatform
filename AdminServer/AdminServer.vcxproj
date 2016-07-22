@@ -160,8 +160,8 @@
     <ProjectReference Include="..\databaseop\databaseop.vcxproj">
       <Project>{dc2aae7b-2f79-42fc-94c2-bc3c9c1108c9}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\dataobject\dataobject.vcxproj">
-      <Project>{6257959c-c51c-47ba-9b4c-b40e83f8453a}</Project>
+    <ProjectReference Include="..\dataserializer\dataserializer.vcxproj">
+      <Project>{feece5a0-b699-4dac-bca9-e95ae0276b66}</Project>
     </ProjectReference>
     <ProjectReference Include="..\message\message.vcxproj">
       <Project>{e9adaa2b-1ccb-4111-9ac3-bddb3dc114f2}</Project>

@@ -8,7 +8,7 @@
 #if !defined(__pbserializer_PBCombineSerializer_h)
 #define __pbserializer_PBCombineSerializer_h
 
-#include "../dataobject/IDataSerializer.h"
+#include "../dataserializer/IDataSerializer.h"
 #include "pbserializer_exp.h"
 
 class PBSERIALIZER_CLASS_EXPORTS PBCombineSerializer : public IDataSerializer

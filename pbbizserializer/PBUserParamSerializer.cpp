@@ -10,7 +10,7 @@
 #include "../Protos/businessobj.pb.h"
 #include "../dataobject/TemplateDO.h"
 
-#include "../dataobject/UserContractParam.h"
+#include "../dataobject/UserContractParamDO.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       PBUserParamSerializer::Serialize(const dataobj_ptr& abstractDO)
@@ -23,7 +23,7 @@
 data_buffer PBUserParamSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	Micro::Future::Message::Business::PBOTCUserParamList PB;
-	auto pDO = (VectorDO<UserContractParam>*)abstractDO.get();
+	auto pDO = (VectorDO<UserContractParamDO>*)abstractDO.get();
 	FillPBHeader(PB, pDO);
 
 	for (auto& ucp : *pDO)
@@ -54,14 +54,14 @@ dataobj_ptr PBUserParamSerializer::Deserialize(const data_buffer& rawdata)
 	Micro::Future::Message::Business::PBOTCUserParamList PB;
 	ParseWithThrow(PB, rawdata);
 
-	auto ret = std::make_shared<VectorDO<UserContractParam>>();
+	auto ret = std::make_shared<VectorDO<UserContractParamDO>>();
 	FillDOHeader(ret, PB);
 
 	auto& params = PB.params();
 
 	for (auto& p : params)
 	{
-		UserContractParam ucp(p.exchange(), p.contract());
+		UserContractParamDO ucp(p.exchange(), p.contract());
 		ucp.Quantity = p.quantity();
 		ret->push_back(std::move(ucp));
 	}

@@ -15,7 +15,7 @@
 #include "../message/DefMessageID.h"
 #include "../message/SysParam.h"
 
-#include "../dataobject/AbstractDataSerializerFactory.h"
+#include "../dataserializer/AbstractDataSerializerFactory.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPMDServiceFactory::CreateMessageHandlers()

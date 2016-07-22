@@ -8,7 +8,7 @@
 #if !defined(__pbserializer_PBMessageSerializerFactory_h)
 #define __pbserializer_PBMessageSerializerFactory_h
 
-#include "../dataobject/AbstractDataSerializerFactory.h"
+#include "../dataserializer/AbstractDataSerializerFactory.h"
 #include "pbserializer_exp.h"
 
 class PBSERIALIZER_CLASS_EXPORTS PBMessageSerializerFactory : public AbstractDataSerializerFactory

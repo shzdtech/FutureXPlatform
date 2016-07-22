@@ -248,11 +248,6 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\dataobject\dataobject.vcxproj">
-      <Project>{6257959c-c51c-47ba-9b4c-b40e83f8453a}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <CustomBuild Include="..\Protos\usermanager.proto">
       <FileType>Document</FileType>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(SolutionDir)Protos  %(FullPath)</Command>
@@ -271,6 +266,11 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="pbserializer.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\dataserializer\dataserializer.vcxproj">
+      <Project>{feece5a0-b699-4dac-bca9-e95ae0276b66}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

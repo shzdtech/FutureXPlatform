@@ -9,7 +9,7 @@
 #include "CTSProcessor.h"
 #include "cts_handlers.h"
 #include "../message/DefMessageID.h"
-#include "../dataobject/AbstractDataSerializerFactory.h"
+#include "../dataserializer/AbstractDataSerializerFactory.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTSServiceFactory::CreateMessageHandlers()

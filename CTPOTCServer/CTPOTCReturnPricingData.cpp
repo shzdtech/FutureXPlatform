@@ -9,7 +9,7 @@
 
 #include "../common/Attribute_Key.h"
 #include "../dataobject/MarketDataDO.h"
-#include "../dataobject/UserContractParam.h"
+#include "../dataobject/UserContractParamDO.h"
 #include "../dataobject/StrategyContractDO.h"
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/MarketDataDO.h"
@@ -38,7 +38,7 @@ dataobj_ptr CTPOTCReturnPricingData::HandleResponse(const uint32_t serialId, par
 
 	auto ret = std::make_shared<VectorDO<PricingDO>>();
 
-	auto userContractMap = std::static_pointer_cast<UserContractParamMap>
+	auto userContractMap = std::static_pointer_cast<UserContractParamDOMap>
 		(session->getContext()->getAttribute(STR_KEY_USER_CONTRACTS));
 
 	for (auto it = userContractMap->begin(); it != userContractMap->end(); it++)

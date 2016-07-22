@@ -12,7 +12,7 @@
 #include "IMessageProcessor.h"
 #include "IMessageHandler.h"
 #include "IContextAttribute.h"
-#include "../dataobject/IDataSerializer.h"
+#include "../dataserializer/IDataSerializer.h"
 
 class IMessageServiceFactory
 {

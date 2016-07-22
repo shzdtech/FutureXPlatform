@@ -20,7 +20,7 @@
 #include "../message/EchoMessageHandler.h"
 #include "../message/EchoMessageSerializer.h"
 #include "../message/DefMessageID.h"
-#include "../dataobject/AbstractDataSerializerFactory.h"
+#include "../dataserializer/AbstractDataSerializerFactory.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       TestingMessageServiceFactory::CreateMessageHandlers()

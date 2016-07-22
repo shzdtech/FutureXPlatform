@@ -37,18 +37,16 @@
 
 dataobj_ptr CTPQueryExchange::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
-	auto stdo = (MapDO<std::string>*)reqDO.get();
-	auto& exchangeid = stdo->TryFind(STR_EXCHANGE_ID, EMPTY_STRING);
-
-	CThostFtdcQryExchangeField req{};
-
 	if (auto wkProcPtr =
 		MessageUtility::FindGlobalProcessor<CTPTradeWorkerProcessor>(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT))
 	{
-		auto& exchangeInfo = wkProcPtr->GetExchangeInfo();
+		auto stdo = (MapDO<std::string>*)reqDO.get();
+		auto& exchangeid = stdo->TryFind(STR_EXCHANGE_ID, EMPTY_STRING);
 
+		auto& exchangeInfo = wkProcPtr->GetExchangeInfo();
 		if (exchangeInfo.size() < 1)
 		{
+			CThostFtdcQryExchangeField req{};
 			int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryExchange(&req, reqDO->SerialId);
 			// CTPUtility::CheckReturnError(iRet);
 
@@ -86,12 +84,6 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 			}
 		}
 	}
-	else
-	{
-		int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryExchange(&req, reqDO->SerialId);
-		CTPUtility::CheckReturnError(iRet);
-	}
-
 
 	return nullptr;
 }

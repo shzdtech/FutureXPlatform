@@ -8,7 +8,7 @@
 #include "ETPAlgorithm.h"
 #include "../dataobject/StrategyContractDO.h"
 #include "../dataobject/MarketDataDO.h"
-#include "../dataobject/UserContractParam.h"
+#include "../dataobject/UserContractParamDO.h"
 #include "../dataobject/PricingDO.h"
 #include "../dataobject/ContractDO.h"
 #include "../dataobject/TypedefDO.h"

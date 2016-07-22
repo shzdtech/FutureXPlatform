@@ -32,9 +32,9 @@ int UserInfoDAO::InsertUser(UserInfoDO & userDO)
 
 		prestmt->setString(1, userDO.UserName);
 		prestmt->setString(2, userDO.Password);
-		prestmt->setString(3, userDO.FirstName);
-		prestmt->setString(4, userDO.LastName);
-		prestmt->setString(5, userDO.Company);
+		prestmt->setString(3, userDO.Company);
+		prestmt->setString(4, userDO.FirstName);
+		prestmt->setString(5, userDO.LastName);
 		prestmt->setInt(6, userDO.Gender);
 		prestmt->setString(7, userDO.Email);
 		prestmt->setString(8, userDO.IdentityNum);

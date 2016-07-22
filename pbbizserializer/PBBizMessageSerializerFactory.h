@@ -8,7 +8,7 @@
 #if !defined(__pbbizserializer_PBBizMessageSerializerFactory_h)
 #define __pbbizserializer_PBBizMessageSerializerFactory_h
 
-#include "../dataobject/AbstractDataSerializerFactory.h"
+#include "../dataserializer/AbstractDataSerializerFactory.h"
 #include "pbbizserializer_exp.h"
 
 static const char* CLASS_UUID_MSG_BIZ_SERIALIZER_FACTORY = "factory.message.biz.serializer";

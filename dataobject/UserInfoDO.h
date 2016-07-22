@@ -24,10 +24,10 @@ public:
 	std::string BrokerId;
 	std::string UserId;
 	std::string UserName;
+	std::string Company;
 	std::string Password;
 	std::string FirstName;
 	std::string LastName;
-	std::string Company;
 	std::string Email;
 	std::string ContactNum;
 	std::string IdentityNum;

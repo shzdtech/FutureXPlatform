@@ -8,7 +8,7 @@
 #if !defined(__pbserializer_PBComplexTableSerializer_h)
 #define __pbserializer_PBComplexTableSerializer_h
 
-#include "../dataobject/IDataSerializer.h"
+#include "../dataserializer/IDataSerializer.h"
 #include "pbserializer_exp.h"
 #include "../utility/singleton_templ.h"
 

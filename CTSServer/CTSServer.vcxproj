@@ -201,8 +201,8 @@
     <Image Include="app.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\dataobject\dataobject.vcxproj">
-      <Project>{6257959c-c51c-47ba-9b4c-b40e83f8453a}</Project>
+    <ProjectReference Include="..\dataserializer\dataserializer.vcxproj">
+      <Project>{feece5a0-b699-4dac-bca9-e95ae0276b66}</Project>
     </ProjectReference>
     <ProjectReference Include="..\litelogger\litelogger.vcxproj">
       <Project>{c1d53247-d933-4f39-9b56-09909f6a1c27}</Project>

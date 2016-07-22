@@ -5,8 +5,8 @@
  * Purpose: Declaration of the class IMessageSerializerFactory
  ***********************************************************************/
 
-#if !defined(__dataobject_IMessageSerializerFactory_h)
-#define __dataobject_IMessageSerializerFactory_h
+#if !defined(__dataserializer_IMessageSerializerFactory_h)
+#define __dataserializer_IMessageSerializerFactory_h
 #include <map>
 #include <memory>
 #include "IDataSerializer.h"

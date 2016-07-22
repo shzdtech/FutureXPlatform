@@ -1,7 +1,7 @@
 #if !defined(__pbserializer_PBStringMapSerializer_h)
 #define __pbserializer_PBStringMapSerializer_h
 
-#include "../dataobject/IDataSerializer.h"
+#include "../dataserializer/IDataSerializer.h"
 #include "../dataobject/TemplateDO.h"
 #include "pbserializer_exp.h"
 #include "../utility/singleton_templ.h"

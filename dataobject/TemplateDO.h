@@ -5,8 +5,8 @@
  * Purpose: Declaration of the class KeyAttributeDO
  ***********************************************************************/
 
-#if !defined(__message_KeyAttributeDO_h)
-#define __message_KeyAttributeDO_h
+#if !defined(__dataobject_TemplateDO_h)
+#define __dataobject_TemplateDO_h
 
 #include <memory>
 #include <vector>

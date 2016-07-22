@@ -35,8 +35,8 @@ dataobj_ptr RegisterUserHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI
 
 	if (auto* pUserInfoDO = (UserInfoDO*)reqDO.get())
 	{
-		if (UserInfoDAO::FindUser(pUserInfoDO->UserId))
-			throw UserException(UserErrorID::USERID_HAS_EXISTED, '"' + pUserInfoDO->UserId + "\" has been registered.");
+		if (UserInfoDAO::FindUser(pUserInfoDO->UserName))
+			throw UserException(UserErrorID::USERID_HAS_EXISTED, '"' + pUserInfoDO->UserName + "\" has been registered.");
 
 		if (pUserInfoDO->Company.length() < 1)
 			pUserInfoDO->Company = SysParam::Get(STR_KEY_DEFAULT_CLIENT_SYMBOL);

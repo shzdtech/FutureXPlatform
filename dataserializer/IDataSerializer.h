@@ -5,12 +5,12 @@
  * Purpose: Declaration of the class IDataSerializer
  ***********************************************************************/
 
-#if !defined(__dataobject_IDataSerializer_h)
-#define __dataobject_IDataSerializer_h
+#if !defined(__dataserializer_IDataSerializer_h)
+#define __dataserializer_IDataSerializer_h
 
 #include <memory>
-#include "data_buffer.h"
-#include "dataobjectbase.h"
+#include "../dataobject/data_buffer.h"
+#include "../dataobject/dataobjectbase.h"
 
 class ISerializer
 {

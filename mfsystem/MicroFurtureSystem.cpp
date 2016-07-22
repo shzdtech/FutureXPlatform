@@ -15,7 +15,7 @@
 
 #include "../databaseop/SysParamsDAO.h"
 #include "../databaseop/AbstractConnectionManager.h"
-#include "../dataobject/AbstractDataSerializerFactory.h"
+#include "../dataserializer/AbstractDataSerializerFactory.h"
 
 void MicroFurtureSystem::InitLogger(const char* logPath)
 {

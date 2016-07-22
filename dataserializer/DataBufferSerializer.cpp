@@ -6,7 +6,7 @@
  ***********************************************************************/
 
 #include "DataBufferSerializer.h"
-#include "TemplateDO.h"
+#include "../dataobject/TemplateDO.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       DataBufferSerializer::Serialize(const dataobj_ptr& abstractDO)

@@ -37,25 +37,25 @@
 
 dataobj_ptr CTPQueryPosition::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
-	auto stdo = (MapDO<std::string>*)reqDO.get();
-
-	auto& brokeid = session->getUserInfo()->getBrokerId();
-	auto& investorid = session->getUserInfo()->getInvestorId();
-	auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
-	CThostFtdcQryInvestorPositionField req{};
-	std::strcpy(req.BrokerID, brokeid.data());
-	std::strcpy(req.InvestorID, investorid.data());
-	std::strcpy(req.InstrumentID, instrumentid.data());
-
-	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryInvestorPosition(&req, reqDO->SerialId);
-	// CTPUtility::CheckReturnError(iRet);
-
 	if (auto wkProcPtr =
 		MessageUtility::FindGlobalProcessor<CTPTradeWorkerProcessor>(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT))
 	{
+		auto stdo = (MapDO<std::string>*)reqDO.get();
+
+		auto& brokeid = session->getUserInfo()->getBrokerId();
+		auto& investorid = session->getUserInfo()->getInvestorId();
+		auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
+
 		auto& positionMap = wkProcPtr->GetUserPositionMap();
 		if (positionMap.size() < 1)
 		{
+			CThostFtdcQryInvestorPositionField req{};
+			std::strcpy(req.BrokerID, brokeid.data());
+			std::strcpy(req.InvestorID, investorid.data());
+			std::strcpy(req.InstrumentID, instrumentid.data());
+
+			int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryInvestorPosition(&req, reqDO->SerialId);
+			// CTPUtility::CheckReturnError(iRet);
 			std::this_thread::sleep_for(std::chrono::seconds(2));
 		}
 

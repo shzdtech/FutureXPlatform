@@ -8,7 +8,7 @@
 #if !defined(__message_IMessageRouter_h)
 #define __message_IMessageRouter_h
 
-#include "../dataobject/IDataSerializer.h"
+#include "../dataserializer/IDataSerializer.h"
 #include "IMessageHandler.h"
 #include "IProcessorBase.h"
 #include "../common/typedefs.h"

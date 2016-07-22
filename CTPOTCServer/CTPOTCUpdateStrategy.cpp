@@ -17,7 +17,7 @@
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/StrategyContractDO.h"
 #include "../dataobject/ResultDO.h"
-#include "../dataobject/UserContractParam.h"
+#include "../dataobject/UserContractParamDO.h"
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPOTCUpdateStrategy::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPOTCUpdateStrategy::HandleRequest()
@@ -40,7 +40,7 @@ dataobj_ptr CTPOTCUpdateStrategy::HandleRequest(const dataobj_ptr& reqDO, IRawAP
 	auto wkProcPtr =
 		MessageUtility::FindGlobalProcessor<CTPOTCWorkerProcessor>(CTPWorkerProcessorID::WORKPROCESSOR_OTC);
 
-	auto userContractMap_Ptr = std::static_pointer_cast<UserContractParamMap>
+	auto userContractMap_Ptr = std::static_pointer_cast<UserContractParamDOMap>
 		(session->getContext()->getAttribute(STR_KEY_USER_CONTRACTS));
 
 	for (auto& strategyDO : *strategyVec)

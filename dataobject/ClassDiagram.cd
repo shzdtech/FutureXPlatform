@@ -3,84 +3,21 @@
   <Class Name="dataobjectbase" Collapsed="true">
     <Position X="9" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>dataobjectbase.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="AbstractDataSerializerFactory" Collapsed="true">
-    <Position X="0.5" Y="7.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAQAAAACAAAAA=</HashCode>
-      <FileName>abstractmessageserializerfactory.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="BizErrorSerializer" Collapsed="true">
-    <Position X="0.5" Y="4.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
-      <FileName>bizerrorserializer.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="DataBufferSerializer" Collapsed="true">
-    <Position X="2.75" Y="4.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACBAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>DataBufferSerializer.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="data_buffer" Collapsed="true">
-    <Position X="37.75" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAIAAECIAAQAAAAAgAAAAAAABAAAAAAAA=</HashCode>
-      <FileName>data_buffer.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="ISerializer" Collapsed="true">
-    <Position X="1.75" Y="1.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>IDataSerializer.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="IDeserializer" Collapsed="true">
-    <Position X="4.75" Y="1.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>IDataSerializer.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="IDataSerializer" Collapsed="true">
-    <Position X="1.75" Y="2.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>IDataSerializer.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="IMessageSerializerFactory" Collapsed="true">
-    <Position X="0.5" Y="6.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAA=</HashCode>
-      <FileName>imessageserializerfactory.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="AccountInfoDO" Collapsed="true">
     <Position X="23.75" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAQAgCAAIIAAgAwBIggAOCJEAgBACAABACACAAGgAAI=</HashCode>
-      <FileName>accountinfodo.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="BizErrorDO" Collapsed="true">
-    <Position X="33" Y="6.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AQAAAAAAAEACAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>BizErrorDO.h</FileName>
+      <FileName>AccountInfoDO.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComplexTableDO" Collapsed="true">
     <Position X="17" Y="6.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAACEAAQAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAACEAAQAAAAAAAAAAAAAAAAAAAAAAQAAA=</HashCode>
       <FileName>ComplexTableDO.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -88,14 +25,14 @@
     <Position X="7.25" Y="8.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAARAAAQAAAAAAEAAAAABAAA=</HashCode>
-      <FileName>contractdo.h</FileName>
+      <FileName>ContractDO.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ContractKey" Collapsed="true">
     <Position X="11.5" Y="7.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAIAAQgAQAAACAAAACAAAEgAAAAAAA=</HashCode>
-      <FileName>contractkey.h</FileName>
+      <HashCode>AAAAAAAAAAAAAAAIAAQgAQAAACAAAACAAAEgAAAAQAA=</HashCode>
+      <FileName>ContractKey.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ContractParam" Collapsed="true">
@@ -108,134 +45,113 @@
   <Class Name="EchoMessageDO" Collapsed="true">
     <Position X="30.75" Y="6.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAgAAAAAAAABAAAAAAAAAAAAAAAAAAAAAIAAAAAAA=</HashCode>
+      <HashCode>AAAAgAAAAAAAABAAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
       <FileName>EchoMessageDO.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ExchangeDO" Collapsed="true">
     <Position X="21.5" Y="7.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAEAAQAAAAA=</HashCode>
-      <FileName>exchangedo.h</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAQQAAAAAAAAAAAEgAQAAQAA=</HashCode>
+      <FileName>ExchangeDO.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="InstrumentDO" Collapsed="true">
     <Position X="10.25" Y="10.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>EEIEAAAQDAAAEEBAgAAwAAQAAABECAgJABIBAAAAAAA=</HashCode>
+      <HashCode>EEIEAAAQDAAAEEAAgAAwAAQAAABECAgJABIBAQAAAAA=</HashCode>
       <FileName>InstrumentDO.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="MultiRecordDO" Collapsed="true">
-    <Position X="23.75" Y="6.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>MultiRecordDO.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="OrderBaseDO" Collapsed="true">
     <Position X="14.5" Y="7.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAABAAAAAAAAAAACAAAAAAAAAAAAAAAAIQAAAAAAA=</HashCode>
-      <FileName>orderdo.h</FileName>
+      <HashCode>AQAAABAAAAACAAACACAAAAAAAAgAAAAgAAIQAAAAAAA=</HashCode>
+      <FileName>OrderDO.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="OrderDO" Collapsed="true">
     <Position X="12.5" Y="8.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AQACAgAAAAACARAAEAAIAAAAAAgAAAAAAAEAAgEACBQ=</HashCode>
-      <FileName>orderdo.h</FileName>
+      <HashCode>AAACAhAAAAAAARAAAAAIAAAAAAAAAAAAACEAIgAACBQ=</HashCode>
+      <FileName>OrderDO.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="PricingDO" Collapsed="true">
     <Position X="7.25" Y="10.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAgABgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>pricingdo.h</FileName>
+      <FileName>PricingDO.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ResultDO" Collapsed="true">
     <Position X="26.25" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
-      <FileName>resultdo.h</FileName>
+      <FileName>ResultDO.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="StrategyContractDO" Collapsed="true">
     <Position X="7.25" Y="12.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AgAAAAAQAAAgAIAAAAAAAAAABAAAAIQgAAAAABQAgAg=</HashCode>
-      <FileName>strategycontractdo.h</FileName>
+      <HashCode>QAEAAAAQgAAgAIAAAgAAAARABQACAIQgAAAAgBQAgAg=</HashCode>
+      <FileName>StrategyContractDO.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="VectorDO&lt;T&gt;" Collapsed="true">
     <Position X="35.25" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>templatedo.h</FileName>
+      <FileName>TemplateDO.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="SetDO&lt;T&gt;" Collapsed="true">
     <Position X="19.25" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>templatedo.h</FileName>
+      <FileName>TemplateDO.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="MapPtr&lt;T&gt;" Collapsed="true">
-    <Position X="39.5" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>templatedo.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="TemplateDO&lt;T&gt;" Collapsed="true">
-    <Position X="9" Y="6.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAACAABAAAAAAAAAAAAA=</HashCode>
-      <FileName>templatedo.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="TMultiRecordDO&lt;T&gt;" Collapsed="true">
+  <Class Name="TDataObject&lt;T&gt;" Collapsed="true">
     <Position X="26" Y="7.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
-      <FileName>templatedo.h</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAQAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>TemplateDO.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="MarketDataDO" Collapsed="true">
     <Position X="10.25" Y="8.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAgAQIBggAAAMAAAACAAEAAAABABAAAJgAAAAAAQ=</HashCode>
+      <HashCode>AAAAAgAQIBigAAAMAAAACAAEACAABADAAAJgAAAAAAQ=</HashCode>
       <FileName>MarketDataDO.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="TradeRecordDO" Collapsed="true">
     <Position X="13.25" Y="10.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AQAAABAAAQAABAAAACAAAAAAgAAAAAQAAAIgAAAEAAA=</HashCode>
-      <FileName>traderecorddo.h</FileName>
+      <HashCode>AQAAABAAAQAABAAAACAAAEAAgAAAAAQBAAIgAAAEAAA=</HashCode>
+      <FileName>TradeRecordDO.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="UserContractParam" Collapsed="true">
+  <Class Name="UserContractParamDO" Collapsed="true">
     <Position X="10.25" Y="12.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
-      <FileName>usercontractparam.h</FileName>
+      <HashCode>AAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>UserContractParamDO.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="UserInfoDO" Collapsed="true">
     <Position X="28.5" Y="6.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ACAAAAAAADAAAAACEAAAAAwACAAgAAACAAAABAAAAAA=</HashCode>
+      <HashCode>ACAAAEAAADAAAACAEAAAAAgAAAAgAAADAQAABAAAAAk=</HashCode>
       <FileName>UserInfoDO.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="UserPositionDO" Collapsed="true">
     <Position X="13.25" Y="12.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AhAgACJUAIDAAIAwBCMACNAGAiBAiAABCCABKAGAAAA=</HashCode>
-      <FileName>userpositiondo.h</FileName>
+      <HashCode>AhAAAAAAAIDAAIAwACAAAFACAAAAAAAAAAABCAAAAAA=</HashCode>
+      <FileName>UserPositionDO.h</FileName>
     </TypeIdentifier>
   </Class>
   <Typedef Name="dataobj_ptr" Collapsed="true">
@@ -266,69 +182,6 @@
       <FileName>dataobjectbase.h</FileName>
     </TypeIdentifier>
   </Typedef>
-  <Typedef Name="shared_void_ptr" Collapsed="true">
-    <Position X="8.5" Y="2.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>data_commondef.h</FileName>
-    </TypeIdentifier>
-  </Typedef>
-  <Typedef Name="buffer_ptr" Collapsed="true">
-    <Position X="6.5" Y="4.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>data_commondef.h</FileName>
-    </TypeIdentifier>
-  </Typedef>
-  <Typedef Name="attribute_ptr" Collapsed="true">
-    <Position X="8.5" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>data_commondef.h</FileName>
-    </TypeIdentifier>
-  </Typedef>
-  <Typedef Name="param_vector" Collapsed="true">
-    <Position X="43" Y="4.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>data_commondef.h</FileName>
-    </TypeIdentifier>
-  </Typedef>
-  <Typedef Name="byte_ptr" Collapsed="true">
-    <Position X="37.75" Y="2.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>data_commondef.h</FileName>
-    </TypeIdentifier>
-  </Typedef>
-  <Typedef Name="ISerializer_Ptr" Collapsed="true">
-    <Position X="43" Y="3.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>IDataSerializer.h</FileName>
-    </TypeIdentifier>
-  </Typedef>
-  <Typedef Name="IDeserializer_Ptr" Collapsed="true">
-    <Position X="39.5" Y="3.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>IDataSerializer.h</FileName>
-    </TypeIdentifier>
-  </Typedef>
-  <Typedef Name="IDataSerializer_Ptr" Collapsed="true">
-    <Position X="37.75" Y="3.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>IDataSerializer.h</FileName>
-    </TypeIdentifier>
-  </Typedef>
-  <Typedef Name="IMessageSerializerFactory_Ptr" Collapsed="true">
-    <Position X="41.25" Y="3.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>imessageserializerfactory.h</FileName>
-    </TypeIdentifier>
-  </Typedef>
   <Typedef Name="ComplexTableDOPtr" Collapsed="true">
     <Position X="39.5" Y="2.75" Width="1.5" />
     <TypeIdentifier>
@@ -340,7 +193,7 @@
     <Position X="41.25" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>contractdo.h</FileName>
+      <FileName>TypedefDO.h</FileName>
     </TypeIdentifier>
   </Typedef>
   <Typedef Name="EchoMessageDO_ptr" Collapsed="true">
@@ -354,91 +207,91 @@
     <Position X="44.75" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>strategycontractdo.h</FileName>
+      <FileName>StrategyContractDO.h</FileName>
     </TypeIdentifier>
   </Typedef>
   <Typedef Name="StrategyContractDOMap" Collapsed="true">
     <Position X="37.75" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>strategycontractdo.h</FileName>
-    </TypeIdentifier>
-  </Typedef>
-  <Typedef Name="DataBufferDO" Collapsed="true">
-    <Position X="5" Y="8.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>templatedo.h</FileName>
+      <FileName>TypedefDO.h</FileName>
     </TypeIdentifier>
   </Typedef>
   <Typedef Name="IntTableDO" Collapsed="true">
     <Position X="11" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>templatedo.h</FileName>
+      <FileName>TemplateDO.h</FileName>
     </TypeIdentifier>
   </Typedef>
   <Typedef Name="DoubleTableDO" Collapsed="true">
     <Position X="12" Y="5.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>templatedo.h</FileName>
+      <FileName>TemplateDO.h</FileName>
     </TypeIdentifier>
   </Typedef>
   <Typedef Name="StringTableDO" Collapsed="true">
     <Position X="6" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>templatedo.h</FileName>
+      <FileName>TemplateDO.h</FileName>
     </TypeIdentifier>
   </Typedef>
   <Typedef Name="MarketDataDOMap" Collapsed="true">
     <Position X="41.25" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>MarketDataDO.h</FileName>
+      <FileName>TypedefDO.h</FileName>
     </TypeIdentifier>
   </Typedef>
-  <Typedef Name="UserContractParamMap" Collapsed="true">
+  <Typedef Name="UserContractParamDOMap" Collapsed="true">
     <Position X="39.5" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>usercontractparam.h</FileName>
+      <FileName>TypedefDO.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="DataBufferDO" Collapsed="true">
+    <Position X="5" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TemplateDO.h</FileName>
     </TypeIdentifier>
   </Typedef>
   <Enum Name="DirectionType" Collapsed="true">
     <Position X="37.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>orderdo.h</FileName>
+      <FileName>EnumTypes.h</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="OrderStatus" Collapsed="true">
     <Position X="41.25" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ACACAAAAAEAAAAAgAAAAAAAAQAAAAAAAAAAAAAAgAAA=</HashCode>
-      <FileName>orderdo.h</FileName>
+      <HashCode>AAAAAAAAAACAAAAgAAAAAAAAQAQgAIACAAAAAAAgAAA=</HashCode>
+      <FileName>OrderDO.h</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="OrderExecType" Collapsed="true">
     <Position X="39.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAABAAAAAAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
-      <FileName>orderdo.h</FileName>
+      <FileName>OrderDO.h</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="OrderTIFType" Collapsed="true">
     <Position X="43" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAEAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>orderdo.h</FileName>
+      <FileName>OrderDO.h</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="TradingType" Collapsed="true">
     <Position X="44.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAIAAAAAAAAEAAAAAAAAACAAAAAAAAAAAACAAAAAA=</HashCode>
-      <FileName>orderdo.h</FileName>
+      <HashCode>AAAAAAAAAAAAAARAAAAAAAAAAAgAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>EnumTypes.h</FileName>
     </TypeIdentifier>
   </Enum>
   <Font Name="微软雅黑" Size="9" />

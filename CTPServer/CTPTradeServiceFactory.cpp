@@ -18,7 +18,7 @@
 #include "../message/MessageUtility.h"
 
 #include "../configuration/AbstractConfigReaderFactory.h"
-#include "../dataobject/AbstractDataSerializerFactory.h"
+#include "../dataserializer/AbstractDataSerializerFactory.h"
 
 
 ////////////////////////////////////////////////////////////////////////

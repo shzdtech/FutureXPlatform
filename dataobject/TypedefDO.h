@@ -7,7 +7,7 @@
 #include "ContractDO.h"
 #include "PortfolioDO.h"
 #include "StrategyContractDO.h"
-#include "UserContractParam.h"
+#include "UserContractParamDO.h"
 #include "MarketDataDO.h"
 #include "InstrumentDO.h"
 #include "UserPositionDO.h"
@@ -29,7 +29,7 @@ typedef ContractMap<StrategyContractDO> StrategyContractDOMap;
 
 typedef autofillmap<std::string, MarketDataDO> MarketDataDOMap;
 
-typedef ContractMap<UserContractParam> UserContractParamMap;
+typedef ContractMap<UserContractParamDO> UserContractParamDOMap;
 
 typedef ContractMap<ContractDO> ContractDOMap;
 

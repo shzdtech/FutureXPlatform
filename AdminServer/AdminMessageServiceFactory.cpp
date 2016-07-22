@@ -11,7 +11,7 @@
 #include "../message/EchoMessageHandler.h"
 #include "../message/EchoMessageSerializer.h"
 #include "../message/DefMessageID.h"
-#include "../dataobject/AbstractDataSerializerFactory.h"
+#include "../dataserializer/AbstractDataSerializerFactory.h"
 
 #include "AdminLoginHandler.h"
 #include "RegisterUserHandler.h"

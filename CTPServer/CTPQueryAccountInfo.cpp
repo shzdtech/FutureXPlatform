@@ -35,14 +35,6 @@
 
 dataobj_ptr CTPQueryAccountInfo::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
-	auto stdo = (MapDO<std::string>*)reqDO.get();
-	auto& brokeid = session->getUserInfo()->getBrokerId();
-	auto& investorid = session->getUserInfo()->getInvestorId();
-
-	CThostFtdcQryTradingAccountField req{};
-	std::strcpy(req.BrokerID, brokeid.data());
-	std::strcpy(req.InvestorID, investorid.data());
-
 	if (auto wkProcPtr =
 		MessageUtility::FindGlobalProcessor<CTPTradeWorkerProcessor>(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT))
 	{
@@ -50,6 +42,14 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const dataobj_ptr& reqDO, IRawAPI
 
 		if (accountInfoVec.size() < 1)
 		{
+			auto stdo = (MapDO<std::string>*)reqDO.get();
+			auto& brokeid = session->getUserInfo()->getBrokerId();
+			auto& investorid = session->getUserInfo()->getInvestorId();
+
+			CThostFtdcQryTradingAccountField req{};
+			std::strcpy(req.BrokerID, brokeid.data());
+			std::strcpy(req.InvestorID, investorid.data());
+
 			int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryTradingAccount(&req, reqDO->SerialId);
 			// CTPUtility::CheckReturnError(iRet);
 
@@ -62,15 +62,10 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const dataobj_ptr& reqDO, IRawAPI
 		for (auto it = accountInfoVec.begin(); it != accountInfoVec.end(); it++)
 		{
 			auto accountptr = std::make_shared<AccountInfoDO>(*it);
-			accountptr->SerialId = stdo->SerialId;
+			accountptr->SerialId = reqDO->SerialId;
 			accountptr->HasMore = it != lastit;
 			wkProcPtr->SendDataObject(session, MSG_ID_QUERY_ACCOUNT_INFO, accountptr);
 		}
-	}
-	else
-	{
-		int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryTradingAccount(&req, reqDO->SerialId);
-		CTPUtility::CheckReturnError(iRet);
 	}
 
 	return nullptr;

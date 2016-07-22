@@ -31,10 +31,10 @@ dataobj_ptr CTPOTCUpdateUserParam::HandleRequest(const dataobj_ptr& reqDO, IRawA
 {
 	CheckLogin(session);
 
-	auto userContractMap_Ptr = std::static_pointer_cast<UserContractParamMap>
+	auto userContractMap_Ptr = std::static_pointer_cast<UserContractParamDOMap>
 		(session->getContext()->getAttribute(STR_KEY_USER_CONTRACTS));
 
-	auto vecUserConDO_Ptr = (VectorDO<UserContractParam>*)reqDO.get();
+	auto vecUserConDO_Ptr = (VectorDO<UserContractParamDO>*)reqDO.get();
 
 	auto strategyMap = AttribPointerCast(session->getProcessor(),
 		STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext)->GetStrategyMap();

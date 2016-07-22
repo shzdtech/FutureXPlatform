@@ -26,7 +26,7 @@ dataobj_ptr CTPOCTUnSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawA
 {
 	CheckLogin(session);
 
-	auto userContractMap = std::static_pointer_cast<UserContractParamMap>
+	auto userContractMap = std::static_pointer_cast<UserContractParamDOMap>
 		(session->getContext()->getAttribute(STR_KEY_USER_CONTRACTS));
 
 	if (auto wkProcPtr =

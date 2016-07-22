@@ -5,8 +5,8 @@
  * Purpose: Declaration of the class data_buffer
  ***********************************************************************/
 
-#if !defined(__message_data_buffer_h)
-#define __message_data_buffer_h
+#if !defined(__dataobject_data_buffer_h)
+#define __dataobject_data_buffer_h
 
 #include "../common/typedefs.h"
 

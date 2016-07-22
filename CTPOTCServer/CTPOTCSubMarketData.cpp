@@ -22,7 +22,7 @@
 
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/PricingDO.h"
-#include "../dataobject/UserContractParam.h"
+#include "../dataobject/UserContractParamDO.h"
 #include "../dataobject/MarketDataDO.h"
 
 #include "../databaseop/BaseContractDAO.h"
@@ -47,14 +47,14 @@ dataobj_ptr CTPOTCSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI
 	ThrowNotFoundException(otcContractVec);
 
 	auto userContractMap_Ptr =
-		std::make_shared < UserContractParamMap >();
+		std::make_shared < UserContractParamDOMap >();
 
 	auto ret = std::make_shared<VectorDO<PricingDO>>();
 	ret->SerialId = reqDO->SerialId;
 
 	for (auto& it : *otcContractVec)
 	{
-		UserContractParam ucp(it.ExchangeID(), it.InstrumentID());
+		UserContractParamDO ucp(it.ExchangeID(), it.InstrumentID());
 		userContractMap_Ptr->emplace(ucp, std::move(ucp));
 
 		PricingDO mdo(it.ExchangeID(), it.InstrumentID());

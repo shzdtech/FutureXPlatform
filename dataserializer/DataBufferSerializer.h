@@ -5,8 +5,8 @@
  * Purpose: Declaration of the class DataBufferSerializer
  ***********************************************************************/
 
-#if !defined(__dataobject_DataBufferSerializer_h)
-#define __dataobject_DataBufferSerializer_h
+#if !defined(__dataserializer_DataBufferSerializer_h)
+#define __dataserializer_DataBufferSerializer_h
 
 #include "IDataSerializer.h"
 #include "../utility/singleton_templ.h"

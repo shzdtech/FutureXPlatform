@@ -1,5 +1,5 @@
-#ifndef _DATAOBJECT_CONFIG_H_
-#define _DATAOBJECT_CONFIG_H_
+#ifndef __dataserializer_config_h_
+#define __dataserializer_config_h_
 
 #include <string>
 

@@ -10,7 +10,7 @@
 #include "DefMessageID.h"
 #include "message_macro.h"
 #include "TemplateMessageProcessor.h"
-#include "../dataobject/ExceptionSerializer.h"
+#include "../dataserializer/ExceptionSerializer.h"
 
 
 void TemplateMessageProcessor::ProcessRequest(const uint msgId, const dataobj_ptr& reqDO, bool sendRsp)

@@ -12,7 +12,7 @@
 #include "../CTPServer/tradeapi/ThostFtdcMdApi.h"
 
 #include "../dataobject/MarketDataDO.h"
-#include "../dataobject/UserContractParam.h"
+#include "../dataobject/UserContractParamDO.h"
 #include "../dataobject/StrategyContractDO.h"
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/MarketDataDO.h"
