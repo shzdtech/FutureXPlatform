@@ -11,8 +11,9 @@
 #include "../message/IUserContextBuilder.h"
 #include "../utility/singleton_templ.h"
 #include <map>
+#include "ctpotc_export.h"
 
-class CTPOTCUserContextBuilder : public IUserContextBuilder, public singleton_ptr < CTPOTCUserContextBuilder >
+class CTP_OTC_CLASS_EXPORT CTPOTCUserContextBuilder : public IUserContextBuilder, public singleton_ptr < CTPOTCUserContextBuilder >
 {
 public:
 	CTPOTCUserContextBuilder();

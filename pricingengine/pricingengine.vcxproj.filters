@@ -13,66 +13,102 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="头文件\pricing">
+      <UniqueIdentifier>{5d674043-dfe8-4438-86bb-0c2e5996f6c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\pricing">
+      <UniqueIdentifier>{2c7d3dd8-d1bc-4b27-bb65-4ec02eb298e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\model">
+      <UniqueIdentifier>{8791221e-eb2b-47cf-98f4-91655d5f45d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\model">
+      <UniqueIdentifier>{a2ac572c-5c31-43cb-a720-5cffc5a8c282}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AlgorithmManager.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="BetaSumAlgorithm.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="IAlgorithm.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ETPAlgorithm.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="PricingUtility.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="IAlgorithmFactory.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="pricingengine_exp.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="BlackScholesPricing.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="PricingAlgorithmFactory.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="IPricingDataContext.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="PricingDataContext.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="IPricingAlgorithm.h">
+      <Filter>头文件\pricing</Filter>
+    </ClInclude>
+    <ClInclude Include="IPricingAlgorithmFactory.h">
+      <Filter>头文件\pricing</Filter>
+    </ClInclude>
+    <ClInclude Include="IPricingDataContext.h">
+      <Filter>头文件\pricing</Filter>
+    </ClInclude>
+    <ClInclude Include="PricingAlgorithmFactory.h">
+      <Filter>头文件\pricing</Filter>
+    </ClInclude>
+    <ClInclude Include="PricingDataContext.h">
+      <Filter>头文件\pricing</Filter>
+    </ClInclude>
+    <ClInclude Include="PricingUtility.h">
+      <Filter>头文件\pricing</Filter>
+    </ClInclude>
+    <ClInclude Include="PricingAlgorithmManager.h">
+      <Filter>头文件\pricing</Filter>
+    </ClInclude>
+    <ClInclude Include="BetaSumPricingAlgorithm.h">
+      <Filter>头文件\pricing</Filter>
+    </ClInclude>
+    <ClInclude Include="ETPPricingAlgorithm.h">
+      <Filter>头文件\pricing</Filter>
+    </ClInclude>
+    <ClInclude Include="WingsVolatilityModel.h">
+      <Filter>头文件\model</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelAlgorithmManager.h">
+      <Filter>头文件\model</Filter>
+    </ClInclude>
+    <ClInclude Include="IModelAlgorithm.h">
+      <Filter>头文件\model</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelAlgorithmFactory.h">
+      <Filter>头文件\model</Filter>
+    </ClInclude>
+    <ClInclude Include="IModelAlgorithmFactory.h">
+      <Filter>头文件\model</Filter>
+    </ClInclude>
+    <ClInclude Include="BlackScholesPricingAlgorithm.h">
+      <Filter>头文件\pricing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AlgorithmManager.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="BetaSumAlgorithm.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="ETPAlgorithm.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="PricingUtility.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="BlackScholesPricing.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="PricingAlgorithmManager.cpp">
+      <Filter>源文件\pricing</Filter>
     </ClCompile>
     <ClCompile Include="PricingAlgorithmFactory.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\pricing</Filter>
     </ClCompile>
     <ClCompile Include="PricingDataContext.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\pricing</Filter>
+    </ClCompile>
+    <ClCompile Include="PricingUtility.cpp">
+      <Filter>源文件\pricing</Filter>
+    </ClCompile>
+    <ClCompile Include="BetaSumPricingAlgorithm.cpp">
+      <Filter>源文件\pricing</Filter>
+    </ClCompile>
+    <ClCompile Include="ETPPricingAlgorithm.cpp">
+      <Filter>源文件\pricing</Filter>
+    </ClCompile>
+    <ClCompile Include="WingsVolatilityModel.cpp">
+      <Filter>源文件\model</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelAlgorithmManager.cpp">
+      <Filter>源文件\model</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelAlgorithmFactory.cpp">
+      <Filter>源文件\model</Filter>
+    </ClCompile>
+    <ClCompile Include="BlackScholesPricingAlgorithm.cpp">
+      <Filter>源文件\pricing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

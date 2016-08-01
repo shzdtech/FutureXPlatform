@@ -41,18 +41,18 @@ dataobj_ptr CTPOTCQueryContractParam::HandleRequest(const dataobj_ptr& reqDO, IR
 	auto contractVec_Ptr = std::make_shared<VectorDO<ContractDO>>();
 	contractVec_Ptr->SerialId = reqDO->SerialId;
 
-	auto pricingCtx = AttribPointerCast(session->getProcessor(),
-		STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext);
-
-	auto contractMap = pricingCtx->GetContractMap();
-
-	for (auto& con : *cpVec_Ptr)
+	if (auto pricingCtxPtr = AttribPointerCast(session->getProcessor(), STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext))
 	{
-		auto& contractDO = contractMap->at(con);
-		contractVec_Ptr->push_back(contractDO);
-	}
+		auto contractMap = pricingCtxPtr->GetContractMap();
 
-	ThrowNotFoundException(contractVec_Ptr);
+		for (auto& con : *cpVec_Ptr)
+		{
+			auto& contractDO = contractMap->at(con);
+			contractVec_Ptr->push_back(contractDO);
+		}
+
+		ThrowNotFoundException(contractVec_Ptr);
+	}
 
 	return contractVec_Ptr;
 }

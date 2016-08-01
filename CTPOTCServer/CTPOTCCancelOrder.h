@@ -9,8 +9,9 @@
 #define __CTPOTC_CTPOTCCancelOrder_h
 
 #include "../message/MessageHandler.h"
+#include "ctpotc_export.h"
 
-class CTPOTCCancelOrder : public MessageHandler
+class CTP_OTC_CLASS_EXPORT CTPOTCCancelOrder : public MessageHandler
 {
 public:
    dataobj_ptr HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session);

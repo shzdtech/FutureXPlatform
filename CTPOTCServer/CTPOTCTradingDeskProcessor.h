@@ -9,8 +9,9 @@
 #define __CTPOTC_CTPOTCTradingDeskProcessor_h
 
 #include "../CTPServer/CTPProcessor.h"
+#include "ctpotc_export.h"
 
-class CTPOTCTradingDeskProcessor : public CTPProcessor
+class CTP_OTC_CLASS_EXPORT CTPOTCTradingDeskProcessor : public CTPProcessor
 {
 public:
 	CTPOTCTradingDeskProcessor(const std::map<std::string, std::string>& configMap);

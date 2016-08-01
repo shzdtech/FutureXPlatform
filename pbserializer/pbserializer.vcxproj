@@ -161,6 +161,7 @@
   <ItemGroup>
     <ClInclude Include="..\Protos\commondefine.pb.h" />
     <ClInclude Include="..\Protos\errormsg.pb.h" />
+    <ClInclude Include="..\Protos\modelalgorithm.pb.h" />
     <ClInclude Include="..\Protos\simpletable.pb.h" />
     <ClInclude Include="..\Protos\usermanager.pb.h" />
     <ClInclude Include="ExceptionDef.h" />
@@ -172,6 +173,7 @@
     <ClInclude Include="PBIntTableSerializer.h" />
     <ClInclude Include="pbmacros.h" />
     <ClInclude Include="PBMessageSerializerFactory.h" />
+    <ClInclude Include="PBModelParamsSerializer.h" />
     <ClInclude Include="PBResultSerializer.h" />
     <ClInclude Include="pbserializers.h" />
     <ClInclude Include="pbserializer_exp.h" />
@@ -184,6 +186,7 @@
   <ItemGroup>
     <ClCompile Include="..\Protos\commondefine.pb.cc" />
     <ClCompile Include="..\Protos\errormsg.pb.cc" />
+    <ClCompile Include="..\Protos\modelalgorithm.pb.cc" />
     <ClCompile Include="..\Protos\simpletable.pb.cc" />
     <ClCompile Include="..\Protos\usermanager.pb.cc" />
     <ClCompile Include="PBExceptionSerializer.cpp" />
@@ -193,6 +196,7 @@
     <ClCompile Include="PBEchoMessageSerializer.cpp" />
     <ClCompile Include="PBIntTableSerializer.cpp" />
     <ClCompile Include="PBMessageSerializerFactory.cpp" />
+    <ClCompile Include="PBModelParamsSerializer.cpp" />
     <ClCompile Include="PBResultSerializer.cpp" />
     <ClCompile Include="pbserializer_exp.cpp" />
     <ClCompile Include="PBStringMapSerializer.cpp" />
@@ -271,6 +275,23 @@
     <ProjectReference Include="..\dataserializer\dataserializer.vcxproj">
       <Project>{feece5a0-b699-4dac-bca9-e95ae0276b66}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\Protos\modelalgorithm.proto">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(SolutionDir)Protos  %(FullPath)</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(Identity)</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(SolutionDir)Protos  %(FullPath)</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(Identity)</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(SolutionDir)Protos  %(FullPath)</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Identity)</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)BuildTool\protoc --proto_path=$(SolutionDir)Protos --cpp_out=$(SolutionDir)Protos  %(FullPath)</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Identity)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)Protos/%(Filename).pb.h;$(SolutionDir)Protos/%(Filename).pb.cc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)Protos/%(Filename).pb.h;$(SolutionDir)Protos/%(Filename).pb.cc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)Protos/%(Filename).pb.h;$(SolutionDir)Protos/%(Filename).pb.cc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)Protos/%(Filename).pb.h;$(SolutionDir)Protos/%(Filename).pb.cc;%(Outputs)</Outputs>
+    </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

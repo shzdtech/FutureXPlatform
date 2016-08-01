@@ -5,8 +5,8 @@
  * Purpose: Declaration of the class CTPAccountLogin
  ***********************************************************************/
 
-#if !defined(__CTP_CTPAccountLogin_h)
-#define __CTP_CTPAccountLogin_h
+#if !defined(__CTPOTC_CTPAccountLogin_h)
+#define __CTPOTC_CTPAccountLogin_h
 
 #include "../message/LoginHandler.h"
 #include "../dataobject/UserInfoDO.h"

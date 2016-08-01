@@ -60,6 +60,8 @@ std::map<uint, IMessageHandler_Ptr> CTPOTCTradingDeskServiceFactory::CreateMessa
 
 	msg_hdl_map[MSG_ID_ORDER_UPDATE] = msg_hdl_map[MSG_ID_QUERY_ORDER];
 
+	msg_hdl_map[MSG_ID_VOLITALITY_MODEL] = std::make_shared<OTCOptionVolatility>();
+
 	return msg_hdl_map;
 }
 
@@ -73,6 +75,7 @@ std::map<uint, IDataSerializer_Ptr> CTPOTCTradingDeskServiceFactory::CreateDataS
 {
 	std::map<uint, IDataSerializer_Ptr> ret;
 	AbstractDataSerializerFactory::Instance()->CreateDataSerializers(ret);
+	ret[MSG_ID_VOLITALITY_MODEL] = ret[MSG_ID_MODELALGORITHM];
 	return ret;
 }
 

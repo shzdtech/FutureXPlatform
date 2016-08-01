@@ -32,44 +32,47 @@ dataobj_ptr CTPOTCUpdateStrategy::HandleRequest(const dataobj_ptr& reqDO, IRawAP
 {
 	CheckLogin(session);
 
-	auto strategyMap = AttribPointerCast(session->getProcessor(), 
-		STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext)->GetStrategyMap();
-
-	auto strategyVec = (VectorDO<StrategyContractDO>*)reqDO.get();
-
-	auto wkProcPtr =
-		MessageUtility::FindGlobalProcessor<CTPOTCWorkerProcessor>(CTPWorkerProcessorID::WORKPROCESSOR_OTC);
-
-	auto userContractMap_Ptr = std::static_pointer_cast<UserContractParamDOMap>
-		(session->getContext()->getAttribute(STR_KEY_USER_CONTRACTS));
-
-	for (auto& strategyDO : *strategyVec)
+	if (auto pricingCtxPtr = AttribPointerCast(session->getProcessor(),
+		STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext))
 	{
-		auto it = strategyMap->find(strategyDO);
-		if (it != strategyMap->end())
+		auto strategyMap = pricingCtxPtr->GetStrategyMap();
+
+		auto strategyVec = (VectorDO<StrategyContractDO>*)reqDO.get();
+
+		auto wkProcPtr =
+			MessageUtility::FindGlobalProcessor<CTPOTCWorkerProcessor>(CTPWorkerProcessorID::WORKPROCESSOR_OTC);
+
+		auto userContractMap_Ptr = std::static_pointer_cast<UserContractParamDOMap>
+			(session->getContext()->getAttribute(STR_KEY_USER_CONTRACTS));
+
+		for (auto& strategyDO : *strategyVec)
 		{
-			StrategyContractDO& scDO = it->second;
-			scDO.Offset = strategyDO.Offset;
-			scDO.Quantity = strategyDO.Quantity;
-			scDO.Depth = strategyDO.Depth;
-			scDO.Spread = strategyDO.Spread;
-			userContractMap_Ptr->at(strategyDO).Quantity = scDO.Quantity;
-			scDO.Enabled = strategyDO.Enabled;
-			scDO.RiskFreeRate = scDO.RiskFreeRate;
-			scDO.Strike = scDO.Strike;
-			scDO.Volatility = scDO.Volatility;
+			auto it = strategyMap->find(strategyDO);
+			if (it != strategyMap->end())
+			{
+				StrategyContractDO& scDO = it->second;
+				scDO.Offset = strategyDO.Offset;
+				scDO.Quantity = strategyDO.Quantity;
+				scDO.Depth = strategyDO.Depth;
+				scDO.Spread = strategyDO.Spread;
+				userContractMap_Ptr->at(strategyDO).Quantity = scDO.Quantity;
+				scDO.Enabled = strategyDO.Enabled;
+				scDO.RiskFreeRate = scDO.RiskFreeRate;
+				scDO.Strike = scDO.Strike;
+				scDO.Volatility = scDO.Volatility;
 
-			if (scDO.Enabled)
-				wkProcPtr->TriggerPricing(scDO);
-			else
-				strategyDO.Trading = false;
+				if (scDO.Enabled)
+					wkProcPtr->TriggerPricing(scDO);
+				else
+					strategyDO.Trading = false;
 
-			scDO.Trading = strategyDO.Trading;
+				scDO.Trading = strategyDO.Trading;
 
-			if (scDO.Trading)
-				wkProcPtr->TriggerOrderUpdating(scDO);
-			else
-				wkProcPtr->CancelAutoOrder(scDO);
+				if (scDO.Trading)
+					wkProcPtr->TriggerOrderUpdating(scDO);
+				else
+					wkProcPtr->CancelAutoOrder(scDO);
+			}
 		}
 	}
 

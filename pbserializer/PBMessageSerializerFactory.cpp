@@ -19,6 +19,7 @@ PBMessageSerializerFactory::PBMessageSerializerFactory()
 {
 	//Common
 	_serializer_map[MSG_ID_ERROR] = PBExceptionSerializer::Instance();
+	_serializer_map[MSG_ID_MODELALGORITHM] = PBModelParamsSerializer::Instance();
 	_serializer_map[MSG_ID_SESSION_CREATED] = PBEchoMessageSerializer::Instance();
 	_serializer_map[MSG_ID_ECHO] = PBEchoMessageSerializer::Instance();
 	_serializer_map[MSG_ID_LOGIN] = std::make_shared<PBCombineSerializer>
@@ -27,10 +28,8 @@ PBMessageSerializerFactory::PBMessageSerializerFactory()
 	//Account
 	_serializer_map[MSG_ID_USER_INFO] = std::make_shared<PBCombineSerializer>
 		(PBUserInfoSerializer::Instance(), PBStringMapSerializer::Instance());
-	_serializer_map[MSG_ID_USER_NEW] = std::make_shared<PBCombineSerializer>
-		(PBResultSerializer::Instance(), PBUserInfoSerializer::Instance());
-	_serializer_map[MSG_ID_USER_INFO_UPDATE] = std::make_shared<PBCombineSerializer>
-		(PBResultSerializer::Instance(), PBUserInfoSerializer::Instance());
+	_serializer_map[MSG_ID_USER_NEW] = PBUserInfoSerializer::Instance();
+	_serializer_map[MSG_ID_USER_INFO_UPDATE] = PBUserInfoSerializer::Instance();
 }
 
 ////////////////////////////////////////////////////////////////////////

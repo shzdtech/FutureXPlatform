@@ -5,8 +5,8 @@
  * Purpose: Declaration of the class PricingUtility
  ***********************************************************************/
 
-#if !defined(__strategy_PricingUtility_h)
-#define __strategy_PricingUtility_h
+#if !defined(__pricingengine_PricingUtility_h)
+#define __pricingengine_PricingUtility_h
 
 #include "../dataobject/PricingDO.h"
 #include "../common/typedefs.h"
@@ -20,26 +20,26 @@ class PRICINGENGINE_CLASS_EXPORTS PricingUtility
 {
 public:
 	static std::shared_ptr<PricingDO> Pricing(
+		const void* pInputObject,
 		const StrategyContractDO& strategy,
-		double inputVal,
-		IPricingDataContext* priceCtx,
+		IPricingDataContext& priceCtx,
 		const param_vector* params);
 
 	static std::shared_ptr<PricingDO> Pricing(
+		const void* pInputObject,
 		const StrategyContractDO& strategy,
-		double inputVal,
-		IPricingDataContext* priceCtx = nullptr);
+		IPricingDataContext& priceCtx);
 
 	static std::shared_ptr<PricingDO> Pricing(
+		const void* pInputObject,
 		const ContractKey& contractKey,
-		double inputVal,
-		IPricingDataContext* priceCtx,
+		IPricingDataContext& priceCtx,
 		const param_vector* params);
 
 	static std::shared_ptr<PricingDO> Pricing(
+		const void* pInputObject,
 		const ContractKey& contractKey,
-		double inputVal,
-		IPricingDataContext* priceCtx);
+		IPricingDataContext& priceCtx);
 
 
 protected:

@@ -5,8 +5,8 @@
  * Purpose: Declaration of the class CTPAccountTradeServiceFactory
  ***********************************************************************/
 
-#if !defined(__CTP_CTPAccountTradeServiceFactory_h)
-#define __CTP_CTPAccountTradeServiceFactory_h
+#if !defined(__CTPOTC_CTPAccountTradeServiceFactory_h)
+#define __CTPOTC_CTPAccountTradeServiceFactory_h
 
 #include "../CTPServer/CTPTradeServiceFactory.h"
 

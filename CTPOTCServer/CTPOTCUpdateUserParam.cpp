@@ -36,22 +36,26 @@ dataobj_ptr CTPOTCUpdateUserParam::HandleRequest(const dataobj_ptr& reqDO, IRawA
 
 	auto vecUserConDO_Ptr = (VectorDO<UserContractParamDO>*)reqDO.get();
 
-	auto strategyMap = AttribPointerCast(session->getProcessor(),
-		STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext)->GetStrategyMap();
 
-	for (auto& userConDO : *vecUserConDO_Ptr)
+	if (auto pricingCtxPtr = AttribPointerCast(session->getProcessor(),
+		STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext))
 	{
-		auto& userContract = userContractMap_Ptr->at(userConDO);
-		userContract.Quantity = userConDO.Quantity;
+		auto strategyMap = pricingCtxPtr->GetStrategyMap();
 
-		auto it = strategyMap->find(userConDO);
-		if (it != strategyMap->end())
+		for (auto& userConDO : *vecUserConDO_Ptr)
 		{
-			OnResponseProcMacro(
-				session->getProcessor(),
-				MSG_ID_RTN_PRICING, 
-				reqDO->SerialId,
-				&it->second);
+			auto& userContract = userContractMap_Ptr->at(userConDO);
+			userContract.Quantity = userConDO.Quantity;
+
+			auto it = strategyMap->find(userConDO);
+			if (it != strategyMap->end())
+			{
+				OnResponseProcMacro(
+					session->getProcessor(),
+					MSG_ID_RTN_PRICING,
+					reqDO->SerialId,
+					&it->second);
+			}
 		}
 	}
 

@@ -7,8 +7,6 @@
 
 #include "CTPOTCDepthMarketData.h"
 
-#include "../common/Attribute_Key.h"
-
 #include "../CTPServer/tradeapi/ThostFtdcMdApi.h"
 
 #include "../dataobject/MarketDataDO.h"
@@ -23,7 +21,7 @@
 #include "../message/AppContext.h"
 
 #include "../utility/Encoding.h"
-#include "../pricingengine/AlgorithmManager.h"
+#include "../pricingengine/PricingAlgorithmManager.h"
 
 #include "../common/Attribute_Key.h"
 #include "../message/message_macro.h"
@@ -46,31 +44,37 @@ dataobj_ptr CTPOTCDepthMarketData::HandleResponse(const uint32_t serialId, param
 	auto pData = (CThostFtdcDepthMarketDataField*)rawRespParams[0];
 
 	if (!_mdDOMap)
-		_mdDOMap = AttribPointerCast(session->getProcessor(),
-			STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext)
-		->GetMarketDataDOMap();
+	{
+		if (auto pricingCtxPtr = AttribPointerCast(session->getProcessor(), STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext))
+		{
+			_mdDOMap = pricingCtxPtr->GetMarketDataDOMap();
+		}
+	}
 
-	MarketDataDO& mdo = _mdDOMap->at(pData->InstrumentID);
+	if (_mdDOMap)
+	{
+		MarketDataDO& mdo = _mdDOMap->at(pData->InstrumentID);
 
-	mdo.PreClosePrice = pData->PreClosePrice;
-	mdo.OpenPrice = pData->OpenPrice;
-	mdo.HighestPrice = pData->HighestPrice;
-	mdo.LowestPrice = pData->LowestPrice;
-	mdo.LastPrice = pData->LastPrice;
-	mdo.Volume = pData->Volume;
-	mdo.Turnover = pData->Turnover;
-	//p.gFutMDPB->set_pricechange(0);//TBD
-	mdo.BidPrice = pData->BidPrice1;
-	mdo.AskPrice = pData->AskPrice1;
-	mdo.BidVolume = pData->BidVolume1;
-	mdo.AskVolume = pData->AskVolume1;
-	mdo.UpperLimitPrice = pData->UpperLimitPrice;
-	mdo.LowerLimitPrice = pData->LowerLimitPrice;
-	mdo.PreSettlementPrice = pData->PreSettlementPrice;
-	mdo.SettlementPrice = pData->SettlementPrice;
-	mdo.PreOpenInterest = pData->PreOpenInterest;
-	mdo.OpenInterest = pData->OpenInterest;
-	mdo.AveragePrice = pData->AveragePrice;
+		mdo.PreClosePrice = pData->PreClosePrice;
+		mdo.OpenPrice = pData->OpenPrice;
+		mdo.HighestPrice = pData->HighestPrice;
+		mdo.LowestPrice = pData->LowestPrice;
+		mdo.LastPrice = pData->LastPrice;
+		mdo.Volume = pData->Volume;
+		mdo.Turnover = pData->Turnover;
+		//p.gFutMDPB->set_pricechange(0);//TBD
+		mdo.BidPrice = pData->BidPrice1;
+		mdo.AskPrice = pData->AskPrice1;
+		mdo.BidVolume = pData->BidVolume1;
+		mdo.AskVolume = pData->AskVolume1;
+		mdo.UpperLimitPrice = pData->UpperLimitPrice;
+		mdo.LowerLimitPrice = pData->LowerLimitPrice;
+		mdo.PreSettlementPrice = pData->PreSettlementPrice;
+		mdo.SettlementPrice = pData->SettlementPrice;
+		mdo.PreOpenInterest = pData->PreOpenInterest;
+		mdo.OpenInterest = pData->OpenInterest;
+		mdo.AveragePrice = pData->AveragePrice;
+	}
 
 	return ret;
 }

@@ -1,24 +1,24 @@
 /***********************************************************************
- * Module:  ETPAlgorithm.h
+ * Module:  ETPPricingAlgorithm.h
  * Author:  milk
  * Modified: 2015年9月6日 23:23:15
- * Purpose: Declaration of the class ETPAlgorithm
+ * Purpose: Declaration of the class ETPPricingAlgorithm
  ***********************************************************************/
 
-#if !defined(__strategy_ETPAlgorithm_h)
-#define __strategy_ETPAlgorithm_h
+#if !defined(__pricingengine_ETPPricingAlgorithm_h)
+#define __pricingengine_ETPPricingAlgorithm_h
 
-#include "IAlgorithm.h"
+#include "IPricingAlgorithm.h"
 
-class ETPAlgorithm : public IAlgorithm
+class ETPPricingAlgorithm : public IPricingAlgorithm
 {
 public:
 	const std::string& Name(void) const;
 	dataobj_ptr Compute(
+		const void* pInputObject,
 		const StrategyContractDO& sdo,
-		double inputVal,
 		IPricingDataContext& priceCtx,
-		const param_vector* params) const;
+		const param_vector* params);
 
 protected:
 private:

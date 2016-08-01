@@ -30,6 +30,8 @@ dataobj_ptr RegisterUserHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI
 {
 	CheckLogin(session);
 
+	dataobj_ptr ret;
+
 	if (session->getUserInfo()->getRole() < ROLE_ADMIN)
 		throw ApiException(APIErrorID::NO_PERMISSION, "No permission to create a new user.");
 
@@ -43,7 +45,15 @@ dataobj_ptr RegisterUserHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI
 
 		if (UserInfoDAO::InsertUser(*pUserInfoDO) != 0)
 			throw DatabaseException("Fail to insert user info.");
+
+		ret = UserInfoDAO::FindUser(pUserInfoDO->UserName);
+
+		if(!ret)
+			throw DatabaseException("Fail to insert user info.");
+
+		ret->SerialId = reqDO->SerialId;
+		ret->HasMore = false;
 	}
 
-	return dataobj_ptr(new ResultDO(reqDO->SerialId));
+	return ret;
 }

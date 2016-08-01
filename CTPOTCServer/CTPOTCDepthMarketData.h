@@ -5,13 +5,14 @@
  * Purpose: Declaration of the class CTPOTCDepthMarketData
  ***********************************************************************/
 
-#if !defined(__CTP_CTPOTCDepthMarketData_h)
-#define __CTP_CTPOTCDepthMarketData_h
+#if !defined(__CTPOTC_CTPOTCDepthMarketData_h)
+#define __CTPOTC_CTPOTCDepthMarketData_h
 
 #include "../message/NopHandler.h"
 #include "../pricingengine/IPricingDataContext.h"
+#include "ctpotc_export.h"
 
-class CTPOTCDepthMarketData : public NopHandler
+class CTP_OTC_CLASS_EXPORT CTPOTCDepthMarketData : public NopHandler
 {
 public:
    dataobj_ptr HandleResponse(const uint32_t serialId, param_vector& rawRespParams, void* rawAPI, ISession* session);

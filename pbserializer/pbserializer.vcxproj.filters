@@ -82,6 +82,12 @@
     <ClInclude Include="PBEchoMessageSerializer.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\Protos\modelalgorithm.pb.h">
+      <Filter>protos</Filter>
+    </ClInclude>
+    <ClInclude Include="PBModelParamsSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PBComplexTableSerializer.cpp">
@@ -135,6 +141,12 @@
     <ClCompile Include="PBEchoMessageSerializer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="..\Protos\modelalgorithm.pb.cc">
+      <Filter>protos</Filter>
+    </ClCompile>
+    <ClCompile Include="PBModelParamsSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\Protos\errormsg.proto">
@@ -154,5 +166,10 @@
     <ResourceCompile Include="pbserializer.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Protos\modelalgorithm.proto">
+      <Filter>protos</Filter>
+    </None>
   </ItemGroup>
 </Project>

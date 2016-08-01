@@ -10,6 +10,7 @@
 #include "PBStringTableSerializer.h"
 #include "PBCombineSerializer.h"
 #include "PBResultSerializer.h"
+#include "PBModelParamsSerializer.h"
 #include "PBUserInfoSerializer.h"
 #include "PBUserInfoListSerializer.h"
 

@@ -1,11 +1,11 @@
 /***********************************************************************
- * Module:  ETPAlgorithm.cpp
+ * Module:  ETPPricingAlgorithm.cpp
  * Author:  milk
  * Modified: 2015年9月6日 23:23:15
- * Purpose: Implementation of the class ETPAlgorithm
+ * Purpose: Implementation of the class ETPPricingAlgorithm
  ***********************************************************************/
 
-#include "ETPAlgorithm.h"
+#include "ETPPricingAlgorithm.h"
 #include "../dataobject/StrategyContractDO.h"
 #include "../dataobject/MarketDataDO.h"
 #include "../dataobject/UserContractParamDO.h"
@@ -14,30 +14,30 @@
 #include "../dataobject/TypedefDO.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       ETPAlgorithm::Name()
-// Purpose:    Implementation of ETPAlgorithm::Name()
+// Name:       ETPPricingAlgorithm::Name()
+// Purpose:    Implementation of ETPPricingAlgorithm::Name()
 // Return:     std::string
 ////////////////////////////////////////////////////////////////////////
 
-const std::string& ETPAlgorithm::Name(void) const
+const std::string& ETPPricingAlgorithm::Name(void) const
 {
 	static const std::string name("etp");
 	return name;
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       ETPAlgorithm::Compute(std::vector<void*>& params)
-// Purpose:    Implementation of ETPAlgorithm::Compute()
+// Name:       ETPPricingAlgorithm::Compute(std::vector<void*>& params)
+// Purpose:    Implementation of ETPPricingAlgorithm::Compute()
 // Parameters:
 // - params
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr ETPAlgorithm::Compute(
+dataobj_ptr ETPPricingAlgorithm::Compute(
+	const void* pInputObject,
 	const StrategyContractDO& sdo,
-	double inputVal,
 	IPricingDataContext& priceCtx,
-	const param_vector* params) const
+	const param_vector* params)
 {
 	static const std::string const1_name("const1");
 	static const std::string const2_name("const2");
@@ -54,7 +54,7 @@ dataobj_ptr ETPAlgorithm::Compute(
 	double bias = sdo.ParamMap->at(const2_name) + sdo.Offset;
 	double BidPrice = 0;
 	double AskPrice = 0;
-	double quantity = inputVal;
+	double quantity = *(int*)pInputObject;
 
 	if (sdo.BaseContracts && sdo.BaseContracts->size() > 0)
 	{

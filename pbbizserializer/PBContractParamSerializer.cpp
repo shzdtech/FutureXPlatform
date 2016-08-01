@@ -54,7 +54,7 @@ data_buffer PBContractParamSerializer::Serialize(const dataobj_ptr& abstractDO)
 dataobj_ptr PBContractParamSerializer::Deserialize(const data_buffer& rawdata)
 {
 	Micro::Future::Message::Business::PBContractParamList PB;
-	ParseWithThrow(PB, rawdata);
+	ParseWithReturn(PB, rawdata);
 
 	auto ret = std::make_shared<VectorDO<ContractDO>>();
 	FillDOHeader(ret, PB);

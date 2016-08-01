@@ -5,8 +5,8 @@
  * Purpose: Declaration of the class PricingContext
  ***********************************************************************/
 
-#if !defined(__strategy__PricingDataContext_h)
-#define __strategy__PricingDataContext_h
+#if !defined(__pricingengine__PricingDataContext_h)
+#define __pricingengine__PricingDataContext_h
 
 #include <memory>
 #include "IPricingDataContext.h"

@@ -5,8 +5,8 @@
  * Created on 2014年10月7日, 下午4:22
  */
 
-#ifndef __CTP_OTC_EXPORT_H
-#define	__CTP_OTC_EXPORT_H
+#ifndef __CTPOTC_OTC_EXPORT_H
+#define	__CTPOTC_OTC_EXPORT_H
 
 #if defined (_MSC_VER)
 #if defined (CTP_OTC_LIBRARY_EXPORTS)

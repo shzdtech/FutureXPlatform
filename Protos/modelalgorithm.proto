@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package Micro.Future.Message;
+
+message ModelParams
+{
+	uint32 serialId = 1;
+	repeated double values = 2;
+	string modelName = 3;
+	map<string, double> scalaParams = 4;
+
+	message double_vector
+	{ repeated double entry = 1;}
+	map<string, double_vector> vectorParams = 5;
+}

@@ -5,12 +5,13 @@
  * Purpose: Declaration of the class CTPOTCReturnPricingData
  ***********************************************************************/
 
-#if !defined(__CTP_CTPOTCReturnPricingData_h)
-#define __CTP_CTPOTCReturnPricingData_h
+#if !defined(__CTPOTC_CTPOTCReturnPricingData_h)
+#define __CTPOTC_CTPOTCReturnPricingData_h
 
 #include "../message/NopHandler.h"
+#include "ctpotc_export.h"
 
-class CTPOTCReturnPricingData : public NopHandler
+class CTP_OTC_CLASS_EXPORT CTPOTCReturnPricingData : public NopHandler
 {
 public:
    dataobj_ptr HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session);

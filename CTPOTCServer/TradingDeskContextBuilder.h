@@ -9,8 +9,9 @@
 #define __CTPOTCServer_TradingDeskContextBuilder_h
 
 #include "../message/IUserContextBuilder.h"
+#include "ctpotc_export.h"
 
-class TradingDeskContextBuilder : public IUserContextBuilder
+class CTP_OTC_CLASS_EXPORT TradingDeskContextBuilder : public IUserContextBuilder
 {
 public:
    TradingDeskContextBuilder();

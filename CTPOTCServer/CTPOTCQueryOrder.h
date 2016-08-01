@@ -9,8 +9,9 @@
 #define __CTPOTC_CTPOTCQueryOrder_h
 
 #include "../message/MessageHandler.h"
+#include "ctpotc_export.h"
 
-class CTPOTCQueryOrder : public MessageHandler
+class CTP_OTC_CLASS_EXPORT CTPOTCQueryOrder : public MessageHandler
 {
 public:
    dataobj_ptr HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session);

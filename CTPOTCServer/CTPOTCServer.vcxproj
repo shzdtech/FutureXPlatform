@@ -197,6 +197,7 @@
     <ClCompile Include="CTPOTCWorkerProcessor.cpp" />
     <ClCompile Include="ctpotc_export.cpp" />
     <ClCompile Include="CTPAccountTradeServiceFactory.cpp" />
+    <ClCompile Include="OTCOptionVolatility.cpp" />
     <ClCompile Include="TradingDeskContextBuilder.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -225,6 +226,7 @@
     <ClInclude Include="ctpotc_bizhandlers.h" />
     <ClInclude Include="CTPAccountTradeServiceFactory.h" />
     <ClInclude Include="ctpotc_export.h" />
+    <ClInclude Include="OTCOptionVolatility.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="TradingDeskContextBuilder.h" />
   </ItemGroup>

@@ -63,7 +63,7 @@ OrderDOVec_Ptr AutoOrderManager::UpdateOrderByStrategy(
 	{
 		std::lock_guard<std::mutex> guard(_userOrderCtx.Mutex(strategyDO));
 
-		if (auto pricingDO_ptr = PricingUtility::Pricing(strategyDO, strategyDO.Quantity, _pricingCtx))
+		if (auto pricingDO_ptr = PricingUtility::Pricing(&strategyDO.Quantity, strategyDO, *_pricingCtx))
 		{
 			ret = std::make_shared<VectorDO<OrderDO>>();
 

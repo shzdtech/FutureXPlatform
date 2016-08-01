@@ -58,10 +58,7 @@ data_buffer PBInstrumentSerializer::Serialize(const dataobj_ptr& abstractDO)
 		PB->set_maxmarginsidealgorithm(insDO.MaxMarginSideAlgorithm);
 	}
 
-	int bufSz = PBList.ByteSize();
-	uint8_t* buff = new uint8_t[bufSz];
-	PBList.SerializePartialToArray(buff, bufSz);
-	return data_buffer(buff, bufSz);
+	SerializeWithReturn(PBList);
 }
 
 ////////////////////////////////////////////////////////////////////////

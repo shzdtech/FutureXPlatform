@@ -19,27 +19,35 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AlgorithmManager.h" />
-    <ClInclude Include="BetaSumAlgorithm.h" />
-    <ClInclude Include="BlackScholesPricing.h" />
-    <ClInclude Include="ETPAlgorithm.h" />
-    <ClInclude Include="IAlgorithm.h" />
-    <ClInclude Include="IAlgorithmFactory.h" />
+    <ClInclude Include="IModelAlgorithmFactory.h" />
+    <ClInclude Include="IModelAlgorithm.h" />
+    <ClInclude Include="ModelAlgorithmFactory.h" />
+    <ClInclude Include="ModelAlgorithmManager.h" />
+    <ClInclude Include="PricingAlgorithmManager.h" />
+    <ClInclude Include="BetaSumPricingAlgorithm.h" />
+    <ClInclude Include="BlackScholesPricingAlgorithm.h" />
+    <ClInclude Include="ETPPricingAlgorithm.h" />
+    <ClInclude Include="IPricingAlgorithm.h" />
+    <ClInclude Include="IPricingAlgorithmFactory.h" />
     <ClInclude Include="IPricingDataContext.h" />
     <ClInclude Include="PricingAlgorithmFactory.h" />
     <ClInclude Include="PricingDataContext.h" />
     <ClInclude Include="pricingengine_exp.h" />
     <ClInclude Include="PricingUtility.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="WingsVolatilityModel.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AlgorithmManager.cpp" />
-    <ClCompile Include="BetaSumAlgorithm.cpp" />
-    <ClCompile Include="BlackScholesPricing.cpp" />
-    <ClCompile Include="ETPAlgorithm.cpp" />
+    <ClCompile Include="ModelAlgorithmFactory.cpp" />
+    <ClCompile Include="ModelAlgorithmManager.cpp" />
+    <ClCompile Include="PricingAlgorithmManager.cpp" />
+    <ClCompile Include="BetaSumPricingAlgorithm.cpp" />
+    <ClCompile Include="BlackScholesPricingAlgorithm.cpp" />
+    <ClCompile Include="ETPPricingAlgorithm.cpp" />
     <ClCompile Include="PricingAlgorithmFactory.cpp" />
     <ClCompile Include="PricingDataContext.cpp" />
     <ClCompile Include="PricingUtility.cpp" />
+    <ClCompile Include="WingsVolatilityModel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\bizutility\bizutility.vcxproj">

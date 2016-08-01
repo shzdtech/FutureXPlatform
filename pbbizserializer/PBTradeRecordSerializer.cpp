@@ -42,10 +42,7 @@ data_buffer PBTradeRecordSerializer::Serialize(const dataobj_ptr& abstractDO)
 	PB.set_tradetype(pDO->TradeType);
 	PB.set_hedgeflag(pDO->HedgeFlag);
 
-	int bufSz = PB.ByteSize();
-	uint8_t* buff = new uint8_t[bufSz];
-	PB.SerializePartialToArray(buff, bufSz);
-	return data_buffer(buff, bufSz);
+	SerializeWithReturn(PB);
 }
 
 ////////////////////////////////////////////////////////////////////////

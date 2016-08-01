@@ -30,17 +30,14 @@ data_buffer PBPricingDataSerializer::Serialize(const dataobj_ptr& abstractDO)
 
 	for (auto& pDO : *pVecDO)
 	{
-		auto PB = PBList.add_pricing();
+		auto PB = PBList.add_pricingdata();
 		PB->set_exchange(pDO.ExchangeID());
 		PB->set_contract(pDO.InstrumentID());
 		PB->set_bidprice(pDO.BidPrice);
 		PB->set_askprice(pDO.AskPrice);
 	}
 
-	int bufSz = PBList.ByteSize();
-	uint8_t* buff = new uint8_t[bufSz];
-	PBList.SerializePartialToArray(buff, bufSz);
-	return data_buffer(buff, bufSz);
+	SerializeWithReturn(PBList);
 }
 
 ////////////////////////////////////////////////////////////////////////

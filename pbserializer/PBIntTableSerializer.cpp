@@ -22,7 +22,7 @@ using namespace Micro::Future::Message;
 dataobj_ptr PBIntTableSerializer::Deserialize(const data_buffer& rawdata)
 {
 	SimpleIntTable simpleTbl;
-	ParseWithThrow(simpleTbl, rawdata);
+	ParseWithReturn(simpleTbl, rawdata);
 
 	auto nameTbl = new IntTableDO;
 	dataobj_ptr ret(nameTbl);

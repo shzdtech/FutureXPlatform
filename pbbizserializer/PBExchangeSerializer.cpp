@@ -31,10 +31,7 @@ data_buffer PBExchangeSerializer::Serialize(const dataobj_ptr& abstractDO)
 	PB.set_name(pDO->Name);
 	PB.set_property(pDO->Property);
 
-	int bufSz = PB.ByteSize();
-	uint8_t* buff = new uint8_t[bufSz];
-	PB.SerializePartialToArray(buff, bufSz);
-	return data_buffer(buff, bufSz);
+	SerializeWithReturn(PB);
 }
 
 ////////////////////////////////////////////////////////////////////////

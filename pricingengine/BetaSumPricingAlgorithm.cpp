@@ -1,11 +1,11 @@
 /***********************************************************************
- * Module:  BetaSumAlgorithm.cpp
+ * Module:  BetaSumPricingAlgorithm.cpp
  * Author:  milk
  * Modified: 2015年8月9日 0:42:12
- * Purpose: Implementation of the class BetaSumAlgorithm
+ * Purpose: Implementation of the class BetaSumPricingAlgorithm
  ***********************************************************************/
 
-#include "BetaSumAlgorithm.h"
+#include "BetaSumPricingAlgorithm.h"
 #include "../dataobject/StrategyContractDO.h"
 #include "../dataobject/MarketDataDO.h"
 #include "../dataobject/UserContractParamDO.h"
@@ -14,30 +14,30 @@
 #include "../dataobject/TypedefDO.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       BetaSumAlgorithm::Name()
-// Purpose:    Implementation of BetaSumAlgorithm::Name()
+// Name:       BetaSumPricingAlgorithm::Name()
+// Purpose:    Implementation of BetaSumPricingAlgorithm::Name()
 // Return:     std::string
 ////////////////////////////////////////////////////////////////////////
 
-const std::string& BetaSumAlgorithm::Name(void) const
+const std::string& BetaSumPricingAlgorithm::Name(void) const
 {
 	static const std::string name("bs");
 	return name;
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       BetaSumAlgorithm::Compute(std::vector<void*> params)
-// Purpose:    Implementation of BetaSumAlgorithm::Compute()
+// Name:       BetaSumPricingAlgorithm::Compute(std::vector<void*> params)
+// Purpose:    Implementation of BetaSumPricingAlgorithm::Compute()
 // Parameters:
 // - params
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr BetaSumAlgorithm::Compute(
+dataobj_ptr BetaSumPricingAlgorithm::Compute(
+	const void* pInputObject,
 	const StrategyContractDO& sdo,
-	double inputVal,
 	IPricingDataContext& priceCtx,
-	const param_vector* params) const
+	const param_vector* params)
 {
 	static const std::string alpha_name("alpha");
 
@@ -51,7 +51,7 @@ dataobj_ptr BetaSumAlgorithm::Compute(
 	double bias = sdo.ParamMap->at(alpha_name) + sdo.Offset;
 	double BidPrice = 0;
 	double AskPrice = 0;
-	double quantity = inputVal;
+	int quantity = *(int*)pInputObject;
 
 	if (sdo.BaseContracts && sdo.BaseContracts->size() > 0)
 	{

@@ -48,30 +48,30 @@ dataobj_ptr CTPOTCQueryStrategy::HandleRequest(const dataobj_ptr& reqDO, IRawAPI
 	auto sDOVec_Ptr = std::make_shared<VectorDO<StrategyContractDO>>();
 	sDOVec_Ptr->SerialId = reqDO->SerialId;
 
-	auto wkProcPtr =
-		MessageUtility::FindGlobalProcessor<CTPOTCWorkerProcessor>(CTPWorkerProcessorID::WORKPROCESSOR_OTC);
-
-	auto pricingCtx = AttribPointerCast(session->getProcessor(),
-		STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext);
-
-	auto pStrategyMap = pricingCtx->GetStrategyMap();
-
-	for (auto& strategyKey : *strategyVec_Ptr)
+	if (auto pricingCtxPtr = AttribPointerCast(session->getProcessor(), STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext))
 	{
-		auto& strategy = pStrategyMap->at(strategyKey);
+		auto wkProcPtr =
+			MessageUtility::FindGlobalProcessor<CTPOTCWorkerProcessor>(CTPWorkerProcessorID::WORKPROCESSOR_OTC);
 
-		if (wkProcPtr)
+		auto pStrategyMap = pricingCtxPtr->GetStrategyMap();
+
+		for (auto& strategyKey : *strategyVec_Ptr)
 		{
-			int ret = wkProcPtr->RefreshStrategy(strategy);
-			CTPUtility::HasReturnError(ret);
-			wkProcPtr->RegisterPricingListener(strategy,
-				session->getProcessor()->LockMessageSession().get());
+			auto& strategy = pStrategyMap->at(strategyKey);
+
+			if (wkProcPtr)
+			{
+				int ret = wkProcPtr->RefreshStrategy(strategy);
+				CTPUtility::HasReturnError(ret);
+				wkProcPtr->RegisterPricingListener(strategy,
+					session->getProcessor()->LockMessageSession().get());
+			}
+
+			sDOVec_Ptr->push_back(strategy);
 		}
 
-		sDOVec_Ptr->push_back(strategy);
+		ThrowNotFoundException(sDOVec_Ptr);
 	}
-
-	ThrowNotFoundException(sDOVec_Ptr);
 
 	return sDOVec_Ptr;
 }

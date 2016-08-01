@@ -96,7 +96,7 @@ void fillDO(ComplexTable& ct, ComplexTableDO* ctDO)
 dataobj_ptr PBComplexTableSerializer::Deserialize(const data_buffer& rawdata)
 {
 	ComplexTable ct;
-	ParseWithThrow(ct, rawdata);
+	ParseWithReturn(ct, rawdata);
 
 	auto ctDO = new ComplexTableDO;
 	dataobj_ptr ret(ctDO);

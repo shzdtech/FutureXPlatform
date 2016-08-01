@@ -57,25 +57,28 @@ void TradingDeskContextBuilder::LoadPortfolio(ISession* pSession)
 	if (auto portfolioDOVec_Ptr = PortfolioDAO::FindPortfolioByClient(
 		pSession->getUserInfo()->getName()))
 	{
-		auto pPortfoliorMap = AttribPointerCast(pSession->getProcessor(),
-			STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext)->GetPortfolioDOMap();
-
-		for (auto& portfolio : *portfolioDOVec_Ptr)
+		if (auto pricingCtxPtr = AttribPointerCast(pSession->getProcessor(),
+			STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext))
 		{
-			auto it = pPortfoliorMap->find(portfolio);
-			if (it != pPortfoliorMap->end())
-			{
-				portfolio = it->second;
-			}
-			else
-			{
-				pPortfoliorMap->emplace(portfolio, portfolio);
-			}
-		}
+			auto pPortfoliorMap = pricingCtxPtr->GetPortfolioDOMap();
 
-		auto portfolioVec_Ptr = std::make_shared<std::vector<PortfolioKey>>();
-		portfolioVec_Ptr->assign(portfolioDOVec_Ptr->begin(), portfolioDOVec_Ptr->end());
-		pSession->getContext()->setAttribute(STR_KEY_USER_PORTFOLIO, portfolioVec_Ptr);
+			for (auto& portfolio : *portfolioDOVec_Ptr)
+			{
+				auto it = pPortfoliorMap->find(portfolio);
+				if (it != pPortfoliorMap->end())
+				{
+					portfolio = it->second;
+				}
+				else
+				{
+					pPortfoliorMap->emplace(portfolio, portfolio);
+				}
+			}
+
+			auto portfolioVec_Ptr = std::make_shared<std::vector<PortfolioKey>>();
+			portfolioVec_Ptr->assign(portfolioDOVec_Ptr->begin(), portfolioDOVec_Ptr->end());
+			pSession->getContext()->setAttribute(STR_KEY_USER_PORTFOLIO, portfolioVec_Ptr);
+		}
 	}
 }
 
@@ -84,24 +87,27 @@ void TradingDeskContextBuilder::LoadContractParam(ISession* pSession)
 	auto contractVec_Ptr = 
 		ContractDAO::FindContractParamByClient(pSession->getUserInfo()->getName());
 
-	auto contractMap = AttribPointerCast(pSession->getProcessor(),
-		STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext)->GetContractMap();
-
-	for (auto& con : *contractVec_Ptr)
+	if (auto pricingCtxPtr = AttribPointerCast(pSession->getProcessor(),
+		STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext))
 	{
-		auto it = contractMap->find(con);
-		if (it != contractMap->end())
-		{
-			con = it->second;
-		}
-		else
-		{
-			contractMap->emplace(con, con);
-		}
+		auto contractMap = pricingCtxPtr->GetContractMap();
 
-		auto conParamVec_Ptr = std::make_shared<std::vector<ContractKey>>();
-		conParamVec_Ptr->assign(contractVec_Ptr->begin(), contractVec_Ptr->end());
-		pSession->getContext()->setAttribute(STR_KEY_USER_CONTRACT_PARAM, conParamVec_Ptr);
+		for (auto& con : *contractVec_Ptr)
+		{
+			auto it = contractMap->find(con);
+			if (it != contractMap->end())
+			{
+				con = it->second;
+			}
+			else
+			{
+				contractMap->emplace(con, con);
+			}
+
+			auto conParamVec_Ptr = std::make_shared<std::vector<ContractKey>>();
+			conParamVec_Ptr->assign(contractVec_Ptr->begin(), contractVec_Ptr->end());
+			pSession->getContext()->setAttribute(STR_KEY_USER_CONTRACT_PARAM, conParamVec_Ptr);
+		}
 	}
 }
 
@@ -110,24 +116,27 @@ void TradingDeskContextBuilder::LoadStrategy(ISession* pSession)
 	if (auto sDOVec_Ptr = StrategyContractDAO::FindStrategyContractByClient(
 		pSession->getUserInfo()->getName()))
 	{
-		auto strategyMap = AttribPointerCast(pSession->getProcessor(),
-			STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext)->GetStrategyMap();
-
-		for (auto& strategy : *sDOVec_Ptr)
+		if (auto pricingCtxPtr = AttribPointerCast(pSession->getProcessor(),
+			STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext))
 		{
-			auto it = strategyMap->find(strategy);
-			if (it != strategyMap->end())
-			{
-				strategy = it->second;
-			}
-			else
-			{
-				strategyMap->emplace(strategy, strategy);
-			}
-		}
+			auto strategyMap = pricingCtxPtr->GetStrategyMap();
 
-		auto strategyVec_Ptr = std::make_shared<std::vector<ContractKey>>();
-		strategyVec_Ptr->assign(sDOVec_Ptr->begin(), sDOVec_Ptr->end());
-		pSession->getContext()->setAttribute(STR_KEY_USER_STRATEGY, strategyVec_Ptr);
+			for (auto& strategy : *sDOVec_Ptr)
+			{
+				auto it = strategyMap->find(strategy);
+				if (it != strategyMap->end())
+				{
+					strategy = it->second;
+				}
+				else
+				{
+					strategyMap->emplace(strategy, strategy);
+				}
+			}
+
+			auto strategyVec_Ptr = std::make_shared<std::vector<ContractKey>>();
+			strategyVec_Ptr->assign(sDOVec_Ptr->begin(), sDOVec_Ptr->end());
+			pSession->getContext()->setAttribute(STR_KEY_USER_STRATEGY, strategyVec_Ptr);
+		}
 	}
 }

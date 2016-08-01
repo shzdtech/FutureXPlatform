@@ -5,13 +5,14 @@
  * Purpose: Declaration of the class CTPOTCLogin
  ***********************************************************************/
 
-#if !defined(__CTP_CTPOTCLogin_h)
-#define __CTP_CTPOTCLogin_h
+#if !defined(__CTPOTC_CTPOTCLogin_h)
+#define __CTPOTC_CTPOTCLogin_h
 
 #include "CTPAccountLogin.h"
 #include "../dataobject/UserInfoDO.h"
+#include "ctpotc_export.h"
 
-class CTPOTCLogin : public CTPAccountLogin
+class CTP_OTC_CLASS_EXPORT CTPOTCLogin : public CTPAccountLogin
 {
 public:
 	dataobj_ptr HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session);

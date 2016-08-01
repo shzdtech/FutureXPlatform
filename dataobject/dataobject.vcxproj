@@ -165,6 +165,7 @@
     <ClInclude Include="ExchangeDO.h" />
     <ClInclude Include="FieldName.h" />
     <ClInclude Include="InstrumentDO.h" />
+    <ClInclude Include="ModelParamsDO.h" />
     <ClInclude Include="OrderDO.h" />
     <ClInclude Include="PortfolioDO.h" />
     <ClInclude Include="PricingDO.h" />

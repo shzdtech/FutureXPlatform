@@ -25,6 +25,12 @@
     <Filter Include="源文件\CTP">
       <UniqueIdentifier>{c714a509-eecf-470b-a9d5-0a8d97622b33}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Option">
+      <UniqueIdentifier>{1ea23dc4-04f9-4a38-968f-4e106a07bece}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Option">
+      <UniqueIdentifier>{0e2c38dd-6e68-441b-a821-1f4be3d831ab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ctpotc_export.cpp">
@@ -101,6 +107,9 @@
     </ClCompile>
     <ClCompile Include="CTPAccountLogin.cpp">
       <Filter>源文件\CTP</Filter>
+    </ClCompile>
+    <ClCompile Include="OTCOptionVolatility.cpp">
+      <Filter>源文件\OTC</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -184,6 +193,9 @@
     </ClInclude>
     <ClInclude Include="CTPAccountLogin.h">
       <Filter>头文件\CTP</Filter>
+    </ClInclude>
+    <ClInclude Include="OTCOptionVolatility.h">
+      <Filter>头文件\OTC</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

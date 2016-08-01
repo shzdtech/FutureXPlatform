@@ -24,7 +24,7 @@ using namespace Micro::Future::Message;
 dataobj_ptr PBStringTableSerializer::Deserialize(const data_buffer& rawdata)
 {
 	SimpleStringTable simpleTbl;
-	ParseWithThrow(simpleTbl, rawdata);
+	ParseWithReturn(simpleTbl, rawdata);
 
 	auto nameTbl = new StringTableDO;
 	dataobj_ptr ret(nameTbl);

@@ -5,12 +5,13 @@
  * Purpose: Declaration of the class CTPOTCUpdateContractParam
  ***********************************************************************/
 
-#if !defined(__CTP_CTPOTCUpdateContractParam_h)
-#define __CTP_CTPOTCUpdateContractParam_h
+#if !defined(__CTPOTC_CTPOTCUpdateContractParam_h)
+#define __CTPOTC_CTPOTCUpdateContractParam_h
 
 #include "../message/MessageHandler.h"
+#include "ctpotc_export.h"
 
-class CTPOTCUpdateContractParam : public MessageHandler
+class CTP_OTC_CLASS_EXPORT CTPOTCUpdateContractParam : public MessageHandler
 {
 public:
    dataobj_ptr HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session);

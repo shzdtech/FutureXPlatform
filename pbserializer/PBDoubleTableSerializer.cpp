@@ -22,7 +22,7 @@ using namespace Micro::Future::Message;
 dataobj_ptr PBDoubleTableSerializer::Deserialize(const data_buffer& rawdata)
 {
 	SimpleDoubleTable simpleTbl;
-	ParseWithThrow(simpleTbl, rawdata)
+	ParseWithReturn(simpleTbl, rawdata)
 	
 	auto nameTbl = new DoubleTableDO;
 	dataobj_ptr ret(nameTbl);

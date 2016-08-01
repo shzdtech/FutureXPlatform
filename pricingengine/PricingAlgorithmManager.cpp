@@ -1,27 +1,27 @@
 /***********************************************************************
- * Module:  AlgorithmManager.cpp
+ * Module:  PricingAlgorithmManager.cpp
  * Author:  milk
  * Modified: 2015年8月9日 0:51:01
- * Purpose: Implementation of the class AlgorithmManager
+ * Purpose: Implementation of the class PricingAlgorithmManager
  ***********************************************************************/
 
-#include "AlgorithmManager.h"
+#include "PricingAlgorithmManager.h"
 #include "PricingAlgorithmFactory.h"
 
-std::once_flag AlgorithmManager::_instance_flag;
-std::shared_ptr<AlgorithmManager> AlgorithmManager::_instance = nullptr;
+std::once_flag PricingAlgorithmManager::_instance_flag;
+std::shared_ptr<PricingAlgorithmManager> PricingAlgorithmManager::_instance = nullptr;
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       AlgorithmManager::FindAlgorithm(const std::string& name)
-// Purpose:    Implementation of AlgorithmManager::FindAlgorithm()
+// Name:       PricingAlgorithmManager::FindAlgorithm(const std::string& name)
+// Purpose:    Implementation of PricingAlgorithmManager::FindAlgorithm()
 // Parameters:
 // - name
-// Return:     IAlgorithm_Ptr
+// Return:     IPricingAlgorithm_Ptr
 ////////////////////////////////////////////////////////////////////////
 
-IAlgorithm_Ptr AlgorithmManager::FindAlgorithm(const std::string& name) const
+IPricingAlgorithm_Ptr PricingAlgorithmManager::FindAlgorithm(const std::string& name) const
 {
-	IAlgorithm_Ptr ret;
+	IPricingAlgorithm_Ptr ret;
 	auto it = _algMap.find(name);
 	if (it != _algMap.end())
 	{
@@ -30,7 +30,7 @@ IAlgorithm_Ptr AlgorithmManager::FindAlgorithm(const std::string& name) const
 	return ret;
 }
 
-void AlgorithmManager::InitializeInstance()
+void PricingAlgorithmManager::InitializeInstance()
 {
 	auto algVect = PricingAlgorithmFactory().CreateAlgorithms();
 

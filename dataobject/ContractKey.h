@@ -18,6 +18,12 @@ class ContractKey
 public:
 	ContractKey() {}
 
+	ContractKey(const char* instrumentID) :
+		_instrumentID(instrumentID) {}
+
+	ContractKey(const std::string& instrumentID) :
+		_instrumentID(instrumentID) {}
+
 	ContractKey(const char* exchangeID, const char* instrumentID) :
 		_exchangeID(exchangeID), _instrumentID(instrumentID){}
 
@@ -54,7 +60,7 @@ public:
 
 	bool IsOTC() const
 	{
-		return _exchangeID == EXCHANGE_OTC;
+		return stringutility::compare(_exchangeID.data(), EXCHANGE_OTC) == 0;
 	}
 
 protected:
@@ -92,6 +98,12 @@ protected:
 class UserContractKey : public ContractKey, virtual public UserKey
 {
 public:
+	UserContractKey(const char* instrumentID, const char* userID) :
+		ContractKey(instrumentID), UserKey(userID) {}
+
+	UserContractKey(const std::string& instrumentID, const std::string& userID) :
+		ContractKey(instrumentID), UserKey(userID) {}
+
 	UserContractKey(const char* exchangeID, const char* instrumentID, const char* userID) :
 		ContractKey(exchangeID, instrumentID), UserKey(userID) {}
 

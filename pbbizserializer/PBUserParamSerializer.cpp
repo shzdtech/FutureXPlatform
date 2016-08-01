@@ -52,7 +52,7 @@ data_buffer PBUserParamSerializer::Serialize(const dataobj_ptr& abstractDO)
 dataobj_ptr PBUserParamSerializer::Deserialize(const data_buffer& rawdata)
 {
 	Micro::Future::Message::Business::PBOTCUserParamList PB;
-	ParseWithThrow(PB, rawdata);
+	ParseWithReturn(PB, rawdata);
 
 	auto ret = std::make_shared<VectorDO<UserContractParamDO>>();
 	FillDOHeader(ret, PB);

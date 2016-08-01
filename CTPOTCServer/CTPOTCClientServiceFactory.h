@@ -5,12 +5,13 @@
  * Purpose: Declaration of the class CTPOTCClientServiceFactory
  ***********************************************************************/
 
-#if !defined(__CTP_CTPOTCClientServiceFactory_h)
-#define __CTP_CTPOTCClientServiceFactory_h
+#if !defined(__CTPOTC_CTPOTCClientServiceFactory_h)
+#define __CTPOTC_CTPOTCClientServiceFactory_h
 
 #include "../CTPServer/CTPMDServiceFactory.h"
+#include "ctpotc_export.h"
 
-class CTPOTCClientServiceFactory : public CTPMDServiceFactory
+class CTP_OTC_CLASS_EXPORT CTPOTCClientServiceFactory : public CTPMDServiceFactory
 {
 public:
    std::map<uint, IMessageHandler_Ptr> CreateMessageHandlers(void);

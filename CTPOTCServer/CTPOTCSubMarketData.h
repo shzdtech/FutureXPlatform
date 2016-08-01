@@ -5,12 +5,13 @@
  * Purpose: Declaration of the class CTPOTCSubMarketData
  ***********************************************************************/
 
-#if !defined(__CTP_CTPOTCSubMarketData_h)
-#define __CTP_CTPOTCSubMarketData_h
+#if !defined(__CTPOTC_CTPOTCSubMarketData_h)
+#define __CTPOTC_CTPOTCSubMarketData_h
 
 #include "../message/MessageHandler.h"
+#include "ctpotc_export.h"
 
-class CTPOTCSubMarketData : public MessageHandler
+class CTP_OTC_CLASS_EXPORT CTPOTCSubMarketData : public MessageHandler
 {
 public:
 	dataobj_ptr HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session);

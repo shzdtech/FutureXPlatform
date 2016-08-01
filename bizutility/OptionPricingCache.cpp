@@ -3,26 +3,57 @@
 #include "../utility/epsdouble.h"
 #include "../utility/autofillmap.h"
 
-static UserContractMap<autofillmap<epsdouble, autofillmap<epsdouble, PricingDO>>> _optionPricingCache;
+static UserContractMap<autofillmap<epsdouble, autofillmap<epsdouble, double>>> _callOptionCache;
+static UserContractMap<autofillmap<epsdouble, autofillmap<epsdouble, double>>> _putOptionCache;
 
-void OptionPricingCache::Add(const StrategyContractDO& key, double price, const PricingDO & pricingDO)
+void OptionPricingCache::AddCallOption(const StrategyContractDO& key, double inputPrice, double outputPrice)
 {
-	_optionPricingCache.getorfill(key).getorfill(key.Volatility).emplace(price, pricingDO);
+	_callOptionCache.getorfill(key).getorfill(key.Volatility).emplace(inputPrice, outputPrice);
 }
 
-PricingDO* OptionPricingCache::Find(const StrategyContractDO& key, double price)
+void OptionPricingCache::AddPutOption(const StrategyContractDO& key, double inputPrice, double outputPrice)
 {
-	PricingDO* ret = nullptr;
+	_putOptionCache.getorfill(key).getorfill(key.Volatility).emplace(inputPrice, outputPrice);
+}
 
-	auto it = _optionPricingCache.find(key);
-	if (it != _optionPricingCache.end())
+bool OptionPricingCache::FindCallOption(const StrategyContractDO& key, double inputPrice, double& outputPrice)
+{
+	bool ret = false;
+
+	auto it = _callOptionCache.find(key);
+	if (it != _callOptionCache.end())
 	{
 		auto vit = it->second.find(key.Volatility);
 		if (vit != it->second.end())
 		{
-			auto pit = vit->second.find(price);
+			auto pit = vit->second.find(inputPrice);
 			if (pit != vit->second.end())
-				ret = &pit->second;
+			{
+				outputPrice = pit->second;
+				ret = true;
+			}
+		}
+	}
+
+	return ret;
+}
+
+bool OptionPricingCache::FindPutOption(const StrategyContractDO& key, double inputPrice, double& outputPrice)
+{
+	bool ret = false;
+
+	auto it = _putOptionCache.find(key);
+	if (it != _putOptionCache.end())
+	{
+		auto vit = it->second.find(key.Volatility);
+		if (vit != it->second.end())
+		{
+			auto pit = vit->second.find(inputPrice);
+			if (pit != vit->second.end())
+			{
+				outputPrice = pit->second;
+				ret = true;
+			}
 		}
 	}
 
@@ -31,10 +62,12 @@ PricingDO* OptionPricingCache::Find(const StrategyContractDO& key, double price)
 
 void OptionPricingCache::Clear(const UserContractKey& key)
 {
-	_optionPricingCache.erase(key);
+	_callOptionCache.erase(key);
+	_putOptionCache.erase(key);
 }
 
 void OptionPricingCache::Clear(void)
 {
-	_optionPricingCache.clear();
+	_callOptionCache.clear();
+	_putOptionCache.clear();
 }

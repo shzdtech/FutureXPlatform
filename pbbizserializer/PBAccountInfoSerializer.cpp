@@ -61,10 +61,7 @@ data_buffer PBAccountInfoSerializer::Serialize(const dataobj_ptr& abstractDO)
 	PB.set_exchangedeliverymargin(pDO->ExchangeDeliveryMargin);
 	PB.set_reservebalance(pDO->ReserveBalance);
 
-	int bufSz = PB.ByteSize();
-	uint8_t* buff = new uint8_t[bufSz];
-	PB.SerializePartialToArray(buff, bufSz);
-	return data_buffer(buff, bufSz);
+	SerializeWithReturn(PB);
 }
 
 ////////////////////////////////////////////////////////////////////////

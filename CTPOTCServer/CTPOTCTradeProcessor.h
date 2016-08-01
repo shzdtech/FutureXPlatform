@@ -14,8 +14,9 @@
 #include "../CTPServer/CTPTradeWorkerProcessor.h"
 #include "../message/SessionContainer.h"
 #include "../dataobject/StrategyContractDO.h"
+#include "ctpotc_export.h"
 
-class CTPOTCTradeProcessor : public CTPTradeWorkerProcessor
+class CTP_OTC_CLASS_EXPORT CTPOTCTradeProcessor : public CTPTradeWorkerProcessor
 {
 public:
 	CTPOTCTradeProcessor(const std::map<std::string, std::string>& configMap, IPricingDataContext* pricingCtx);

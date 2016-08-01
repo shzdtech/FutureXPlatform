@@ -5,8 +5,8 @@
  * Purpose: Declaration of the class CTPOTCWorkerProcessor
  ***********************************************************************/
 
-#if !defined(__CTP_CTPOTCWorkerProcessor_h)
-#define __CTP_CTPOTCWorkerProcessor_h
+#if !defined(__CTPOTC_CTPOTCWorkerProcessor_h)
+#define __CTPOTC_CTPOTCWorkerProcessor_h
 
 #include <set>
 #include <list>
@@ -16,8 +16,9 @@
 #include "../dataobject/TypedefDO.h"
 
 #include "../message/SessionContainer.h"
+#include "ctpotc_export.h"
 
-class CTPOTCWorkerProcessor : public CTPMarketDataProcessor
+class CTP_OTC_CLASS_EXPORT CTPOTCWorkerProcessor : public CTPMarketDataProcessor
 {
 public:
    CTPOTCWorkerProcessor(const std::map<std::string, std::string>& configMap, IPricingDataContext* pricingCtx);

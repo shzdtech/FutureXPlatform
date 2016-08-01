@@ -83,6 +83,16 @@ namespace Micro.Future.Server.Monitor.Properties {
         /// <summary>
         ///   查找类似于 (Icon) 的 System.Drawing.Icon 类型的本地化资源。
         /// </summary>
+        public static System.Drawing.Icon Logo {
+            get {
+                object obj = ResourceManager.GetObject("Logo", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似于 (Icon) 的 System.Drawing.Icon 类型的本地化资源。
+        /// </summary>
         public static System.Drawing.Icon RLight {
             get {
                 object obj = ResourceManager.GetObject("RLight", resourceCulture);

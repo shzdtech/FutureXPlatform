@@ -9,8 +9,9 @@
 #define __CTPOTCServer_CTPOCTUnSubMarketData_h
 
 #include "../message/MessageHandler.h"
+#include "ctpotc_export.h"
 
-class CTPOCTUnSubMarketData : public MessageHandler
+class CTP_OTC_CLASS_EXPORT CTPOCTUnSubMarketData : public MessageHandler
 {
 public:
    dataobj_ptr HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session);

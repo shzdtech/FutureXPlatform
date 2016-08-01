@@ -7,25 +7,25 @@
 
 #include "PricingAlgorithmFactory.h"
 
-#include "BetaSumAlgorithm.h"
-#include "ETPAlgorithm.h"
-#include "BlackScholesPricing.h"
+#include "BetaSumPricingAlgorithm.h"
+#include "ETPPricingAlgorithm.h"
+#include "BlackScholesPricingAlgorithm.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       PricingAlgorithmFactory::CreateAlgorithms()
 // Purpose:    Implementation of PricingAlgorithmFactory::CreateAlgorithms()
-// Return:     std::vector<IAlgorithm_Ptr>
+// Return:     std::vector<IPricingAlgorithm_Ptr>
 ////////////////////////////////////////////////////////////////////////
 
-std::vector<IAlgorithm_Ptr> PricingAlgorithmFactory::CreateAlgorithms(void)
+std::vector<IPricingAlgorithm_Ptr> PricingAlgorithmFactory::CreateAlgorithms(void)
 {
-	std::vector<IAlgorithm_Ptr> ret;
+	std::vector<IPricingAlgorithm_Ptr> ret;
 
-	IAlgorithm_Ptr algptr;
+	IPricingAlgorithm_Ptr algptr;
 
-	ret.push_back(std::make_shared<BetaSumAlgorithm>());
-	ret.push_back(std::make_shared<ETPAlgorithm>());
-	ret.push_back(std::make_shared<BlackScholesPricing>());
+	ret.push_back(std::make_shared<BetaSumPricingAlgorithm>());
+	ret.push_back(std::make_shared<ETPPricingAlgorithm>());
+	ret.push_back(std::make_shared<BlackScholesPricingAlgorithm>());
 	
 	return ret;
 }

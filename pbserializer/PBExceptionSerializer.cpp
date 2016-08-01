@@ -23,7 +23,7 @@ using namespace Micro::Future::Message;
 dataobj_ptr PBExceptionSerializer::Deserialize(const data_buffer& rawdata)
 {
 	ExceptionMessage exceptionMsg;
-	ParseWithThrow(exceptionMsg, rawdata)
+	ParseWithReturn(exceptionMsg, rawdata)
 
 	auto ret = std::make_shared<MessageExceptionDO> (exceptionMsg.messageid(), exceptionMsg.serialid(),
 		exceptionMsg.errortype(), exceptionMsg.errorcode(), exceptionMsg.description());

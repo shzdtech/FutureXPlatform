@@ -47,11 +47,7 @@ data_buffer PBOrderSerializer::Serialize(const dataobj_ptr& abstractDO)
 	PB.set_openclose(pDO->OpenClose);
 	PB.set_message(pDO->Message);
 	
-
-	int bufSz = PB.ByteSize();
-	uint8_t* buff = new uint8_t[bufSz];
-	PB.SerializePartialToArray(buff, bufSz);
-	return data_buffer(buff, bufSz);
+	SerializeWithReturn(PB);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -65,7 +61,7 @@ data_buffer PBOrderSerializer::Serialize(const dataobj_ptr& abstractDO)
 dataobj_ptr PBOrderSerializer::Deserialize(const data_buffer& rawdata)
 {
 	Micro::Future::Message::Business::PBOrderInfo PB;
-	ParseWithThrow(PB, rawdata);
+	ParseWithReturn(PB, rawdata);
 
 	auto ret = std::make_shared<OrderDO>(PB.orderid(), PB.exchange(), PB.contract(), "");
 	FillDOHeader(ret, PB);

@@ -66,10 +66,7 @@ data_buffer PBUserPositionSerializer::Serialize(const dataobj_ptr& abstractDO)
 	PB.set_marginratebymoney(pDO->MarginRateByMoney);
 	PB.set_marginratebyvolume(pDO->MarginRateByVolume);*/
 
-	int bufSz = PB.ByteSize();
-	uint8_t* buff = new uint8_t[bufSz];
-	PB.SerializePartialToArray(buff, bufSz);
-	return data_buffer(buff, bufSz);
+	SerializeWithReturn(PB);
 }
 
 ////////////////////////////////////////////////////////////////////////

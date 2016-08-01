@@ -102,6 +102,9 @@
     <ClInclude Include="data_buffer.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="ModelParamsDO.h">
+      <Filter>头文件\system</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

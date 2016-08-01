@@ -27,7 +27,7 @@ int OTCOrderManager::CreateOrder(OrderDO& orderInfo)
 {
 	int ret = -1;
 
-	if (auto pricingDO_ptr = PricingUtility::Pricing(orderInfo, orderInfo.Volume, _pricingCtx))
+	if (auto pricingDO_ptr = PricingUtility::Pricing(&orderInfo.Volume, orderInfo, *_pricingCtx))
 	{
 		if (auto orderptr = OTCOrderDAO::CreateOrder(orderInfo, *pricingDO_ptr))
 		{
@@ -69,7 +69,7 @@ OrderDOVec_Ptr OTCOrderManager::UpdateOrderByStrategy(const StrategyContractDO& 
 			for (auto& it : tradingMap)
 			{
 				auto& orderDO = *it.second;
-				if (auto pricingDO_ptr = PricingUtility::Pricing(strategyDO, orderDO.Volume))
+				if (auto pricingDO_ptr = PricingUtility::Pricing(&orderDO.Volume, strategyDO, *_pricingCtx))
 				{
 					bool accept = false;
 					if (orderDO.Direction == DirectionType::BUY)

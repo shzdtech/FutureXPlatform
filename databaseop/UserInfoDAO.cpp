@@ -9,15 +9,6 @@
 #include "UserInfoDAO.h"
 #include "MySqlConnectionManager.h"
 
- ////////////////////////////////////////////////////////////////////////
- // Name:       UserInfoDAO::FindUser(const std::string& userId, const std::string& password)
- // Purpose:    Implementation of UserInfoDAO::FindUser()
- // Parameters:
- // - userId
- // - password
- // Return:     std::shared_ptr<UserInfoDO>
- ////////////////////////////////////////////////////////////////////////
-
 int UserInfoDAO::InsertUser(UserInfoDO & userDO)
 {
 	int ret = -1;
@@ -33,12 +24,12 @@ int UserInfoDAO::InsertUser(UserInfoDO & userDO)
 		prestmt->setString(1, userDO.UserName);
 		prestmt->setString(2, userDO.Password);
 		prestmt->setString(3, userDO.Company);
-		prestmt->setString(4, userDO.FirstName);
-		prestmt->setString(5, userDO.LastName);
-		prestmt->setInt(6, userDO.Gender);
-		prestmt->setString(7, userDO.Email);
-		prestmt->setString(8, userDO.IdentityNum);
-		prestmt->setString(9, userDO.ContactNum);
+		prestmt->setString(4, userDO.ContactNum);
+		prestmt->setString(5, userDO.FirstName);
+		prestmt->setString(6, userDO.LastName);
+		prestmt->setInt(7, userDO.Gender);
+		prestmt->setString(8, userDO.Email);
+		prestmt->setString(9, userDO.IdentityNum);
 		prestmt->setString(10, userDO.Address);
 		prestmt->setString(11, userDO.ZipCode);
 
@@ -55,12 +46,21 @@ int UserInfoDAO::InsertUser(UserInfoDO & userDO)
 	return ret;
 }
 
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       UserInfoDAO::FindUser(const std::string& userId, const std::string& password)
+ // Purpose:    Implementation of UserInfoDAO::FindUser()
+ // Parameters:
+ // - userId
+ // - password
+ // Return:     std::shared_ptr<UserInfoDO>
+ ////////////////////////////////////////////////////////////////////////
+
 std::shared_ptr<UserInfoDO> UserInfoDAO::FindUser(const std::string& userName)
 {
 	static const std::string sql_finduser(
-		"SELECT account_id,account_password,firstname,lastname,client_symbol,is_trading_allowed,"
+		"SELECT accountid,password,firstname,lastname,client_symbol,is_trading_allowed,"
 		"email,gender,contactnum,address,zipcode,roletype "
-		"FROM vw_client_detail WHERE account_username = ?");
+		"FROM vw_client_detail WHERE username = ?");
 
 	std::shared_ptr<UserInfoDO> ret;
 
@@ -105,7 +105,7 @@ std::shared_ptr<UserInfoDO> UserInfoDAO::FindUser(const std::string& userName)
 VectorDO_Ptr<UserInfoDO> UserInfoDAO::FindAllUserByRole(int role)
 {
 	static const std::string sql_findalluser(
-		"SELECT account_id,account_username,firstname,lastname,client_symbol,is_trading_allowed,"
+		"SELECT accountid,username,firstname,lastname,client_symbol,is_trading_allowed,"
 		"email,gender,contactnum,address,zipcode "
 		"FROM vw_client_detail WHERE roletype = ?");
 

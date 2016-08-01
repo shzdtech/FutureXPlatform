@@ -39,24 +39,27 @@ dataobj_ptr CTPOTCUpdateContractParam::HandleRequest(const dataobj_ptr& reqDO, I
 	CheckLogin(session);
 
 	auto vecConDO_Ptr = (VectorDO<ContractDO>*)reqDO.get();
-	auto pricingCtx = AttribPointerCast(session->getProcessor(),
-		STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext);
 
-	auto mdMap = pricingCtx->GetMarketDataDOMap();
-	auto contractMap = pricingCtx->GetContractMap();
-
-	auto wkProcPtr =
-		MessageUtility::FindGlobalProcessor<CTPOTCWorkerProcessor>(CTPWorkerProcessorID::WORKPROCESSOR_OTC);
-
-	for (auto& conDO : *vecConDO_Ptr)
+	if (auto pricingCtxPtr = AttribPointerCast(session->getProcessor(),
+		STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext))
 	{
-		auto& contractDO = contractMap->at(conDO);
-		contractDO.DepthVol = conDO.DepthVol;
-		contractDO.Gamma = conDO.Gamma;
 
-		auto& mdDO = mdMap->at(conDO.InstrumentID());
-		wkProcPtr->TriggerUpdating(mdDO);
-	}	
+		auto mdMap = pricingCtxPtr->GetMarketDataDOMap();
+		auto contractMap = pricingCtxPtr->GetContractMap();
+
+		auto wkProcPtr =
+			MessageUtility::FindGlobalProcessor<CTPOTCWorkerProcessor>(CTPWorkerProcessorID::WORKPROCESSOR_OTC);
+
+		for (auto& conDO : *vecConDO_Ptr)
+		{
+			auto& contractDO = contractMap->at(conDO);
+			contractDO.DepthVol = conDO.DepthVol;
+			contractDO.Gamma = conDO.Gamma;
+
+			auto& mdDO = mdMap->at(conDO.InstrumentID());
+			wkProcPtr->TriggerUpdating(mdDO);
+		}
+	}
 
 	return std::make_shared<ResultDO>(reqDO->SerialId);
 }

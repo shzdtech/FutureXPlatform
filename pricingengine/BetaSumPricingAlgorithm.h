@@ -1,24 +1,24 @@
 /***********************************************************************
- * Module:  BetaSumAlgorithm.h
+ * Module:  BetaSumPricingAlgorithm.h
  * Author:  milk
  * Modified: 2015年8月9日 0:42:12
- * Purpose: Declaration of the class BetaSumAlgorithm
+ * Purpose: Declaration of the class BetaSumPricingAlgorithm
  ***********************************************************************/
 
-#if !defined(__strategy_BetaSumAlgorithm_h)
-#define __strategy_BetaSumAlgorithm_h
+#if !defined(__pricingengine_BetaSumPricingAlgorithm_h)
+#define __pricingengine_BetaSumPricingAlgorithm_h
 
-#include "IAlgorithm.h"
+#include "IPricingAlgorithm.h"
 
-class BetaSumAlgorithm : public IAlgorithm
+class BetaSumPricingAlgorithm : public IPricingAlgorithm
 {
 public:
 	const std::string& Name(void) const;
 	dataobj_ptr Compute(
+		const void* pInputObject,
 		const StrategyContractDO& sdo,
-		double inputVal,
 		IPricingDataContext& priceCtx,
-		const param_vector* params) const;
+		const param_vector* params);
 
 protected:
 private:

@@ -46,14 +46,22 @@ dataobj_ptr CTPDepthMarketData::HandleResponse(const uint32_t serialId, param_ve
 		mdo.OpenPrice = pData->OpenPrice;
 		mdo.SettlementPrice = pData->SettlementPrice;
 
+
 		mdo.HighestPrice = pData->HighestPrice;
 		mdo.LowestPrice = pData->LowestPrice;
 		mdo.Turnover = pData->Turnover;
 		mdo.AveragePrice = pData->AveragePrice;
+	}
 
+	if (pData->BidPrice1 < 1e32)
+	{
 		mdo.BidPrice = pData->BidPrice1;
-		mdo.AskPrice = pData->AskPrice1;
 		mdo.BidVolume = pData->BidVolume1;
+	}
+
+	if (pData->AskPrice1 < 1e32)
+	{
+		mdo.AskPrice = pData->AskPrice1;
 		mdo.AskVolume = pData->AskVolume1;
 	}
 

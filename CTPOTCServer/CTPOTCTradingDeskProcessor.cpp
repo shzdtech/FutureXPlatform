@@ -52,23 +52,25 @@ bool CTPOTCTradingDeskProcessor::OnSessionClosing(void)
 	if (auto wkProcPtr =
 		MessageUtility::FindGlobalProcessor<CTPOTCWorkerProcessor>(CTPWorkerProcessorID::WORKPROCESSOR_OTC))
 	{
-		auto pStrategyMap = AttribPointerCast(this, STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext)
-			->GetStrategyMap();
-
-		if (auto sessionptr = LockMessageSession())
+		if (auto pricingCtxPtr = AttribPointerCast(this, STR_KEY_SERVER_PRICING_DATACONTEXT, IPricingDataContext))
 		{
-			if (auto strategyVec_Ptr = std::static_pointer_cast<std::vector<ContractKey>>(
-				sessionptr->getContext()->getAttribute(STR_KEY_USER_STRATEGY)))
+			auto pStrategyMap = pricingCtxPtr->GetStrategyMap();
+
+			if (auto sessionptr = LockMessageSession())
 			{
-				for (auto& contract : *strategyVec_Ptr)
+				if (auto strategyVec_Ptr = std::static_pointer_cast<std::vector<ContractKey>>(
+					sessionptr->getContext()->getAttribute(STR_KEY_USER_STRATEGY)))
 				{
-					auto& strategy = pStrategyMap->at(contract);
-					strategy.Enabled = false;
-					if (strategy.Trading)
+					for (auto& contract : *strategyVec_Ptr)
 					{
-						strategy.Trading = false;
-						OrderDO orderDO(strategy);
-						wkProcPtr->CancelAutoOrder(orderDO);
+						auto& strategy = pStrategyMap->at(contract);
+						strategy.Enabled = false;
+						if (strategy.Trading)
+						{
+							strategy.Trading = false;
+							OrderDO orderDO(strategy);
+							wkProcPtr->CancelAutoOrder(orderDO);
+						}
 					}
 				}
 			}

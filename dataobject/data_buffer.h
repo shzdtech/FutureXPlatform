@@ -13,17 +13,20 @@
 class data_buffer
 {
 public:
-   data_buffer(buffer_ptr buf, std::size_t bufsz):_buffer_ptr(buf),_buffer_size(bufsz){}
-   data_buffer(void* buf, std::size_t bufsz) :_buffer_ptr(buf), _buffer_size(bufsz){}
-   buffer_ptr get_buffer() const {return _buffer_ptr;}
-   void* get() const {return _buffer_ptr.get();}
-   int size() const {return _buffer_size;}
-   operator bool() const
-    { return _buffer_size > 0 && _buffer_ptr; }
-   
+	data_buffer() = default;
+	data_buffer(buffer_ptr buf, std::size_t bufsz) :_buffer_ptr(buf), _buffer_size(bufsz) {}
+	data_buffer(void* buf, std::size_t bufsz) :_buffer_ptr(buf), _buffer_size(bufsz) {}
+	buffer_ptr get_buffer() const { return _buffer_ptr; }
+	void* get() const { return _buffer_ptr.get(); }
+	int size() const { return _buffer_size; }
+	operator bool() const
+	{
+		return _buffer_ptr.operator bool();
+	}
+
 private:
-   buffer_ptr _buffer_ptr;
-   std::size_t _buffer_size;
+	buffer_ptr _buffer_ptr;
+	std::size_t _buffer_size;
 };
 
 #endif

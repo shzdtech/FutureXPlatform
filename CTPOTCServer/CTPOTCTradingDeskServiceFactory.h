@@ -5,12 +5,13 @@
  * Purpose: Declaration of the class CTPOTCTradingDeskServiceFactory
  ***********************************************************************/
 
-#if !defined(__CTP_CTPOTCTradingDeskServiceFactory_h)
-#define __CTP_CTPOTCTradingDeskServiceFactory_h
+#if !defined(__CTPOTC_CTPOTCTradingDeskServiceFactory_h)
+#define __CTPOTC_CTPOTCTradingDeskServiceFactory_h
 
 #include "../CTPServer/CTPMDServiceFactory.h"
+#include "ctpotc_export.h"
 
-class CTPOTCTradingDeskServiceFactory : public CTPMDServiceFactory
+class CTP_OTC_CLASS_EXPORT CTPOTCTradingDeskServiceFactory : public CTPMDServiceFactory
 {
 public:
 	void SetServerContext(IContextAttribute* serverCtx);

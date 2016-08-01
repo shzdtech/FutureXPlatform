@@ -208,16 +208,16 @@ class PBMarketData : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // optional string exhange = 1;
-  void clear_exhange();
-  static const int kExhangeFieldNumber = 1;
-  const ::std::string& exhange() const;
-  void set_exhange(const ::std::string& value);
-  void set_exhange(const char* value);
-  void set_exhange(const char* value, size_t size);
-  ::std::string* mutable_exhange();
-  ::std::string* release_exhange();
-  void set_allocated_exhange(::std::string* exhange);
+  // optional string exchange = 1;
+  void clear_exchange();
+  static const int kExchangeFieldNumber = 1;
+  const ::std::string& exchange() const;
+  void set_exchange(const ::std::string& value);
+  void set_exchange(const char* value);
+  void set_exchange(const char* value, size_t size);
+  ::std::string* mutable_exchange();
+  ::std::string* release_exchange();
+  void set_allocated_exchange(::std::string* exchange);
 
   // optional string contract = 2;
   void clear_contract();
@@ -382,7 +382,7 @@ class PBMarketData : public ::google::protobuf::Message {
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   bool _is_default_instance_;
-  ::google::protobuf::internal::ArenaStringPtr exhange_;
+  ::google::protobuf::internal::ArenaStringPtr exchange_;
   ::google::protobuf::internal::ArenaStringPtr contract_;
   double preclosevalue_;
   double openvalue_;
@@ -474,17 +474,17 @@ class PBMarketDataList : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // repeated .Micro.Future.Message.Business.PBMarketData mdList = 1;
-  int mdlist_size() const;
-  void clear_mdlist();
-  static const int kMdListFieldNumber = 1;
-  const ::Micro::Future::Message::Business::PBMarketData& mdlist(int index) const;
-  ::Micro::Future::Message::Business::PBMarketData* mutable_mdlist(int index);
-  ::Micro::Future::Message::Business::PBMarketData* add_mdlist();
+  // repeated .Micro.Future.Message.Business.PBMarketData marketData = 1;
+  int marketdata_size() const;
+  void clear_marketdata();
+  static const int kMarketDataFieldNumber = 1;
+  const ::Micro::Future::Message::Business::PBMarketData& marketdata(int index) const;
+  ::Micro::Future::Message::Business::PBMarketData* mutable_marketdata(int index);
+  ::Micro::Future::Message::Business::PBMarketData* add_marketdata();
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBMarketData >*
-      mutable_mdlist();
+      mutable_marketdata();
   const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBMarketData >&
-      mdlist() const;
+      marketdata() const;
 
   // optional .Micro.Future.Message.DataHeader header = 2;
   bool has_header() const;
@@ -500,7 +500,7 @@ class PBMarketDataList : public ::google::protobuf::Message {
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   bool _is_default_instance_;
-  ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBMarketData > mdlist_;
+  ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBMarketData > marketdata_;
   ::Micro::Future::Message::DataHeader* header_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
@@ -687,17 +687,17 @@ class PBPricingDataList : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // repeated .Micro.Future.Message.Business.PBPricingData pricing = 1;
-  int pricing_size() const;
-  void clear_pricing();
-  static const int kPricingFieldNumber = 1;
-  const ::Micro::Future::Message::Business::PBPricingData& pricing(int index) const;
-  ::Micro::Future::Message::Business::PBPricingData* mutable_pricing(int index);
-  ::Micro::Future::Message::Business::PBPricingData* add_pricing();
+  // repeated .Micro.Future.Message.Business.PBPricingData pricingData = 1;
+  int pricingdata_size() const;
+  void clear_pricingdata();
+  static const int kPricingDataFieldNumber = 1;
+  const ::Micro::Future::Message::Business::PBPricingData& pricingdata(int index) const;
+  ::Micro::Future::Message::Business::PBPricingData* mutable_pricingdata(int index);
+  ::Micro::Future::Message::Business::PBPricingData* add_pricingdata();
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBPricingData >*
-      mutable_pricing();
+      mutable_pricingdata();
   const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBPricingData >&
-      pricing() const;
+      pricingdata() const;
 
   // optional .Micro.Future.Message.DataHeader header = 2;
   bool has_header() const;
@@ -713,7 +713,7 @@ class PBPricingDataList : public ::google::protobuf::Message {
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   bool _is_default_instance_;
-  ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBPricingData > pricing_;
+  ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBPricingData > pricingdata_;
   ::Micro::Future::Message::DataHeader* header_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
@@ -3177,48 +3177,48 @@ inline void PBParam::set_value(double value) {
 
 // PBMarketData
 
-// optional string exhange = 1;
-inline void PBMarketData::clear_exhange() {
-  exhange_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// optional string exchange = 1;
+inline void PBMarketData::clear_exchange() {
+  exchange_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::std::string& PBMarketData::exhange() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketData.exhange)
-  return exhange_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+inline const ::std::string& PBMarketData::exchange() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketData.exchange)
+  return exchange_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void PBMarketData::set_exhange(const ::std::string& value) {
+inline void PBMarketData::set_exchange(const ::std::string& value) {
   
-  exhange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.exhange)
+  exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.exchange)
 }
-inline void PBMarketData::set_exhange(const char* value) {
+inline void PBMarketData::set_exchange(const char* value) {
   
-  exhange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBMarketData.exhange)
+  exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBMarketData.exchange)
 }
-inline void PBMarketData::set_exhange(const char* value, size_t size) {
+inline void PBMarketData::set_exchange(const char* value, size_t size) {
   
-  exhange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBMarketData.exhange)
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBMarketData.exchange)
 }
-inline ::std::string* PBMarketData::mutable_exhange() {
+inline ::std::string* PBMarketData::mutable_exchange() {
   
-  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBMarketData.exhange)
-  return exhange_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBMarketData.exchange)
+  return exchange_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* PBMarketData::release_exhange() {
-  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBMarketData.exhange)
+inline ::std::string* PBMarketData::release_exchange() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBMarketData.exchange)
   
-  return exhange_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  return exchange_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void PBMarketData::set_allocated_exhange(::std::string* exhange) {
-  if (exhange != NULL) {
+inline void PBMarketData::set_allocated_exchange(::std::string* exchange) {
+  if (exchange != NULL) {
     
   } else {
     
   }
-  exhange_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), exhange);
-  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBMarketData.exhange)
+  exchange_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), exchange);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBMarketData.exchange)
 }
 
 // optional string contract = 2;
@@ -3637,34 +3637,34 @@ inline void PBMarketData::set_allocated_header(::Micro::Future::Message::DataHea
 
 // PBMarketDataList
 
-// repeated .Micro.Future.Message.Business.PBMarketData mdList = 1;
-inline int PBMarketDataList::mdlist_size() const {
-  return mdlist_.size();
+// repeated .Micro.Future.Message.Business.PBMarketData marketData = 1;
+inline int PBMarketDataList::marketdata_size() const {
+  return marketdata_.size();
 }
-inline void PBMarketDataList::clear_mdlist() {
-  mdlist_.Clear();
+inline void PBMarketDataList::clear_marketdata() {
+  marketdata_.Clear();
 }
-inline const ::Micro::Future::Message::Business::PBMarketData& PBMarketDataList::mdlist(int index) const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketDataList.mdList)
-  return mdlist_.Get(index);
+inline const ::Micro::Future::Message::Business::PBMarketData& PBMarketDataList::marketdata(int index) const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketDataList.marketData)
+  return marketdata_.Get(index);
 }
-inline ::Micro::Future::Message::Business::PBMarketData* PBMarketDataList::mutable_mdlist(int index) {
-  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBMarketDataList.mdList)
-  return mdlist_.Mutable(index);
+inline ::Micro::Future::Message::Business::PBMarketData* PBMarketDataList::mutable_marketdata(int index) {
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBMarketDataList.marketData)
+  return marketdata_.Mutable(index);
 }
-inline ::Micro::Future::Message::Business::PBMarketData* PBMarketDataList::add_mdlist() {
-  // @@protoc_insertion_point(field_add:Micro.Future.Message.Business.PBMarketDataList.mdList)
-  return mdlist_.Add();
+inline ::Micro::Future::Message::Business::PBMarketData* PBMarketDataList::add_marketdata() {
+  // @@protoc_insertion_point(field_add:Micro.Future.Message.Business.PBMarketDataList.marketData)
+  return marketdata_.Add();
 }
 inline ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBMarketData >*
-PBMarketDataList::mutable_mdlist() {
-  // @@protoc_insertion_point(field_mutable_list:Micro.Future.Message.Business.PBMarketDataList.mdList)
-  return &mdlist_;
+PBMarketDataList::mutable_marketdata() {
+  // @@protoc_insertion_point(field_mutable_list:Micro.Future.Message.Business.PBMarketDataList.marketData)
+  return &marketdata_;
 }
 inline const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBMarketData >&
-PBMarketDataList::mdlist() const {
-  // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBMarketDataList.mdList)
-  return mdlist_;
+PBMarketDataList::marketdata() const {
+  // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBMarketDataList.marketData)
+  return marketdata_;
 }
 
 // optional .Micro.Future.Message.DataHeader header = 2;
@@ -3867,34 +3867,34 @@ inline void PBPricingData::set_allocated_header(::Micro::Future::Message::DataHe
 
 // PBPricingDataList
 
-// repeated .Micro.Future.Message.Business.PBPricingData pricing = 1;
-inline int PBPricingDataList::pricing_size() const {
-  return pricing_.size();
+// repeated .Micro.Future.Message.Business.PBPricingData pricingData = 1;
+inline int PBPricingDataList::pricingdata_size() const {
+  return pricingdata_.size();
 }
-inline void PBPricingDataList::clear_pricing() {
-  pricing_.Clear();
+inline void PBPricingDataList::clear_pricingdata() {
+  pricingdata_.Clear();
 }
-inline const ::Micro::Future::Message::Business::PBPricingData& PBPricingDataList::pricing(int index) const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPricingDataList.pricing)
-  return pricing_.Get(index);
+inline const ::Micro::Future::Message::Business::PBPricingData& PBPricingDataList::pricingdata(int index) const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPricingDataList.pricingData)
+  return pricingdata_.Get(index);
 }
-inline ::Micro::Future::Message::Business::PBPricingData* PBPricingDataList::mutable_pricing(int index) {
-  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBPricingDataList.pricing)
-  return pricing_.Mutable(index);
+inline ::Micro::Future::Message::Business::PBPricingData* PBPricingDataList::mutable_pricingdata(int index) {
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBPricingDataList.pricingData)
+  return pricingdata_.Mutable(index);
 }
-inline ::Micro::Future::Message::Business::PBPricingData* PBPricingDataList::add_pricing() {
-  // @@protoc_insertion_point(field_add:Micro.Future.Message.Business.PBPricingDataList.pricing)
-  return pricing_.Add();
+inline ::Micro::Future::Message::Business::PBPricingData* PBPricingDataList::add_pricingdata() {
+  // @@protoc_insertion_point(field_add:Micro.Future.Message.Business.PBPricingDataList.pricingData)
+  return pricingdata_.Add();
 }
 inline ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBPricingData >*
-PBPricingDataList::mutable_pricing() {
-  // @@protoc_insertion_point(field_mutable_list:Micro.Future.Message.Business.PBPricingDataList.pricing)
-  return &pricing_;
+PBPricingDataList::mutable_pricingdata() {
+  // @@protoc_insertion_point(field_mutable_list:Micro.Future.Message.Business.PBPricingDataList.pricingData)
+  return &pricingdata_;
 }
 inline const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBPricingData >&
-PBPricingDataList::pricing() const {
-  // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBPricingDataList.pricing)
-  return pricing_;
+PBPricingDataList::pricingdata() const {
+  // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBPricingDataList.pricingData)
+  return pricingdata_;
 }
 
 // optional .Micro.Future.Message.DataHeader header = 2;

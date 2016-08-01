@@ -5,12 +5,13 @@
  * Purpose: Declaration of the class CTPOTCQueryStrategy
  ***********************************************************************/
 
-#if !defined(__CTP_CTPOTCQueryStrategy_h)
-#define __CTP_CTPOTCQueryStrategy_h
+#if !defined(__CTPOTC_CTPOTCQueryStrategy_h)
+#define __CTPOTC_CTPOTCQueryStrategy_h
 
 #include "../message/MessageHandler.h"
+#include "ctpotc_export.h"
 
-class CTPOTCQueryStrategy : public MessageHandler
+class CTP_OTC_CLASS_EXPORT CTPOTCQueryStrategy : public MessageHandler
 {
 public:
    dataobj_ptr HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session);

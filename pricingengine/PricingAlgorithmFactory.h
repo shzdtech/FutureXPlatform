@@ -8,12 +8,12 @@
 #if !defined(__pricingengine_PricingAlgorithmFactory_h)
 #define __pricingengine_PricingAlgorithmFactory_h
 
-#include "IAlgorithmFactory.h"
+#include "IPricingAlgorithmFactory.h"
 
-class PricingAlgorithmFactory : public IAlgorithmFactory
+class PricingAlgorithmFactory : public IPricingAlgorithmFactory
 {
 public:
-   std::vector<IAlgorithm_Ptr> CreateAlgorithms(void);
+   std::vector<IPricingAlgorithm_Ptr> CreateAlgorithms(void);
 
 protected:
 private:

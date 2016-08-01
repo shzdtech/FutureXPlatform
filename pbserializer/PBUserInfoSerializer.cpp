@@ -61,7 +61,7 @@ data_buffer PBUserInfoSerializer::Serialize(const dataobj_ptr& abstractDO)
 dataobj_ptr PBUserInfoSerializer::Deserialize(const data_buffer& rawdata)
 {
 	Micro::Future::Message::PBUserInfo PB;
-	ParseWithThrow(PB, rawdata);
+	ParseWithReturn(PB, rawdata);
 
 	auto ret = std::make_shared<UserInfoDO>();
 	FillDOHeader(ret, PB);

@@ -46,16 +46,17 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 		auto& investorid = session->getUserInfo()->getInvestorId();
 		auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
 
+		CThostFtdcQryInvestorPositionField req{};
+		std::strcpy(req.BrokerID, brokeid.data());
+		std::strcpy(req.InvestorID, investorid.data());
+		std::strcpy(req.InstrumentID, instrumentid.data());
+
+		int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryInvestorPosition(&req, reqDO->SerialId);
+		// CTPUtility::CheckReturnError(iRet);
+
 		auto& positionMap = wkProcPtr->GetUserPositionMap();
 		if (positionMap.size() < 1)
 		{
-			CThostFtdcQryInvestorPositionField req{};
-			std::strcpy(req.BrokerID, brokeid.data());
-			std::strcpy(req.InvestorID, investorid.data());
-			std::strcpy(req.InstrumentID, instrumentid.data());
-
-			int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryInvestorPosition(&req, reqDO->SerialId);
-			// CTPUtility::CheckReturnError(iRet);
 			std::this_thread::sleep_for(std::chrono::seconds(2));
 		}
 

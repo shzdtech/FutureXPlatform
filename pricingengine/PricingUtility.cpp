@@ -6,7 +6,7 @@
  ***********************************************************************/
 
 #include "PricingUtility.h"
-#include "AlgorithmManager.h"
+#include "PricingAlgorithmManager.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       PricingUtility::Pricing(const std::string& alg, const std::vector<void*>& params)
@@ -18,49 +18,49 @@
 ////////////////////////////////////////////////////////////////////////
 
 std::shared_ptr<PricingDO> PricingUtility::Pricing(
-	const StrategyContractDO& strategy,
-	double inputVal,
-	IPricingDataContext* priceCtx,
+	const void* pInputObject,
+	const StrategyContractDO& sdo,
+	IPricingDataContext& priceCtx,
 	const param_vector* params)
 {
 	std::shared_ptr<PricingDO> ret;
 
 	auto algorithm =
-		AlgorithmManager::Instance()->FindAlgorithm(strategy.Algorithm);
+		PricingAlgorithmManager::Instance()->FindAlgorithm(sdo.Algorithm);
 
 	if (algorithm)
 	{
-		ret = std::static_pointer_cast<PricingDO>(algorithm->Compute(strategy, inputVal, *priceCtx, params));
+		ret = std::static_pointer_cast<PricingDO>(algorithm->Compute(pInputObject, sdo, priceCtx, params));
 	}
 
 	return ret;
 }
 
 std::shared_ptr<PricingDO>  PricingUtility::Pricing(
-	const StrategyContractDO& strategy,
-	double inputVal,
-	IPricingDataContext* priceCtx)
+	const void* pInputObject,
+	const StrategyContractDO& sdo,
+	IPricingDataContext& priceCtx)
 {
-	return Pricing(strategy, inputVal, priceCtx, nullptr);
+	return Pricing(pInputObject, sdo, priceCtx, nullptr);
 }
 
 std::shared_ptr<PricingDO> PricingUtility::Pricing(
+	const void* pInputObject,
 	const ContractKey& contractKey,
-	double inputVal,
-	IPricingDataContext* priceCtx,
+	IPricingDataContext& priceCtx,
 	const param_vector* params)
 {
-	auto it = priceCtx->GetStrategyMap()->find(contractKey);
-	if (it == priceCtx->GetStrategyMap()->end())
+	auto it = priceCtx.GetStrategyMap()->find(contractKey);
+	if (it == priceCtx.GetStrategyMap()->end())
 		return nullptr;
 
-	return Pricing(it->second, inputVal);
+	return Pricing(pInputObject, it->second, priceCtx);
 }
 
 std::shared_ptr<PricingDO> PricingUtility::Pricing(
+	const void* pInputObject,
 	const ContractKey& contractKey,
-	double inputVal,
-	IPricingDataContext* priceCtx)
+	IPricingDataContext& priceCtx)
 {
-	return Pricing(contractKey, inputVal, priceCtx, nullptr);
+	return Pricing(pInputObject, contractKey, priceCtx, nullptr);
 }
