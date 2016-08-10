@@ -23,21 +23,19 @@ OTCOrderManager::OTCOrderManager(IOrderAPI* pOrderAPI, IPricingDataContext* pric
 // Return:     OrderDO_Ptr
 ////////////////////////////////////////////////////////////////////////
 
-int OTCOrderManager::CreateOrder(OrderDO& orderInfo)
+OrderDO_Ptr OTCOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 {
-	int ret = -1;
+	OrderDO_Ptr ret;
 
 	if (auto pricingDO_ptr = PricingUtility::Pricing(&orderInfo.Volume, orderInfo, *_pricingCtx))
 	{
-		if (auto orderptr = OTCOrderDAO::CreateOrder(orderInfo, *pricingDO_ptr))
+		if (ret = OTCOrderDAO::CreateOrder(orderInfo, *pricingDO_ptr))
 		{
-			orderInfo = *orderptr;
-			if (orderInfo.OrderStatus == OrderStatus::OPENNING)
+			if (ret->OrderStatus == OrderStatus::OPENED)
 			{
 				std::lock_guard<std::mutex> guard(_userOrderCtx.Mutex(orderInfo));
-				_userOrderCtx.AddOrder(orderInfo);
+				_userOrderCtx.AddOrder(*ret);
 			}
-			ret = 0;
 		}
 	}
 
@@ -133,16 +131,15 @@ int OTCOrderManager::OnOrderUpdated(OrderDO& orderInfo)
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-int OTCOrderManager::CancelOrder(OrderDO& orderInfo)
+OrderDO_Ptr OTCOrderManager::CancelOrder(OrderRequestDO& orderInfo)
 {
 	OrderStatus currStatus;
 	OTCOrderDAO::CancelOrder(orderInfo, currStatus);
-	orderInfo.OrderStatus = currStatus;
 	std::lock_guard<std::mutex> guard(_userOrderCtx.Mutex(orderInfo));
-	_userOrderCtx.RemoveOrder(orderInfo.OrderID);
+	OrderDO_Ptr ret = _userOrderCtx.RemoveOrder(orderInfo.OrderID);
+	if (ret)	ret->OrderStatus = OrderStatus::CANCELED;
 
-	return currStatus == OrderStatus::UNDEFINED;
-
+	return ret;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -153,15 +150,15 @@ int OTCOrderManager::CancelOrder(OrderDO& orderInfo)
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-int OTCOrderManager::RejectOrder(OrderDO& orderInfo)
+OrderDO_Ptr OTCOrderManager::RejectOrder(OrderRequestDO& orderInfo)
 {
 	OrderStatus currStatus;
 	OTCOrderDAO::RejectOrder(orderInfo, currStatus);
-	orderInfo.OrderStatus = currStatus;
 	std::lock_guard<std::mutex> guard(_userOrderCtx.Mutex(orderInfo));
-	_userOrderCtx.RemoveOrder(orderInfo.OrderID);
+	OrderDO_Ptr ret = _userOrderCtx.RemoveOrder(orderInfo.OrderID);
+	if (ret)	ret->OrderStatus = OrderStatus::REJECTED;
 
-	return currStatus == OrderStatus::UNDEFINED;
+	return ret;
 
 }
 
@@ -186,7 +183,7 @@ int OTCOrderManager::Reset()
 
 void OTCOrderManager::Hedge(const PortfolioKey& portfolioKey)
 {
-	auto& portfolio = _pricingCtx->GetPortfolioDOMap()->at(portfolioKey);
+	auto& portfolio = _pricingCtx->GetPortfolioMap()->at(portfolioKey);
 	auto now = std::chrono::steady_clock::now();
 	auto int_ms =
 		std::chrono::duration_cast<std::chrono::milliseconds>

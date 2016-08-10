@@ -16,10 +16,10 @@
 class DATABASEOP_CLASS_EXPORTS OTCOrderDAO
 {
 public:
-	static OrderDO_Ptr CreateOrder(const OrderDO& orderDO, const PricingDO& pricingDO);
-	static bool CancelOrder(const OrderBaseDO& orderDO, OrderStatus& status);
-	static bool AcceptOrder(const OrderBaseDO& orderDO, OrderStatus& status);
-	static bool RejectOrder(const OrderBaseDO& orderDO, OrderStatus& status);
+	static OrderDO_Ptr CreateOrder(const OrderRequestDO& orderDO, const PricingDO& pricingDO);
+	static bool CancelOrder(const OrderRequestDO& orderDO, OrderStatus& status);
+	static bool AcceptOrder(const OrderRequestDO& orderDO, OrderStatus& status);
+	static bool RejectOrder(const OrderRequestDO& orderDO, OrderStatus& status);
 	static OrderDOVec_Ptr QueryTradingOrder(const ContractKey& contractKey);
 	static OrderDOVec_Ptr QueryTodayOrder(const std::string& userId, const ContractKey& contractKey);
 

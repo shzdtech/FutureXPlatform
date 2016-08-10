@@ -23,14 +23,8 @@
       }
     },
     "otc": {
-      "client": {
+      "service": {
         "port": "31002",
-        "workerthread": "1",
-        "timeout": "120",
-        "max_msg_size": "0x10000"
-      },
-      "tradingdesk": {
-        "port": "31003",
         "workerthread": "1",
         "timeout": "120",
         "max_msg_size": "0x10000"

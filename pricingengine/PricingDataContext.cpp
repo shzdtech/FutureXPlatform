@@ -17,17 +17,17 @@ StrategyContractDOMap* PricingDataContext::GetStrategyMap()
 	return &_strategyContractDOMap;
 }
 
-ContractDOMap* PricingDataContext::GetContractMap()
+ContractParamDOMap* PricingDataContext::GetContractParamMap()
 {
 	return &_contractDOMap;
 }
 
-MarketDataDOMap* PricingDataContext::GetMarketDataDOMap()
+MarketDataDOMap* PricingDataContext::GetMarketDataMap()
 {
 	return &_marketDataDOMap;
 }
 
-PortfolioDOMap* PricingDataContext::GetPortfolioDOMap()
+PortfolioDOMap* PricingDataContext::GetPortfolioMap()
 {
 	return &_portfolioDOMap;
 }

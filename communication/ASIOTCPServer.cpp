@@ -136,8 +136,7 @@ bool ASIOTCPServer::Start(void) {
 
 			if (ec)
 			{
-				std::string errmsg(ec.message());
-				LOG_FATAL << "Failed to start " << _uri << ": " << errmsg;
+				LOG_ERROR << "Failed to start " << _uri << ": " << ec.message();
 			}
 		}
 	}
@@ -166,17 +165,14 @@ void ASIOTCPServer::work_thread(void) {
 		_iosrv.run(ec);
 		if (ec)
 		{
-			LOG_ERROR << _uri << "::" << __FUNCTION__ << ": "
-				<< ec.message();
+			LOG_ERROR << _uri << "::" << __FUNCTION__ << ": " << ec.message();
 		}
 	}
 	catch (std::exception& ex) {
-		std::string msg(__FUNCTION__);
-		LOG_FATAL << msg << ": " << ex.what();
+		LOG_ERROR << __FUNCTION__ << ": " << ex.what();
 	}
 	catch (...) {
-		std::string msg(__FUNCTION__);
-		LOG_FATAL << msg << ": " << ": Unknown error occured.";
+		LOG_ERROR << __FUNCTION__ << ": " << ": Unknown error occured.";
 	}
 }
 

@@ -13,10 +13,10 @@
 class TestingMessageServiceFactory : public MessageServiceFactory
 {
 public:
-   std::map<uint, IMessageHandler_Ptr> CreateMessageHandlers(void);
-   std::map<uint, IDataSerializer_Ptr> CreateDataSerializers(void);
-   std::map<std::string, IProcessorBase_Ptr> CreateWorkProcessor(void);
-   IMessageProcessor_Ptr CreateMessageProcessor(void);
+   std::map<uint, IMessageHandler_Ptr> CreateMessageHandlers(IServerContext* serverCtx);
+   std::map<uint, IDataSerializer_Ptr> CreateDataSerializers(IServerContext* serverCtx);
+   IMessageProcessor_Ptr CreateWorkerProcessor(IServerContext* serverCtx);
+   IMessageProcessor_Ptr CreateMessageProcessor(IServerContext* serverCtx);
 
 protected:
 private:

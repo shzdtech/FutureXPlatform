@@ -14,10 +14,10 @@
 class CTP_CLASS_EXPORT CTPTradeServiceFactory : public MessageServiceFactory
 {
 public:
-   std::map<uint, IMessageHandler_Ptr> CreateMessageHandlers(void);
-   std::map<uint, IDataSerializer_Ptr> CreateDataSerializers(void);
-   IMessageProcessor_Ptr CreateMessageProcessor(void);
-   std::map<std::string, IProcessorBase_Ptr> CreateWorkProcessor(void);
+   std::map<uint, IMessageHandler_Ptr> CreateMessageHandlers(IServerContext* serverCtx);
+   std::map<uint, IDataSerializer_Ptr> CreateDataSerializers(IServerContext* serverCtx);
+   IMessageProcessor_Ptr CreateMessageProcessor(IServerContext* serverCtx);
+   IMessageProcessor_Ptr CreateWorkerProcessor(IServerContext* serverCtx);
 
    bool Load(const std::string& configFile, const std::string& param);
 

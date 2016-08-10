@@ -22,7 +22,7 @@
 #include "../message/BizError.h"
 #include "../utility/Encoding.h"
 #include "../utility/TUtil.h"
-#include "../bizutility/InstrumentCache.h"
+#include "../bizutility/ContractCache.h"
 
 
  ////////////////////////////////////////////////////////////////////////
@@ -38,7 +38,7 @@
 dataobj_ptr CTPQueryPosition::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	if (auto wkProcPtr =
-		MessageUtility::FindGlobalProcessor<CTPTradeWorkerProcessor>(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT))
+		  MessageUtility::ServerWorkerProcessor<CTPTradeWorkerProcessor>(session->getProcessor()))
 	{
 		auto stdo = (MapDO<std::string>*)reqDO.get();
 
@@ -74,10 +74,9 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 			for (auto pit = positions.begin(); pit != positions.end(); pit++)
 			{
 				auto position_ptr = std::make_shared<UserPositionExDO>(pit->second);
-				position_ptr->SerialId = reqDO->SerialId;
 				position_ptr->HasMore = pit != lastpit;
 
-				wkProcPtr->SendDataObject(session, MSG_ID_QUERY_POSITION, position_ptr);
+				wkProcPtr->SendDataObject(session, MSG_ID_QUERY_POSITION, reqDO->SerialId, position_ptr);
 			}
 		}
 		else
@@ -92,10 +91,9 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 					for (auto pit = positions.begin(); pit != positions.end(); pit++)
 					{
 						auto positionDO_Ptr = std::make_shared<UserPositionExDO>(pit->second);
-						positionDO_Ptr->SerialId = reqDO->SerialId;
 						positionDO_Ptr->HasMore = (it != lastit || pit != lastpit);
 
-						wkProcPtr->SendDataObject(session, MSG_ID_QUERY_POSITION, positionDO_Ptr);
+						wkProcPtr->SendDataObject(session, MSG_ID_QUERY_POSITION, reqDO->SerialId, positionDO_Ptr);
 					}
 				}
 			}
@@ -125,13 +123,13 @@ dataobj_ptr CTPQueryPosition::HandleResponse(const uint32_t serialId, param_vect
 	{
 		std::string exchange;
 
-		if (auto pInstrumentDO = InstrumentCache::QueryInstrumentById(pData->InstrumentID))
+		if (auto pInstrumentDO = ContractCache::Futures().QueryInstrumentById(pData->InstrumentID))
 		{
 			exchange = pInstrumentDO->ExchangeID();
 		}
 		auto pDO = new UserPositionExDO(exchange, pData->InstrumentID);
 		ret.reset(pDO);
-		pDO->SerialId = serialId;
+
 		pDO->HasMore = !*(bool*)rawRespParams[3];
 
 		pDO->Direction = (PositionDirectionType)(pData->PosiDirection - THOST_FTDC_PD_Net);
@@ -173,7 +171,7 @@ dataobj_ptr CTPQueryPosition::HandleResponse(const uint32_t serialId, param_vect
 		pDO->MarginRateByVolume = pData->MarginRateByVolume;
 
 		if (auto wkProcPtr =
-			MessageUtility::FindGlobalProcessor<CTPTradeWorkerProcessor>(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT))
+			  MessageUtility::ServerWorkerProcessor<CTPTradeWorkerProcessor>(session->getProcessor()))
 		{
 			auto& positionMap = wkProcPtr->GetUserPositionMap();
 			auto& positions = positionMap.getorfill(pDO->InstrumentID());

@@ -29,7 +29,7 @@
 
 dataobj_ptr CTPNewOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
-	auto pDO = (OrderDO*)reqDO.get();
+	auto pDO = (OrderRequestDO*)reqDO.get();
 
 	auto userinfo = session->getUserInfo();
 
@@ -77,7 +77,7 @@ dataobj_ptr CTPNewOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI
 	req.IsAutoSuspend = false;
 
 	bool bLast = true;
-	pDO->OrderStatus = OrderStatus::OPENNING;
+
 	OnResponseProcMacro(session->getProcessor(), MSG_ID_ORDER_NEW, reqDO->SerialId, &req, nullptr, &reqDO->SerialId, &bLast);
 
 
@@ -99,13 +99,12 @@ dataobj_ptr CTPNewOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI
 
 dataobj_ptr CTPNewOrder::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
-	dataobj_ptr ret;
+	OrderDO_Ptr ret;
 
 	if (auto pData = (CThostFtdcInputOrderField*)rawRespParams[0])
 	{
 		auto pRsp = (CThostFtdcRspInfoField*)rawRespParams[1];
-		ret = CTPUtility::ParseRawOrderInput(pData, pRsp);
-		ret->SerialId = serialId;
+		ret = CTPUtility::ParseRawOrderInput(pData, pRsp, session->getUserInfo()->getSessionId());
 		ret->HasMore = false;
 	}
 

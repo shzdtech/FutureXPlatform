@@ -89,7 +89,7 @@ bool CTSAPIWrapperImpl::IsSubscribed(const ContractKey& contractKey)
 	return _contractMap->find(contractKey) != _contractMap->end();
 }
 
-int CTSAPIWrapperImpl::CreateOrder(OrderDO& orderDO)
+int CTSAPIWrapperImpl::CreateOrder(OrderRequestDO& orderDO)
 {
 	int ret = Subscribe(orderDO, orderDO.SerialId);
 
@@ -99,9 +99,7 @@ int CTSAPIWrapperImpl::CreateOrder(OrderDO& orderDO)
 
 		if (it != _contractMap->end())
 		{
-			UInt64 orderId = OrderSeqGen::GetNextSeq();
 			auto account = gcnew OrderList::AccountRouting();
-
 			account->CustomerReference = gcnew String(orderDO.UserID().data());
 
 			auto& market = it->second;
@@ -115,7 +113,7 @@ int CTSAPIWrapperImpl::CreateOrder(OrderDO& orderDO)
 				market->ConvertDecimalToTicks(orderDO.LimitPrice),
 				0,
 				OpenClose::Undefined,
-				orderId.ToString(),
+				account->CustomerReference,
 				0,
 				ActivationType::Immediate,
 				String::Empty,
@@ -126,7 +124,9 @@ int CTSAPIWrapperImpl::CreateOrder(OrderDO& orderDO)
 			pOrder->OrderUpdate +=
 				gcnew Order::OrderUpdateEventHandler(this, &CTSAPIWrapperImpl::OnOrderUpdated);
 
-			_orderMap->Add(orderId, pOrder);
+			auto orderUUID = Guid::Parse(pOrder->UniqueID);
+
+			_orderMap->Add(orderUUID, pOrder);
 
 			OrderDO_Ptr order_ptr = CTSUtility::ParseRawOrder(pOrder);
 
@@ -140,20 +140,27 @@ int CTSAPIWrapperImpl::CreateOrder(OrderDO& orderDO)
 
 }
 
-int CTSAPIWrapperImpl::CancelOrder(OrderDO& orderDO)
+int CTSAPIWrapperImpl::CancelOrder(OrderRequestDO& orderDO)
 {
 	int ret = -1;
 
 	Order^ order;
-	if (_orderMap->TryGetValue(orderDO.OrderID, order))
+
+	auto uuidArray = BitConverter::GetBytes(orderDO.OrderID);
+	auto uuidArray8 = BitConverter::GetBytes(orderDO.OrderSysID);
+
+	auto orderUUID = Guid(BitConverter::ToInt32(uuidArray, 0), BitConverter::ToInt16(uuidArray, 4), BitConverter::ToInt16(uuidArray, 6),
+		uuidArray8);
+
+	if (_orderMap->TryGetValue(orderUUID, order))
 	{
-		if (order->Pull())
-			ret = 0;
-		else if (!order->IsWorking)
-		{
-			throw BizException(OBJECT_IS_CLOSED);
-		}
-		orderDO = *CTSUtility::ParseRawOrder(order);
+	if (order->Pull())
+		ret = 0;
+	else if (!order->IsWorking)
+	{
+		throw BizException(OBJECT_IS_CLOSED);
+	}
+	orderDO = *CTSUtility::ParseRawOrder(order);
 	}
 
 	OnResponseProcMacro(_pMsgProcessor, MSG_ID_ORDER_CANCEL, orderDO.SerialId, &orderDO);
@@ -223,7 +230,7 @@ void CTSAPIWrapperImpl::OnOrderUpdated(Order^ pOrder)
 		case ::OrderStatus::CANCEL_REJECTED:
 			msgId = MSG_ID_ORDER_CANCEL;
 			break;
-		case ::OrderStatus::OPENNING:
+		case ::OrderStatus::OPENED:
 		case ::OrderStatus::OPEN_REJECTED:
 			msgId = MSG_ID_ORDER_NEW;
 			break;

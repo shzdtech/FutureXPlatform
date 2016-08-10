@@ -18,9 +18,9 @@ public:
 	AutoOrderManager(IOrderAPI* pOrderAPI, IPricingDataContext* pricingCtx);
 
 	int Reset();
-	int CreateOrder(OrderDO& orderInfo);
-	int CancelOrder(OrderDO& orderInfo);
-	int RejectOrder(OrderDO& orderInfo);
+	OrderDO_Ptr CreateOrder(OrderRequestDO& orderInfo);
+	OrderDO_Ptr CancelOrder(OrderRequestDO& orderInfo);
+	OrderDO_Ptr RejectOrder(OrderRequestDO& orderInfo);
 	int OnOrderUpdated(OrderDO& orderInfo);
 	OrderDOVec_Ptr UpdateOrderByStrategy(
 		const StrategyContractDO& strategyDO);

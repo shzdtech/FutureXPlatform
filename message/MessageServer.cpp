@@ -43,7 +43,7 @@ IMessageServiceFactory_Ptr MessageServer::GetServiceFactory(void)
 	return _svcfactory_ptr;
 }
 
-IContextAttribute * MessageServer::getContext()
+IServerContext * MessageServer::getContext()
 {
 	return &_context;
 }

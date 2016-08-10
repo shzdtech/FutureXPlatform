@@ -173,64 +173,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CTPAccountLogin.cpp" />
-    <ClCompile Include="CTPOCTUnSubMarketData.cpp" />
-    <ClCompile Include="CTPOTCCancelOrder.cpp" />
-    <ClCompile Include="CTPOTCClientServiceFactory.cpp" />
-    <ClCompile Include="CTPOTCDepthMarketData.cpp" />
     <ClCompile Include="CTPOTCLogin.cpp" />
-    <ClCompile Include="CTPOTCNewOrder.cpp" />
-    <ClCompile Include="CTPOTCQueryContractParam.cpp" />
-    <ClCompile Include="CTPOTCQueryOrder.cpp" />
-    <ClCompile Include="CTPOTCQueryStrategy.cpp" />
-    <ClCompile Include="CTPOTCQueryTradingDesks.cpp" />
-    <ClCompile Include="CTPOTCReturnPricingData.cpp" />
-    <ClCompile Include="CTPOTCSubMarketData.cpp" />
     <ClCompile Include="CTPOTCTradeProcessor.cpp" />
-    <ClCompile Include="CTPOTCTradingDeskLogin.cpp" />
-    <ClCompile Include="CTPOTCTradingDeskProcessor.cpp" />
-    <ClCompile Include="CTPOTCTradingDeskServiceFactory.cpp" />
-    <ClCompile Include="CTPOTCUpdateContractParam.cpp" />
-    <ClCompile Include="CTPOTCUpdateStrategy.cpp" />
-    <ClCompile Include="CTPOTCUpdateUserParam.cpp" />
-    <ClCompile Include="CTPOTCUserContextBuilder.cpp" />
+    <ClCompile Include="CTPOTCSessionProcessor.cpp" />
+    <ClCompile Include="CTPOTCServiceFactory.cpp" />
     <ClCompile Include="CTPOTCWorkerProcessor.cpp" />
     <ClCompile Include="ctpotc_export.cpp" />
-    <ClCompile Include="CTPAccountTradeServiceFactory.cpp" />
-    <ClCompile Include="OTCOptionVolatility.cpp" />
-    <ClCompile Include="TradingDeskContextBuilder.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CTPAccountLogin.h" />
-    <ClInclude Include="CTPOCTUnSubMarketData.h" />
-    <ClInclude Include="CTPOTCCancelOrder.h" />
-    <ClInclude Include="CTPOTCClientServiceFactory.h" />
-    <ClInclude Include="CTPOTCDepthMarketData.h" />
     <ClInclude Include="CTPOTCLogin.h" />
-    <ClInclude Include="CTPOTCNewOrder.h" />
-    <ClInclude Include="CTPOTCQueryContractParam.h" />
-    <ClInclude Include="CTPOTCQueryOrder.h" />
-    <ClInclude Include="CTPOTCQueryStrategy.h" />
-    <ClInclude Include="CTPOTCQueryTradingDesks.h" />
-    <ClInclude Include="CTPOTCReturnPricingData.h" />
-    <ClInclude Include="CTPOTCSubMarketData.h" />
     <ClInclude Include="CTPOTCTradeProcessor.h" />
-    <ClInclude Include="CTPOTCTradingDeskLogin.h" />
-    <ClInclude Include="CTPOTCTradingDeskProcessor.h" />
-    <ClInclude Include="CTPOTCTradingDeskServiceFactory.h" />
-    <ClInclude Include="CTPOTCUpdateContractParam.h" />
-    <ClInclude Include="CTPOTCUpdateStrategy.h" />
-    <ClInclude Include="CTPOTCUpdateUserParam.h" />
-    <ClInclude Include="CTPOTCUserContextBuilder.h" />
+    <ClInclude Include="CTPOTCSessionProcessor.h" />
+    <ClInclude Include="CTPOTCServiceFactory.h" />
     <ClInclude Include="CTPOTCWorkerProcessor.h" />
     <ClInclude Include="ctpotc_bizhandlers.h" />
-    <ClInclude Include="CTPAccountTradeServiceFactory.h" />
     <ClInclude Include="ctpotc_export.h" />
-    <ClInclude Include="OTCOptionVolatility.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="TradingDeskContextBuilder.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\bizutility\bizutility.vcxproj">
+      <Project>{e3f399cf-2d32-49a8-b536-ea7fad14483f}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\configuration\configuration.vcxproj">
       <Project>{6ca92597-54a1-435d-b200-41860f096abc}</Project>
     </ProjectReference>
@@ -249,8 +212,14 @@
     <ProjectReference Include="..\message\message.vcxproj">
       <Project>{e9adaa2b-1ccb-4111-9ac3-bddb3dc114f2}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\OptionServer\OptionServer.vcxproj">
+      <Project>{dcd588f8-7058-442f-9f51-bce059faad80}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\ordermanager\ordermanager.vcxproj">
       <Project>{be84a8c2-79ea-49a5-ab37-23250e0631b6}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\OTCServer\OTCServer.vcxproj">
+      <Project>{5f50c5da-8183-40d3-a78b-6462ee958593}</Project>
     </ProjectReference>
     <ProjectReference Include="..\pricingengine\pricingengine.vcxproj">
       <Project>{001a89a1-70d7-4a9b-a7b2-82d0be1ba07c}</Project>

@@ -13,20 +13,20 @@
 
 #include "pricingengine_exp.h"
 
-class PRICINGENGINE_CLASS_EXPORTS PricingDataContext : IPricingDataContext
+class PRICINGENGINE_CLASS_EXPORTS PricingDataContext : public IPricingDataContext
 {
 public:
 	StrategyContractDOMap* GetStrategyMap();
-	ContractDOMap* GetContractMap();
-	MarketDataDOMap* GetMarketDataDOMap();
-	PortfolioDOMap* GetPortfolioDOMap();
+	ContractParamDOMap* GetContractParamMap();
+	MarketDataDOMap* GetMarketDataMap();
+	PortfolioDOMap* GetPortfolioMap();
 	InstrumentDOMap* GetInstrumentDOMap();
 
 protected:
 
 private:
 	StrategyContractDOMap _strategyContractDOMap;
-	ContractDOMap _contractDOMap;
+	ContractParamDOMap _contractDOMap;
 	MarketDataDOMap _marketDataDOMap;
 	PortfolioDOMap _portfolioDOMap;
 	InstrumentDOMap _instrumentDOMap;

@@ -5,7 +5,7 @@
 dataobj_ptr TestingPositionHandler::HandleRequest(const dataobj_ptr & reqDO, IRawAPI * rawAPI, ISession * session)
 {
 	UserPositionExDO position("TSEX", "TS1610");
-	position.SerialId = reqDO->SerialId;
+
 	position.CloseAmount = std::rand();
 	position.CloseProfit = std::rand();
 	position.OpenVolume = std::rand();

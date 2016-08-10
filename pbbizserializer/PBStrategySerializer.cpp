@@ -35,27 +35,20 @@ data_buffer PBStrategySerializer::Serialize(const dataobj_ptr& abstractDO)
 		pStrategy->set_symbol(sdo.Strategy);
 		pStrategy->set_description(sdo.Description);
 		pStrategy->set_depth(sdo.Depth);
-		pStrategy->set_spread(sdo.Spread);
-		pStrategy->set_offset(sdo.Offset);
 		pStrategy->set_enabled(sdo.Enabled);
 		pStrategy->set_quantity(sdo.Quantity);
-		pStrategy->set_strike(sdo.Strike);
-		pStrategy->set_riskfreerate(sdo.RiskFreeRate);
-		pStrategy->set_volatility(sdo.Volatility);
 
-		for (auto& param : *sdo.ParamMap)
-		{
-			auto paramDO = pStrategy->add_params();
-			paramDO->set_name(param.first);
-			paramDO->set_value(param.second);
-		}
+		pStrategy->mutable_params()->insert(sdo.Params.begin(), sdo.Params.end());
 
-		for (auto& basecontract : *sdo.BaseContracts)
+		if (sdo.PricingContracts)
 		{
-			auto wtContract = pStrategy->add_weightcontract();
-			wtContract->set_exchange(basecontract.ExchangeID());
-			wtContract->set_contract(basecontract.InstrumentID());
-			wtContract->set_weight(basecontract.Weight);
+			for (auto& pricingContract : *sdo.PricingContracts)
+			{
+				auto pContract = pStrategy->add_pricingcontracts();
+				pContract->set_exchange(pricingContract.ExchangeID());
+				pContract->set_contract(pricingContract.InstrumentID());
+				pContract->set_weight(pricingContract.Weight);
+			}
 		}
 	}
 
@@ -88,30 +81,23 @@ dataobj_ptr PBStrategySerializer::Deserialize(const data_buffer& rawdata)
 	{
 		StrategyContractDO sdo(strategy.exchange(), strategy.contract());
 		sdo.Depth = strategy.depth();
-		sdo.Spread = strategy.spread();
-		sdo.Offset = strategy.offset();
 		sdo.Trading = strategy.allowtrading();
 		sdo.Enabled = strategy.enabled();
 		sdo.Quantity = strategy.quantity();
-		sdo.RiskFreeRate = strategy.riskfreerate();
-		sdo.Volatility = strategy.volatility();
-		sdo.Strike = strategy.strike();
 
-		auto paramMap = std::make_shared<std::map<std::string, double>>();
-		for (auto& param : strategy.params())
-		{
-			paramMap->emplace(param.name(), param.value());
-		}
-		sdo.ParamMap = paramMap;
+		sdo.Params.insert(strategy.params().begin(), strategy.params().end());
 
-		auto bcVec = std::make_shared<std::vector<ContractParam>>();
-		for (auto& bc : strategy.weightcontract())
+		if (!strategy.pricingcontracts().empty())
 		{
-			ContractParam cp(bc.exchange(), bc.contract());
-			cp.Weight = bc.weight();
-			bcVec->push_back(std::move(cp));
+			auto bcVec = std::make_shared<std::vector<PricingContract>>();
+			for (auto& bc : strategy.pricingcontracts())
+			{
+				PricingContract cp(bc.exchange(), bc.contract());
+				cp.Weight = bc.weight();
+				bcVec->push_back(std::move(cp));
+			}
+			sdo.PricingContracts = bcVec;
 		}
-		sdo.BaseContracts = bcVec;
 
 		ret->push_back(std::move(sdo));
 	}

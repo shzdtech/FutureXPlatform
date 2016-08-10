@@ -78,9 +78,6 @@
     <ClInclude Include="ResultDO.h">
       <Filter>头文件\system</Filter>
     </ClInclude>
-    <ClInclude Include="ContractParam.h">
-      <Filter>头文件\otc</Filter>
-    </ClInclude>
     <ClInclude Include="StrategyContractDO.h">
       <Filter>头文件\otc</Filter>
     </ClInclude>
@@ -88,12 +85,6 @@
       <Filter>头文件\otc</Filter>
     </ClInclude>
     <ClInclude Include="PortfolioDO.h">
-      <Filter>头文件\otc</Filter>
-    </ClInclude>
-    <ClInclude Include="ContractDO.h">
-      <Filter>头文件\otc</Filter>
-    </ClInclude>
-    <ClInclude Include="PricingDO.h">
       <Filter>头文件\otc</Filter>
     </ClInclude>
     <ClInclude Include="TemplateDO.h">
@@ -104,6 +95,15 @@
     </ClInclude>
     <ClInclude Include="ModelParamsDO.h">
       <Filter>头文件\system</Filter>
+    </ClInclude>
+    <ClInclude Include="PricingDO.h">
+      <Filter>头文件\common</Filter>
+    </ClInclude>
+    <ClInclude Include="PricingContract.h">
+      <Filter>头文件\otc</Filter>
+    </ClInclude>
+    <ClInclude Include="ContractParamDO.h">
+      <Filter>头文件\otc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

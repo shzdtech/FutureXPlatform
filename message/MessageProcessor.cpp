@@ -6,7 +6,7 @@
  ***********************************************************************/
 
 #include "MessageProcessor.h"
-#include "ContextAttribute.h"
+#include "ServerContext.h"
 #include "../litelogger/LiteLogger.h"
 
 MessageProcessor::MessageProcessor()
@@ -47,12 +47,12 @@ void MessageProcessor::setServiceLocator(IMessageServiceLocator_Ptr svcLct_Ptr)
 	_svc_locator_ptr = svcLct_Ptr;
 }
 
-void MessageProcessor::setServerContext(IContextAttribute * serverCtx)
+void MessageProcessor::setServerContext(IServerContext * serverCtx)
 {
 	_serverCtx = serverCtx;
 }
 
-IContextAttribute * MessageProcessor::getServerContext(void)
+IServerContext * MessageProcessor::getServerContext(void)
 {
 	return _serverCtx;
 }

@@ -22,21 +22,18 @@
 
 #include "ctpexport.h"
 
-class CTP_CLASS_EXPORT CTPTradeWorkerProcessor : public CTPTradeProcessor, public IOrderAPI
+class CTP_CLASS_EXPORT CTPTradeWorkerProcessor : public CTPTradeProcessor
 {
 public:
-   CTPTradeWorkerProcessor(const std::map<std::string, std::string>& configMap);
+   CTPTradeWorkerProcessor(const std::map<std::string, std::string>& configMap, IServerContext* pServerCtx);
    ~CTPTradeWorkerProcessor();
    virtual void Initialize(void);
    virtual int LoadSystemData(CThostFtdcTraderApi* trdAPI);
    virtual int LoginSystemUser(void);
    virtual int LoginSystemUserIfNeed(void);
 
-   virtual int CreateOrder(const OrderDO& orderInfo, OrderStatus& currStatus);
-   virtual int CancelOrder(const OrderDO& orderInfo, OrderStatus& currStatus);
-
    virtual void RegisterLoggedSession(IMessageSession* pMessageSession);
-   virtual void DispatchUserMessage(int msgId, const std::string& userId, const dataobj_ptr& dataobj_ptr);
+   virtual void DispatchUserMessage(int msgId, int serialId, const std::string& userId, const dataobj_ptr& dataobj_ptr);
    virtual std::vector<AccountInfoDO>& GetAccountInfo(const std::string userId);
    virtual std::set<ExchangeDO>& GetExchangeInfo();
    virtual UserPositionExDOMap& GetUserPositionMap();

@@ -35,11 +35,11 @@
       <FileName>ContractKey.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ContractParam" Collapsed="true">
+  <Class Name="PricingContract" Collapsed="true">
     <Position X="29.5" Y="8.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAgAAAAAAAAAAAAAAAAACQAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ContractParam.h</FileName>
+      <FileName>PricingContract.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="EchoMessageDO" Collapsed="true">
@@ -63,7 +63,7 @@
       <FileName>InstrumentDO.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="OrderBaseDO" Collapsed="true">
+  <Class Name="OrderRequestDO" Collapsed="true">
     <Position X="14.5" Y="7.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AQAAABAAAAACAAACACAAAAAAAAgAAAAgAAIQAAAAAAA=</HashCode>

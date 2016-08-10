@@ -6,7 +6,7 @@
  ***********************************************************************/
 
 #include "MessageSession.h"
-#include "ContextAttribute.h"
+#include "MessageContext.h"
 #include "UserInfo.h"
 
 
@@ -21,7 +21,7 @@ MessageSession::MessageSession()
 	static uint64_t idgen = 0;
 	_id = ++idgen;
 	_userInfo_ptr = std::make_shared<UserInfo>();
-	_context_ptr = std::make_shared<ContextAttribute>();
+	_context_ptr = std::make_shared<MessageContext>();
 	_timeout = 0;
 	_islogin = false;
 	_closed = false;
@@ -66,7 +66,7 @@ void MessageSession::RegistProcessor(IMessageProcessor_Ptr msgProcessor)
 // Return:     context_ptr
 ////////////////////////////////////////////////////////////////////////
 
-IContextAttribute_Ptr MessageSession::getContext(void)
+IMessageContext_Ptr MessageSession::getContext(void)
 {
 	return _context_ptr;
 }

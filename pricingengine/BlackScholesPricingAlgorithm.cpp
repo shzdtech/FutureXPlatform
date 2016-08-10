@@ -12,12 +12,14 @@
 #include "../dataobject/MarketDataDO.h"
 #include "../dataobject/UserContractParamDO.h"
 #include "../dataobject/PricingDO.h"
-#include "../dataobject/ContractDO.h"
+#include "../dataobject/ContractParamDO.h"
 #include "../dataobject/TypedefDO.h"
 #include "../bizutility/OptionPricingCache.h"
 
 using namespace QuantLib;
 
+const std::string BlackScholesParams::riskFreeRate_name("riskFreeRate");
+const std::string BlackScholesParams::spread_name("spread");
 ////////////////////////////////////////////////////////////////////////
 // Name:       BlackScholesPricingAlgorithm::Name()
 // Purpose:    Implementation of BlackScholesPricingAlgorithm::Name()
@@ -44,37 +46,38 @@ dataobj_ptr BlackScholesPricingAlgorithm::Compute(
 	IPricingDataContext& priceCtx,
 	const param_vector* params)
 {
-	
+	BlackScholesParams paramObj;
+	if (!ParseParams(sdo.Params, &paramObj))
+		return nullptr;
+
 	double bidPrice = ((double*)pInputObject)[0];
 	double askdPrice = ((double*)pInputObject)[1];
 
 	PricingDO callPricingDO(sdo.ExchangeID(), sdo.InstrumentID());
-	callPricingDO.Type = 0;
 
 	PricingDO putPricingDO(sdo.ExchangeID(), sdo.InstrumentID());
-	putPricingDO.Type = 1;
 
 	if (!OptionPricingCache::FindCallOption(sdo, bidPrice, callPricingDO.BidPrice))
 	{
-		callPricingDO.BidPrice = ComputeOptionPrice(bidPrice, callPricingDO.Type, sdo, priceCtx);
+		callPricingDO.BidPrice = ComputeOptionPrice(paramObj, bidPrice, true, sdo, priceCtx);
 		OptionPricingCache::AddCallOption(sdo, bidPrice, callPricingDO.BidPrice);
 	}
 
 	if (!OptionPricingCache::FindCallOption(sdo, askdPrice, callPricingDO.AskPrice))
 	{
-		callPricingDO.AskPrice = ComputeOptionPrice(askdPrice, callPricingDO.Type, sdo, priceCtx);
+		callPricingDO.AskPrice = ComputeOptionPrice(paramObj, askdPrice, true, sdo, priceCtx);
 		OptionPricingCache::AddCallOption(sdo, askdPrice, callPricingDO.AskPrice);
 	}
 
 	if (!OptionPricingCache::FindPutOption(sdo, bidPrice, putPricingDO.BidPrice))
 	{
-		putPricingDO.BidPrice = ComputeOptionPrice(bidPrice, putPricingDO.Type, sdo, priceCtx);
+		putPricingDO.BidPrice = ComputeOptionPrice(paramObj, bidPrice, false, sdo, priceCtx);
 		OptionPricingCache::AddCallOption(sdo, bidPrice, putPricingDO.BidPrice);
 	}
 
 	if (!OptionPricingCache::FindPutOption(sdo, askdPrice, putPricingDO.AskPrice))
 	{
-		putPricingDO.AskPrice = ComputeOptionPrice(askdPrice, putPricingDO.Type, sdo, priceCtx);
+		putPricingDO.AskPrice = ComputeOptionPrice(paramObj, askdPrice, false, sdo, priceCtx);
 		OptionPricingCache::AddCallOption(sdo, askdPrice, putPricingDO.AskPrice);
 	}
 
@@ -85,32 +88,50 @@ dataobj_ptr BlackScholesPricingAlgorithm::Compute(
 	return ret;
 }
 
-double BlackScholesPricingAlgorithm::ComputeOptionPrice(double inputPrice, int optionType,
+const std::map<std::string, double>& BlackScholesPricingAlgorithm::DefaultParams(void)
+{
+	static std::map<std::string, double> defaultParams = {
+		{ BlackScholesParams::riskFreeRate_name , 0.05},
+		{ BlackScholesParams::spread_name , 1 },
+	};
+	return defaultParams;
+}
+
+bool BlackScholesPricingAlgorithm::ParseParams(const std::map<std::string, double>& params, void * pParamObj)
+{
+	return false;
+}
+
+double BlackScholesPricingAlgorithm::ComputeOptionPrice(
+	const BlackScholesParams& params,
+	double inputPrice, bool call,
 	const StrategyContractDO & sdo, IPricingDataContext & priceCtx)
 {
-	auto& mdDOMap = *(priceCtx.GetMarketDataDOMap());
-	auto& conDOMap = *(priceCtx.GetContractMap());
+	auto& mdDOMap = *(priceCtx.GetMarketDataMap());
+	auto& conDOMap = *(priceCtx.GetContractParamMap());
 
-	auto& baseContract = sdo.BaseContracts->at(0);
+	auto& baseContract = sdo.PricingContracts->at(0);
 	auto& md = mdDOMap.at(baseContract.InstrumentID());
 
 	Calendar calendar = TARGET();
 	Real underlying = md.LastPrice;
-	Spread dividendYield = sdo.Spread;
-	Rate riskFreeRate = sdo.RiskFreeRate;
+	Spread dividendYield = params.spread;
+	Rate riskFreeRate = params.riskFreeRate;
 	Volatility volatility = sdo.Volatility;
 	DayCounter dayCounter = Actual365Fixed();
 
-	Date maturity((Day)sdo.Muturity.tm_mday,
-		(Month)sdo.Muturity.tm_mon,
-		(Year)sdo.Muturity.tm_year);
+	Date maturity((Day)sdo.Expiration.tm_mday,
+		(Month)(sdo.Expiration.tm_mon + 1),
+		(Year)(sdo.Expiration.tm_year + 1900));
 
-	Date settlementDate((Day)sdo.SettlementDate.tm_mday,
-		(Month)sdo.SettlementDate.tm_mon,
-		(Year)sdo.SettlementDate.tm_year);
+	auto now = std::time(nullptr);
+	auto pTM = std::localtime(&now);
+	Date settlementDate((Day)pTM->tm_mday,
+		(Month)(pTM->tm_mon + 1),
+		(Year)(pTM->tm_year + 1900));
 
 	Handle<Quote> underlyingH(
-		boost::shared_ptr<Quote>(new SimpleQuote(inputPrice)));
+		boost::shared_ptr<Quote>(new SimpleQuote(underlying)));
 
 	// bootstrap the yield/dividend/vol curves
 	Handle<YieldTermStructure> flatTermStructure(
@@ -124,8 +145,8 @@ double BlackScholesPricingAlgorithm::ComputeOptionPrice(double inputPrice, int o
 			new BlackConstantVol(settlementDate, calendar, volatility,
 				dayCounter)));
 
-	boost::shared_ptr<StrikedTypePayoff> payoffP(
-		new PlainVanillaPayoff(optionType > 0 ? Option::Put : Option::Call, inputPrice));
+	boost::shared_ptr<StrikedTypePayoff> payoff(
+		new PlainVanillaPayoff(call ? Option::Call : Option::Put, inputPrice));
 
 	boost::shared_ptr<BlackScholesMertonProcess> bsmProcess(
 		new BlackScholesMertonProcess(underlyingH, flatDividendTS,
@@ -137,7 +158,7 @@ double BlackScholesPricingAlgorithm::ComputeOptionPrice(double inputPrice, int o
 	boost::shared_ptr<Exercise> europeanExercise(
 		new EuropeanExercise(maturity));
 
-	VanillaOption europeanOption(payoffP, europeanExercise);
+	VanillaOption europeanOption(payoff, europeanExercise);
 	europeanOption.setPricingEngine(pricingEngine);
 
 	return europeanOption.NPV();

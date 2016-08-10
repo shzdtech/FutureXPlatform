@@ -22,7 +22,7 @@
 
 dataobj_ptr CTSCancelOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
-	auto pOrder = (OrderDO*)reqDO.get();
+	auto pOrder = (OrderRequestDO*)reqDO.get();
 	auto api = (CTSAPIWrapper*)rawAPI;
 	api->Impl()->CancelOrder(*pOrder);
 

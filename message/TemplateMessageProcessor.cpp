@@ -27,7 +27,7 @@ void TemplateMessageProcessor::ProcessRequest(const uint msgId, const dataobj_pt
 					{
 						if (sendRsp)
 						{
-							SendDataObject(pMsgSession, msgId, dataobj_ptr);
+							SendDataObject(pMsgSession, msgId, reqDO->SerialId, dataobj_ptr);
 						}
 					}
 				}
@@ -59,7 +59,7 @@ void TemplateMessageProcessor::ProcessResponse(const uint msgId, const uint seri
 					{
 						if (sendRsp)
 						{
-							SendDataObject(pMsgSession, msgId, dataobj_ptr);
+							SendDataObject(pMsgSession, msgId, serialId, dataobj_ptr);
 						}
 					}
 				}
@@ -78,12 +78,15 @@ void TemplateMessageProcessor::ProcessResponse(const uint msgId, const uint seri
 }
 
 int TemplateMessageProcessor::SendDataObject(ISession* session,
-	const uint msgId, const dataobj_ptr& dataobj)
+	const uint msgId, const uint serialId, const dataobj_ptr& dataobj)
 {
 	int ret = 0;
 	if (auto msgSerilzer = _svc_locator_ptr->FindDataSerializer(msgId))
+	{
+		dataobj->SerialId = serialId;
 		if (data_buffer db = msgSerilzer->Serialize(dataobj))
 			ret = session->WriteMessage(msgId, db);
+	}
 
 	return ret;
 }

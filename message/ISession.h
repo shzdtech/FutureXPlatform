@@ -10,7 +10,7 @@
 
 #include "../dataobject/data_buffer.h"
 #include "../common/typedefs.h"
-#include "IContextAttribute.h"
+#include "IMessageContext.h"
 #include "IUserInfo.h"
 #include "MessageInterfaceDeclare.h"
 
@@ -20,7 +20,7 @@ public:
 	virtual uint64_t Id() = 0;
 	virtual int WriteMessage(const uint msgId, const data_buffer& msg) = 0;
 	virtual int WriteMessage(const data_buffer& msg) = 0;
-	virtual IContextAttribute_Ptr getContext(void) = 0;
+	virtual IMessageContext_Ptr getContext(void) = 0;
 	virtual bool IsLogin(void) = 0;
 	virtual void setLoginStatus(bool status) = 0;
 	virtual IUserInfo_Ptr getUserInfo(void) = 0;

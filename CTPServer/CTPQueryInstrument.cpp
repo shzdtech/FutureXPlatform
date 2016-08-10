@@ -19,7 +19,7 @@
 #include "../utility/TUtil.h"
 #include "../utility/stringutility.h"
 
-#include "../bizutility/InstrumentCache.h"
+#include "../bizutility/ContractCache.h"
 
 #include "CTPUtility.h"
 
@@ -45,9 +45,9 @@ dataobj_ptr CTPQueryInstrument::HandleRequest(const dataobj_ptr& reqDO, IRawAPI*
 	VectorDO_Ptr<InstrumentDO> ret;
 
 	if (instrumentid == EMPTY_STRING && exchangeid == EMPTY_STRING && productid == EMPTY_STRING)
-		ret = InstrumentCache::AllInstruments();
+		ret = ContractCache::Futures().AllInstruments();
 	else
-		ret = InstrumentCache::QueryInstrument(instrumentid, exchangeid, productid);
+		ret = ContractCache::Futures().QueryInstrument(instrumentid, exchangeid, productid);
 
 	if (TUtil::IsNullOrEmpty(ret))
 	{
@@ -61,7 +61,6 @@ dataobj_ptr CTPQueryInstrument::HandleRequest(const dataobj_ptr& reqDO, IRawAPI*
 		throw NotFoundException();
 	}
 
-	ret->SerialId = reqDO->SerialId;
 	ret->HasMore = false;
 	return ret;
 }
@@ -82,7 +81,7 @@ dataobj_ptr CTPQueryInstrument::HandleResponse(const uint32_t serialId, param_ve
 	CTPUtility::CheckError(rawRespParams[1]);
 
 	VectorDO_Ptr<InstrumentDO> ret = std::make_shared<VectorDO<InstrumentDO>>();
-	ret->SerialId = serialId;
+
 	ret->HasMore = !*(bool*)rawRespParams[3];
 
 	if (auto pData = (CThostFtdcInstrumentField*)rawRespParams[0])
@@ -111,11 +110,10 @@ dataobj_ptr CTPQueryInstrument::HandleResponse(const uint32_t serialId, param_ve
 		insDO.PositionDateType = (PositionDateType)(pData->PositionDateType - THOST_FTDC_PDT_UseHistory);
 		insDO.LongMarginRatio = pData->LongMarginRatio;
 		insDO.ShortMarginRatio = pData->ShortMarginRatio;
-		insDO.MaxMarginSideAlgorithm = pData->MaxMarginSideAlgorithm;
 
-		if (!InstrumentCache::QueryInstrumentById(pData->InstrumentID))
+		if (!ContractCache::Futures().QueryInstrumentById(pData->InstrumentID))
 		{
-			InstrumentCache::Add(insDO);
+			ContractCache::Futures().Add(insDO);
 		}
 
 		ret->push_back(std::move(insDO));

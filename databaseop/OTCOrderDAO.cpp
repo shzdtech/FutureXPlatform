@@ -16,7 +16,7 @@
 // Return:     bool
 ////////////////////////////////////////////////////////////////////////
 
-OrderDO_Ptr OTCOrderDAO::CreateOrder(const OrderDO& orderDO, const PricingDO& pricingDO)
+OrderDO_Ptr OTCOrderDAO::CreateOrder(const OrderRequestDO& orderDO, const PricingDO& pricingDO)
 {
 	static const std::string sql_proc_createorder("CALL Order_OTC_New"
 		"(?,?,?,?,?,?,?,?,?,?,"
@@ -68,7 +68,7 @@ OrderDO_Ptr OTCOrderDAO::CreateOrder(const OrderDO& orderDO, const PricingDO& pr
 // Return:     bool
 ////////////////////////////////////////////////////////////////////////
 
-bool OTCOrderDAO::CancelOrder(const OrderBaseDO& orderDO, OrderStatus& status)
+bool OTCOrderDAO::CancelOrder(const OrderRequestDO& orderDO, OrderStatus& status)
 {
 	static const std::string sql_proc_cancelorder
 	("CALL Order_OTC_Cancel(?,?)");
@@ -106,7 +106,7 @@ bool OTCOrderDAO::CancelOrder(const OrderBaseDO& orderDO, OrderStatus& status)
 // Return:     bool
 ////////////////////////////////////////////////////////////////////////
 
-bool OTCOrderDAO::AcceptOrder(const OrderBaseDO& orderDO, OrderStatus& status)
+bool OTCOrderDAO::AcceptOrder(const OrderRequestDO& orderDO, OrderStatus& status)
 {
 	static const std::string sql_proc_acceptorder("CALL Order_OTC_Accept(?)");
 
@@ -142,7 +142,7 @@ bool OTCOrderDAO::AcceptOrder(const OrderBaseDO& orderDO, OrderStatus& status)
 // Return:     bool
 ////////////////////////////////////////////////////////////////////////
 
-bool OTCOrderDAO::RejectOrder(const OrderBaseDO& orderDO, OrderStatus& status)
+bool OTCOrderDAO::RejectOrder(const OrderRequestDO& orderDO, OrderStatus& status)
 {
 	static const std::string sql_proc_rejectorder("CALL Order_OTC_Reject(?)");
 

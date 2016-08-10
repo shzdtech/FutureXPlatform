@@ -11,7 +11,6 @@
 #include "IMessageSession.h"
 #include "IMessageProcessor.h"
 #include "ISessionManager.h"
-#include "IContextAttribute.h"
 #include "IUserInfo.h"
 
 #include <list>
@@ -31,7 +30,7 @@ public:
 	virtual int WriteMessage(const uint msgId, const data_buffer& msg) { return 0; }
 	virtual int WriteMessage(const data_buffer& msg) { return 0; }
 	void setTimeout(long seconds);
-	IContextAttribute_Ptr getContext(void);
+	IMessageContext_Ptr getContext(void);
 	bool IsLogin(void);
 	void setLoginStatus(bool status);
 	IUserInfo_Ptr getUserInfo(void);
@@ -42,7 +41,7 @@ public:
 
 protected:
 	uint64_t _id;
-	IContextAttribute_Ptr _context_ptr;
+	IMessageContext_Ptr _context_ptr;
 	IMessageProcessor_Ptr _messageProcessor_ptr;
 	std::list<IMessageSessionEvent_WkPtr> _sessionEventList;
 	IUserInfo_Ptr _userInfo_ptr;

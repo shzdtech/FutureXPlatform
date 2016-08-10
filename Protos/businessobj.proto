@@ -4,12 +4,6 @@ import "commondefine.proto";
 
 package Micro.Future.Message.Business;
 
-message PBParam
-{
-	string name = 1;
-	double value = 2;
-}
-
 message PBMarketData {
 	//MD Common Data
 	string exchange = 1;
@@ -39,7 +33,7 @@ message PBMarketData {
 	double openInterest = 20;
 	double averagePrice = 21;
 
-	DataHeader header = 22;
+	// DataHeader header = 22;
 }
 
 message PBMarketDataList
@@ -57,7 +51,7 @@ message PBPricingData {
 	double askPrice = 3;
 	double bidPrice = 4;
 
-	DataHeader header = 5;
+	//DataHeader header = 5;
 }
 
 message PBPricingDataList
@@ -66,7 +60,7 @@ message PBPricingDataList
 	DataHeader header = 2;
 }
 
-message PBStrategyWeight
+message PBPricingContract
 {
 	string exchange = 1;
 	string contract = 2;
@@ -84,13 +78,8 @@ message PBStrategy
 	bool enabled = 7;
 	int32 quantity = 8;
 	int32 depth = 9;
-	double spread = 10;
-	double offset = 11;
-	double strike = 12;
-	double riskFreeRate = 13;
-	double volatility = 14;
-	repeated PBStrategyWeight weightContract = 15;
-	repeated PBParam params = 16;
+	repeated PBPricingContract pricingContracts = 10;
+	map<string,double> params = 11;
 }
 
 message PBStrategyList
@@ -127,6 +116,32 @@ message PBOTCUserParamList
 }
 
 ///报单
+message PBOrderRequest {
+	DataHeader header = 1;
+	///报单编号
+	uint64 orderID = 2;
+	///系统报单编号
+	uint64 orderSysID = 3;
+	///交易所代码
+	string	exchange = 4;
+	///合约代码
+	string	contract = 5;
+	///价格
+	double limitPrice = 6;	
+	///数量
+	int32 volume = 7;
+	///报单价格条件
+	int32 execType = 8;
+	///Time In Force
+	int32 tif = 9;
+	///买卖方向
+	int32 direction = 10;
+	// Call Put
+	int32 callput = 11;
+	///开平标志
+	int32 openclose = 12;
+}
+
 message PBOrderInfo {
 	///报单编号
 	uint64 orderID = 1;
@@ -178,8 +193,10 @@ message PBOrderInfo {
 	int32 openclose = 25;
 	///状态信息
 	bytes message = 26;
+	/// Session Id
+	int32 sessionID = 27;
 
-	DataHeader header = 27;
+	DataHeader header = 28;
 }
 
 ///成交
@@ -386,14 +403,26 @@ message PBContractInfo {
 	double longMarginRatio = 23;
 	///空头保证金率
 	double shortMarginRatio = 24;
-	///是否使用大额单边保证金算法
-	string maxMarginSideAlgorithm = 25;
+	///组名称
+	string groupName = 25;
 
-	DataHeader header = 26;
+	//DataHeader header = 26;
 }
 
 message PBContractInfoList
 {
 	repeated PBContractInfo contractInfo = 1;
 	DataHeader header = 2;
+}
+
+message PBOptionPricing
+{
+	DataHeader header = 1;
+	string exchange = 2;
+	string contract = 3;
+	repeated double strikePrice = 4;
+	repeated double putBidPrice = 5;
+	repeated double putAskPrice = 6;
+	repeated double callBidPrice = 7;
+	repeated double callAskPrice = 8;
 }

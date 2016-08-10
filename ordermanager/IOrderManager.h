@@ -32,9 +32,9 @@ class IOrderManager : public IOrderUpdatedEvent
 public:
 	virtual int Reset() = 0;
 	virtual OrderDO_Ptr FindOrder(uint64_t orderID) = 0;
-	virtual int CreateOrder(OrderDO& orderInfo) = 0;
-	virtual int CancelOrder(OrderDO& orderInfo) = 0;
-	virtual int RejectOrder(OrderDO& orderInfo) = 0;
+	virtual OrderDO_Ptr CreateOrder(OrderRequestDO& orderInfo) = 0;
+	virtual OrderDO_Ptr CancelOrder(OrderRequestDO& orderInfo) = 0;
+	virtual OrderDO_Ptr RejectOrder(OrderRequestDO& orderInfo) = 0;
 	virtual OrderDOVec_Ptr UpdateOrderByStrategy(
 		const StrategyContractDO& strategyDO) = 0;
 

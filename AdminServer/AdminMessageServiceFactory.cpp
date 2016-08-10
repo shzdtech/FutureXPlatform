@@ -22,7 +22,7 @@
  // Return:     std::map<uint, IMessageHandler_Ptr>
  ////////////////////////////////////////////////////////////////////////
 
-std::map<uint, IMessageHandler_Ptr> AdminMessageServiceFactory::CreateMessageHandlers(void)
+std::map<uint, IMessageHandler_Ptr> AdminMessageServiceFactory::CreateMessageHandlers(IServerContext* serverCtx)
 {
 	std::map<uint, IMessageHandler_Ptr> msg_hdl_map;
 
@@ -43,7 +43,7 @@ std::map<uint, IMessageHandler_Ptr> AdminMessageServiceFactory::CreateMessageHan
 // Return:     std::map<uint, IDataSerializer_Ptr>
 ////////////////////////////////////////////////////////////////////////
 
-std::map<uint, IDataSerializer_Ptr> AdminMessageServiceFactory::CreateDataSerializers(void)
+std::map<uint, IDataSerializer_Ptr> AdminMessageServiceFactory::CreateDataSerializers(IServerContext* serverCtx)
 {
 	std::map<uint, IDataSerializer_Ptr> ret;
 	AbstractDataSerializerFactory::Instance()->CreateDataSerializers(ret);
@@ -51,14 +51,14 @@ std::map<uint, IDataSerializer_Ptr> AdminMessageServiceFactory::CreateDataSerial
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       AdminMessageServiceFactory::CreateWorkProcessor()
-// Purpose:    Implementation of AdminMessageServiceFactory::CreateWorkProcessor()
+// Name:       AdminMessageServiceFactory::CreateWorkerProcessor()
+// Purpose:    Implementation of AdminMessageServiceFactory::CreateWorkerProcessor()
 // Return:     std::map<uint, IProcessorBase_Ptr>
 ////////////////////////////////////////////////////////////////////////
 
-std::map<std::string, IProcessorBase_Ptr> AdminMessageServiceFactory::CreateWorkProcessor(void)
+IMessageProcessor_Ptr AdminMessageServiceFactory::CreateWorkerProcessor(IServerContext* serverCtx)
 {
-	return std::map<std::string, IProcessorBase_Ptr>();
+	return nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -67,7 +67,7 @@ std::map<std::string, IProcessorBase_Ptr> AdminMessageServiceFactory::CreateWork
 // Return:     IMessageProcessor_Ptr
 ////////////////////////////////////////////////////////////////////////
 
-IMessageProcessor_Ptr AdminMessageServiceFactory::CreateMessageProcessor(void)
+IMessageProcessor_Ptr AdminMessageServiceFactory::CreateMessageProcessor(IServerContext* serverCtx)
 {
 	return std::make_shared<AdminServerMessageProcessor>();
 }

@@ -9,7 +9,7 @@
 #define __message_MessageServer_h
 
 #include "IMessageServer.h"
-#include "ContextAttribute.h"
+#include "ServerContext.h"
 #include "message_exp.h"
 
 class MESSAGE_CLASS_EXPORT MessageServer : public IMessageServer
@@ -22,13 +22,13 @@ public:
 	const std::string& getUri(void);
 	void RegisterServiceFactory(IMessageServiceFactory_Ptr msgSvcFactory);
 	IMessageServiceFactory_Ptr GetServiceFactory(void);
-	virtual IContextAttribute* getContext();
+	virtual IServerContext* getContext();
 
 protected:
 	std::string _uri;
 	ISessionManager_Ptr _manager_ptr;
 	IMessageServiceFactory_Ptr _svcfactory_ptr;
-	ContextAttribute _context;
+	ServerContext _context;
 
 private:
 

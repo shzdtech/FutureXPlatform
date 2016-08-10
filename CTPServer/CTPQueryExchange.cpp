@@ -37,8 +37,7 @@
 
 dataobj_ptr CTPQueryExchange::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
-	if (auto wkProcPtr =
-		MessageUtility::FindGlobalProcessor<CTPTradeWorkerProcessor>(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT))
+	if (auto wkProcPtr = MessageUtility::ServerWorkerProcessor<CTPTradeWorkerProcessor>(session->getProcessor()))
 	{
 		auto stdo = (MapDO<std::string>*)reqDO.get();
 		auto& exchangeid = stdo->TryFind(STR_EXCHANGE_ID, EMPTY_STRING);
@@ -63,8 +62,7 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 			if (it != exchangeInfo.end())
 			{
 				auto exchangeDO_Ptr = std::make_shared<ExchangeDO>(*it);
-				exchangeDO_Ptr->SerialId = reqDO->SerialId;
-				wkProcPtr->SendDataObject(session, MSG_ID_QUERY_EXCHANGE, exchangeDO_Ptr);
+				wkProcPtr->SendDataObject(session, MSG_ID_QUERY_EXCHANGE, reqDO->SerialId, exchangeDO_Ptr);
 			}
 			else
 			{
@@ -77,10 +75,9 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 			for (auto it = exchangeInfo.begin(); it != exchangeInfo.end(); it++)
 			{
 				auto exchangeDO_Ptr = std::make_shared<ExchangeDO>(*it);
-				exchangeDO_Ptr->SerialId = reqDO->SerialId;
 				exchangeDO_Ptr->HasMore = it != lastit;
 
-				wkProcPtr->SendDataObject(session, MSG_ID_QUERY_EXCHANGE, exchangeDO_Ptr);
+				wkProcPtr->SendDataObject(session, MSG_ID_QUERY_EXCHANGE, reqDO->SerialId, exchangeDO_Ptr);
 			}
 		}
 	}
@@ -105,7 +102,7 @@ dataobj_ptr CTPQueryExchange::HandleResponse(const uint32_t serialId, param_vect
 
 	auto pDO = new ExchangeDO;
 	dataobj_ptr ret(pDO);
-	pDO->SerialId = serialId;
+
 	pDO->HasMore = !(*((bool*)rawRespParams[3]));
 
 	if (auto pData = (CThostFtdcExchangeField*)rawRespParams[0])
@@ -114,8 +111,7 @@ dataobj_ptr CTPQueryExchange::HandleResponse(const uint32_t serialId, param_vect
 		pDO->Name = Encoding::ToUTF8(pData->ExchangeName, CHARSET_GB2312);
 		pDO->Property = pData->ExchangeProperty;
 
-		if (auto wkProcPtr =
-			MessageUtility::FindGlobalProcessor<CTPTradeWorkerProcessor>(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT))
+		if (auto wkProcPtr = MessageUtility::ServerWorkerProcessor<CTPTradeWorkerProcessor>(session->getProcessor()))
 		{
 			auto& exchangeSet = wkProcPtr->GetExchangeInfo();
 			if (exchangeSet.find(*pDO) == exchangeSet.end())

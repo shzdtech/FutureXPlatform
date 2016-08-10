@@ -25,16 +25,16 @@ void sigtermhandler(int code)
 
 void siginthandler(int code)
 {
-	//std::cout << "Are you sure to exit? (Y/N):";
+	std::cout << "Are you sure to exit? (Y/N):";
 	std::string instr;
-	//std::getline(std::cin, instr);
+	std::getline(std::cin, instr);
 	if (instr == "Y") {
 		int retcode = app.Exit();
-		//std::cout << "Server has exited.";
+		std::cout << "Server has exited.";
 		std::exit(retcode);
 	}
 	else {
-		//std::cout << "Server will continue running...";
+		std::cout << "Server will continue running...";
 		std::signal(SIGINT, siginthandler);
 	}
 
@@ -43,8 +43,8 @@ void siginthandler(int code)
 void registsignal()
 {
 	std::signal(SIGINT, siginthandler);
+	std::signal(SIGBREAK, siginthandler);
 	std::signal(SIGTERM, sigtermhandler);
-	std::signal(SIGBREAK, sigtermhandler);
 }
 
 
@@ -69,10 +69,10 @@ int main(int argc, char** argv) {
 	}
 	catch (std::exception& ex)
 	{
-		LOG_FATAL << "Fatal erorr occured, application is exiting: " << ex.what();
+		LOG_ERROR << "Fatal erorr occured, application is exiting: " << ex.what();
 	}
 	catch (...) {
-		LOG_FATAL << "Unknown fatal erorr occured, application is exiting!";;
+		LOG_ERROR << "Unknown fatal erorr occured, application is exiting!";;
 	}
 	return 0;
 }

@@ -28,7 +28,7 @@
 // Return:     std::map<uint, IMessageHandler_Ptr>
 ////////////////////////////////////////////////////////////////////////
 
-std::map<uint, IMessageHandler_Ptr> TestingMessageServiceFactory::CreateMessageHandlers(void)
+std::map<uint, IMessageHandler_Ptr> TestingMessageServiceFactory::CreateMessageHandlers(IServerContext* serverCtx)
 {
 	std::map<uint, IMessageHandler_Ptr> msg_hdl_map;
 
@@ -59,7 +59,7 @@ std::map<uint, IMessageHandler_Ptr> TestingMessageServiceFactory::CreateMessageH
 // Return:     std::map<uint, IDataSerializer_Ptr>
 ////////////////////////////////////////////////////////////////////////
 
-std::map<uint, IDataSerializer_Ptr> TestingMessageServiceFactory::CreateDataSerializers(void)
+std::map<uint, IDataSerializer_Ptr> TestingMessageServiceFactory::CreateDataSerializers(IServerContext* serverCtx)
 {
 	std::map<uint, IDataSerializer_Ptr> ret;
 	AbstractDataSerializerFactory::Instance()->CreateDataSerializers(ret);
@@ -67,14 +67,14 @@ std::map<uint, IDataSerializer_Ptr> TestingMessageServiceFactory::CreateDataSeri
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       TestingMessageServiceFactory::CreateWorkProcessor()
-// Purpose:    Implementation of TestingMessageServiceFactory::CreateWorkProcessor()
+// Name:       TestingMessageServiceFactory::CreateWorkerProcessor()
+// Purpose:    Implementation of TestingMessageServiceFactory::CreateWorkerProcessor()
 // Return:     std::map<uint, IProcessorBase_Ptr>
 ////////////////////////////////////////////////////////////////////////
 
-std::map<std::string, IProcessorBase_Ptr> TestingMessageServiceFactory::CreateWorkProcessor(void)
+IMessageProcessor_Ptr TestingMessageServiceFactory::CreateWorkerProcessor(IServerContext* serverCtx)
 {
-	return std::map<std::string, IProcessorBase_Ptr>();
+	return nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -83,7 +83,7 @@ std::map<std::string, IProcessorBase_Ptr> TestingMessageServiceFactory::CreateWo
 // Return:     IMessageProcessor_Ptr
 ////////////////////////////////////////////////////////////////////////
 
-IMessageProcessor_Ptr TestingMessageServiceFactory::CreateMessageProcessor(void)
+IMessageProcessor_Ptr TestingMessageServiceFactory::CreateMessageProcessor(IServerContext* serverCtx)
 {
 	return std::make_shared<TestingServerMessageProcessor>(_configMap);
 }

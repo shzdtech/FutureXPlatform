@@ -26,18 +26,16 @@ AutoOrderManager::AutoOrderManager(IOrderAPI* pOrderAPI, IPricingDataContext* pr
 // Return:     OrderDO_Ptr
 ////////////////////////////////////////////////////////////////////////
 
-int AutoOrderManager::CreateOrder(OrderDO& orderInfo)
+OrderDO_Ptr AutoOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 {
-	int ret = 0;
+	OrderDO_Ptr ret;
 
 	auto orderId = orderInfo.OrderID;
 	if (orderId == 0 || !FindOrder(orderId))
 	{
 		orderInfo.OrderID = OrderSeqGen::GetNextSeq();
-		OrderStatus currStatus;
-		auto errCode = _pOrderAPI->CreateOrder(orderInfo, currStatus);
-		orderInfo.OrderStatus = currStatus;
-		if (errCode == 0)
+		ret = _pOrderAPI->CreateOrder(orderInfo);
+		if (ret->OrderStatus == OrderStatus::OPENED)
 		{
 			_userOrderCtx.AddOrder(orderInfo);
 		}
@@ -107,9 +105,8 @@ OrderDOVec_Ptr AutoOrderManager::UpdateOrderByStrategy(
 
 				if (canceled)
 				{
-					OrderStatus currStatus;
-					_pOrderAPI->CancelOrder(order, currStatus);
-					order.OrderStatus = currStatus;
+					auto order_ptr = _pOrderAPI->CancelOrder(order);
+					order.OrderStatus = OrderStatus::CANCELED;
 					it = tradingOrders.erase(it);
 					ret->push_back(order);
 				}
@@ -120,7 +117,7 @@ OrderDOVec_Ptr AutoOrderManager::UpdateOrderByStrategy(
 			}
 
 			// Make new orders
-			OrderDO newOrder(strategyDO);
+			OrderRequestDO newOrder(strategyDO);
 			newOrder.Volume = strategyDO.Quantity;
 			
 			double sellPrice = pricingsellMin;
@@ -216,9 +213,9 @@ int AutoOrderManager::OnOrderUpdated(OrderDO& orderInfo)
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-int AutoOrderManager::CancelOrder(OrderDO& orderInfo)
+OrderDO_Ptr AutoOrderManager::CancelOrder(OrderRequestDO& orderInfo)
 {
-	int ret = -1;
+	OrderDO_Ptr ret;
 	auto& orderMap = _userOrderCtx.GetTradingOrderMap(orderInfo);
 	if (orderInfo.OrderID != 0)
 	{
@@ -226,9 +223,7 @@ int AutoOrderManager::CancelOrder(OrderDO& orderInfo)
 		if (it != orderMap.end())
 		{
 			it->second->OrderStatus = OrderStatus::CANCELING;
-			OrderStatus currStatus;
-			ret = _pOrderAPI->CancelOrder(orderInfo, currStatus);
-			orderInfo.OrderStatus = currStatus;
+			ret = _pOrderAPI->CancelOrder(orderInfo);
 			orderMap.erase(it);
 		}
 	}
@@ -236,8 +231,7 @@ int AutoOrderManager::CancelOrder(OrderDO& orderInfo)
 	{
 		for (auto it = orderMap.begin(); it != orderMap.end();)
 		{
-			OrderStatus currStatus;
-			ret = _pOrderAPI->CancelOrder(*it->second, currStatus);
+			ret = _pOrderAPI->CancelOrder(*it->second);
 			it = orderMap.erase(it);
 		}
 	}
@@ -253,7 +247,7 @@ int AutoOrderManager::CancelOrder(OrderDO& orderInfo)
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-int AutoOrderManager::RejectOrder(OrderDO& orderInfo)
+OrderDO_Ptr AutoOrderManager::RejectOrder(OrderRequestDO& orderInfo)
 {
 	return CancelOrder(orderInfo);
 }

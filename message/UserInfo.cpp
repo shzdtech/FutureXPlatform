@@ -260,7 +260,7 @@ void UserInfo::setSessionId(const int sessionId)
 // Return:     long
 ////////////////////////////////////////////////////////////////////////
 
-int UserInfo::LockMessageSessionId(void) const
+int UserInfo::getSessionId(void) const
 {
 	return _sessionId;
 }

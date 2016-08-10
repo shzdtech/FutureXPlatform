@@ -27,7 +27,7 @@
 // Return:     std::map<uint, IMessageHandler_Ptr>
 ////////////////////////////////////////////////////////////////////////
 
-std::map<uint, IMessageHandler_Ptr> CTPTradeServiceFactory::CreateMessageHandlers(void)
+std::map<uint, IMessageHandler_Ptr> CTPTradeServiceFactory::CreateMessageHandlers(IServerContext* serverCtx)
 {
 	std::map<uint, IMessageHandler_Ptr> msg_hdl_map;
 
@@ -66,7 +66,7 @@ std::map<uint, IMessageHandler_Ptr> CTPTradeServiceFactory::CreateMessageHandler
 // Return:     std::map<uint, IDataSerializer_Ptr>
 ////////////////////////////////////////////////////////////////////////
 
-std::map<uint, IDataSerializer_Ptr> CTPTradeServiceFactory::CreateDataSerializers(void)
+std::map<uint, IDataSerializer_Ptr> CTPTradeServiceFactory::CreateDataSerializers(IServerContext* serverCtx)
 {
 	std::map<uint, IDataSerializer_Ptr> ret;
 	AbstractDataSerializerFactory::Instance()->CreateDataSerializers(ret);
@@ -79,7 +79,7 @@ std::map<uint, IDataSerializer_Ptr> CTPTradeServiceFactory::CreateDataSerializer
 // Return:     IMessageProcessor_Ptr
 ////////////////////////////////////////////////////////////////////////
 
-IMessageProcessor_Ptr CTPTradeServiceFactory::CreateMessageProcessor(void)
+IMessageProcessor_Ptr CTPTradeServiceFactory::CreateMessageProcessor(IServerContext* serverCtx)
 {
 	auto ret = std::make_shared<CTPTradeProcessor>(_configMap);
 	ret->Initialize();
@@ -99,20 +99,14 @@ bool CTPTradeServiceFactory::Load(const std::string& configFile, const std::stri
 }
 
 
-std::map<std::string, IProcessorBase_Ptr> CTPTradeServiceFactory::CreateWorkProcessor(void)
+IMessageProcessor_Ptr CTPTradeServiceFactory::CreateWorkerProcessor(IServerContext* serverCtx)
 {
-	std::map<std::string, IProcessorBase_Ptr> workerProcMap;
-	IProcessorBase_Ptr prcPtr;
-
-	static std::string workprocessId("CTP.Trade.WorkerProcessor");
-	if (!(prcPtr = GlobalProcessorRegistry::FindProcessor(workprocessId)))
+	if (!serverCtx->getWorkerProcessor())
 	{
-		auto worker_ptr = std::make_shared<CTPTradeWorkerProcessor>(_configMap);
+		auto worker_ptr = std::make_shared<CTPTradeWorkerProcessor>(_configMap, serverCtx);
 		worker_ptr->Initialize();
-		GlobalProcessorRegistry::RegisterProcessor(workprocessId, worker_ptr);
-		prcPtr = worker_ptr;
+		serverCtx->setWorkerProcessor(worker_ptr);
 	}
-	workerProcMap[workprocessId] = prcPtr;
 
-	return workerProcMap;
+	return serverCtx->getWorkerProcessor();
 }

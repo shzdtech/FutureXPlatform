@@ -69,7 +69,6 @@ dataobj_ptr CTPUnsubMarketData::HandleResponse(const uint32_t serialId, param_ve
 	auto stDO = new StringTableDO;
 	ret.reset(stDO);
 	stDO->Data[STR_INSTRUMENT_ID].push_back(pRspInstr->InstrumentID);
-	stDO->SerialId = serialId;
 	stDO->HasMore = !*(bool*)rawRespParams[3];
 
 	return ret;

@@ -44,9 +44,6 @@
     <ClInclude Include="MySqlDefinition.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="BaseContractDAO.h">
-      <Filter>头文件\DAO</Filter>
-    </ClInclude>
     <ClInclude Include="ContractDAO.h">
       <Filter>头文件\DAO</Filter>
     </ClInclude>
@@ -78,9 +75,6 @@
     </ClCompile>
     <ClCompile Include="MySqlConnectionManager.cpp">
       <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="BaseContractDAO.cpp">
-      <Filter>源文件\DAO</Filter>
     </ClCompile>
     <ClCompile Include="ContractDAO.cpp">
       <Filter>源文件\DAO</Filter>

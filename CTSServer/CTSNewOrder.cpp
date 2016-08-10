@@ -20,7 +20,7 @@
 
 dataobj_ptr CTSNewOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
-	auto pOrder = (OrderDO*)reqDO.get();
+	auto pOrder = (OrderRequestDO*)reqDO.get();
 	pOrder->SetUserID(session->getUserInfo()->getUserId());
 
 	auto api = (CTSAPIWrapper*)rawAPI;

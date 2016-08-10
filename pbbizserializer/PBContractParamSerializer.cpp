@@ -11,7 +11,7 @@
 #include "../Protos/businessobj.pb.h"
 #include "../dataobject/TemplateDO.h"
 
-#include "../dataobject/ContractDO.h"
+#include "../dataobject/ContractParamDO.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       PBContractParamSerializer::Serialize(const dataobj_ptr& abstractDO)
@@ -24,7 +24,7 @@
 data_buffer PBContractParamSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	Micro::Future::Message::Business::PBContractParamList PB;
-	auto pDO = (VectorDO<ContractDO>*)abstractDO.get();
+	auto pDO = (VectorDO<ContractParamDO>*)abstractDO.get();
 	FillPBHeader(PB, pDO);
 
 	for (auto& cto : *pDO)
@@ -56,14 +56,14 @@ dataobj_ptr PBContractParamSerializer::Deserialize(const data_buffer& rawdata)
 	Micro::Future::Message::Business::PBContractParamList PB;
 	ParseWithReturn(PB, rawdata);
 
-	auto ret = std::make_shared<VectorDO<ContractDO>>();
+	auto ret = std::make_shared<VectorDO<ContractParamDO>>();
 	FillDOHeader(ret, PB);
 
 	auto& params = PB.params();
 
 	for (auto& p : params)
 	{
-		ContractDO cdo(p.exchange(), p.contract());
+		ContractParamDO cdo(p.exchange(), p.contract());
 		cdo.DepthVol = p.depthvol();
 		cdo.Gamma = p.gamma();
 		ret->push_back(std::move(cdo));

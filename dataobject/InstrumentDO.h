@@ -21,6 +21,7 @@ public:
 		: ContractKey(exchangeID, instrumentID)	{}
 
 	std::string Name;
+	std::string GroupName;
 	std::string ProductID;
 	ProductType ProductType;
 	std::string CreateDate;
@@ -31,7 +32,6 @@ public:
 	LifePhaseType LifePhase;
 	PositionType PositionType;
 	PositionDateType PositionDateType;
-	std::string MaxMarginSideAlgorithm;
 
 	int DeliveryYear = 0;
 	int DeliveryMonth = 0;

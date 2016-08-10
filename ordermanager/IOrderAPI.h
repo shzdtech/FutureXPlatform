@@ -13,8 +13,8 @@
 class IOrderAPI
 {
 public:
-	virtual int CreateOrder(const OrderDO& orderInfo, OrderStatus& currStatus) = 0;
-	virtual int CancelOrder(const OrderDO& orderInfo, OrderStatus& currStatus) = 0;
+	virtual OrderDO_Ptr CreateOrder(OrderRequestDO& orderInfo) = 0;
+	virtual OrderDO_Ptr CancelOrder(OrderRequestDO& orderInfo) = 0;
 
 protected:
 private:

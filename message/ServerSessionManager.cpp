@@ -45,7 +45,7 @@ ServerSessionManager::~ServerSessionManager()
 
 void ServerSessionManager::AssembleSession(IMessageSession_Ptr msgSessionPtr)
 {
-	auto msgProcessor = _server->GetServiceFactory()->CreateMessageProcessor();
+	auto msgProcessor = _server->GetServiceFactory()->CreateMessageProcessor(_server->getContext());
 	msgProcessor->setServerContext(_server->getContext());
 	msgProcessor->setServiceLocator(_msgsvclocator);
 	msgSessionPtr->RegistProcessor(msgProcessor);
@@ -105,16 +105,14 @@ void ServerSessionManager::OnServerClosing(void)
 void ServerSessionManager::OnServerStarting(void)
 {
 	if (!_msgsvclocator)
-		_msgsvclocator = std::make_shared<MessageServiceLocator>(_server->GetServiceFactory());
+		_msgsvclocator = std::make_shared<MessageServiceLocator>(_server->GetServiceFactory(), _server->getContext());
 	
-	auto& wkprocMap = _msgsvclocator->AllWorkProcessor();
-	for (auto& it : wkprocMap)
+	if (auto workProcPtr = _msgsvclocator->GetWorkerProcessor())
 	{
 		auto msgSession_Ptr = std::make_shared<MessageSession>();
-		auto msgProc_Ptr = std::static_pointer_cast<IMessageProcessor>(it.second);
-		msgSession_Ptr->RegistProcessor(msgProc_Ptr);
-		msgProc_Ptr->setServiceLocator(_msgsvclocator);
-		msgProc_Ptr->setSession(msgSession_Ptr);
+		workProcPtr->setServiceLocator(_msgsvclocator);
+		msgSession_Ptr->RegistProcessor(workProcPtr);
+		workProcPtr->setSession(msgSession_Ptr);
 		_sessionSet.insert(msgSession_Ptr);
 	}
 }

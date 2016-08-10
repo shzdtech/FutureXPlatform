@@ -20,10 +20,11 @@ enum OrderStatus
 	CANCELED = 3,
 	OPEN_REJECTED = 4,
 	REJECTED = 5,
-	OPENNING = 10,
+	OPENED = 10,
 	PARTIAL_TRADING = 11,
 	CANCELING = 12,
-	CANCEL_REJECTED = 13
+	CANCEL_REJECTED = 13,
+	SUBMITTING = 14
 };
 
 enum OrderExecType
@@ -38,44 +39,52 @@ enum OrderTIFType
 	IOC = 1,
 };
 
-class OrderBaseDO : public dataobjectbase
+class OrderRequestDO : public UserContractKey, public dataobjectbase
 {
 public:
-	OrderBaseDO(const uint64_t orderID) : OrderID(orderID){}
+	OrderRequestDO(const uint64_t orderID, const char* exchangeID, const char* instrumentID,
+		const char* userID) : UserKey(userID), UserContractKey(exchangeID, instrumentID, userID) {}
+
+	OrderRequestDO(const uint64_t orderID, const std::string& exchangeID, const std::string& instrumentID,
+		const std::string& userID) : UserKey(userID), UserContractKey(exchangeID, instrumentID, userID) {}
+
+	OrderRequestDO(const UserContractKey& userContractKey) : 
+		UserKey(userContractKey), UserContractKey(userContractKey) {}
+
 	uint64_t OrderID = 0;
 	uint64_t OrderSysID = 0;
-	DirectionType Direction = DirectionType::SELL;
 	double LimitPrice = 0;
 	int Volume = 0;
-	bool Active = false;
-	OrderStatus OrderStatus = OrderStatus::UNDEFINED;
 	int ErrorCode = 0;
+	DirectionType Direction = DirectionType::SELL;
+	OrderCallPutType CallPut;
+	OrderOpenCloseType OpenClose = OrderOpenCloseType::OPEN;
+	OrderTIFType TIF = OrderTIFType::GFD;
+	OrderExecType ExecType = OrderExecType::LIMIT;
 };
 
 
-class OrderDO : public UserContractKey, public OrderBaseDO
+class OrderDO : public OrderRequestDO
 {
 public:
 	OrderDO(const uint64_t orderID, const char* exchangeID, const char* instrumentID,
-		const char* userID) : OrderBaseDO(orderID),
-		UserKey(userID), UserContractKey(exchangeID, instrumentID, userID){}
+		const char* userID) : UserKey(userID), OrderRequestDO(orderID, exchangeID, instrumentID, userID) {}
 
 	OrderDO(const uint64_t orderID, const std::string& exchangeID, const std::string& instrumentID,
-		const std::string& userID) : OrderBaseDO(orderID),
-		UserKey(userID), UserContractKey(exchangeID, instrumentID, userID){}
+		const std::string& userID) : UserKey(userID), OrderRequestDO(orderID, exchangeID, instrumentID, userID) {}
 
-	OrderDO(const UserContractKey& userContractKey) : OrderBaseDO(0), 
-		UserKey(userContractKey), UserContractKey(userContractKey){}
+	OrderDO(const UserContractKey& userContractKey) : 
+		UserKey(userContractKey.UserID()), OrderRequestDO(userContractKey) {}
 
 	OrderDO(const uint64_t orderID) : OrderDO(orderID, "", "", ""){}
 
-	OrderOpenCloseType OpenClose = OrderOpenCloseType::OPEN;
-	OrderTIFType TIF = OrderTIFType::GFD;
 	TradingType TradingType = TradingType::TRADINGTYPE_MANUAL;
-	OrderExecType ExecType = OrderExecType::LIMIT;
+	OrderStatus OrderStatus = OrderStatus::UNDEFINED;
 	int VolumeTraded = 0;
 	int VolumeRemain = 0;
 	int TradingDay = 0;
+	int SessionID = 0;
+	bool Active = false;
 	double StopPrice = 0;
 	std::string InsertTime;
 	std::string UpdateTime;

@@ -149,6 +149,7 @@
     <ClInclude Include="DefMessageID.h" />
     <ClInclude Include="EchoMessageHandler.h" />
     <ClInclude Include="EchoMessageSerializer.h" />
+    <ClInclude Include="IMessageContext.h" />
     <ClInclude Include="IMessageHandler.h" />
     <ClInclude Include="IMessageProcessor.h" />
     <ClInclude Include="IMessageServiceLocator.h" />
@@ -158,12 +159,13 @@
     <ClInclude Include="IProcessorBase.h" />
     <ClInclude Include="IRawAPI.h" />
     <ClInclude Include="ISession.h" />
-    <ClInclude Include="IContextAttribute.h" />
+    <ClInclude Include="IServerContext.h" />
     <ClInclude Include="ISessionManager.h" />
     <ClInclude Include="IUserContextBuilder.h" />
     <ClInclude Include="IUserInfo.h" />
     <ClInclude Include="LoginHandler.h" />
     <ClInclude Include="LogoutHandler.h" />
+    <ClInclude Include="MessageContext.h" />
     <ClInclude Include="MessageInterfaceDeclare.h" />
     <ClInclude Include="MessageException.h" />
     <ClInclude Include="MessageHandler.h" />
@@ -179,7 +181,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="ServerSessionManager.h" />
     <ClInclude Include="SessionContainer.h" />
-    <ClInclude Include="ContextAttribute.h" />
+    <ClInclude Include="ServerContext.h" />
     <ClInclude Include="SessionManager.h" />
     <ClInclude Include="SysParam.h" />
     <ClInclude Include="TemplateMessageProcessor.h" />
@@ -191,6 +193,7 @@
     <ClCompile Include="AppContext.cpp" />
     <ClCompile Include="EchoMessageHandler.cpp" />
     <ClCompile Include="EchoMessageSerializer.cpp" />
+    <ClCompile Include="MessageContext.cpp" />
     <ClCompile Include="MessageHandler.cpp" />
     <ClCompile Include="MessageProcessor.cpp" />
     <ClCompile Include="MessageServiceFactory.cpp" />
@@ -199,7 +202,7 @@
     <ClCompile Include="MessageSession.cpp" />
     <ClCompile Include="GlobalProcessorRegistry.cpp" />
     <ClCompile Include="ServerSessionManager.cpp" />
-    <ClCompile Include="ContextAttribute.cpp" />
+    <ClCompile Include="ServerContext.cpp" />
     <ClCompile Include="SessionManager.cpp" />
     <ClCompile Include="SysParam.cpp" />
     <ClCompile Include="TemplateMessageProcessor.cpp" />

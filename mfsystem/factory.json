@@ -14,21 +14,16 @@
         "class.uuid": "factory.ctp.marketdata.service"
       },
       "trade": {
-        "module.uuid": "com.micro.future.ctp.otc.dll",
-        "module.path": "CTPOTCServer.dll",
+        "module.uuid": "com.micro.future.ctp.dll",
+        "module.path": "CTPServer.dll",
         "class.uuid": "factory.singleaccount.ctp.trade.service"
       }
     },
     "otc": {
-      "client": {
+      "service": {
         "module.uuid": "com.micro.future.ctp.otc.dll",
         "module.path": "CTPOTCServer.dll",
-        "class.uuid": "factory.otc.client.service"
-      },
-      "tradingdesk": {
-        "module.uuid": "ccom.micro.future.ctp.otc.dll",
-        "module.path": "CTPOTCServer.dll",
-        "class.uuid": "factory.otc.tradingdesk.service"
+        "class.uuid": "factory.otc.service"
       }
     },
     "cts": {

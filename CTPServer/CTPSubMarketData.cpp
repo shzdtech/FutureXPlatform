@@ -11,7 +11,7 @@
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/FieldName.h"
 #include "../utility/TUtil.h"
-#include "../bizutility/InstrumentCache.h"
+#include "../bizutility/ContractCache.h"
 #include "../common/BizErrorIDs.h"
 
 #include <algorithm>
@@ -43,14 +43,14 @@ dataobj_ptr CTPSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 				ppInstrments[i] = const_cast<char*>(inst.data());
 				std::string instrument(inst);
 				std::transform(inst.begin(), inst.end(), instrument.begin(), ::tolower);
-				if (auto pInstumentDO = InstrumentCache::QueryInstrumentById(instrument))
+				if (auto pInstumentDO = ContractCache::Futures().QueryInstrumentById(instrument))
 				{
 						ppInstrments[i] = const_cast<char*>(pInstumentDO->InstrumentID().data());
 				}
 				else
 				{
 					std::transform(inst.begin(), inst.end(), instrument.begin(), ::toupper);
-					if (auto pInstumentDO = InstrumentCache::QueryInstrumentById(instrument))
+					if (auto pInstumentDO = ContractCache::Futures().QueryInstrumentById(instrument))
 					{
 						ppInstrments[i] = const_cast<char*>(pInstumentDO->InstrumentID().data());
 					}
@@ -80,13 +80,13 @@ dataobj_ptr CTPSubMarketData::HandleResponse(const uint32_t serialId, param_vect
 	CTPUtility::CheckError(rawRespParams[1]);
 
 	VectorDO_Ptr<MarketDataDO> ret = std::make_shared<VectorDO<MarketDataDO>>();
-	ret->SerialId = serialId;
+
 	ret->HasMore = !*(bool*)rawRespParams[3];
 
 	if (auto pRspInstr = (CThostFtdcSpecificInstrumentField*)rawRespParams[0])
 	{
 		std::string exchange;
-		if (auto pInstumentDO = InstrumentCache::QueryInstrumentById(pRspInstr->InstrumentID))
+		if (auto pInstumentDO = ContractCache::Futures().QueryInstrumentById(pRspInstr->InstrumentID))
 		{
 			exchange = pInstumentDO->ExchangeID();
 		}

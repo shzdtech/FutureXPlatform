@@ -26,8 +26,8 @@ public:
 	int Subscribe(const ContractKey& contractKeyD, uint32_t serailId);
 	bool IsSubscribed(const ContractKey& contractKey);
 
-	int CreateOrder(OrderDO& orderDO);
-	int CancelOrder(OrderDO& orderDO);
+	int CreateOrder(OrderRequestDO& orderDO);
+	int CancelOrder(OrderRequestDO& orderDO);
 
 protected:
 	bool _isLogged;
@@ -37,8 +37,8 @@ protected:
 	IMessageProcessor* _pMsgProcessor;
 	std::map<std::string, std::string>* _configMap;
 	std::map<ContractKey, gcroot<Market^>>* _contractMap;
-	System::Collections::Generic::IDictionary<UInt64, API::Order^>^ _orderMap
-		= gcnew System::Collections::Generic::Dictionary<UInt64, API::Order^>();
+	System::Collections::Generic::IDictionary<Guid, API::Order^>^ _orderMap
+		= gcnew System::Collections::Generic::Dictionary<Guid, API::Order^>();
 
 
 	//Callback

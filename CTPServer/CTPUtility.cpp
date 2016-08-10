@@ -11,6 +11,7 @@
 #include "../utility/Encoding.h"
 #include "../utility/commonconst.h"
 #include "../common/BizErrorIDs.h"
+#include "../bizutility/ContractCache.h"
 
  ////////////////////////////////////////////////////////////////////////
  // Name:       CTPUtility::CheckError()
@@ -143,6 +144,9 @@ OrderStatus CTPUtility::CheckOrderStatus(const int status, const int submitStatu
 	case THOST_FTDC_OST_AllTraded:
 		ret = OrderStatus::ALL_TRADED;
 		break;
+	case THOST_FTDC_OST_NoTradeQueueing:
+		ret = OrderStatus::OPENED;
+		break;
 	case THOST_FTDC_OST_NoTradeNotQueueing:
 		ret = OrderStatus::OPEN_REJECTED;
 		break;
@@ -156,7 +160,10 @@ OrderStatus CTPUtility::CheckOrderStatus(const int status, const int submitStatu
 		switch (submitStatus)
 		{
 		case THOST_FTDC_OSS_InsertSubmitted:
-			ret = OrderStatus::OPENNING;
+			ret = OrderStatus::SUBMITTING;
+			break;
+		case THOST_FTDC_OSS_Accepted:
+			ret = OrderStatus::OPENED;
 			break;
 		case THOST_FTDC_OSS_InsertRejected:
 			ret = OrderStatus::OPEN_REJECTED;
@@ -198,6 +205,7 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(CThostFtdcOrderField *pOrder)
 	pDO->CancelTime = pOrder->CancelTime;
 	pDO->TradingDay = std::strtoul(pOrder->TradingDay, nullptr, 0);
 	pDO->Message = std::move(Encoding::ToUTF8(pOrder->StatusMsg, CHARSET_GB2312));
+	pDO->SessionID = pOrder->SessionID;
 
 	return ret;
 }
@@ -211,8 +219,9 @@ OrderDO_Ptr CTPUtility::ParseRawOrderInputAction(
 	OrderDO_Ptr ret(pDO);
 	pDO->OrderSysID = std::strtoull(pOrderAction->OrderSysID, nullptr, 0);
 	pDO->LimitPrice = pOrderAction->LimitPrice;
-	pDO->Active = pRsp != nullptr;
-	pDO->OrderStatus = pRsp? OrderStatus::OPEN_REJECTED : OrderStatus::OPENNING;
+	pDO->Active = pRsp == nullptr;
+	pDO->OrderStatus = pRsp? OrderStatus::CANCEL_REJECTED : OrderStatus::CANCELING;
+	pDO->SessionID = pOrderAction->SessionID;
 
 	if (pRsp) {
 		pDO->ErrorCode = pRsp->ErrorID;
@@ -224,18 +233,30 @@ OrderDO_Ptr CTPUtility::ParseRawOrderInputAction(
 
 OrderDO_Ptr CTPUtility::ParseRawOrderInput(
 	CThostFtdcInputOrderField *pOrderInput,
-	CThostFtdcRspInfoField *pRsp)
+	CThostFtdcRspInfoField *pRsp,
+	int sessionID)
 {
+	const char* pExchange = "";
+	if (auto pInstument = ContractCache::Futures().QueryInstrumentById(pOrderInput->InstrumentID))
+		pExchange = pInstument->ExchangeID().data();
+
 	auto pDO = new OrderDO(std::strtoull(pOrderInput->OrderRef, nullptr, 0),
-		"", pOrderInput->InstrumentID, pOrderInput->UserID);
+		pExchange, pOrderInput->InstrumentID, pOrderInput->UserID);
 	OrderDO_Ptr ret(pDO);
 
+	pDO->SessionID = sessionID;
 	pDO->Direction = (pOrderInput->Direction == THOST_FTDC_D_Buy) ? DirectionType::BUY : DirectionType::SELL;
 	pDO->LimitPrice = pOrderInput->LimitPrice;
 	pDO->Volume = pOrderInput->VolumeTotalOriginal;
 	pDO->StopPrice = pOrderInput->StopPrice;
-	pDO->Active = pRsp != nullptr;
-	pDO->OrderStatus = pRsp ? OrderStatus::OPEN_REJECTED : OrderStatus::OPENNING;
+	pDO->Active = pRsp == nullptr;
+	pDO->OrderStatus = pRsp ? OrderStatus::OPEN_REJECTED : OrderStatus::SUBMITTING;
+
+	auto now = std::time(nullptr);
+	auto tm = std::localtime(&now);
+	char timebuf[20];
+	std::strftime(timebuf, sizeof(timebuf) , "%Y%m%d %T", tm);
+	pDO->InsertTime = timebuf;
 
 	if (pRsp) {
 		pDO->ErrorCode = pRsp->ErrorID;
@@ -252,8 +273,9 @@ OrderDO_Ptr CTPUtility::ParseRawOrderAction(CThostFtdcOrderActionField * pOrderA
 	OrderDO_Ptr ret(pDO);
 	pDO->OrderSysID = std::strtoull(pOrderAction->OrderSysID, nullptr, 0);
 	pDO->LimitPrice = pOrderAction->LimitPrice;
-	pDO->Active = pRsp != nullptr;
+	pDO->Active = pRsp == nullptr;
 	pDO->OrderStatus = pRsp ? OrderStatus::CANCEL_REJECTED : OrderStatus::CANCELING;
+	pDO->SessionID = pOrderAction->SessionID;
 
 	if (pRsp) {
 		pDO->ErrorCode = pRsp->ErrorID;

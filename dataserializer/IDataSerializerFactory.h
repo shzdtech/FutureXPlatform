@@ -10,7 +10,7 @@
 #include <map>
 #include <memory>
 #include "IDataSerializer.h"
-#include "../message/IContextAttribute.h"
+#include "../message/IServerContext.h"
 
 class IDataSerializerFactory
 {

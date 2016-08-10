@@ -9,7 +9,7 @@
 
 dataobj_ptr TestingCreateOrderHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI * rawAPI, ISession * session)
 {
-	auto pDO = (OrderDO*)reqDO.get();
+	auto pDO = (OrderRequestDO*)reqDO.get();
 
 	_tradingTask = std::async(std::launch::async, [pDO, session]()
 	{
@@ -38,11 +38,11 @@ dataobj_ptr TestingCreateOrderHandler::HandleRequest(const dataobj_ptr& reqDO, I
 					orderptr->OrderStatus = OrderStatus::ALL_TRADED;
 
 
-				pProc->SendDataObject(sessionptr.get(), MSG_ID_ORDER_UPDATE, orderptr);
+				pProc->SendDataObject(sessionptr.get(), MSG_ID_ORDER_UPDATE, pDO->SerialId, orderptr);
 
 				tradeptr->Volume = 1;
 				tradeptr->TradeID = AppContext::GenNextSeq();
-				pProc->SendDataObject(sessionptr.get(), MSG_ID_TRADE_RTN, tradeptr);
+				pProc->SendDataObject(sessionptr.get(), MSG_ID_TRADE_RTN, pDO->SerialId, tradeptr);
 			}
 		}
 	});

@@ -28,7 +28,7 @@
 
 dataobj_ptr CTPCancelOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
-	auto pDO = (OrderDO*)reqDO.get();
+	auto pDO = (OrderRequestDO*)reqDO.get();
 
 	auto userinfo = session->getUserInfo();
 
@@ -46,14 +46,13 @@ dataobj_ptr CTPCancelOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* raw
 	}
 	else
 	{
-		req.SessionID = userinfo->LockMessageSessionId();
+		req.SessionID = userinfo->getSessionId();
 		req.FrontID = userinfo->getFrontId();
 		std::strcpy(req.InstrumentID, pDO->InstrumentID().data());
 		std::sprintf(req.OrderRef, FMT_PADDING_ORDERREF, pDO->OrderID);
 	}
 
 	bool bLast = true;
-	pDO->OrderStatus = OrderStatus::CANCELING;
 	OnResponseProcMacro(session->getProcessor(), MSG_ID_ORDER_CANCEL, reqDO->SerialId, &req, nullptr, &reqDO->SerialId, &bLast);
 
 	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqOrderAction(&req, reqDO->SerialId);
@@ -89,7 +88,6 @@ dataobj_ptr CTPCancelOrder::HandleResponse(const uint32_t serialId, param_vector
 		ret = CTPUtility::ParseRawOrderAction(pData, pRsp);
 	}
 
-	ret->SerialId = serialId;
 	ret->HasMore = false;
 
 	return ret;

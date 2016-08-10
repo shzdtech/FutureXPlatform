@@ -14,17 +14,17 @@ void UserOrderContext::AddOrder(const OrderDO& orderDO)
 	_orderMap.getorfill(orderDO).entry.emplace(orderDO.OrderID, orderptr);
 }
 
-int UserOrderContext::RemoveOrder(uint64_t orderID)
+OrderDO_Ptr UserOrderContext::RemoveOrder(uint64_t orderID)
 {
-	int ret = 0;
+	OrderDO_Ptr ret;
 	auto it = _activeOrders.find(orderID);
 	if (it != _activeOrders.end())
 	{
+		ret = it->second;
 		_activeOrders.erase(it);
 		auto& order = *it->second;
 		auto& orderMap = GetTradingOrderMap(order);
 		orderMap.erase(orderID);
-		ret++;
 	}
 
 	return ret;

@@ -50,7 +50,7 @@ public:
 	virtual unsigned long getNextSeq(void) = 0;
 	virtual void setInitSeq(const unsigned long initVal) = 0;
 
-	virtual int LockMessageSessionId(void) const = 0;
+	virtual int getSessionId(void) const = 0;
 	virtual void setSessionId(const int sessionId) = 0;
 
 	virtual int getFrontId(void) const = 0;

@@ -17,7 +17,7 @@
 // Return:     std::map<uint, IMessageHandler_Ptr>
 ////////////////////////////////////////////////////////////////////////
 
-std::map<uint, IMessageHandler_Ptr> CTSServiceFactory::CreateMessageHandlers(void)
+std::map<uint, IMessageHandler_Ptr> CTSServiceFactory::CreateMessageHandlers(IServerContext* serverCtx)
 {
 	std::map<uint, IMessageHandler_Ptr> msg_hdl_map;
 
@@ -44,7 +44,7 @@ std::map<uint, IMessageHandler_Ptr> CTSServiceFactory::CreateMessageHandlers(voi
 // Return:     std::map<uint, IDataSerializer_Ptr>
 ////////////////////////////////////////////////////////////////////////
 
-std::map<uint, IDataSerializer_Ptr> CTSServiceFactory::CreateDataSerializers(void)
+std::map<uint, IDataSerializer_Ptr> CTSServiceFactory::CreateDataSerializers(IServerContext* serverCtx)
 {
 	std::map<uint, IDataSerializer_Ptr> ret;
 	AbstractDataSerializerFactory::Instance()->CreateDataSerializers(ret);
@@ -52,15 +52,14 @@ std::map<uint, IDataSerializer_Ptr> CTSServiceFactory::CreateDataSerializers(voi
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTSServiceFactory::CreateWorkProcessor()
-// Purpose:    Implementation of CTSServiceFactory::CreateWorkProcessor()
+// Name:       CTSServiceFactory::CreateWorkerProcessor()
+// Purpose:    Implementation of CTSServiceFactory::CreateWorkerProcessor()
 // Return:     std::map<uint, IProcessorBase_Ptr>
 ////////////////////////////////////////////////////////////////////////
 
-std::map<std::string, IProcessorBase_Ptr> CTSServiceFactory::CreateWorkProcessor(void)
+IMessageProcessor_Ptr CTSServiceFactory::CreateWorkerProcessor(IServerContext* serverCtx)
 {
-	std::map<std::string, IProcessorBase_Ptr> workproc_map;
-	return workproc_map;
+	return nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -69,7 +68,7 @@ std::map<std::string, IProcessorBase_Ptr> CTSServiceFactory::CreateWorkProcessor
 // Return:     IMessageProcessor_Ptr
 ////////////////////////////////////////////////////////////////////////
 
-IMessageProcessor_Ptr CTSServiceFactory::CreateMessageProcessor(void)
+IMessageProcessor_Ptr CTSServiceFactory::CreateMessageProcessor(IServerContext* serverCtx)
 {
 	return std::make_shared<CTSProcessor>(_configMap);
 }

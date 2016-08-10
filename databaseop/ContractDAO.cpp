@@ -8,20 +8,20 @@
 #include "ContractDAO.h"
 #include "MySqlConnectionManager.h"
 
-////////////////////////////////////////////////////////////////////////
-// Name:       ContractDAO::FindBaseContractByCompany(const std::string& company)
-// Purpose:    Implementation of ContractDAO::FindBaseContractByCompany()
-// Parameters:
-// - company
-// Return:     std::shared_ptr<std::vector<ContractKey>>
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       ContractDAO::FindBaseContractByCompany(const std::string& company)
+ // Purpose:    Implementation of ContractDAO::FindBaseContractByCompany()
+ // Parameters:
+ // - company
+ // Return:     std::shared_ptr<std::vector<ContractKey>>
+ ////////////////////////////////////////////////////////////////////////
 
 VectorDO_Ptr<ContractKey> ContractDAO::FindContractByClient(const std::string& clientSymbol)
 {
 	static const std::string sql_findcontract(
-		"SELECT exchange_symbol, contract_symbol "
+		"SELECT exchange_symbol,contract_symbol,group_name "
 		"FROM vw_pricing_contract "
-		"WHERE client_symbol = ?");
+		"WHERE client_symbol like ?");
 
 	auto ret = std::make_shared<VectorDO<ContractKey>>();
 
@@ -58,28 +58,34 @@ VectorDO_Ptr<ContractKey> ContractDAO::FindContractByClient(const std::string& c
 // Return:     std::shared_ptr<std::vector<ContractKey>>
 ////////////////////////////////////////////////////////////////////////
 
-std::shared_ptr<ContractDOMap> ContractDAO::FindAllContract(void)
+VectorDO_Ptr<InstrumentDO> ContractDAO::FindContractByProductType(int productType)
 {
 	static const std::string sql_findallcontract(
-		"SELECT a.exchange_symbol, a.contract_symbol, b.tick_size, b.multiplier FROM contract a "
-		"JOIN underlying b ON b.exchange_symbol = a.exchange_symbol AND b.underlying_symbol = a.underlying_symbol");
+		"SELECT exchange_symbol, contract_symbol, tick_size, multiplier, underlying_symbol, expiration "
+		"FROM vw_contract_property "
+		"where product_type = ?");
 
-	auto ret = std::make_shared<ContractDOMap>();
+	auto ret = std::make_shared<VectorDO<InstrumentDO>>();
 
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
 			session->getConnection()->prepareStatement(sql_findallcontract));
+		prestmt->setInt(1, productType);
 
 		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
 
 		while (rs->next())
 		{
-			ContractDO cdo(rs->getString(1), rs->getString(2));
-			cdo.TickSize = rs->getDouble(3);
-			cdo.Multiplier = rs->getDouble(4);
-			ret->emplace(cdo, std::move(cdo));
+			InstrumentDO cdo(rs->getString(1), rs->getString(2));
+			cdo.PriceTick = rs->getDouble(3);
+			cdo.VolumeMultiple = rs->getDouble(4);
+			cdo.ProductID = rs->getString(5);
+			if (!rs->isNull(6))	cdo.ExpireDate = rs->getString(6);
+			cdo.ProductType = (ProductType)productType;
+
+			ret->push_back(std::move(cdo));
 		}
 	}
 	catch (sql::SQLException& sqlEx)
@@ -93,14 +99,14 @@ std::shared_ptr<ContractDOMap> ContractDAO::FindAllContract(void)
 
 
 
-VectorDO_Ptr<ContractDO> ContractDAO::FindContractParamByClient(const std::string& clientSymbol)
+VectorDO_Ptr<ContractParamDO> ContractDAO::FindContractParamByClient(const std::string& clientSymbol)
 {
 	static const std::string sql_findcontractparam(
 		"SELECT distinct exchange_symbol, contract_symbol, tick_size, multiplier "
 		"FROM vw_pricing_contract_property "
 		"WHERE client_symbol = ?");
 
-	auto ret = std::make_shared<VectorDO<ContractDO>>();
+	auto ret = std::make_shared<VectorDO<ContractParamDO>>();
 
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
@@ -113,7 +119,7 @@ VectorDO_Ptr<ContractDO> ContractDAO::FindContractParamByClient(const std::strin
 
 		while (rs->next())
 		{
-			ContractDO cdo(rs->getString(1), rs->getString(2));
+			ContractParamDO cdo(rs->getString(1), rs->getString(2));
 			cdo.TickSize = rs->getDouble(3);
 			cdo.Multiplier = rs->getDouble(4);
 			ret->push_back(std::move(cdo));

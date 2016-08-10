@@ -10,15 +10,30 @@
 
 #include "IPricingAlgorithm.h"
 
+class ETPParams
+{
+public:
+	static const std::string coeff_name;
+	static const std::string offset_name;
+	static const std::string spread_name;
+
+	double coeff;
+	double offset;
+	double spread;
+};
+
+
 class ETPPricingAlgorithm : public IPricingAlgorithm
 {
 public:
-	const std::string& Name(void) const;
-	dataobj_ptr Compute(
+	virtual const std::string& Name(void) const;
+	virtual dataobj_ptr Compute(
 		const void* pInputObject,
 		const StrategyContractDO& sdo,
 		IPricingDataContext& priceCtx,
 		const param_vector* params);
+	virtual const std::map<std::string, double>& DefaultParams(void);
+	virtual bool ParseParams(const std::map<std::string, double>& params, void* pParamObj);
 
 protected:
 private:

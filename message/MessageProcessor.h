@@ -26,13 +26,13 @@ public:
 	IMessageServiceLocator_Ptr getServiceLocator(void);
 	void setServiceLocator(IMessageServiceLocator_Ptr svc_locator_ptr);
 
-	virtual void setServerContext(IContextAttribute* serverCtx);
-	virtual IContextAttribute* getServerContext(void);
+	virtual void setServerContext(IServerContext* serverCtx);
+	virtual IServerContext* getServerContext(void);
 
 protected:
 	IMessageSession_WkPtr _msgsession_wk_ptr;
 	IMessageServiceLocator_Ptr _svc_locator_ptr;
-	IContextAttribute* _serverCtx;
+	IServerContext* _serverCtx;
 
 	bool OnSessionClosing(void);
 private:

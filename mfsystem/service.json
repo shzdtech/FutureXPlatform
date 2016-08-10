@@ -4,8 +4,7 @@
       "service.admin",
       "service.ctp_md",
       "service.ctp_trade",
-      "service.otc_client",
-      "service.otc_tradingdesk",
+      "service.otc",
       "service.cts",
       "service.testing"
     ],
@@ -39,25 +38,15 @@
       "factory.config": "factory.json",
       "factory.config.section": "factory.ctp.trade"
     },
-    "otc_client": {
-      "server.uri": "otc.client",
+    "otc": {
+      "server.uri": "otc.service",
       "server.module.uuid": "com.micro.future.asio.dll",
       "server.module.path": "communication.dll",
       "server.class.uuid": "server.asiotcp.lite",
       "server.config": "server.json",
-      "server.config.section": "server.otc.client",
+      "server.config.section": "server.otc.service",
       "factory.config": "factory.json",
-      "factory.config.section": "factory.otc.client"
-    },
-    "otc_tradingdesk": {
-      "server.uri": "otc.tradingdesk",
-      "server.module.uuid": "com.micro.future.asio.dll",
-      "server.module.path": "communication.dll",
-      "server.class.uuid": "server.asiotcp.lite",
-      "server.config": "server.json",
-      "server.config.section": "server.otc.tradingdesk",
-      "factory.config": "factory.json",
-      "factory.config.section": "factory.otc.tradingdesk"
+      "factory.config.section": "factory.otc.service"
     },
     "cts": {
       "server.uri": "cts.client",

@@ -9,7 +9,7 @@
 #define __message_IProcessorBase_h
 
 #include "../common/typedefs.h"
-#include "IContextAttribute.h"
+#include "IServerContext.h"
 #include "../dataobject/data_buffer.h"
 #include "MessageInterfaceDeclare.h"
 
@@ -19,7 +19,7 @@ public:
    virtual IMessageServiceLocator_Ptr getServiceLocator(void) = 0;
    virtual int OnRequest(const uint msgId, const data_buffer& msg) = 0;
    virtual int OnResponse(const uint msgId, const uint serialId, param_vector& rawRespParams) = 0;
-   virtual IContextAttribute* getServerContext(void) = 0;
+   virtual IServerContext* getServerContext(void) = 0;
    virtual IMessageSession_Ptr LockMessageSession(void) = 0;
 
 protected:

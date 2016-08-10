@@ -24,13 +24,12 @@ HedgeOrderManager::HedgeOrderManager(const std::string& user,
 // Return:     OrderDO_Ptr
 ////////////////////////////////////////////////////////////////////////
 
-int HedgeOrderManager::CreateOrder(OrderDO& orderInfo)
+OrderDO_Ptr HedgeOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 {
-	auto pMdMap = _pricingCtx->GetMarketDataDOMap();
+	auto pMdMap = _pricingCtx->GetMarketDataMap();
 	auto& mdo = pMdMap->at(orderInfo.InstrumentID());
 
 	orderInfo.TIF = OrderTIFType::IOC;
-	orderInfo.TradingType = TradingType::TRADINGTYPE_HEDGE;
 
 	if (orderInfo.Direction == DirectionType::SELL)
 	{
@@ -105,7 +104,7 @@ int HedgeOrderManager::OnOrderUpdated(OrderDO& orderInfo)
 				double remain = atomicutil::atomic_fetch_add(position, (double)delta);
 				if (remain <= -1 || remain >= 1)
 				{
-					OrderDO newOrder(orderInfo);
+					OrderRequestDO newOrder(orderInfo);
 					newOrder.Volume = std::labs(remain);
 					CreateOrder(newOrder);
 				}
@@ -148,7 +147,7 @@ int HedgeOrderManager::Hedge(void)
 			if (_contractMutex.getorfill(it.first).mutex().try_lock()) //if hedging for this contract
 			{
 				// Make new orders
-				OrderDO newOrder(0, it.first.ExchangeID(), it.first.InstrumentID(), _user);
+				OrderRequestDO newOrder(0, it.first.ExchangeID(), it.first.InstrumentID(), _user);
 				newOrder.Volume = std::labs(position);
 				newOrder.Direction = position < 0 ? DirectionType::SELL : DirectionType::BUY;
 				CreateOrder(newOrder);

@@ -1,22 +1,22 @@
 #include "WingsVolatilityModel.h"
 
-static const std::string PARAM_F_ATM("f_atm");
-static const std::string PARAM_SSR("ssr");
-static const std::string PARAM_SCR("scr");
-static const std::string PARAM_F_REF("f_ref");
-static const std::string PARAM_VCR("vcr");
-static const std::string PARAM_VOL_REF("vol_ref");
-static const std::string PARAM_SLOPE_REF("slope_ref");
-static const std::string PARAM_DN_CF("dn_cf");
-static const std::string PARAM_UP_CF("up_cf");
-static const std::string PARAM_UP_SM("up_sm");
-static const std::string PARAM_DN_SM("dn_sm");
-static const std::string PARAM_PUT_CURV("put_curv");
-static const std::string PARAM_CALL_CURV("call_curv");
-static const std::string PARAM_DN_SLOPE("dn_slope");
-static const std::string PARAM_UP_SLOPE("up_slope");
-static const std::string PARAM_DAYS("days");
-static const std::string PARAM_ALPHA("alpha");
+const std::string WingsParams::PARAM_F_ATM("f_atm");
+const std::string WingsParams::PARAM_SSR("ssr");
+const std::string WingsParams::PARAM_SCR("scr");
+const std::string WingsParams::PARAM_F_REF("f_ref");
+const std::string WingsParams::PARAM_VCR("vcr");
+const std::string WingsParams::PARAM_VOL_REF("vol_ref");
+const std::string WingsParams::PARAM_SLOPE_REF("slope_ref");
+const std::string WingsParams::PARAM_DN_CF("dn_cf");
+const std::string WingsParams::PARAM_UP_CF("up_cf");
+const std::string WingsParams::PARAM_UP_SM("up_sm");
+const std::string WingsParams::PARAM_DN_SM("dn_sm");
+const std::string WingsParams::PARAM_PUT_CURV("put_curv");
+const std::string WingsParams::PARAM_CALL_CURV("call_curv");
+const std::string WingsParams::PARAM_DN_SLOPE("dn_slope");
+const std::string WingsParams::PARAM_UP_SLOPE("up_slope");
+const std::string WingsParams::PARAM_DAYS("days");
+const std::string WingsParams::PARAM_ALPHA("alpha");
 
 const std::string & WingsVolatilityModel::Name(void) const
 {
@@ -27,24 +27,29 @@ const std::string & WingsVolatilityModel::Name(void) const
 dataobj_ptr WingsVolatilityModel::Compute(const dataobj_ptr & input)
 {
 	auto& model = *(ModelParamsDO*)input.get();
+
+	WingsParams paramObj;
+	if (!ParseParams(model.ScalaParams, &paramObj))
+		return nullptr;
+
 	// synthetic forward price
-	double f_atm = model.ScalaParams[PARAM_F_ATM];
-	double ssr = model.ScalaParams[PARAM_SSR];
-	double scr = model.ScalaParams[PARAM_SCR];
-	double f_ref = model.ScalaParams[PARAM_F_REF];
-	double vcr = model.ScalaParams[PARAM_VCR];
-	double vol_ref = model.ScalaParams[PARAM_VOL_REF];
-	double slope_ref = model.ScalaParams[PARAM_SLOPE_REF];
-	double dn_cf = model.ScalaParams[PARAM_DN_CF];
-	double up_cf = model.ScalaParams[PARAM_UP_CF];
-	double dn_sm = model.ScalaParams[PARAM_DN_SM];
-	double up_sm = model.ScalaParams[PARAM_UP_SM];
-	double put_curv = model.ScalaParams[PARAM_PUT_CURV];
-	double call_curv = model.ScalaParams[PARAM_CALL_CURV];
-	double dn_slope = model.ScalaParams[PARAM_DN_SLOPE];
-	double up_slope = model.ScalaParams[PARAM_UP_SLOPE];
-	double days = model.ScalaParams[PARAM_DAYS];
-	double alpha = model.ScalaParams[PARAM_ALPHA];
+	double f_atm = paramObj.f_atm;
+	double ssr = paramObj.ssr;
+	double scr = paramObj.scr;
+	double f_ref = paramObj.f_ref;
+	double vcr = paramObj.vcr;
+	double vol_ref = paramObj.vol_ref;
+	double slope_ref = paramObj.slope_ref;
+	double dn_cf = paramObj.dn_cf;
+	double up_cf = paramObj.up_cf;
+	double dn_sm = paramObj.dn_sm;
+	double up_sm = paramObj.up_sm;
+	double put_curv = paramObj.put_curv;
+	double call_curv = paramObj.call_curv;
+	double dn_slope = paramObj.dn_slope;
+	double up_slope = paramObj.up_slope;
+	double days = paramObj.days;
+	double alpha = paramObj.alpha;
 
 	double f_syn = std::pow(f_atm, (ssr / 100)) * std::pow(f_ref, (1 - f_ref / 100));
 	// current volatility and current slope, i.e., when log - moneyness x = 0
@@ -78,7 +83,7 @@ dataobj_ptr WingsVolatilityModel::Compute(const dataobj_ptr & input)
 	double sigma_x3 = up_sm_a + up_sm_b * x3 + up_sm_c * x3 * x3;
 
 	auto ret = std::make_shared<ModelParamsDO>();
-	ret->SerialId = model.SerialId;
+
 	ret->ModelName = model.ModelName;
 
 	for (double moneyness : model.Values)
@@ -115,6 +120,55 @@ dataobj_ptr WingsVolatilityModel::Compute(const dataobj_ptr & input)
 
 		ret->Values.push_back(theo);
 	}
+
+	return ret;
+}
+
+const std::map<std::string, double>& WingsVolatilityModel::DefaultParams(void)
+{
+	static std::map<std::string, double> defaultParams = {
+		{WingsParams::PARAM_F_ATM, 0},
+		{WingsParams::PARAM_SSR,0},
+		{WingsParams::PARAM_SCR, 0},
+		{WingsParams::PARAM_F_REF, 0 },
+		{WingsParams::PARAM_VCR, 0 },
+		{WingsParams::PARAM_VOL_REF, 0 },
+		{WingsParams::PARAM_SLOPE_REF, 0 },
+		{WingsParams::PARAM_DN_CF, 0 },
+		{WingsParams::PARAM_UP_CF, 0 },
+		{WingsParams::PARAM_UP_SM, 0 },
+		{WingsParams::PARAM_DN_SM, 0 },
+		{WingsParams::PARAM_PUT_CURV, 0 },
+		{WingsParams::PARAM_CALL_CURV, 0 },
+		{WingsParams::PARAM_DN_SLOPE, 0 },
+		{WingsParams::PARAM_UP_SLOPE, 0 },
+		{WingsParams::PARAM_DAYS, 0 },
+		{WingsParams::PARAM_ALPHA, 0 }
+	};
+	return defaultParams;
+}
+
+bool WingsVolatilityModel::ParseParams(const std::map<std::string, double>& params, void * pParamObj)
+{
+	bool ret = true;
+	WingsParams* pParams = (WingsParams*)pParamObj;
+	pParams->f_atm = params.at(WingsParams::PARAM_F_ATM);
+	pParams->ssr = params.at(WingsParams::PARAM_SSR);
+	pParams->scr = params.at(WingsParams::PARAM_SCR);
+	pParams->f_ref = params.at(WingsParams::PARAM_F_REF);
+	pParams->vcr = params.at(WingsParams::PARAM_VCR);
+	pParams->vol_ref = params.at(WingsParams::PARAM_VOL_REF);
+	pParams->slope_ref = params.at(WingsParams::PARAM_SLOPE_REF);
+	pParams->dn_cf = params.at(WingsParams::PARAM_DN_CF);
+	pParams->up_cf = params.at(WingsParams::PARAM_UP_CF);
+	pParams->dn_sm = params.at(WingsParams::PARAM_DN_SM);
+	pParams->up_sm = params.at(WingsParams::PARAM_UP_SM);
+	pParams->put_curv = params.at(WingsParams::PARAM_PUT_CURV);
+	pParams->call_curv = params.at(WingsParams::PARAM_CALL_CURV);
+	pParams->dn_slope = params.at(WingsParams::PARAM_DN_SLOPE);
+	pParams->up_slope = params.at(WingsParams::PARAM_UP_SLOPE);
+	pParams->days = params.at(WingsParams::PARAM_DAYS);
+	pParams->alpha = params.at(WingsParams::PARAM_ALPHA);
 
 	return ret;
 }

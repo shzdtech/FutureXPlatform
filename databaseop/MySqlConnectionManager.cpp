@@ -159,7 +159,7 @@ void MySqlConnectionManager::InitPool()
 	}
 	catch (std::exception& ex)
 	{
-		LOG_FATAL <<"Cannot create db pool : " << ex.what();
+		LOG_ERROR <<"Cannot create db pool : " << ex.what();
 	}
 	_runing = true;
 

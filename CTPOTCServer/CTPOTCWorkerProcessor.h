@@ -14,50 +14,38 @@
 #include "../ordermanager/OTCOrderManager.h"
 #include "../CTPServer/CTPMarketDataProcessor.h"
 #include "../dataobject/TypedefDO.h"
+#include "../OTCServer/OTCWorkerProcessor.h"
 
 #include "../message/SessionContainer.h"
 #include "ctpotc_export.h"
 
-class CTP_OTC_CLASS_EXPORT CTPOTCWorkerProcessor : public CTPMarketDataProcessor
+class CTP_OTC_CLASS_EXPORT CTPOTCWorkerProcessor : public OTCWorkerProcessor, public CTPMarketDataProcessor
 {
 public:
-   CTPOTCWorkerProcessor(const std::map<std::string, std::string>& configMap, IPricingDataContext* pricingCtx);
-   ~CTPOTCWorkerProcessor();
-   bool OnSessionClosing(void);
-   void setSession(IMessageSession_WkPtr msgSession_wk_ptr);
-   void Initialize(void);
+	CTPOTCWorkerProcessor(const std::map<std::string, std::string>& configMap,
+		IServerContext* pServerCtx,
+		const std::shared_ptr<CTPOTCTradeProcessor>& ctpOtcTradeProcessorPtr);
 
-   int LoginSystemUserIfNeed(void);
-  
-   int RefreshStrategy(const StrategyContractDO& strategyDO);
-   void AddContractToMonitor(const ContractKey& contractId);
-  
-   void TriggerPricing(const StrategyContractDO& strategyDO);
-   void TriggerUpdating(const MarketDataDO& mdDO);
-   void TriggerOTCOrderUpdating(const StrategyContractDO& strategyDO);
-   void TriggerOrderUpdating(const StrategyContractDO& strategyDO);
-   
-   void RegisterPricingListener(const ContractKey& contractId,
-	   IMessageSession* pMsgSession);
-   void UnregisterPricingListener(const ContractKey& contractId,
-	   IMessageSession* pMsgSession);
+	~CTPOTCWorkerProcessor();
 
-   void RegisterLoggedSession(IMessageSession* pMessageSession);
+	void setSession(IMessageSession_WkPtr msgSession_wk_ptr);
+	bool OnSessionClosing(void);
 
-   void CancelAutoOrder(const UserContractKey& userContractKey);
-   int OTCNewOrder(OrderDO& orderReq);
-   int OTCCancelOrder(OrderDO& orderReq);
+	void Initialize(void);
+
+	int LoginSystemUserIfNeed(void);
+
+	int RefreshStrategy(const StrategyContractDO& strategyDO);
+
+	void RegisterLoggedSession(IMessageSession* pMessageSession);
+
+	OTCTradeProcessor* GetOTCTradeProcessor();
 
 protected:
-	ContractMap<std::set<ContractKey >> _contract_strategy_map;
-	SessionContainer_Ptr<ContractKey> _pricingNotifers;
-	SessionContainer_Ptr<uint64_t> _otcOrderNotifers;
+	std::shared_ptr<CTPOTCTradeProcessor> _ctpOtcTradeProcessorPtr;
 
-	CTPOTCTradeProcessor _otcTradeProcessor;
-
-	IPricingDataContext* _pricingCtx;
 private:
-	
+
 
 
 	//CTP APIs

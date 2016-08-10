@@ -14,28 +14,36 @@
 #include "../CTPServer/CTPTradeWorkerProcessor.h"
 #include "../message/SessionContainer.h"
 #include "../dataobject/StrategyContractDO.h"
+#include "../OTCServer/OTCTradeProcessor.h"
+#include "../pricingengine/PricingDataContext.h"
+
 #include "ctpotc_export.h"
 
-class CTP_OTC_CLASS_EXPORT CTPOTCTradeProcessor : public CTPTradeWorkerProcessor
+class CTP_OTC_CLASS_EXPORT CTPOTCTradeProcessor : public OTCTradeProcessor, public CTPTradeWorkerProcessor
 {
 public:
-	CTPOTCTradeProcessor(const std::map<std::string, std::string>& configMap, IPricingDataContext* pricingCtx);
+	CTPOTCTradeProcessor(const std::map<std::string, std::string>& configMap, 
+		IServerContext* pServerCtx, 
+		IPricingDataContext* pricingDataCtx);
 	~CTPOTCTradeProcessor();
 	void Initialize(void);
 
-	bool OnSessionClosing(void);
+	virtual OrderDOVec_Ptr TriggerHedgeOrderUpdating(const StrategyContractDO& strategyDO);
+	virtual OrderDOVec_Ptr TriggerOTCOrderUpdating(const StrategyContractDO& strategyDO);
 
-	void TriggerOrderUpdating(const StrategyContractDO& strategyDO);
+	virtual OrderDO_Ptr CreateOrder(OrderRequestDO& orderInfo);
+	virtual OrderDO_Ptr CancelOrder(OrderRequestDO& orderInfo);
 
-	AutoOrderManager& GetAutoOrderManager(void);
-	OTCOrderManager& GetOTCOrderManager(void);
+	virtual IPricingDataContext* GetPricingContext(void);
+	virtual OTCOrderManager* GetOTCOrderManager(void);
+	virtual AutoOrderManager* GetAutoOrderManager(void);
 
 protected:
 	OTCOrderManager _otcOrderMgr;
-
 	AutoOrderManager _autoOrderMgr;
 
-	IPricingDataContext* _pricingCtx;
+	IPricingDataContext* _pricingDataCtx;
+
 private:
 
 

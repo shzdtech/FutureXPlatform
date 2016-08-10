@@ -157,6 +157,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Attribute_Key.h" />
+    <ClInclude Include="CTPAccountLogin.h" />
+    <ClInclude Include="CTPAccountTradeServiceFactory.h" />
     <ClInclude Include="CTPCancelOrder.h" />
     <ClInclude Include="CTPConstant.h" />
     <ClInclude Include="CTPDepthMarketData.h" />
@@ -190,6 +192,8 @@
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CTPAccountLogin.cpp" />
+    <ClCompile Include="CTPAccountTradeServiceFactory.cpp" />
     <ClCompile Include="CTPCancelOrder.cpp" />
     <ClCompile Include="CTPDepthMarketData.cpp" />
     <ClCompile Include="ctpexport.cpp" />

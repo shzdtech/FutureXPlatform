@@ -159,11 +159,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="bizutility_exp.h" />
+    <ClInclude Include="ContractCache.h" />
     <ClInclude Include="InstrumentCache.h" />
     <ClInclude Include="OptionPricingCache.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ContractCache.cpp" />
     <ClCompile Include="InstrumentCache.cpp" />
     <ClCompile Include="OptionPricingCache.cpp" />
   </ItemGroup>

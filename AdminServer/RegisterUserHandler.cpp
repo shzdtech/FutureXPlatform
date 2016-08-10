@@ -51,7 +51,6 @@ dataobj_ptr RegisterUserHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI
 		if(!ret)
 			throw DatabaseException("Fail to insert user info.");
 
-		ret->SerialId = reqDO->SerialId;
 		ret->HasMore = false;
 	}
 

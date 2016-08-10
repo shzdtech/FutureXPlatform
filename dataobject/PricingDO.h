@@ -17,7 +17,6 @@ public:
 	PricingDO(const std::string& exchangeID, const std::string& instrumentID)
 		: ContractKey(exchangeID, instrumentID){}
 
-	int Type = 0;
 	double BidPrice = 0;
 	double AskPrice = 0;
 

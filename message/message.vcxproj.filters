@@ -114,12 +114,6 @@
     <ClInclude Include="message_macro.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="IContextAttribute.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ContextAttribute.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="GlobalProcessorRegistry.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -139,6 +133,18 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="MessageUtility.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerContext.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IServerContext.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IMessageContext.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageContext.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -176,9 +182,6 @@
     <ClCompile Include="ServerSessionManager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="ContextAttribute.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="GlobalProcessorRegistry.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -189,6 +192,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="EchoMessageSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerContext.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageContext.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

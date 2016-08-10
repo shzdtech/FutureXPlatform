@@ -27,7 +27,6 @@ dataobj_ptr CTSSubscribeMarketData::HandleRequest(const dataobj_ptr& reqDO, IRaw
 {
 	auto stdo = (StringTableDO*)reqDO.get();
 	auto mdVec = std::make_shared<VectorDO<MarketDataDO>>();
-	mdVec->SerialId = reqDO->SerialId;
 
 	if (stdo->Data.size() > 0)
 	{

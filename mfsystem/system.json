@@ -1,6 +1,6 @@
 {
   "system": {
-    "version": "0.8-2016.7.12-18.00",
+    "version": "0.8-2016.8.9-20.00",
     "service": {
       "config": "service.json"
     },
@@ -9,7 +9,7 @@
       "mysql": {
         "key": "default",
         "dbtype": "mysql",
-        "url": "tcp://139.196.202.235:3306/futurexdb",
+        "url": "tcp://www.shzdtech.com:3306/futurexdb",
         "user": "zhuyi",
         "password": "Bocifco123",
         "autocommit": "1",

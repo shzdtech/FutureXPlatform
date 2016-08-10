@@ -157,9 +157,9 @@
     <ClInclude Include="data_buffer.h" />
     <ClInclude Include="MessageExceptionDO.h" />
     <ClInclude Include="ComplexTableDO.h" />
-    <ClInclude Include="ContractDO.h" />
+    <ClInclude Include="ContractParamDO.h" />
     <ClInclude Include="ContractKey.h" />
-    <ClInclude Include="ContractParam.h" />
+    <ClInclude Include="PricingContract.h" />
     <ClInclude Include="EchoMessageDO.h" />
     <ClInclude Include="EnumTypes.h" />
     <ClInclude Include="ExchangeDO.h" />

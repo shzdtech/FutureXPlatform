@@ -20,5 +20,6 @@
 #include "CTPCancelOrder.h"
 #include "CTPOrderUpdated.h"
 #include "CTPTradeUpdated.h"
+#include "CTPAccountLogin.h"
 
 #endif

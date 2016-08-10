@@ -42,22 +42,9 @@ IDataSerializer_Ptr MessageServiceLocator::FindDataSerializer(uint msgId) {
     return ret;
 }
 
-////////////////////////////////////////////////////////////////////////
-// Name:       MessageServiceLocator::FindWorkProccessor(uint processorID)
-// Purpose:    Implementation of MessageServiceLocator::FindWorkProccessor()
-// Parameters:
-// - processorID
-// Return:     IProcessorBase_Ptr
-////////////////////////////////////////////////////////////////////////
-
-IProcessorBase_Ptr MessageServiceLocator::FindWorkProccessor(const std::string& processorName)
+IMessageProcessor_Ptr MessageServiceLocator::GetWorkerProcessor(void)
 {
-	IProcessorBase_Ptr ret;
-	auto itr = _prcMap.find(processorName);
-	if (itr != _prcMap.end())
-		ret = itr->second;
-
-	return ret;
+	return _workProcessor;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -69,11 +56,11 @@ IProcessorBase_Ptr MessageServiceLocator::FindWorkProccessor(const std::string& 
 // Return:     
 ////////////////////////////////////////////////////////////////////////
 
-MessageServiceLocator::MessageServiceLocator(IMessageServiceFactory_Ptr msgsvc_fac)
+MessageServiceLocator::MessageServiceLocator(IMessageServiceFactory_Ptr msgsvc_fac, IServerContext* serverCtx)
 {
-    _msghdlMap = msgsvc_fac->CreateMessageHandlers();
-	_prcMap = msgsvc_fac->CreateWorkProcessor();
-	_dataSerialMap = msgsvc_fac->CreateDataSerializers();
+	_workProcessor = msgsvc_fac->CreateWorkerProcessor(serverCtx);
+    _msghdlMap = msgsvc_fac->CreateMessageHandlers(serverCtx);
+	_dataSerialMap = msgsvc_fac->CreateDataSerializers(serverCtx);
 }
 
 
@@ -86,9 +73,4 @@ std::map<uint, IMessageHandler_Ptr>& MessageServiceLocator::AllMessageHandler(vo
 std::map<uint, IDataSerializer_Ptr>& MessageServiceLocator::AllDataSerializer(void)
 {
 	return _dataSerialMap;
-}
-
-std::map<std::string, IProcessorBase_Ptr>& MessageServiceLocator::AllWorkProcessor(void)
-{
-	return _prcMap;
 }

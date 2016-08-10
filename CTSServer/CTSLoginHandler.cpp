@@ -74,7 +74,6 @@ dataobj_ptr CTSLoginHandler::HandleResponse(const uint32_t serialId, param_vecto
 
 	auto pDO = new UserInfoDO;
 	dataobj_ptr ret(pDO);
-	pDO->SerialId = serialId;
 
 	auto pUserInfo = session->getUserInfo();
 

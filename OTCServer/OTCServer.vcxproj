@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{5F50C5DA-8183-40D3-A78B-6462EE958593}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>OTCServer</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>OTCSERVER_LIBRARY_EXPORTS;WIN32;_DEBUG;_WINDOWS;_USRDLL;OTCSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>OTCSERVER_LIBRARY_EXPORTS;_DEBUG;_WINDOWS;_USRDLL;OTCSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>OTCSERVER_LIBRARY_EXPORTS;WIN32;NDEBUG;_WINDOWS;_USRDLL;OTCSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>OTCSERVER_LIBRARY_EXPORTS;NDEBUG;_WINDOWS;_USRDLL;OTCSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="OTCHandlerBase.cpp" />
+    <ClCompile Include="OTCQueryInstrument.cpp" />
+    <ClCompile Include="OTCUnSubMarketData.cpp" />
+    <ClCompile Include="OTCCancelOrder.cpp" />
+    <ClCompile Include="OTCNewOrder.cpp" />
+    <ClCompile Include="OTCQueryContractParam.cpp" />
+    <ClCompile Include="OTCQueryOrder.cpp" />
+    <ClCompile Include="OTCQueryStrategy.cpp" />
+    <ClCompile Include="OTCQueryTradingDesks.cpp" />
+    <ClCompile Include="OTCReturnPricingData.cpp" />
+    <ClCompile Include="otcserver_export.cpp" />
+    <ClCompile Include="OTCSubMarketData.cpp" />
+    <ClCompile Include="OTCTradeProcessor.cpp" />
+    <ClCompile Include="OTCUpdateContractParam.cpp" />
+    <ClCompile Include="OTCUpdateStrategy.cpp" />
+    <ClCompile Include="OTCUpdateUserParam.cpp" />
+    <ClCompile Include="OTCUserContextBuilder.cpp" />
+    <ClCompile Include="OTCWorkerProcessor.cpp" />
+    <ClCompile Include="TradingDeskContextBuilder.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="OTCHandlerBase.h" />
+    <ClInclude Include="OTCQueryInstrument.h" />
+    <ClInclude Include="OTCUnSubMarketData.h" />
+    <ClInclude Include="OTCCancelOrder.h" />
+    <ClInclude Include="OTCNewOrder.h" />
+    <ClInclude Include="OTCQueryContractParam.h" />
+    <ClInclude Include="OTCQueryOrder.h" />
+    <ClInclude Include="OTCQueryStrategy.h" />
+    <ClInclude Include="OTCQueryTradingDesks.h" />
+    <ClInclude Include="OTCReturnPricingData.h" />
+    <ClInclude Include="otcserver_export.h" />
+    <ClInclude Include="OTCSubMarketData.h" />
+    <ClInclude Include="OTCTradeProcessor.h" />
+    <ClInclude Include="OTCUpdateContractParam.h" />
+    <ClInclude Include="OTCUpdateStrategy.h" />
+    <ClInclude Include="OTCUpdateUserParam.h" />
+    <ClInclude Include="OTCUserContextBuilder.h" />
+    <ClInclude Include="OTCWorkerProcessor.h" />
+    <ClInclude Include="otc_bizhandlers.h" />
+    <ClInclude Include="TradingDeskContextBuilder.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\bizutility\bizutility.vcxproj">
+      <Project>{e3f399cf-2d32-49a8-b536-ea7fad14483f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\databaseop\databaseop.vcxproj">
+      <Project>{dc2aae7b-2f79-42fc-94c2-bc3c9c1108c9}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\message\message.vcxproj">
+      <Project>{e9adaa2b-1ccb-4111-9ac3-bddb3dc114f2}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\ordermanager\ordermanager.vcxproj">
+      <Project>{be84a8c2-79ea-49a5-ab37-23250e0631b6}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\pricingengine\pricingengine.vcxproj">
+      <Project>{001a89a1-70d7-4a9b-a7b2-82d0be1ba07c}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

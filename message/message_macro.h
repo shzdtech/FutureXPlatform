@@ -19,7 +19,7 @@
 	processor->ProcessResponse(MSG_ID, SERIAL_ID, resp_param_vec, false); \
 }
 
-#define AttribPointerCast(processor, key, T) \
+#define ServerAttribPtrCast(processor, key, T) \
 	std::static_pointer_cast<T>(processor->getServerContext()->getAttribute(key))
 
 #endif

@@ -8,7 +8,7 @@
 #if !defined(__CTPOTC_CTPOTCLogin_h)
 #define __CTPOTC_CTPOTCLogin_h
 
-#include "CTPAccountLogin.h"
+#include "../CTPServer/CTPAccountLogin.h"
 #include "../dataobject/UserInfoDO.h"
 #include "ctpotc_export.h"
 

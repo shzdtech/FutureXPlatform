@@ -15,8 +15,7 @@ class UserContractParamDO : public ContractKey, public dataobjectbase
 {
 public:
 	UserContractParamDO(const std::string& exchangeID, const std::string& instrumentID,
-		int quantity) : ContractKey(exchangeID, instrumentID){
-		Quantity = quantity;
+		int quantity) : ContractKey(exchangeID, instrumentID), Quantity(quantity){
 	}
 
 	UserContractParamDO(const std::string& exchangeID, const std::string& instrumentID)

@@ -12,11 +12,12 @@
 #include "../dataobject/StrategyContractDO.h"
 #include "../common/typedefs.h"
 #include "IPricingDataContext.h"
+#include "IAlgorithmBase.h"
 
-class IPricingAlgorithm
+
+class IPricingAlgorithm : public IAlgorithmBase
 {
 public:
-	virtual const std::string& Name(void) const = 0;
 	virtual dataobj_ptr Compute(
 		const void* pInputObject,
 		const StrategyContractDO& sdo,

@@ -3,12 +3,12 @@
 
 #include <string>
 #include <memory>
+#include "IAlgorithmBase.h"
 #include "../dataobject/ModelParamsDO.h"
 
-class IModelAlgorithm
+class IModelAlgorithm : public IAlgorithmBase
 {
 public:
-	virtual const std::string& Name(void) const = 0;
 	virtual dataobj_ptr Compute(const dataobj_ptr& input) = 0;
 };
 

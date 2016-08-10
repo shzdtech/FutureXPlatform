@@ -40,6 +40,12 @@ enum TradingType
 	TRADINGTYPE_HEDGE = 3,
 };
 
+enum OrderCallPutType
+{
+	CALL = 0,
+	PUT = 1
+};
+
 enum OrderOpenCloseType
 {
 	///开仓
@@ -81,7 +87,9 @@ enum ProductType
 	///期转现
 	PRODUCT_EFP = 4,
 	///现货期权
-	PRODUCT_SPOTOPTION = 5
+	PRODUCT_SPOTOPTION = 5,
+	///OTC合约
+	PRODUCT_OTC = 6
 };
 
 enum LifePhaseType

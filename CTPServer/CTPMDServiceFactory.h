@@ -15,9 +15,9 @@
 class CTP_CLASS_EXPORT CTPMDServiceFactory : public MessageServiceFactory
 {
 public:
-   std::map<uint, IMessageHandler_Ptr> CreateMessageHandlers(void);
-   std::map<uint, IDataSerializer_Ptr> CreateDataSerializers(void);
-   IMessageProcessor_Ptr CreateMessageProcessor(void);
+   std::map<uint, IMessageHandler_Ptr> CreateMessageHandlers(IServerContext* serverCtx);
+   std::map<uint, IDataSerializer_Ptr> CreateDataSerializers(IServerContext* serverCtx);
+   IMessageProcessor_Ptr CreateMessageProcessor(IServerContext* serverCtx);
    bool Load(const std::string& configFile, const std::string& param);
 
 protected:

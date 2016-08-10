@@ -23,7 +23,7 @@
 // Return:     std::map<uint, IMessageHandler_Ptr>
 ////////////////////////////////////////////////////////////////////////
 
-std::map<uint, IMessageHandler_Ptr> CTPMDServiceFactory::CreateMessageHandlers(void)
+std::map<uint, IMessageHandler_Ptr> CTPMDServiceFactory::CreateMessageHandlers(IServerContext* serverCtx)
 {
     std::map<uint, IMessageHandler_Ptr> msg_hdl_map;
  
@@ -46,7 +46,7 @@ std::map<uint, IMessageHandler_Ptr> CTPMDServiceFactory::CreateMessageHandlers(v
 // Return:     std::map<uint, IDataSerializer_Ptr>
 ////////////////////////////////////////////////////////////////////////
 
-std::map<uint, IDataSerializer_Ptr> CTPMDServiceFactory::CreateDataSerializers(void)
+std::map<uint, IDataSerializer_Ptr> CTPMDServiceFactory::CreateDataSerializers(IServerContext* serverCtx)
 {
 	std::map<uint, IDataSerializer_Ptr> ret;
 	AbstractDataSerializerFactory::Instance()->CreateDataSerializers(ret);
@@ -59,7 +59,7 @@ std::map<uint, IDataSerializer_Ptr> CTPMDServiceFactory::CreateDataSerializers(v
 // Return:     IMessageProcessor_Ptr
 ////////////////////////////////////////////////////////////////////////
 
-IMessageProcessor_Ptr CTPMDServiceFactory::CreateMessageProcessor(void)
+IMessageProcessor_Ptr CTPMDServiceFactory::CreateMessageProcessor(IServerContext* serverCtx)
 {
 	auto ret = std::make_shared<CTPMarketDataProcessor>(_configMap);
 	ret->Initialize();

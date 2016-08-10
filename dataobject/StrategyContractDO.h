@@ -9,9 +9,10 @@
 #define __dataobject_StrategyContractDO_h
 
 #include "dataobjectbase.h"
-#include "ContractParam.h"
+#include "PricingContract.h"
 #include "ContractKey.h"
 #include "PortfolioDO.h"
+#include <ctime>
 
 class StrategyContractDO : public UserContractKey, public PortfolioKey, public dataobjectbase
 {
@@ -27,23 +28,17 @@ public:
 	std::string Description;
 	std::string Underlying;
 	std::string Algorithm;
+	std::tm Expiration;
 	int Quantity = 1;
 	int Depth = 2;
-	double Spread = 0;
-	double Offset = 0;
+	double Volatility = 0.1;
 	double TickSize = 1;
 	double Multiplier = 1;
-	double Strike = 0;
-	double RiskFreeRate = 0;
-	double Volatility;
 	bool Trading = false;
 	bool Enabled = false;
 
-	std::tm SettlementDate;
-	std::tm Muturity;
-
-	std::shared_ptr<std::map<std::string, double>> ParamMap;
-	std::shared_ptr<std::vector<ContractParam>> BaseContracts;
+	std::map<std::string, double> Params;
+	std::shared_ptr<std::vector<PricingContract>> PricingContracts;
 
 protected:
 

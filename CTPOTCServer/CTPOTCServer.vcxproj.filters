@@ -19,12 +19,6 @@
     <Filter Include="头文件\OTC">
       <UniqueIdentifier>{4a1ec80b-29b7-400b-83ca-4ebfc985fdc8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\CTP">
-      <UniqueIdentifier>{e66a3ade-56c0-4557-9f65-7bffaaef8a89}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\CTP">
-      <UniqueIdentifier>{c714a509-eecf-470b-a9d5-0a8d97622b33}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\Option">
       <UniqueIdentifier>{1ea23dc4-04f9-4a38-968f-4e106a07bece}</UniqueIdentifier>
     </Filter>
@@ -36,79 +30,19 @@
     <ClCompile Include="ctpotc_export.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CTPOCTUnSubMarketData.cpp">
-      <Filter>源文件\OTC</Filter>
-    </ClCompile>
-    <ClCompile Include="CTPOTCCancelOrder.cpp">
-      <Filter>源文件\OTC</Filter>
-    </ClCompile>
-    <ClCompile Include="CTPOTCClientServiceFactory.cpp">
-      <Filter>源文件\OTC</Filter>
-    </ClCompile>
-    <ClCompile Include="CTPOTCDepthMarketData.cpp">
-      <Filter>源文件\OTC</Filter>
-    </ClCompile>
     <ClCompile Include="CTPOTCLogin.cpp">
-      <Filter>源文件\OTC</Filter>
-    </ClCompile>
-    <ClCompile Include="CTPOTCNewOrder.cpp">
-      <Filter>源文件\OTC</Filter>
-    </ClCompile>
-    <ClCompile Include="CTPOTCQueryContractParam.cpp">
-      <Filter>源文件\OTC</Filter>
-    </ClCompile>
-    <ClCompile Include="CTPOTCQueryOrder.cpp">
-      <Filter>源文件\OTC</Filter>
-    </ClCompile>
-    <ClCompile Include="CTPOTCQueryStrategy.cpp">
-      <Filter>源文件\OTC</Filter>
-    </ClCompile>
-    <ClCompile Include="CTPOTCQueryTradingDesks.cpp">
-      <Filter>源文件\OTC</Filter>
-    </ClCompile>
-    <ClCompile Include="CTPOTCReturnPricingData.cpp">
-      <Filter>源文件\OTC</Filter>
-    </ClCompile>
-    <ClCompile Include="CTPOTCSubMarketData.cpp">
       <Filter>源文件\OTC</Filter>
     </ClCompile>
     <ClCompile Include="CTPOTCTradeProcessor.cpp">
       <Filter>源文件\OTC</Filter>
     </ClCompile>
-    <ClCompile Include="CTPOTCTradingDeskLogin.cpp">
-      <Filter>源文件\OTC</Filter>
-    </ClCompile>
-    <ClCompile Include="CTPOTCTradingDeskProcessor.cpp">
-      <Filter>源文件\OTC</Filter>
-    </ClCompile>
-    <ClCompile Include="CTPOTCTradingDeskServiceFactory.cpp">
-      <Filter>源文件\OTC</Filter>
-    </ClCompile>
-    <ClCompile Include="CTPOTCUpdateContractParam.cpp">
-      <Filter>源文件\OTC</Filter>
-    </ClCompile>
-    <ClCompile Include="CTPOTCUpdateStrategy.cpp">
-      <Filter>源文件\OTC</Filter>
-    </ClCompile>
-    <ClCompile Include="CTPOTCUpdateUserParam.cpp">
-      <Filter>源文件\OTC</Filter>
-    </ClCompile>
-    <ClCompile Include="CTPOTCUserContextBuilder.cpp">
-      <Filter>源文件\OTC</Filter>
-    </ClCompile>
     <ClCompile Include="CTPOTCWorkerProcessor.cpp">
       <Filter>源文件\OTC</Filter>
     </ClCompile>
-    <ClCompile Include="TradingDeskContextBuilder.cpp">
+    <ClCompile Include="CTPOTCServiceFactory.cpp">
       <Filter>源文件\OTC</Filter>
     </ClCompile>
-    <ClCompile Include="CTPAccountTradeServiceFactory.cpp">
-      <Filter>源文件\CTP</Filter>
-    </ClCompile>
-    <ClCompile Include="CTPAccountLogin.cpp">
-      <Filter>源文件\CTP</Filter>
-    </ClCompile>
-    <ClCompile Include="OTCOptionVolatility.cpp">
+    <ClCompile Include="CTPOTCSessionProcessor.cpp">
       <Filter>源文件\OTC</Filter>
     </ClCompile>
   </ItemGroup>
@@ -122,79 +56,19 @@
     <ClInclude Include="resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="CTPOCTUnSubMarketData.h">
-      <Filter>头文件\OTC</Filter>
-    </ClInclude>
-    <ClInclude Include="CTPOTCCancelOrder.h">
-      <Filter>头文件\OTC</Filter>
-    </ClInclude>
-    <ClInclude Include="CTPOTCClientServiceFactory.h">
-      <Filter>头文件\OTC</Filter>
-    </ClInclude>
-    <ClInclude Include="CTPOTCDepthMarketData.h">
-      <Filter>头文件\OTC</Filter>
-    </ClInclude>
     <ClInclude Include="CTPOTCLogin.h">
-      <Filter>头文件\OTC</Filter>
-    </ClInclude>
-    <ClInclude Include="CTPOTCNewOrder.h">
-      <Filter>头文件\OTC</Filter>
-    </ClInclude>
-    <ClInclude Include="CTPOTCQueryContractParam.h">
-      <Filter>头文件\OTC</Filter>
-    </ClInclude>
-    <ClInclude Include="CTPOTCQueryOrder.h">
-      <Filter>头文件\OTC</Filter>
-    </ClInclude>
-    <ClInclude Include="CTPOTCQueryStrategy.h">
-      <Filter>头文件\OTC</Filter>
-    </ClInclude>
-    <ClInclude Include="CTPOTCQueryTradingDesks.h">
-      <Filter>头文件\OTC</Filter>
-    </ClInclude>
-    <ClInclude Include="CTPOTCReturnPricingData.h">
-      <Filter>头文件\OTC</Filter>
-    </ClInclude>
-    <ClInclude Include="CTPOTCSubMarketData.h">
       <Filter>头文件\OTC</Filter>
     </ClInclude>
     <ClInclude Include="CTPOTCTradeProcessor.h">
       <Filter>头文件\OTC</Filter>
     </ClInclude>
-    <ClInclude Include="CTPOTCTradingDeskLogin.h">
-      <Filter>头文件\OTC</Filter>
-    </ClInclude>
-    <ClInclude Include="CTPOTCTradingDeskProcessor.h">
-      <Filter>头文件\OTC</Filter>
-    </ClInclude>
-    <ClInclude Include="CTPOTCTradingDeskServiceFactory.h">
-      <Filter>头文件\OTC</Filter>
-    </ClInclude>
-    <ClInclude Include="CTPOTCUpdateContractParam.h">
-      <Filter>头文件\OTC</Filter>
-    </ClInclude>
-    <ClInclude Include="CTPOTCUpdateStrategy.h">
-      <Filter>头文件\OTC</Filter>
-    </ClInclude>
-    <ClInclude Include="CTPOTCUpdateUserParam.h">
-      <Filter>头文件\OTC</Filter>
-    </ClInclude>
-    <ClInclude Include="CTPOTCUserContextBuilder.h">
-      <Filter>头文件\OTC</Filter>
-    </ClInclude>
     <ClInclude Include="CTPOTCWorkerProcessor.h">
       <Filter>头文件\OTC</Filter>
     </ClInclude>
-    <ClInclude Include="TradingDeskContextBuilder.h">
+    <ClInclude Include="CTPOTCServiceFactory.h">
       <Filter>头文件\OTC</Filter>
     </ClInclude>
-    <ClInclude Include="CTPAccountTradeServiceFactory.h">
-      <Filter>头文件\CTP</Filter>
-    </ClInclude>
-    <ClInclude Include="CTPAccountLogin.h">
-      <Filter>头文件\CTP</Filter>
-    </ClInclude>
-    <ClInclude Include="OTCOptionVolatility.h">
+    <ClInclude Include="CTPOTCSessionProcessor.h">
       <Filter>头文件\OTC</Filter>
     </ClInclude>
   </ItemGroup>

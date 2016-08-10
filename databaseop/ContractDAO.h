@@ -18,8 +18,8 @@ class DATABASEOP_CLASS_EXPORTS ContractDAO
 {
 public:
 	static VectorDO_Ptr<ContractKey> FindContractByClient(const std::string& clientSymbol);
-	static std::shared_ptr<ContractDOMap> FindAllContract(void);
-	static VectorDO_Ptr<ContractDO> FindContractParamByClient(const std::string& clientSymbol);
+	static VectorDO_Ptr<InstrumentDO> FindContractByProductType(int productType);
+	static VectorDO_Ptr<ContractParamDO> FindContractParamByClient(const std::string& clientSymbol);
 
 protected:
 private:

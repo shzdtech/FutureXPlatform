@@ -10,7 +10,7 @@
 #include "../litelogger/LiteLogger.h"
 #include "../message/DefMessageID.h"
 #include "../message/message_macro.h"
-#include "../bizutility/InstrumentCache.h"
+#include "../bizutility/ContractCache.h"
 
  ////////////////////////////////////////////////////////////////////////
  // Name:       CTPTradeProcessor::CTPTradeProcessor(const std::map<std::string, std::string>& configMap)

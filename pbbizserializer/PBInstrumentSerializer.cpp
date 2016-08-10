@@ -55,7 +55,8 @@ data_buffer PBInstrumentSerializer::Serialize(const dataobj_ptr& abstractDO)
 		PB->set_positiondatetype(insDO.PositionDateType);
 		PB->set_longmarginratio(insDO.LongMarginRatio);
 		PB->set_shortmarginratio(insDO.ShortMarginRatio);
-		PB->set_maxmarginsidealgorithm(insDO.MaxMarginSideAlgorithm);
+		if(insDO.GroupName.length()>0)
+			PB->set_groupname(insDO.GroupName);
 	}
 
 	SerializeWithReturn(PBList);

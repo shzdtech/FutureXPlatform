@@ -129,6 +129,12 @@
     <ClInclude Include="CTPOrderUpdated.h">
       <Filter>头文件\CTPHandler\Trader</Filter>
     </ClInclude>
+    <ClInclude Include="CTPAccountLogin.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPAccountTradeServiceFactory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ctpexport.cpp">
@@ -205,6 +211,12 @@
     </ClCompile>
     <ClCompile Include="CTPTradeUpdated.cpp">
       <Filter>源文件\CTPHandler\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPAccountLogin.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPAccountTradeServiceFactory.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

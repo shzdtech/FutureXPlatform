@@ -37,7 +37,7 @@
 dataobj_ptr CTPQueryTrade::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	if (auto wkProcPtr =
-		MessageUtility::FindGlobalProcessor<CTPTradeWorkerProcessor>(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT))
+		  MessageUtility::ServerWorkerProcessor<CTPTradeWorkerProcessor>(session->getProcessor()))
 	{
 		auto& userMap = wkProcPtr->GetUserTradeMap(session->getUserInfo()->getUserId());
 		if (userMap.size() < 1)
@@ -72,9 +72,8 @@ dataobj_ptr CTPQueryTrade::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawA
 		for (auto it = userMap.begin(); it != userMap.end(); it++)
 		{
 			auto tradeptr = std::make_shared<TradeRecordDO>(it->second);
-			tradeptr->SerialId = reqDO->SerialId;
 			tradeptr->HasMore = it != lastit;
-			wkProcPtr->SendDataObject(session, MSG_ID_QUERY_TRADE, tradeptr);
+			wkProcPtr->SendDataObject(session, MSG_ID_QUERY_TRADE, reqDO->SerialId, tradeptr);
 		}
 	}
 	return nullptr;
@@ -99,11 +98,10 @@ dataobj_ptr CTPQueryTrade::HandleResponse(const uint32_t serialId, param_vector&
 	TradeRecordDO_Ptr ret;
 	if (ret = CTPUtility::ParseRawTrade(pTradeInfo))
 	{
-		ret->SerialId = serialId;
 		ret->HasMore = !*(bool*)rawRespParams[3];
 
 		if (auto wkProcPtr =
-			MessageUtility::FindGlobalProcessor<CTPTradeWorkerProcessor>(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT))
+			  MessageUtility::ServerWorkerProcessor<CTPTradeWorkerProcessor>(session->getProcessor()))
 		{
 			auto& tradeMap = wkProcPtr->GetUserTradeMap(pTradeInfo->UserID);
 			auto& trade = tradeMap.getorfill(ret->TradeID, *ret);

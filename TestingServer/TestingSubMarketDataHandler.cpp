@@ -26,7 +26,7 @@ dataobj_ptr TestingSubMarketDataHandler::HandleRequest(const dataobj_ptr& reqDO,
 	VectorDO_Ptr<MarketDataDO> ret = std::make_shared<VectorDO<MarketDataDO>>();
 
 	auto stdo = (StringTableDO*)reqDO.get();
-	ret->SerialId = stdo->SerialId;
+
 	ret->HasMore = stdo->HasMore;
 
 	std::shared_ptr<MarketDataDOMap> mdDOMap_Ptr =

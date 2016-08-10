@@ -25,7 +25,7 @@ OrderStatus CTSUtility::CheckOrderStatus(T4::OrderStatus status, T4::OrderChange
 		break;
 	default:
 		if (status == T4::OrderStatus::Held)
-			ret = OrderStatus::OPENNING;
+			ret = OrderStatus::OPENED;
 	}
 
 	return ret;
@@ -43,13 +43,15 @@ OrderDO_Ptr CTSUtility::ParseRawOrder(T4::API::Order^ pOrder)
 	CTSConvertor::MarshalString(market->ContractID, contract);
 	CTSConvertor::MarshalString(pOrder->UserID, userId);
 
-	auto ret = std::make_shared<OrderDO>(UInt64::Parse(pOrder->Tag), exchange, contract, userId);
+	auto orderUUIDArray = Guid::Parse(pOrder->UniqueID).ToByteArray();
+
+	auto ret = std::make_shared<OrderDO>(BitConverter::ToUInt64(orderUUIDArray, 0), exchange, contract, userId);
+	ret->OrderSysID = BitConverter::ToUInt64(orderUUIDArray, 8);
 
 	ret->Direction = pOrder->BuySell == T4::BuySell::Buy ? DirectionType::BUY : DirectionType::SELL;
 	ret->LimitPrice = market->ConvertTicksToDecimal(pOrder->CurrentLimitTicks);
 	ret->Volume = pOrder->CurrentVolume;
 	ret->StopPrice = market->ConvertTicksToDecimal(pOrder->CurrentStopTicks);
-	ret->OrderSysID = 0;
 	ret->Active = pOrder->IsWorking;
 	ret->OrderStatus = CTSUtility::CheckOrderStatus(pOrder->Status, pOrder->Change);
 	ret->VolumeTraded = pOrder->TotalFillVolume;

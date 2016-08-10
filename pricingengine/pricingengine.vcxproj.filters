@@ -78,6 +78,9 @@
     <ClInclude Include="BlackScholesPricingAlgorithm.h">
       <Filter>头文件\pricing</Filter>
     </ClInclude>
+    <ClInclude Include="IAlgorithmBase.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PricingAlgorithmManager.cpp">

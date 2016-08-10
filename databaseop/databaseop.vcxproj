@@ -114,6 +114,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(BOOST_ROOT);$(SolutionDir)include\mysql;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalOptions>-D_CRT_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -155,6 +156,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(BOOST_ROOT);$(SolutionDir)include\mysql;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalOptions>-D_CRT_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -170,7 +172,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractConnectionManager.h" />
-    <ClInclude Include="BaseContractDAO.h" />
     <ClInclude Include="MySqlConnectionManager.h" />
     <ClInclude Include="ConnectionPool.h" />
     <ClInclude Include="ContractDAO.h" />
@@ -187,7 +188,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AbstractConnectionManager.cpp" />
-    <ClCompile Include="BaseContractDAO.cpp" />
     <ClCompile Include="MySqlConnectionManager.cpp" />
     <ClCompile Include="ContractDAO.cpp" />
     <ClCompile Include="OrderDAO.cpp" />

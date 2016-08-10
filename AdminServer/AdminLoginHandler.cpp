@@ -85,7 +85,6 @@ dataobj_ptr AdminLoginHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* 
 	}
 
 	ret = std::static_pointer_cast<UserInfoDO>(pUserInfo->getAttribute(STR_KEY_USER_INFO_DETAIL));
-	ret->SerialId = reqDO->SerialId;
 
 	return ret;
 }

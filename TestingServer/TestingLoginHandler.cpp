@@ -44,7 +44,6 @@ dataobj_ptr TestingLoginHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI
 
 	//
 	auto pDO = std::make_shared<UserInfoDO>();
-	pDO->SerialId = reqDO->SerialId;
 
 	pDO->BrokerId = pUserInfo->getBrokerId();;
 	pDO->UserName = pUserInfo->getName();

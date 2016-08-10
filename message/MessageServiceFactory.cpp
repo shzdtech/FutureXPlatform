@@ -14,7 +14,7 @@
 // Return:     std::map<uint, IMessageHandler_Ptr>
 ////////////////////////////////////////////////////////////////////////
 
-std::map<uint, IMessageHandler_Ptr> MessageServiceFactory::CreateMessageHandlers(void)
+std::map<uint, IMessageHandler_Ptr> MessageServiceFactory::CreateMessageHandlers(IServerContext* serverCtx)
 {
 	return std::map<uint, IMessageHandler_Ptr>();
 }
@@ -25,20 +25,20 @@ std::map<uint, IMessageHandler_Ptr> MessageServiceFactory::CreateMessageHandlers
 // Return:     std::map<uint, IDataSerializer_Ptr>
 ////////////////////////////////////////////////////////////////////////
 
-std::map<uint, IDataSerializer_Ptr> MessageServiceFactory::CreateDataSerializers(void)
+std::map<uint, IDataSerializer_Ptr> MessageServiceFactory::CreateDataSerializers(IServerContext* serverCtx)
 {
 	return std::map<uint, IDataSerializer_Ptr>();
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       MessageServiceFactory::CreateWorkProcessor()
-// Purpose:    Implementation of MessageServiceFactory::CreateWorkProcessor()
+// Name:       MessageServiceFactory::CreateWorkerProcessor()
+// Purpose:    Implementation of MessageServiceFactory::CreateWorkerProcessor()
 // Return:     std::map<uint, IProcessorBase_Ptr>
 ////////////////////////////////////////////////////////////////////////
 
-std::map<std::string, IProcessorBase_Ptr> MessageServiceFactory::CreateWorkProcessor(void)
+IMessageProcessor_Ptr MessageServiceFactory::CreateWorkerProcessor(IServerContext* serverCtx)
 {
-	return std::map<std::string, IProcessorBase_Ptr>();
+	return nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -47,7 +47,7 @@ std::map<std::string, IProcessorBase_Ptr> MessageServiceFactory::CreateWorkProce
 // Return:     IMessageProcessor_Ptr
 ////////////////////////////////////////////////////////////////////////
 
-IMessageProcessor_Ptr MessageServiceFactory::CreateMessageProcessor(void)
+IMessageProcessor_Ptr MessageServiceFactory::CreateMessageProcessor(IServerContext* serverCtx)
 {
 	return nullptr;
 }
@@ -75,7 +75,7 @@ bool MessageServiceFactory::Load(const std::string& configFile, const std::strin
 }
 
 
-void MessageServiceFactory::SetServerContext(IContextAttribute * serverCtx)
+void MessageServiceFactory::SetServerContext(IServerContext * serverCtx)
 {
 	_serverCtx = serverCtx;
 }

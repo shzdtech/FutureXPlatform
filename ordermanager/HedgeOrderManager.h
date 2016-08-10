@@ -20,7 +20,7 @@ class ORDERMGR_CLASS_EXPORT HedgeOrderManager : public AutoOrderManager
 public:
 	HedgeOrderManager(const std::string& user, IOrderAPI* pOrderAPI, IPricingDataContext* pricingCtx);
 
-	int CreateOrder(OrderDO& orderInfo);
+	OrderDO_Ptr CreateOrder(OrderRequestDO& orderInfo);
 
 	int OnOrderUpdated(OrderDO& orderInfo);
 

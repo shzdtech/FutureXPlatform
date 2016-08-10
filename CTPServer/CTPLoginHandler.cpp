@@ -21,6 +21,8 @@
 #include "CTPUtility.h"
 #include "CTPConstant.h"
 
+#include "../common/Attribute_Key.h"
+
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPLoginHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, IMessageProcessor_Ptr session)
 // Purpose:    Implementation of CTPLoginHandler::HandleRequest()
@@ -33,35 +35,42 @@
 
 dataobj_ptr CTPLoginHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
-	auto stdo = (MapDO<std::string>*)reqDO.get();
-	
-	auto& brokeid = stdo->TryFind(STR_BROKER_ID, EMPTY_STRING);
-	auto& userid = stdo->TryFind(STR_USER_NAME, EMPTY_STRING);
-	auto& password = stdo->TryFind(STR_PASSWORD, EMPTY_STRING);
+	if (!session->IsLogin())
+	{
 
-	CThostFtdcReqUserLoginField req{};
+		auto stdo = (MapDO<std::string>*)reqDO.get();
 
-	std::strcpy(req.BrokerID, brokeid.data());
-	std::strcpy(req.UserID, userid.data());
-	std::strcpy(req.Password, password.data());
-	std::strcpy(req.UserProductInfo, UUID_MICROFUTURE_CTP);
+		auto& brokeid = stdo->TryFind(STR_BROKER_ID, EMPTY_STRING);
+		auto& userid = stdo->TryFind(STR_USER_NAME, EMPTY_STRING);
+		auto& password = stdo->TryFind(STR_PASSWORD, EMPTY_STRING);
 
-	int ret = LoginFunction(rawAPI, session, &req, stdo->SerialId);
-	CTPUtility::CheckReturnError(ret);
-	//int ret = ((CThostFtdcMdApi*)rawAPI)->ReqUserLogin(&req, 1);
+		CThostFtdcReqUserLoginField req{};
 
-	auto pUserInfo = session->getUserInfo();
-	pUserInfo->setInvestorId(req.UserID);
-	pUserInfo->setBrokerId(req.BrokerID);
-	pUserInfo->setName(userid);
-	pUserInfo->setPassword(password);
-	pUserInfo->setUserId(req.UserID);
-	pUserInfo->setRole(ROLE_CLIENT);
-	pUserInfo->setPermission(ALLOW_TRADING);
+		std::strcpy(req.BrokerID, brokeid.data());
+		std::strcpy(req.UserID, userid.data());
+		std::strcpy(req.Password, password.data());
+		std::strcpy(req.UserProductInfo, UUID_MICROFUTURE_CTP);
 
-	LOG_DEBUG << "Login: " << req.BrokerID << ":" << userid << ":" << password;
+		int ret = LoginFunction(rawAPI, session, &req, stdo->SerialId);
+		CTPUtility::CheckReturnError(ret);
+		//int ret = ((CThostFtdcMdApi*)rawAPI)->ReqUserLogin(&req, 1);
 
-	return nullptr;
+		auto pUserInfo = session->getUserInfo();
+		pUserInfo->setInvestorId(req.UserID);
+		pUserInfo->setBrokerId(req.BrokerID);
+		pUserInfo->setName(userid);
+		pUserInfo->setPassword(password);
+		pUserInfo->setUserId(req.UserID);
+		pUserInfo->setRole(ROLE_CLIENT);
+		pUserInfo->setPermission(ALLOW_TRADING);
+
+		LOG_DEBUG << "Login: " << req.BrokerID << ":" << userid << ":" << password;
+	}
+
+	auto userInfoDO_Ptr = std::static_pointer_cast<UserInfoDO>
+		(session->getUserInfo()->getAttribute(STR_KEY_USER_INFO_DETAIL));
+
+	return userInfoDO_Ptr;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -82,7 +91,6 @@ dataobj_ptr CTPLoginHandler::HandleResponse(const uint32_t serialId, param_vecto
 	
 	auto pDO = new UserInfoDO;
 	dataobj_ptr ret(pDO);
-	pDO->SerialId = serialId;
 
 	auto pUserInfo = session->getUserInfo();
 
@@ -99,6 +107,7 @@ dataobj_ptr CTPLoginHandler::HandleResponse(const uint32_t serialId, param_vecto
 	pDO->Role = pUserInfo->getRole();
 	pDO->UserId = pUserInfo->getUserId();
 
+	session->getUserInfo()->setAttribute(STR_KEY_USER_INFO_DETAIL, ret);
 	session->setLoginStatus(true);
 
 	LOG_DEBUG << pDO->UserId << " login successful.";

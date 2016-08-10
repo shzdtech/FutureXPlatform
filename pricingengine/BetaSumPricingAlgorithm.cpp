@@ -10,8 +10,11 @@
 #include "../dataobject/MarketDataDO.h"
 #include "../dataobject/UserContractParamDO.h"
 #include "../dataobject/PricingDO.h"
-#include "../dataobject/ContractDO.h"
+#include "../dataobject/ContractParamDO.h"
 #include "../dataobject/TypedefDO.h"
+
+const std::string BetaSumParams::offset_name("offset");
+const std::string BetaSumParams::spread_name("spread");
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       BetaSumPricingAlgorithm::Name()
@@ -39,24 +42,25 @@ dataobj_ptr BetaSumPricingAlgorithm::Compute(
 	IPricingDataContext& priceCtx,
 	const param_vector* params)
 {
-	static const std::string alpha_name("alpha");
+	BetaSumParams paramObj;
+	if (!ParseParams(sdo.Params, &paramObj))
+		return nullptr;
 
 	dataobj_ptr ret;
 
-	auto& mdDOMap = *(priceCtx.GetMarketDataDOMap());
-	auto& conDOMap = *(priceCtx.GetContractMap());
+	auto& mdDOMap = *(priceCtx.GetMarketDataMap());
+	auto& conDOMap = *(priceCtx.GetContractParamMap());
 
 	auto& parentCon = conDOMap.at(sdo);
 
-	double bias = sdo.ParamMap->at(alpha_name) + sdo.Offset;
 	double BidPrice = 0;
 	double AskPrice = 0;
 	int quantity = *(int*)pInputObject;
 
-	if (sdo.BaseContracts && sdo.BaseContracts->size() > 0)
+	if (sdo.PricingContracts && sdo.PricingContracts->size() > 0)
 	{
 
-		for (auto& conparam : *(sdo.BaseContracts))
+		for (auto& conparam : *(sdo.PricingContracts))
 		{
 			auto& baseCon = conDOMap.at(conparam);
 			auto& md = mdDOMap.at(conparam.InstrumentID());
@@ -81,8 +85,8 @@ dataobj_ptr BetaSumPricingAlgorithm::Compute(
 			AskPrice += conparam.Weight * VolAdjAskPrice;
 		}
 
-		BidPrice += bias - sdo.Spread;
-		AskPrice += bias + sdo.Spread;
+		BidPrice += paramObj.offset - paramObj.spread;
+		AskPrice += paramObj.offset + paramObj.spread;
 
 		BidPrice = std::floor(BidPrice / parentCon.TickSize) * parentCon.TickSize;
 
@@ -101,6 +105,26 @@ dataobj_ptr BetaSumPricingAlgorithm::Compute(
 		pDO->BidPrice = BidPrice;
 		pDO->AskPrice = AskPrice;
 	}
+
+	return ret;
+}
+
+const std::map<std::string, double>& BetaSumPricingAlgorithm::DefaultParams(void)
+{
+	static std::map<std::string, double> defaultParams = { 
+		{ BetaSumParams::offset_name , 0},
+		{ BetaSumParams::spread_name , 1},
+	};
+	return defaultParams;
+}
+
+bool BetaSumPricingAlgorithm::ParseParams(const std::map<std::string, double>& params, void * pParamObj)
+{
+	bool ret = true;
+
+	BetaSumParams* pParams = (BetaSumParams*)pParamObj;
+	pParams->offset = params.at(BetaSumParams::offset_name);
+	pParams->spread = params.at(BetaSumParams::spread_name);
 
 	return ret;
 }

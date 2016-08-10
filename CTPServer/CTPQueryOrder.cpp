@@ -35,7 +35,7 @@
 dataobj_ptr CTPQueryOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	if (auto wkProcPtr =
-		MessageUtility::FindGlobalProcessor<CTPTradeWorkerProcessor>(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT))
+		  MessageUtility::ServerWorkerProcessor<CTPTradeWorkerProcessor>(session->getProcessor()))
 	{
 		auto stdo = (MapDO<std::string>*)reqDO.get();
 
@@ -74,9 +74,8 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawA
 			if (it != userMap.end())
 			{
 				auto orderptr = std::make_shared<OrderDO>(it->second);
-				orderptr->SerialId = stdo->SerialId;
 				orderptr->HasMore = false;
-				wkProcPtr->SendDataObject(session, MSG_ID_QUERY_ORDER, orderptr);
+				wkProcPtr->SendDataObject(session, MSG_ID_QUERY_ORDER, stdo->SerialId, orderptr);
 			}
 			else
 				throw NotFoundException();
@@ -87,9 +86,8 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawA
 			for (auto it = userMap.begin(); it != userMap.end(); it++)
 			{
 				auto orderptr = std::make_shared<OrderDO>(it->second);
-				orderptr->SerialId = stdo->SerialId;
 				orderptr->HasMore = it != lastit;
-				wkProcPtr->SendDataObject(session, MSG_ID_QUERY_ORDER, orderptr);
+				wkProcPtr->SendDataObject(session, MSG_ID_QUERY_ORDER, stdo->SerialId, orderptr);
 			}
 		}
 	}
@@ -115,7 +113,6 @@ dataobj_ptr CTPQueryOrder::HandleResponse(const uint32_t serialId, param_vector&
 	if (auto pData = (CThostFtdcOrderField*)rawRespParams[0])
 	{
 		ret = CTPUtility::ParseRawOrder(pData);
-		ret->SerialId = serialId;
 		
 		if (rawRespParams.size() > 1)
 		{
@@ -124,7 +121,7 @@ dataobj_ptr CTPQueryOrder::HandleResponse(const uint32_t serialId, param_vector&
 			ret->HasMore = !*(bool*)rawRespParams[3];
 
 			if (auto wkProcPtr =
-				MessageUtility::FindGlobalProcessor<CTPTradeWorkerProcessor>(CTPWorkerProcessorID::TRADE_SHARED_ACCOUNT))
+				  MessageUtility::ServerWorkerProcessor<CTPTradeWorkerProcessor>(session->getProcessor()))
 			{
 				wkProcPtr->GetUserOrderMap(ret->UserID()).getorfill(ret->OrderSysID, *ret);
 			}

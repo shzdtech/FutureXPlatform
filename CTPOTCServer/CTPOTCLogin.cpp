@@ -6,7 +6,7 @@
  ***********************************************************************/
 
 #include "CTPOTCLogin.h"
-#include "CTPOTCUserContextBuilder.h"
+#include "../OTCServer/OTCUserContextBuilder.h"
 #include "CTPOTCWorkerProcessor.h"
 #include "../CTPServer/CTPWorkerProcessorID.h"
 
@@ -45,14 +45,18 @@ dataobj_ptr CTPOTCLogin::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI
 {
 	auto ret = Login(reqDO, rawAPI, session);
 
-	if (auto wkProcPtr =
-		MessageUtility::FindGlobalProcessor<CTPOTCWorkerProcessor>(CTPWorkerProcessorID::WORKPROCESSOR_OTC))
+	if (auto wkProcPtr = MessageUtility::ServerWorkerProcessor<CTPOTCWorkerProcessor>(session->getProcessor()))
 	{
 		if (!(wkProcPtr->ConnectedToServer() && wkProcPtr->HasLogged()))
 			throw SystemException(CONNECTION_ERROR, "Cannot connect to CTP Trading Server!");
 		wkProcPtr->RegisterLoggedSession(session->getProcessor()->LockMessageSession().get());
+
+		if (session->getUserInfo()->getRole() == ROLE_TRADINGDESK)
+		{
+			wkProcPtr->LoginSystemUserIfNeed();
+		}
 	}
 	
-	CTPOTCUserContextBuilder::Instance()->BuildContext(session);
+	OTCUserContextBuilder::Instance()->BuildContext(session);
 	return ret;
 }
