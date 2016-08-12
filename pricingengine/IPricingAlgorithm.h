@@ -18,7 +18,7 @@
 class IPricingAlgorithm : public IAlgorithmBase
 {
 public:
-	virtual dataobj_ptr Compute(
+	virtual std::shared_ptr<PricingDO> Compute(
 		const void* pInputObject,
 		const StrategyContractDO& sdo,
 		IPricingDataContext& priceCtx,

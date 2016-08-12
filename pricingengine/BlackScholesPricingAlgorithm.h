@@ -13,9 +13,11 @@
 class BlackScholesParams
 {
 public:
+	static const std::string volatility_name;
 	static const std::string spread_name;
 	static const std::string riskFreeRate_name;
 
+	double volatility;
 	double riskFreeRate;
 	double spread;
 };
@@ -25,22 +27,19 @@ class BlackScholesPricingAlgorithm : public IPricingAlgorithm
 {
 public:
 	virtual const std::string& Name(void) const;
-	virtual dataobj_ptr Compute(
+	virtual std::shared_ptr<PricingDO> Compute(
 		const void* pInputObject,
 		const StrategyContractDO& sdo,
 		IPricingDataContext& priceCtx,
 		const param_vector* params);
 	virtual const std::map<std::string, double>& DefaultParams(void);
-	virtual bool ParseParams(const std::map<std::string, double>& params, void* pParamObj);
+	virtual bool ParseParams(const ModelParamsDO& modelParams, void* pParamObj);
 
 protected:
 	double ComputeOptionPrice(
+		double underlyingPrice,
 		const BlackScholesParams& params,
-		double inputPrice,
-		bool call,
-		const StrategyContractDO& sdo,
-		IPricingDataContext& priceCtx
-		);
+		const StrategyContractDO& sdo);
 
 private:
 

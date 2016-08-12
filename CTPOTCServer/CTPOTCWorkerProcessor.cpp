@@ -64,10 +64,11 @@ bool CTPOTCWorkerProcessor::OnSessionClosing(void)
 
 void CTPOTCWorkerProcessor::Initialize(void)
 {
-	if (auto vectPtr = ContractDAO::FindContractByProductType(ProductType::PRODUCT_OTC))
+	auto productType = GetProductType();
+	if (auto vectPtr = ContractDAO::FindContractByProductType(productType))
 	{
 		for (auto& contract : *vectPtr)
-			ContractCache::OtcContracts().Add(contract);
+			ContractCache::Get(productType).Add(contract);
 	}
 
 	CTPMarketDataProcessor::Initialize();
@@ -111,7 +112,7 @@ int CTPOTCWorkerProcessor::RefreshStrategy(const StrategyContractDO& strategyDO)
 		if (strategyDO.IsOTC())
 		{
 			int i = 0;
-			for (auto& contract : *strategyDO.PricingContracts)
+			for (auto& contract : strategyDO.PricingContracts)
 			{
 				instPtr[i++] = const_cast<char*>(contract.InstrumentID().data());
 			}
@@ -131,6 +132,11 @@ void CTPOTCWorkerProcessor::RegisterLoggedSession(IMessageSession * pMessageSess
 	((CTPOTCTradeProcessor*)GetOTCTradeProcessor())->RegisterLoggedSession(pMessageSession);
 }
 
+ProductType CTPOTCWorkerProcessor::GetProductType()
+{
+	return ProductType::PRODUCT_OTC;
+}
+
 OTCTradeProcessor * CTPOTCWorkerProcessor::GetOTCTradeProcessor()
 {
 	return _ctpOtcTradeProcessorPtr.get();
@@ -148,7 +154,6 @@ void CTPOTCWorkerProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField 
 		auto& mdo = it->second;
 		if (mdo.BidPrice != pDepthMarketData->BidPrice1 ||
 			mdo.AskPrice != pDepthMarketData->AskPrice1 ||
-			mdo.LastPrice != pDepthMarketData->LastPrice ||
 			mdo.BidVolume != pDepthMarketData->BidVolume1 ||
 			mdo.AskVolume != pDepthMarketData->AskVolume1)
 		{
@@ -156,7 +161,6 @@ void CTPOTCWorkerProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField 
 			mdo.AskPrice = pDepthMarketData->AskPrice1;
 			mdo.BidVolume = pDepthMarketData->BidVolume1;
 			mdo.AskVolume = pDepthMarketData->AskVolume1;
-			mdo.LastPrice = pDepthMarketData->LastPrice;
 
 			//mdo.PreClosePrice = pDepthMarketData->PreClosePrice;
 			//mdo.OpenPrice = pDepthMarketData->OpenPrice;

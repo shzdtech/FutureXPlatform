@@ -11,13 +11,13 @@
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/StrategyContractDO.h"
 
-////////////////////////////////////////////////////////////////////////
-// Name:       PBStrategySerializer::Serialize(const dataobj_ptr& abstractDO)
-// Purpose:    Implementation of PBStrategySerializer::Serialize()
-// Parameters:
-// - abstractDO
-// Return:     data_buffer
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       PBStrategySerializer::Serialize(const dataobj_ptr& abstractDO)
+ // Purpose:    Implementation of PBStrategySerializer::Serialize()
+ // Parameters:
+ // - abstractDO
+ // Return:     data_buffer
+ ////////////////////////////////////////////////////////////////////////
 
 data_buffer PBStrategySerializer::Serialize(const dataobj_ptr& abstractDO)
 {
@@ -32,23 +32,37 @@ data_buffer PBStrategySerializer::Serialize(const dataobj_ptr& abstractDO)
 		pStrategy->set_contract(sdo.InstrumentID());
 		pStrategy->set_allowtrading(sdo.Trading);
 		pStrategy->set_underlying(sdo.Underlying);
-		pStrategy->set_symbol(sdo.Strategy);
+		pStrategy->set_symbol(sdo.StrategyName);
 		pStrategy->set_description(sdo.Description);
 		pStrategy->set_depth(sdo.Depth);
 		pStrategy->set_enabled(sdo.Enabled);
 		pStrategy->set_quantity(sdo.Quantity);
 
-		pStrategy->mutable_params()->insert(sdo.Params.begin(), sdo.Params.end());
-
-		if (sdo.PricingContracts)
+		if (sdo.PricingContracts.size() > 0)
 		{
-			for (auto& pricingContract : *sdo.PricingContracts)
+			for (auto& pricingContract : sdo.PricingContracts)
 			{
 				auto pContract = pStrategy->add_pricingcontracts();
 				pContract->set_exchange(pricingContract.ExchangeID());
 				pContract->set_contract(pricingContract.InstrumentID());
 				pContract->set_weight(pricingContract.Weight);
 			}
+		}
+
+		// Fill Model Param
+		auto pbModelParams = pStrategy->mutable_modelparams();
+
+		pbModelParams->set_modelname(sdo.ModelParams.ModelName);
+
+		pbModelParams->mutable_scalaparams()->insert(sdo.ModelParams.ScalaParams.begin(), sdo.ModelParams.ScalaParams.end());
+
+		for (auto& pair : sdo.ModelParams.VectorParams)
+		{
+			Micro::Future::Message::ModelParams_double_vector double_vector;
+			for (double val : pair.second)
+				double_vector.add_entry(val);
+
+			(*pbModelParams->mutable_vectorparams())[pair.first] = double_vector;
 		}
 	}
 
@@ -69,38 +83,38 @@ data_buffer PBStrategySerializer::Serialize(const dataobj_ptr& abstractDO)
 
 dataobj_ptr PBStrategySerializer::Deserialize(const data_buffer& rawdata)
 {
-	Micro::Future::Message::Business::PBStrategyList PB;
-	ParseWithReturn(PB, rawdata);
+	Micro::Future::Message::Business::PBStrategy pbstrtg;
+	ParseWithReturn(pbstrtg, rawdata);
 
-	auto ret = std::make_shared<VectorDO<StrategyContractDO>>();
-	FillDOHeader(ret, PB);
+	auto sdo = std::make_shared<StrategyContractDO>(pbstrtg.exchange(), pbstrtg.contract());
+	FillDOHeader(sdo, pbstrtg);
 
-	auto& strategyList = PB.strategy();
+	sdo->Depth = pbstrtg.depth();
+	sdo->Trading = pbstrtg.allowtrading();
+	sdo->Enabled = pbstrtg.enabled();
+	sdo->Quantity = pbstrtg.quantity();
 
-	for (auto& strategy : strategyList)
+	if (!pbstrtg.pricingcontracts().empty())
 	{
-		StrategyContractDO sdo(strategy.exchange(), strategy.contract());
-		sdo.Depth = strategy.depth();
-		sdo.Trading = strategy.allowtrading();
-		sdo.Enabled = strategy.enabled();
-		sdo.Quantity = strategy.quantity();
-
-		sdo.Params.insert(strategy.params().begin(), strategy.params().end());
-
-		if (!strategy.pricingcontracts().empty())
+		for (auto& bc : pbstrtg.pricingcontracts())
 		{
-			auto bcVec = std::make_shared<std::vector<PricingContract>>();
-			for (auto& bc : strategy.pricingcontracts())
-			{
-				PricingContract cp(bc.exchange(), bc.contract());
-				cp.Weight = bc.weight();
-				bcVec->push_back(std::move(cp));
-			}
-			sdo.PricingContracts = bcVec;
+			PricingContract cp(bc.exchange(), bc.contract());
+			cp.Weight = bc.weight();
+			sdo->PricingContracts.push_back(std::move(cp));
 		}
-
-		ret->push_back(std::move(sdo));
 	}
 
-	return ret;
+	// Model Params
+	sdo->ModelParams.ScalaParams.insert(
+		pbstrtg.modelparams().scalaparams().begin(), pbstrtg.modelparams().scalaparams().end());
+
+	auto& vectorParams = pbstrtg.modelparams().vectorparams();
+	for (auto& pair : vectorParams)
+	{
+		std::vector<double> double_vec(pair.second.entry().begin(),
+			pair.second.entry().end());
+		sdo->ModelParams.VectorParams.emplace(pair.first, double_vec);
+	}
+
+	return sdo;
 }

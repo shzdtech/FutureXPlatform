@@ -5,11 +5,15 @@
 #include <memory>
 #include "IAlgorithmBase.h"
 #include "../dataobject/ModelParamsDO.h"
+#include "../common/typedefs.h"
 
 class IModelAlgorithm : public IAlgorithmBase
 {
 public:
-	virtual dataobj_ptr Compute(const dataobj_ptr& input) = 0;
+	virtual dataobj_ptr Compute(
+		const void* pInputObject,
+		const ModelParamsDO& modelParams,
+		const param_vector* params) = 0;
 };
 
 typedef std::shared_ptr<IModelAlgorithm> IModelAlgorithm_Ptr;

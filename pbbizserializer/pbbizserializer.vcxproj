@@ -197,6 +197,7 @@
   <ItemGroup>
     <ClCompile Include="..\Protos\businessobj.pb.cc" />
     <ClCompile Include="..\Protos\commondefine.pb.cc" />
+    <ClCompile Include="..\Protos\modelalgorithm.pb.cc" />
     <ClCompile Include="PBAccountInfoSerializer.cpp" />
     <ClCompile Include="PBBizMessageSerializerFactory.cpp" />
     <ClCompile Include="pbbizserializer_exp.cpp" />
@@ -208,6 +209,7 @@
     <ClCompile Include="PBPricingDataSerializer.cpp" />
     <ClCompile Include="PBStrategySerializer.cpp" />
     <ClCompile Include="PBSubMarketDataSerializer.cpp" />
+    <ClCompile Include="PBSubPricingDataSerializer.cpp" />
     <ClCompile Include="PBTradeRecordSerializer.cpp" />
     <ClCompile Include="PBUserParamSerializer.cpp" />
     <ClCompile Include="PBUserPositionSerializer.cpp" />
@@ -215,6 +217,7 @@
   <ItemGroup>
     <ClInclude Include="..\Protos\businessobj.pb.h" />
     <ClInclude Include="..\Protos\commondefine.pb.h" />
+    <ClInclude Include="..\Protos\modelalgorithm.pb.h" />
     <ClInclude Include="PBAccountInfoSerializer.h" />
     <ClInclude Include="PBBizMessageSerializerFactory.h" />
     <ClInclude Include="pbbizserializers.h" />
@@ -227,6 +230,7 @@
     <ClInclude Include="PBPricingDataSerializer.h" />
     <ClInclude Include="PBStrategySerializer.h" />
     <ClInclude Include="PBSubMarketDataSerializer.h" />
+    <ClInclude Include="PBSubPricingDataSerializer.h" />
     <ClInclude Include="PBTradeRecordSerializer.h" />
     <ClInclude Include="PBUserParamSerializer.h" />
     <ClInclude Include="PBUserPositionSerializer.h" />
@@ -242,6 +246,9 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="pbbizserializer.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Protos\modelalgorithm.proto" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

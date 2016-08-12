@@ -1,4 +1,5 @@
 #include "WingsVolatilityModel.h"
+#include "../dataobject/TemplateDO.h"
 
 const std::string WingsParams::PARAM_F_ATM("f_atm");
 const std::string WingsParams::PARAM_SSR("ssr");
@@ -24,13 +25,16 @@ const std::string & WingsVolatilityModel::Name(void) const
 	return ws;
 }
 
-dataobj_ptr WingsVolatilityModel::Compute(const dataobj_ptr & input)
+dataobj_ptr WingsVolatilityModel::Compute(
+	const void* pInputObject,
+	const ModelParamsDO& modelParams,
+	const param_vector* params)
 {
-	auto& model = *(ModelParamsDO*)input.get();
-
 	WingsParams paramObj;
-	if (!ParseParams(model.ScalaParams, &paramObj))
+	if (!ParseParams(modelParams, &paramObj))
 		return nullptr;
+
+	auto& moneyVector = *(std::vector<double>*)pInputObject;
 
 	// synthetic forward price
 	double f_atm = paramObj.f_atm;
@@ -82,11 +86,9 @@ dataobj_ptr WingsVolatilityModel::Compute(const dataobj_ptr & input)
 	double up_sm_a = sigma_x2 - up_sm_b * x2 - up_sm_c * x2 * x2;
 	double sigma_x3 = up_sm_a + up_sm_b * x3 + up_sm_c * x3 * x3;
 
-	auto ret = std::make_shared<ModelParamsDO>();
+	auto ret = std::make_shared<VectorDO<double>>();
 
-	ret->ModelName = model.ModelName;
-
-	for (double moneyness : model.Values)
+	for (double moneyness : moneyVector)
 	{
 		// log - moneyness, i.e., transformed strike price
 		double x = (1 / std::pow((days / 365), alpha)) * std::log(moneyness / f_syn);
@@ -118,7 +120,7 @@ dataobj_ptr WingsVolatilityModel::Compute(const dataobj_ptr & input)
 			theo = up_slope * (x - x3) + sigma_x3;
 		}
 
-		ret->Values.push_back(theo);
+		ret->push_back(theo);
 	}
 
 	return ret;
@@ -148,27 +150,27 @@ const std::map<std::string, double>& WingsVolatilityModel::DefaultParams(void)
 	return defaultParams;
 }
 
-bool WingsVolatilityModel::ParseParams(const std::map<std::string, double>& params, void * pParamObj)
+bool WingsVolatilityModel::ParseParams(const ModelParamsDO& modelParams, void * pParamObj)
 {
 	bool ret = true;
 	WingsParams* pParams = (WingsParams*)pParamObj;
-	pParams->f_atm = params.at(WingsParams::PARAM_F_ATM);
-	pParams->ssr = params.at(WingsParams::PARAM_SSR);
-	pParams->scr = params.at(WingsParams::PARAM_SCR);
-	pParams->f_ref = params.at(WingsParams::PARAM_F_REF);
-	pParams->vcr = params.at(WingsParams::PARAM_VCR);
-	pParams->vol_ref = params.at(WingsParams::PARAM_VOL_REF);
-	pParams->slope_ref = params.at(WingsParams::PARAM_SLOPE_REF);
-	pParams->dn_cf = params.at(WingsParams::PARAM_DN_CF);
-	pParams->up_cf = params.at(WingsParams::PARAM_UP_CF);
-	pParams->dn_sm = params.at(WingsParams::PARAM_DN_SM);
-	pParams->up_sm = params.at(WingsParams::PARAM_UP_SM);
-	pParams->put_curv = params.at(WingsParams::PARAM_PUT_CURV);
-	pParams->call_curv = params.at(WingsParams::PARAM_CALL_CURV);
-	pParams->dn_slope = params.at(WingsParams::PARAM_DN_SLOPE);
-	pParams->up_slope = params.at(WingsParams::PARAM_UP_SLOPE);
-	pParams->days = params.at(WingsParams::PARAM_DAYS);
-	pParams->alpha = params.at(WingsParams::PARAM_ALPHA);
+	pParams->f_atm = modelParams.ScalaParams.at(WingsParams::PARAM_F_ATM);
+	pParams->ssr = modelParams.ScalaParams.at(WingsParams::PARAM_SSR);
+	pParams->scr = modelParams.ScalaParams.at(WingsParams::PARAM_SCR);
+	pParams->f_ref = modelParams.ScalaParams.at(WingsParams::PARAM_F_REF);
+	pParams->vcr = modelParams.ScalaParams.at(WingsParams::PARAM_VCR);
+	pParams->vol_ref = modelParams.ScalaParams.at(WingsParams::PARAM_VOL_REF);
+	pParams->slope_ref = modelParams.ScalaParams.at(WingsParams::PARAM_SLOPE_REF);
+	pParams->dn_cf = modelParams.ScalaParams.at(WingsParams::PARAM_DN_CF);
+	pParams->up_cf = modelParams.ScalaParams.at(WingsParams::PARAM_UP_CF);
+	pParams->dn_sm = modelParams.ScalaParams.at(WingsParams::PARAM_DN_SM);
+	pParams->up_sm = modelParams.ScalaParams.at(WingsParams::PARAM_UP_SM);
+	pParams->put_curv = modelParams.ScalaParams.at(WingsParams::PARAM_PUT_CURV);
+	pParams->call_curv = modelParams.ScalaParams.at(WingsParams::PARAM_CALL_CURV);
+	pParams->dn_slope = modelParams.ScalaParams.at(WingsParams::PARAM_DN_SLOPE);
+	pParams->up_slope = modelParams.ScalaParams.at(WingsParams::PARAM_UP_SLOPE);
+	pParams->days = modelParams.ScalaParams.at(WingsParams::PARAM_DAYS);
+	pParams->alpha = modelParams.ScalaParams.at(WingsParams::PARAM_ALPHA);
 
 	return ret;
 }

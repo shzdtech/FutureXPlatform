@@ -123,7 +123,7 @@ dataobj_ptr CTPQueryPosition::HandleResponse(const uint32_t serialId, param_vect
 	{
 		std::string exchange;
 
-		if (auto pInstrumentDO = ContractCache::Futures().QueryInstrumentById(pData->InstrumentID))
+		if (auto pInstrumentDO = ContractCache::Get(ProductType::PRODUCT_FUTURE).QueryInstrumentById(pData->InstrumentID))
 		{
 			exchange = pInstrumentDO->ExchangeID();
 		}

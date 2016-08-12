@@ -26,17 +26,17 @@ std::shared_ptr<PricingDO> PricingUtility::Pricing(
 	std::shared_ptr<PricingDO> ret;
 
 	auto algorithm =
-		PricingAlgorithmManager::Instance()->FindAlgorithm(sdo.Algorithm);
+		PricingAlgorithmManager::Instance()->FindAlgorithm(sdo.ModelParams.ModelName);
 
 	if (algorithm)
 	{
-		ret = std::static_pointer_cast<PricingDO>(algorithm->Compute(pInputObject, sdo, priceCtx, params));
+		ret = algorithm->Compute(pInputObject, sdo, priceCtx, params);
 	}
 
 	return ret;
 }
 
-std::shared_ptr<PricingDO>  PricingUtility::Pricing(
+std::shared_ptr<PricingDO> PricingUtility::Pricing(
 	const void* pInputObject,
 	const StrategyContractDO& sdo,
 	IPricingDataContext& priceCtx)

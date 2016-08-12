@@ -1,19 +1,9 @@
 #include "ContractCache.h"
 
-InstrumentCache & ContractCache::Futures()
-{
-	static InstrumentCache futures;
-	return futures;
-}
 
-InstrumentCache & ContractCache::OtcContracts()
+InstrumentCache & ContractCache::Get(ProductType productType)
 {
-	static InstrumentCache otcContracts;
-	return otcContracts;
-}
+	static std::vector<InstrumentCache> instrumentCaches(ProductType::PRODUCT_UPPERBOUND);
 
-InstrumentCache & ContractCache::OtcOptions()
-{
-	static InstrumentCache otcOptions;
-	return otcOptions;
+	return instrumentCaches[productType];
 }

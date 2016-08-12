@@ -20,10 +20,15 @@
       }
     },
     "otc": {
-      "service": {
+      "contract": {
         "module.uuid": "com.micro.future.ctp.otc.dll",
         "module.path": "CTPOTCServer.dll",
-        "class.uuid": "factory.otc.service"
+        "class.uuid": "factory.otc.contract"
+      },
+      "option": {
+        "module.uuid": "com.micro.future.ctp.otc.dll",
+        "module.path": "CTPOTCServer.dll",
+        "class.uuid": "factory.otc.option"
       }
     },
     "cts": {

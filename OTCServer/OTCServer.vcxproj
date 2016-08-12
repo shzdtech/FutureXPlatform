@@ -154,7 +154,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="OTCHandlerBase.cpp" />
     <ClCompile Include="OTCQueryInstrument.cpp" />
     <ClCompile Include="OTCUnSubMarketData.cpp" />
     <ClCompile Include="OTCCancelOrder.cpp" />
@@ -175,7 +174,6 @@
     <ClCompile Include="TradingDeskContextBuilder.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="OTCHandlerBase.h" />
     <ClInclude Include="OTCQueryInstrument.h" />
     <ClInclude Include="OTCUnSubMarketData.h" />
     <ClInclude Include="OTCCancelOrder.h" />

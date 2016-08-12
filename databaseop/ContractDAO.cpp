@@ -19,7 +19,7 @@
 VectorDO_Ptr<ContractKey> ContractDAO::FindContractByClient(const std::string& clientSymbol)
 {
 	static const std::string sql_findcontract(
-		"SELECT exchange_symbol,contract_symbol,group_name "
+		"SELECT exchange_symbol,contract_symbol "
 		"FROM vw_pricing_contract "
 		"WHERE client_symbol like ?");
 
@@ -61,7 +61,7 @@ VectorDO_Ptr<ContractKey> ContractDAO::FindContractByClient(const std::string& c
 VectorDO_Ptr<InstrumentDO> ContractDAO::FindContractByProductType(int productType)
 {
 	static const std::string sql_findallcontract(
-		"SELECT exchange_symbol, contract_symbol, tick_size, multiplier, underlying_symbol, expiration "
+		"SELECT exchange_symbol, contract_symbol, tick_size, multiplier, underlying_symbol, expiration, underlying_exchange, underlying_contract "
 		"FROM vw_contract_property "
 		"where product_type = ?");
 
@@ -83,6 +83,14 @@ VectorDO_Ptr<InstrumentDO> ContractDAO::FindContractByProductType(int productTyp
 			cdo.VolumeMultiple = rs->getDouble(4);
 			cdo.ProductID = rs->getString(5);
 			if (!rs->isNull(6))	cdo.ExpireDate = rs->getString(6);
+
+			std::string underlying_exchange;
+			std::string underlying_contract;
+			if (!rs->isNull(7)) underlying_exchange = rs->getString(7);
+			if (!rs->isNull(8)) underlying_contract = rs->getString(8);
+
+			cdo.UnderlyingContract = ContractKey(underlying_exchange, underlying_contract);
+
 			cdo.ProductType = (ProductType)productType;
 
 			ret->push_back(std::move(cdo));

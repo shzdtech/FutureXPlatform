@@ -61,15 +61,14 @@ int OTCWorkerProcessor::RefreshStrategy(const StrategyContractDO& strategyDO)
 	int ret = 0;
 
 	//subscribe market data from CTP
-	auto baseContracts = strategyDO.PricingContracts;
 
-	for (auto& bsContract : *baseContracts)
+	for (auto& bsContract : strategyDO.PricingContracts)
 	{
 		AddContractToMonitor(bsContract);
 		_contract_strategy_map.getorfill(bsContract).insert(strategyDO);
 	}
 
-	return baseContracts->size();
+	return strategyDO.PricingContracts.size();
 }
 
 void OTCWorkerProcessor::RegisterPricingListener(const ContractKey& contractId,

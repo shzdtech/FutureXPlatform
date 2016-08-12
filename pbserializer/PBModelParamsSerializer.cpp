@@ -24,11 +24,7 @@ data_buffer PBModelParamsSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	auto pDO = (ModelParamsDO*)abstractDO.get();
 	ModelParams pb;
-	pb.set_serialid(pDO->SerialId);
 	pb.set_modelname(pDO->ModelName);
-
-	for (double val : pDO->Values)
-		pb.mutable_values()->Add(val);
 
 	pb.mutable_scalaparams()->insert(pDO->ScalaParams.begin(), pDO->ScalaParams.end());
 
@@ -63,10 +59,7 @@ dataobj_ptr PBModelParamsSerializer::Deserialize(const data_buffer& rawdata)
 
 	auto pDO = new ModelParamsDO;
 	dataobj_ptr ret(pDO);
-	pDO->SerialId = pb.serialid();
 	pDO->ModelName = pb.modelname();	
-
-	pDO->Values.assign(pb.values().begin(), pb.values().end());
 
 	pDO->ScalaParams.insert(pb.scalaparams().begin(), pb.scalaparams().end());
 

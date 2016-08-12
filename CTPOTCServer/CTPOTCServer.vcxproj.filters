@@ -45,6 +45,12 @@
     <ClCompile Include="CTPOTCSessionProcessor.cpp">
       <Filter>源文件\OTC</Filter>
     </ClCompile>
+    <ClCompile Include="CTPOTCOptionWorkerProcessor.cpp">
+      <Filter>源文件\Option</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPOTCOptionServiceFactory.cpp">
+      <Filter>源文件\Option</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ctpotc_bizhandlers.h">
@@ -70,6 +76,12 @@
     </ClInclude>
     <ClInclude Include="CTPOTCSessionProcessor.h">
       <Filter>头文件\OTC</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPOTCOptionWorkerProcessor.h">
+      <Filter>头文件\Option</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPOTCOptionServiceFactory.h">
+      <Filter>头文件\Option</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

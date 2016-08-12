@@ -39,6 +39,8 @@ public:
 
 	void RegisterLoggedSession(IMessageSession* pMessageSession);
 
+	ProductType GetProductType();
+
 	OTCTradeProcessor* GetOTCTradeProcessor();
 
 protected:

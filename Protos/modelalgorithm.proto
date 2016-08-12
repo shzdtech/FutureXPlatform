@@ -4,10 +4,8 @@ package Micro.Future.Message;
 
 message ModelParams
 {
-	uint32 serialId = 1;
-	repeated double values = 2;
-	string modelName = 3;
-	map<string, double> scalaParams = 4;
+	string modelName = 1;
+	map<string, double> scalaParams = 2;
 
 	message double_vector
 	{ repeated double entry = 1;}

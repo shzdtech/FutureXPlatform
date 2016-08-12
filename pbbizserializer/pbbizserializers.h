@@ -25,6 +25,7 @@
 #include "PBContractParamSerializer.h"
 #include "PBStrategySerializer.h"
 #include "PBUserParamSerializer.h"
+#include "PBSubPricingDataSerializer.h"
 
 
 #endif

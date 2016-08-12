@@ -36,6 +36,8 @@ public:
    virtual void UnregisterPricingListener(const ContractKey& contractId,
 	   IMessageSession* pMsgSession);
 
+   virtual ProductType GetProductType() = 0;
+
    virtual OTCTradeProcessor* GetOTCTradeProcessor() = 0;
 
 protected:

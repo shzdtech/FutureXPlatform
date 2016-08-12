@@ -69,6 +69,12 @@
     <ClCompile Include="..\Protos\commondefine.pb.cc">
       <Filter>protos</Filter>
     </ClCompile>
+    <ClCompile Include="..\Protos\modelalgorithm.pb.cc">
+      <Filter>protos</Filter>
+    </ClCompile>
+    <ClCompile Include="PBSubPricingDataSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Protos\businessobj.pb.h">
@@ -125,6 +131,12 @@
     <ClInclude Include="resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\Protos\modelalgorithm.pb.h">
+      <Filter>protos</Filter>
+    </ClInclude>
+    <ClInclude Include="PBSubPricingDataSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\Protos\businessobj.proto">
@@ -135,5 +147,10 @@
     <ResourceCompile Include="pbbizserializer.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Protos\modelalgorithm.proto">
+      <Filter>protos</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -38,25 +38,20 @@ dataobj_ptr OTCUnSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI*
 		auto nInstrument = instList.size();
 
 		if (nInstrument > 0)
-			if (auto userContractMap = std::static_pointer_cast<UserContractParamDOMap>
-				(session->getContext()->getAttribute(STR_KEY_USER_CONTRACTS)))
-				if (auto wkProcPtr =
-					MessageUtility::ServerWorkerProcessor<OTCWorkerProcessor>(session->getProcessor()))
+			if (auto wkProcPtr = MessageUtility::ServerWorkerProcessor<OTCWorkerProcessor>(session->getProcessor()))
+			{
+				for (auto& inst : instList)
 				{
-					for (auto& inst : instList)
+					if (auto contract = ContractCache::Get(wkProcPtr->GetProductType()).QueryInstrumentById(inst))
 					{
-						if (auto contract = ContractCache::OtcContracts().QueryInstrumentById(inst))
-						{
-							userContractMap->erase(*contract);
+						wkProcPtr->UnregisterPricingListener(*contract,
+							session->getProcessor()->LockMessageSession().get());
 
-							wkProcPtr->UnregisterPricingListener(*contract,
-								session->getProcessor()->LockMessageSession().get());
-
-							ret->Data[STR_INSTRUMENT_ID].push_back(inst);
-						}
+						ret->Data[STR_INSTRUMENT_ID].push_back(inst);
 					}
-
 				}
+
+			}
 	}
 
 	return ret;

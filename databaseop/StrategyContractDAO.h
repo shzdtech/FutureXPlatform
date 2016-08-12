@@ -17,9 +17,9 @@
 class DATABASEOP_CLASS_EXPORTS StrategyContractDAO
 {
 public:
-	static VectorDO_Ptr<StrategyContractDO> FindStrategyContractByClient(const std::string& clientSymbol);
-	static VectorDO_Ptr<PricingContract> FindPricingContracts(const std::string& strategySymbol, const std::string& clientSymbol);
-	static void FindStrategyParams(const std::string& strategySymbol, const std::string& clientSymbol, std::map<std::string, double>& paramMap);
+	static VectorDO_Ptr<StrategyContractDO> FindStrategyContractByClient(const std::string& clientSymbol, int productType);
+	static void RetrievePricingContracts(const std::string& strategySymbol, const std::string& clientSymbol, std::vector<PricingContract>& pricingContracts);
+	static void RetrieveModelParams(const std::string& strategySymbol, const std::string& clientSymbol, ModelParamsDO& modelParams);
 
 protected:
 private:

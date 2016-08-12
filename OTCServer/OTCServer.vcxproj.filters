@@ -13,6 +13,24 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="头文件\MarketDataHandler">
+      <UniqueIdentifier>{9444a09d-ee85-4a70-9527-704cacff461c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\TradeHandler">
+      <UniqueIdentifier>{8dc689e8-0625-4a3f-b538-af71a05d47b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\TradingDesk">
+      <UniqueIdentifier>{efa11103-2990-4aed-b5b2-6ddca48ea8c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\TradingDesk">
+      <UniqueIdentifier>{887dd5ef-8097-414b-882e-237c3751f8d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\TradeHandler">
+      <UniqueIdentifier>{e2a589f2-604e-4a5a-9056-b77346eff73d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\MarketDataHandler">
+      <UniqueIdentifier>{4d654aa2-cead-4d82-8b23-e34309e3c936}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="otcserver_export.cpp">
@@ -24,53 +42,50 @@
     <ClCompile Include="OTCTradeProcessor.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="OTCCancelOrder.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="OTCNewOrder.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="OTCQueryContractParam.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="OTCQueryOrder.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="OTCQueryStrategy.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="OTCQueryTradingDesks.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="OTCReturnPricingData.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="OTCSubMarketData.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="OTCUpdateContractParam.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="OTCUpdateStrategy.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="OTCUpdateUserParam.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="OTCUserContextBuilder.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="TradingDeskContextBuilder.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="OTCUnSubMarketData.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="OTCCancelOrder.cpp">
+      <Filter>源文件\TradeHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="OTCNewOrder.cpp">
+      <Filter>源文件\TradeHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="OTCQueryOrder.cpp">
+      <Filter>源文件\TradeHandler</Filter>
     </ClCompile>
     <ClCompile Include="OTCQueryInstrument.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\TradeHandler</Filter>
     </ClCompile>
-    <ClCompile Include="OTCHandlerBase.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="OTCQueryContractParam.cpp">
+      <Filter>源文件\TradingDesk</Filter>
+    </ClCompile>
+    <ClCompile Include="OTCQueryStrategy.cpp">
+      <Filter>源文件\TradingDesk</Filter>
+    </ClCompile>
+    <ClCompile Include="OTCQueryTradingDesks.cpp">
+      <Filter>源文件\MarketDataHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="OTCReturnPricingData.cpp">
+      <Filter>源文件\MarketDataHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="OTCSubMarketData.cpp">
+      <Filter>源文件\MarketDataHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="OTCUnSubMarketData.cpp">
+      <Filter>源文件\MarketDataHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="OTCUpdateStrategy.cpp">
+      <Filter>源文件\TradingDesk</Filter>
+    </ClCompile>
+    <ClCompile Include="OTCUpdateContractParam.cpp">
+      <Filter>源文件\TradingDesk</Filter>
+    </ClCompile>
+    <ClCompile Include="OTCUpdateUserParam.cpp">
+      <Filter>源文件\TradingDesk</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -86,53 +101,50 @@
     <ClInclude Include="otc_bizhandlers.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="OTCCancelOrder.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="OTCNewOrder.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="OTCQueryContractParam.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="OTCQueryOrder.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="OTCQueryStrategy.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="OTCQueryTradingDesks.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="OTCReturnPricingData.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="OTCSubMarketData.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="OTCUpdateContractParam.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="OTCUpdateStrategy.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="OTCUpdateUserParam.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="OTCUserContextBuilder.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="TradingDeskContextBuilder.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="OTCSubMarketData.h">
+      <Filter>头文件\MarketDataHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="OTCReturnPricingData.h">
+      <Filter>头文件\MarketDataHandler</Filter>
+    </ClInclude>
     <ClInclude Include="OTCUnSubMarketData.h">
-      <Filter>头文件</Filter>
+      <Filter>头文件\MarketDataHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="OTCNewOrder.h">
+      <Filter>头文件\TradeHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="OTCQueryOrder.h">
+      <Filter>头文件\TradeHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="OTCCancelOrder.h">
+      <Filter>头文件\TradeHandler</Filter>
     </ClInclude>
     <ClInclude Include="OTCQueryInstrument.h">
-      <Filter>头文件</Filter>
+      <Filter>头文件\TradeHandler</Filter>
     </ClInclude>
-    <ClInclude Include="OTCHandlerBase.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="OTCQueryStrategy.h">
+      <Filter>头文件\TradeHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="OTCUpdateUserParam.h">
+      <Filter>头文件\TradingDesk</Filter>
+    </ClInclude>
+    <ClInclude Include="OTCUpdateStrategy.h">
+      <Filter>头文件\TradingDesk</Filter>
+    </ClInclude>
+    <ClInclude Include="OTCUpdateContractParam.h">
+      <Filter>头文件\TradingDesk</Filter>
+    </ClInclude>
+    <ClInclude Include="OTCQueryContractParam.h">
+      <Filter>头文件\TradingDesk</Filter>
+    </ClInclude>
+    <ClInclude Include="OTCQueryTradingDesks.h">
+      <Filter>头文件\MarketDataHandler</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

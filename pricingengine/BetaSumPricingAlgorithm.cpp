@@ -36,36 +36,34 @@ const std::string& BetaSumPricingAlgorithm::Name(void) const
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr BetaSumPricingAlgorithm::Compute(
+std::shared_ptr<PricingDO> BetaSumPricingAlgorithm::Compute(
 	const void* pInputObject,
 	const StrategyContractDO& sdo,
 	IPricingDataContext& priceCtx,
 	const param_vector* params)
 {
 	BetaSumParams paramObj;
-	if (!ParseParams(sdo.Params, &paramObj))
+	if (!ParseParams(sdo.ModelParams, &paramObj))
 		return nullptr;
 
-	dataobj_ptr ret;
+	std::shared_ptr<PricingDO> ret;
 
 	auto& mdDOMap = *(priceCtx.GetMarketDataMap());
 	auto& conDOMap = *(priceCtx.GetContractParamMap());
-
-	auto& parentCon = conDOMap.at(sdo);
 
 	double BidPrice = 0;
 	double AskPrice = 0;
 	int quantity = *(int*)pInputObject;
 
-	if (sdo.PricingContracts && sdo.PricingContracts->size() > 0)
+	if (sdo.PricingContracts.size() > 0)
 	{
 
-		for (auto& conparam : *(sdo.PricingContracts))
+		for (auto& conparam : sdo.PricingContracts)
 		{
 			auto& baseCon = conDOMap.at(conparam);
 			auto& md = mdDOMap.at(conparam.InstrumentID());
 
-			double K = std::fabs(conparam.Weight) *	quantity * parentCon.Multiplier / 
+			double K = std::fabs(conparam.Weight) *	quantity * sdo.Multiplier /
 				baseCon.Multiplier;
 
 
@@ -88,9 +86,9 @@ dataobj_ptr BetaSumPricingAlgorithm::Compute(
 		BidPrice += paramObj.offset - paramObj.spread;
 		AskPrice += paramObj.offset + paramObj.spread;
 
-		BidPrice = std::floor(BidPrice / parentCon.TickSize) * parentCon.TickSize;
+		BidPrice = std::floor(BidPrice / sdo.TickSize) * sdo.TickSize;
 
-		AskPrice = std::ceil(AskPrice / parentCon.TickSize) * parentCon.TickSize;
+		AskPrice = std::ceil(AskPrice / sdo.TickSize) * sdo.TickSize;
 
 		if (!sdo.IsOTC())
 		{
@@ -118,13 +116,13 @@ const std::map<std::string, double>& BetaSumPricingAlgorithm::DefaultParams(void
 	return defaultParams;
 }
 
-bool BetaSumPricingAlgorithm::ParseParams(const std::map<std::string, double>& params, void * pParamObj)
+bool BetaSumPricingAlgorithm::ParseParams(const ModelParamsDO& modelParams, void * pParamObj)
 {
 	bool ret = true;
 
 	BetaSumParams* pParams = (BetaSumParams*)pParamObj;
-	pParams->offset = params.at(BetaSumParams::offset_name);
-	pParams->spread = params.at(BetaSumParams::spread_name);
+	pParams->offset = modelParams.ScalaParams.at(BetaSumParams::offset_name);
+	pParams->spread = modelParams.ScalaParams.at(BetaSumParams::spread_name);
 
 	return ret;
 }

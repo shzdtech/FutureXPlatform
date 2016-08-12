@@ -18,7 +18,8 @@
 #define CTP_OTC_CLASS_EXPORT
 #endif
 
-static const char* UUID_OTC_SERVICE_FACTORY = "factory.otc.service";
+static const char* UUID_OTC_CONTRACT_FACTORY = "factory.otc.contract";
+static const char* UUID_OTC_OPTION_FACTORY = "factory.otc.option";
 
 #endif	/* CTPEXPORT_H */
 

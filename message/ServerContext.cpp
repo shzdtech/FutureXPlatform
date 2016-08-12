@@ -7,23 +7,23 @@
 
 #include "ServerContext.h"
 
-////////////////////////////////////////////////////////////////////////
-// Name:       Context::getAttribute(std::string key)
-// Purpose:    Implementation of Context::getAttribute()
-// Parameters:
-// - key
-// Return:     attribute_ptr
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       Context::getAttribute(std::string key)
+ // Purpose:    Implementation of Context::getAttribute()
+ // Parameters:
+ // - key
+ // Return:     attribute_ptr
+ ////////////////////////////////////////////////////////////////////////
 
 attribute_ptr ServerContext::getAttribute(const std::string& key)
 {
-    attribute_ptr ret;
-    auto itr = _attrib_map.find(key);
-    if (itr != _attrib_map.end())
-    {
-        ret = itr->second;
-    }
-    return ret;
+	attribute_ptr ret;
+	auto itr = _attrib_map.find(key);
+	if (itr != _attrib_map.end())
+	{
+		ret = itr->second;
+	}
+	return ret;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -37,12 +37,14 @@ attribute_ptr ServerContext::getAttribute(const std::string& key)
 
 void ServerContext::setAttribute(const std::string& key, attribute_ptr value)
 {
-   _attrib_map[key] = value;
+	_attrib_map[key] = value;
 }
 
 void ServerContext::setWorkerProcessor(const IMessageProcessor_Ptr& proc_ptr)
 {
 	_workerProcessor_Ptr = proc_ptr;
+	if (!_subWorkProcPtr)
+		_subWorkProcPtr = proc_ptr;
 }
 
 IMessageProcessor_Ptr ServerContext::getWorkerProcessor(void)

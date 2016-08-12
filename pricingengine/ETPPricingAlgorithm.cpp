@@ -38,37 +38,35 @@ const std::string& ETPPricingAlgorithm::Name(void) const
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr ETPPricingAlgorithm::Compute(
+std::shared_ptr<PricingDO> ETPPricingAlgorithm::Compute(
 	const void* pInputObject,
 	const StrategyContractDO& sdo,
 	IPricingDataContext& priceCtx,
 	const param_vector* params)
 {
 	ETPParams paramObj;
-	if (!ParseParams(sdo.Params, &paramObj))
+	if (!ParseParams(sdo.ModelParams, &paramObj))
 		return nullptr;
 
-	dataobj_ptr ret;
+	std::shared_ptr<PricingDO> ret;
 
 	auto& mdDOMap = *(priceCtx.GetMarketDataMap());
 	auto& conDOMap = *(priceCtx.GetContractParamMap());
-
-	auto& parentCon = conDOMap.at(sdo);
 
 	double BidPrice = 0;
 	double AskPrice = 0;
 	double quantity = *(int*)pInputObject;
 
-	if (sdo.PricingContracts && sdo.PricingContracts->size() > 0)
+	if (sdo.PricingContracts.size() > 0)
 	{
 
-		for (auto& conparam : *(sdo.PricingContracts))
+		for (auto& conparam : sdo.PricingContracts)
 		{
 			auto& baseCon = conDOMap.at(conparam);
 			auto& md = mdDOMap.at(conparam.InstrumentID());
 
 			double K = std::fabs(conparam.Weight) *
-				quantity * parentCon.Multiplier / baseCon.Multiplier;
+				quantity * sdo.Multiplier / baseCon.Multiplier;
 
 
 			double VolAdjBidPrice =
@@ -90,8 +88,8 @@ dataobj_ptr ETPPricingAlgorithm::Compute(
 		BidPrice = paramObj.coeff * BidPrice + paramObj.offset - paramObj.spread;
 		AskPrice = paramObj.coeff * AskPrice + paramObj.offset + paramObj.spread;
 
-		BidPrice = std::floor(BidPrice / parentCon.TickSize) * parentCon.TickSize;
-		AskPrice = std::ceil(AskPrice / parentCon.TickSize) * parentCon.TickSize;
+		BidPrice = std::floor(BidPrice / sdo.TickSize) * sdo.TickSize;
+		AskPrice = std::ceil(AskPrice / sdo.TickSize) * sdo.TickSize;
 
 		if (!sdo.IsOTC())
 		{
@@ -120,14 +118,14 @@ const std::map<std::string, double>& ETPPricingAlgorithm::DefaultParams(void)
 	return defaultParams;
 }
 
-bool ETPPricingAlgorithm::ParseParams(const std::map<std::string, double>& params, void * pParamObj)
+bool ETPPricingAlgorithm::ParseParams(const ModelParamsDO& modelParams, void * pParamObj)
 {
 	bool ret = true;
 
 	ETPParams* pParams = (ETPParams*)pParamObj;
-	pParams->coeff = params.at(ETPParams::coeff_name);
-	pParams->offset = params.at(ETPParams::offset_name);
-	pParams->spread = params.at(ETPParams::spread_name);
+	pParams->coeff = modelParams.ScalaParams.at(ETPParams::coeff_name);
+	pParams->offset = modelParams.ScalaParams.at(ETPParams::offset_name);
+	pParams->spread = modelParams.ScalaParams.at(ETPParams::spread_name);
 
 	return ret;
 }

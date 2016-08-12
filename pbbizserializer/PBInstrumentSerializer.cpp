@@ -55,8 +55,12 @@ data_buffer PBInstrumentSerializer::Serialize(const dataobj_ptr& abstractDO)
 		PB->set_positiondatetype(insDO.PositionDateType);
 		PB->set_longmarginratio(insDO.LongMarginRatio);
 		PB->set_shortmarginratio(insDO.ShortMarginRatio);
-		if(insDO.GroupName.length()>0)
-			PB->set_groupname(insDO.GroupName);
+		if(insDO.StrikePrice > 0.01) PB->set_strikeprice(insDO.StrikePrice);
+		if(insDO.UnderlyingContract.InstrumentID().length()>0)
+		{
+			PB->set_underlyingexchange(insDO.UnderlyingContract.ExchangeID());
+			PB->set_underlyingcontract(insDO.UnderlyingContract.InstrumentID());
+		}
 	}
 
 	SerializeWithReturn(PBList);

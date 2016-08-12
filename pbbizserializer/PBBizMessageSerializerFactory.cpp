@@ -38,7 +38,7 @@ PBBizMessageSerializerFactory::PBBizMessageSerializerFactory()
 	_serializer_map[MSG_ID_SETTLEMENT_INFO_CONFIRM] = PBStringMapSerializer::Instance();
 
 	//OTC
-	_serializer_map[MSG_ID_SUB_PRICING] = PBPricingDataSerializer::Instance();
+	_serializer_map[MSG_ID_SUB_PRICING] = PBSubPricingDataSerializer::Instance();
 	_serializer_map[MSG_ID_RTN_PRICING] = PBPricingDataSerializer::Instance();
 	_serializer_map[MSG_ID_UNSUB_PRICING] = PBStringTableSerializer::Instance();
 	_serializer_map[MSG_ID_MODIFY_USER_PARAM] = std::make_shared<PBCombineSerializer>

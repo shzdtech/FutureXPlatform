@@ -38,8 +38,5 @@ dataobj_ptr CTSReturnMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI
 dataobj_ptr CTSReturnMarketData::HandleResponse(const uint32_t serialId, param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
 {
 	auto pMdDO = (MarketDataDO*)rawParams[0];
-	auto ret = std::make_shared<VectorDO<MarketDataDO>>();
-	ret->push_back(*pMdDO);
-
-	return ret;
+	return std::make_shared<MarketDataDO>(*pMdDO);
 }

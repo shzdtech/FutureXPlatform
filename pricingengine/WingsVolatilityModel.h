@@ -48,9 +48,12 @@ class WingsVolatilityModel : public IModelAlgorithm
 {
 public:
 	virtual const std::string& Name(void) const;
-	virtual dataobj_ptr Compute(const dataobj_ptr& input);
+	virtual dataobj_ptr Compute(
+		const void* pInputObject,
+		const ModelParamsDO& modelParams,
+		const param_vector* params);
 	virtual const std::map<std::string, double>& DefaultParams(void);
-	virtual bool ParseParams(const std::map<std::string, double>& params, void* pParamObj);
+	virtual bool ParseParams(const ModelParamsDO& modelParams, void* pParamObj);
 };
 
 #endif

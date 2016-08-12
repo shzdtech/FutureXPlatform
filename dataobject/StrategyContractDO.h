@@ -12,6 +12,9 @@
 #include "PricingContract.h"
 #include "ContractKey.h"
 #include "PortfolioDO.h"
+#include "ModelParamsDO.h"
+#include "EnumTypes.h"
+#include "DateType.h"
 #include <ctime>
 
 class StrategyContractDO : public UserContractKey, public PortfolioKey, public dataobjectbase
@@ -24,21 +27,23 @@ public:
 	StrategyContractDO(const std::string& exchangeID, const std::string& instrumentID)
 		: StrategyContractDO(exchangeID, instrumentID, "", "") {}
 
-	std::string Strategy;
+	std::string StrategyName;
 	std::string Description;
 	std::string Underlying;
-	std::string Algorithm;
-	std::tm Expiration;
+	DateType Expiration;
+	DateType TradingDay;
+	ContractType ContractType;
 	int Quantity = 1;
 	int Depth = 2;
-	double Volatility = 0.1;
-	double TickSize = 1;
-	double Multiplier = 1;
 	bool Trading = false;
 	bool Enabled = false;
 
-	std::map<std::string, double> Params;
-	std::shared_ptr<std::vector<PricingContract>> PricingContracts;
+	double TickSize = 1;
+	double Multiplier = 1;
+	double StrikePrice;
+
+	ModelParamsDO ModelParams;
+	std::vector<PricingContract> PricingContracts;
 
 protected:
 

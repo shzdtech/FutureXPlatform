@@ -40,7 +40,7 @@ dataobj_ptr OTCReturnPricingData::HandleResponse(const uint32_t serialId, param_
 {
 	auto pStrategyDO = (StrategyContractDO*)rawRespParams[0];
 
-	auto ret = std::make_shared<VectorDO<PricingDO>>();
+	std::shared_ptr<PricingDO> ret;
 
 	if (auto wkProcPtr =
 		MessageUtility::ServerWorkerProcessor<OTCWorkerProcessor>(session->getProcessor()))
@@ -48,12 +48,10 @@ dataobj_ptr OTCReturnPricingData::HandleResponse(const uint32_t serialId, param_
 		auto userContractMap = std::static_pointer_cast<UserContractParamDOMap>
 			(session->getContext()->getAttribute(STR_KEY_USER_CONTRACTS));
 
-		for (auto it = userContractMap->begin(); it != userContractMap->end(); it++)
-		{
-			if (auto pricingDO_ptr = PricingUtility::Pricing(&it->second.Quantity, *pStrategyDO, 
-				*wkProcPtr->GetOTCTradeProcessor()->GetPricingContext()))
-				ret->push_back(std::move(*pricingDO_ptr));
-		}
+		int quantity = userContractMap->at(*pStrategyDO).Quantity;
+
+		ret = PricingUtility::Pricing(&quantity, *pStrategyDO,
+			*wkProcPtr->GetOTCTradeProcessor()->GetPricingContext());
 	}
 
 	return ret;

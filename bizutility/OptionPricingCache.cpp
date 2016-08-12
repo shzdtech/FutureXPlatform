@@ -3,27 +3,21 @@
 #include "../utility/epsdouble.h"
 #include "../utility/autofillmap.h"
 
-static UserContractMap<autofillmap<epsdouble, autofillmap<epsdouble, double>>> _callOptionCache;
-static UserContractMap<autofillmap<epsdouble, autofillmap<epsdouble, double>>> _putOptionCache;
+static ContractMap<autofillmap<epsdouble, autofillmap<epsdouble, double>>> _optionCache;
 
-void OptionPricingCache::AddCallOption(const StrategyContractDO& key, double inputPrice, double outputPrice)
+void OptionPricingCache::AddOption(const ContractKey& key, double volatility, double inputPrice, double outputPrice)
 {
-	_callOptionCache.getorfill(key).getorfill(key.Volatility).emplace(inputPrice, outputPrice);
+	_optionCache.getorfill(key).getorfill(volatility).emplace(inputPrice, outputPrice);
 }
 
-void OptionPricingCache::AddPutOption(const StrategyContractDO& key, double inputPrice, double outputPrice)
-{
-	_putOptionCache.getorfill(key).getorfill(key.Volatility).emplace(inputPrice, outputPrice);
-}
-
-bool OptionPricingCache::FindCallOption(const StrategyContractDO& key, double inputPrice, double& outputPrice)
+bool OptionPricingCache::FindOption(const ContractKey& key, double volatility, double inputPrice, double& outputPrice)
 {
 	bool ret = false;
 
-	auto it = _callOptionCache.find(key);
-	if (it != _callOptionCache.end())
+	auto it = _optionCache.find(key);
+	if (it != _optionCache.end())
 	{
-		auto vit = it->second.find(key.Volatility);
+		auto vit = it->second.find(volatility);
 		if (vit != it->second.end())
 		{
 			auto pit = vit->second.find(inputPrice);
@@ -38,36 +32,12 @@ bool OptionPricingCache::FindCallOption(const StrategyContractDO& key, double in
 	return ret;
 }
 
-bool OptionPricingCache::FindPutOption(const StrategyContractDO& key, double inputPrice, double& outputPrice)
+void OptionPricingCache::Clear(const ContractKey& key)
 {
-	bool ret = false;
-
-	auto it = _putOptionCache.find(key);
-	if (it != _putOptionCache.end())
-	{
-		auto vit = it->second.find(key.Volatility);
-		if (vit != it->second.end())
-		{
-			auto pit = vit->second.find(inputPrice);
-			if (pit != vit->second.end())
-			{
-				outputPrice = pit->second;
-				ret = true;
-			}
-		}
-	}
-
-	return ret;
-}
-
-void OptionPricingCache::Clear(const UserContractKey& key)
-{
-	_callOptionCache.erase(key);
-	_putOptionCache.erase(key);
+	_optionCache.erase(key);
 }
 
 void OptionPricingCache::Clear(void)
 {
-	_callOptionCache.clear();
-	_putOptionCache.clear();
+	_optionCache.clear();
 }

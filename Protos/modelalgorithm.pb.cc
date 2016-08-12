@@ -42,9 +42,7 @@ void protobuf_AssignDesc_modelalgorithm_2eproto() {
       "modelalgorithm.proto");
   GOOGLE_CHECK(file != NULL);
   ModelParams_descriptor_ = file->message_type(0);
-  static const int ModelParams_offsets_[5] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelParams, serialid_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelParams, values_),
+  static const int ModelParams_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelParams, modelname_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelParams, scalaparams_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelParams, vectorparams_),
@@ -130,17 +128,16 @@ void protobuf_AddDesc_modelalgorithm_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\024modelalgorithm.proto\022\024Micro.Future.Mes"
-    "sage\"\220\003\n\013ModelParams\022\020\n\010serialId\030\001 \001(\r\022\016"
-    "\n\006values\030\002 \003(\001\022\021\n\tmodelName\030\003 \001(\t\022G\n\013sca"
-    "laParams\030\004 \003(\01322.Micro.Future.Message.Mo"
-    "delParams.ScalaParamsEntry\022I\n\014vectorPara"
-    "ms\030\005 \003(\01323.Micro.Future.Message.ModelPar"
-    "ams.VectorParamsEntry\0322\n\020ScalaParamsEntr"
-    "y\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\001:\0028\001\032\036\n\rdou"
-    "ble_vector\022\r\n\005entry\030\001 \003(\001\032d\n\021VectorParam"
-    "sEntry\022\013\n\003key\030\001 \001(\t\022>\n\005value\030\002 \001(\0132/.Mic"
-    "ro.Future.Message.ModelParams.double_vec"
-    "tor:\0028\001b\006proto3", 455);
+    "sage\"\356\002\n\013ModelParams\022\021\n\tmodelName\030\001 \001(\t\022"
+    "G\n\013scalaParams\030\002 \003(\01322.Micro.Future.Mess"
+    "age.ModelParams.ScalaParamsEntry\022I\n\014vect"
+    "orParams\030\005 \003(\01323.Micro.Future.Message.Mo"
+    "delParams.VectorParamsEntry\0322\n\020ScalaPara"
+    "msEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\001:\0028\001\032"
+    "\036\n\rdouble_vector\022\r\n\005entry\030\001 \003(\001\032d\n\021Vecto"
+    "rParamsEntry\022\013\n\003key\030\001 \001(\t\022>\n\005value\030\002 \001(\013"
+    "2/.Micro.Future.Message.ModelParams.doub"
+    "le_vector:\0028\001b\006proto3", 421);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "modelalgorithm.proto", &protobuf_RegisterTypes);
   ModelParams::default_instance_ = new ModelParams();
@@ -407,8 +404,6 @@ void ModelParams_double_vector::InternalSwap(ModelParams_double_vector* other) {
 // -------------------------------------------------------------------
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int ModelParams::kSerialIdFieldNumber;
-const int ModelParams::kValuesFieldNumber;
 const int ModelParams::kModelNameFieldNumber;
 const int ModelParams::kScalaParamsFieldNumber;
 const int ModelParams::kVectorParamsFieldNumber;
@@ -436,7 +431,6 @@ void ModelParams::SharedCtor() {
     _is_default_instance_ = false;
   ::google::protobuf::internal::GetEmptyString();
   _cached_size_ = 0;
-  serialid_ = 0u;
   modelname_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   scalaparams_.SetAssignDescriptorCallback(
       protobuf_AssignDescriptorsOnce);
@@ -486,9 +480,7 @@ ModelParams* ModelParams::New(::google::protobuf::Arena* arena) const {
 
 void ModelParams::Clear() {
 // @@protoc_insertion_point(message_clear_start:Micro.Future.Message.ModelParams)
-  serialid_ = 0u;
   modelname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  values_.Clear();
   scalaparams_.Clear();
   vectorparams_.Clear();
 }
@@ -503,42 +495,9 @@ bool ModelParams::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional uint32 serialId = 1;
+      // optional string modelName = 1;
       case 1: {
-        if (tag == 8) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &serialid_)));
-
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(18)) goto parse_values;
-        break;
-      }
-
-      // repeated double values = 2;
-      case 2: {
-        if (tag == 18) {
-         parse_values:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
-                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
-                 input, this->mutable_values())));
-        } else if (tag == 17) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
-                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
-                 1, 18, input, this->mutable_values())));
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(26)) goto parse_modelName;
-        break;
-      }
-
-      // optional string modelName = 3;
-      case 3: {
-        if (tag == 26) {
-         parse_modelName:
+        if (tag == 10) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_modelname()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -548,13 +507,13 @@ bool ModelParams::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(34)) goto parse_scalaParams;
+        if (input->ExpectTag(18)) goto parse_scalaParams;
         break;
       }
 
-      // map<string, double> scalaParams = 4;
-      case 4: {
-        if (tag == 34) {
+      // map<string, double> scalaParams = 2;
+      case 2: {
+        if (tag == 18) {
          parse_scalaParams:
           DO_(input->IncrementRecursionDepth());
          parse_loop_scalaParams:
@@ -569,7 +528,7 @@ bool ModelParams::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(34)) goto parse_loop_scalaParams;
+        if (input->ExpectTag(18)) goto parse_loop_scalaParams;
         if (input->ExpectTag(42)) goto parse_loop_vectorParams;
         input->UnsafeDecrementRecursionDepth();
         break;
@@ -621,32 +580,17 @@ failure:
 void ModelParams::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:Micro.Future.Message.ModelParams)
-  // optional uint32 serialId = 1;
-  if (this->serialid() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->serialid(), output);
-  }
-
-  // repeated double values = 2;
-  if (this->values_size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteTag(2, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
-    output->WriteVarint32(_values_cached_byte_size_);
-  }
-  for (int i = 0; i < this->values_size(); i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteDoubleNoTag(
-      this->values(i), output);
-  }
-
-  // optional string modelName = 3;
+  // optional string modelName = 1;
   if (this->modelname().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->modelname().data(), this->modelname().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "Micro.Future.Message.ModelParams.modelName");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      3, this->modelname(), output);
+      1, this->modelname(), output);
   }
 
-  // map<string, double> scalaParams = 4;
+  // map<string, double> scalaParams = 2;
   {
     ::google::protobuf::scoped_ptr<ModelParams_ScalaParamsEntry> entry;
     for (::google::protobuf::Map< ::std::string, double >::const_iterator
@@ -654,7 +598,7 @@ void ModelParams::SerializeWithCachedSizes(
         it != this->scalaparams().end(); ++it) {
       entry.reset(scalaparams_.NewEntryWrapper(it->first, it->second));
       ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-          4, *entry, output);
+          2, *entry, output);
       ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
         it->first.data(), it->first.length(),
         ::google::protobuf::internal::WireFormatLite::SERIALIZE,
@@ -684,26 +628,7 @@ void ModelParams::SerializeWithCachedSizes(
 ::google::protobuf::uint8* ModelParams::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // @@protoc_insertion_point(serialize_to_array_start:Micro.Future.Message.ModelParams)
-  // optional uint32 serialId = 1;
-  if (this->serialid() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->serialid(), target);
-  }
-
-  // repeated double values = 2;
-  if (this->values_size() > 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
-      2,
-      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
-      target);
-    target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
-      _values_cached_byte_size_, target);
-  }
-  for (int i = 0; i < this->values_size(); i++) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteDoubleNoTagToArray(this->values(i), target);
-  }
-
-  // optional string modelName = 3;
+  // optional string modelName = 1;
   if (this->modelname().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->modelname().data(), this->modelname().length(),
@@ -711,10 +636,10 @@ void ModelParams::SerializeWithCachedSizes(
       "Micro.Future.Message.ModelParams.modelName");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        3, this->modelname(), target);
+        1, this->modelname(), target);
   }
 
-  // map<string, double> scalaParams = 4;
+  // map<string, double> scalaParams = 2;
   {
     ::google::protobuf::scoped_ptr<ModelParams_ScalaParamsEntry> entry;
     for (::google::protobuf::Map< ::std::string, double >::const_iterator
@@ -723,7 +648,7 @@ void ModelParams::SerializeWithCachedSizes(
       entry.reset(scalaparams_.NewEntryWrapper(it->first, it->second));
       target = ::google::protobuf::internal::WireFormatLite::
           WriteMessageNoVirtualToArray(
-              4, *entry, target);
+              2, *entry, target);
       ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
         it->first.data(), it->first.length(),
         ::google::protobuf::internal::WireFormatLite::SERIALIZE,
@@ -756,35 +681,14 @@ int ModelParams::ByteSize() const {
 // @@protoc_insertion_point(message_byte_size_start:Micro.Future.Message.ModelParams)
   int total_size = 0;
 
-  // optional uint32 serialId = 1;
-  if (this->serialid() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::UInt32Size(
-        this->serialid());
-  }
-
-  // optional string modelName = 3;
+  // optional string modelName = 1;
   if (this->modelname().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->modelname());
   }
 
-  // repeated double values = 2;
-  {
-    int data_size = 0;
-    data_size = 8 * this->values_size();
-    if (data_size > 0) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
-    }
-    GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-    _values_cached_byte_size_ = data_size;
-    GOOGLE_SAFE_CONCURRENT_WRITES_END();
-    total_size += data_size;
-  }
-
-  // map<string, double> scalaParams = 4;
+  // map<string, double> scalaParams = 2;
   total_size += 1 * this->scalaparams_size();
   {
     ::google::protobuf::scoped_ptr<ModelParams_ScalaParamsEntry> entry;
@@ -834,12 +738,8 @@ void ModelParams::MergeFrom(const ::google::protobuf::Message& from) {
 void ModelParams::MergeFrom(const ModelParams& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:Micro.Future.Message.ModelParams)
   if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
-  values_.MergeFrom(from.values_);
   scalaparams_.MergeFrom(from.scalaparams_);
   vectorparams_.MergeFrom(from.vectorparams_);
-  if (from.serialid() != 0) {
-    set_serialid(from.serialid());
-  }
   if (from.modelname().size() > 0) {
 
     modelname_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.modelname_);
@@ -870,8 +770,6 @@ void ModelParams::Swap(ModelParams* other) {
   InternalSwap(other);
 }
 void ModelParams::InternalSwap(ModelParams* other) {
-  std::swap(serialid_, other->serialid_);
-  values_.UnsafeArenaSwap(&other->values_);
   modelname_.Swap(&other->modelname_);
   scalaparams_.Swap(&other->scalaparams_);
   vectorparams_.Swap(&other->vectorparams_);
@@ -924,51 +822,7 @@ ModelParams_double_vector::mutable_entry() {
 
 // ModelParams
 
-// optional uint32 serialId = 1;
-void ModelParams::clear_serialid() {
-  serialid_ = 0u;
-}
- ::google::protobuf::uint32 ModelParams::serialid() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.ModelParams.serialId)
-  return serialid_;
-}
- void ModelParams::set_serialid(::google::protobuf::uint32 value) {
-  
-  serialid_ = value;
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.ModelParams.serialId)
-}
-
-// repeated double values = 2;
-int ModelParams::values_size() const {
-  return values_.size();
-}
-void ModelParams::clear_values() {
-  values_.Clear();
-}
- double ModelParams::values(int index) const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.ModelParams.values)
-  return values_.Get(index);
-}
- void ModelParams::set_values(int index, double value) {
-  values_.Set(index, value);
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.ModelParams.values)
-}
- void ModelParams::add_values(double value) {
-  values_.Add(value);
-  // @@protoc_insertion_point(field_add:Micro.Future.Message.ModelParams.values)
-}
- const ::google::protobuf::RepeatedField< double >&
-ModelParams::values() const {
-  // @@protoc_insertion_point(field_list:Micro.Future.Message.ModelParams.values)
-  return values_;
-}
- ::google::protobuf::RepeatedField< double >*
-ModelParams::mutable_values() {
-  // @@protoc_insertion_point(field_mutable_list:Micro.Future.Message.ModelParams.values)
-  return &values_;
-}
-
-// optional string modelName = 3;
+// optional string modelName = 1;
 void ModelParams::clear_modelname() {
   modelname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1012,7 +866,7 @@ void ModelParams::clear_modelname() {
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.ModelParams.modelName)
 }
 
-// map<string, double> scalaParams = 4;
+// map<string, double> scalaParams = 2;
 int ModelParams::scalaparams_size() const {
   return scalaparams_.size();
 }

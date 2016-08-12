@@ -105,6 +105,9 @@
     <ClInclude Include="ContractParamDO.h">
       <Filter>头文件\otc</Filter>
     </ClInclude>
+    <ClInclude Include="DateType.h">
+      <Filter>头文件\common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

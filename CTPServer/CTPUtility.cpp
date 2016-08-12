@@ -122,6 +122,7 @@ bool CTPUtility::IsOrderActive(const int status)
 	case THOST_FTDC_OST_PartTradedNotQueueing:
 	case THOST_FTDC_OST_NoTradeNotQueueing:
 	case THOST_FTDC_OST_Canceled:
+	case THOST_FTDC_OST_Unknown:
 		ret = false;
 		break;
 	default:
@@ -237,7 +238,7 @@ OrderDO_Ptr CTPUtility::ParseRawOrderInput(
 	int sessionID)
 {
 	const char* pExchange = "";
-	if (auto pInstument = ContractCache::Futures().QueryInstrumentById(pOrderInput->InstrumentID))
+	if (auto pInstument = ContractCache::Get(ProductType::PRODUCT_FUTURE).QueryInstrumentById(pOrderInput->InstrumentID))
 		pExchange = pInstument->ExchangeID().data();
 
 	auto pDO = new OrderDO(std::strtoull(pOrderInput->OrderRef, nullptr, 0),

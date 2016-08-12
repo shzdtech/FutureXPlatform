@@ -45,9 +45,9 @@ dataobj_ptr CTPQueryInstrument::HandleRequest(const dataobj_ptr& reqDO, IRawAPI*
 	VectorDO_Ptr<InstrumentDO> ret;
 
 	if (instrumentid == EMPTY_STRING && exchangeid == EMPTY_STRING && productid == EMPTY_STRING)
-		ret = ContractCache::Futures().AllInstruments();
+		ret = ContractCache::Get(ProductType::PRODUCT_FUTURE).AllInstruments();
 	else
-		ret = ContractCache::Futures().QueryInstrument(instrumentid, exchangeid, productid);
+		ret = ContractCache::Get(ProductType::PRODUCT_FUTURE).QueryInstrument(instrumentid, exchangeid, productid);
 
 	if (TUtil::IsNullOrEmpty(ret))
 	{
@@ -110,10 +110,11 @@ dataobj_ptr CTPQueryInstrument::HandleResponse(const uint32_t serialId, param_ve
 		insDO.PositionDateType = (PositionDateType)(pData->PositionDateType - THOST_FTDC_PDT_UseHistory);
 		insDO.LongMarginRatio = pData->LongMarginRatio;
 		insDO.ShortMarginRatio = pData->ShortMarginRatio;
+		insDO.StrikePrice = pData->StrikePrice;
 
-		if (!ContractCache::Futures().QueryInstrumentById(pData->InstrumentID))
+		if (!ContractCache::Get(ProductType::PRODUCT_FUTURE).QueryInstrumentById(pData->InstrumentID))
 		{
-			ContractCache::Futures().Add(insDO);
+			ContractCache::Get(ProductType::PRODUCT_FUTURE).Add(insDO);
 		}
 
 		ret->push_back(std::move(insDO));

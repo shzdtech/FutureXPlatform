@@ -8,15 +8,11 @@
 class BIZUTILITY_CLASS_EXPORT OptionPricingCache
 {
 public:
-	static void AddCallOption(const StrategyContractDO& key, double inputPrice, double outputPrice);
+	static void AddOption(const ContractKey& key, double volatility, double inputPrice, double outputPrice);
 
-	static void AddPutOption(const StrategyContractDO& key, double inputPrice, double outputPrice);
+	static bool FindOption(const ContractKey& key, double volatility, double inputPrice, double& outputPrice);
 
-	static bool FindCallOption(const StrategyContractDO& key, double inputPrice, double& outputPrice);
-
-	static bool FindPutOption(const StrategyContractDO& key, double inputPrice, double& outputPrice);
-
-	static void Clear(const UserContractKey& key);
+	static void Clear(const ContractKey& key);
 
 	static void Clear(void);
 };

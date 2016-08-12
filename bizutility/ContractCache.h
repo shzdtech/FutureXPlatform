@@ -5,8 +5,6 @@
 class BIZUTILITY_CLASS_EXPORT ContractCache
 {
 public:
-	static InstrumentCache& Futures();
-	static InstrumentCache& OtcContracts();
-	static InstrumentCache& OtcOptions();
+	static InstrumentCache& Get(ProductType productType);
 };
 

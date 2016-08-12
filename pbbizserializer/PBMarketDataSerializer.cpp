@@ -23,40 +23,36 @@ data_buffer PBMarketDataSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	using namespace Micro::Future::Message::Business;
 	
-	PBMarketDataList PBList;
-	auto pVecDO = (VectorDO<MarketDataDO>*)abstractDO.get();
-	FillPBHeader(PBList, pVecDO);
+	PBMarketData PB;
+	auto pDO = (MarketDataDO*)abstractDO.get();
+	FillPBHeader(PB, pDO);
 
-	for (auto& pDO : *pVecDO)
-	{
-		auto PB = PBList.add_marketdata();
-		PB->set_exchange(pDO.ExchangeID());
-		PB->set_contract(pDO.InstrumentID());
+	PB.set_exchange(pDO->ExchangeID());
+	PB.set_contract(pDO->InstrumentID());
 
-		// Updating with time
-		PB->set_highvalue(pDO.HighestPrice);
-		PB->set_lowvalue(pDO.LowestPrice);
-		PB->set_matchprice(pDO.LastPrice);
-		PB->set_volume(pDO.Volume);
-		PB->set_turnover(pDO.Turnover);
-		PB->add_askprice(pDO.AskPrice);
-		PB->add_askvolume(pDO.AskVolume);
-		PB->add_bidprice(pDO.BidPrice);
-		PB->add_bidvolume(pDO.BidVolume);
-		PB->set_averageprice(pDO.AveragePrice);
+	// Updating with time
+	PB.set_highvalue(pDO->HighestPrice);
+	PB.set_lowvalue(pDO->LowestPrice);
+	PB.set_matchprice(pDO->LastPrice);
+	PB.set_volume(pDO->Volume);
+	PB.set_turnover(pDO->Turnover);
+	PB.add_askprice(pDO->AskPrice);
+	PB.add_askvolume(pDO->AskVolume);
+	PB.add_bidprice(pDO->BidPrice);
+	PB.add_bidvolume(pDO->BidVolume);
+	PB.set_averageprice(pDO->AveragePrice);
 
-		// Doesn't change after openning
-		PB->set_preclosevalue(pDO.PreClosePrice);
-		PB->set_openvalue(pDO.OpenPrice);
-		PB->set_highlimit(pDO.UpperLimitPrice);
-		PB->set_lowlimit(pDO.LowerLimitPrice);
-		PB->set_presettleprice(pDO.PreSettlementPrice);
-		PB->set_settleprice(pDO.SettlementPrice);
-		PB->set_preopeninterest(pDO.PreOpenInterest);
-		PB->set_openinterest(pDO.OpenInterest);
-	}
+	// Doesn't change after openning
+	PB.set_preclosevalue(pDO->PreClosePrice);
+	PB.set_openvalue(pDO->OpenPrice);
+	PB.set_highlimit(pDO->UpperLimitPrice);
+	PB.set_lowlimit(pDO->LowerLimitPrice);
+	PB.set_presettleprice(pDO->PreSettlementPrice);
+	PB.set_settleprice(pDO->SettlementPrice);
+	PB.set_preopeninterest(pDO->PreOpenInterest);
+	PB.set_openinterest(pDO->OpenInterest);
 
-	SerializeWithReturn(PBList);
+	SerializeWithReturn(PB);
 }
 
 ////////////////////////////////////////////////////////////////////////

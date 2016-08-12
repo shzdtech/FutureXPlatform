@@ -9,7 +9,6 @@
 class ModelParamsDO : public dataobjectbase
 {
 public:
-	std::vector<double> Values;
 	std::string ModelName;
 
 	std::map<std::string, double> ScalaParams;

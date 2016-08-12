@@ -72,7 +72,7 @@ dataobj_ptr OTCSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 			{
 				for (auto& inst : instList)
 				{
-					if (auto contract = ContractCache::OtcContracts().QueryInstrumentById(inst))
+					if (auto contract = ContractCache::Get(wkProcPtr->GetProductType()).QueryInstrumentById(inst))
 					{
 						PricingDO mdo(contract->ExchangeID(), contract->InstrumentID());
 						ret->push_back(std::move(mdo));

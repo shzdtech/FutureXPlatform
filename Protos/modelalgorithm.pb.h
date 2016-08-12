@@ -188,27 +188,9 @@ class ModelParams : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // optional uint32 serialId = 1;
-  void clear_serialid();
-  static const int kSerialIdFieldNumber = 1;
-  ::google::protobuf::uint32 serialid() const;
-  void set_serialid(::google::protobuf::uint32 value);
-
-  // repeated double values = 2;
-  int values_size() const;
-  void clear_values();
-  static const int kValuesFieldNumber = 2;
-  double values(int index) const;
-  void set_values(int index, double value);
-  void add_values(double value);
-  const ::google::protobuf::RepeatedField< double >&
-      values() const;
-  ::google::protobuf::RepeatedField< double >*
-      mutable_values();
-
-  // optional string modelName = 3;
+  // optional string modelName = 1;
   void clear_modelname();
-  static const int kModelNameFieldNumber = 3;
+  static const int kModelNameFieldNumber = 1;
   const ::std::string& modelname() const;
   void set_modelname(const ::std::string& value);
   void set_modelname(const char* value);
@@ -217,10 +199,10 @@ class ModelParams : public ::google::protobuf::Message {
   ::std::string* release_modelname();
   void set_allocated_modelname(::std::string* modelname);
 
-  // map<string, double> scalaParams = 4;
+  // map<string, double> scalaParams = 2;
   int scalaparams_size() const;
   void clear_scalaparams();
-  static const int kScalaParamsFieldNumber = 4;
+  static const int kScalaParamsFieldNumber = 2;
   const ::google::protobuf::Map< ::std::string, double >&
       scalaparams() const;
   ::google::protobuf::Map< ::std::string, double >*
@@ -240,8 +222,6 @@ class ModelParams : public ::google::protobuf::Message {
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   bool _is_default_instance_;
-  ::google::protobuf::RepeatedField< double > values_;
-  mutable int _values_cached_byte_size_;
   ::google::protobuf::internal::ArenaStringPtr modelname_;
   typedef ::google::protobuf::internal::MapEntryLite<
       ::std::string, double,
@@ -265,7 +245,6 @@ class ModelParams : public ::google::protobuf::Message {
       ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
       ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE,
       0 > vectorparams_;
-  ::google::protobuf::uint32 serialid_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_modelalgorithm_2eproto();
   friend void protobuf_AssignDesc_modelalgorithm_2eproto();
@@ -316,51 +295,7 @@ ModelParams_double_vector::mutable_entry() {
 
 // ModelParams
 
-// optional uint32 serialId = 1;
-inline void ModelParams::clear_serialid() {
-  serialid_ = 0u;
-}
-inline ::google::protobuf::uint32 ModelParams::serialid() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.ModelParams.serialId)
-  return serialid_;
-}
-inline void ModelParams::set_serialid(::google::protobuf::uint32 value) {
-  
-  serialid_ = value;
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.ModelParams.serialId)
-}
-
-// repeated double values = 2;
-inline int ModelParams::values_size() const {
-  return values_.size();
-}
-inline void ModelParams::clear_values() {
-  values_.Clear();
-}
-inline double ModelParams::values(int index) const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.ModelParams.values)
-  return values_.Get(index);
-}
-inline void ModelParams::set_values(int index, double value) {
-  values_.Set(index, value);
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.ModelParams.values)
-}
-inline void ModelParams::add_values(double value) {
-  values_.Add(value);
-  // @@protoc_insertion_point(field_add:Micro.Future.Message.ModelParams.values)
-}
-inline const ::google::protobuf::RepeatedField< double >&
-ModelParams::values() const {
-  // @@protoc_insertion_point(field_list:Micro.Future.Message.ModelParams.values)
-  return values_;
-}
-inline ::google::protobuf::RepeatedField< double >*
-ModelParams::mutable_values() {
-  // @@protoc_insertion_point(field_mutable_list:Micro.Future.Message.ModelParams.values)
-  return &values_;
-}
-
-// optional string modelName = 3;
+// optional string modelName = 1;
 inline void ModelParams::clear_modelname() {
   modelname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -404,7 +339,7 @@ inline void ModelParams::set_allocated_modelname(::std::string* modelname) {
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.ModelParams.modelName)
 }
 
-// map<string, double> scalaParams = 4;
+// map<string, double> scalaParams = 2;
 inline int ModelParams::scalaparams_size() const {
   return scalaparams_.size();
 }

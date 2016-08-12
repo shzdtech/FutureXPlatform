@@ -72,7 +72,6 @@ dataobj_ptr PBOrderSerializer::Deserialize(const data_buffer& rawdata)
 	ret->LimitPrice = PB.limitprice();
 	ret->Volume = PB.volume();
 	ret->TIF = (OrderTIFType)PB.tif();
-	ret->CallPut = (OrderCallPutType)PB.callput();
 	ret->ExecType = (OrderExecType)PB.exectype();
 	ret->OpenClose = (OrderOpenCloseType)PB.openclose();
 

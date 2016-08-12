@@ -21,7 +21,6 @@ public:
 		: ContractKey(exchangeID, instrumentID)	{}
 
 	std::string Name;
-	std::string GroupName;
 	std::string ProductID;
 	ProductType ProductType;
 	std::string CreateDate;
@@ -33,20 +32,21 @@ public:
 	PositionType PositionType;
 	PositionDateType PositionDateType;
 
-	int DeliveryYear = 0;
-	int DeliveryMonth = 0;
-	int MaxMarketOrderVolume = 0;
-	int MinMarketOrderVolume = 0;
-	int MaxLimitOrderVolume = 0;
-	int MinLimitOrderVolume = 0;
-	int VolumeMultiple = 0;
-	int IsTrading = 0;
+	int DeliveryYear;
+	int DeliveryMonth;
+	int MaxMarketOrderVolume;
+	int MinMarketOrderVolume;
+	int MaxLimitOrderVolume;
+	int MinLimitOrderVolume ;
+	int VolumeMultiple;
+	bool IsTrading;
 
-	double PriceTick = 0;
-	double LongMarginRatio = 0;
-	double ShortMarginRatio = 0;
+	double PriceTick;
+	double LongMarginRatio;
+	double ShortMarginRatio;
+	double StrikePrice;
 	
-
+	ContractKey UnderlyingContract;
 protected:
 
 private:

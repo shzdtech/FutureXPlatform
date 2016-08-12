@@ -35,14 +35,14 @@
     "sysparam": {
       "mergedbparam": "override",
       "DEFAULT.CLIENT.SYMBOL": "boc_otc",
-      "CTP.MD.SERVER": "tcp://218.202.237.33:10012",
-      "CTP.MD.LOGIN.BROKERID": "9999",
-      "CTP.MD.LOGIN.USERID": "031237",
-      "CTP.MD.LOGIN.PASSWORD": "",
-      "CTP.TRADER.SERVER": "tcp://218.202.237.33:10002",
-      "CTP.TRADER.LOGIN.BROKERID": "9999",
-      "CTP.TRADER.LOGIN.USERID": "031237",
-      "CTP.TRADER.LOGIN.PASSWORD": "12345678"
+      "CTP.MD.SERVER": "tcp://ctpfz1-front1.citicsf.com:51213",
+      "CTP.MD.LOGIN.BROKERID": "66666",
+      "CTP.MD.LOGIN.USERID": "895816",
+      "CTP.MD.LOGIN.PASSWORD": "260519",
+      "CTP.TRADER.SERVER": "tcp://ctpfz1-front1.citicsf.com:51205",
+      "CTP.TRADER.LOGIN.BROKERID": "66666",
+      "CTP.TRADER.LOGIN.USERID": "895816",
+      "CTP.TRADER.LOGIN.PASSWORD": "260519"
     }
   }
 }

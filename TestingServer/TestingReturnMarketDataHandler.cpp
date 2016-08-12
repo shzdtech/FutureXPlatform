@@ -21,10 +21,5 @@
 
 dataobj_ptr TestingReturnMarketDataHandler::HandleResponse(const uint32_t serialId, param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
 {
-	auto pDOVec = new VectorDO<MarketDataDO>;
-	dataobj_ptr ret(pDOVec);
-
-	pDOVec->push_back(*((MarketDataDO*)rawParams[0]));
-
-	return ret;
+	return std::make_shared<MarketDataDO>(*((MarketDataDO*)rawParams[0]));
 }

@@ -43,14 +43,14 @@ dataobj_ptr CTPSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 				ppInstrments[i] = const_cast<char*>(inst.data());
 				std::string instrument(inst);
 				std::transform(inst.begin(), inst.end(), instrument.begin(), ::tolower);
-				if (auto pInstumentDO = ContractCache::Futures().QueryInstrumentById(instrument))
+				if (auto pInstumentDO = ContractCache::Get(ProductType::PRODUCT_FUTURE).QueryInstrumentById(instrument))
 				{
 						ppInstrments[i] = const_cast<char*>(pInstumentDO->InstrumentID().data());
 				}
 				else
 				{
 					std::transform(inst.begin(), inst.end(), instrument.begin(), ::toupper);
-					if (auto pInstumentDO = ContractCache::Futures().QueryInstrumentById(instrument))
+					if (auto pInstumentDO = ContractCache::Get(ProductType::PRODUCT_FUTURE).QueryInstrumentById(instrument))
 					{
 						ppInstrments[i] = const_cast<char*>(pInstumentDO->InstrumentID().data());
 					}
@@ -86,7 +86,7 @@ dataobj_ptr CTPSubMarketData::HandleResponse(const uint32_t serialId, param_vect
 	if (auto pRspInstr = (CThostFtdcSpecificInstrumentField*)rawRespParams[0])
 	{
 		std::string exchange;
-		if (auto pInstumentDO = ContractCache::Futures().QueryInstrumentById(pRspInstr->InstrumentID))
+		if (auto pInstumentDO = ContractCache::Get(ProductType::PRODUCT_FUTURE).QueryInstrumentById(pRspInstr->InstrumentID))
 		{
 			exchange = pInstumentDO->ExchangeID();
 		}

@@ -12,32 +12,28 @@
 #include "../dataobject/TemplateDO.h"
 #include "../Protos/businessobj.pb.h"
 
-////////////////////////////////////////////////////////////////////////
-// Name:       PBPricingDataSerializer::Serialize(const dataobj_ptr& abstractDO)
-// Purpose:    Implementation of PBPricingDataSerializer::Serialize()
-// Parameters:
-// - abstractDO
-// Return:     data_buffer
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       PBPricingDataSerializer::Serialize(const dataobj_ptr& abstractDO)
+ // Purpose:    Implementation of PBPricingDataSerializer::Serialize()
+ // Parameters:
+ // - abstractDO
+ // Return:     data_buffer
+ ////////////////////////////////////////////////////////////////////////
 
 data_buffer PBPricingDataSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	using namespace Micro::Future::Message::Business;
-	
-	PBPricingDataList PBList;
-	auto pVecDO = (VectorDO<PricingDO>*)abstractDO.get();
-	FillPBHeader(PBList, pVecDO);
 
-	for (auto& pDO : *pVecDO)
-	{
-		auto PB = PBList.add_pricingdata();
-		PB->set_exchange(pDO.ExchangeID());
-		PB->set_contract(pDO.InstrumentID());
-		PB->set_bidprice(pDO.BidPrice);
-		PB->set_askprice(pDO.AskPrice);
-	}
+	PBPricingData PB;
+	auto pDO = (PricingDO*)abstractDO.get();
+	FillPBHeader(PB, pDO);
 
-	SerializeWithReturn(PBList);
+	PB.set_exchange(pDO->ExchangeID());
+	PB.set_contract(pDO->InstrumentID());
+	PB.set_bidprice(pDO->BidPrice);
+	PB.set_askprice(pDO->AskPrice);
+
+	SerializeWithReturn(PB);
 }
 
 ////////////////////////////////////////////////////////////////////////

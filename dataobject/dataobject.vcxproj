@@ -155,6 +155,7 @@
     <ClInclude Include="dataobjectbase.h" />
     <ClInclude Include="AccountInfoDO.h" />
     <ClInclude Include="data_buffer.h" />
+    <ClInclude Include="DateType.h" />
     <ClInclude Include="MessageExceptionDO.h" />
     <ClInclude Include="ComplexTableDO.h" />
     <ClInclude Include="ContractParamDO.h" />

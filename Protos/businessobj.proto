@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 import "commondefine.proto";
+import "modelalgorithm.proto";
 
 package Micro.Future.Message.Business;
 
@@ -33,25 +34,26 @@ message PBMarketData {
 	double openInterest = 20;
 	double averagePrice = 21;
 
-	// DataHeader header = 22;
+	DataHeader header = 22;
 }
 
 message PBMarketDataList
 {
-	repeated PBMarketData marketData = 1;
-	DataHeader header = 2;
+	DataHeader header = 1;
+	repeated PBMarketData marketData = 2;
 }
 
 message PBPricingData {
+	DataHeader header = 1;
+	
 	//MD Common Data
-	string exchange = 1;
-	string contract = 2;
+	string exchange = 2;
+	string contract = 3;
 
 	//Equity Data
-	double askPrice = 3;
-	double bidPrice = 4;
+	double askPrice = 4;
+	double bidPrice = 5;
 
-	//DataHeader header = 5;
 }
 
 message PBPricingDataList
@@ -69,23 +71,24 @@ message PBPricingContract
 
 message PBStrategy
 {
-	string exchange = 1;
-	string contract = 2;
-	string underlying = 3;
-	string symbol = 4;
-	string description = 5;
-	bool allowTrading = 6;
-	bool enabled = 7;
-	int32 quantity = 8;
-	int32 depth = 9;
-	repeated PBPricingContract pricingContracts = 10;
-	map<string,double> params = 11;
+	DataHeader header = 1;
+	string exchange = 2;
+	string contract = 3;
+	string underlying = 4;
+	string symbol = 5;
+	string description = 6;
+	bool allowTrading = 7;
+	bool enabled = 8;
+	int32 quantity = 9;
+	int32 depth = 10;
+	repeated PBPricingContract pricingContracts = 11;
+	ModelParams modelParams = 12;
 }
 
 message PBStrategyList
 {
-	repeated PBStrategy strategy = 1;
-	DataHeader header = 2;
+	DataHeader header = 1;
+	repeated PBStrategy strategy = 2;
 }
 
 message PBContractParam
@@ -98,8 +101,8 @@ message PBContractParam
 
 message PBContractParamList
 {
-	repeated PBContractParam params = 1;
-	DataHeader header = 2;
+	DataHeader header = 1;
+	repeated PBContractParam params = 2;
 }
 
 message PBOTCUserParam
@@ -111,8 +114,9 @@ message PBOTCUserParam
 
 message PBOTCUserParamList
 {
-	repeated PBOTCUserParam params = 1;
-	DataHeader header = 2;
+	DataHeader header = 1;
+	repeated PBOTCUserParam params = 2;
+	
 }
 
 ///报单
@@ -136,10 +140,8 @@ message PBOrderRequest {
 	int32 tif = 9;
 	///买卖方向
 	int32 direction = 10;
-	// Call Put
-	int32 callput = 11;
 	///开平标志
-	int32 openclose = 12;
+	int32 openclose = 11;
 }
 
 message PBOrderInfo {
@@ -394,7 +396,7 @@ message PBContractInfo {
 	///合约生命周期状态
 	int32 lifePhase = 19;
 	///当前是否交易
-	int32 isTrading = 20;
+	bool isTrading = 20;
 	///持仓类型
 	int32 positionType = 21;
 	///持仓日期类型
@@ -403,26 +405,16 @@ message PBContractInfo {
 	double longMarginRatio = 23;
 	///空头保证金率
 	double shortMarginRatio = 24;
-	///组名称
-	string groupName = 25;
+	///
+	string underlyingExchange = 25;
+	///
+	string underlyingContract = 26;
 
-	//DataHeader header = 26;
+	double strikePrice = 27;
 }
 
 message PBContractInfoList
 {
-	repeated PBContractInfo contractInfo = 1;
-	DataHeader header = 2;
-}
-
-message PBOptionPricing
-{
 	DataHeader header = 1;
-	string exchange = 2;
-	string contract = 3;
-	repeated double strikePrice = 4;
-	repeated double putBidPrice = 5;
-	repeated double putAskPrice = 6;
-	repeated double callBidPrice = 7;
-	repeated double callAskPrice = 8;
+	repeated PBContractInfo contractInfo = 2;
 }

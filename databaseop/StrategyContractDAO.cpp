@@ -17,13 +17,14 @@
 // Return:     std::shared_ptr<std::vector<StrategyContractDO>>
 ////////////////////////////////////////////////////////////////////////
 
-VectorDO_Ptr<StrategyContractDO> StrategyContractDAO::FindStrategyContractByClient(const std::string& clientSymbol)
+VectorDO_Ptr<StrategyContractDO> StrategyContractDAO::FindStrategyContractByClient(
+	const std::string& clientSymbol, int productType)
 {
 	static const std::string sql_findstrategy(
 		"SELECT exchange_symbol, contract_symbol, underlying_symbol, tick_size, multiplier, "
-		"strategy_symbol, descript, pricing_algorithm, portfolio_symbol, expiration "
+		"strategy_symbol, descript, pricing_algorithm, portfolio_symbol, contract_type, strikeprice, expiration "
 		"FROM vw_strategy_contract_info "
-		"WHERE client_symbol = ?");
+		"WHERE client_symbol = ? and product_type = ?");
 
 	auto ret = std::make_shared<VectorDO<StrategyContractDO>>();
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
@@ -32,23 +33,36 @@ VectorDO_Ptr<StrategyContractDO> StrategyContractDAO::FindStrategyContractByClie
 		AutoClosePreparedStmt_Ptr prestmt(
 			session->getConnection()->prepareStatement(sql_findstrategy));
 		prestmt->setString(1, clientSymbol);
+		prestmt->setInt(2, productType);
 
 		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
+
+		auto now = std::time(nullptr);
+		auto pTM = std::localtime(&now);
 
 		while (rs->next())
 		{
 			StrategyContractDO stcdo(rs->getString(1), rs->getString(2), clientSymbol, rs->getString(9));
+			stcdo.TradingDay.Year = pTM->tm_year + 1900;
+			stcdo.TradingDay.Month = pTM->tm_mon + 1;
+			stcdo.TradingDay.Day = pTM->tm_mday;
 			stcdo.Underlying = rs->getString(3);
 			stcdo.TickSize = rs->getDouble(4);
 			stcdo.Multiplier = rs->getDouble(5);
-			stcdo.Strategy = rs->getString(6);
+			stcdo.StrategyName = rs->getString(6);
 			stcdo.Description = rs->getString(7);
-			stcdo.Algorithm = rs->getString(8);
-			std::time_t time = rs->getInt64(10);
-			stcdo.Expiration = *std::localtime(&time);
+			stcdo.ModelParams.ModelName = rs->getString(8);
+			stcdo.ContractType = (ContractType)rs->getInt(10);
+			stcdo.StrikePrice = rs->getDouble(11);
+			if (!rs->isNull(12))
+			{
+				std::string strDate = rs->getString(12);
+				std::sscanf(strDate.data(), "%d-%d-%d", 
+					&stcdo.Expiration.Year, &stcdo.Expiration.Month, &stcdo.Expiration.Day);
+			}
 
-			FindStrategyParams(stcdo.Strategy, clientSymbol, stcdo.Params);
-			stcdo.PricingContracts = FindPricingContracts(stcdo.Strategy, clientSymbol);
+			RetrieveModelParams(stcdo.StrategyName, clientSymbol, stcdo.ModelParams);
+			RetrievePricingContracts(stcdo.StrategyName, clientSymbol, stcdo.PricingContracts);
 
 			ret->push_back(std::move(stcdo));
 		}
@@ -63,13 +77,12 @@ VectorDO_Ptr<StrategyContractDO> StrategyContractDAO::FindStrategyContractByClie
 }
 
 
-VectorDO_Ptr<PricingContract> StrategyContractDAO::FindPricingContracts(const std::string& strategySymbol, const std::string& clientSymbol)
+void StrategyContractDAO::RetrievePricingContracts
+(const std::string& strategySymbol, const std::string& clientSymbol, std::vector<PricingContract>& pricingContracts)
 {
 	static const std::string sql_findcontractparam(
 		"SELECT exchange_symbol, contract_symbol, weight FROM vw_strategy_pricingcontracts "
 		"WHERE strategy_symbol = ? and client_symbol = ?");
-
-	auto ret = std::make_shared<VectorDO<PricingContract>>();
 
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
@@ -86,7 +99,7 @@ VectorDO_Ptr<PricingContract> StrategyContractDAO::FindPricingContracts(const st
 			PricingContract cp(rs->getString(1), rs->getString(2));
 			cp.Weight = rs->getDouble(3);
 
-			ret->push_back(std::move(cp));
+			pricingContracts.push_back(std::move(cp));
 		}
 	}
 	catch (sql::SQLException& sqlEx)
@@ -94,12 +107,10 @@ VectorDO_Ptr<PricingContract> StrategyContractDAO::FindPricingContracts(const st
 		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
 		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
 	}
-
-	return ret;
 }
 
-void StrategyContractDAO::FindStrategyParams(const std::string& strategySymbol, const std::string& clientSymbol,
-	std::map<std::string, double>& paramMap)
+void StrategyContractDAO::RetrieveModelParams(const std::string& strategySymbol, const std::string& clientSymbol,
+	ModelParamsDO& modelParams)
 {
 	static const std::string sql_findstrategyparam(
 		"SELECT param_name, param_value FROM strategy_pricing_param "
@@ -117,7 +128,7 @@ void StrategyContractDAO::FindStrategyParams(const std::string& strategySymbol, 
 
 		while (rs->next())
 		{
-			paramMap[rs->getString(1)] = rs->getDouble(2);
+			modelParams.ScalaParams[rs->getString(1)] = rs->getDouble(2);
 		}
 	}
 	catch (sql::SQLException& sqlEx)

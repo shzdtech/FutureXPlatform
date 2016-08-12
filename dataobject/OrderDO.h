@@ -43,10 +43,10 @@ class OrderRequestDO : public UserContractKey, public dataobjectbase
 {
 public:
 	OrderRequestDO(const uint64_t orderID, const char* exchangeID, const char* instrumentID,
-		const char* userID) : UserKey(userID), UserContractKey(exchangeID, instrumentID, userID) {}
+		const char* userID) : OrderID(orderID), UserKey(userID), UserContractKey(exchangeID, instrumentID, userID) {}
 
 	OrderRequestDO(const uint64_t orderID, const std::string& exchangeID, const std::string& instrumentID,
-		const std::string& userID) : UserKey(userID), UserContractKey(exchangeID, instrumentID, userID) {}
+		const std::string& userID) : OrderID(orderID), UserKey(userID), UserContractKey(exchangeID, instrumentID, userID) {}
 
 	OrderRequestDO(const UserContractKey& userContractKey) : 
 		UserKey(userContractKey), UserContractKey(userContractKey) {}

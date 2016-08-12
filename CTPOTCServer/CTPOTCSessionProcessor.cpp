@@ -51,7 +51,7 @@ bool CTPOTCSessionProcessor::OnSessionClosing(void)
 {
 	if (auto sessionPtr = LockMessageSession())
 		if (sessionPtr->getUserInfo()->getRole() == ROLE_TRADINGDESK)
-			if (auto wkProcPtr = MessageUtility::ServerWorkerProcessor<CTPOTCWorkerProcessor>(shared_from_this()))
+			if (auto wkProcPtr = MessageUtility::ServerWorkerProcessor<OTCWorkerProcessor>(shared_from_this()))
 			{
 				auto pStrategyMap = wkProcPtr->GetOTCTradeProcessor()->GetPricingContext()->GetStrategyMap();
 

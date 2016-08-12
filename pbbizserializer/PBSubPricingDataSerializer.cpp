@@ -5,7 +5,7 @@
  * Purpose: Implementation of the class PBSubMarketDataSerializer
  ***********************************************************************/
 
-#include "PBSubMarketDataSerializer.h"
+#include "PBSubPricingDataSerializer.h"
 #include "../pbserializer/PBStringTableSerializer.h"
 #include "../pbserializer/pbmacros.h"
 #include "../dataobject/TemplateDO.h"
@@ -20,41 +20,19 @@
 // Return:     data_buffer
 ////////////////////////////////////////////////////////////////////////
 
-data_buffer PBSubMarketDataSerializer::Serialize(const dataobj_ptr& abstractDO)
+data_buffer PBSubPricingDataSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	using namespace Micro::Future::Message::Business;
 
-	PBMarketDataList PBList;
-	auto pVecDO = (VectorDO<MarketDataDO>*)abstractDO.get();
+	PBPricingDataList PBList;
+	auto pVecDO = (VectorDO<PricingDO>*)abstractDO.get();
 	FillPBHeader(PBList, pVecDO);
 
 	for (auto& pDO : *pVecDO)
 	{
-		auto PB = PBList.add_marketdata();
+		auto PB = PBList.add_pricingdata();
 		PB->set_exchange(pDO.ExchangeID());
 		PB->set_contract(pDO.InstrumentID());
-
-		// Updating with time
-		PB->set_highvalue(pDO.HighestPrice);
-		PB->set_lowvalue(pDO.LowestPrice);
-		PB->set_matchprice(pDO.LastPrice);
-		PB->set_volume(pDO.Volume);
-		PB->set_turnover(pDO.Turnover);
-		PB->add_askprice(pDO.AskPrice);
-		PB->add_askvolume(pDO.AskVolume);
-		PB->add_bidprice(pDO.BidPrice);
-		PB->add_bidvolume(pDO.BidVolume);
-		PB->set_averageprice(pDO.AveragePrice);
-
-		// Doesn't change after openning
-		PB->set_preclosevalue(pDO.PreClosePrice);
-		PB->set_openvalue(pDO.OpenPrice);
-		PB->set_highlimit(pDO.UpperLimitPrice);
-		PB->set_lowlimit(pDO.LowerLimitPrice);
-		PB->set_presettleprice(pDO.PreSettlementPrice);
-		PB->set_settleprice(pDO.SettlementPrice);
-		PB->set_preopeninterest(pDO.PreOpenInterest);
-		PB->set_openinterest(pDO.OpenInterest);
 	}
 
 	SerializeWithReturn(PBList);
@@ -68,7 +46,7 @@ data_buffer PBSubMarketDataSerializer::Serialize(const dataobj_ptr& abstractDO)
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr PBSubMarketDataSerializer::Deserialize(const data_buffer& rawdata)
+dataobj_ptr PBSubPricingDataSerializer::Deserialize(const data_buffer& rawdata)
 {
 	return PBStringTableSerializer::Instance()->Deserialize(rawdata);
 }
