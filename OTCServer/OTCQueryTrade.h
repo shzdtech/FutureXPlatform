@@ -1,26 +1,23 @@
 /***********************************************************************
- * Module:  CTPQueryInstrument.h
+ * Module:  OTCQueryOrder.h
  * Author:  milk
- * Modified: 2015年7月11日 13:06:13
- * Purpose: Declaration of the class CTPQueryInstrument
+ * Modified: 2015年10月15日 16:08:36
+ * Purpose: Declaration of the class OTCQueryOrder
  ***********************************************************************/
 
-#if !defined(__CTP_CTPQueryInstrument_h)
-#define __CTP_CTPQueryInstrument_h
+#if !defined(__OTCServer_OTCQueryTrade_h)
+#define __OTCServer_OTCQueryTrade_h
 
 #include "../message/MessageHandler.h"
-#include "../dataobject/EnumTypes.h"
-#include "ctpexport.h"
+#include "otcserver_export.h"
 
-class CTP_CLASS_EXPORT CTPQueryInstrument : public MessageHandler
+class OTCSERVER_CLASS_EXPORT OTCQueryTrade : public MessageHandler
 {
 public:
 	dataobj_ptr HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session);
 	dataobj_ptr HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session);
 
 protected:
-
-
 private:
 
 };

@@ -20,9 +20,9 @@ class CONFIGURATION_CLASS_EXPORT AbstractConfigReaderFactory
 {
 public:
 	static const std::vector<std::string>& SupportConfigFormats();
-	static IConfigReader_Ptr CreateConfigReader(const std::string& type);
+	static IConfigReader_Ptr CreateConfigReader(const char* type);
 	static IConfigReader_Ptr CreateConfigReader();
-	static IConfigReader_Ptr OpenConfigReader(const std::string& configPath);
+	static IConfigReader_Ptr OpenConfigReader(const char* configPath);
 
 	static std::string DEFAULT_CONFIG_FORMAT;
 

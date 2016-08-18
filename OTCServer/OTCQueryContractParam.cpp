@@ -38,13 +38,13 @@ dataobj_ptr OTCQueryContractParam::HandleRequest(const dataobj_ptr& reqDO, IRawA
 	auto cpVec_Ptr = std::static_pointer_cast<std::vector<ContractKey>>(
 		session->getContext()->getAttribute(STR_KEY_USER_CONTRACT_PARAM));
 
-	ThrowNotFoundException(cpVec_Ptr);
+	ThrowNotFoundExceptionIfEmpty(cpVec_Ptr);
 
 	auto contractVec_Ptr = std::make_shared<VectorDO<ContractParamDO>>();
 
 	if (auto wkProcPtr = MessageUtility::ServerWorkerProcessor<OTCWorkerProcessor>(session->getProcessor()))
 	{
-		auto contractMap = wkProcPtr->GetOTCTradeProcessor()->GetPricingContext()->GetContractParamMap();
+		auto contractMap = wkProcPtr->PricingDataContext()->GetContractParamMap();
 
 		for (auto& con : *cpVec_Ptr)
 		{
@@ -52,7 +52,7 @@ dataobj_ptr OTCQueryContractParam::HandleRequest(const dataobj_ptr& reqDO, IRawA
 			contractVec_Ptr->push_back(contractDO);
 		}
 
-		ThrowNotFoundException(contractVec_Ptr);
+		ThrowNotFoundExceptionIfEmpty(contractVec_Ptr);
 	}
 
 	return contractVec_Ptr;

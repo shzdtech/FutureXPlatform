@@ -20,7 +20,7 @@
 class OTCSERVER_CLASS_EXPORT OTCWorkerProcessor
 {
 public:
-	OTCWorkerProcessor();
+	OTCWorkerProcessor(IPricingDataContext* pricingCtx);
    ~OTCWorkerProcessor();
 
    virtual int LoginSystemUserIfNeed(void) = 0;
@@ -40,10 +40,14 @@ public:
 
    virtual OTCTradeProcessor* GetOTCTradeProcessor() = 0;
 
+   IPricingDataContext* PricingDataContext();
+
 protected:
 	ContractMap<std::set<ContractKey >> _contract_strategy_map;
 	SessionContainer_Ptr<ContractKey> _pricingNotifers;
 	SessionContainer_Ptr<uint64_t> _otcOrderNotifers;
+
+	IPricingDataContext* _pricingCtx;
 
 private:
 

@@ -28,13 +28,13 @@ const std::vector<std::string>& AbstractConfigReaderFactory::SupportConfigFormat
 	return SUPPORT_CONFIG_FORMATS;
 }
 
-IConfigReader_Ptr AbstractConfigReaderFactory::CreateConfigReader(const std::string& type)
+IConfigReader_Ptr AbstractConfigReaderFactory::CreateConfigReader(const char* type)
 {
 	IConfigReader_Ptr ret;
 
-	if (stringutility::compare(type.data(), XMLCONFIG_FORMAT) == 0)
+	if (stringutility::compare(type, XMLCONFIG_FORMAT) == 0)
 		ret = std::make_shared<XMLConfigReader>();
-	else if (stringutility::compare(type.data(), JSONCONFIG_FORMAT) == 0)
+	else if (stringutility::compare(type, JSONCONFIG_FORMAT) == 0)
 		ret = std::make_shared<JsonConfigReader>();
 
 	return ret;
@@ -42,29 +42,30 @@ IConfigReader_Ptr AbstractConfigReaderFactory::CreateConfigReader(const std::str
 
 IConfigReader_Ptr AbstractConfigReaderFactory::CreateConfigReader()
 {
-	return CreateConfigReader(DEFAULT_CONFIG_FORMAT);
+	return CreateConfigReader(DEFAULT_CONFIG_FORMAT.data());
 }
 
-IConfigReader_Ptr AbstractConfigReaderFactory::OpenConfigReader(const std::string & configPath)
+IConfigReader_Ptr AbstractConfigReaderFactory::OpenConfigReader(const char* configPath)
 {
 	IConfigReader_Ptr ret;
-	auto idx = configPath.rfind('.');
+	std::string configFile(configPath);
+	auto idx = configFile.rfind('.');
 	if (idx != std::string::npos)
 	{
-		std::string type = configPath.substr(idx + 1);
-		ret = CreateConfigReader(type);
-		ret->LoadFromFile(configPath);
+		std::string type = configFile.substr(idx + 1);
+		ret = CreateConfigReader(type.data());
+		ret->LoadFromFile(configFile.data());
 	}
 	else
 	{
 		auto& types = SupportConfigFormats();
 		for (auto& type : types)
 		{
-			std::string filepath(configPath + '.' + type);
+			std::string filepath(configFile + '.' + type);
 			std::ifstream is(filepath.data());
 			if (is && is.good())
 			{
-				if (ret = CreateConfigReader(type))
+				if (ret = CreateConfigReader(type.data()))
 					if (ret->LoadFromStream(is))
 						break;
 			}

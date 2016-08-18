@@ -35,7 +35,7 @@
 
 dataobj_ptr CTPLoginHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
-	if (!session->IsLogin())
+	if (!session->getLoginTimeStamp())
 	{
 
 		auto stdo = (MapDO<std::string>*)reqDO.get();
@@ -108,7 +108,7 @@ dataobj_ptr CTPLoginHandler::HandleResponse(const uint32_t serialId, param_vecto
 	pDO->UserId = pUserInfo->getUserId();
 
 	session->getUserInfo()->setAttribute(STR_KEY_USER_INFO_DETAIL, ret);
-	session->setLoginStatus(true);
+	session->setLoginTimeStamp();
 
 	LOG_DEBUG << pDO->UserId << " login successful.";
 

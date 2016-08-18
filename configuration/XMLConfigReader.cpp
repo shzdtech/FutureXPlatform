@@ -25,7 +25,7 @@ bool XMLConfigReader::LoadFromStream(std::istream& is)
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       XMLConfigReader::LoadFromFile(const std::string& configPath)
+// Name:       XMLConfigReader::LoadFromFile(const char* configPath)
 // Purpose:    Implementation of XMLConfigReader::LoadFromFile()
 // Parameters:
 // - configPath

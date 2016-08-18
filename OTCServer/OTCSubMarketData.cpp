@@ -38,7 +38,7 @@
 
 dataobj_ptr OTCSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
-	CheckLogin(session);
+	// CheckLogin(session);
 
 	auto ret = std::make_shared<VectorDO<PricingDO>>();
 

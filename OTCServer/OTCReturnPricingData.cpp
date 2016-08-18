@@ -51,7 +51,7 @@ dataobj_ptr OTCReturnPricingData::HandleResponse(const uint32_t serialId, param_
 		int quantity = userContractMap->at(*pStrategyDO).Quantity;
 
 		ret = PricingUtility::Pricing(&quantity, *pStrategyDO,
-			*wkProcPtr->GetOTCTradeProcessor()->GetPricingContext());
+			*wkProcPtr->PricingDataContext());
 	}
 
 	return ret;

@@ -94,6 +94,7 @@
       <PreprocessorDefinitions>OTCSERVER_LIBRARY_EXPORTS;WIN32;_DEBUG;_WINDOWS;_USRDLL;OTCSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalOptions>-D_CRT_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -109,6 +110,7 @@
       <PreprocessorDefinitions>OTCSERVER_LIBRARY_EXPORTS;_DEBUG;_WINDOWS;_USRDLL;OTCSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalOptions>-D_CRT_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -126,6 +128,7 @@
       <PreprocessorDefinitions>OTCSERVER_LIBRARY_EXPORTS;WIN32;NDEBUG;_WINDOWS;_USRDLL;OTCSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalOptions>-D_CRT_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -145,6 +148,7 @@
       <PreprocessorDefinitions>OTCSERVER_LIBRARY_EXPORTS;NDEBUG;_WINDOWS;_USRDLL;OTCSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalOptions>-D_CRT_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -155,6 +159,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="OTCQueryInstrument.cpp" />
+    <ClCompile Include="OTCQueryTrade.cpp" />
     <ClCompile Include="OTCUnSubMarketData.cpp" />
     <ClCompile Include="OTCCancelOrder.cpp" />
     <ClCompile Include="OTCNewOrder.cpp" />
@@ -175,6 +180,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="OTCQueryInstrument.h" />
+    <ClInclude Include="OTCQueryTrade.h" />
     <ClInclude Include="OTCUnSubMarketData.h" />
     <ClInclude Include="OTCCancelOrder.h" />
     <ClInclude Include="OTCNewOrder.h" />

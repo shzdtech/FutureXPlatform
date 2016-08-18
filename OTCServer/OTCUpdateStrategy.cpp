@@ -35,7 +35,7 @@ dataobj_ptr OTCUpdateStrategy::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* 
 
 	if (auto wkProcPtr = MessageUtility::ServerWorkerProcessor<OTCWorkerProcessor>(session->getProcessor()))
 	{
-		auto strategyMap = wkProcPtr->GetOTCTradeProcessor()->GetPricingContext()->GetStrategyMap();
+		auto strategyMap = wkProcPtr->PricingDataContext()->GetStrategyMap();
 
 		auto strategyDO = *(StrategyContractDO*)reqDO.get();
 

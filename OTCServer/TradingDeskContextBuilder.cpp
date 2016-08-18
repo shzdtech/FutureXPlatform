@@ -61,7 +61,7 @@ void TradingDeskContextBuilder::LoadPortfolio(ISession* pSession)
 	{
 		if (auto wkProcPtr = MessageUtility::ServerWorkerProcessor<OTCWorkerProcessor>(pSession->getProcessor()))
 		{
-			auto pPortfoliorMap = wkProcPtr->GetOTCTradeProcessor()->GetPricingContext()->GetPortfolioMap();
+			auto pPortfoliorMap = wkProcPtr->PricingDataContext()->GetPortfolioMap();
 
 			for (auto& portfolio : *portfolioDOVec_Ptr)
 			{
@@ -90,7 +90,7 @@ void TradingDeskContextBuilder::LoadContractParam(ISession* pSession)
 
 	if (auto wkProcPtr = MessageUtility::ServerWorkerProcessor<OTCWorkerProcessor>(pSession->getProcessor()))
 	{
-		auto contractMap = wkProcPtr->GetOTCTradeProcessor()->GetPricingContext()->GetContractParamMap();
+		auto contractMap = wkProcPtr->PricingDataContext()->GetContractParamMap();
 
 		for (auto& con : *contractVec_Ptr)
 		{
@@ -119,7 +119,7 @@ void TradingDeskContextBuilder::LoadStrategy(ISession* pSession)
 		if (auto sDOVec_Ptr = StrategyContractDAO::FindStrategyContractByClient(
 			pSession->getUserInfo()->getBrokerId(), wkProcPtr->GetProductType()))
 		{
-			auto strategyMap = wkProcPtr->GetOTCTradeProcessor()->GetPricingContext()->GetStrategyMap();
+			auto strategyMap = wkProcPtr->PricingDataContext()->GetStrategyMap();
 
 			for (auto& strategy : *sDOVec_Ptr)
 			{

@@ -4,6 +4,7 @@
       "service.admin",
       "service.ctp_md",
       "service.ctp_trade",
+      "service.ctp_option",
       "service.otc",
       "service.otc_option",
       "service.cts",
@@ -38,6 +39,16 @@
       "server.config.section": "server.ctp.trade",
       "factory.config": "factory.json",
       "factory.config.section": "factory.ctp.trade"
+    },
+    "ctp_option": {
+      "server.uri": "ctp.option",
+      "server.module.uuid": "com.micro.future.asio.dll",
+      "server.module.path": "communication.dll",
+      "server.class.uuid": "server.asiotcp.lite",
+      "server.config": "server.json",
+      "server.config.section": "server.ctp.option",
+      "factory.config": "factory.json",
+      "factory.config.section": "factory.ctp.option"
     },
     "otc": {
       "server.uri": "otc.contract",

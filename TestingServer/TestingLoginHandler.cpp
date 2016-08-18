@@ -40,7 +40,7 @@ dataobj_ptr TestingLoginHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI
 	pUserInfo->setRole(ROLE_CLIENT);
 	pUserInfo->setPermission(ALLOW_TRADING);
 
-	session->setLoginStatus(true);
+	session->setLoginTimeStamp();
 
 	//
 	auto pDO = std::make_shared<UserInfoDO>();

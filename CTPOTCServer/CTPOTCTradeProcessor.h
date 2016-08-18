@@ -22,8 +22,7 @@
 class CTP_OTC_CLASS_EXPORT CTPOTCTradeProcessor : public OTCTradeProcessor, public CTPTradeWorkerProcessor
 {
 public:
-	CTPOTCTradeProcessor(const std::map<std::string, std::string>& configMap, 
-		IServerContext* pServerCtx, 
+	CTPOTCTradeProcessor(IServerContext* pServerCtx, 
 		IPricingDataContext* pricingDataCtx);
 	~CTPOTCTradeProcessor();
 	void Initialize(void);
@@ -34,15 +33,12 @@ public:
 	virtual OrderDO_Ptr CreateOrder(OrderRequestDO& orderInfo);
 	virtual OrderDO_Ptr CancelOrder(OrderRequestDO& orderInfo);
 
-	virtual IPricingDataContext* GetPricingContext(void);
 	virtual OTCOrderManager* GetOTCOrderManager(void);
 	virtual AutoOrderManager* GetAutoOrderManager(void);
 
 protected:
 	OTCOrderManager _otcOrderMgr;
 	AutoOrderManager _autoOrderMgr;
-
-	IPricingDataContext* _pricingDataCtx;
 
 private:
 

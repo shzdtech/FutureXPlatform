@@ -11,8 +11,6 @@
 #include <string>
 #include "../utility/stringutility.h"
 
-static const char* EXCHANGE_OTC = "otc";
-
 class ContractKey
 {
 public:
@@ -32,10 +30,10 @@ public:
 
 	inline int compare(const ContractKey& contractKey) const
 	{
-		int cmp = stringutility::compare(_instrumentID.data(), contractKey._instrumentID.data());
+		int cmp = stringutility::compare(_instrumentID, contractKey._instrumentID);
 
 		return cmp != 0 ? cmp : 
-			stringutility::compare(_exchangeID.data(), contractKey._exchangeID.data());
+			stringutility::compare(_exchangeID, contractKey._exchangeID);
 	}
 
 	inline bool operator< (const ContractKey& contractKey) const
@@ -58,9 +56,25 @@ public:
 		return _instrumentID;
 	}
 
+	void setExchangeID(const std::string& exchangeId)
+	{
+		_exchangeID = exchangeId;
+	}
+
+	const std::string& OTCExchange() const
+	{
+		static const std::string OTC("otc");
+		return OTC;
+	}
+
+	void ConvertToOTC()
+	{
+		_exchangeID = OTCExchange();
+	}
+
 	bool IsOTC() const
 	{
-		return stringutility::compare(_exchangeID.data(), EXCHANGE_OTC) == 0;
+		return stringutility::compare(_exchangeID, OTCExchange()) == 0;
 	}
 
 protected:

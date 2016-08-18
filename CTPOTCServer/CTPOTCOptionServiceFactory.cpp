@@ -38,6 +38,8 @@ std::map<uint, IMessageHandler_Ptr> CTPOTCOptionServiceFactory::CreateMessageHan
 	std::map<uint, IMessageHandler_Ptr> msg_hdl_map =
 		CTPOTCServiceFactory::CreateMessageHandlers(serverCtx);
 
+	msg_hdl_map[MSG_ID_VOLITALITY_MODEL] = std::make_shared<OTCOptionVolatility>();
+
 	return msg_hdl_map;
 }
 
@@ -52,10 +54,9 @@ IMessageProcessor_Ptr CTPOTCOptionServiceFactory::CreateWorkerProcessor(IServerC
 	if (!serverCtx->getWorkerProcessor())
 	{
 		auto pricingCtx = (IPricingDataContext*)serverCtx->getAttribute(STR_KEY_SERVER_PRICING_DATACONTEXT).get();
-		auto worker_ptr = std::make_shared<CTPOTCOptionWorkerProcessor>(
-			_configMap, serverCtx,
-			std::make_shared<CTPOTCTradeProcessor>(_configMap, serverCtx, pricingCtx));
-		worker_ptr->Initialize();
+		auto worker_ptr = std::make_shared<CTPOTCOptionWorkerProcessor>(serverCtx,
+			std::make_shared<CTPOTCTradeProcessor>(serverCtx, pricingCtx));
+		worker_ptr->Initialize(serverCtx);
 		serverCtx->setWorkerProcessor(worker_ptr);
 		serverCtx->setSubTypeWorkerPtr(std::static_pointer_cast<OTCWorkerProcessor>(worker_ptr));
 	}

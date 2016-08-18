@@ -1,6 +1,8 @@
 #if !defined(__utility_stringutility_h)
 #define __utility_stringutility_h
 
+#include <string>
+
 class stringutility
 {
 public:
@@ -29,6 +31,11 @@ public:
 		}
 
 		return ret;
+	}
+
+	inline static int compare(const std::string& str1, const std::string& str2)
+	{
+		return compare(str1.data(), str2.data());
 	}
 };
 

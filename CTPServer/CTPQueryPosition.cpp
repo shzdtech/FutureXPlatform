@@ -60,7 +60,7 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 			std::this_thread::sleep_for(std::chrono::seconds(2));
 		}
 
-		ThrowNotFoundException(&positionMap);
+		ThrowNotFoundExceptionIfEmpty(&positionMap);
 
 		if (instrumentid != EMPTY_STRING)
 		{
@@ -127,6 +127,7 @@ dataobj_ptr CTPQueryPosition::HandleResponse(const uint32_t serialId, param_vect
 		{
 			exchange = pInstrumentDO->ExchangeID();
 		}
+
 		auto pDO = new UserPositionExDO(exchange, pData->InstrumentID);
 		ret.reset(pDO);
 
@@ -134,7 +135,7 @@ dataobj_ptr CTPQueryPosition::HandleResponse(const uint32_t serialId, param_vect
 
 		pDO->Direction = (PositionDirectionType)(pData->PosiDirection - THOST_FTDC_PD_Net);
 		pDO->HedgeFlag = (HedgeType)(pData->HedgeFlag - THOST_FTDC_HF_Speculation);
-		pDO->PositionDate = pData->PositionDate;
+		pDO->PositionDateFlag = (PositionDateFlagType)(pData->PositionDate - THOST_FTDC_PSD_Today);
 		pDO->LastdayPosition = pData->YdPosition;
 		pDO->Position = pData->Position;
 		pDO->LongFrozen = pData->LongFrozen;
@@ -175,7 +176,7 @@ dataobj_ptr CTPQueryPosition::HandleResponse(const uint32_t serialId, param_vect
 		{
 			auto& positionMap = wkProcPtr->GetUserPositionMap();
 			auto& positions = positionMap.getorfill(pDO->InstrumentID());
-			auto& position = positions.getorfill(pDO->Direction);
+			auto& position = positions.getorfill(std::make_pair(pDO->PositionDateFlag, pDO->Direction));
 			position = *pDO;
 		}
 	}

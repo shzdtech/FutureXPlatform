@@ -25,9 +25,9 @@
 class CTP_CLASS_EXPORT CTPTradeWorkerProcessor : public CTPTradeProcessor
 {
 public:
-   CTPTradeWorkerProcessor(const std::map<std::string, std::string>& configMap, IServerContext* pServerCtx);
+   CTPTradeWorkerProcessor(IServerContext* pServerCtx);
    ~CTPTradeWorkerProcessor();
-   virtual void Initialize(void);
+   virtual void Initialize(IServerContext* pServerCtx);
    virtual int LoadSystemData(CThostFtdcTraderApi* trdAPI);
    virtual int LoginSystemUser(void);
    virtual int LoginSystemUserIfNeed(void);

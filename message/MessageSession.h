@@ -31,8 +31,8 @@ public:
 	virtual int WriteMessage(const data_buffer& msg) { return 0; }
 	void setTimeout(long seconds);
 	IMessageContext_Ptr getContext(void);
-	bool IsLogin(void);
-	void setLoginStatus(bool status);
+	time_t getLoginTimeStamp(void);
+	void setLoginTimeStamp(time_t tm);
 	IUserInfo_Ptr getUserInfo(void);
 	IProcessorBase_Ptr getProcessor(void);
 
@@ -46,7 +46,7 @@ protected:
 	std::list<IMessageSessionEvent_WkPtr> _sessionEventList;
 	IUserInfo_Ptr _userInfo_ptr;
 	long _timeout;
-	bool _islogin;
+	time_t _loginTimeStamp;
 	bool _closed;
 
 private:

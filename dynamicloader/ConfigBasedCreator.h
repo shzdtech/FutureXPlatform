@@ -13,13 +13,13 @@
 class CLASS_EXPORT ConfigBasedCreator
 {
 public:
-   static std::shared_ptr<void> CreateInstance(const std::string& configFile, const std::string& sectionPath);
+   static std::shared_ptr<void> CreateInstance(const char* configFile, const char* sectionPath);
 
-   static std::shared_ptr<void> CreateInstance(const std::string& moduleUUID, const std::string& modulePath, const std::string& classUUID);
+   static std::shared_ptr<void> CreateInstance(const char* moduleUUID, const char* modulePath, const char* classUUID);
    
-   static std::shared_ptr<void> CreateInstance(const std::string& sectionPath);
+   static std::shared_ptr<void> CreateInstance(const char* sectionPath);
 
-   static std::string DEFAULT_CFG_PATH;
+   static const char* DEFAULT_CFG_PATH;
 
 protected:
 private:

@@ -30,7 +30,7 @@ data_buffer PBUserPositionSerializer::Serialize(const dataobj_ptr& abstractDO)
 	PB.set_contract(pDO->InstrumentID().data());
 	PB.set_direction(pDO->Direction);
 	PB.set_hedgeflag(pDO->HedgeFlag);
-	PB.set_positiondate(pDO->PositionDate);
+	PB.set_positiondateflag(pDO->PositionDateFlag);
 	PB.set_ydposition(pDO->LastdayPosition);
 	PB.set_position(pDO->Position);
 	PB.set_openvolume(pDO->OpenVolume);

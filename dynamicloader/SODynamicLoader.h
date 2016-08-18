@@ -13,9 +13,9 @@
 class SODynamicLoader : public AbstractDynamicLoader
 {
 public:
-   void* LoadModule(const std::string& modulePath);
+   void* LoadModule(const char* modulePath);
    bool UnloadModule(const void* module);
-   void* FindFunction(const void* module, const std::string& funcName);
+   void* FindFunction(const void* module, const char* funcName);
 
 protected:
 private:

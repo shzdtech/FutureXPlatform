@@ -222,7 +222,7 @@ void ASIOTCPSession::asyn_timeout(ASIOTCPSession_WkPtr this_wk_ptr) {
 				if (!ec) {
 					if (auto this_ptr = this_wk_ptr.lock()) {
 						auto this_ins = this_ptr.get();
-						if (this_ins->_alive /*&& this_ins->IsLogin()*/) {
+						if (this_ins->_alive && this_ins->getLoginTimeStamp()) {
 							this_ins->_alive = false;
 							asyn_timeout(this_ptr);
 						}

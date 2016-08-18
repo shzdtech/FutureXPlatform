@@ -20,11 +20,9 @@
 
 
 CTPOTCTradeProcessor::CTPOTCTradeProcessor(
-	const std::map<std::string, std::string>& configMap,
 	IServerContext* pServerCtx,
 	IPricingDataContext* pricingDataCtx)
-	: CTPTradeWorkerProcessor(configMap, pServerCtx),
-	_pricingDataCtx(pricingDataCtx),
+	: OTCTradeProcessor(pricingDataCtx), CTPTradeWorkerProcessor(pServerCtx),
 	_otcOrderMgr(this, pricingDataCtx),
 	_autoOrderMgr(this, pricingDataCtx)
 {
@@ -161,11 +159,6 @@ OrderDO_Ptr CTPOTCTradeProcessor::CancelOrder(OrderRequestDO& orderInfo)
 	
 	req.SessionID = _systemUser.getSessionId();
 	return CTPUtility::ParseRawOrderInputAction(&req, nullptr);
-}
-
-IPricingDataContext * CTPOTCTradeProcessor::GetPricingContext(void)
-{
-	return _pricingDataCtx;
 }
 
 OTCOrderManager * CTPOTCTradeProcessor::GetOTCOrderManager(void)

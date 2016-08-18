@@ -12,14 +12,14 @@
 #include <dlfcn.h>
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       SODynamicLoader::LoadModule(const std::string& modulePath)
+// Name:       SODynamicLoader::LoadModule(const char* modulePath)
 // Purpose:    Implementation of SODynamicLoader::LoadModule()
 // Parameters:
 // - modulePath
 // Return:     void*
 ////////////////////////////////////////////////////////////////////////
 
-void* SODynamicLoader::LoadModule(const std::string& modulePath)
+void* SODynamicLoader::LoadModule(const char* modulePath)
 {
 	return dlopen(modulePath.data(), RTLD_LAZY);
 }
@@ -38,7 +38,7 @@ bool SODynamicLoader::UnloadModule(const void* module)
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       SODynamicLoader::FindFunction(const void* handle, const std::string& funcName)
+// Name:       SODynamicLoader::FindFunction(const void* handle, const char* funcName)
 // Purpose:    Implementation of SODynamicLoader::FindFunction()
 // Parameters:
 // - handle
@@ -46,7 +46,7 @@ bool SODynamicLoader::UnloadModule(const void* module)
 // Return:     void*
 ////////////////////////////////////////////////////////////////////////
 
-void* SODynamicLoader::FindFunction(const void* module, const std::string& funcName)
+void* SODynamicLoader::FindFunction(const void* module, const char* funcName)
 {
 	return (void*)dlsym(module, funcName.data());
 }

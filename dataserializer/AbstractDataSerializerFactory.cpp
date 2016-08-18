@@ -28,7 +28,7 @@ AbstractDataSerializerFactory::Instance(void)
 		for (auto& config : messageSerializerConfigs)
 		{
 			auto serializerFactory_ptr = std::static_pointer_cast<AbstractDataSerializerFactory>
-				(ConfigBasedCreator::CreateInstance(config.MODULE_UUID, config.MODULE_PATH, config.CLASS_UUID));
+				(ConfigBasedCreator::CreateInstance(config.MODULE_UUID.data(), config.MODULE_PATH.data(), config.CLASS_UUID.data()));
 			serializerFactory_ptr->CreateDataSerializers(instance->_serializer_map);
 		}
 		once_flag = false;

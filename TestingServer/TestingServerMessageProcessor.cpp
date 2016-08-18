@@ -76,6 +76,7 @@ void TestingServerMessageProcessor::_mdGenerator()
 						marketDataDO.LowerLimitPrice = marketDataDO.BidVolume * 0.9;
 
 						OnResponseMacro(MSG_ID_RET_MARKETDATA, 0, &marketDataDO);
+						OnResponseMacro(MSG_ID_RTN_PRICING, 0, &marketDataDO);
 					}
 				}
 			}

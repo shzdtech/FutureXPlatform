@@ -14,7 +14,7 @@
 class CTP_OTC_CLASS_EXPORT CTPOTCSessionProcessor : public CTPProcessor
 {
 public:
-	CTPOTCSessionProcessor(const std::map<std::string, std::string>& configMap);
+	CTPOTCSessionProcessor();
    ~CTPOTCSessionProcessor();
    void Initialize(void);
 

@@ -28,9 +28,10 @@
  // Return:     
  ////////////////////////////////////////////////////////////////////////
 
-OTCWorkerProcessor::OTCWorkerProcessor() :
+OTCWorkerProcessor::OTCWorkerProcessor(IPricingDataContext* pricingCtx) :
 	_pricingNotifers(SessionContainer<ContractKey>::NewInstance()),
-	_otcOrderNotifers(SessionContainer<uint64_t>::NewInstance())
+	_otcOrderNotifers(SessionContainer<uint64_t>::NewInstance()),
+	_pricingCtx(pricingCtx)
 {
 }
 
@@ -48,7 +49,7 @@ OTCWorkerProcessor::~OTCWorkerProcessor()
 
 void OTCWorkerProcessor::AddContractToMonitor(const ContractKey& contractId)
 {
-	auto mdMap_Ptr = GetOTCTradeProcessor()->GetPricingContext()->GetMarketDataMap();
+	auto mdMap_Ptr = PricingDataContext()->GetMarketDataMap();
 	if (mdMap_Ptr->find(contractId.InstrumentID()) == mdMap_Ptr->end())
 	{
 		MarketDataDO mdo(contractId.ExchangeID(), contractId.InstrumentID());
@@ -82,6 +83,11 @@ void OTCWorkerProcessor::UnregisterPricingListener(const ContractKey & contractI
 	_pricingNotifers->remove(contractId, pMsgSession);
 }
 
+IPricingDataContext * OTCWorkerProcessor::PricingDataContext()
+{
+	return _pricingCtx;
+}
+
 void OTCWorkerProcessor::TriggerPricing(const StrategyContractDO& strategyDO)
 {
 	if (strategyDO.Enabled)
@@ -94,7 +100,7 @@ void OTCWorkerProcessor::TriggerPricing(const StrategyContractDO& strategyDO)
 
 void OTCWorkerProcessor::TriggerUpdating(const MarketDataDO& mdDO)
 {
-	auto strategyMap = GetOTCTradeProcessor()->GetPricingContext()->GetStrategyMap();
+	auto strategyMap = PricingDataContext()->GetStrategyMap();
 	auto it = _contract_strategy_map.find(mdDO);
 	if (it != _contract_strategy_map.end())
 	{

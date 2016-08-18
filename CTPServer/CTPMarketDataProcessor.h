@@ -13,9 +13,9 @@
 
 class CTP_CLASS_EXPORT CTPMarketDataProcessor : public CTPProcessor, public CThostFtdcMdSpi {
 public:
-	CTPMarketDataProcessor(const std::map<std::string, std::string>& configMap);
+	CTPMarketDataProcessor();
 	~CTPMarketDataProcessor();
-	void Initialize(void);
+	void Initialize(IServerContext* serverCtx);
 
 	int Login(CThostFtdcReqUserLoginField* loginInfo, uint32_t serialId);
 protected:

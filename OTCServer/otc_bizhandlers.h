@@ -14,5 +14,7 @@
 #include "OTCNewOrder.h"
 #include "OTCCancelOrder.h"
 #include "OTCQueryOrder.h"
+#include "OTCQueryInstrument.h"
+#include "OTCQueryTrade.h"
 
 #endif

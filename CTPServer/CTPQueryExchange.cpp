@@ -52,7 +52,7 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 			std::this_thread::sleep_for(std::chrono::seconds(2));
 		}
 
-		ThrowNotFoundException(&exchangeInfo);
+		ThrowNotFoundExceptionIfEmpty(&exchangeInfo);
 
 		if (exchangeid != EMPTY_STRING)
 		{

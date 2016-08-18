@@ -27,6 +27,8 @@ OrderDO_Ptr OTCOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 {
 	OrderDO_Ptr ret;
 
+	if (!orderInfo.IsOTC()) orderInfo.ConvertToOTC();
+
 	if (auto pricingDO_ptr = PricingUtility::Pricing(&orderInfo.Volume, orderInfo, *_pricingCtx))
 	{
 		if (ret = OTCOrderDAO::CreateOrder(orderInfo, *pricingDO_ptr))
@@ -133,11 +135,13 @@ int OTCOrderManager::OnOrderUpdated(OrderDO& orderInfo)
 
 OrderDO_Ptr OTCOrderManager::CancelOrder(OrderRequestDO& orderInfo)
 {
+	if (!orderInfo.IsOTC()) orderInfo.ConvertToOTC();
+
 	OrderStatus currStatus;
 	OTCOrderDAO::CancelOrder(orderInfo, currStatus);
 	std::lock_guard<std::mutex> guard(_userOrderCtx.Mutex(orderInfo));
 	OrderDO_Ptr ret = _userOrderCtx.RemoveOrder(orderInfo.OrderID);
-	if (ret)	ret->OrderStatus = OrderStatus::CANCELED;
+	if (ret) ret->OrderStatus = OrderStatus::CANCELED;
 
 	return ret;
 }

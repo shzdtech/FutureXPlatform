@@ -12,10 +12,10 @@
 #include "../configuration/AbstractConfigReaderFactory.h"
 
 
-std::string ConfigBasedCreator::DEFAULT_CFG_PATH = "instance";
+const char* ConfigBasedCreator::DEFAULT_CFG_PATH = "instance";
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       ConfigBasedCreator::CreateInstance(const std::string& moduleUUID, const std::string& modulePath, const std::string& classUUID)
+// Name:       ConfigBasedCreator::CreateInstance(const char* moduleUUID, const char* modulePath, const char* classUUID)
 // Purpose:    Implementation of ConfigBasedCreator::CreateInstance()
 // Parameters:
 // - moduleUUID
@@ -24,7 +24,7 @@ std::string ConfigBasedCreator::DEFAULT_CFG_PATH = "instance";
 // Return:     std::shared_ptr<void>
 ////////////////////////////////////////////////////////////////////////
 
-std::shared_ptr<void> ConfigBasedCreator::CreateInstance(const std::string& moduleUUID, const std::string& modulePath, const std::string& classUUID)
+std::shared_ptr<void> ConfigBasedCreator::CreateInstance(const char* moduleUUID, const char* modulePath, const char* classUUID)
 {
 	std::shared_ptr<void> instancePtr;
 	AbstractDynamicLoader* adl = AbstractDynamicLoader::Instance();
@@ -40,7 +40,7 @@ std::shared_ptr<void> ConfigBasedCreator::CreateInstance(const std::string& modu
 
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       FactoryInitializer::CreateFactoryFromCfg(const std::string& factoryUUID, const std::string& configFile, void** factoryInstance)
+// Name:       FactoryInitializer::CreateFactoryFromCfg(const char* factoryUUID, const char* configFile, void** factoryInstance)
 // Purpose:    Implementation of FactoryInitializer::CreateFactoryFromCfg()
 // Parameters:
 // - factoryUUID
@@ -49,13 +49,13 @@ std::shared_ptr<void> ConfigBasedCreator::CreateInstance(const std::string& modu
 // Return:     bool
 ////////////////////////////////////////////////////////////////////////
 
-std::shared_ptr<void> ConfigBasedCreator::CreateInstance(const std::string& configFile, const std::string& sectionPath) {
+std::shared_ptr<void> ConfigBasedCreator::CreateInstance(const char* configFile, const char* sectionPath) {
 	std::shared_ptr<void> instancePtr;
 	if (auto cfgReader = AbstractConfigReaderFactory::OpenConfigReader(configFile)) {
 		std::map<std::string, std::string> facMap;
 		if (cfgReader->getMap(sectionPath, facMap)) {
-			instancePtr = CreateInstance(facMap["module.uuid"], 
-				facMap["module.path"], facMap["class.uuid"]);
+			instancePtr = CreateInstance(facMap["module.uuid"].data(), 
+				facMap["module.path"].data(), facMap["class.uuid"].data());
 		}
 	}
 
@@ -63,7 +63,7 @@ std::shared_ptr<void> ConfigBasedCreator::CreateInstance(const std::string& conf
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       FactoryInitializer::ConfigBasedCreator(const std::string& factoryUUID)
+// Name:       FactoryInitializer::ConfigBasedCreator(const char* factoryUUID)
 // Purpose:    Implementation of ConfigBasedCreator::CreateFactoryFromCfg()
 // Parameters:
 // - factoryUUID
@@ -71,6 +71,6 @@ std::shared_ptr<void> ConfigBasedCreator::CreateInstance(const std::string& conf
 // Return:     bool
 ////////////////////////////////////////////////////////////////////////
 
-std::shared_ptr<void> ConfigBasedCreator::CreateInstance(const std::string& factoryUUID) {
+std::shared_ptr<void> ConfigBasedCreator::CreateInstance(const char* factoryUUID) {
 	return CreateInstance(factoryUUID, DEFAULT_CFG_PATH);
 }

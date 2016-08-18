@@ -409,7 +409,7 @@ void protobuf_AssignDesc_businessobj_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPosition, direction_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPosition, position_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPosition, ydposition_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPosition, positiondate_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPosition, positiondateflag_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPosition, openvolume_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPosition, closevolume_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPosition, openamount_),
@@ -498,7 +498,7 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMarketInfo, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMarketInfo, _is_default_instance_));
   PBContractInfo_descriptor_ = file->message_type(17);
-  static const int PBContractInfo_offsets_[27] = {
+  static const int PBContractInfo_offsets_[28] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBContractInfo, exchange_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBContractInfo, contract_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBContractInfo, name_),
@@ -525,6 +525,7 @@ void protobuf_AssignDesc_businessobj_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBContractInfo, shortmarginratio_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBContractInfo, underlyingexchange_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBContractInfo, underlyingcontract_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBContractInfo, contracttype_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBContractInfo, strikeprice_),
   };
   PBContractInfo_reflection_ =
@@ -737,56 +738,57 @@ void protobuf_AddDesc_businessobj_2eproto() {
     "\r \001(\t\022\021\n\ttradeTime\030\016 \001(\t\022\021\n\ttradeType\030\017 "
     "\001(\005\022\021\n\thedgeFlag\030\020 \001(\005\022\022\n\ncommission\030\021 \001"
     "(\001\0220\n\006header\030\022 \001(\0132 .Micro.Future.Messag"
-    "e.DataHeader\"\356\002\n\nPBPosition\022\020\n\010exchange\030"
+    "e.DataHeader\"\362\002\n\nPBPosition\022\020\n\010exchange\030"
     "\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022\021\n\tdirection\030\003 \001"
     "(\005\022\020\n\010position\030\005 \001(\005\022\022\n\nydPosition\030\004 \001(\005"
-    "\022\024\n\014positionDate\030\006 \001(\t\022\022\n\nopenVolume\030\007 \001"
-    "(\005\022\023\n\013closeVolume\030\010 \001(\005\022\022\n\nopenAmount\030\t "
-    "\001(\001\022\023\n\013closeAmount\030\n \001(\001\022\014\n\004cost\030\013 \001(\001\022\020"
-    "\n\010openCost\030\014 \001(\001\022\016\n\006profit\030\r \001(\001\022\023\n\013clos"
-    "eProfit\030\016 \001(\001\022\021\n\tuseMargin\030\017 \001(\001\022\021\n\thedg"
-    "eFlag\030\020 \001(\005\0220\n\006header\030\021 \001(\0132 .Micro.Futu"
-    "re.Message.DataHeader\"\275\005\n\rPBAccountInfo\022"
-    "\020\n\010brokerID\030\002 \001(\t\022\021\n\taccountID\030\003 \001(\t\022\023\n\013"
-    "preMortgage\030\004 \001(\001\022\021\n\tpreCredit\030\005 \001(\001\022\022\n\n"
-    "preDeposit\030\006 \001(\001\022\022\n\npreBalance\030\007 \001(\001\022\021\n\t"
-    "preMargin\030\010 \001(\001\022\024\n\014interestBase\030\t \001(\001\022\020\n"
-    "\010interest\030\n \001(\001\022\017\n\007deposit\030\013 \001(\001\022\020\n\010with"
-    "draw\030\014 \001(\001\022\024\n\014frozenMargin\030\r \001(\001\022\022\n\nfroz"
-    "enCash\030\016 \001(\001\022\030\n\020frozenCommission\030\017 \001(\001\022\022"
-    "\n\ncurrMargin\030\020 \001(\001\022\016\n\006cashIn\030\021 \001(\001\022\022\n\nco"
-    "mmission\030\022 \001(\001\022\023\n\013closeProfit\030\023 \001(\001\022\026\n\016p"
-    "ositionProfit\030\024 \001(\001\022\017\n\007balance\030\025 \001(\001\022\021\n\t"
-    "available\030\026 \001(\001\022\025\n\rwithdrawQuota\030\027 \001(\001\022\017"
-    "\n\007reserve\030\030 \001(\001\022\022\n\ntradingDay\030\031 \001(\t\022\024\n\014s"
-    "ettlementID\030\032 \001(\005\022\016\n\006credit\030\033 \001(\001\022\020\n\010mor"
-    "tgage\030\034 \001(\001\022\026\n\016exchangeMargin\030\035 \001(\001\022\026\n\016d"
-    "eliveryMargin\030\036 \001(\001\022\036\n\026exchangeDeliveryM"
-    "argin\030\037 \001(\001\022\026\n\016reserveBalance\030  \001(\001\0220\n\006h"
-    "eader\030! \001(\0132 .Micro.Future.Message.DataH"
-    "eader\"r\n\014PBMarketInfo\022\020\n\010exchange\030\001 \001(\t\022"
-    "\014\n\004name\030\002 \001(\014\022\020\n\010property\030\003 \001(\014\0220\n\006heade"
-    "r\030\004 \001(\0132 .Micro.Future.Message.DataHeade"
-    "r\"\366\004\n\016PBContractInfo\022\020\n\010exchange\030\001 \001(\t\022\020"
-    "\n\010contract\030\002 \001(\t\022\014\n\004name\030\003 \001(\014\022\021\n\tproduc"
-    "tID\030\004 \001(\t\022\023\n\013productType\030\005 \001(\005\022\024\n\014delive"
-    "ryYear\030\006 \001(\005\022\025\n\rdeliveryMonth\030\007 \001(\005\022\034\n\024m"
-    "axMarketOrderVolume\030\010 \001(\005\022\034\n\024minMarketOr"
-    "derVolume\030\t \001(\005\022\033\n\023maxLimitOrderVolume\030\n"
-    " \001(\005\022\033\n\023minLimitOrderVolume\030\013 \001(\005\022\026\n\016vol"
-    "umeMultiple\030\014 \001(\005\022\021\n\tpriceTick\030\r \001(\005\022\022\n\n"
-    "createDate\030\016 \001(\t\022\020\n\010openDate\030\017 \001(\t\022\022\n\nex"
-    "pireDate\030\020 \001(\t\022\026\n\016startDelivDate\030\021 \001(\t\022\024"
-    "\n\014endDelivDate\030\022 \001(\t\022\021\n\tlifePhase\030\023 \001(\005\022"
-    "\021\n\tisTrading\030\024 \001(\010\022\024\n\014positionType\030\025 \001(\005"
-    "\022\030\n\020positionDateType\030\026 \001(\005\022\027\n\017longMargin"
-    "Ratio\030\027 \001(\001\022\030\n\020shortMarginRatio\030\030 \001(\001\022\032\n"
-    "\022underlyingExchange\030\031 \001(\t\022\032\n\022underlyingC"
-    "ontract\030\032 \001(\t\022\023\n\013strikePrice\030\033 \001(\001\"\213\001\n\022P"
-    "BContractInfoList\0220\n\006header\030\001 \001(\0132 .Micr"
-    "o.Future.Message.DataHeader\022C\n\014contractI"
-    "nfo\030\002 \003(\0132-.Micro.Future.Message.Busines"
-    "s.PBContractInfob\006proto3", 5144);
+    "\022\030\n\020positionDateFlag\030\006 \001(\005\022\022\n\nopenVolume"
+    "\030\007 \001(\005\022\023\n\013closeVolume\030\010 \001(\005\022\022\n\nopenAmoun"
+    "t\030\t \001(\001\022\023\n\013closeAmount\030\n \001(\001\022\014\n\004cost\030\013 \001"
+    "(\001\022\020\n\010openCost\030\014 \001(\001\022\016\n\006profit\030\r \001(\001\022\023\n\013"
+    "closeProfit\030\016 \001(\001\022\021\n\tuseMargin\030\017 \001(\001\022\021\n\t"
+    "hedgeFlag\030\020 \001(\005\0220\n\006header\030\021 \001(\0132 .Micro."
+    "Future.Message.DataHeader\"\275\005\n\rPBAccountI"
+    "nfo\022\020\n\010brokerID\030\002 \001(\t\022\021\n\taccountID\030\003 \001(\t"
+    "\022\023\n\013preMortgage\030\004 \001(\001\022\021\n\tpreCredit\030\005 \001(\001"
+    "\022\022\n\npreDeposit\030\006 \001(\001\022\022\n\npreBalance\030\007 \001(\001"
+    "\022\021\n\tpreMargin\030\010 \001(\001\022\024\n\014interestBase\030\t \001("
+    "\001\022\020\n\010interest\030\n \001(\001\022\017\n\007deposit\030\013 \001(\001\022\020\n\010"
+    "withdraw\030\014 \001(\001\022\024\n\014frozenMargin\030\r \001(\001\022\022\n\n"
+    "frozenCash\030\016 \001(\001\022\030\n\020frozenCommission\030\017 \001"
+    "(\001\022\022\n\ncurrMargin\030\020 \001(\001\022\016\n\006cashIn\030\021 \001(\001\022\022"
+    "\n\ncommission\030\022 \001(\001\022\023\n\013closeProfit\030\023 \001(\001\022"
+    "\026\n\016positionProfit\030\024 \001(\001\022\017\n\007balance\030\025 \001(\001"
+    "\022\021\n\tavailable\030\026 \001(\001\022\025\n\rwithdrawQuota\030\027 \001"
+    "(\001\022\017\n\007reserve\030\030 \001(\001\022\022\n\ntradingDay\030\031 \001(\t\022"
+    "\024\n\014settlementID\030\032 \001(\005\022\016\n\006credit\030\033 \001(\001\022\020\n"
+    "\010mortgage\030\034 \001(\001\022\026\n\016exchangeMargin\030\035 \001(\001\022"
+    "\026\n\016deliveryMargin\030\036 \001(\001\022\036\n\026exchangeDeliv"
+    "eryMargin\030\037 \001(\001\022\026\n\016reserveBalance\030  \001(\001\022"
+    "0\n\006header\030! \001(\0132 .Micro.Future.Message.D"
+    "ataHeader\"r\n\014PBMarketInfo\022\020\n\010exchange\030\001 "
+    "\001(\t\022\014\n\004name\030\002 \001(\014\022\020\n\010property\030\003 \001(\014\0220\n\006h"
+    "eader\030\004 \001(\0132 .Micro.Future.Message.DataH"
+    "eader\"\214\005\n\016PBContractInfo\022\020\n\010exchange\030\001 \001"
+    "(\t\022\020\n\010contract\030\002 \001(\t\022\014\n\004name\030\003 \001(\014\022\021\n\tpr"
+    "oductID\030\004 \001(\t\022\023\n\013productType\030\005 \001(\005\022\024\n\014de"
+    "liveryYear\030\006 \001(\005\022\025\n\rdeliveryMonth\030\007 \001(\005\022"
+    "\034\n\024maxMarketOrderVolume\030\010 \001(\005\022\034\n\024minMark"
+    "etOrderVolume\030\t \001(\005\022\033\n\023maxLimitOrderVolu"
+    "me\030\n \001(\005\022\033\n\023minLimitOrderVolume\030\013 \001(\005\022\026\n"
+    "\016volumeMultiple\030\014 \001(\005\022\021\n\tpriceTick\030\r \001(\001"
+    "\022\022\n\ncreateDate\030\016 \001(\t\022\020\n\010openDate\030\017 \001(\t\022\022"
+    "\n\nexpireDate\030\020 \001(\t\022\026\n\016startDelivDate\030\021 \001"
+    "(\t\022\024\n\014endDelivDate\030\022 \001(\t\022\021\n\tlifePhase\030\023 "
+    "\001(\005\022\021\n\tisTrading\030\024 \001(\010\022\024\n\014positionType\030\025"
+    " \001(\005\022\030\n\020positionDateType\030\026 \001(\005\022\027\n\017longMa"
+    "rginRatio\030\027 \001(\001\022\030\n\020shortMarginRatio\030\030 \001("
+    "\001\022\032\n\022underlyingExchange\030\031 \001(\t\022\032\n\022underly"
+    "ingContract\030\032 \001(\t\022\024\n\014contractType\030\033 \001(\005\022"
+    "\023\n\013strikePrice\030\034 \001(\001\"\213\001\n\022PBContractInfoL"
+    "ist\0220\n\006header\030\001 \001(\0132 .Micro.Future.Messa"
+    "ge.DataHeader\022C\n\014contractInfo\030\002 \003(\0132-.Mi"
+    "cro.Future.Message.Business.PBContractIn"
+    "fob\006proto3", 5170);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "businessobj.proto", &protobuf_RegisterTypes);
   PBMarketData::default_instance_ = new PBMarketData();
@@ -11584,7 +11586,7 @@ const int PBPosition::kContractFieldNumber;
 const int PBPosition::kDirectionFieldNumber;
 const int PBPosition::kPositionFieldNumber;
 const int PBPosition::kYdPositionFieldNumber;
-const int PBPosition::kPositionDateFieldNumber;
+const int PBPosition::kPositionDateFlagFieldNumber;
 const int PBPosition::kOpenVolumeFieldNumber;
 const int PBPosition::kCloseVolumeFieldNumber;
 const int PBPosition::kOpenAmountFieldNumber;
@@ -11626,7 +11628,7 @@ void PBPosition::SharedCtor() {
   direction_ = 0;
   position_ = 0;
   ydposition_ = 0;
-  positiondate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  positiondateflag_ = 0;
   openvolume_ = 0;
   closevolume_ = 0;
   openamount_ = 0;
@@ -11648,7 +11650,6 @@ PBPosition::~PBPosition() {
 void PBPosition::SharedDtor() {
   exchange_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   contract_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  positiondate_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != default_instance_) {
     delete header_;
   }
@@ -11697,14 +11698,11 @@ void PBPosition::Clear() {
            ZR_HELPER_(last) - ZR_HELPER_(first) + sizeof(last));\
 } while (0)
 
-  ZR_(direction_, position_);
-  ZR_(ydposition_, openvolume_);
+  ZR_(direction_, closevolume_);
   exchange_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   contract_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  positiondate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  closevolume_ = 0;
-  ZR_(openamount_, opencost_);
-  ZR_(hedgeflag_, usemargin_);
+  ZR_(openamount_, usemargin_);
+  hedgeflag_ = 0;
   if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
   header_ = NULL;
 
@@ -11797,20 +11795,18 @@ bool PBPosition::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(50)) goto parse_positionDate;
+        if (input->ExpectTag(48)) goto parse_positionDateFlag;
         break;
       }
 
-      // optional string positionDate = 6;
+      // optional int32 positionDateFlag = 6;
       case 6: {
-        if (tag == 50) {
-         parse_positionDate:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_positiondate()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->positiondate().data(), this->positiondate().length(),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "Micro.Future.Message.Business.PBPosition.positionDate"));
+        if (tag == 48) {
+         parse_positionDateFlag:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &positiondateflag_)));
+
         } else {
           goto handle_unusual;
         }
@@ -12040,14 +12036,9 @@ void PBPosition::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->position(), output);
   }
 
-  // optional string positionDate = 6;
-  if (this->positiondate().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->positiondate().data(), this->positiondate().length(),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "Micro.Future.Message.Business.PBPosition.positionDate");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      6, this->positiondate(), output);
+  // optional int32 positionDateFlag = 6;
+  if (this->positiondateflag() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(6, this->positiondateflag(), output);
   }
 
   // optional int32 openVolume = 7;
@@ -12149,15 +12140,9 @@ void PBPosition::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->position(), target);
   }
 
-  // optional string positionDate = 6;
-  if (this->positiondate().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->positiondate().data(), this->positiondate().length(),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "Micro.Future.Message.Business.PBPosition.positionDate");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        6, this->positiondate(), target);
+  // optional int32 positionDateFlag = 6;
+  if (this->positiondateflag() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(6, this->positiondateflag(), target);
   }
 
   // optional int32 openVolume = 7;
@@ -12260,11 +12245,11 @@ int PBPosition::ByteSize() const {
         this->ydposition());
   }
 
-  // optional string positionDate = 6;
-  if (this->positiondate().size() > 0) {
+  // optional int32 positionDateFlag = 6;
+  if (this->positiondateflag() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->positiondate());
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->positiondateflag());
   }
 
   // optional int32 openVolume = 7;
@@ -12371,9 +12356,8 @@ void PBPosition::MergeFrom(const PBPosition& from) {
   if (from.ydposition() != 0) {
     set_ydposition(from.ydposition());
   }
-  if (from.positiondate().size() > 0) {
-
-    positiondate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.positiondate_);
+  if (from.positiondateflag() != 0) {
+    set_positiondateflag(from.positiondateflag());
   }
   if (from.openvolume() != 0) {
     set_openvolume(from.openvolume());
@@ -12439,7 +12423,7 @@ void PBPosition::InternalSwap(PBPosition* other) {
   std::swap(direction_, other->direction_);
   std::swap(position_, other->position_);
   std::swap(ydposition_, other->ydposition_);
-  positiondate_.Swap(&other->positiondate_);
+  std::swap(positiondateflag_, other->positiondateflag_);
   std::swap(openvolume_, other->openvolume_);
   std::swap(closevolume_, other->closevolume_);
   std::swap(openamount_, other->openamount_);
@@ -12596,48 +12580,18 @@ void PBPosition::clear_ydposition() {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.ydPosition)
 }
 
-// optional string positionDate = 6;
-void PBPosition::clear_positiondate() {
-  positiondate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// optional int32 positionDateFlag = 6;
+void PBPosition::clear_positiondateflag() {
+  positiondateflag_ = 0;
 }
- const ::std::string& PBPosition::positiondate() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.positionDate)
-  return positiondate_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+ ::google::protobuf::int32 PBPosition::positiondateflag() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.positionDateFlag)
+  return positiondateflag_;
 }
- void PBPosition::set_positiondate(const ::std::string& value) {
+ void PBPosition::set_positiondateflag(::google::protobuf::int32 value) {
   
-  positiondate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.positionDate)
-}
- void PBPosition::set_positiondate(const char* value) {
-  
-  positiondate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBPosition.positionDate)
-}
- void PBPosition::set_positiondate(const char* value, size_t size) {
-  
-  positiondate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBPosition.positionDate)
-}
- ::std::string* PBPosition::mutable_positiondate() {
-  
-  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBPosition.positionDate)
-  return positiondate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
- ::std::string* PBPosition::release_positiondate() {
-  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBPosition.positionDate)
-  
-  return positiondate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
- void PBPosition::set_allocated_positiondate(::std::string* positiondate) {
-  if (positiondate != NULL) {
-    
-  } else {
-    
-  }
-  positiondate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), positiondate);
-  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBPosition.positionDate)
+  positiondateflag_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.positionDateFlag)
 }
 
 // optional int32 openVolume = 7;
@@ -15366,6 +15320,7 @@ const int PBContractInfo::kLongMarginRatioFieldNumber;
 const int PBContractInfo::kShortMarginRatioFieldNumber;
 const int PBContractInfo::kUnderlyingExchangeFieldNumber;
 const int PBContractInfo::kUnderlyingContractFieldNumber;
+const int PBContractInfo::kContractTypeFieldNumber;
 const int PBContractInfo::kStrikePriceFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
@@ -15417,6 +15372,7 @@ void PBContractInfo::SharedCtor() {
   shortmarginratio_ = 0;
   underlyingexchange_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   underlyingcontract_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  contracttype_ = 0;
   strikeprice_ = 0;
 }
 
@@ -15489,19 +15445,16 @@ void PBContractInfo::Clear() {
   contract_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   productid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ZR_(minmarketordervolume_, volumemultiple_);
-  pricetick_ = 0;
+  ZR_(minmarketordervolume_, pricetick_);
   createdate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   opendate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   expiredate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ZR_(istrading_, shortmarginratio_);
+  ZR_(lifephase_, shortmarginratio_);
   startdelivdate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   enddelivdate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  lifephase_ = 0;
-  positiondatetype_ = 0;
+  ZR_(strikeprice_, contracttype_);
   underlyingexchange_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   underlyingcontract_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  strikeprice_ = 0;
 
 #undef ZR_HELPER_
 #undef ZR_
@@ -15697,16 +15650,16 @@ bool PBContractInfo::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(104)) goto parse_priceTick;
+        if (input->ExpectTag(105)) goto parse_priceTick;
         break;
       }
 
-      // optional int32 priceTick = 13;
+      // optional double priceTick = 13;
       case 13: {
-        if (tag == 104) {
+        if (tag == 105) {
          parse_priceTick:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
                  input, &pricetick_)));
 
         } else {
@@ -15921,13 +15874,28 @@ bool PBContractInfo::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(217)) goto parse_strikePrice;
+        if (input->ExpectTag(216)) goto parse_contractType;
         break;
       }
 
-      // optional double strikePrice = 27;
+      // optional int32 contractType = 27;
       case 27: {
-        if (tag == 217) {
+        if (tag == 216) {
+         parse_contractType:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &contracttype_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(225)) goto parse_strikePrice;
+        break;
+      }
+
+      // optional double strikePrice = 28;
+      case 28: {
+        if (tag == 225) {
          parse_strikePrice:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
@@ -16040,9 +16008,9 @@ void PBContractInfo::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(12, this->volumemultiple(), output);
   }
 
-  // optional int32 priceTick = 13;
+  // optional double priceTick = 13;
   if (this->pricetick() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(13, this->pricetick(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(13, this->pricetick(), output);
   }
 
   // optional string createDate = 14;
@@ -16145,9 +16113,14 @@ void PBContractInfo::SerializeWithCachedSizes(
       26, this->underlyingcontract(), output);
   }
 
-  // optional double strikePrice = 27;
+  // optional int32 contractType = 27;
+  if (this->contracttype() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(27, this->contracttype(), output);
+  }
+
+  // optional double strikePrice = 28;
   if (this->strikeprice() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteDouble(27, this->strikeprice(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(28, this->strikeprice(), output);
   }
 
   // @@protoc_insertion_point(serialize_end:Micro.Future.Message.Business.PBContractInfo)
@@ -16236,9 +16209,9 @@ void PBContractInfo::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(12, this->volumemultiple(), target);
   }
 
-  // optional int32 priceTick = 13;
+  // optional double priceTick = 13;
   if (this->pricetick() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(13, this->pricetick(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(13, this->pricetick(), target);
   }
 
   // optional string createDate = 14;
@@ -16348,9 +16321,14 @@ void PBContractInfo::SerializeWithCachedSizes(
         26, this->underlyingcontract(), target);
   }
 
-  // optional double strikePrice = 27;
+  // optional int32 contractType = 27;
+  if (this->contracttype() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(27, this->contracttype(), target);
+  }
+
+  // optional double strikePrice = 28;
   if (this->strikeprice() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(27, this->strikeprice(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(28, this->strikeprice(), target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.Business.PBContractInfo)
@@ -16445,11 +16423,9 @@ int PBContractInfo::ByteSize() const {
         this->volumemultiple());
   }
 
-  // optional int32 priceTick = 13;
+  // optional double priceTick = 13;
   if (this->pricetick() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->pricetick());
+    total_size += 1 + 8;
   }
 
   // optional string createDate = 14;
@@ -16537,7 +16513,14 @@ int PBContractInfo::ByteSize() const {
         this->underlyingcontract());
   }
 
-  // optional double strikePrice = 27;
+  // optional int32 contractType = 27;
+  if (this->contracttype() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->contracttype());
+  }
+
+  // optional double strikePrice = 28;
   if (this->strikeprice() != 0) {
     total_size += 2 + 8;
   }
@@ -16655,6 +16638,9 @@ void PBContractInfo::MergeFrom(const PBContractInfo& from) {
 
     underlyingcontract_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.underlyingcontract_);
   }
+  if (from.contracttype() != 0) {
+    set_contracttype(from.contracttype());
+  }
   if (from.strikeprice() != 0) {
     set_strikeprice(from.strikeprice());
   }
@@ -16710,6 +16696,7 @@ void PBContractInfo::InternalSwap(PBContractInfo* other) {
   std::swap(shortmarginratio_, other->shortmarginratio_);
   underlyingexchange_.Swap(&other->underlyingexchange_);
   underlyingcontract_.Swap(&other->underlyingcontract_);
+  std::swap(contracttype_, other->contracttype_);
   std::swap(strikeprice_, other->strikeprice_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
@@ -17014,15 +17001,15 @@ void PBContractInfo::clear_volumemultiple() {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBContractInfo.volumeMultiple)
 }
 
-// optional int32 priceTick = 13;
+// optional double priceTick = 13;
 void PBContractInfo::clear_pricetick() {
   pricetick_ = 0;
 }
- ::google::protobuf::int32 PBContractInfo::pricetick() const {
+ double PBContractInfo::pricetick() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBContractInfo.priceTick)
   return pricetick_;
 }
- void PBContractInfo::set_pricetick(::google::protobuf::int32 value) {
+ void PBContractInfo::set_pricetick(double value) {
   
   pricetick_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBContractInfo.priceTick)
@@ -17420,7 +17407,21 @@ void PBContractInfo::clear_underlyingcontract() {
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBContractInfo.underlyingContract)
 }
 
-// optional double strikePrice = 27;
+// optional int32 contractType = 27;
+void PBContractInfo::clear_contracttype() {
+  contracttype_ = 0;
+}
+ ::google::protobuf::int32 PBContractInfo::contracttype() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBContractInfo.contractType)
+  return contracttype_;
+}
+ void PBContractInfo::set_contracttype(::google::protobuf::int32 value) {
+  
+  contracttype_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBContractInfo.contractType)
+}
+
+// optional double strikePrice = 28;
 void PBContractInfo::clear_strikeprice() {
   strikeprice_ = 0;
 }

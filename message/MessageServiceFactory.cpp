@@ -53,22 +53,21 @@ IMessageProcessor_Ptr MessageServiceFactory::CreateMessageProcessor(IServerConte
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       MessageServiceFactory::Load(const std::string& configFile, const std::string& param)
-// Purpose:    Implementation of MessageServiceFactory::Load()
+// Name:       MessageServiceFactory::LoadParams(const std::string& configFile, const std::string& param)
+// Purpose:    Implementation of MessageServiceFactory::LoadParams()
 // Parameters:
 // - configFile
 // - param
 // Return:     bool
 ////////////////////////////////////////////////////////////////////////
 
-bool MessageServiceFactory::Load(const std::string& configFile, const std::string& param)
+bool MessageServiceFactory::LoadParams(const std::string& configFile, const std::string& section)
 {
-	bool ret = false;
-	if (auto reader = AbstractConfigReaderFactory::OpenConfigReader(configFile)) {
+	bool ret = true;
+	if (auto reader = AbstractConfigReaderFactory::OpenConfigReader(configFile.data())) {
 		std::map<std::string, std::string> cfgMap;
-		if (reader->getMap(param, cfgMap)) {
-			_configMap = cfgMap;
-			ret = true;
+		if (reader->getMap(section, cfgMap)) {
+			_configMap.insert(cfgMap.begin(), cfgMap.end());
 		}
 	}
 	return ret;
@@ -78,4 +77,6 @@ bool MessageServiceFactory::Load(const std::string& configFile, const std::strin
 void MessageServiceFactory::SetServerContext(IServerContext * serverCtx)
 {
 	_serverCtx = serverCtx;
+	for(auto& pair : _configMap)
+		_serverCtx->setConfigVal(pair.first, pair.second);
 }

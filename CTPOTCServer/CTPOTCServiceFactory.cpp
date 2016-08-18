@@ -12,7 +12,6 @@
 #include "../CTPServer/CTPWorkerProcessorID.h"
 #include "../OTCServer/otc_bizhandlers.h"
 #include "../CTPServer/ctp_bizhandlers.h"
-#include "../OptionServer/OTCOptionVolatility.h"
 #include "ctpotc_bizhandlers.h"
 
 #include "../message/MessageUtility.h"
@@ -65,7 +64,9 @@ std::map<uint, IMessageHandler_Ptr> CTPOTCServiceFactory::CreateMessageHandlers(
 
 	msg_hdl_map[MSG_ID_MODIFY_STRATEGY] = std::make_shared<OTCUpdateStrategy>();
 
-	msg_hdl_map[MSG_ID_VOLITALITY_MODEL] = std::make_shared<OTCOptionVolatility>();
+	msg_hdl_map[MSG_ID_QUERY_INSTRUMENT] = std::make_shared<OTCQueryInstrument>();
+
+	msg_hdl_map[MSG_ID_QUERY_TRADE] = std::make_shared<OTCQueryTrade>();
 
 	return msg_hdl_map;
 }
@@ -92,7 +93,7 @@ std::map<uint, IDataSerializer_Ptr> CTPOTCServiceFactory::CreateDataSerializers(
 
 IMessageProcessor_Ptr CTPOTCServiceFactory::CreateMessageProcessor(IServerContext* serverCtx)
 {
-	auto ret = std::make_shared<CTPOTCSessionProcessor>(_configMap);
+	auto ret = std::make_shared<CTPOTCSessionProcessor>();
 	ret->Initialize();
 	return ret;
 }
@@ -108,22 +109,15 @@ IMessageProcessor_Ptr CTPOTCServiceFactory::CreateWorkerProcessor(IServerContext
 	if (!serverCtx->getWorkerProcessor())
 	{
 		auto pricingCtx = (IPricingDataContext*)serverCtx->getAttribute(STR_KEY_SERVER_PRICING_DATACONTEXT).get();
-		auto worker_ptr = std::make_shared<CTPOTCWorkerProcessor>(
-			_configMap, serverCtx,
-			std::make_shared<CTPOTCTradeProcessor>(_configMap, serverCtx, pricingCtx));
-		worker_ptr->Initialize();
+		auto worker_ptr = std::make_shared<CTPOTCWorkerProcessor>(serverCtx, 
+			std::make_shared<CTPOTCTradeProcessor>(serverCtx, pricingCtx));
+		worker_ptr->Initialize(serverCtx);
 		serverCtx->setWorkerProcessor(worker_ptr);
 		serverCtx->setSubTypeWorkerPtr(std::static_pointer_cast<OTCWorkerProcessor>(worker_ptr));
 	}
 
 	return serverCtx->getWorkerProcessor();
 }
-
-bool CTPOTCServiceFactory::Load(const std::string& configFile, const std::string& param)
-{
-	return CTPMDServiceFactory::Load(configFile, param);
-}
-
 
 void CTPOTCServiceFactory::SetServerContext(IServerContext * serverCtx)
 {

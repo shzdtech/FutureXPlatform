@@ -84,7 +84,7 @@ dataobj_ptr CTSLoginHandler::HandleResponse(const uint32_t serialId, param_vecto
 	pDO->Role = pUserInfo->getRole();
 	pDO->Permission = pUserInfo->getPermission();
 
-	session->setLoginStatus(true);
+	session->setLoginTimeStamp();
 
 	LOG_DEBUG << pDO->UserId << " login successful.";
 

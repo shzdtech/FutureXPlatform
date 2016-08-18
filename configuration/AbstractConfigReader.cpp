@@ -10,7 +10,7 @@
 using namespace boost::property_tree;
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       AbstractConfigReader::getValue(const std::string& expression)
+// Name:       AbstractConfigReader::getValue(const char* expression)
 // Purpose:    Implementation of AbstractConfigReader::getValue()
 // Parameters:
 // - expression
@@ -23,7 +23,7 @@ std::string AbstractConfigReader::getValue(const std::string& expression)
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       AbstractConfigReader::getVector(const std::string& expression, std::vector<std::string>& values)
+// Name:       AbstractConfigReader::getVector(const char* expression, std::vector<std::string>& values)
 // Purpose:    Implementation of AbstractConfigReader::getVector()
 // Parameters:
 // - expression
@@ -42,7 +42,7 @@ int AbstractConfigReader::getVector(const std::string& expression, std::vector<s
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       AbstractConfigReader::getMap(const std::string& expression, std::map<std::string, std::string>& values)
+// Name:       AbstractConfigReader::getMap(const char* expression, std::map<std::string, std::string>& values)
 // Purpose:    Implementation of AbstractConfigReader::getMap()
 // Parameters:
 // - expression

@@ -41,6 +41,14 @@ std::map<uint, IMessageHandler_Ptr> TestingMessageServiceFactory::CreateMessageH
 	msg_hdl_map[MSG_ID_UNSUB_MARKETDATA] = std::make_shared<TestingUnsubMarketDataHandler>();
 
 	msg_hdl_map[MSG_ID_RET_MARKETDATA] = std::make_shared<TestingReturnMarketDataHandler>();
+	
+	msg_hdl_map[MSG_ID_RET_MARKETDATA] = std::make_shared<TestingReturnMarketDataHandler>();
+
+	msg_hdl_map[MSG_ID_SUB_PRICING] = msg_hdl_map[MSG_ID_SUB_MARKETDATA];
+
+	msg_hdl_map[MSG_ID_UNSUB_PRICING] = msg_hdl_map[MSG_ID_UNSUB_MARKETDATA];
+
+	msg_hdl_map[MSG_ID_RTN_PRICING] = msg_hdl_map[MSG_ID_RET_MARKETDATA];
 
 	msg_hdl_map[MSG_ID_ORDER_NEW] = std::make_shared<TestingCreateOrderHandler>();
 

@@ -16,25 +16,21 @@
 
 #include "ctpexport.h"
 
-static const std::string STR_FRONT_SERVER("front_server");
-static const std::string STR_NUM_DISCONNECTION("num_disconnect");
-
 class CTP_CLASS_EXPORT CTPProcessor : public TemplateMessageProcessor
 {
 public:
-	CTPProcessor(const std::map<std::string, std::string>& configMap);
+	CTPProcessor();
 	CTPProcessor(const CTPRawAPI_Ptr& rawAPI);
 	virtual IRawAPI* getRawAPI(void);
-	virtual void Initialize(void);
+	virtual void Initialize(IServerContext* serverCtx);
 	virtual bool HasLogged(void);
 	virtual bool ConnectedToServer(void);
 	CTPRawAPI_Ptr& RawAPI_Ptr(void);
 
 protected:
-	bool _isLogged;
-	int _isConnected;
+	bool _isLogged = false;
+	int _isConnected = false;
 
-	std::map<std::string, std::string> _configMap;
 	CTPRawAPI_Ptr _rawAPI;
 
 private:

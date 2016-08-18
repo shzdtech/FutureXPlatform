@@ -6,7 +6,7 @@ std::atomic_uint MessageHandler::_requestIdGen;
 
 bool MessageHandler::CheckLogin(ISession* session, bool throwBizErr)
 {
-	bool ret = session->IsLogin();
+	bool ret = session->getLoginTimeStamp();
 
 	if (!ret && throwBizErr)
 	{

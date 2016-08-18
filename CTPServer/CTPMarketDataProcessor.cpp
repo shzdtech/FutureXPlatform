@@ -11,6 +11,7 @@
 #include "CTPUtility.h"
 #include "../message/DefMessageID.h"
 #include "../message/message_macro.h"
+#include "CTPConstant.h"
 
 #include <future>
 
@@ -22,8 +23,8 @@
  // Return:     
  ////////////////////////////////////////////////////////////////////////
 
-CTPMarketDataProcessor::CTPMarketDataProcessor(const std::map<std::string, std::string>& configMap)
-	: CTPProcessor(configMap) {
+CTPMarketDataProcessor::CTPMarketDataProcessor()
+{
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -42,11 +43,18 @@ CTPMarketDataProcessor::~CTPMarketDataProcessor() {
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void CTPMarketDataProcessor::Initialize(void) {
+void CTPMarketDataProcessor::Initialize(IServerContext* serverCtx) {
 	if (!_rawAPI->MdAPI) {
 		_rawAPI->MdAPI = CThostFtdcMdApi::CreateFtdcMdApi();
 		_rawAPI->MdAPI->RegisterSpi(this);
-		_rawAPI->MdAPI->RegisterFront(const_cast<char*> (_configMap[STR_FRONT_SERVER].data()));
+
+		std::string server_addr;
+		if (!serverCtx->getConfigVal(CTP_MD_SERVER, server_addr))
+		{
+			server_addr = SysParam::Get(CTP_MD_SERVER);
+		}
+
+		_rawAPI->MdAPI->RegisterFront(const_cast<char*> (server_addr.data()));
 		_rawAPI->MdAPI->Init();
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}

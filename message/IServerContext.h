@@ -19,6 +19,10 @@ public:
 	virtual IMessageProcessor_Ptr getWorkerProcessor(void) = 0;
 	virtual void setSubTypeWorkerPtr(const shared_void_ptr& proc_ptr) = 0;
 	virtual shared_void_ptr getSubTypeWorkerPtr(void) = 0;
+	virtual bool getConfigVal(const std::string& cfgKey, std::string& cfgVal) = 0;
+	virtual void setConfigVal(const std::string& cfgKey, const std::string& cfgVal) = 0;
+	virtual int getServerType(void) = 0;
+	virtual void setServerType(int type) = 0;
 
 protected:
 private:

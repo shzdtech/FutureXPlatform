@@ -40,7 +40,7 @@ dataobj_ptr AdminLoginHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* 
 
 	auto pUserInfo = session->getUserInfo();
 
-	if (!session->IsLogin())
+	if (!session->getLoginTimeStamp())
 	{
 		auto stdo = (MapDO<std::string>*)reqDO.get();
 
@@ -71,7 +71,7 @@ dataobj_ptr AdminLoginHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* 
 
 		pUserInfo->setAttribute(STR_KEY_USER_INFO_DETAIL, userInfo_Ptr);
 
-		session->setLoginStatus(true);
+		session->setLoginTimeStamp();
 
 		auto userInfoCache = std::static_pointer_cast<IUserInfoPtrMap>
 			(AppContext::GetData(STR_KEY_DEFAULT_CLIENT_SYMBOL));

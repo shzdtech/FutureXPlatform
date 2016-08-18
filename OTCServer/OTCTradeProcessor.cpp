@@ -15,7 +15,7 @@
 
 bool OTCTradeProcessor::Dispose(void)
 {
-	auto pMap = GetPricingContext()->GetStrategyMap();
+	auto pMap = PricingDataContext()->GetStrategyMap();
 	for (auto& it : *pMap)
 	{
 		auto& stragety = it.second;
@@ -29,6 +29,11 @@ bool OTCTradeProcessor::Dispose(void)
 	return true;
 }
 
+
+OTCTradeProcessor::OTCTradeProcessor(IPricingDataContext * pricingCtx) :
+	_pricingCtx(pricingCtx)
+{
+}
 
 OrderDOVec_Ptr OTCTradeProcessor::TriggerHedgeOrderUpdating(const StrategyContractDO& strategyDO)
 {
@@ -53,4 +58,9 @@ OrderDO_Ptr OTCTradeProcessor::OTCCancelOrder(OrderRequestDO& orderReq)
 OrderDO_Ptr OTCTradeProcessor::CancelHedgeOrder(const UserContractKey& userContractKey)
 {
 	return GetAutoOrderManager()->CancelOrder(OrderRequestDO(userContractKey));
+}
+
+IPricingDataContext * OTCTradeProcessor::PricingDataContext(void)
+{
+	return _pricingCtx;
 }

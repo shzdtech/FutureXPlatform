@@ -21,8 +21,8 @@ public:
 	virtual int WriteMessage(const uint msgId, const data_buffer& msg) = 0;
 	virtual int WriteMessage(const data_buffer& msg) = 0;
 	virtual IMessageContext_Ptr getContext(void) = 0;
-	virtual bool IsLogin(void) = 0;
-	virtual void setLoginStatus(bool status) = 0;
+	virtual time_t getLoginTimeStamp(void) = 0;
+	virtual void setLoginTimeStamp(time_t tm = 0) = 0;
 	virtual IUserInfo_Ptr getUserInfo(void) = 0;
 	virtual IProcessorBase_Ptr getProcessor(void) = 0;
 

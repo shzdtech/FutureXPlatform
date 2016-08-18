@@ -14,7 +14,7 @@
 class CONFIGURATION_CLASS_EXPORT SysConfig
 {
 public:
-   virtual bool getConfig(const std::string& config, std::string& value)=0;
+   virtual bool getConfig(const std::string&, std::string& value)=0;
    static SysConfig* instance(void);
 
    static std::string DEFAULT_CONFIG;

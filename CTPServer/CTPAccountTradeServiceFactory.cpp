@@ -69,17 +69,12 @@ IMessageProcessor_Ptr CTPAccountTradeServiceFactory::CreateWorkerProcessor(IServ
 {
 	if (!serverCtx->getWorkerProcessor())
 	{
-		auto worker_ptr = std::make_shared<CTPTradeWorkerProcessor>(_configMap, serverCtx);
-		worker_ptr->Initialize();
+		auto worker_ptr = std::make_shared<CTPTradeWorkerProcessor>(serverCtx);
+		worker_ptr->Initialize(serverCtx);
 		serverCtx->setWorkerProcessor(worker_ptr);
 	}
 
 	return serverCtx->getWorkerProcessor();
-}
-
-bool CTPAccountTradeServiceFactory::Load(const std::string& configFile, const std::string& param)
-{
-	return CTPTradeServiceFactory::Load(configFile, param);
 }
 
 

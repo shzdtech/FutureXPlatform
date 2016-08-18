@@ -10,7 +10,8 @@
 
 #include <atomic>
 #include "IMessageHandler.h"
-#include "ISession.h"
+#include "IProcessorBase.h"
+#include "MessageInterfaceDeclare.h"
 #include "message_exp.h"
 
 class MESSAGE_CLASS_EXPORT MessageHandler : public IMessageHandler

@@ -7,6 +7,7 @@
 
 #include "CTPTradeProcessor.h"
 #include "CTPUtility.h"
+#include "CTPConstant.h"
 #include "../litelogger/LiteLogger.h"
 #include "../message/DefMessageID.h"
 #include "../message/message_macro.h"
@@ -20,8 +21,8 @@
  // Return:     
  ////////////////////////////////////////////////////////////////////////
 
-CTPTradeProcessor::CTPTradeProcessor(const std::map<std::string, std::string>& configMap)
-	: CTPProcessor(configMap)
+CTPTradeProcessor::CTPTradeProcessor()
+	: CTPProcessor()
 {
 }
 
@@ -49,13 +50,20 @@ CTPTradeProcessor::~CTPTradeProcessor()
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void CTPTradeProcessor::Initialize(void) {
+void CTPTradeProcessor::Initialize(IServerContext * serverCtx) {
 	if (!_rawAPI->TrdAPI)
 	{
 		_rawAPI->TrdAPI = CThostFtdcTraderApi::CreateFtdcTraderApi();
 		_rawAPI->TrdAPI->RegisterSpi(this);
 
-		_rawAPI->TrdAPI->RegisterFront(const_cast<char*> (_configMap[STR_FRONT_SERVER].data()));
+		std::string server_addr;
+		if (!serverCtx->getConfigVal(CTP_TRADER_SERVER, server_addr))
+		{
+			server_addr = SysParam::Get(CTP_TRADER_SERVER);
+		}
+
+		_rawAPI->TrdAPI->RegisterFront(const_cast<char*> (server_addr.data()));
+
 		_rawAPI->TrdAPI->SubscribePrivateTopic(THOST_TERT_RESUME);
 		_rawAPI->TrdAPI->SubscribePublicTopic(THOST_TERT_RESUME);
 		_rawAPI->TrdAPI->Init();

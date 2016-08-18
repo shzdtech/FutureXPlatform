@@ -66,7 +66,7 @@ dataobj_ptr CTPQueryTrade::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawA
 			std::this_thread::sleep_for(std::chrono::seconds(2));
 		}
 
-		ThrowNotFoundException(&userMap);
+		ThrowNotFoundExceptionIfEmpty(&userMap);
 
 		auto lastit = std::prev(userMap.end());
 		for (auto it = userMap.begin(); it != userMap.end(); it++)

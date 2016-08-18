@@ -9,7 +9,6 @@
 #define __databaseop_OrderDAO_h
 
 #include "../dataobject/OrderDO.h"
-#include "../dataobject/PricingDO.h"
 #include "../dataobject/ContractKey.h"
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/StrategyContractDO.h"

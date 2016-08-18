@@ -23,6 +23,7 @@ public:
 	std::string Name;
 	std::string ProductID;
 	ProductType ProductType;
+	ContractType ContractType;
 	std::string CreateDate;
 	std::string OpenDate;
 	std::string ExpireDate;

@@ -14,7 +14,7 @@
 class SysConfigImpl : public SysConfig
 {
 public:
-   bool getConfig(const std::string& config, std::string& value);
+   bool getConfig(const std::string&, std::string& value);
 
 protected:
    void Initialize(void);

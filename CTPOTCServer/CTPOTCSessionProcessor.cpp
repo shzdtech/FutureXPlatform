@@ -19,8 +19,7 @@
  // Return:     
  ////////////////////////////////////////////////////////////////////////
 
-CTPOTCSessionProcessor::CTPOTCSessionProcessor(const std::map<std::string, std::string>& configMap)
-	: CTPProcessor(configMap)
+CTPOTCSessionProcessor::CTPOTCSessionProcessor()
 {
 }
 
@@ -53,7 +52,7 @@ bool CTPOTCSessionProcessor::OnSessionClosing(void)
 		if (sessionPtr->getUserInfo()->getRole() == ROLE_TRADINGDESK)
 			if (auto wkProcPtr = MessageUtility::ServerWorkerProcessor<OTCWorkerProcessor>(shared_from_this()))
 			{
-				auto pStrategyMap = wkProcPtr->GetOTCTradeProcessor()->GetPricingContext()->GetStrategyMap();
+				auto pStrategyMap = wkProcPtr->PricingDataContext()->GetStrategyMap();
 
 				if (auto strategyVec_Ptr = std::static_pointer_cast<std::vector<ContractKey>>(
 					sessionPtr->getContext()->getAttribute(STR_KEY_USER_STRATEGY)))

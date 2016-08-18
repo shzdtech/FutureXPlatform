@@ -16,18 +16,18 @@ class CLASS_EXPORT AbstractDynamicLoader
 {
 public:
 	static AbstractDynamicLoader* Instance(void);
-	virtual void* LoadModule(const std::string& moduleUUID, const std::string& modulePath);
-	virtual void* FindModule(const std::string& moduleUUID);
-	virtual bool UnloadModule(const std::string& moduleUUID);
-	virtual bool CreateInstance(const void* handle, const std::string& classUUID, void** instance);
+	virtual void* LoadModule(const char* moduleUUID, const char* modulePath);
+	virtual void* FindModule(const char* moduleUUID);
+	virtual bool UnloadModule(const char* moduleUUID);
+	virtual bool CreateInstance(const void* handle, const char* classUUID, void** instance);
 
-	virtual void* LoadModule(const std::string& modulePath) = 0;
+	virtual void* LoadModule(const char* modulePath) = 0;
 	virtual bool UnloadModule(const void* module) = 0;
-	virtual void* FindFunction(const void* module, const std::string& funcName) = 0;
+	virtual void* FindFunction(const void* module, const char* funcName) = 0;
 
 protected:
 	std::map<std::string, void*> uuidHandlerMap;
-	static std::string STR_CREATEINSTANCE;
+	static const char* STR_CREATEINSTANCE;
 	AbstractDynamicLoader();
 
 private:

@@ -11,7 +11,7 @@
 const char * CONFIG_VARIABLE_PATH = "sys.config.variables";
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       SysConfigImpl::getConfig(const std::string& config, std::string& value)
+// Name:       SysConfigImpl::getConfig(const char* config, std::string& value)
 // Purpose:    Implementation of SysConfigImpl::getConfig()
 // Parameters:
 // - config
@@ -41,7 +41,7 @@ void SysConfigImpl::Initialize(void)
 {
     auto configReader = AbstractConfigReaderFactory::CreateConfigReader();
     if (configReader) {
-        if (configReader->LoadFromFile(DEFAULT_CONFIG))
+        if (configReader->LoadFromFile(DEFAULT_CONFIG.data()))
             configReader->getMap(CONFIG_VARIABLE_PATH, _configMap);
     }
 }

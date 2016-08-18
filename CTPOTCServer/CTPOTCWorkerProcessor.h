@@ -22,16 +22,14 @@
 class CTP_OTC_CLASS_EXPORT CTPOTCWorkerProcessor : public OTCWorkerProcessor, public CTPMarketDataProcessor
 {
 public:
-	CTPOTCWorkerProcessor(const std::map<std::string, std::string>& configMap,
-		IServerContext* pServerCtx,
-		const std::shared_ptr<CTPOTCTradeProcessor>& ctpOtcTradeProcessorPtr);
+	CTPOTCWorkerProcessor(IServerContext* pServerCtx, const std::shared_ptr<CTPOTCTradeProcessor>& ctpOtcTradeProcessorPtr);
 
 	~CTPOTCWorkerProcessor();
 
 	void setSession(IMessageSession_WkPtr msgSession_wk_ptr);
 	bool OnSessionClosing(void);
 
-	void Initialize(void);
+	void Initialize(IServerContext* pServerCtx);
 
 	int LoginSystemUserIfNeed(void);
 

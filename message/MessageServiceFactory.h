@@ -20,7 +20,7 @@ public:
 	virtual std::map<uint, IDataSerializer_Ptr> CreateDataSerializers(IServerContext* serverCtx);
 	virtual IMessageProcessor_Ptr CreateWorkerProcessor(IServerContext* serverCtx);
 	virtual IMessageProcessor_Ptr CreateMessageProcessor(IServerContext* serverCtx);
-	virtual bool Load(const std::string& configFile, const std::string& param);
+	virtual bool LoadParams(const std::string& configFile, const std::string& section);
 
 protected:
 	std::map<std::string, std::string> _configMap;

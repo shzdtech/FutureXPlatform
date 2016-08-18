@@ -184,6 +184,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="StrategyContractDAO.h" />
     <ClInclude Include="SysParamsDAO.h" />
+    <ClInclude Include="TradeDAO.h" />
     <ClInclude Include="UserInfoDAO.h" />
   </ItemGroup>
   <ItemGroup>
@@ -195,6 +196,7 @@
     <ClCompile Include="PortfolioDAO.cpp" />
     <ClCompile Include="StrategyContractDAO.cpp" />
     <ClCompile Include="SysParamsDAO.cpp" />
+    <ClCompile Include="TradeDAO.cpp" />
     <ClCompile Include="UserInfoDAO.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -252,8 +252,8 @@ message PBPosition {
 	int32 position = 5;
 	///上日持仓
 	int32 ydPosition = 4;
-	///持仓日期
-	string	positionDate = 6;	
+	///持仓日期标识
+	int32 positionDateFlag = 6;	
 	///开仓量
 	int32 openVolume = 7;
 	///平仓量
@@ -382,7 +382,7 @@ message PBContractInfo {
 	///合约数量乘数
 	int32 volumeMultiple = 12;
 	///最小变动价位
-	int32 priceTick = 13;
+	double priceTick = 13;
 	///创建日
 	string createDate = 14;
 	///上市日
@@ -410,7 +410,9 @@ message PBContractInfo {
 	///
 	string underlyingContract = 26;
 
-	double strikePrice = 27;
+	int32 contractType = 27;
+
+	double strikePrice = 28;
 }
 
 message PBContractInfoList

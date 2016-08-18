@@ -8,17 +8,16 @@
 #include "CTPProcessor.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPProcessor::CTPProcessor(const std::map<std::string, std::string>& configMap)
+// Name:       CTPProcessor::CTPProcessor()
 // Purpose:    Implementation of CTPProcessor::CTPProcessor()
 // Parameters:
 // - frontserver
 // Return:     
 ////////////////////////////////////////////////////////////////////////
 
-CTPProcessor::CTPProcessor(const std::map<std::string, std::string>& configMap)
-	:_isConnected(false), _isLogged(false), _configMap(configMap), _rawAPI(new CTPRawAPI)
+CTPProcessor::CTPProcessor()
+	: _rawAPI(new CTPRawAPI)
 {
-	auto it = configMap.find(STR_NUM_DISCONNECTION);
 }
 
  CTPProcessor::CTPProcessor(const CTPRawAPI_Ptr& rawAPI)
@@ -43,7 +42,7 @@ IRawAPI* CTPProcessor::getRawAPI(void)
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void CTPProcessor::Initialize(void)
+void CTPProcessor::Initialize(IServerContext* serverCtx)
 {
 }
 

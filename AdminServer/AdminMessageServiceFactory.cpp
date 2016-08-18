@@ -71,17 +71,3 @@ IMessageProcessor_Ptr AdminMessageServiceFactory::CreateMessageProcessor(IServer
 {
 	return std::make_shared<AdminServerMessageProcessor>();
 }
-
-////////////////////////////////////////////////////////////////////////
-// Name:       AdminMessageServiceFactory::Load(const std::string& configFile, const std::string& param)
-// Purpose:    Implementation of AdminMessageServiceFactory::Load()
-// Parameters:
-// - configFile
-// - param
-// Return:     bool
-////////////////////////////////////////////////////////////////////////
-
-bool AdminMessageServiceFactory::Load(const std::string& configFile, const std::string& param)
-{
-	return true;
-}

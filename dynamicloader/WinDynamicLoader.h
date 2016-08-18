@@ -13,8 +13,8 @@
 class WinDynamicLoader : public AbstractDynamicLoader
 {
 public:
-	virtual void* FindFunction(const void* module, const std::string& funcName);
-	virtual void* LoadModule(const std::string& modulePath);
+	virtual void* FindFunction(const void* module, const char* funcName);
+	virtual void* LoadModule(const char* modulePath);
 	virtual bool UnloadModule(const void* module);
 
 protected:

@@ -8,7 +8,8 @@
 #include "CTPMDServiceFactory.h"
 #include "CTPMarketDataProcessor.h"
 #include "ctp_bizhandlers.h"
-#include "CTPConstant.h"
+
+#include "CTPTradeWorkerProcessor.h"
 
 #include "../message/EchoMessageHandler.h"
 #include "../message/EchoMessageSerializer.h"
@@ -37,6 +38,8 @@ std::map<uint, IMessageHandler_Ptr> CTPMDServiceFactory::CreateMessageHandlers(I
 
 	msg_hdl_map[MSG_ID_RET_MARKETDATA] = std::make_shared<CTPDepthMarketData>();
 
+	msg_hdl_map[MSG_ID_QUERY_INSTRUMENT] = std::make_shared<CTPQueryInstrument>();
+
     return msg_hdl_map;
 }
 
@@ -61,19 +64,23 @@ std::map<uint, IDataSerializer_Ptr> CTPMDServiceFactory::CreateDataSerializers(I
 
 IMessageProcessor_Ptr CTPMDServiceFactory::CreateMessageProcessor(IServerContext* serverCtx)
 {
-	auto ret = std::make_shared<CTPMarketDataProcessor>(_configMap);
-	ret->Initialize();
+	auto ret = std::make_shared<CTPMarketDataProcessor>();
+	ret->Initialize(serverCtx);
 	return ret;
 }
 
-bool CTPMDServiceFactory::Load(const std::string& configFile, const std::string& param)
+IMessageProcessor_Ptr CTPMDServiceFactory::CreateWorkerProcessor(IServerContext* serverCtx)
 {
-	bool ret = MessageServiceFactory::Load(configFile, param);
-	std::string frontserver;
-	if (SysParam::Contains(CTP_MD_SERVER))
+	std::string loadWkProc;
+	if (serverCtx->getConfigVal("load_workprocessor", loadWkProc))
 	{
-		_configMap[STR_FRONT_SERVER] = SysParam::Get(CTP_MD_SERVER);
+		if (!serverCtx->getWorkerProcessor())
+		{
+			auto worker_ptr = std::make_shared<CTPTradeWorkerProcessor>(serverCtx);
+			worker_ptr->Initialize(serverCtx);
+			serverCtx->setWorkerProcessor(worker_ptr);
+		}
 	}
 
-	return ret;
+	return serverCtx->getWorkerProcessor();
 }

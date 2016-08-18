@@ -87,6 +87,9 @@
     <ClCompile Include="OTCUpdateUserParam.cpp">
       <Filter>源文件\TradingDesk</Filter>
     </ClCompile>
+    <ClCompile Include="OTCQueryTrade.cpp">
+      <Filter>源文件\TradeHandler</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="otcserver_export.h">
@@ -145,6 +148,9 @@
     </ClInclude>
     <ClInclude Include="OTCQueryTradingDesks.h">
       <Filter>头文件\MarketDataHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="OTCQueryTrade.h">
+      <Filter>头文件\TradeHandler</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

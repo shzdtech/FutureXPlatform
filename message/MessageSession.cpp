@@ -23,7 +23,7 @@ MessageSession::MessageSession()
 	_userInfo_ptr = std::make_shared<UserInfo>();
 	_context_ptr = std::make_shared<MessageContext>();
 	_timeout = 0;
-	_islogin = false;
+	_loginTimeStamp = 0;
 	_closed = false;
 }
 
@@ -142,14 +142,14 @@ void MessageSession::removeListener(IMessageSessionEvent_WkPtr listener)
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       MessageSession::IsLogin()
-// Purpose:    Implementation of MessageSession::IsLogin()
+// Name:       MessageSession::getLoginTimeStamp()
+// Purpose:    Implementation of MessageSession::getLoginTimeStamp()
 // Return:     bool
 ////////////////////////////////////////////////////////////////////////
 
-bool MessageSession::IsLogin(void)
+time_t MessageSession::getLoginTimeStamp(void)
 {
-	return _islogin;
+	return _loginTimeStamp;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -160,9 +160,14 @@ bool MessageSession::IsLogin(void)
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void MessageSession::setLoginStatus(bool status)
+void MessageSession::setLoginTimeStamp(time_t tm)
 {
-	_islogin = status;
+	if (!tm)
+	{
+		tm = time(nullptr);
+	}
+
+	_loginTimeStamp = tm;
 }
 
 ////////////////////////////////////////////////////////////////////////

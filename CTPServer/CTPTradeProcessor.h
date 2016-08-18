@@ -14,10 +14,10 @@
 class CTP_CLASS_EXPORT CTPTradeProcessor : public CTPProcessor, public CThostFtdcTraderSpi
 {
 public:
-	CTPTradeProcessor(const std::map<std::string, std::string>& configMap);
+	CTPTradeProcessor();
 	CTPTradeProcessor(const CTPRawAPI_Ptr& rawAPI);
 	~CTPTradeProcessor();
-	void Initialize(void);
+	void Initialize(IServerContext* serverCtx);
 
 protected:
 

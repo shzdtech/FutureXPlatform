@@ -9,7 +9,7 @@
 #include "WinDynamicLoader.h"
 #include "SODynamicLoader.h"
 
-std::string AbstractDynamicLoader::STR_CREATEINSTANCE = "CreateInstance";
+const char* AbstractDynamicLoader::STR_CREATEINSTANCE = "CreateInstance";
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       AbstractDynamicLoader::Instance()
@@ -27,7 +27,7 @@ AbstractDynamicLoader* AbstractDynamicLoader::Instance(void)
 	return &singleton;
 }
 
-void * AbstractDynamicLoader::LoadModule(const std::string & moduleUUID, const std::string & modulePath)
+void * AbstractDynamicLoader::LoadModule(const char* moduleUUID, const char* modulePath)
 {
 	void* module = nullptr;
 	auto itr = uuidHandlerMap.find(moduleUUID);
@@ -35,14 +35,14 @@ void * AbstractDynamicLoader::LoadModule(const std::string & moduleUUID, const s
 		module = itr->second;
 	}
 	else {
-		if (module = LoadModule(modulePath.data()))
+		if (module = LoadModule(modulePath))
 			uuidHandlerMap[moduleUUID] = module;
 	}
 
 	return module;
 }
 
-void * AbstractDynamicLoader::FindModule(const std::string & moduleUUID)
+void * AbstractDynamicLoader::FindModule(const char* moduleUUID)
 {
 	void* funcPtr = nullptr;
 	auto iter = uuidHandlerMap.find(moduleUUID);
@@ -52,7 +52,7 @@ void * AbstractDynamicLoader::FindModule(const std::string & moduleUUID)
 	return funcPtr;
 }
 
-bool AbstractDynamicLoader::UnloadModule(const std::string & moduleUUID)
+bool AbstractDynamicLoader::UnloadModule(const char* moduleUUID)
 {
 	bool ret = true;
 
@@ -67,14 +67,14 @@ bool AbstractDynamicLoader::UnloadModule(const std::string & moduleUUID)
 	return ret;
 }
 
-bool AbstractDynamicLoader::CreateInstance(const void * handle, const std::string & classUUID, void ** instance)
+bool AbstractDynamicLoader::CreateInstance(const void * handle, const char* classUUID, void ** instance)
 {
 	*instance = nullptr;
 	typedef void* (*instanceFun)(const char*);
 	instanceFun instanceCall;
 	instanceCall = (instanceFun)FindFunction(handle, AbstractDynamicLoader::STR_CREATEINSTANCE);
 	if (instanceCall)
-		*instance = instanceCall(classUUID.data());
+		*instance = instanceCall(classUUID);
 
 	return *instance != nullptr;
 }

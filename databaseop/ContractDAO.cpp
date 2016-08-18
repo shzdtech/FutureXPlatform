@@ -61,7 +61,8 @@ VectorDO_Ptr<ContractKey> ContractDAO::FindContractByClient(const std::string& c
 VectorDO_Ptr<InstrumentDO> ContractDAO::FindContractByProductType(int productType)
 {
 	static const std::string sql_findallcontract(
-		"SELECT exchange_symbol, contract_symbol, tick_size, multiplier, underlying_symbol, expiration, underlying_exchange, underlying_contract "
+		"SELECT exchange_symbol, contract_symbol, contract_type, tick_size, multiplier, "
+		"underlying_symbol, expiration, underlying_exchange, underlying_contract, strikeprice "
 		"FROM vw_contract_property "
 		"where product_type = ?");
 
@@ -79,15 +80,18 @@ VectorDO_Ptr<InstrumentDO> ContractDAO::FindContractByProductType(int productTyp
 		while (rs->next())
 		{
 			InstrumentDO cdo(rs->getString(1), rs->getString(2));
-			cdo.PriceTick = rs->getDouble(3);
-			cdo.VolumeMultiple = rs->getDouble(4);
-			cdo.ProductID = rs->getString(5);
-			if (!rs->isNull(6))	cdo.ExpireDate = rs->getString(6);
+			cdo.ContractType = (ContractType)rs->getInt(3);
+			cdo.PriceTick = rs->getDouble(4);
+			cdo.VolumeMultiple = rs->getDouble(5);
+			cdo.ProductID = rs->getString(6);
+			if (!rs->isNull(7))	cdo.ExpireDate = rs->getString(7);
 
 			std::string underlying_exchange;
 			std::string underlying_contract;
-			if (!rs->isNull(7)) underlying_exchange = rs->getString(7);
-			if (!rs->isNull(8)) underlying_contract = rs->getString(8);
+			if (!rs->isNull(8)) underlying_exchange = rs->getString(8);
+			if (!rs->isNull(9)) underlying_contract = rs->getString(9);
+
+			cdo.StrikePrice = rs->getDouble(10);
 
 			cdo.UnderlyingContract = ContractKey(underlying_exchange, underlying_contract);
 

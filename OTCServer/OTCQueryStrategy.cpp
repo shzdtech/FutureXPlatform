@@ -43,7 +43,7 @@ dataobj_ptr OTCQueryStrategy::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 		session->getContext()->getAttribute(STR_KEY_USER_STRATEGY)))
 		if (auto wkProcPtr = MessageUtility::ServerWorkerProcessor<OTCWorkerProcessor>(session->getProcessor()))
 		{
-			auto pStrategyMap = wkProcPtr->GetOTCTradeProcessor()->GetPricingContext()->GetStrategyMap();
+			auto pStrategyMap = wkProcPtr->PricingDataContext()->GetStrategyMap();
 
 			for (auto& strategyKey : *strategyVec_Ptr)
 			{
@@ -59,7 +59,7 @@ dataobj_ptr OTCQueryStrategy::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 				sDOVec_Ptr->push_back(strategy);
 			}
 
-			ThrowNotFoundException(sDOVec_Ptr);
+			ThrowNotFoundExceptionIfEmpty(sDOVec_Ptr);
 		}
 
 	return sDOVec_Ptr;

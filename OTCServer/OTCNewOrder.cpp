@@ -36,7 +36,7 @@ dataobj_ptr OTCNewOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI
 	{
 		if (!(ret = wkProcPtr->GetOTCTradeProcessor()->OTCNewOrder(orderDO)))
 		{
-			throw BizException(ret->ErrorCode, "Creating OTC Order failed");
+			throw BizException("Creating OTC Order failed");
 		}	
 	}
 

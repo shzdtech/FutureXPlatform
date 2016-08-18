@@ -40,6 +40,31 @@ void ServerContext::setAttribute(const std::string& key, attribute_ptr value)
 	_attrib_map[key] = value;
 }
 
+bool ServerContext::getConfigVal(const std::string & cfgKey, std::string & cfgVal)
+{
+	auto it = _configs.find(cfgKey);
+	bool found = it != _configs.end();
+	if (found)
+		cfgVal = it->second;
+
+	return found;
+}
+
+void ServerContext::setConfigVal(const std::string & cfgKey, const std::string & cfgVal)
+{
+	_configs[cfgKey] = cfgVal;
+}
+
+int ServerContext::getServerType(void)
+{
+	return _serverType;
+}
+
+void ServerContext::setServerType(int type)
+{
+	_serverType = type;
+}
+
 void ServerContext::setWorkerProcessor(const IMessageProcessor_Ptr& proc_ptr)
 {
 	_workerProcessor_Ptr = proc_ptr;

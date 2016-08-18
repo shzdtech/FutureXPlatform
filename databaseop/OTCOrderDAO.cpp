@@ -18,9 +18,7 @@
 
 OrderDO_Ptr OTCOrderDAO::CreateOrder(const OrderRequestDO& orderDO, const PricingDO& pricingDO)
 {
-	static const std::string sql_proc_createorder("CALL Order_OTC_New"
-		"(?,?,?,?,?,?,?,?,?,?,"
-		"@orderID,@orderSysID,@orderStatus)");
+	static const std::string sql_proc_createorder("CALL Order_OTC_New(?,?,?,?,?,?,?,?,?,?,@orderID,@orderSysID,@orderStatus)");
 
 	auto ret = std::make_shared<OrderDO>(orderDO);
 
@@ -32,13 +30,13 @@ OrderDO_Ptr OTCOrderDAO::CreateOrder(const OrderRequestDO& orderDO, const Pricin
 		prestmt->setDouble(1, pricingDO.BidPrice);
 		prestmt->setDouble(2, pricingDO.AskPrice);
 		prestmt->setString(3, orderDO.UserID());
-		prestmt->setString(4, ret->ExchangeID());
-		prestmt->setString(5, ret->InstrumentID());
-		prestmt->setDouble(6, ret->LimitPrice);
-		prestmt->setInt(7, ret->Volume);
-		prestmt->setInt(8, ret->Direction);
-		prestmt->setInt(9, ret->ExecType);
-		prestmt->setInt(10, ret->TIF);
+		prestmt->setString(4, orderDO.ExchangeID());
+		prestmt->setString(5, orderDO.InstrumentID());
+		prestmt->setDouble(6, orderDO.LimitPrice);
+		prestmt->setInt(7, orderDO.Volume);
+		prestmt->setInt(8, orderDO.Direction);
+		prestmt->setInt(9, orderDO.ExecType);
+		prestmt->setInt(10, orderDO.TIF);
 
 		prestmt->execute();
 

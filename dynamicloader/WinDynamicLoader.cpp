@@ -12,7 +12,7 @@
 #include <windows.h>
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       WinDynamicLoader::FindFunction(const void* handle, const std::string& funcName)
+// Name:       WinDynamicLoader::FindFunction(const void* handle, const char* funcName)
 // Purpose:    Implementation of WinDynamicLoader::FindFunction()
 // Parameters:
 // - handle
@@ -20,14 +20,14 @@
 // Return:     void*
 ////////////////////////////////////////////////////////////////////////
 
-void* WinDynamicLoader::FindFunction(const void* module, const std::string& funcName)
+void* WinDynamicLoader::FindFunction(const void* module, const char* funcName)
 {
-    return (void*)::GetProcAddress(HMODULE(module), funcName.data());
+    return (void*)::GetProcAddress(HMODULE(module), funcName);
 }
 
-void * WinDynamicLoader::LoadModule(const std::string & modulePath)
+void * WinDynamicLoader::LoadModule(const char* modulePath)
 {
-	return ::LoadLibraryA(modulePath.data());
+	return ::LoadLibraryA(modulePath);
 }
 
 bool WinDynamicLoader::UnloadModule(const void * module)

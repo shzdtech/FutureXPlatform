@@ -53,7 +53,7 @@ bool ASIOTCPServer::Initialize(const std::string& uri, const std::string& config
 		_port = std::stoi(uri.substr(pos + 1));
 	}
 
-	if (auto cfgReader = AbstractConfigReaderFactory::OpenConfigReader(config)) {
+	if (auto cfgReader = AbstractConfigReaderFactory::OpenConfigReader(config.data())) {
 		std::map<std::string, std::string> valMap;
 		cfgReader->getMap("server." + _uri, valMap);
 		if (!_port)

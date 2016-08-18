@@ -22,7 +22,7 @@ public:
 	virtual std::map<uint, IDataSerializer_Ptr> CreateDataSerializers(IServerContext* serverCtx) = 0;
 	virtual IMessageProcessor_Ptr CreateWorkerProcessor(IServerContext* serverCtx) = 0;
 	virtual IMessageProcessor_Ptr CreateMessageProcessor(IServerContext* serverCtx) = 0;
-	virtual bool Load(const std::string& configFile, const std::string& param) = 0;
+	virtual bool LoadParams(const std::string& configFile, const std::string& section) = 0;
 
 protected:
 private:

@@ -34,7 +34,7 @@ public:
 	double CloseProfit = 0;
 	double UseMargin = 0;
 	
-	std::string PositionDate;
+	PositionDateFlagType PositionDateFlag;
 
 protected:
 

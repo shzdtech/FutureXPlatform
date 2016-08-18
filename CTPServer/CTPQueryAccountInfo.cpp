@@ -55,7 +55,7 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const dataobj_ptr& reqDO, IRawAPI
 			std::this_thread::sleep_for(std::chrono::seconds(2));
 		}
 
-		ThrowNotFoundException(&accountInfoVec);
+		ThrowNotFoundExceptionIfEmpty(&accountInfoVec);
 
 		auto lastit = std::prev(accountInfoVec.end());
 		for (auto it = accountInfoVec.begin(); it != accountInfoVec.end(); it++)

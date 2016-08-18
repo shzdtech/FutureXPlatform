@@ -4,38 +4,66 @@
       "manage": {
         "module.uuid": "com.micro.future.admin.dll",
         "module.path": "AdminServer.dll",
-        "class.uuid": "factory.admin.service"
+        "class.uuid": "factory.admin.service",
+        "params": {
+        }
       }
     },
     "ctp": {
       "marketdata": {
         "module.uuid": "com.micro.future.ctp.dll",
         "module.path": "CTPServer.dll",
-        "class.uuid": "factory.ctp.marketdata.service"
+        "class.uuid": "factory.ctp.marketdata.service",
+        "params": {
+        }
       },
       "trade": {
         "module.uuid": "com.micro.future.ctp.dll",
         "module.path": "CTPServer.dll",
-        "class.uuid": "factory.singleaccount.ctp.trade.service"
+        "class.uuid": "factory.singleaccount.ctp.trade.service",
+        "params": {
+        }
+      },
+      "option": {
+        "module.uuid": "com.micro.future.ctp.dll",
+        "module.path": "CTPServer.dll",
+        "class.uuid": "factory.ctp.marketdata.service",
+        "params": {
+          "load_workprocessor": "",
+          "CTP.MD.SERVER": "tcp://ctpfz1-front1.citicsf.com:51213",
+          "CTP.MD.LOGIN.BROKERID": "66666",
+          "CTP.MD.LOGIN.USERID": "895816",
+          "CTP.MD.LOGIN.PASSWORD": "260519",
+          "CTP.TRADER.SERVER": "tcp://ctpfz1-front1.citicsf.com:51205",
+          "CTP.TRADER.LOGIN.BROKERID": "66666",
+          "CTP.TRADER.LOGIN.USERID": "895816",
+          "CTP.TRADER.LOGIN.PASSWORD": "260519"
+        }
       }
     },
     "otc": {
       "contract": {
         "module.uuid": "com.micro.future.ctp.otc.dll",
         "module.path": "CTPOTCServer.dll",
-        "class.uuid": "factory.otc.contract"
+        "class.uuid": "factory.otc.contract",
+        "params": {
+        }
       },
       "option": {
         "module.uuid": "com.micro.future.ctp.otc.dll",
         "module.path": "CTPOTCServer.dll",
-        "class.uuid": "factory.otc.option"
+        "class.uuid": "factory.otc.option",
+        "params": {
+        }
       }
     },
     "cts": {
       "client": {
         "module.uuid": "com.micro.future.cts.dll",
         "module.path": "CTSServer.dll",
-        "class.uuid": "factory.cts.service"
+        "class.uuid": "factory.cts.service",
+        "params": {
+        }
       }
     },
     "testing": {
@@ -43,7 +71,9 @@
         "module.uuid": "com.micro.future.testing.dll",
         "module.path": "TestingServer.dll",
         "class.uuid": "factory.testing.sim.service",
-        "mdInterval": "3000"
+        "mdInterval": "3000",
+        "params": {
+        }
       }
     }
   }

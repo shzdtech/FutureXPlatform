@@ -41,8 +41,8 @@ dataobj_ptr OTCUpdateContractParam::HandleRequest(const dataobj_ptr& reqDO, IRaw
 	if (auto wkProcPtr = MessageUtility::ServerWorkerProcessor<OTCWorkerProcessor>(session->getProcessor()))
 	{
 
-		auto mdMap = wkProcPtr->GetOTCTradeProcessor()->GetPricingContext()->GetMarketDataMap();
-		auto contractMap = wkProcPtr->GetOTCTradeProcessor()->GetPricingContext()->GetContractParamMap();
+		auto mdMap = wkProcPtr->PricingDataContext()->GetMarketDataMap();
+		auto contractMap = wkProcPtr->PricingDataContext()->GetContractParamMap();
 
 		for (auto& conDO : *vecConDO_Ptr)
 		{

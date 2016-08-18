@@ -19,8 +19,6 @@ public:
    IMessageProcessor_Ptr CreateMessageProcessor(IServerContext* serverCtx);
    IMessageProcessor_Ptr CreateWorkerProcessor(IServerContext* serverCtx);
 
-   bool Load(const std::string& configFile, const std::string& param);
-
 protected:
 
 private:

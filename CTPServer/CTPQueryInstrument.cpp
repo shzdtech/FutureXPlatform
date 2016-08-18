@@ -110,7 +110,23 @@ dataobj_ptr CTPQueryInstrument::HandleResponse(const uint32_t serialId, param_ve
 		insDO.PositionDateType = (PositionDateType)(pData->PositionDateType - THOST_FTDC_PDT_UseHistory);
 		insDO.LongMarginRatio = pData->LongMarginRatio;
 		insDO.ShortMarginRatio = pData->ShortMarginRatio;
-		insDO.StrikePrice = pData->StrikePrice;
+
+		if (pData->StrikePrice > 0 && pData->StrikePrice < 1e32)
+		{
+			insDO.StrikePrice = pData->StrikePrice;
+
+			insDO.UnderlyingContract = ContractKey(pData->ExchangeID, pData->UnderlyingInstrID);
+
+			switch (pData->OptionsType)
+			{
+			case THOST_FTDC_CP_CallOptions:
+				insDO.ContractType = ContractType::CONTRACTTYPE_CALL_OPTION;
+				break;
+			case THOST_FTDC_CP_PutOptions:
+				insDO.ContractType = ContractType::CONTRACTTYPE_PUT_OPTION;
+				break;
+			}
+		}
 
 		if (!ContractCache::Get(ProductType::PRODUCT_FUTURE).QueryInstrumentById(pData->InstrumentID))
 		{

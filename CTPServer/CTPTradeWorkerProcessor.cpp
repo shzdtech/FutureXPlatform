@@ -22,18 +22,29 @@
  // Return:     
  ////////////////////////////////////////////////////////////////////////
 
-CTPTradeWorkerProcessor::CTPTradeWorkerProcessor(const std::map<std::string, std::string>& configMap,
-	IServerContext* pServerCtx)
-	: CTPTradeProcessor(configMap),
-	_userSessionCtn_Ptr(SessionContainer<std::string>::NewInstance())
+CTPTradeWorkerProcessor::CTPTradeWorkerProcessor(IServerContext* pServerCtx)
+	: _userSessionCtn_Ptr(SessionContainer<std::string>::NewInstance())
 {
 	_serverCtx = pServerCtx,
 	DataLoaded = false;
-	_systemUser.setBrokerId(SysParam::Get(CTP_TRADER_BROKERID));
-	_systemUser.setInvestorId(SysParam::Get(CTP_TRADER_USERID));
-	_systemUser.setUserId(SysParam::Get(CTP_TRADER_USERID));
-	_systemUser.setPassword(SysParam::Get(CTP_TRADER_PASSWORD));
-	_systemUser.setServer(SysParam::Get(CTP_TRADER_SERVER));
+
+	std::string value;
+	if (!_serverCtx->getConfigVal(CTP_TRADER_BROKERID, value))
+		value = SysParam::Get(CTP_TRADER_BROKERID);
+	_systemUser.setBrokerId(value);
+
+	if (!_serverCtx->getConfigVal(CTP_TRADER_USERID, value))
+		value = SysParam::Get(CTP_TRADER_USERID);
+	_systemUser.setInvestorId(value);
+	_systemUser.setUserId(value);
+
+	if (!_serverCtx->getConfigVal(CTP_TRADER_PASSWORD, value))
+		value = SysParam::Get(CTP_TRADER_PASSWORD);
+	_systemUser.setPassword(value);
+
+	if (!_serverCtx->getConfigVal(CTP_TRADER_SERVER, value))
+		value = SysParam::Get(CTP_TRADER_SERVER);
+	_systemUser.setServer(value);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -53,7 +64,7 @@ CTPTradeWorkerProcessor::~CTPTradeWorkerProcessor()
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void CTPTradeWorkerProcessor::Initialize(void)
+void CTPTradeWorkerProcessor::Initialize(IServerContext* pServerCtx)
 {
 	if (!_rawAPI->TrdAPI) {
 		_rawAPI->TrdAPI = CThostFtdcTraderApi::CreateFtdcTraderApi();
@@ -144,7 +155,7 @@ void CTPTradeWorkerProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUs
 	{
 		if (auto session = LockMessageSession())
 		{
-			session->setLoginStatus(true);
+			session->setLoginTimeStamp();
 			auto userinfo_ptr = session->getUserInfo();
 			userinfo_ptr->setBrokerId(pRspUserLogin->BrokerID);
 			userinfo_ptr->setInvestorId(pRspUserLogin->UserID);
@@ -251,7 +262,7 @@ void CTPTradeWorkerProcessor::OnRtnTrade(CThostFtdcTradeField * pTrade)
 
 void CTPTradeWorkerProcessor::RegisterLoggedSession(IMessageSession * pMessageSession)
 {
-	if (pMessageSession->IsLogin() && _isLogged)
+	if (pMessageSession->getLoginTimeStamp() && _isLogged)
 	{
 		if (auto userInfoPtr = pMessageSession->getUserInfo())
 		{

@@ -16,13 +16,14 @@
 class CTP_OTC_CLASS_EXPORT CTPOTCOptionWorkerProcessor : public CTPOTCWorkerProcessor
 {
 public:
-	CTPOTCOptionWorkerProcessor(const std::map<std::string, std::string>& configMap,
-		IServerContext* pServerCtx,
+	CTPOTCOptionWorkerProcessor(IServerContext* pServerCtx,
 		const std::shared_ptr<CTPOTCTradeProcessor>& ctpOtcTradeProcessorPtr);
 
 	virtual void TriggerPricing(const StrategyContractDO& strategyDO);
 
 	virtual ProductType GetProductType();
+
+	void OnRtnDepthMarketData(CThostFtdcDepthMarketDataField * pDepthMarketData);
 
 protected:
 

@@ -25,7 +25,7 @@ bool JsonConfigReader::LoadFromStream(std::istream& is)
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       JsonConfigReader::LoadFromFile(const std::string& configPath)
+// Name:       JsonConfigReader::LoadFromFile(const char* configPath)
 // Purpose:    Implementation of JsonConfigReader::LoadFromFile()
 // Parameters:
 // - configPath

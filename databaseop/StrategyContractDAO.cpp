@@ -22,9 +22,9 @@ VectorDO_Ptr<StrategyContractDO> StrategyContractDAO::FindStrategyContractByClie
 {
 	static const std::string sql_findstrategy(
 		"SELECT exchange_symbol, contract_symbol, underlying_symbol, tick_size, multiplier, "
-		"strategy_symbol, descript, pricing_algorithm, portfolio_symbol, contract_type, strikeprice, expiration "
+		"strategy_symbol, descript, pricing_algorithm, portfolio_symbol, contract_type, strikeprice, expiration, client_symbol "
 		"FROM vw_strategy_contract_info "
-		"WHERE client_symbol = ? and product_type = ?");
+		"WHERE client_symbol like ? and product_type = ?");
 
 	auto ret = std::make_shared<VectorDO<StrategyContractDO>>();
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
@@ -32,7 +32,7 @@ VectorDO_Ptr<StrategyContractDO> StrategyContractDAO::FindStrategyContractByClie
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
 			session->getConnection()->prepareStatement(sql_findstrategy));
-		prestmt->setString(1, clientSymbol);
+		prestmt->setString(1, clientSymbol.length() ? clientSymbol : "%");
 		prestmt->setInt(2, productType);
 
 		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
@@ -42,7 +42,8 @@ VectorDO_Ptr<StrategyContractDO> StrategyContractDAO::FindStrategyContractByClie
 
 		while (rs->next())
 		{
-			StrategyContractDO stcdo(rs->getString(1), rs->getString(2), clientSymbol, rs->getString(9));
+			auto clientSym = rs->getString(13);
+			StrategyContractDO stcdo(rs->getString(1), rs->getString(2), clientSym, rs->getString(9));
 			stcdo.TradingDay.Year = pTM->tm_year + 1900;
 			stcdo.TradingDay.Month = pTM->tm_mon + 1;
 			stcdo.TradingDay.Day = pTM->tm_mday;
@@ -61,8 +62,8 @@ VectorDO_Ptr<StrategyContractDO> StrategyContractDAO::FindStrategyContractByClie
 					&stcdo.Expiration.Year, &stcdo.Expiration.Month, &stcdo.Expiration.Day);
 			}
 
-			RetrieveModelParams(stcdo.StrategyName, clientSymbol, stcdo.ModelParams);
-			RetrievePricingContracts(stcdo.StrategyName, clientSymbol, stcdo.PricingContracts);
+			RetrieveModelParams(stcdo.StrategyName, clientSym, stcdo.ModelParams);
+			RetrievePricingContracts(stcdo.StrategyName, clientSym, stcdo.PricingContracts);
 
 			ret->push_back(std::move(stcdo));
 		}

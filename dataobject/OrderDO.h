@@ -57,7 +57,6 @@ public:
 	int Volume = 0;
 	int ErrorCode = 0;
 	DirectionType Direction = DirectionType::SELL;
-	OrderCallPutType CallPut;
 	OrderOpenCloseType OpenClose = OrderOpenCloseType::OPEN;
 	OrderTIFType TIF = OrderTIFType::GFD;
 	OrderExecType ExecType = OrderExecType::LIMIT;

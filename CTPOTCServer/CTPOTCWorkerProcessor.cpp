@@ -19,6 +19,8 @@
 
 #include "../databaseop/OTCOrderDAO.h"
 #include "../databaseop/ContractDAO.h"
+#include "../databaseop/StrategyContractDAO.h"
+#include "../pricingengine/PricingAlgorithmManager.h"
 
 #include "../bizutility/ContractCache.h"
 
@@ -31,13 +33,12 @@
  // Return:     
  ////////////////////////////////////////////////////////////////////////
 
-CTPOTCWorkerProcessor::CTPOTCWorkerProcessor(const std::map<std::string, std::string>& configMap,
-	IServerContext* pServerCtx,
+CTPOTCWorkerProcessor::CTPOTCWorkerProcessor(IServerContext* pServerCtx,
 	const std::shared_ptr<CTPOTCTradeProcessor>& otcTradeProcessorPtr) :
-	CTPMarketDataProcessor(configMap),
+	OTCWorkerProcessor(otcTradeProcessorPtr->PricingDataContext()),
 	_ctpOtcTradeProcessorPtr(otcTradeProcessorPtr)
 {
-
+	setServerContext(pServerCtx);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -62,7 +63,7 @@ bool CTPOTCWorkerProcessor::OnSessionClosing(void)
 	return GetOTCTradeProcessor()->Dispose();
 }
 
-void CTPOTCWorkerProcessor::Initialize(void)
+void CTPOTCWorkerProcessor::Initialize(IServerContext* serverCtx)
 {
 	auto productType = GetProductType();
 	if (auto vectPtr = ContractDAO::FindContractByProductType(productType))
@@ -71,7 +72,21 @@ void CTPOTCWorkerProcessor::Initialize(void)
 			ContractCache::Get(productType).Add(contract);
 	}
 
-	CTPMarketDataProcessor::Initialize();
+	if (auto sDOVec_Ptr = StrategyContractDAO::FindStrategyContractByClient(EMPTY_STRING, productType))
+	{
+		auto strategyMap = PricingDataContext()->GetStrategyMap();
+		for (auto& strategy : *sDOVec_Ptr)
+		{
+			if (auto model = PricingAlgorithmManager::Instance()->FindAlgorithm(strategy.ModelParams.ModelName))
+			{
+				auto& params = model->DefaultParams();
+				strategy.ModelParams.ScalaParams.insert(params.begin(), params.end());
+			}
+			strategyMap->emplace(strategy, strategy);
+		}
+	}
+
+	CTPMarketDataProcessor::Initialize(serverCtx);
 	((CTPOTCTradeProcessor*)GetOTCTradeProcessor())->Initialize();
 
 	LoginSystemUserIfNeed();
@@ -89,10 +104,21 @@ int CTPOTCWorkerProcessor::LoginSystemUserIfNeed(void)
 
 	if (!_isLogged)
 	{
+		std::string value;
+
 		CThostFtdcReqUserLoginField req{};
-		std::strcpy(req.BrokerID, SysParam::Get(CTP_MD_BROKERID).data());
-		std::strcpy(req.UserID, SysParam::Get(CTP_MD_USERID).data());
-		std::strcpy(req.Password, SysParam::Get(CTP_MD_PASSWORD).data());
+		if (!_serverCtx->getConfigVal(CTP_MD_BROKERID, value))
+			value = SysParam::Get(CTP_MD_BROKERID);
+		std::strcpy(req.BrokerID, value.data());
+
+		if (!_serverCtx->getConfigVal(CTP_MD_USERID, value))
+			value = SysParam::Get(CTP_MD_USERID);
+		std::strcpy(req.UserID, value.data());
+
+		if (!_serverCtx->getConfigVal(CTP_MD_PASSWORD, value))
+			value = SysParam::Get(CTP_MD_PASSWORD);
+		std::strcpy(req.Password, value.data());
+
 		ret = ((CTPRawAPI*)getRawAPI())->MdAPI->ReqUserLogin(&req, AppContext::GenNextSeq());
 	}
 
@@ -147,7 +173,7 @@ OTCTradeProcessor * CTPOTCWorkerProcessor::GetOTCTradeProcessor()
 
 void CTPOTCWorkerProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
 {
-	auto mdMap = GetOTCTradeProcessor()->GetPricingContext()->GetMarketDataMap();
+	auto mdMap = PricingDataContext()->GetMarketDataMap();
 	auto it = mdMap->find(pDepthMarketData->InstrumentID);
 	if (it != mdMap->end())
 	{

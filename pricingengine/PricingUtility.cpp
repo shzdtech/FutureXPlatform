@@ -7,6 +7,7 @@
 
 #include "PricingUtility.h"
 #include "PricingAlgorithmManager.h"
+#include "../message/BizError.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       PricingUtility::Pricing(const std::string& alg, const std::vector<void*>& params)
@@ -23,17 +24,13 @@ std::shared_ptr<PricingDO> PricingUtility::Pricing(
 	IPricingDataContext& priceCtx,
 	const param_vector* params)
 {
-	std::shared_ptr<PricingDO> ret;
-
 	auto algorithm =
 		PricingAlgorithmManager::Instance()->FindAlgorithm(sdo.ModelParams.ModelName);
 
-	if (algorithm)
-	{
-		ret = algorithm->Compute(pInputObject, sdo, priceCtx, params);
-	}
+	if (!algorithm)
+		throw NotFoundException("Prcing algorithm '" + sdo.ModelParams.ModelName + "' not found");
 
-	return ret;
+	return algorithm->Compute(pInputObject, sdo, priceCtx, params);
 }
 
 std::shared_ptr<PricingDO> PricingUtility::Pricing(
@@ -52,7 +49,7 @@ std::shared_ptr<PricingDO> PricingUtility::Pricing(
 {
 	auto it = priceCtx.GetStrategyMap()->find(contractKey);
 	if (it == priceCtx.GetStrategyMap()->end())
-		return nullptr;
+		throw NotFoundException("Prcing strategy for " + contractKey.InstrumentID() + "not found");
 
 	return Pricing(pInputObject, it->second, priceCtx);
 }

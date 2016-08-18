@@ -2218,16 +2218,11 @@ class PBPosition : public ::google::protobuf::Message {
   ::google::protobuf::int32 ydposition() const;
   void set_ydposition(::google::protobuf::int32 value);
 
-  // optional string positionDate = 6;
-  void clear_positiondate();
-  static const int kPositionDateFieldNumber = 6;
-  const ::std::string& positiondate() const;
-  void set_positiondate(const ::std::string& value);
-  void set_positiondate(const char* value);
-  void set_positiondate(const char* value, size_t size);
-  ::std::string* mutable_positiondate();
-  ::std::string* release_positiondate();
-  void set_allocated_positiondate(::std::string* positiondate);
+  // optional int32 positionDateFlag = 6;
+  void clear_positiondateflag();
+  static const int kPositionDateFlagFieldNumber = 6;
+  ::google::protobuf::int32 positiondateflag() const;
+  void set_positiondateflag(::google::protobuf::int32 value);
 
   // optional int32 openVolume = 7;
   void clear_openvolume();
@@ -2307,19 +2302,19 @@ class PBPosition : public ::google::protobuf::Message {
   ::google::protobuf::internal::ArenaStringPtr contract_;
   ::google::protobuf::int32 direction_;
   ::google::protobuf::int32 position_;
-  ::google::protobuf::internal::ArenaStringPtr positiondate_;
   ::google::protobuf::int32 ydposition_;
+  ::google::protobuf::int32 positiondateflag_;
   ::google::protobuf::int32 openvolume_;
+  ::google::protobuf::int32 closevolume_;
   double openamount_;
   double closeamount_;
   double cost_;
   double opencost_;
-  ::google::protobuf::int32 closevolume_;
-  ::google::protobuf::int32 hedgeflag_;
   double profit_;
   double closeprofit_;
   double usemargin_;
   ::Micro::Future::Message::DataHeader* header_;
+  ::google::protobuf::int32 hedgeflag_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
@@ -2908,11 +2903,11 @@ class PBContractInfo : public ::google::protobuf::Message {
   ::google::protobuf::int32 volumemultiple() const;
   void set_volumemultiple(::google::protobuf::int32 value);
 
-  // optional int32 priceTick = 13;
+  // optional double priceTick = 13;
   void clear_pricetick();
   static const int kPriceTickFieldNumber = 13;
-  ::google::protobuf::int32 pricetick() const;
-  void set_pricetick(::google::protobuf::int32 value);
+  double pricetick() const;
+  void set_pricetick(double value);
 
   // optional string createDate = 14;
   void clear_createdate();
@@ -3027,9 +3022,15 @@ class PBContractInfo : public ::google::protobuf::Message {
   ::std::string* release_underlyingcontract();
   void set_allocated_underlyingcontract(::std::string* underlyingcontract);
 
-  // optional double strikePrice = 27;
+  // optional int32 contractType = 27;
+  void clear_contracttype();
+  static const int kContractTypeFieldNumber = 27;
+  ::google::protobuf::int32 contracttype() const;
+  void set_contracttype(::google::protobuf::int32 value);
+
+  // optional double strikePrice = 28;
   void clear_strikeprice();
-  static const int kStrikePriceFieldNumber = 27;
+  static const int kStrikePriceFieldNumber = 28;
   double strikeprice() const;
   void set_strikeprice(double value);
 
@@ -3050,21 +3051,22 @@ class PBContractInfo : public ::google::protobuf::Message {
   ::google::protobuf::int32 maxlimitordervolume_;
   ::google::protobuf::int32 minlimitordervolume_;
   ::google::protobuf::int32 volumemultiple_;
+  double pricetick_;
   ::google::protobuf::internal::ArenaStringPtr createdate_;
   ::google::protobuf::internal::ArenaStringPtr opendate_;
   ::google::protobuf::internal::ArenaStringPtr expiredate_;
-  ::google::protobuf::int32 pricetick_;
-  ::google::protobuf::int32 lifephase_;
   ::google::protobuf::internal::ArenaStringPtr startdelivdate_;
   ::google::protobuf::internal::ArenaStringPtr enddelivdate_;
+  ::google::protobuf::int32 lifephase_;
   bool istrading_;
   ::google::protobuf::int32 positiontype_;
+  ::google::protobuf::int32 positiondatetype_;
   double longmarginratio_;
   double shortmarginratio_;
   ::google::protobuf::internal::ArenaStringPtr underlyingexchange_;
   ::google::protobuf::internal::ArenaStringPtr underlyingcontract_;
   double strikeprice_;
-  ::google::protobuf::int32 positiondatetype_;
+  ::google::protobuf::int32 contracttype_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
@@ -6379,48 +6381,18 @@ inline void PBPosition::set_ydposition(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.ydPosition)
 }
 
-// optional string positionDate = 6;
-inline void PBPosition::clear_positiondate() {
-  positiondate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// optional int32 positionDateFlag = 6;
+inline void PBPosition::clear_positiondateflag() {
+  positiondateflag_ = 0;
 }
-inline const ::std::string& PBPosition::positiondate() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.positionDate)
-  return positiondate_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+inline ::google::protobuf::int32 PBPosition::positiondateflag() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.positionDateFlag)
+  return positiondateflag_;
 }
-inline void PBPosition::set_positiondate(const ::std::string& value) {
+inline void PBPosition::set_positiondateflag(::google::protobuf::int32 value) {
   
-  positiondate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.positionDate)
-}
-inline void PBPosition::set_positiondate(const char* value) {
-  
-  positiondate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBPosition.positionDate)
-}
-inline void PBPosition::set_positiondate(const char* value, size_t size) {
-  
-  positiondate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBPosition.positionDate)
-}
-inline ::std::string* PBPosition::mutable_positiondate() {
-  
-  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBPosition.positionDate)
-  return positiondate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* PBPosition::release_positiondate() {
-  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBPosition.positionDate)
-  
-  return positiondate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void PBPosition::set_allocated_positiondate(::std::string* positiondate) {
-  if (positiondate != NULL) {
-    
-  } else {
-    
-  }
-  positiondate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), positiondate);
-  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBPosition.positionDate)
+  positiondateflag_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.positionDateFlag)
 }
 
 // optional int32 openVolume = 7;
@@ -7633,15 +7605,15 @@ inline void PBContractInfo::set_volumemultiple(::google::protobuf::int32 value) 
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBContractInfo.volumeMultiple)
 }
 
-// optional int32 priceTick = 13;
+// optional double priceTick = 13;
 inline void PBContractInfo::clear_pricetick() {
   pricetick_ = 0;
 }
-inline ::google::protobuf::int32 PBContractInfo::pricetick() const {
+inline double PBContractInfo::pricetick() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBContractInfo.priceTick)
   return pricetick_;
 }
-inline void PBContractInfo::set_pricetick(::google::protobuf::int32 value) {
+inline void PBContractInfo::set_pricetick(double value) {
   
   pricetick_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBContractInfo.priceTick)
@@ -8039,7 +8011,21 @@ inline void PBContractInfo::set_allocated_underlyingcontract(::std::string* unde
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBContractInfo.underlyingContract)
 }
 
-// optional double strikePrice = 27;
+// optional int32 contractType = 27;
+inline void PBContractInfo::clear_contracttype() {
+  contracttype_ = 0;
+}
+inline ::google::protobuf::int32 PBContractInfo::contracttype() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBContractInfo.contractType)
+  return contracttype_;
+}
+inline void PBContractInfo::set_contracttype(::google::protobuf::int32 value) {
+  
+  contracttype_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBContractInfo.contractType)
+}
+
+// optional double strikePrice = 28;
 inline void PBContractInfo::clear_strikeprice() {
   strikeprice_ = 0;
 }

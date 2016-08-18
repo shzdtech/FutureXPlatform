@@ -18,7 +18,7 @@ public:
    std::map<uint, IMessageHandler_Ptr> CreateMessageHandlers(IServerContext* serverCtx);
    std::map<uint, IDataSerializer_Ptr> CreateDataSerializers(IServerContext* serverCtx);
    IMessageProcessor_Ptr CreateMessageProcessor(IServerContext* serverCtx);
-   bool Load(const std::string& configFile, const std::string& param);
+   IMessageProcessor_Ptr CreateWorkerProcessor(IServerContext* serverCtx);
 
 protected:
 

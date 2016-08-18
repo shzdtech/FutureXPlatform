@@ -46,7 +46,7 @@ bool MicroFurtureSystem::Load(const std::string& config)
 {
 	bool ret = false;
 
-	if (auto cfgReader = AbstractConfigReaderFactory::OpenConfigReader(config)) {
+	if (auto cfgReader = AbstractConfigReaderFactory::OpenConfigReader(config.data())) {
 		auto ver = cfgReader->getValue("system.version");
 		LOG_INFO << "Initializing system (ver. " << ver << ")...";
 
@@ -110,7 +110,7 @@ bool MicroFurtureSystem::Load(const std::string& config)
 
 		// Initialize Services
 		std::string serve_cfg = cfgReader->getValue("system.service.config");
-		if (cfgReader = AbstractConfigReaderFactory::OpenConfigReader(serve_cfg)) {
+		if (cfgReader = AbstractConfigReaderFactory::OpenConfigReader(serve_cfg.data())) {
 			LOG_INFO << "  Initializing services (" << serve_cfg << ')';
 			std::vector<std::string> sections;
 			cfgReader->getVector("service.servercfg", sections);
@@ -123,9 +123,10 @@ bool MicroFurtureSystem::Load(const std::string& config)
 				cfgReader->getMap(sec, cfgMap);
 				std::string facCfg = cfgMap["factory.config"];
 				std::string facCfgSec = cfgMap["factory.config.section"];
-				if (auto msgfac = ConfigBasedCreator::CreateInstance(facCfg, facCfgSec)) {
+				if (auto msgfac = ConfigBasedCreator::CreateInstance(facCfg.data(), facCfgSec.data())) {
 					auto msgsvcfactory = std::static_pointer_cast<IMessageServiceFactory>(msgfac);
-					if (msgsvcfactory->Load(facCfg, facCfgSec)) {
+					std::string facParamsSec = facCfgSec + ".params";
+					if (msgsvcfactory->LoadParams(facCfg, facParamsSec)) {
 
 						std::string svrUUID = cfgMap["server.module.uuid"];
 						std::string svrModule = cfgMap["server.module.path"];
@@ -135,7 +136,7 @@ bool MicroFurtureSystem::Load(const std::string& config)
 						std::string svruri = cfgMap["server.uri"];
 
 						// Initialize Server
-						if (auto srvPtr = ConfigBasedCreator::CreateInstance(svrUUID, svrModule, svrClass)) {
+						if (auto srvPtr = ConfigBasedCreator::CreateInstance(svrUUID.data(), svrModule.data(), svrClass.data())) {
 							auto server = std::static_pointer_cast<IMessageServer>(srvPtr);
 							server->RegisterServiceFactory(msgsvcfactory);
 							if (server->Initialize(svruri, svrCfg)) {

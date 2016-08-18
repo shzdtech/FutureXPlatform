@@ -17,9 +17,10 @@
  // Return:     
  ////////////////////////////////////////////////////////////////////////
 
-CTPOTCOptionWorkerProcessor::CTPOTCOptionWorkerProcessor(const std::map<std::string, std::string>& configMap,
-	IServerContext* pServerCtx, const std::shared_ptr<CTPOTCTradeProcessor>& otcTradeProcessorPtr) :
-	CTPOTCWorkerProcessor(configMap, pServerCtx, otcTradeProcessorPtr)
+CTPOTCOptionWorkerProcessor::CTPOTCOptionWorkerProcessor(
+	IServerContext* pServerCtx, 
+	const std::shared_ptr<CTPOTCTradeProcessor>& otcTradeProcessorPtr) :
+	CTPOTCWorkerProcessor(pServerCtx, otcTradeProcessorPtr)
 {
 
 }
@@ -28,7 +29,7 @@ void CTPOTCOptionWorkerProcessor::TriggerPricing(const StrategyContractDO& strat
 {
 	if (strategyDO.Enabled)
 	{
-		if (auto pricingCtx = GetOTCTradeProcessor()->GetPricingContext())
+		if (auto pricingCtx = PricingDataContext())
 		{
 			auto& mdDO = pricingCtx->GetMarketDataMap()->at(strategyDO.PricingContracts[0].InstrumentID());
 
@@ -47,3 +48,22 @@ ProductType CTPOTCOptionWorkerProcessor::GetProductType()
 }
 
 
+//CTP APIs
+
+void CTPOTCOptionWorkerProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
+{
+	auto mdMap = PricingDataContext()->GetMarketDataMap();
+	auto it = mdMap->find(pDepthMarketData->InstrumentID);
+	if (it != mdMap->end())
+	{
+		auto& mdo = it->second;
+		if (mdo.BidPrice != pDepthMarketData->BidPrice1 ||
+			mdo.AskPrice != pDepthMarketData->AskPrice1 )
+		{
+			mdo.BidPrice = pDepthMarketData->BidPrice1;
+			mdo.AskPrice = pDepthMarketData->AskPrice1;
+
+			TriggerUpdating(mdo);
+		}
+	}
+}

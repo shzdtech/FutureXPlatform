@@ -73,7 +73,7 @@ dataobj_ptr CTPAccountLogin::HandleResponse(const uint32_t serialId, param_vecto
 
 std::shared_ptr<UserInfoDO> CTPAccountLogin::Login(const dataobj_ptr reqDO, IRawAPI * rawAPI, ISession * session)
 {
-	if (!session->IsLogin())
+	if (!session->getLoginTimeStamp())
 	{
 		auto stdo = (MapDO<std::string>*)reqDO.get();
 		auto& userid = stdo->TryFind(STR_USER_NAME, EMPTY_STRING);
@@ -117,7 +117,7 @@ std::shared_ptr<UserInfoDO> CTPAccountLogin::Login(const dataobj_ptr reqDO, IRaw
 
 		session->getUserInfo()->setAttribute(STR_KEY_USER_INFO_DETAIL, userInfo_Ptr);
 
-		session->setLoginStatus(true);
+		session->setLoginTimeStamp();
 	}
 
 	auto userInfoDO_Ptr = std::static_pointer_cast<UserInfoDO>

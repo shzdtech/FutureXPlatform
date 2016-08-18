@@ -1,6 +1,8 @@
 #if !defined(__message_MessageInterfaceDeclare_h)
 #define __message_MessageInterfaceDeclare_h
 
+#include <memory>
+
 class ISession;
 class IMessageSession;
 class IMessageSessionEvent;

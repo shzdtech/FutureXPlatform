@@ -81,20 +81,8 @@ std::map<uint, IDataSerializer_Ptr> CTPTradeServiceFactory::CreateDataSerializer
 
 IMessageProcessor_Ptr CTPTradeServiceFactory::CreateMessageProcessor(IServerContext* serverCtx)
 {
-	auto ret = std::make_shared<CTPTradeProcessor>(_configMap);
-	ret->Initialize();
-	return ret;
-}
-
-
-bool CTPTradeServiceFactory::Load(const std::string& configFile, const std::string& param)
-{
-	bool ret = MessageServiceFactory::Load(configFile, param);
-	if (SysParam::Contains(CTP_TRADER_SERVER))
-	{
-		_configMap[STR_FRONT_SERVER] = SysParam::Get(CTP_TRADER_SERVER);
-	}
-
+	auto ret = std::make_shared<CTPTradeProcessor>();
+	ret->Initialize(serverCtx);
 	return ret;
 }
 
@@ -103,8 +91,8 @@ IMessageProcessor_Ptr CTPTradeServiceFactory::CreateWorkerProcessor(IServerConte
 {
 	if (!serverCtx->getWorkerProcessor())
 	{
-		auto worker_ptr = std::make_shared<CTPTradeWorkerProcessor>(_configMap, serverCtx);
-		worker_ptr->Initialize();
+		auto worker_ptr = std::make_shared<CTPTradeWorkerProcessor>(serverCtx);
+		worker_ptr->Initialize(serverCtx);
 		serverCtx->setWorkerProcessor(worker_ptr);
 	}
 

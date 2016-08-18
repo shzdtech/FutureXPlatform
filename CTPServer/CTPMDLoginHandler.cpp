@@ -11,11 +11,11 @@
 #include "CTPMarketDataProcessor.h"
 #include "../utility/TUtil.h"
 
-////////////////////////////////////////////////////////////////////////
-// Name:       CTPMDLoginHandler::LoginFunction()
-// Purpose:    Implementation of CTPMDLoginHandler::LoginFunction()
-// Return:     int
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       CTPMDLoginHandler::LoginFunction()
+ // Purpose:    Implementation of CTPMDLoginHandler::LoginFunction()
+ // Return:     int
+ ////////////////////////////////////////////////////////////////////////
 
 int CTPMDLoginHandler::LoginFunction(IRawAPI* rawAPI, ISession* session, CThostFtdcReqUserLoginField* loginInfo, uint requestId)
 {
@@ -23,17 +23,28 @@ int CTPMDLoginHandler::LoginFunction(IRawAPI* rawAPI, ISession* session, CThostF
 
 	if (loginInfo->BrokerID[0] == 0)
 	{
-		std::strcpy(loginInfo->BrokerID, SysParam::Get(CTP_MD_BROKERID).data());
+		if (!session->getProcessor()->getServerContext()->getConfigVal(CTP_MD_SERVER, value))
+		{
+			value = SysParam::Get(CTP_MD_SERVER);
+		}
+		std::strcpy(loginInfo->BrokerID, value.data());
 	}
 	if (loginInfo->UserID[0] == 0)
 	{
-		std::strcpy(loginInfo->UserID, SysParam::Get(CTP_MD_USERID).data());
+		if (!session->getProcessor()->getServerContext()->getConfigVal(CTP_MD_USERID, value))
+		{
+			value = SysParam::Get(CTP_MD_USERID);
+		}
+		std::strcpy(loginInfo->UserID, value.data());
 	}
 	if (loginInfo->Password[0] == 0)
 	{
-		std::strcpy(loginInfo->Password, SysParam::Get(CTP_MD_PASSWORD).data());
+		if (!session->getProcessor()->getServerContext()->getConfigVal(CTP_MD_PASSWORD, value))
+		{
+			value = SysParam::Get(CTP_MD_PASSWORD);
+		}
+		std::strcpy(loginInfo->Password, value.data());
 	}
 
-	return ((CTPMarketDataProcessor*)session->getProcessor().get())->
-		Login(loginInfo, requestId);
+	return ((CTPMarketDataProcessor*)session->getProcessor().get())->Login(loginInfo, requestId);
 }

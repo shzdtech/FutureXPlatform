@@ -57,16 +57,24 @@ std::shared_ptr<PricingDO> BlackScholesPricingAlgorithm::Compute(
 
 	auto pricingDO = std::make_shared<PricingDO>(sdo.ExchangeID(), sdo.InstrumentID());
 
-	if (!OptionPricingCache::FindOption(sdo, paramObj.volatility, bidPrice, pricingDO->BidPrice))
-	{
+	auto& pairObj = OptionPricingCache::FindOption(sdo, bidPrice);
+	if (pairObj.first == paramObj.volatility)
+		pricingDO->BidPrice = pairObj.second;
+	else
+	{ 
 		pricingDO->BidPrice = std::floor(ComputeOptionPrice(bidPrice, paramObj, sdo) / sdo.TickSize) * sdo.TickSize;
-		OptionPricingCache::AddOption(sdo, paramObj.volatility, bidPrice, pricingDO->BidPrice);
+		pairObj.first = paramObj.volatility;
+		pairObj.second = pricingDO->BidPrice;
 	}
-
-	if (!OptionPricingCache::FindOption(sdo, paramObj.volatility, askdPrice, pricingDO->AskPrice))
+	
+	pairObj = OptionPricingCache::FindOption(sdo, askdPrice);
+	if (pairObj.first == paramObj.volatility)
+		pricingDO->AskPrice = pairObj.second;
+	else
 	{
 		pricingDO->AskPrice = std::ceil(ComputeOptionPrice(askdPrice, paramObj, sdo) / sdo.TickSize) * sdo.TickSize;
-		OptionPricingCache::FindOption(sdo, paramObj.volatility, askdPrice, pricingDO->AskPrice);
+		pairObj.first = paramObj.volatility;
+		pairObj.second = pricingDO->AskPrice;
 	}
 
 	return pricingDO;

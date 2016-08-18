@@ -63,7 +63,7 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawA
 			std::this_thread::sleep_for(std::chrono::seconds(2));
 		}
 
-		ThrowNotFoundException(&userMap);
+		ThrowNotFoundExceptionIfEmpty(&userMap);
 
 		using namespace boolinq;
 		if (orderid != EMPTY_STRING)
