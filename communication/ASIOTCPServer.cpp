@@ -31,7 +31,7 @@ ASIOTCPServer::ASIOTCPServer() :
 }
 
 ASIOTCPServer::~ASIOTCPServer() {
-	LOG_DEBUG << "~ASIOTCPServer:" << _uri;
+	LOG_DEBUG << __FUNCTION__ << getUri();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -43,19 +43,20 @@ ASIOTCPServer::~ASIOTCPServer() {
 // Return:     bool
 ////////////////////////////////////////////////////////////////////////
 
-bool ASIOTCPServer::Initialize(const std::string& uri, const std::string& config) {
+bool ASIOTCPServer::Initialize(const std::string& uri, const std::string& config, const std::string& section) {
 	bool ret = false;
 
-	_uri = uri;
+	_context.setServerUri(uri);
+
 	std::size_t pos = uri.rfind(':');
 	if (pos != std::string::npos) {
-		_uri = uri.substr(0, pos);
+		_context.setServerUri(uri.substr(0, pos));
 		_port = std::stoi(uri.substr(pos + 1));
 	}
 
 	if (auto cfgReader = AbstractConfigReaderFactory::OpenConfigReader(config.data())) {
 		std::map<std::string, std::string> valMap;
-		cfgReader->getMap("server." + _uri, valMap);
+		cfgReader->getMap(section, valMap);
 		if (!_port)
 			_port = std::stoi(valMap["port"]);
 		int nthread = std::stoi(valMap["workerthread"], nullptr, 0);
@@ -136,7 +137,7 @@ bool ASIOTCPServer::Start(void) {
 
 			if (ec)
 			{
-				LOG_ERROR << "Failed to start " << _uri << ": " << ec.message();
+				LOG_ERROR << "Failed to start " << getUri() << ": " << ec.message();
 			}
 		}
 	}
@@ -165,7 +166,7 @@ void ASIOTCPServer::work_thread(void) {
 		_iosrv.run(ec);
 		if (ec)
 		{
-			LOG_ERROR << _uri << "::" << __FUNCTION__ << ": " << ec.message();
+			LOG_ERROR << getUri() << "::" << __FUNCTION__ << ": " << ec.message();
 		}
 	}
 	catch (std::exception& ex) {

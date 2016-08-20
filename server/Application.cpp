@@ -27,7 +27,7 @@ bool Application::Initialize(const std::string& configFile)
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-void Application::Run(void) {
+void Application::Start(void) {
 	MicroFurtureSystem::Instance()->Start();
 }
 
@@ -37,7 +37,7 @@ void Application::Run(void) {
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-int Application::Exit(void) {
+int Application::Stop(void) {
 	return MicroFurtureSystem::Instance()->Stop() ? 0 : -1;
 }
 

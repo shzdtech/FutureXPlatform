@@ -14,7 +14,7 @@
 class IMessageServer
 {
 public:
-   virtual bool Initialize(const std::string& uri, const std::string& config)=0;
+   virtual bool Initialize(const std::string& uri, const std::string& config, const std::string& section)=0;
    virtual bool Start(void)=0;
    virtual bool Stop(void)=0;
    virtual bool Stopped(void)=0;

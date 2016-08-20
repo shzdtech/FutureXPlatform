@@ -28,8 +28,8 @@ public:
 	CTPRawAPI_Ptr& RawAPI_Ptr(void);
 
 protected:
-	bool _isLogged = false;
-	int _isConnected = false;
+	bool _isLogged;
+	bool _isConnected;
 
 	CTPRawAPI_Ptr _rawAPI;
 

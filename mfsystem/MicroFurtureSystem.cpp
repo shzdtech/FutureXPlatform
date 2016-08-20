@@ -139,7 +139,7 @@ bool MicroFurtureSystem::Load(const std::string& config)
 						if (auto srvPtr = ConfigBasedCreator::CreateInstance(svrUUID.data(), svrModule.data(), svrClass.data())) {
 							auto server = std::static_pointer_cast<IMessageServer>(srvPtr);
 							server->RegisterServiceFactory(msgsvcfactory);
-							if (server->Initialize(svruri, svrCfg)) {
+							if (server->Initialize(svruri, svrCfg, svrCfgSec)) {
 								this->_servers.push_back(server);
 								initserver = true;
 								LOG_INFO << "    " << svruri << " initialized.";
@@ -236,7 +236,6 @@ bool MicroFurtureSystem::Stop(void)
 		{
 			LOG_ERROR << "  " << svr->getUri() << " failed to stop!";
 		}
-		svr->Stop();
 	}
 
 	_running = false;

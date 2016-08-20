@@ -20,24 +20,29 @@ Application app;
 
 void sigtermhandler(int code)
 {
-	std::exit(app.Exit());
+	std::exit(app.Stop());
 }
 
 void siginthandler(int code)
 {
-	std::cout << "Are you sure to exit? (Y/N):";
+	std::cout << "Exit (X) or Restart (R): ";
 	std::string instr;
 	std::getline(std::cin, instr);
-	if (instr == "Y") {
-		int retcode = app.Exit();
+	if (instr == "X") {
+		int retcode = app.Stop();
 		std::cout << "Server has exited.";
 		std::exit(retcode);
 	}
-	else {
-		std::cout << "Server will continue running...";
-		std::signal(SIGINT, siginthandler);
+	else if (instr == "R")
+	{
+		app.Stop();
+		app.Start();
+		std::cout << "Server has restarted." << std::endl;
 	}
-
+	else {
+		std::cout << "Server will continue running..." << std::endl;
+	}
+	std::signal(SIGINT, siginthandler);
 }
 
 void registsignal()
@@ -63,9 +68,9 @@ int main(int argc, char** argv) {
 			configFile = argv[1];
 		}
 		app.Initialize(configFile);
-		app.Run();
+		app.Start();
 		app.Join();
-		app.Exit();
+		app.Stop();
 	}
 	catch (std::exception& ex)
 	{

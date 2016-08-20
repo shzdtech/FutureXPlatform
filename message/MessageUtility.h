@@ -15,9 +15,9 @@ public:
 	}
 
 	template <typename T>
-	static std::shared_ptr<T> ServerWorkerProcessor(const IProcessorBase_Ptr& processorPtr)
+	static T* ServerWorkerProcessor(const IProcessorBase_Ptr& processorPtr)
 	{
-		return std::static_pointer_cast<T>(processorPtr->getServerContext()->getSubTypeWorkerPtr());
+		return (T*)(processorPtr->getServerContext()->getSubTypeWorkerPtr());
 	}
 };
 

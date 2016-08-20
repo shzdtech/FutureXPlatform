@@ -19,6 +19,8 @@ public:
 	CTPOTCOptionWorkerProcessor(IServerContext* pServerCtx,
 		const std::shared_ptr<CTPOTCTradeProcessor>& ctpOtcTradeProcessorPtr);
 
+	~CTPOTCOptionWorkerProcessor();
+
 	virtual void TriggerPricing(const StrategyContractDO& strategyDO);
 
 	virtual ProductType GetProductType();

@@ -13,6 +13,7 @@ class IMessageHandler;
 
 typedef std::shared_ptr<IProcessorBase> IProcessorBase_Ptr;
 typedef std::shared_ptr<IMessageProcessor> IMessageProcessor_Ptr;
+typedef std::weak_ptr<IMessageProcessor> IMessageProcessor_WkPtr;
 
 typedef std::shared_ptr<IMessageSession> IMessageSession_Ptr;
 typedef std::weak_ptr<IMessageSession> IMessageSession_WkPtr;

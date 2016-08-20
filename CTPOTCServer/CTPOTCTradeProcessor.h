@@ -25,7 +25,6 @@ public:
 	CTPOTCTradeProcessor(IServerContext* pServerCtx, 
 		IPricingDataContext* pricingDataCtx);
 	~CTPOTCTradeProcessor();
-	void Initialize(void);
 
 	virtual OrderDOVec_Ptr TriggerHedgeOrderUpdating(const StrategyContractDO& strategyDO);
 	virtual OrderDOVec_Ptr TriggerOTCOrderUpdating(const StrategyContractDO& strategyDO);
@@ -55,6 +54,7 @@ public:
 	void OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
 	void OnRtnOrder(CThostFtdcOrderField *pOrder);
+	void RegisterLoggedSession(IMessageSession * pMessageSession);
 };
 
 #endif

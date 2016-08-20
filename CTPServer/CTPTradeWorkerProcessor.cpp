@@ -25,7 +25,7 @@
 CTPTradeWorkerProcessor::CTPTradeWorkerProcessor(IServerContext* pServerCtx)
 	: _userSessionCtn_Ptr(SessionContainer<std::string>::NewInstance())
 {
-	_serverCtx = pServerCtx,
+	_serverCtx = pServerCtx;
 	DataLoaded = false;
 
 	std::string value;
@@ -55,6 +55,8 @@ CTPTradeWorkerProcessor::CTPTradeWorkerProcessor(IServerContext* pServerCtx)
 
 CTPTradeWorkerProcessor::~CTPTradeWorkerProcessor()
 {
+	DataLoaded = true;
+	_initializer.join();
 	LOG_DEBUG << __FUNCTION__;
 }
 
@@ -79,54 +81,66 @@ void CTPTradeWorkerProcessor::Initialize(IServerContext* pServerCtx)
 		return;
 
 	auto trdAPI = _rawAPI->TrdAPI;
-	_initializer = std::async(std::launch::async, [trdAPI, this]() {
+	_initializer = std::move(std::thread([trdAPI, this]() {
 		std::this_thread::sleep_for(std::chrono::seconds(1)); //wait 1 secs for connecting to CTP server
+		auto millsec = std::chrono::milliseconds(500);
 		while (!this->DataLoaded)
 		{
 			if (!this->HasLogged())
 			{
 				LoginSystemUser();
-				std::this_thread::sleep_for(std::chrono::seconds(3)); //wait 5 secs for login CTP server
+				std::this_thread::sleep_for(std::chrono::seconds(5)); //wait 5 secs for login CTP server
 			}
 
 			if (!DataLoaded)
 			{
 				LoadSystemData(trdAPI);
 			}
-			std::this_thread::sleep_for(std::chrono::milliseconds(this->RetryInterval));
+
+			for (int cum_ms = 0; cum_ms < this->RetryInterval && !DataLoaded; cum_ms += millsec.count())
+			{
+				std::this_thread::sleep_for(millsec);
+			}
 		}
-	});
+	}));
 }
 
 int CTPTradeWorkerProcessor::LoadSystemData(CThostFtdcTraderApi * trdAPI)
 {
-	auto delay = std::chrono::seconds(2);
+	int ret = -1;
 
-	std::this_thread::sleep_for(delay);
-	CThostFtdcQryTradingAccountField reqaccount{};
-	trdAPI->ReqQryTradingAccount(&reqaccount, 0);
+	if (HasLogged())
+	{
+		// LOG_INFO << _serverCtx->getServerUri() << ": Try loading data...";
 
-	std::this_thread::sleep_for(delay);
-	CThostFtdcQryInvestorPositionField reqposition{};
-	trdAPI->ReqQryInvestorPosition(&reqposition, 0);
+		auto delay = std::chrono::seconds(2);
 
-	std::this_thread::sleep_for(delay);
-	CThostFtdcQryTradeField reqtrd{};
-	trdAPI->ReqQryTrade(&reqtrd, 0);
+		std::this_thread::sleep_for(delay);
+		CThostFtdcQryTradingAccountField reqaccount{};
+		ret = trdAPI->ReqQryTradingAccount(&reqaccount, 0);
 
-	std::this_thread::sleep_for(delay);
-	CThostFtdcQryOrderField reqorder{};
-	trdAPI->ReqQryOrder(&reqorder, 0);
+		std::this_thread::sleep_for(delay);
+		CThostFtdcQryInvestorPositionField reqposition{};
+		ret = trdAPI->ReqQryInvestorPosition(&reqposition, 0);
 
-	std::this_thread::sleep_for(delay);
-	CThostFtdcQryExchangeField reqexchange{};
-	trdAPI->ReqQryExchange(&reqexchange, 0);
+		std::this_thread::sleep_for(delay);
+		CThostFtdcQryTradeField reqtrd{};
+		ret = trdAPI->ReqQryTrade(&reqtrd, 0);
 
-	std::this_thread::sleep_for(delay);
-	CThostFtdcQryInstrumentField reqinstr{};
-	trdAPI->ReqQryInstrument(&reqinstr, 0);
+		std::this_thread::sleep_for(delay);
+		CThostFtdcQryOrderField reqorder{};
+		ret = trdAPI->ReqQryOrder(&reqorder, 0);
 
-	return 0;
+		std::this_thread::sleep_for(delay);
+		CThostFtdcQryExchangeField reqexchange{};
+		ret = trdAPI->ReqQryExchange(&reqexchange, 0);
+
+		std::this_thread::sleep_for(delay);
+		CThostFtdcQryInstrumentField reqinstr{};
+		ret = trdAPI->ReqQryInstrument(&reqinstr, 0);
+	}
+
+	return ret;
 }
 
 int CTPTradeWorkerProcessor::LoginSystemUser(void)
@@ -168,13 +182,14 @@ void CTPTradeWorkerProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUs
 			_systemUser.setSessionId(pRspUserLogin->SessionID);
 		}
 
-		_isLogged = true;
-		auto trdAPI = _rawAPI->TrdAPI;
-
 		CThostFtdcSettlementInfoConfirmField reqsettle{};
 		std::strcpy(reqsettle.BrokerID, _systemUser.getBrokerId().data());
 		std::strcpy(reqsettle.InvestorID, _systemUser.getInvestorId().data());
-		trdAPI->ReqSettlementInfoConfirm(&reqsettle, 0);
+		_rawAPI->TrdAPI->ReqSettlementInfoConfirm(&reqsettle, 0);
+
+		_isLogged = true;
+
+		LOG_INFO << getServerContext()->getServerUri() << ": System user has logged.";
 	}
 }
 
@@ -182,7 +197,14 @@ void CTPTradeWorkerProcessor::OnRspQryInstrument(CThostFtdcInstrumentField * pIn
 {
 	try
 	{
-		DataLoaded = bIsLast;
+		if (!DataLoaded)
+		{
+			if (DataLoaded = bIsLast)
+			{
+				LOG_INFO << getServerContext()->getServerUri() << ": Data preloading finished.";
+			}
+		}
+
 		ProcessResponseMacro(this, MSG_ID_QUERY_INSTRUMENT, nRequestID, pInstrument, pRspInfo, &nRequestID, &bIsLast);
 	}
 	catch (...) {}

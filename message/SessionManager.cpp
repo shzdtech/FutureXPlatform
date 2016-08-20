@@ -53,6 +53,7 @@ void SessionManager::OnServerStarting(void)
 void SessionManager::OnServerClosing(void)
 {
 	_sessionSet.clear();
+	_server->getContext()->Reset();
 }
 
 ////////////////////////////////////////////////////////////////////////

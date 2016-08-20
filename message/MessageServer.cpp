@@ -15,7 +15,7 @@
 
 const std::string& MessageServer::getUri(void)
 {
-   return _uri;
+   return _context.getServerUri();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -29,7 +29,6 @@ const std::string& MessageServer::getUri(void)
 void MessageServer::RegisterServiceFactory(IMessageServiceFactory_Ptr msgSvcFactory)
 {
 	_svcfactory_ptr = msgSvcFactory;
-	msgSvcFactory->SetServerContext(getContext());
 }
 
 ////////////////////////////////////////////////////////////////////////

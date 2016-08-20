@@ -15,6 +15,11 @@
  // Return:     attribute_ptr
  ////////////////////////////////////////////////////////////////////////
 
+ServerContext::ServerContext()
+{
+	_pSubWorkProc = nullptr;
+}
+
 attribute_ptr ServerContext::getAttribute(const std::string& key)
 {
 	attribute_ptr ret;
@@ -68,8 +73,8 @@ void ServerContext::setServerType(int type)
 void ServerContext::setWorkerProcessor(const IMessageProcessor_Ptr& proc_ptr)
 {
 	_workerProcessor_Ptr = proc_ptr;
-	if (!_subWorkProcPtr)
-		_subWorkProcPtr = proc_ptr;
+	if (!_pSubWorkProc)
+		_pSubWorkProc = proc_ptr.get();
 }
 
 IMessageProcessor_Ptr ServerContext::getWorkerProcessor(void)
@@ -77,12 +82,30 @@ IMessageProcessor_Ptr ServerContext::getWorkerProcessor(void)
 	return _workerProcessor_Ptr;
 }
 
-void ServerContext::setSubTypeWorkerPtr(const shared_void_ptr & proc_ptr)
+void ServerContext::setSubTypeWorkerPtr(void* pProcess)
 {
-	_subWorkProcPtr = proc_ptr;
+	_pSubWorkProc = pProcess;
 }
 
-shared_void_ptr ServerContext::getSubTypeWorkerPtr(void)
+void* ServerContext::getSubTypeWorkerPtr(void)
 {
-	return _subWorkProcPtr;
+	return _pSubWorkProc;
+}
+
+const std::string & ServerContext::getServerUri(void)
+{
+	return _serverUri;
+}
+
+void ServerContext::setServerUri(const std::string& serverUri)
+{
+	_serverUri = serverUri;
+}
+
+void ServerContext::Reset(void)
+{
+	_attrib_map.clear();
+	_configs.clear();
+	_workerProcessor_Ptr.reset();
+	_pSubWorkProc = nullptr;
 }

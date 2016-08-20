@@ -21,7 +21,7 @@ class COMMUNICATION_CLASS_EXPORT ASIOTCPServer : public MessageServer
 public:
 	ASIOTCPServer();
 	~ASIOTCPServer();
-	bool Initialize(const std::string& uri, const std::string& config);
+	bool Initialize(const std::string& uri, const std::string& config, const std::string& section);
 	bool Stop(void);
 	bool Start(void);
 	bool Stopped(void);

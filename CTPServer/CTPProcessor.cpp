@@ -18,11 +18,15 @@
 CTPProcessor::CTPProcessor()
 	: _rawAPI(new CTPRawAPI)
 {
+	_isLogged = false;
+	_isConnected = false;
 }
 
  CTPProcessor::CTPProcessor(const CTPRawAPI_Ptr& rawAPI)
  {
 	 _rawAPI = rawAPI;
+	 _isLogged = false;
+	 _isConnected = false;
  }
 
 ////////////////////////////////////////////////////////////////////////

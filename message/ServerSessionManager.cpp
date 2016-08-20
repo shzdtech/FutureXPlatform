@@ -11,7 +11,7 @@
 #include "DefMessageID.h"
 #include "../dataobject/ResultDO.h"
 
-const data_buffer ZERO_RETURN(new byte[1]{0}, 1);
+const data_buffer ZERO_RETURN(new byte[1]{ 0 }, 1);
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       ServerSessionManager::ServerSessionManager()
@@ -94,6 +94,7 @@ void ServerSessionManager::OnServerClosing(void)
 
 		it = _sessionSet.begin();
 	}
+	_server->getContext()->Reset();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -104,9 +105,8 @@ void ServerSessionManager::OnServerClosing(void)
 
 void ServerSessionManager::OnServerStarting(void)
 {
-	if (!_msgsvclocator)
-		_msgsvclocator = std::make_shared<MessageServiceLocator>(_server->GetServiceFactory(), _server->getContext());
-	
+	_msgsvclocator = std::make_shared<MessageServiceLocator>(_server->GetServiceFactory(), _server->getContext());
+
 	if (auto workProcPtr = _msgsvclocator->GetWorkerProcessor())
 	{
 		auto msgSession_Ptr = std::make_shared<MessageSession>();

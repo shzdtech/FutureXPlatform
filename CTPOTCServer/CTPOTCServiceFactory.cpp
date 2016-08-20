@@ -109,11 +109,12 @@ IMessageProcessor_Ptr CTPOTCServiceFactory::CreateWorkerProcessor(IServerContext
 	if (!serverCtx->getWorkerProcessor())
 	{
 		auto pricingCtx = (IPricingDataContext*)serverCtx->getAttribute(STR_KEY_SERVER_PRICING_DATACONTEXT).get();
-		auto worker_ptr = std::make_shared<CTPOTCWorkerProcessor>(serverCtx, 
-			std::make_shared<CTPOTCTradeProcessor>(serverCtx, pricingCtx));
+		auto tradeProcessor = std::make_shared<CTPOTCTradeProcessor>(serverCtx, pricingCtx);
+		tradeProcessor->Initialize(serverCtx);
+		auto worker_ptr = std::make_shared<CTPOTCWorkerProcessor>(serverCtx, tradeProcessor);
 		worker_ptr->Initialize(serverCtx);
 		serverCtx->setWorkerProcessor(worker_ptr);
-		serverCtx->setSubTypeWorkerPtr(std::static_pointer_cast<OTCWorkerProcessor>(worker_ptr));
+		serverCtx->setSubTypeWorkerPtr(static_cast<OTCWorkerProcessor*>(worker_ptr.get()));
 	}
 
 	return serverCtx->getWorkerProcessor();

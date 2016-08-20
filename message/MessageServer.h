@@ -15,7 +15,7 @@
 class MESSAGE_CLASS_EXPORT MessageServer : public IMessageServer
 {
 public:
-	virtual bool Initialize(const std::string& uri, const std::string& config) = 0;
+	virtual bool Initialize(const std::string& uri, const std::string& config, const std::string& section) = 0;
 	virtual bool Stop(void) = 0;
 	virtual bool Start(void) = 0;
 	virtual bool Stopped(void) = 0;
@@ -25,7 +25,6 @@ public:
 	virtual IServerContext* getContext();
 
 protected:
-	std::string _uri;
 	ISessionManager_Ptr _manager_ptr;
 	IMessageServiceFactory_Ptr _svcfactory_ptr;
 	ServerContext _context;

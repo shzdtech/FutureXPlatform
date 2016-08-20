@@ -7,6 +7,7 @@
 
 #include "MessageServiceLocator.h"
 #include "IMessageServiceFactory.h"
+#include "../litelogger/LiteLogger.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       MessageRouter::getMsgHandler(uint msgId)
@@ -44,7 +45,7 @@ IDataSerializer_Ptr MessageServiceLocator::FindDataSerializer(uint msgId) {
 
 IMessageProcessor_Ptr MessageServiceLocator::GetWorkerProcessor(void)
 {
-	return _workProcessor;
+	return _workProcessor.lock();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -58,9 +59,15 @@ IMessageProcessor_Ptr MessageServiceLocator::GetWorkerProcessor(void)
 
 MessageServiceLocator::MessageServiceLocator(IMessageServiceFactory_Ptr msgsvc_fac, IServerContext* serverCtx)
 {
+	msgsvc_fac->SetServerContext(serverCtx);
 	_workProcessor = msgsvc_fac->CreateWorkerProcessor(serverCtx);
     _msghdlMap = msgsvc_fac->CreateMessageHandlers(serverCtx);
 	_dataSerialMap = msgsvc_fac->CreateDataSerializers(serverCtx);
+}
+
+MessageServiceLocator::~MessageServiceLocator()
+{
+	LOG_DEBUG << __FUNCTION__;
 }
 
 

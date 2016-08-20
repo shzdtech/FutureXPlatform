@@ -18,6 +18,7 @@ class MESSAGE_CLASS_EXPORT MessageServiceLocator : public IMessageServiceLocator
 {
 public:
 	MessageServiceLocator(IMessageServiceFactory_Ptr msgsvc_fac, IServerContext* serverCtx);
+	~MessageServiceLocator();
 
 	IMessageHandler_Ptr FindMessageHandler(uint msgId);
 	IDataSerializer_Ptr FindDataSerializer(uint msgId);
@@ -28,7 +29,7 @@ public:
 protected:
 	std::map<uint, IMessageHandler_Ptr> _msghdlMap;
 	std::map<uint, IDataSerializer_Ptr> _dataSerialMap;
-	IMessageProcessor_Ptr _workProcessor;
+	IMessageProcessor_WkPtr _workProcessor;
 
 private:
 

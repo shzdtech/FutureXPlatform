@@ -40,19 +40,6 @@ CTPOTCTradeProcessor::~CTPOTCTradeProcessor()
 	LOG_DEBUG << __FUNCTION__;
 }
 
-void CTPOTCTradeProcessor::Initialize(void)
-{
-	if (!_rawAPI->TrdAPI) {
-		_rawAPI->TrdAPI = CThostFtdcTraderApi::CreateFtdcTraderApi();
-		_rawAPI->TrdAPI->RegisterSpi(this);
-		_rawAPI->TrdAPI->RegisterFront(const_cast<char*> (_systemUser.getServer().data()));
-		_rawAPI->TrdAPI->SubscribePrivateTopic(THOST_TERT_RESUME);
-		_rawAPI->TrdAPI->SubscribePublicTopic(THOST_TERT_RESUME);
-		_rawAPI->TrdAPI->Init();
-		std::this_thread::sleep_for(std::chrono::seconds(1)); //wait 1 secs for connecting to CTP server
-	}
-}
-
 
 OrderDOVec_Ptr CTPOTCTradeProcessor::TriggerHedgeOrderUpdating(const StrategyContractDO& strategyDO)
 {
@@ -191,6 +178,14 @@ void CTPOTCTradeProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserL
 			_autoOrderMgr.Reset();
 		}
 	}
+
+	CThostFtdcSettlementInfoConfirmField reqsettle{};
+	std::strcpy(reqsettle.BrokerID, _systemUser.getBrokerId().data());
+	std::strcpy(reqsettle.InvestorID, _systemUser.getInvestorId().data());
+	_rawAPI->TrdAPI->ReqSettlementInfoConfirm(&reqsettle, 0);
+
+	_isLogged = true;
+	LOG_INFO << getServerContext()->getServerUri() << ": System user has logged.";
 }
 
 ///报单录入请求响应
@@ -227,6 +222,19 @@ void CTPOTCTradeProcessor::OnRtnOrder(CThostFtdcOrderField *pOrder)
 		if (ret == 0)
 		{
 			DispatchUserMessage(MSG_ID_ORDER_UPDATE, 0, orderptr->UserID(), orderptr);
+		}
+	}
+}
+
+void CTPOTCTradeProcessor::RegisterLoggedSession(IMessageSession * pMessageSession)
+{
+	if (pMessageSession->getLoginTimeStamp() && _isLogged)
+	{
+		if (auto userInfoPtr = pMessageSession->getUserInfo())
+		{
+			userInfoPtr->setFrontId(_systemUser.getFrontId());
+			userInfoPtr->setSessionId(_systemUser.getSessionId());
+			_userSessionCtn_Ptr->add(userInfoPtr->getUserId(), pMessageSession);
 		}
 	}
 }

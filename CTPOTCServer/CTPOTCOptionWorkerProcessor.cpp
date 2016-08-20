@@ -8,6 +8,7 @@
 #include "CTPOTCOptionWorkerProcessor.h"
 #include "../pricingengine/PricingUtility.h"
 #include "../message/DefMessageID.h"
+#include "../litelogger/LiteLogger.h"
 
  ////////////////////////////////////////////////////////////////////////
  // Name:       CTPOTCWorkerProcessor::CTPOTCWorkerProcessor(const std::map<std::string, std::string>& configMap)
@@ -23,6 +24,11 @@ CTPOTCOptionWorkerProcessor::CTPOTCOptionWorkerProcessor(
 	CTPOTCWorkerProcessor(pServerCtx, otcTradeProcessorPtr)
 {
 
+}
+
+CTPOTCOptionWorkerProcessor::~CTPOTCOptionWorkerProcessor()
+{
+	LOG_DEBUG << __FUNCTION__;
 }
 
 void CTPOTCOptionWorkerProcessor::TriggerPricing(const StrategyContractDO& strategyDO)

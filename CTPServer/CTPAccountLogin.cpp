@@ -111,6 +111,7 @@ std::shared_ptr<UserInfoDO> CTPAccountLogin::Login(const dataobj_ptr reqDO, IRaw
 		pUserInfo->setBrokerId(userInfo_Ptr->Company);
 		pUserInfo->setName(userInfo_Ptr->UserName);
 		pUserInfo->setPassword(userInfo_Ptr->Password);
+		pUserInfo->setInvestorId(userInfo_Ptr->UserId);
 		pUserInfo->setUserId(userInfo_Ptr->UserId);
 		pUserInfo->setRole(userInfo_Ptr->Role);
 		pUserInfo->setPermission(userInfo_Ptr->Permission);

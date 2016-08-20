@@ -30,11 +30,11 @@
         "class.uuid": "factory.ctp.marketdata.service",
         "params": {
           "load_workprocessor": "",
-          "CTP.MD.SERVER": "tcp://ctpfz1-front1.citicsf.com:51213",
+          "CTP.MD.SERVER": "tcp://ctpfz1-front3.citicsf.com:51213",
           "CTP.MD.LOGIN.BROKERID": "66666",
           "CTP.MD.LOGIN.USERID": "895816",
           "CTP.MD.LOGIN.PASSWORD": "260519",
-          "CTP.TRADER.SERVER": "tcp://ctpfz1-front1.citicsf.com:51205",
+          "CTP.TRADER.SERVER": "tcp://ctpfz1-front3.citicsf.com:51205",
           "CTP.TRADER.LOGIN.BROKERID": "66666",
           "CTP.TRADER.LOGIN.USERID": "895816",
           "CTP.TRADER.LOGIN.PASSWORD": "260519"

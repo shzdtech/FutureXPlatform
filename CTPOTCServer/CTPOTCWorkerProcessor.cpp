@@ -6,6 +6,8 @@
  ***********************************************************************/
 
 #include "CTPOTCWorkerProcessor.h"
+#include "../litelogger/LiteLogger.h"
+
 #include "../CTPServer/CTPConstant.h"
 
 #include "../common/Attribute_Key.h"
@@ -49,7 +51,7 @@ CTPOTCWorkerProcessor::CTPOTCWorkerProcessor(IServerContext* pServerCtx,
 
 CTPOTCWorkerProcessor::~CTPOTCWorkerProcessor()
 {
-	// TODO : implement
+	LOG_DEBUG << __FUNCTION__;
 }
 
 void CTPOTCWorkerProcessor::setSession(IMessageSession_WkPtr msgSession_wk_ptr)
@@ -70,6 +72,7 @@ void CTPOTCWorkerProcessor::Initialize(IServerContext* serverCtx)
 	{
 		for (auto& contract : *vectPtr)
 			ContractCache::Get(productType).Add(contract);
+		LOG_INFO << _serverCtx->getServerUri() << ": " << vectPtr->size() << " contracts are preloaded";
 	}
 
 	if (auto sDOVec_Ptr = StrategyContractDAO::FindStrategyContractByClient(EMPTY_STRING, productType))
@@ -84,10 +87,10 @@ void CTPOTCWorkerProcessor::Initialize(IServerContext* serverCtx)
 			}
 			strategyMap->emplace(strategy, strategy);
 		}
+		LOG_INFO << _serverCtx->getServerUri() << ": " << sDOVec_Ptr->size() << " stratigies are preloaded";
 	}
 
 	CTPMarketDataProcessor::Initialize(serverCtx);
-	((CTPOTCTradeProcessor*)GetOTCTradeProcessor())->Initialize();
 
 	LoginSystemUserIfNeed();
 }
@@ -121,9 +124,6 @@ int CTPOTCWorkerProcessor::LoginSystemUserIfNeed(void)
 
 		ret = ((CTPRawAPI*)getRawAPI())->MdAPI->ReqUserLogin(&req, AppContext::GenNextSeq());
 	}
-
-	if (ret == 0)
-		ret = ((CTPOTCTradeProcessor*)GetOTCTradeProcessor())->LoginSystemUserIfNeed();
 
 	return ret;
 }

@@ -17,9 +17,9 @@ public:
 	Application();
 	~Application();
 	bool Initialize(const std::string& configFile);
-	void Run(void);
+	void Start(void);
 	void Join(long seconds = -1);
-	int Exit(void);
+	int Stop(void);
 
 protected:
 private:

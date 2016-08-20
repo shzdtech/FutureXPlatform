@@ -45,7 +45,7 @@ public:
 
 protected:
    UserInfo _systemUser;
-   std::future<void> _initializer;
+   std::thread _initializer;
    SessionContainer_Ptr<std::string> _userSessionCtn_Ptr;
    autofillmap<std::string, std::vector<AccountInfoDO>> _accountInfoMap;
    UserPositionExDOMap _userPositionMap;

@@ -27,11 +27,11 @@
 #include "../pricingengine/PricingDataContext.h"
 
 
-////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCServiceFactory::CreateMessageHandlers()
-// Purpose:    Implementation of CTPOTCServiceFactory::CreateMessageHandlers()
-// Return:     std::map<uint, IMessageHandler_Ptr>
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       CTPOTCServiceFactory::CreateMessageHandlers()
+ // Purpose:    Implementation of CTPOTCServiceFactory::CreateMessageHandlers()
+ // Return:     std::map<uint, IMessageHandler_Ptr>
+ ////////////////////////////////////////////////////////////////////////
 
 std::map<uint, IMessageHandler_Ptr> CTPOTCOptionServiceFactory::CreateMessageHandlers(IServerContext* serverCtx)
 {
@@ -54,11 +54,12 @@ IMessageProcessor_Ptr CTPOTCOptionServiceFactory::CreateWorkerProcessor(IServerC
 	if (!serverCtx->getWorkerProcessor())
 	{
 		auto pricingCtx = (IPricingDataContext*)serverCtx->getAttribute(STR_KEY_SERVER_PRICING_DATACONTEXT).get();
-		auto worker_ptr = std::make_shared<CTPOTCOptionWorkerProcessor>(serverCtx,
-			std::make_shared<CTPOTCTradeProcessor>(serverCtx, pricingCtx));
+		auto tradeProcessor = std::make_shared<CTPOTCTradeProcessor>(serverCtx, pricingCtx);
+		tradeProcessor->Initialize(serverCtx);
+		auto worker_ptr = std::make_shared<CTPOTCOptionWorkerProcessor>(serverCtx, tradeProcessor);
 		worker_ptr->Initialize(serverCtx);
 		serverCtx->setWorkerProcessor(worker_ptr);
-		serverCtx->setSubTypeWorkerPtr(std::static_pointer_cast<OTCWorkerProcessor>(worker_ptr));
+		serverCtx->setSubTypeWorkerPtr(static_cast<OTCWorkerProcessor*>(worker_ptr.get()));
 	}
 
 	return serverCtx->getWorkerProcessor();
