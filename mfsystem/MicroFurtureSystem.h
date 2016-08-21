@@ -23,8 +23,8 @@ public:
 	MicroFurtureSystem();
 	~MicroFurtureSystem();
 
-	static void InitLogger(const char* logPath = MICROFUTURE_DEFAULT_LOGPATH);
-	static void InitLogger(const std::string& logPath);
+	static void InitLogger(const char* logPath = MICROFUTURE_DEFAULT_LOGPATH, bool showInStdErr = false);
+	static void InitLogger(const std::string& logPath, bool showInStdErr = false);
 	static const std::string& GetLogPath(void);
 	bool Load(const char* config = MICROFUTURE_DEFAULT_CONFIG_NAME);
 	bool Load(const std::string& config = MICROFUTURE_DEFAULT_CONFIG_NAME);

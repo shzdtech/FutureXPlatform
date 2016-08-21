@@ -202,6 +202,7 @@ void CTPTradeWorkerProcessor::OnRspQryInstrument(CThostFtdcInstrumentField * pIn
 			if (DataLoaded = bIsLast)
 			{
 				LOG_INFO << getServerContext()->getServerUri() << ": Data preloading finished.";
+				LOG_FLUSH;
 			}
 		}
 

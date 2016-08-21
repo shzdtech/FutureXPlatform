@@ -125,6 +125,8 @@ dataobj_ptr CTPQueryInstrument::HandleResponse(const uint32_t serialId, param_ve
 			case THOST_FTDC_CP_PutOptions:
 				insDO.ContractType = ContractType::CONTRACTTYPE_PUT_OPTION;
 				break;
+			default:
+				insDO.ContractType = ContractType::CONTRACTTYPE_FUTURE;
 			}
 		}
 

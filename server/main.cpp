@@ -11,6 +11,7 @@
 #include <iostream>
 #include <string>
 #include <csignal>
+#include "../utility/stringutility.h"
 
 #include "../litelogger/LiteLogger.h"
 
@@ -30,17 +31,17 @@ void siginthandler(int code)
 	std::getline(std::cin, instr);
 	if (instr == "X") {
 		int retcode = app.Stop();
-		std::cout << "Server has exited.";
+		LOG_INFO << "Server has exited.";
 		std::exit(retcode);
 	}
 	else if (instr == "R")
 	{
 		app.Stop();
 		app.Start();
-		std::cout << "Server has restarted." << std::endl;
+		LOG_INFO << "Server has restarted.";
 	}
 	else {
-		std::cout << "Server will continue running..." << std::endl;
+		LOG_INFO << "Server will continue running...";
 	}
 	std::signal(SIGINT, siginthandler);
 }
@@ -57,11 +58,11 @@ void registsignal()
  *
  */
 int main(int argc, char** argv) {
+	int retcode = 0;
 	registsignal();
 	try {
-#ifndef _DEBUG
-		MicroFurtureSystem::InitLogger(argv[0]);
-#endif
+		MicroFurtureSystem::InitLogger(argv[0], true);
+
 		std::string configFile("system");
 		if (argc > 1)
 		{
@@ -69,15 +70,40 @@ int main(int argc, char** argv) {
 		}
 		app.Initialize(configFile);
 		app.Start();
-		app.Join();
-		app.Stop();
+		std::string instr;
+		for (;;)
+		{
+			std::getline(std::cin, instr);
+			if (stringutility::compare(instr.data(), "exit") == 0)
+			{
+				retcode = app.Stop();
+				LOG_INFO << "Server has exited.";
+				break;
+			}
+			else if (stringutility::compare(instr.data(), "stop") == 0)
+			{
+				app.Stop();
+				LOG_INFO << "Server has stopped.";
+			}
+			else if (stringutility::compare(instr.data(), "start") == 0)
+			{
+				app.Start();
+				LOG_INFO << "Server has started.";
+			}
+			else if (stringutility::compare(instr.data(), "restart") == 0)
+			{
+				app.Stop();
+				app.Start();
+				LOG_INFO << "Server has restarted.";
+			}
+		}
 	}
 	catch (std::exception& ex)
 	{
 		LOG_ERROR << "Fatal erorr occured, application is exiting: " << ex.what();
 	}
 	catch (...) {
-		LOG_ERROR << "Unknown fatal erorr occured, application is exiting!";;
+		LOG_ERROR << "Unknown fatal erorr occured, application is exiting!";
 	}
-	return 0;
+	return retcode;
 }

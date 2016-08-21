@@ -8,6 +8,7 @@
 #define LOG_WARN LiteLogger::Instance().Warn(__FILE__, __LINE__)->Stream()
 #define LOG_ERROR LiteLogger::Instance().Error(__FILE__, __LINE__)->Stream()
 #define LOG_FATAL LiteLogger::Instance().Fatal(__FILE__, __LINE__)->Stream()
+#define LOG_FLUSH LiteLogger::Instance().Flush()
 
 #if !defined(NDEBUG)
 #define LOG_DEBUG LOG_INFO
@@ -29,12 +30,13 @@ public:
 
 	static LiteLogger& Instance();
 	
-	virtual void InitLogger(const std::string& logPath) = 0;
+	virtual void InitLogger(const std::string& logPath, bool showInStdErr = false) = 0;
 	virtual const std::string& LogPath(void) = 0;
 	virtual LiteLogMessage_Ptr Info(const char* file, int line) = 0;
 	virtual LiteLogMessage_Ptr Warn(const char* file, int line) = 0;
 	virtual LiteLogMessage_Ptr Error(const char* file, int line) = 0;
 	virtual LiteLogMessage_Ptr Fatal(const char* file, int line) = 0;
+	virtual void Flush(void) = 0;
 
 private:
 };

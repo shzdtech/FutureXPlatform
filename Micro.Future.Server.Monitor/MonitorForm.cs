@@ -17,6 +17,7 @@ namespace Micro.Future.Server.Monitor
         public static string CONFIG_FILE = "system";
         private bool _exiting;
         private MicroFurtureSystemClr _system = MicroFurtureSystemClr.Instance;
+        private Task _consoleTask;
 
         public MonitorForm()
         {
@@ -35,6 +36,33 @@ namespace Micro.Future.Server.Monitor
             toolStripMenuItemExit.Image = Resources.Exit.ToBitmap();
 
             notifyIconStatus.Icon = Resources.RLight;
+
+            _consoleTask = Task.Run(() =>
+            {
+                string instr;
+                for (;;)
+                {
+                    instr = Console.ReadLine();
+                    if (string.Compare(instr, "exit", true) == 0)
+                    {
+                        Exit();
+                        break;
+                    }
+                    else if (string.Compare(instr, "stop", true) == 0)
+                    {
+                        StopSystem();
+                    }
+                    else if (string.Compare(instr, "start", true) == 0)
+                    {
+                        StartSystem();
+                    }
+                    else if (string.Compare(instr, "restart", true) == 0)
+                    {
+                        StopSystem();
+                        StartSystem();
+                    }
+                }
+            });
         }
 
         private void OnMessageRecv(LogSeverityType severity, string message)
@@ -69,13 +97,17 @@ namespace Micro.Future.Server.Monitor
 
         private void Form_Load(object sender, EventArgs e)
         {
-            Task.Run(() => {
-            if (_system.Load(CONFIG_FILE) && _system.Start())
+            Task.Run(() =>
             {
-                toolStripMenuItemStart.Enabled = false;
-                notifyIconStatus.Icon = Resources.GLight;
-                timer.Start();
-                }
+                if (_system.Load(CONFIG_FILE) && _system.Start())
+                {
+                    Invoke((MethodInvoker)delegate ()
+                    {
+                        toolStripMenuItemStart.Enabled = false;
+                        notifyIconStatus.Icon = Resources.GLight;
+                    });
+                    timer.Start();
+                };
             });
         }
 
@@ -87,34 +119,55 @@ namespace Micro.Future.Server.Monitor
             BringToFront();
         }
 
-        private void toolStripMenuItemStart_Click(object sender, EventArgs e)
+        public void StartSystem()
         {
             _system.Start();
-            toolStripMenuItemStart.Enabled = false;
-            toolStripMenuItemStop.Enabled = true;
-            notifyIconStatus.Icon = Resources.GLight;
+            Invoke((MethodInvoker)delegate ()
+            {
+                toolStripMenuItemStart.Enabled = false;
+                toolStripMenuItemStop.Enabled = true;
+                notifyIconStatus.Icon = Resources.GLight;
+            });
         }
-        private void toolStripMenuItemStop_Click(object sender, EventArgs e)
+
+        private void toolStripMenuItemStart_Click(object sender, EventArgs e)
+        {
+            StartSystem();
+        }
+
+        public void StopSystem()
         {
             _system.Stop();
-            toolStripMenuItemStart.Enabled = true;
-            toolStripMenuItemStop.Enabled = false;
-            notifyIconStatus.Icon = Resources.RLight;
+            Invoke((MethodInvoker)delegate ()
+            {
+                toolStripMenuItemStart.Enabled = true;
+                toolStripMenuItemStop.Enabled = false;
+                notifyIconStatus.Icon = Resources.RLight;
+            });
+        }
+
+        private void toolStripMenuItemStop_Click(object sender, EventArgs e)
+        {
+            StopSystem();
+        }
+
+        public void Exit()
+        {
+            _exiting = true;
+
+            _system.Stop();
+
+            Invoke((MethodInvoker)delegate ()
+            {
+                notifyIconStatus.Visible = false;
+            });
+
+            Close();
         }
 
         private void toolStripMenuItemExit_Click(object sender, EventArgs e)
         {
-
-            _exiting = true;
-
-            if (_system.IsRunning)
-            {
-                _system.Stop();
-            }
-
-            notifyIconStatus.Visible = false;
-
-            Application.Exit();
+            Exit();
         }
 
         private void timer_Tick(object sender, EventArgs e)

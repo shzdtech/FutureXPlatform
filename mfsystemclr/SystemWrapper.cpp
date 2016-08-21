@@ -14,19 +14,19 @@ namespace Micro {
 			delete _system;
 		}
 
-		void SystemWrapper::InitLogger(String^ logPath)
+		void SystemWrapper::InitLogger(String^ logPath, bool showInStdErr)
 		{
 			if (String::IsNullOrEmpty(logPath))
 				logPath = System::Reflection::Assembly::GetExecutingAssembly()->Location;
 
 			char* path = (char*)Marshal::StringToHGlobalAnsi(logPath).ToPointer();
-			MicroFurtureSystem::InitLogger(path);
+			MicroFurtureSystem::InitLogger(path, showInStdErr);
 			Marshal::FreeHGlobal(IntPtr(path));
 		}
 
-		void SystemWrapper::InitLogger()
+		void SystemWrapper::InitLogger(bool showInStdErr)
 		{
-			InitLogger(nullptr);
+			InitLogger(nullptr, showInStdErr);
 		}
 
 		bool SystemWrapper::Load(String^ config)

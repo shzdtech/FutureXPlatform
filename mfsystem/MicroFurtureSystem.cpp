@@ -17,14 +17,14 @@
 #include "../databaseop/AbstractConnectionManager.h"
 #include "../dataserializer/AbstractDataSerializerFactory.h"
 
-void MicroFurtureSystem::InitLogger(const char* logPath)
+void MicroFurtureSystem::InitLogger(const char* logPath, bool showInStdErr)
 {
-	InitLogger(std::string(logPath));
+	InitLogger(std::string(logPath), showInStdErr);
 }
 
-void MicroFurtureSystem::InitLogger(const std::string& logPath)
+void MicroFurtureSystem::InitLogger(const std::string& logPath, bool showInStdErr)
 {
-	LiteLogger::Instance().InitLogger(logPath);
+	LiteLogger::Instance().InitLogger(logPath, showInStdErr);
 
 	LOG_INFO << "Log path: " << logPath;
 }
@@ -206,6 +206,8 @@ bool MicroFurtureSystem::Start(void)
 		}
 		LOG_INFO << i << " servers have started running.";
 
+		LOG_FLUSH;
+
 		_running = true;
 
 		ret = i == _servers.size();
@@ -243,6 +245,8 @@ bool MicroFurtureSystem::Stop(void)
 	ret = i == _servers.size();
 
 	LOG_INFO << i << " servers have stopped.";
+
+	LOG_FLUSH;
 
 	return ret;
 }

@@ -20,12 +20,13 @@ public:
 		google::LogMessage _logMessage;
 	};
 
-	virtual void InitLogger(const std::string& logPath);
+	virtual void InitLogger(const std::string& logPath, bool showInStdErr = false);
 	virtual const std::string& LogPath(void);
 	virtual LiteLogMessage_Ptr Info(const char* file, int line);
 	virtual LiteLogMessage_Ptr Warn(const char* file, int line);
 	virtual LiteLogMessage_Ptr Error(const char* file, int line);
 	virtual LiteLogMessage_Ptr Fatal(const char* file, int line);
+	virtual void Flush(void);
 
 private:
 	std::string _logPath;

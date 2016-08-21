@@ -3,8 +3,8 @@
 #include "../litelogger/AbstractLogSink.h"
 
 extern "C" {
-	MFSYSTEM_CLASS_EXPORT void MicroFutureSystem_InitLogger(const char* logPath) {
-		MicroFurtureSystem::InitLogger(logPath);
+	MFSYSTEM_CLASS_EXPORT void MicroFutureSystem_InitLogger(const char* logPath, bool showInStdErr) {
+		MicroFurtureSystem::InitLogger(logPath, showInStdErr);
 	}
 
 	MFSYSTEM_CLASS_EXPORT bool MicroFutureSystem_Load(const char* configFile) {

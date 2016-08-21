@@ -14,14 +14,32 @@ namespace Micro.Future.Server.Monitor
         /// 应用程序的主入口点。
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
-            MicroFurtureSystemClr.InitLogger(Application.ExecutablePath);
+            if (args.Length > 0 && args.Contains("kill"))
+            {
+                var processes =
+                    Process.GetProcessesByName(Path.GetFileNameWithoutExtension(Application.ExecutablePath));
+                foreach (var process in processes)
+                {
+                    process.Kill(); 
+                }
+                return;
+            }
+
+            MicroFurtureSystemClr.InitLogger(Application.ExecutablePath, true);
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MonitorForm());
 
+            var mainform = new MonitorForm();
+            mainform.FormClosed += FormClosed;
+
+            Application.Run(mainform);
+        }
+
+        private static void FormClosed(object sender, FormClosedEventArgs e)
+        {
             Process.GetCurrentProcess().Kill();
         }
     }

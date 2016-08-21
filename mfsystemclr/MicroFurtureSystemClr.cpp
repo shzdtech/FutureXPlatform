@@ -2,14 +2,14 @@
 
 namespace Micro {
 	namespace Future {
-		void MicroFurtureSystemClr::InitLogger(String^ logPath)
+		void MicroFurtureSystemClr::InitLogger(String^ logPath, bool showInStdErr)
 		{
-			SystemWrapper::InitLogger(logPath);
+			SystemWrapper::InitLogger(logPath, showInStdErr);
 		}
 
-		void MicroFurtureSystemClr::InitLogger()
+		void MicroFurtureSystemClr::InitLogger(bool showInStdErr)
 		{
-			InitLogger(nullptr);
+			InitLogger(nullptr, showInStdErr);
 		}
 
 		bool MicroFurtureSystemClr::Load(String^ config)

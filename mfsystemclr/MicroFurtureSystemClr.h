@@ -34,9 +34,9 @@ namespace Micro {
 				bool get() { return _systemWrapper->IsRunning; }
 			}
 
-			static void InitLogger(String^ logPath);
+			static void InitLogger(String^ logPath, bool showInStdErr);
 
-			static void InitLogger();
+			static void InitLogger(bool showInStdErr);
 
 			bool Load(String^ config);
 
