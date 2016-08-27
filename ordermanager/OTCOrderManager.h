@@ -36,7 +36,7 @@ protected:
 	PortfolioMap<HedgeOrderManager_Ptr> _hedgeMgr;
 
 private:
-	HedgeOrderManager_Ptr initHedgeOrderMgr(const std::string& userID);
+	HedgeOrderManager_Ptr initHedgeOrderMgr(const PortfolioKey& portfolio);
 };
 
 #endif

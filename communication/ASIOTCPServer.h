@@ -38,7 +38,6 @@ protected:
 	tcp::socket _socket;
 
 private:
-	bool startlisten(void);
 	void work_thread(void);
 	void asyc_accept(void);
 

@@ -34,7 +34,7 @@ OrderDO_Ptr OTCOrderDAO::CreateOrder(const OrderRequestDO& orderDO, const Pricin
 		prestmt->setString(5, orderDO.InstrumentID());
 		prestmt->setDouble(6, orderDO.LimitPrice);
 		prestmt->setInt(7, orderDO.Volume);
-		prestmt->setInt(8, orderDO.Direction);
+		prestmt->setInt(8, orderDO.Direction == DirectionType::BUY);
 		prestmt->setInt(9, orderDO.ExecType);
 		prestmt->setInt(10, orderDO.TIF);
 
@@ -195,13 +195,18 @@ OrderDOVec_Ptr OTCOrderDAO::QueryTradingOrder(const ContractKey& contractKey)
 		ret = std::make_shared<VectorDO<OrderDO>>();
 		while (rs->next())
 		{
-			OrderDO obDO(rs->getUInt64(1));
-			obDO.OrderSysID = rs->isNull(2) ? 0 : rs->getUInt64(2);
-			obDO.Direction = rs->getInt(3) != 0 ? DirectionType::BUY : DirectionType::SELL;
-			obDO.LimitPrice = rs->getDouble(4);
-			obDO.Volume = rs->getInt(5);
-
-			ret->push_back(obDO);
+			OrderDO obDO(rs->getUInt64(1), rs->getString(2), rs->getString(3), rs->getString(4), rs->getString(13));
+			obDO.OrderSysID = rs->isNull(5) ? 0 : rs->getUInt64(5);
+			obDO.LimitPrice = rs->getDouble(6);
+			obDO.Volume = rs->getInt(7);
+			obDO.VolumeTraded = rs->getInt(8);
+			obDO.VolumeRemain = obDO.Volume - obDO.VolumeTraded;
+			obDO.Direction = rs->getInt(9) != 0 ? DirectionType::BUY : DirectionType::SELL;
+			obDO.OrderStatus = (OrderStatus)rs->getInt(10);
+			obDO.TIF = (OrderTIFType)rs->getInt(11);
+			obDO.TradingType = (TradingType)rs->getInt(12);
+			obDO.InsertTime = rs->getString(14);
+			ret->push_back(std::move(obDO));
 		}
 	}
 	catch (sql::SQLException& sqlEx)
@@ -244,7 +249,11 @@ OrderDOVec_Ptr OTCOrderDAO::QueryTodayOrder(const std::string& userId, const Con
 			if (!ret)
 				ret = std::make_shared<VectorDO<OrderDO>>();
 
-			OrderDO obDO(rs->getUInt64(1), rs->getString(2), rs->getString(3), rs->getString(4));
+			/*SELECT `id`, `exchange`, `contract`, `accountid`, `sysid`, `price`, `quantity`, `quantity_filled`,
+				`is_buy`, `status`, `tif`, `trading_type`, `portfolio_symbol`, DATE_FORMAT(create_time, '%H:%i:%s') AS createtime
+				FROM order_record*/
+
+			OrderDO obDO(rs->getUInt64(1), rs->getString(2), rs->getString(3), rs->getString(4), rs->getString(13));
 			obDO.OrderSysID = rs->isNull(5) ? 0 : rs->getUInt64(5);
 			obDO.LimitPrice = rs->getDouble(6);
 			obDO.Volume = rs->getInt(7);
@@ -252,7 +261,9 @@ OrderDOVec_Ptr OTCOrderDAO::QueryTodayOrder(const std::string& userId, const Con
 			obDO.VolumeRemain = obDO.Volume - obDO.VolumeTraded;
 			obDO.Direction = rs->getInt(9) != 0 ? DirectionType::BUY : DirectionType::SELL;
 			obDO.OrderStatus = (OrderStatus)rs->getInt(10);
-			obDO.InsertTime = rs->getString(11);
+			obDO.TIF = (OrderTIFType)rs->getInt(11);
+			obDO.TradingType = (TradingType)rs->getInt(12);
+			obDO.InsertTime = rs->getString(14);
 			ret->push_back(std::move(obDO));
 		}
 	}

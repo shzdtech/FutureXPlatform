@@ -13,6 +13,7 @@
 #include "../message/UserInfo.h"
 #include "../message/SessionContainer.h"
 #include "../ordermanager/IOrderAPI.h"
+#include "../ordermanager/UserOrderContext.h"
 #include "../utility/autofillmap.h"
 #include "../dataobject/AccountInfoDO.h"
 #include "../dataobject/ExchangeDO.h"
@@ -28,9 +29,10 @@ public:
    CTPTradeWorkerProcessor(IServerContext* pServerCtx);
    ~CTPTradeWorkerProcessor();
    virtual void Initialize(IServerContext* pServerCtx);
-   virtual int LoadSystemData(CThostFtdcTraderApi* trdAPI);
+   virtual int RequestExchangeData(void);
    virtual int LoginSystemUser(void);
    virtual int LoginSystemUserIfNeed(void);
+   virtual int LoadDataAsync(void);
 
    virtual void RegisterLoggedSession(IMessageSession* pMessageSession);
    virtual void DispatchUserMessage(int msgId, int serialId, const std::string& userId, const dataobj_ptr& dataobj_ptr);
@@ -38,7 +40,7 @@ public:
    virtual std::set<ExchangeDO>& GetExchangeInfo();
    virtual UserPositionExDOMap& GetUserPositionMap();
    virtual autofillmap<uint64_t, TradeRecordDO>& GetUserTradeMap(const std::string userId);
-   virtual autofillmap<uint64_t, OrderDO>& GetUserOrderMap(const std::string userId);
+   virtual UserOrderContext& GetUserOrderContext(void);
 
    int RetryInterval = 60000;
    bool DataLoaded;
@@ -51,7 +53,7 @@ protected:
    UserPositionExDOMap _userPositionMap;
    std::set<ExchangeDO> _exchangeInfo_Set;
    autofillmap<std::string, autofillmap<uint64_t, TradeRecordDO>> _userTradeMap;
-   autofillmap<std::string, autofillmap<uint64_t, OrderDO>> _userOrderMap;
+   UserOrderContext _userOrderCtx;
 
 
 public:

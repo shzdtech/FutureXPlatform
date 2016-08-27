@@ -57,7 +57,7 @@ std::shared_ptr<PricingDO> ETPPricingAlgorithm::Compute(
 	double AskPrice = 0;
 	double quantity = *(int*)pInputObject;
 
-	if (sdo.PricingContracts.size() > 0)
+	if (!sdo.PricingContracts.empty())
 	{
 
 		for (auto& conparam : sdo.PricingContracts)
@@ -113,7 +113,7 @@ const std::map<std::string, double>& ETPPricingAlgorithm::DefaultParams(void)
 	static std::map<std::string, double> defaultParams = {
 		{ ETPParams::coeff_name, 1 },
 		{ ETPParams::offset_name, 0 },
-		{ ETPParams::spread_name, 1 }
+		{ ETPParams::spread_name, 0 }
 	};
 	return defaultParams;
 }

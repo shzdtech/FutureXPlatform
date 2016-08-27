@@ -32,9 +32,9 @@ dataobj_ptr OTCUnSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI*
 
 	auto stdo = (StringTableDO*)reqDO.get();
 
-	if (stdo->Data.size() > 0)
+	if (!stdo->Data.empty())
 	{
-		auto& instList = stdo->Data[STR_INSTRUMENT_ID];
+		auto& instList = stdo->Data.begin()->second;
 		auto nInstrument = instList.size();
 
 		if (nInstrument > 0)

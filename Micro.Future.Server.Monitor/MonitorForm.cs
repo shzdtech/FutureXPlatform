@@ -99,13 +99,13 @@ namespace Micro.Future.Server.Monitor
         {
             Task.Run(() =>
             {
+                Invoke((MethodInvoker)delegate ()
+                {
+                    toolStripMenuItemStart.Enabled = false;
+                    notifyIconStatus.Icon = Resources.GLight;
+                });
                 if (_system.Load(CONFIG_FILE) && _system.Start())
                 {
-                    Invoke((MethodInvoker)delegate ()
-                    {
-                        toolStripMenuItemStart.Enabled = false;
-                        notifyIconStatus.Icon = Resources.GLight;
-                    });
                     timer.Start();
                 };
             });

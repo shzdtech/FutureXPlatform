@@ -19,38 +19,18 @@ using namespace std;
 
 Application app;
 
-void sigtermhandler(int code)
-{
-	std::exit(app.Stop());
-}
-
 void siginthandler(int code)
 {
-	std::cout << "Exit (X) or Restart (R): ";
-	std::string instr;
-	std::getline(std::cin, instr);
-	if (instr == "X") {
-		int retcode = app.Stop();
-		LOG_INFO << "Server has exited.";
-		std::exit(retcode);
-	}
-	else if (instr == "R")
-	{
-		app.Stop();
-		app.Start();
-		LOG_INFO << "Server has restarted.";
-	}
-	else {
-		LOG_INFO << "Server will continue running...";
-	}
-	std::signal(SIGINT, siginthandler);
+	int retcode = app.Exit();
+	LOG_INFO << "Server has exited.";
+	std::fprintf(stdin, "exit");
 }
 
 void registsignal()
 {
 	std::signal(SIGINT, siginthandler);
 	std::signal(SIGBREAK, siginthandler);
-	std::signal(SIGTERM, sigtermhandler);
+	std::signal(SIGTERM, siginthandler);
 }
 
 
@@ -58,39 +38,36 @@ void registsignal()
  *
  */
 int main(int argc, char** argv) {
-	int retcode = 0;
+	int retcode = EXIT_SUCCESS;
+
 	registsignal();
 	try {
 		MicroFurtureSystem::InitLogger(argv[0], true);
 
-		std::string configFile("system");
-		if (argc > 1)
-		{
-			configFile = argv[1];
-		}
+		std::string configFile(argc > 1 ? argv[1] : "system");
 		app.Initialize(configFile);
 		app.Start();
-		std::string instr;
-		for (;;)
+		std::string line;
+		while (!app.Exited())
 		{
-			std::getline(std::cin, instr);
-			if (stringutility::compare(instr.data(), "exit") == 0)
+			std::getline(std::cin, line);
+
+			if (stringutility::compare(line, "exit") == 0)
 			{
-				retcode = app.Stop();
-				LOG_INFO << "Server has exited.";
+				retcode = app.Exit();
 				break;
 			}
-			else if (stringutility::compare(instr.data(), "stop") == 0)
+			else if (stringutility::compare(line, "stop") == 0)
 			{
 				app.Stop();
 				LOG_INFO << "Server has stopped.";
 			}
-			else if (stringutility::compare(instr.data(), "start") == 0)
+			else if (stringutility::compare(line, "start") == 0)
 			{
 				app.Start();
 				LOG_INFO << "Server has started.";
 			}
-			else if (stringutility::compare(instr.data(), "restart") == 0)
+			else if (stringutility::compare(line, "restart") == 0)
 			{
 				app.Stop();
 				app.Start();
@@ -105,5 +82,8 @@ int main(int argc, char** argv) {
 	catch (...) {
 		LOG_ERROR << "Unknown fatal erorr occured, application is exiting!";
 	}
+	LOG_INFO << "Server has exited.";
+	LOG_FLUSH;
+
 	return retcode;
 }

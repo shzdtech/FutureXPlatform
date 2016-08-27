@@ -81,11 +81,14 @@ int TemplateMessageProcessor::SendDataObject(ISession* session,
 	const uint msgId, const uint serialId, const dataobj_ptr& dataobj)
 {
 	int ret = 0;
-	if (auto msgSerilzer = _svc_locator_ptr->FindDataSerializer(msgId))
+	if (_svc_locator_ptr)
 	{
-		dataobj->SerialId = serialId;
-		if (data_buffer db = msgSerilzer->Serialize(dataobj))
-			ret = session->WriteMessage(msgId, db);
+		if (auto msgSerilzer = _svc_locator_ptr->FindDataSerializer(msgId))
+		{
+			dataobj->SerialId = serialId;
+			if (data_buffer db = msgSerilzer->Serialize(dataobj))
+				ret = session->WriteMessage(msgId, db);
+		}
 	}
 
 	return ret;

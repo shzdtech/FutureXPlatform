@@ -19,7 +19,7 @@ dataobj_ptr TestingCreateOrderHandler::HandleRequest(const dataobj_ptr& reqDO, I
 			auto orderptr = std::make_shared<OrderDO>(*pDO);
 			auto tradeptr = std::make_shared<TradeRecordDO>
 				(orderptr->ExchangeID(), orderptr->InstrumentID(),
-					session->getUserInfo()->getName());
+					session->getUserInfo()->getName(), "TestPortfolio");
 			tradeptr->Direction = orderptr->Direction;
 			tradeptr->OpenClose = orderptr->OpenClose;
 

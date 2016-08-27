@@ -53,7 +53,7 @@ data_buffer PBExceptionSerializer::Serialize(const dataobj_ptr& abstractDO)
 	if(pDO->ErrorCode)
 		exceptionMsg.set_errorcode(pDO->ErrorCode);
 
-	if(pDO->ErrorMessage.length() > 0)
+	if(!pDO->ErrorMessage.empty())
 		exceptionMsg.set_description(pDO->ErrorMessage);
 	
 	int bufsz = exceptionMsg.ByteSize();

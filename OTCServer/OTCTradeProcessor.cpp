@@ -15,12 +15,14 @@
 
 bool OTCTradeProcessor::Dispose(void)
 {
-	auto pMap = PricingDataContext()->GetStrategyMap();
-	for (auto& it : *pMap)
+	if (auto pMap = PricingDataContext()->GetStrategyMap())
 	{
-		auto& stragety = it.second;
-		stragety.Enabled = false;
-		stragety.Trading = false;
+		for (auto& it : *pMap)
+		{
+			auto& stragety = it.second;
+			stragety.Enabled = false;
+			stragety.Trading = false;
+		}
 	}
 
 	GetOTCOrderManager()->Reset();

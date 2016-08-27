@@ -26,7 +26,7 @@ public:
 
 	~CTPOTCWorkerProcessor();
 
-	void setSession(IMessageSession_WkPtr msgSession_wk_ptr);
+	void setSession(const IMessageSession_WkPtr& msgSession_wk_ptr);
 	bool OnSessionClosing(void);
 
 	void Initialize(IServerContext* pServerCtx);

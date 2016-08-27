@@ -39,7 +39,7 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const dataobj_ptr& reqDO, IRawAPI
 	{
 		auto& accountInfoVec = wkProcPtr->GetAccountInfo(session->getUserInfo()->getInvestorId());
 
-		if (accountInfoVec.size() < 1)
+		if (accountInfoVec.empty())
 		{
 			auto stdo = (MapDO<std::string>*)reqDO.get();
 			auto& brokeid = session->getUserInfo()->getBrokerId();

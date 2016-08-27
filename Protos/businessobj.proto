@@ -43,6 +43,19 @@ message PBMarketDataList
 	repeated PBMarketData marketData = 2;
 }
 
+message PBPortfolio
+{
+	string name = 1;
+	int32 hedgeDelay = 2;
+	string description =3;
+}
+
+message PBPortfolioList
+{
+	DataHeader header = 1;
+	repeated PBPortfolio portfolio = 2;
+}
+
 message PBPricingData {
 	DataHeader header = 1;
 	
@@ -142,39 +155,43 @@ message PBOrderRequest {
 	int32 direction = 10;
 	///开平标志
 	int32 openclose = 11;
+	///
+	string portfolio = 12;
 }
 
 message PBOrderInfo {
+
+	DataHeader header = 1;
 	///报单编号
-	uint64 orderID = 1;
+	uint64 orderID = 2;
 	///系统报单编号
-	uint64	orderSysID = 2;	
+	uint64	orderSysID = 3;	
 	///经纪公司代码
-	string	brokerID = 3;
+	string	brokerID = 4;
 	///投资者代码
-	string	investorID = 4;
+	string	investorID = 5;
 	///交易所代码
-	string	exchange = 5;
+	string	exchange = 6;
 	///合约代码
-	string	contract = 6;
+	string	contract = 7;
 	///报单价格条件
-	int32	execType = 7;
+	int32	execType = 8;
 	///TIF
-	int32	tif = 8;
+	int32	tif = 9;
 	///交易类型
-	int32	tradingType = 9;
+	int32	tradingType = 10;
 	///买卖方向
-	int32	direction = 10;
+	int32	direction = 11;
 	///价格
-	double	limitPrice = 11;
+	double	limitPrice = 12;
 	///止损价
-	double	stopPrice = 12;	
+	double	stopPrice = 13;	
 	///报单状态
-	int32 orderStatus = 13;
+	int32 orderStatus = 14;
 	///报单类型
-	int32	orderType = 14;
+	int32	orderType = 15;
 	///数量
-	int32	volume = 15;
+	int32	volume = 16;
 	///委托时间
 	string insertTime = 17;
 	///最后修改时间
@@ -197,48 +214,49 @@ message PBOrderInfo {
 	bytes message = 26;
 	/// Session Id
 	int32 sessionID = 27;
-
-	DataHeader header = 28;
+	///
+	string portfolio = 28;
 }
 
 ///成交
 message PBTradeInfo {
+	DataHeader header = 1;
 	///成交编号
-	uint64	tradeID = 1;
+	uint64	tradeID = 2;
 	///买卖方向
-	int32 direction = 2;
+	int32 direction = 3;
 	///开平标志
-	int32 openclose = 3;
+	int32 openclose = 4;
 	///报单编号
-	uint64	orderSysID = 4;
+	uint64	orderSysID = 5;
 	///报单引用
-	uint64 orderID = 5;
+	uint64 orderID = 6;
 	///价格
-	double	price = 6;
+	double	price = 7;
 	///数量
-	int32	volume = 7;
+	int32	volume = 8;
 	///经纪公司代码
-	string	brokerID = 8;
+	string	brokerID = 9;
 	///投资者代码
-	string	investorID = 9;
+	string	investorID = 10;
 	///交易所代码
-	string	exchange = 10;
+	string	exchange = 11;
 	///合约代码
-	string	contract = 11;
+	string	contract = 12;
 	///用户代码
-	string	userID = 12;
+	string	userID = 13;
 	///成交时期
-	string	tradeDate = 13;
+	string	tradeDate = 14;
 	///成交时间
-	string	tradeTime = 14;
+	string	tradeTime = 15;
 	///成交类型
-	int32 tradeType = 15;
+	int32 tradeType = 16;
 	///投机套保标志
-	int32 hedgeFlag = 16;
+	int32 hedgeFlag = 17;
 	///手续费
-	double	commission = 17;
-
-	DataHeader header = 18;
+	double	commission = 18;
+	///
+	string portfolio = 19;
 }
 
 message PBPosition {

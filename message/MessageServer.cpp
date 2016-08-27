@@ -19,14 +19,14 @@ const std::string& MessageServer::getUri(void)
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       MessageServer::RegisterServiceFactory(IMessageServiceFactory_Ptr msgSvcFactory)
+// Name:       MessageServer::RegisterServiceFactory(const IMessageServiceFactory_Ptr& msgSvcFactory)
 // Purpose:    Implementation of MessageServer::RegisterServiceFactory()
 // Parameters:
 // - msgSvcFactory
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void MessageServer::RegisterServiceFactory(IMessageServiceFactory_Ptr msgSvcFactory)
+void MessageServer::RegisterServiceFactory(const IMessageServiceFactory_Ptr& msgSvcFactory)
 {
 	_svcfactory_ptr = msgSvcFactory;
 }

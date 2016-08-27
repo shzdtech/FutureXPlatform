@@ -35,7 +35,7 @@
 dataobj_ptr CTPQueryOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	if (auto wkProcPtr =
-		  MessageUtility::ServerWorkerProcessor<CTPTradeWorkerProcessor>(session->getProcessor()))
+		MessageUtility::ServerWorkerProcessor<CTPTradeWorkerProcessor>(session->getProcessor()))
 	{
 		auto stdo = (MapDO<std::string>*)reqDO.get();
 
@@ -47,8 +47,8 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawA
 		auto& tmstart = stdo->TryFind(STR_TIME_START, EMPTY_STRING);
 		auto& tmend = stdo->TryFind(STR_TIME_END, EMPTY_STRING);
 
-		auto& userMap = wkProcPtr->GetUserOrderMap(session->getUserInfo()->getUserId());
-		if (userMap.size() < 1)
+		auto vectorPtr = wkProcPtr->GetUserOrderContext().GetOrdersByUser(session->getUserInfo()->getUserId());
+		if (vectorPtr->empty())
 		{
 			CThostFtdcQryOrderField req{};
 			std::strcpy(req.BrokerID, brokeid.data());
@@ -63,17 +63,13 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawA
 			std::this_thread::sleep_for(std::chrono::seconds(2));
 		}
 
-		ThrowNotFoundExceptionIfEmpty(&userMap);
+		ThrowNotFoundExceptionIfEmpty(vectorPtr.get());
 
 		using namespace boolinq;
 		if (orderid != EMPTY_STRING)
 		{
-			auto it = 
-				userMap.find(std::strtoull(orderid.data(), nullptr, 0));
-
-			if (it != userMap.end())
+			if (auto orderptr = wkProcPtr->GetUserOrderContext().FindOrder(std::strtoull(orderid.data(), nullptr, 0)))
 			{
-				auto orderptr = std::make_shared<OrderDO>(it->second);
 				orderptr->HasMore = false;
 				wkProcPtr->SendDataObject(session, MSG_ID_QUERY_ORDER, stdo->SerialId, orderptr);
 			}
@@ -82,10 +78,10 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawA
 		}
 		else
 		{
-			auto lastit = std::prev(userMap.end());
-			for (auto it = userMap.begin(); it != userMap.end(); it++)
+			auto lastit = std::prev(vectorPtr->end());
+			for (auto it = vectorPtr->begin(); it != vectorPtr->end(); it++)
 			{
-				auto orderptr = std::make_shared<OrderDO>(it->second);
+				auto orderptr = std::make_shared<OrderDO>(*it);
 				orderptr->HasMore = it != lastit;
 				wkProcPtr->SendDataObject(session, MSG_ID_QUERY_ORDER, stdo->SerialId, orderptr);
 			}
@@ -113,17 +109,21 @@ dataobj_ptr CTPQueryOrder::HandleResponse(const uint32_t serialId, param_vector&
 	if (auto pData = (CThostFtdcOrderField*)rawRespParams[0])
 	{
 		ret = CTPUtility::ParseRawOrder(pData);
-		
+
 		if (rawRespParams.size() > 1)
 		{
 			if (auto pRsp = (CThostFtdcRspInfoField*)rawRespParams[1])
 				ret->ErrorCode = pRsp->ErrorID;
 			ret->HasMore = !*(bool*)rawRespParams[3];
 
-			if (auto wkProcPtr =
-				  MessageUtility::ServerWorkerProcessor<CTPTradeWorkerProcessor>(session->getProcessor()))
+			if (auto wkProcPtr = MessageUtility::ServerWorkerProcessor<CTPTradeWorkerProcessor>(session->getProcessor()))
 			{
-				wkProcPtr->GetUserOrderMap(ret->UserID()).getorfill(ret->OrderSysID, *ret);
+				if (auto order_ptr = wkProcPtr->GetUserOrderContext().FindOrder(ret->OrderID))
+				{
+					ret->SetUserID(order_ptr->UserID());
+					ret->SetPortfolioID(order_ptr->PortfolioID());
+				}
+				wkProcPtr->GetUserOrderContext().AddOrder(*ret);
 			}
 		}
 	}

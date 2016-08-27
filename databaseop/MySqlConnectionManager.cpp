@@ -34,23 +34,23 @@ bool MySqlConnectionManager::LoadDbConfig(const std::map<std::string, std::strin
 
 	std::string empty;
 	auto& autocommit = TUtil::FirstNamedEntry("autocommit", cfgMap, empty);
-	if (autocommit.length() > 0)
+	if (!autocommit.empty())
 		_connConfig.DB_AUTOCOMMIT = std::stoi(autocommit, nullptr, 0) != 0;
 
 	auto& timeout = TUtil::FirstNamedEntry("timeout", cfgMap, empty);
-	if (timeout.length() > 0)
+	if (!timeout.empty())
 		_connConfig.DB_CONNECT_TIMEOUT = std::stoul(timeout, nullptr, 0);
 
 	auto& spoolsz = TUtil::FirstNamedEntry("poolsize", cfgMap, empty);
-	if (spoolsz.length() > 0)
+	if (!spoolsz.empty())
 		_connConfig.DB_POOL_SIZE = std::stoi(spoolsz, nullptr, 0);
 
 	auto& checksql = TUtil::FirstNamedEntry("checksql", cfgMap, empty);
-	if (checksql.length() > 0)
+	if (!checksql.empty())
 		_connConfig.DB_CHECKSQL = checksql;
 
 	auto& shb = TUtil::FirstNamedEntry("heartbeat", cfgMap, empty);
-	if (shb.length())
+	if (!shb.empty())
 		_connConfig.DB_HEARTBEAT = std::stoi(shb, nullptr, 0);
 
 	return true;
@@ -111,6 +111,7 @@ MySqlConnectionManager::MySqlConnectionManager()
 MySqlConnectionManager::~MySqlConnectionManager()
 {
 	_runing = false;
+	_heartbeatTask.join();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -163,16 +164,19 @@ void MySqlConnectionManager::InitPool()
 	}
 	_runing = true;
 
-	_heartbeatTask = std::async(std::launch::async, &MySqlConnectionManager::CheckStatus, this);
+	_heartbeatTask = std::move(std::thread(&MySqlConnectionManager::CheckStatus, this));
 }
 
 void MySqlConnectionManager::CheckStatus()
 {
 	std::string checkSql = _connConfig.DB_CHECKSQL;
-
+	auto millsec = std::chrono::milliseconds(1000);
 	while (_runing)
 	{
-		std::this_thread::sleep_for(std::chrono::milliseconds(_connConfig.DB_HEARTBEAT));
+		for (int cum_ms = 0; cum_ms < _connConfig.DB_HEARTBEAT; cum_ms += millsec.count())
+		{
+			std::this_thread::sleep_for(millsec);
+		}
 
 		for (int i = 0; i < _connConfig.DB_POOL_SIZE; i++)
 		{

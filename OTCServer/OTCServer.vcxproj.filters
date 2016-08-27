@@ -90,6 +90,12 @@
     <ClCompile Include="OTCQueryTrade.cpp">
       <Filter>源文件\TradeHandler</Filter>
     </ClCompile>
+    <ClCompile Include="OTCNewPortfolio.cpp">
+      <Filter>源文件\TradingDesk</Filter>
+    </ClCompile>
+    <ClCompile Include="OTCQueryPortfolio.cpp">
+      <Filter>源文件\TradingDesk</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="otcserver_export.h">
@@ -152,5 +158,19 @@
     <ClInclude Include="OTCQueryTrade.h">
       <Filter>头文件\TradeHandler</Filter>
     </ClInclude>
+    <ClInclude Include="OTCNewPortfolio.h">
+      <Filter>头文件\TradingDesk</Filter>
+    </ClInclude>
+    <ClInclude Include="OTCQueryPortfolio.h">
+      <Filter>头文件\TradingDesk</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="OTCServer.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

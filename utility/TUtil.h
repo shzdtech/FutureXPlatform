@@ -13,7 +13,7 @@ public:
 	static const T& FirstEntry(const std::vector<T>& vec,
 		const T& defaultVal)
 	{
-		return vec.size() > 0 ? vec[0] : defaultVal;
+		return vec.empty() ? defaultVal : vec[0];
 	};
 
 	template<class T>
@@ -38,13 +38,13 @@ public:
 	template<class T>
 	static inline bool IsNullOrEmpty(const T* pContainer)
 	{
-		return !pContainer || pContainer->begin() == pContainer->end();
+		return !pContainer || pContainer->empty();
 	};
 
 	template<class T>
 	static inline bool IsNullOrEmpty(const std::shared_ptr<T>& containerPtr)
 	{
-		return !containerPtr || containerPtr->begin() == containerPtr->end();
+		return !containerPtr || containerPtr->empty();
 	};
 };
 

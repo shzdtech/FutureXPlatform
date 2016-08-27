@@ -47,9 +47,9 @@ dataobj_ptr OTCSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 	if (auto wkProcPtr =
 		MessageUtility::ServerWorkerProcessor<OTCWorkerProcessor>(session->getProcessor()))
 	{
-		if (stdo->Data.size() > 0)
+		if (!stdo->Data.empty())
 		{
-			auto& instList = stdo->Data[STR_INSTRUMENT_ID];
+			auto& instList = stdo->Data.begin()->second;
 
 			auto userContractMap_Ptr = std::static_pointer_cast<UserContractParamDOMap>(session->getContext()->getAttribute(STR_KEY_USER_CONTRACTS));
 
@@ -61,7 +61,7 @@ dataobj_ptr OTCSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 
 			if (session->getUserInfo()->getRole() == ROLE_TRADINGDESK)
 			{
-				if (auto vectorPtr = ContractDAO::FindContractByClient(session->getUserInfo()->getBrokerId()))
+				if (auto vectorPtr = ContractDAO::FindContractByUser(session->getUserInfo()->getUserId()))
 					for (auto& contract : *vectorPtr)
 					{
 						PricingDO mdo(contract.ExchangeID(), contract.InstrumentID());

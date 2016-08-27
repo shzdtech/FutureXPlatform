@@ -18,7 +18,7 @@ public:
 	ServerContext();
 
 	attribute_ptr getAttribute(const std::string& key);
-	void setAttribute(const std::string& key, attribute_ptr value);
+	void setAttribute(const std::string& key, const attribute_ptr& value);
 	bool getConfigVal(const std::string& cfgKey, std::string& cfgVal);
 	void setConfigVal(const std::string& cfgKey, const std::string& cfgVal);
 	int getServerType(void);

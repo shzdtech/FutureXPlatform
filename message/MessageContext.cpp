@@ -35,7 +35,7 @@ attribute_ptr MessageContext::getAttribute(const std::string& key)
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void MessageContext::setAttribute(const std::string& key, attribute_ptr value)
+void MessageContext::setAttribute(const std::string& key, const attribute_ptr& value)
 {
    _attrib_map[key] = value;
 }

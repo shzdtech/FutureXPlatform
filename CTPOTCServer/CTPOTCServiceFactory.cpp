@@ -68,6 +68,10 @@ std::map<uint, IMessageHandler_Ptr> CTPOTCServiceFactory::CreateMessageHandlers(
 
 	msg_hdl_map[MSG_ID_QUERY_TRADE] = std::make_shared<OTCQueryTrade>();
 
+	msg_hdl_map[MSG_ID_QUERY_PORTFOLIO] = std::make_shared<OTCQueryPortfolio>();
+
+	msg_hdl_map[MSD_ID_PORTFOLIO_NEW] = std::make_shared<OTCNewPortfolio>();
+
 	return msg_hdl_map;
 }
 

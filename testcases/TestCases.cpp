@@ -4,13 +4,13 @@
 #include "stdafx.h"
 #include "../databaseop/AbstractConnectionManager.h"
 #include "../dataobject/UserPositionDO.h"
-#include "../ordermanager/UserOrderContext.h"
 #include <thread>
 #include <set>
 #include <map>
 #include <iostream>
 #include "../message/SessionContainer.h"
 #include "../utility/epsdouble.h"
+#include "../utility/stringutility.h"
 #include "../litelogger/LiteLogger.h"
 
 void testCollection()
@@ -51,8 +51,8 @@ void testConnectHelper()
 
 void testAutoFillMap()
 {
-	autofillmap< int, UserOrderContext > autoMap;
-	auto& vec = autoMap.getorfillfunc(1, [](int a){ return UserOrderContext(); }, 123);
+	autofillmap< int, double > autoMap;
+	auto& vec = autoMap.getorfillfunc(1, [](int a){ return 0.5; }, 123);
 }
 
 void testSessionContainer()
@@ -74,10 +74,20 @@ void testepsdouble()
 	testepsilondouble(a);
 }
 
+void test_stringutility()
+{
+	std::string first;
+	std::string second;
+	stringutility::split("035467", first, second);
+	stringutility::split("035467:", first, second);
+	stringutility::split("035467:123", first, second);
+}
+
 int _tmain(int argc, _TCHAR* argv[])
 {
 	try
 	{
+		test_stringutility();
 		testCollection();
 		testAutoFillMap();
 		testepsdouble();

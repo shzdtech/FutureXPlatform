@@ -16,11 +16,11 @@
 // Return:     bool
 ////////////////////////////////////////////////////////////////////////
 
-OrderDO_Ptr OrderDAO::CreateOrder(const OrderDO& orderDO)
+bool OrderDAO::CreateOrder(OrderRequestDO& orderDO)
 {
-	static const std::string sql_proc_createorder("CALL Order_Auto_New(?,?,?,?,?,?,@orderID)");
+	bool ret = false;
 
-	OrderDO_Ptr ret;
+	static const std::string sql_proc_createorder("insert into exchange_order(accountid,portfolio) values (?,?)");
 
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 
@@ -29,21 +29,49 @@ OrderDO_Ptr OrderDAO::CreateOrder(const OrderDO& orderDO)
 		AutoClosePreparedStmt_Ptr prestmt(
 			session->getConnection()->prepareStatement(sql_proc_createorder));
 		prestmt->setString(1, orderDO.UserID());
-		prestmt->setString(2, orderDO.ExchangeID());
-		prestmt->setString(3, orderDO.InstrumentID());
-		prestmt->setDouble(4, orderDO.LimitPrice);
-		prestmt->setInt(5, orderDO.Volume);
-		prestmt->setInt(6, orderDO.Direction);
+		prestmt->setString(2, orderDO.PortfolioID());
 
-		prestmt->execute();
+		prestmt->executeUpdate();
 
-		ret = std::make_shared<OrderDO>(orderDO);
 		AutoCloseStatement_Ptr stmt(session->getConnection()->createStatement());
-		AutoCloseResultSet_Ptr rsout(stmt->executeQuery("select @orderID"));
+		AutoCloseResultSet_Ptr rsout(stmt->executeQuery("select LAST_INSERT_ID()"));
 		if (rsout->next())
 		{
-			ret->OrderID = rsout->getUInt64(1);
+			orderDO.OrderID = rsout->getUInt64(1);
 		}
+
+		ret = true;
+	}
+	catch (sql::SQLException& sqlEx)
+	{
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
+	}
+
+	return ret;
+}
+
+bool OrderDAO::QueryAllOrderPortfolio(std::map<uint64_t, std::string>& memoryPortfolio)
+{
+	bool ret = false;
+
+	static const std::string sql_findportfolio(
+		"SELECT id,portfolio FROM exchange_order");
+
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
+	try
+	{
+		AutoClosePreparedStmt_Ptr prestmt(
+			session->getConnection()->prepareStatement(sql_findportfolio));
+
+		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
+
+		while (rs->next())
+		{
+			memoryPortfolio.emplace(rs->getUInt64(1), rs->getString(2));
+		}
+
+		ret = true;
 	}
 	catch (sql::SQLException& sqlEx)
 	{

@@ -17,14 +17,15 @@
 #include "message_exp.h"
 
 
-class MESSAGE_CLASS_EXPORT MessageSession : public IMessageSession, public std::enable_shared_from_this < MessageSession >
+class MESSAGE_CLASS_EXPORT MessageSession : public IMessageSession, 
+	public std::enable_shared_from_this<MessageSession>
 {
 public:
 	MessageSession();
 	~MessageSession();
 
 	uint64_t Id();
-	void RegistProcessor(IMessageProcessor_Ptr msgprocessor_ptr);
+	void RegistProcessor(const IMessageProcessor_Ptr& msgprocessor_ptr);
 	bool Start(void) { return false; }
 	bool Close(void);
 	virtual int WriteMessage(const uint msgId, const data_buffer& msg) { return 0; }
@@ -36,8 +37,8 @@ public:
 	IUserInfo_Ptr getUserInfo(void);
 	IProcessorBase_Ptr getProcessor(void);
 
-	void addListener(IMessageSessionEvent_WkPtr listener);
-	void removeListener(IMessageSessionEvent_WkPtr listener);
+	void addListener(const IMessageSessionEvent_WkPtr& listener);
+	void removeListener(const IMessageSessionEvent_WkPtr& listener);
 
 protected:
 	uint64_t _id;

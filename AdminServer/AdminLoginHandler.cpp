@@ -24,15 +24,15 @@
 
 #include "../common/Attribute_Key.h"
 
-////////////////////////////////////////////////////////////////////////
-// Name:       AdminLoginHandler::HandleRequest(dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of AdminLoginHandler::HandleRequest()
-// Parameters:
-// - reqDO
-// - rawAPI
-// - session
-// Return:     dataobj_ptr
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       AdminLoginHandler::HandleRequest(dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+ // Purpose:    Implementation of AdminLoginHandler::HandleRequest()
+ // Parameters:
+ // - reqDO
+ // - rawAPI
+ // - session
+ // Return:     dataobj_ptr
+ ////////////////////////////////////////////////////////////////////////
 
 dataobj_ptr AdminLoginHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
@@ -58,7 +58,7 @@ dataobj_ptr AdminLoginHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* 
 		}
 
 		auto now = std::time(nullptr);
-		
+
 		pUserInfo->setLoginTime(now);
 		pUserInfo->setAuthorizedKey(std::to_string(std::rand()));
 
@@ -73,12 +73,11 @@ dataobj_ptr AdminLoginHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* 
 
 		session->setLoginTimeStamp();
 
-		auto userInfoCache = std::static_pointer_cast<IUserInfoPtrMap>
-			(AppContext::GetData(STR_KEY_DEFAULT_CLIENT_SYMBOL));
+		auto userInfoCache = std::static_pointer_cast<IUserInfoPtrMap>(AppContext::GetData(STR_KEY_APP_USER_DETAIL));
 		if (!userInfoCache)
 		{
 			userInfoCache = std::make_shared<IUserInfoPtrMap>();
-			AppContext::SetData(STR_KEY_DEFAULT_CLIENT_SYMBOL, userInfoCache);
+			AppContext::SetData(STR_KEY_APP_USER_DETAIL, userInfoCache);
 		}
 
 		userInfoCache->emplace(pUserInfo->getUserId(), pUserInfo);

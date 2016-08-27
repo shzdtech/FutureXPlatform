@@ -10,22 +10,25 @@
 #include "CTPUtility.h"
 #include "CTPMapping.h"
 #include "CTPConstant.h"
-#include "../ordermanager/OrderSeqGen.h"
+#include "CTPTradeWorkerProcessor.h"
 
-#include "../dataobject/OrderDO.h"
 
 #include "../message/message_macro.h"
 #include "../message/DefMessageID.h"
+#include "../message/MessageUtility.h"
 
-////////////////////////////////////////////////////////////////////////
-// Name:       CTPNewOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTPNewOrder::HandleRequest()
-// Parameters:
-// - reqDO
-// - rawAPI
-// - session
-// Return:     dataobj_ptr
-////////////////////////////////////////////////////////////////////////
+#include "../dataobject/OrderDO.h"
+
+
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       CTPNewOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Purpose:    Implementation of CTPNewOrder::HandleRequest()
+ // Parameters:
+ // - reqDO
+ // - rawAPI
+ // - session
+ // Return:     dataobj_ptr
+ ////////////////////////////////////////////////////////////////////////
 
 dataobj_ptr CTPNewOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
@@ -43,10 +46,11 @@ dataobj_ptr CTPNewOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI
 	// 合约代码
 	std::strcpy(req.InstrumentID, pDO->InstrumentID().data());
 	///报单引用
-	uint64_t orderID = pDO->OrderID == 0 ? OrderSeqGen::GetNextSeq() : pDO->OrderID;
-	std::sprintf(req.OrderRef, FMT_PADDING_ORDERREF, orderID);
+	pDO->OrderID = CTPUtility::GenOrderID();
+	std::sprintf(req.OrderRef, FMT_PADDING_ORDERREF, pDO->OrderID);
 	// 用户代码
-	std::strcpy(req.UserID, userinfo->getUserId().data());
+	pDO->SetUserID(userinfo->getUserId());
+	std::strcpy(req.UserID, pDO->UserID().data());
 	// 报单价格条件
 	req.OrderPriceType = CTPExecPriceMapping.at((OrderExecType)pDO->ExecType);
 	// 买卖方向
@@ -62,7 +66,7 @@ dataobj_ptr CTPNewOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI
 	// 有效期类型
 	req.TimeCondition = CTPTIFMapping.at((OrderTIFType)pDO->TIF);
 	// GTD日期
-	std::strcpy(req.GTDDate, "");
+	//std::strcpy(req.GTDDate, "");
 	// 成交量类型
 	req.VolumeCondition = THOST_FTDC_VC_AV;
 	// 最小成交量
@@ -78,8 +82,12 @@ dataobj_ptr CTPNewOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI
 
 	bool bLast = true;
 
-	OnResponseProcMacro(session->getProcessor(), MSG_ID_ORDER_NEW, reqDO->SerialId, &req, nullptr, &reqDO->SerialId, &bLast);
+	if (auto wkProcPtr = MessageUtility::ServerWorkerProcessor<CTPTradeWorkerProcessor>(session->getProcessor()))
+	{
+		wkProcPtr->GetUserOrderContext().AddOrder(*pDO);
+	}
 
+	OnResponseProcMacro(session->getProcessor(), MSG_ID_ORDER_NEW, reqDO->SerialId, &req, nullptr, &reqDO->SerialId, &bLast);
 
 	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqOrderInsert(&req, reqDO->SerialId);
 	CTPUtility::CheckReturnError(iRet);

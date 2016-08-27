@@ -39,11 +39,12 @@ void CTPOTCOptionWorkerProcessor::TriggerPricing(const StrategyContractDO& strat
 		{
 			auto& mdDO = pricingCtx->GetMarketDataMap()->at(strategyDO.PricingContracts[0].InstrumentID());
 
-			auto pricingDO = PricingUtility::Pricing(&mdDO, strategyDO, *pricingCtx);
-
-			_pricingNotifers->foreach(strategyDO, [this, pricingDO](IMessageSession* pSession)
-			{ this->SendDataObject(pSession, MSG_ID_RTN_PRICING, 0, pricingDO); }
-			);
+			if (auto pricingDO = PricingUtility::Pricing(&mdDO, strategyDO, *pricingCtx))
+			{
+				_pricingNotifers->foreach(strategyDO, [this, pricingDO](IMessageSession* pSession)
+				{ this->SendDataObject(pSession, MSG_ID_RTN_PRICING, 0, pricingDO); }
+				);
+			}
 		}
 	}
 }

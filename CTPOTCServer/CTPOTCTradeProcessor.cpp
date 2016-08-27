@@ -15,7 +15,7 @@
 #include "../message/DefMessageID.h"
 #include "../message/SysParam.h"
 #include "../message/AppContext.h"
-
+#include "../databaseop/TradeDAO.h"
 #include "../litelogger/LiteLogger.h"
 
 
@@ -39,7 +39,6 @@ CTPOTCTradeProcessor::~CTPOTCTradeProcessor()
 {
 	LOG_DEBUG << __FUNCTION__;
 }
-
 
 OrderDOVec_Ptr CTPOTCTradeProcessor::TriggerHedgeOrderUpdating(const StrategyContractDO& strategyDO)
 {
@@ -84,9 +83,10 @@ OrderDO_Ptr CTPOTCTradeProcessor::CreateOrder(OrderRequestDO& orderInfo)
 	// 合约代码
 	std::strcpy(req.InstrumentID, orderInfo.InstrumentID().data());
 	///报单引用
+	orderInfo.OrderID = CTPUtility::GenOrderID();
 	std::sprintf(req.OrderRef, FMT_PADDING_ORDERREF, orderInfo.OrderID);
 	// 用户代码
-	std::strcpy(req.UserID, orderInfo.UserID().data());
+	std::strcpy(req.UserID, orderInfo.UserPortfolioID().data());
 	// 报单价格条件
 	req.OrderPriceType = THOST_FTDC_OPT_LimitPrice;
 	// 买卖方向
@@ -194,9 +194,7 @@ void CTPOTCTradeProcessor::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrd
 	if (pInputOrder)
 	{
 		auto orderptr = CTPUtility::ParseRawOrderInput(pInputOrder, pRspInfo, _systemUser.getSessionId());
-
 		int ret = _autoOrderMgr.OnOrderUpdated(*orderptr);
-
 		DispatchUserMessage(MSG_ID_ORDER_UPDATE, 0, orderptr->UserID(), orderptr);
 	}
 }
@@ -206,9 +204,7 @@ void CTPOTCTradeProcessor::OnRspOrderAction(CThostFtdcInputOrderActionField *pIn
 	if (pInputOrderAction)
 	{
 		auto orderptr = CTPUtility::ParseRawOrderInputAction(pInputOrderAction, pRspInfo);
-
 		int ret = _autoOrderMgr.OnOrderUpdated(*orderptr);
-
 		DispatchUserMessage(MSG_ID_ORDER_UPDATE, 0, orderptr->UserID(), orderptr);
 	}
 }
@@ -235,6 +231,23 @@ void CTPOTCTradeProcessor::RegisterLoggedSession(IMessageSession * pMessageSessi
 			userInfoPtr->setFrontId(_systemUser.getFrontId());
 			userInfoPtr->setSessionId(_systemUser.getSessionId());
 			_userSessionCtn_Ptr->add(userInfoPtr->getUserId(), pMessageSession);
+		}
+	}
+}
+
+void CTPOTCTradeProcessor::OnRtnTrade(CThostFtdcTradeField * pTrade)
+{
+	if (pTrade)
+	{
+		if (auto trdDO_Ptr = CTPUtility::ParseRawTrade(pTrade))
+		{
+			if (auto order_ptr = _autoOrderMgr.FindOrder(trdDO_Ptr->OrderID))
+			{
+				trdDO_Ptr->SetUserID(order_ptr->PortfolioID());
+				trdDO_Ptr->SetPortfolioID(order_ptr->PortfolioID());
+			}
+			TradeDAO::SaveExchangeTrade(*trdDO_Ptr);
+			DispatchUserMessage(MSG_ID_TRADE_RTN, 0, pTrade->UserID, trdDO_Ptr);
 		}
 	}
 }

@@ -1,6 +1,6 @@
 {
   "system": {
-    "version": "0.8-2016.8.20-20.00",
+    "version": "0.8-2016.8.26-23.00",
     "service": {
       "config": "service.json"
     },
@@ -35,11 +35,11 @@
     "sysparam": {
       "mergedbparam": "override",
       "DEFAULT.CLIENT.SYMBOL": "boc_otc",
-      "CTP.MD.SERVER": "tcp://ctp1-front13.citicsf.com:41213",
+      "CTP.MD.SERVER": "tcp://ctpfz1-front3.citicsf.com:51213",
       "CTP.MD.LOGIN.BROKERID": "66666",
       "CTP.MD.LOGIN.USERID": "895816",
       "CTP.MD.LOGIN.PASSWORD": "260519",
-      "CTP.TRADER.SERVER": "tcp://ctp1-front13.citicsf.com:41205",
+      "CTP.TRADER.SERVER": "tcp://ctpfz1-front3.citicsf.com:51205",
       "CTP.TRADER.LOGIN.BROKERID": "66666",
       "CTP.TRADER.LOGIN.USERID": "895816",
       "CTP.TRADER.LOGIN.PASSWORD": "260519"

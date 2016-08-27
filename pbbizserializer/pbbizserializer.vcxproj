@@ -206,6 +206,7 @@
     <ClCompile Include="PBInstrumentSerializer.cpp" />
     <ClCompile Include="PBMarketDataSerializer.cpp" />
     <ClCompile Include="PBOrderSerializer.cpp" />
+    <ClCompile Include="PBPortfolioSerializer.cpp" />
     <ClCompile Include="PBPricingDataSerializer.cpp" />
     <ClCompile Include="PBStrategySerializer.cpp" />
     <ClCompile Include="PBSubMarketDataSerializer.cpp" />
@@ -227,6 +228,7 @@
     <ClInclude Include="PBInstrumentSerializer.h" />
     <ClInclude Include="PBMarketDataSerializer.h" />
     <ClInclude Include="PBOrderSerializer.h" />
+    <ClInclude Include="PBPortfolioSerializer.h" />
     <ClInclude Include="PBPricingDataSerializer.h" />
     <ClInclude Include="PBStrategySerializer.h" />
     <ClInclude Include="PBSubMarketDataSerializer.h" />

@@ -11,6 +11,8 @@
 #include "ContractKey.h"
 #include "TemplateDO.h"
 #include "EnumTypes.h"
+#include "PortfolioDO.h"
+#include "StrategyContractDO.h"
 
 enum OrderStatus
 {
@@ -39,17 +41,21 @@ enum OrderTIFType
 	IOC = 1,
 };
 
-class OrderRequestDO : public UserContractKey, public dataobjectbase
+class OrderRequestDO : public UserContractKey, public PortfolioKey, public dataobjectbase
 {
 public:
 	OrderRequestDO(const uint64_t orderID, const char* exchangeID, const char* instrumentID,
-		const char* userID) : OrderID(orderID), UserKey(userID), UserContractKey(exchangeID, instrumentID, userID) {}
+		const char* userID, const char* portfolioID) : OrderID(orderID), UserKey(userID),
+		UserContractKey(exchangeID, instrumentID, userID), PortfolioKey(portfolioID, userID) {}
 
 	OrderRequestDO(const uint64_t orderID, const std::string& exchangeID, const std::string& instrumentID,
-		const std::string& userID) : OrderID(orderID), UserKey(userID), UserContractKey(exchangeID, instrumentID, userID) {}
+		const std::string& userID, const std::string& portfolioID) : OrderID(orderID), UserKey(userID), 
+		UserContractKey(exchangeID, instrumentID, userID), PortfolioKey(portfolioID, userID) {}
 
 	OrderRequestDO(const UserContractKey& userContractKey) : 
-		UserKey(userContractKey), UserContractKey(userContractKey) {}
+		UserKey(userContractKey), UserContractKey(userContractKey), PortfolioKey("", userContractKey.UserID()) {}
+
+	OrderRequestDO(const StrategyContractDO& strategy) : UserKey(strategy.UserID()), UserContractKey(strategy), PortfolioKey(strategy) {}
 
 	uint64_t OrderID = 0;
 	uint64_t OrderSysID = 0;
@@ -67,15 +73,20 @@ class OrderDO : public OrderRequestDO
 {
 public:
 	OrderDO(const uint64_t orderID, const char* exchangeID, const char* instrumentID,
-		const char* userID) : UserKey(userID), OrderRequestDO(orderID, exchangeID, instrumentID, userID) {}
+		const char* userID, const char* portfolioID = "") : UserKey(userID), 
+		OrderRequestDO(orderID, exchangeID, instrumentID, userID, portfolioID) {}
 
 	OrderDO(const uint64_t orderID, const std::string& exchangeID, const std::string& instrumentID,
-		const std::string& userID) : UserKey(userID), OrderRequestDO(orderID, exchangeID, instrumentID, userID) {}
+		const std::string& userID, const std::string& portfolioID = "") :
+		UserKey(userID), OrderRequestDO(orderID, exchangeID, instrumentID, userID, portfolioID) {}
+
+	OrderDO(const OrderRequestDO& requestDO) : UserKey(requestDO.UserID()),
+		OrderRequestDO(requestDO) {}
 
 	OrderDO(const UserContractKey& userContractKey) : 
 		UserKey(userContractKey.UserID()), OrderRequestDO(userContractKey) {}
 
-	OrderDO(const uint64_t orderID) : OrderDO(orderID, "", "", ""){}
+	OrderDO(const uint64_t orderID) : OrderDO(orderID, "", "", "", ""){}
 
 	TradingType TradingType = TradingType::TRADINGTYPE_MANUAL;
 	OrderStatus OrderStatus = OrderStatus::UNDEFINED;

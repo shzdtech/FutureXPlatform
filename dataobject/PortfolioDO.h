@@ -18,6 +18,9 @@ public:
 	PortfolioKey(const std::string& portfolioID, const std::string& userID) :
 		_portfolioID(portfolioID), UserKey(userID){}
 
+	PortfolioKey(const char* portfolioID, const char* userID) :
+		_portfolioID(portfolioID), UserKey(userID) {}
+
 	PortfolioKey& operator= (const PortfolioKey& contractKey)
 	{
 		return *this;
@@ -41,9 +44,19 @@ public:
 		return compare(portfolioKey) == 0;
 	}
 
+	void SetPortfolioID(const std::string& portfolioID)
+	{
+		_portfolioID = portfolioID;
+	}
+
 	const std::string& PortfolioID() const
 	{
 		return _portfolioID;
+	}
+
+	std::string UserPortfolioID()
+	{
+		return _userID + ':' + _portfolioID;
 	}
 
 protected:

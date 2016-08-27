@@ -16,10 +16,10 @@ class IMessageSession : public ISession
 public:
 	virtual bool Start(void) = 0;
 	virtual bool Close(void) = 0;
-	virtual void RegistProcessor(IMessageProcessor_Ptr msgprocessor) = 0;
+	virtual void RegistProcessor(const IMessageProcessor_Ptr& msgprocessor) = 0;
 	virtual void setTimeout(long seconds) = 0;
-	virtual void addListener(IMessageSessionEvent_WkPtr listener) = 0;
-	virtual void removeListener(IMessageSessionEvent_WkPtr listener) = 0;
+	virtual void addListener(const IMessageSessionEvent_WkPtr& listener) = 0;
+	virtual void removeListener(const IMessageSessionEvent_WkPtr& listener) = 0;
 
 protected:
 private:
@@ -29,7 +29,7 @@ private:
 class IMessageSessionEvent
 {
 public:
-	virtual void OnSessionClosing(IMessageSession_Ptr msgSessionPtr) = 0;
+	virtual void OnSessionClosing(const IMessageSession_Ptr& msgSessionPtr) = 0;
 };
 
 

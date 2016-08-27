@@ -43,11 +43,6 @@ IDataSerializer_Ptr MessageServiceLocator::FindDataSerializer(uint msgId) {
     return ret;
 }
 
-IMessageProcessor_Ptr MessageServiceLocator::GetWorkerProcessor(void)
-{
-	return _workProcessor.lock();
-}
-
 ////////////////////////////////////////////////////////////////////////
 // Name:       MessageRouter::MessageRouter(std::map<int, messgehandler_ptr> msghdlMap, std::map<int, IDataSerializer_Ptr> msgsrlMap)
 // Purpose:    Implementation of MessageRouter::MessageRouter()
@@ -57,10 +52,10 @@ IMessageProcessor_Ptr MessageServiceLocator::GetWorkerProcessor(void)
 // Return:     
 ////////////////////////////////////////////////////////////////////////
 
-MessageServiceLocator::MessageServiceLocator(IMessageServiceFactory_Ptr msgsvc_fac, IServerContext* serverCtx)
+MessageServiceLocator::MessageServiceLocator(const IMessageServiceFactory_Ptr& msgsvc_fac, IServerContext* serverCtx)
 {
 	msgsvc_fac->SetServerContext(serverCtx);
-	_workProcessor = msgsvc_fac->CreateWorkerProcessor(serverCtx);
+	serverCtx->setWorkerProcessor(msgsvc_fac->CreateWorkerProcessor(serverCtx));
     _msghdlMap = msgsvc_fac->CreateMessageHandlers(serverCtx);
 	_dataSerialMap = msgsvc_fac->CreateDataSerializers(serverCtx);
 }

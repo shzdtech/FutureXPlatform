@@ -27,7 +27,6 @@ public:
    ASIOTCPSession(tcp::socket&& socket);
    ~ASIOTCPSession();
    void setMaxMessageSize(uint maxMsgSize);
-   void RegistProcessor(IMessageProcessor_Ptr msgprocessor);
    virtual int WriteMessage(const uint msgId, const data_buffer& msg);
    virtual int WriteMessage(const data_buffer& msg);
    bool Start(void);
@@ -44,9 +43,9 @@ protected:
    std::mutex _clsmutex;
 
 private:
-   static void asyn_read_header(ASIOTCPSession_Ptr this_ptr);
-   static void asyn_read_body(ASIOTCPSession_Ptr this_ptr, uint msgSize);
-   static void asyn_timeout(ASIOTCPSession_WkPtr this_wk_ptr);
+   static void asyn_read_header(const ASIOTCPSession_Ptr& this_ptr);
+   static void asyn_read_body(const ASIOTCPSession_Ptr& this_ptr, uint msgSize);
+   static void asyn_timeout(const ASIOTCPSession_WkPtr& this_wk_ptr);
 };
 
 #endif

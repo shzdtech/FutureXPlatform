@@ -34,7 +34,7 @@ attribute_ptr UserInfo::getAttribute(const std::string& key) const
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void UserInfo::setAttribute(const std::string& key, attribute_ptr value)
+void UserInfo::setAttribute(const std::string& key, const attribute_ptr& value)
 {
 	_attributes[key] = value;
 }

@@ -128,13 +128,13 @@ public:
 			{
 				for (auto& key : it->second)
 				{
-					auto sit = _sessionMap.find(key);
-					if (sit != _sessionMap.end())
+					auto mit = _sessionMap.find(key);
+					if (mit != _sessionMap.end())
 					{
-						auto& sessionSet = sit->second;
-						auto sit = sessionSet.find(pSession);
-						if (sessionSet.erase(sit) == sessionSet.end())
-							_sessionMap.erase(key);
+						auto& sessionSet = mit->second;
+						sessionSet.erase(pSession);
+						if (sessionSet.empty())
+							_sessionMap.erase(mit);
 					}
 				}
 				_reverseMap.erase(it);
@@ -145,7 +145,7 @@ public:
 	}
 
 protected:
-	void OnSessionClosing(IMessageSession_Ptr msgSessionPtr)
+	void OnSessionClosing(const IMessageSession_Ptr& msgSessionPtr)
 	{
 		removesession(msgSessionPtr.get());
 	}

@@ -55,7 +55,7 @@ std::shared_ptr<PricingDO> BetaSumPricingAlgorithm::Compute(
 	double AskPrice = 0;
 	int quantity = *(int*)pInputObject;
 
-	if (sdo.PricingContracts.size() > 0)
+	if (!sdo.PricingContracts.empty())
 	{
 
 		for (auto& conparam : sdo.PricingContracts)
@@ -111,7 +111,7 @@ const std::map<std::string, double>& BetaSumPricingAlgorithm::DefaultParams(void
 {
 	static std::map<std::string, double> defaultParams = { 
 		{ BetaSumParams::offset_name , 0},
-		{ BetaSumParams::spread_name , 1},
+		{ BetaSumParams::spread_name , 0},
 	};
 	return defaultParams;
 }

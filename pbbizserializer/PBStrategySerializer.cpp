@@ -38,7 +38,7 @@ data_buffer PBStrategySerializer::Serialize(const dataobj_ptr& abstractDO)
 		pStrategy->set_enabled(sdo.Enabled);
 		pStrategy->set_quantity(sdo.Quantity);
 
-		if (sdo.PricingContracts.size() > 0)
+		if (!sdo.PricingContracts.empty())
 		{
 			for (auto& pricingContract : sdo.PricingContracts)
 			{

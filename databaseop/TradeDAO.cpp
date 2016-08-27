@@ -31,7 +31,7 @@ VectorDO_Ptr<TradeRecordDO> TradeDAO::QueryTrade(const std::string& userid, cons
 			if (!ret)
 				ret = std::make_shared<VectorDO<TradeRecordDO>>();
 
-			TradeRecordDO tradeDO(rs->getString(1), rs->getString(2), userid);
+			TradeRecordDO tradeDO(rs->getString(1), rs->getString(2), userid, "");
 			tradeDO.TradeID = rs->getUInt64(3);
 			tradeDO.Price = rs->getDouble(4);
 			tradeDO.Volume = rs->getInt(5);
@@ -51,4 +51,49 @@ VectorDO_Ptr<TradeRecordDO> TradeDAO::QueryTrade(const std::string& userid, cons
 	}
 
 	return ret;
+}
+
+int TradeDAO::SaveExchangeTrade(int64_t tradeId, int64_t orderSysId, 
+	const std::string& exchange, const std::string& contract, int quantity, double price,
+	const std::string & tradingDay, const std::string & userid, const std::string & portfolio, bool isBuy, int openclose)
+{
+	int ret = 0;
+
+	static const std::string sql_proc_savetrade("CALL Trade_Exchange(?,?,?,?,?,?,?,?,?,?,?)");
+
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
+	try
+	{
+		AutoClosePreparedStmt_Ptr prestmt(
+			session->getConnection()->prepareStatement(sql_proc_savetrade));
+		prestmt->setUInt64(1, tradeId);
+		prestmt->setUInt64(2, orderSysId);
+		prestmt->setString(3, exchange);
+		prestmt->setString(4, contract);
+		prestmt->setUInt(5, quantity);
+		prestmt->setDouble(6, price);
+		prestmt->setDateTime(7, tradingDay);
+		prestmt->setString(8, userid);
+		prestmt->setString(9, portfolio);
+		prestmt->setBoolean(10, isBuy);
+		prestmt->setInt(11, openclose);
+
+		prestmt->executeUpdate();
+	}
+	catch (sql::SQLException& sqlEx)
+	{
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		ret = sqlEx.getErrorCode();
+	}
+
+	return 0;
+}
+
+int TradeDAO::SaveExchangeTrade(const TradeRecordDO & tradeDO)
+{
+	return SaveExchangeTrade(tradeDO.TradeID, tradeDO.OrderSysID,
+		tradeDO.ExchangeID(), tradeDO.InstrumentID(),
+		tradeDO.Volume, tradeDO.Price,
+		tradeDO.TradingDay, tradeDO.UserID(), tradeDO.PortfolioID(),
+		tradeDO.Direction == DirectionType::BUY, tradeDO.OpenClose);
 }

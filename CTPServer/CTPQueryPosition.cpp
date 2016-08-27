@@ -55,7 +55,7 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 		// CTPUtility::CheckReturnError(iRet);
 
 		auto& positionMap = wkProcPtr->GetUserPositionMap();
-		if (positionMap.size() < 1)
+		if (positionMap.empty())
 		{
 			std::this_thread::sleep_for(std::chrono::seconds(2));
 		}
@@ -85,7 +85,7 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 			for (auto it = positionMap.begin(); it != positionMap.end(); it++)
 			{
 				auto& positions = it->second;
-				if (positions.begin() != positions.end())
+				if (!positions.empty())
 				{
 					auto lastpit = std::prev(positions.end());
 					for (auto pit = positions.begin(); pit != positions.end(); pit++)

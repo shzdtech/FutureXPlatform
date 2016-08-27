@@ -31,6 +31,16 @@ void Application::Start(void) {
 	MicroFurtureSystem::Instance()->Start();
 }
 
+bool Application::Exited(void)
+{
+	return _exited;
+}
+
+int Application::Exit(void)
+{
+	_exited = true;
+	return Stop();
+}
 ////////////////////////////////////////////////////////////////////////
 // Name:       Application::Exit()
 // Purpose:    Implementation of Application::Exit()
@@ -58,6 +68,7 @@ void Application::Join(long seconds) {
 
 Application::Application()
 {
+	_exited = false;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -68,4 +79,5 @@ Application::Application()
 
 Application::~Application()
 {
+	Exit();
 }

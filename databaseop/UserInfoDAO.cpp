@@ -13,7 +13,7 @@ int UserInfoDAO::InsertUser(UserInfoDO & userDO)
 {
 	int ret = -1;
 
-	static const std::string sql_proc_newuser("CALL User_New(?,?,?,?,?,?,?,?,?,?,?)");
+	static const std::string sql_proc_newuser("CALL User_New(?,?,?,?,?,?,?,?,?,?)");
 
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
@@ -23,15 +23,15 @@ int UserInfoDAO::InsertUser(UserInfoDO & userDO)
 
 		prestmt->setString(1, userDO.UserName);
 		prestmt->setString(2, userDO.Password);
-		prestmt->setString(3, userDO.Company);
-		prestmt->setString(4, userDO.ContactNum);
-		prestmt->setString(5, userDO.FirstName);
-		prestmt->setString(6, userDO.LastName);
-		prestmt->setInt(7, userDO.Gender);
-		prestmt->setString(8, userDO.Email);
-		prestmt->setString(9, userDO.IdentityNum);
-		prestmt->setString(10, userDO.Address);
-		prestmt->setString(11, userDO.ZipCode);
+		//prestmt->setString(3, userDO.Company);
+		prestmt->setString(3, userDO.ContactNum);
+		prestmt->setString(4, userDO.FirstName);
+		prestmt->setString(5, userDO.LastName);
+		prestmt->setInt(6, userDO.Gender);
+		prestmt->setString(7, userDO.Email);
+		prestmt->setString(8, userDO.IdentityNum);
+		prestmt->setString(9, userDO.Address);
+		prestmt->setString(10, userDO.ZipCode);
 
 		prestmt->execute();
 
@@ -58,7 +58,7 @@ int UserInfoDAO::InsertUser(UserInfoDO & userDO)
 std::shared_ptr<UserInfoDO> UserInfoDAO::FindUser(const std::string& userName)
 {
 	static const std::string sql_finduser(
-		"SELECT accountid,password,firstname,lastname,client_symbol,is_trading_allowed,"
+		"SELECT accountid,password,firstname,lastname,is_trading_allowed,"
 		"email,gender,contactnum,address,zipcode,roletype "
 		"FROM vw_client_detail WHERE username = ?");
 
@@ -82,15 +82,15 @@ std::shared_ptr<UserInfoDO> UserInfoDAO::FindUser(const std::string& userName)
 			userDO->Password = rs->getString(2);
 			userDO->FirstName = rs->getString(3);
 			userDO->LastName = rs->getString(4);
-			userDO->Company = rs->getString(5);
-			bool allowTrading = rs->getBoolean(6);
+			//userDO->Company = rs->getString(5);
+			bool allowTrading = rs->getBoolean(5);
 			userDO->Permission = allowTrading ? ALLOW_TRADING : 0;
-			userDO->Email = rs->getString(7);
-			userDO->Gender = (GenderType)rs->getInt(8);
-			userDO->ContactNum = rs->getString(9);
-			userDO->Address = rs->getString(10);
-			userDO->ZipCode = rs->getString(11);
-			userDO->Role = rs->getInt(12);
+			userDO->Email = rs->getString(6);
+			userDO->Gender = (GenderType)rs->getInt(7);
+			userDO->ContactNum = rs->getString(8);
+			userDO->Address = rs->getString(9);
+			userDO->ZipCode = rs->getString(10);
+			userDO->Role = rs->getInt(11);
 		}
 	}
 	catch (sql::SQLException& sqlEx)
@@ -105,7 +105,7 @@ std::shared_ptr<UserInfoDO> UserInfoDAO::FindUser(const std::string& userName)
 VectorDO_Ptr<UserInfoDO> UserInfoDAO::FindAllUserByRole(int role)
 {
 	static const std::string sql_findalluser(
-		"SELECT accountid,username,firstname,lastname,client_symbol,is_trading_allowed,"
+		"SELECT accountid,username,firstname,lastname,is_trading_allowed,"
 		"email,gender,contactnum,address,zipcode "
 		"FROM vw_client_detail WHERE roletype = ?");
 
@@ -126,14 +126,14 @@ VectorDO_Ptr<UserInfoDO> UserInfoDAO::FindAllUserByRole(int role)
 			userDO.UserName = rs->getString(2);
 			userDO.FirstName = rs->getString(3);
 			userDO.LastName = rs->getString(4);
-			userDO.Company = rs->getString(5);
-			bool allowTrading = rs->getBoolean(6);
+			//userDO.Company = rs->getString(5);
+			bool allowTrading = rs->getBoolean(5);
 			userDO.Permission = allowTrading ? ALLOW_TRADING : 0;
-			userDO.Email = rs->getString(7);
-			userDO.Gender = (GenderType)rs->getInt(8);
-			userDO.ContactNum = rs->getString(9);
-			userDO.Address = rs->getString(10);
-			userDO.ZipCode = rs->getString(11);
+			userDO.Email = rs->getString(6);
+			userDO.Gender = (GenderType)rs->getInt(7);
+			userDO.ContactNum = rs->getString(8);
+			userDO.Address = rs->getString(9);
+			userDO.ZipCode = rs->getString(10);
 			userDO.Role = role;
 
 			ret->push_back(std::move(userDO));

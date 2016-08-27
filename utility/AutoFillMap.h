@@ -13,9 +13,12 @@
 #include <functional>
 
 template <class K, class V>
-class autofillmap : public std::map < K, V >
+class autofillmap : public std::map<K, V>
 {
 public:
+	autofillmap() = default;
+	autofillmap(const std::map<K, V>& others) : std::map<K, V>(others) {}
+
 	V& getorfill(const K& key)
 	{
 		auto it = find(key);

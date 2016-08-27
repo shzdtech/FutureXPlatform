@@ -158,7 +158,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="OTCNewPortfolio.cpp" />
     <ClCompile Include="OTCQueryInstrument.cpp" />
+    <ClCompile Include="OTCQueryPortfolio.cpp" />
     <ClCompile Include="OTCQueryTrade.cpp" />
     <ClCompile Include="OTCUnSubMarketData.cpp" />
     <ClCompile Include="OTCCancelOrder.cpp" />
@@ -179,7 +181,9 @@
     <ClCompile Include="TradingDeskContextBuilder.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="OTCNewPortfolio.h" />
     <ClInclude Include="OTCQueryInstrument.h" />
+    <ClInclude Include="OTCQueryPortfolio.h" />
     <ClInclude Include="OTCQueryTrade.h" />
     <ClInclude Include="OTCUnSubMarketData.h" />
     <ClInclude Include="OTCCancelOrder.h" />
@@ -198,6 +202,7 @@
     <ClInclude Include="OTCUserContextBuilder.h" />
     <ClInclude Include="OTCWorkerProcessor.h" />
     <ClInclude Include="otc_bizhandlers.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="TradingDeskContextBuilder.h" />
   </ItemGroup>
   <ItemGroup>
@@ -216,6 +221,9 @@
     <ProjectReference Include="..\pricingengine\pricingengine.vcxproj">
       <Project>{001a89a1-70d7-4a9b-a7b2-82d0be1ba07c}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="OTCServer.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

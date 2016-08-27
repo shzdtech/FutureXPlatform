@@ -52,7 +52,7 @@ dataobj_ptr CTPAccountLogin::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* ra
 
 		wkProcPtr->RegisterLoggedSession(session->getProcessor()->LockMessageSession().get());
 	}
-	
+
 	return ret;
 }
 
@@ -82,14 +82,12 @@ std::shared_ptr<UserInfoDO> CTPAccountLogin::Login(const dataobj_ptr reqDO, IRaw
 		bool userInCache = false;
 		std::shared_ptr<UserInfoDO> userInfo_Ptr;
 
-		if (auto userInfoCache = std::static_pointer_cast<IUserInfoPtrMap>
-			(AppContext::GetData(STR_KEY_DEFAULT_CLIENT_SYMBOL)))
+		if (auto userInfoCache = std::static_pointer_cast<IUserInfoPtrMap>(AppContext::GetData(STR_KEY_APP_USER_DETAIL)))
 		{
 			auto it = userInfoCache->find(userid);
 			if (it != userInfoCache->end())
 			{
-				userInfo_Ptr = std::static_pointer_cast<UserInfoDO>
-					(it->second->getAttribute(STR_KEY_USER_INFO_DETAIL));
+				userInfo_Ptr = std::static_pointer_cast<UserInfoDO>(it->second->getAttribute(STR_KEY_USER_INFO_DETAIL));
 				userInCache = true;
 			}
 		}

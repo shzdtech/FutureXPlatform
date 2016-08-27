@@ -33,7 +33,6 @@ OrderDO_Ptr AutoOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 	auto orderId = orderInfo.OrderID;
 	if (orderId == 0 || !FindOrder(orderId))
 	{
-		orderInfo.OrderID = OrderSeqGen::GetNextSeq();
 		ret = _pOrderAPI->CreateOrder(orderInfo);
 		if (ret->OrderStatus == OrderStatus::OPENED)
 		{
@@ -59,7 +58,7 @@ OrderDOVec_Ptr AutoOrderManager::UpdateOrderByStrategy(
 
 	if (strategyDO.Trading)
 	{
-		std::lock_guard<std::mutex> guard(_userOrderCtx.Mutex(strategyDO));
+		std::lock_guard<std::shared_mutex> guard(_userOrderCtx.UserMutex(strategyDO.UserID()));
 
 		if (auto pricingDO_ptr = PricingUtility::Pricing(&strategyDO.Quantity, strategyDO, *_pricingCtx))
 		{
@@ -74,7 +73,7 @@ OrderDOVec_Ptr AutoOrderManager::UpdateOrderByStrategy(
 			std::vector<double> tlBuyPrices;
 			std::vector<double> tlSellPrices;
 
-			auto& tradingOrders = _userOrderCtx.GetTradingOrderMap(strategyDO);
+			auto& tradingOrders = _userOrderCtx.GetOrderMapByUserContract(strategyDO);
 
 			for (auto it = tradingOrders.begin(); it != tradingOrders.end();)
 			{
@@ -119,15 +118,14 @@ OrderDOVec_Ptr AutoOrderManager::UpdateOrderByStrategy(
 			// Make new orders
 			OrderRequestDO newOrder(strategyDO);
 			newOrder.Volume = strategyDO.Quantity;
-			
+
 			double sellPrice = pricingsellMin;
 			double buyPrice = pricingbuyMax;
 			double tickSize = strategyDO.TickSize;
-			
+
 			for (int i = 0; i < strategyDO.Depth; i++)
 			{
-				if (std::find(tlSellPrices.begin(), tlSellPrices.end(), sellPrice)
-					== tlSellPrices.end())
+				if (std::find(tlSellPrices.begin(), tlSellPrices.end(), sellPrice) == tlSellPrices.end())
 				{
 					newOrder.OrderID = 0;
 					newOrder.Direction = DirectionType::SELL;
@@ -136,8 +134,7 @@ OrderDOVec_Ptr AutoOrderManager::UpdateOrderByStrategy(
 					ret->push_back(newOrder);
 				}
 
-				if (std::find(tlBuyPrices.begin(), tlBuyPrices.end(), buyPrice)
-					== tlBuyPrices.end())
+				if (std::find(tlBuyPrices.begin(), tlBuyPrices.end(), buyPrice) == tlBuyPrices.end())
 				{
 					newOrder.OrderID = 0;
 					newOrder.Direction = DirectionType::BUY;
@@ -187,7 +184,6 @@ int AutoOrderManager::OnOrderUpdated(OrderDO& orderInfo)
 
 		if (!orderInfo.Active)
 		{
-			std::lock_guard<std::mutex> guard(_userOrderCtx.Mutex(orderInfo));
 			_userOrderCtx.RemoveOrder(orderInfo.OrderID);
 		}
 
@@ -216,7 +212,7 @@ int AutoOrderManager::OnOrderUpdated(OrderDO& orderInfo)
 OrderDO_Ptr AutoOrderManager::CancelOrder(OrderRequestDO& orderInfo)
 {
 	OrderDO_Ptr ret;
-	auto& orderMap = _userOrderCtx.GetTradingOrderMap(orderInfo);
+	auto& orderMap = _userOrderCtx.GetOrderMapByUserContract(orderInfo);
 	if (orderInfo.OrderID != 0)
 	{
 		auto it = orderMap.find(orderInfo.OrderID);

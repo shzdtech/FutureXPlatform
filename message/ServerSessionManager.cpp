@@ -43,7 +43,7 @@ ServerSessionManager::~ServerSessionManager()
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void ServerSessionManager::AssembleSession(IMessageSession_Ptr msgSessionPtr)
+void ServerSessionManager::AssembleSession(const IMessageSession_Ptr& msgSessionPtr)
 {
 	auto msgProcessor = _server->GetServiceFactory()->CreateMessageProcessor(_server->getContext());
 	msgProcessor->setServerContext(_server->getContext());
@@ -57,14 +57,14 @@ void ServerSessionManager::AssembleSession(IMessageSession_Ptr msgSessionPtr)
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       ServerSessionManager::OnSessionClosing(IMessageSession_Ptr msgSessionPtr)
+// Name:       ServerSessionManager::OnSessionClosing(IMessageSession_Ptr& msgSessionPtr)
 // Purpose:    Implementation of ServerSessionManager::OnSessionClosing()
 // Parameters:
 // - msgSessionPtr
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void ServerSessionManager::OnSessionClosing(IMessageSession_Ptr msgSessionPtr)
+void ServerSessionManager::OnSessionClosing(const IMessageSession_Ptr& msgSessionPtr)
 {
 	if (_sessionSet.find(msgSessionPtr) != _sessionSet.end())
 		_sessionSet.erase(msgSessionPtr);
@@ -85,14 +85,12 @@ void ServerSessionManager::OnServerClosing(void)
 	{
 		try
 		{
-			auto sessionPtr = *it;
-			_sessionSet.erase(it);
-			if (sessionPtr)
+			if (auto sessionPtr = *it)
 				sessionPtr->Close();
 		}
 		catch (...) {}
 
-		it = _sessionSet.begin();
+		it = _sessionSet.erase(it);
 	}
 	_server->getContext()->Reset();
 }
@@ -107,7 +105,7 @@ void ServerSessionManager::OnServerStarting(void)
 {
 	_msgsvclocator = std::make_shared<MessageServiceLocator>(_server->GetServiceFactory(), _server->getContext());
 
-	if (auto workProcPtr = _msgsvclocator->GetWorkerProcessor())
+	if (auto workProcPtr = _server->getContext()->getWorkerProcessor())
 	{
 		auto msgSession_Ptr = std::make_shared<MessageSession>();
 		workProcPtr->setServiceLocator(_msgsvclocator);

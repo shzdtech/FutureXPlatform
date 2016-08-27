@@ -11,14 +11,14 @@
 #include "AutoOrderManager.h"
 #include "MarketPositionContext.h"
 #include "../dataobject/TypedefDO.h"
-
+#include "../dataobject/PortfolioDO.h"
 
 #include "ordermgr_export.h"
 
 class ORDERMGR_CLASS_EXPORT HedgeOrderManager : public AutoOrderManager
 {
 public:
-	HedgeOrderManager(const std::string& user, IOrderAPI* pOrderAPI, IPricingDataContext* pricingCtx);
+	HedgeOrderManager(const PortfolioKey& portfolio, IOrderAPI* pOrderAPI, IPricingDataContext* pricingCtx);
 
 	OrderDO_Ptr CreateOrder(OrderRequestDO& orderInfo);
 
@@ -33,7 +33,7 @@ public:
 	void FillPosition(ContractMap<double>& position);
 
 protected:
-	const std::string& _user;
+	PortfolioKey _portfolio;
 	ContractMap<movable_mutex<std::mutex>> _contractMutex;
 	ContractMap<std::atomic<double>> _contractPosition;
 	MarketPositionContext _mktPosCtx;

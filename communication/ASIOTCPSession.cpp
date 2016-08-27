@@ -13,18 +13,18 @@
 #include "../configuration/AbstractConfigReaderFactory.h"
 
 
-////////////////////////////////////////////////////////////////////////
-// Name:       ASIOTCPSession::ASIOTCPSession(io_service& io_svc)
-// Purpose:    Implementation of ASIOTCPSession::ASIOTCPSession()
-// Parameters:
-// - io_svc
-// Return:     
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       ASIOTCPSession::ASIOTCPSession(io_service& io_svc)
+ // Purpose:    Implementation of ASIOTCPSession::ASIOTCPSession()
+ // Parameters:
+ // - io_svc
+ // Return:     
+ ////////////////////////////////////////////////////////////////////////
 
 ASIOTCPSession::ASIOTCPSession(tcp::socket&& socket) :
-_alive(true), _closed(false), _started(false),
-_socket(std::move(socket)), _max_msg_size(MAX_MSG_SIZE),
-_heartbeat_timer(_socket.get_io_service()) {
+	_alive(true), _closed(false), _started(false),
+	_socket(std::move(socket)), _max_msg_size(MAX_MSG_SIZE),
+	_heartbeat_timer(_socket.get_io_service()) {
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -40,20 +40,6 @@ ASIOTCPSession::~ASIOTCPSession() {
 void ASIOTCPSession::setMaxMessageSize(uint maxMsgSize)
 {
 	_max_msg_size = maxMsgSize;
-}
-
-////////////////////////////////////////////////////////////////////////
-// Name:       ASIOTCPSession::RegistProcessor(messageprocessor_ptr msgprocessor)
-// Purpose:    Implementation of ASIOTCPSession::RegistProcessor()
-// Parameters:
-// - msgprocessor
-// Return:     void
-////////////////////////////////////////////////////////////////////////
-
-void ASIOTCPSession::RegistProcessor(IMessageProcessor_Ptr msgprocessor) {
-	if (msgprocessor) {
-		MessageSession::RegistProcessor(msgprocessor);
-	}
 }
 
 int ASIOTCPSession::WriteMessage(const uint msgId, const data_buffer& msg) {
@@ -132,7 +118,7 @@ bool ASIOTCPSession::Close(void) {
 	if (!_closed) {
 		if (_socket.is_open())
 		{
-			LOG_DEBUG << "Session on " << _socket.remote_endpoint().address().to_string() 
+			LOG_DEBUG << "Session on " << _socket.remote_endpoint().address().to_string()
 				<< " is closing...";
 			_socket.shutdown(tcp::socket::shutdown_both);
 			_socket.close();
@@ -148,7 +134,7 @@ bool ASIOTCPSession::Close(void) {
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void ASIOTCPSession::asyn_read_header(ASIOTCPSession_Ptr this_ptr) {
+void ASIOTCPSession::asyn_read_header(const ASIOTCPSession_Ptr& this_ptr) {
 	async_read(this_ptr->_socket, buffer(this_ptr->_header, HEADER_SIZE),
 		[this_ptr](boost::system::error_code ec, std::size_t length) {
 		auto this_ins = this_ptr.get();
@@ -158,8 +144,8 @@ void ASIOTCPSession::asyn_read_header(ASIOTCPSession_Ptr this_ptr) {
 			if (CTRLCHAR::SOH == header[0] && CTRLCHAR::STX == header[HEADER_LAST]) {
 				uint msg_size = (header[1] | header[2] << 8 | header[3] << 16 | header[4] << 24);
 				if (msg_size > this_ins->_max_msg_size) {
-					LOG_INFO << "Client message exceed max size (" 
-						<<this_ins->_max_msg_size << "): " << msg_size;
+					LOG_INFO << "Client message exceed max size ("
+						<< this_ins->_max_msg_size << "): " << msg_size;
 					this_ins->Close();
 				}
 				else {
@@ -183,7 +169,7 @@ void ASIOTCPSession::asyn_read_header(ASIOTCPSession_Ptr this_ptr) {
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void ASIOTCPSession::asyn_read_body(ASIOTCPSession_Ptr this_ptr, uint msgSize) {
+void ASIOTCPSession::asyn_read_body(const ASIOTCPSession_Ptr& this_ptr, uint msgSize) {
 	buffer_ptr msgbuf(new byte[msgSize]);
 	async_read(this_ptr->_socket, buffer(msgbuf.get(), msgSize),
 		[this_ptr, msgbuf](boost::system::error_code ec, std::size_t length) {
@@ -213,7 +199,7 @@ void ASIOTCPSession::asyn_read_body(ASIOTCPSession_Ptr this_ptr, uint msgSize) {
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void ASIOTCPSession::asyn_timeout(ASIOTCPSession_WkPtr this_wk_ptr) {
+void ASIOTCPSession::asyn_timeout(const ASIOTCPSession_WkPtr& this_wk_ptr) {
 	if (auto this_ptr = this_wk_ptr.lock()) {
 		auto this_ins = this_ptr.get();
 		if (this_ins->_timeout > 0) {

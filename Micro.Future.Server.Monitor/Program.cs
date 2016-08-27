@@ -31,16 +31,7 @@ namespace Micro.Future.Server.Monitor
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-            var mainform = new MonitorForm();
-            mainform.FormClosed += FormClosed;
-
-            Application.Run(mainform);
-        }
-
-        private static void FormClosed(object sender, FormClosedEventArgs e)
-        {
-            Process.GetCurrentProcess().Kill();
+            Application.Run(new MonitorForm());
         }
     }
 }

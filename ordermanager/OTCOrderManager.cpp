@@ -35,7 +35,6 @@ OrderDO_Ptr OTCOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 		{
 			if (ret->OrderStatus == OrderStatus::OPENED)
 			{
-				std::lock_guard<std::mutex> guard(_userOrderCtx.Mutex(orderInfo));
 				_userOrderCtx.AddOrder(*ret);
 			}
 		}
@@ -58,11 +57,11 @@ OrderDOVec_Ptr OTCOrderManager::UpdateOrderByStrategy(const StrategyContractDO& 
 
 	if (strategyDO.Enabled)
 	{
-		std::lock_guard<std::mutex> guard(_userOrderCtx.Mutex(strategyDO));
+		std::lock_guard<std::shared_mutex> guard(_userOrderCtx.UserMutex(strategyDO.UserID()));
 
-		auto& tradingMap = _userOrderCtx.GetTradingOrderMap(strategyDO);
+		auto& tradingMap = _userOrderCtx.GetOrderMapByUserContract(strategyDO);
 
-		if (tradingMap.size() > 0)
+		if (!tradingMap.empty())
 		{
 			ret = std::make_shared<VectorDO<OrderDO>>();
 
@@ -139,7 +138,6 @@ OrderDO_Ptr OTCOrderManager::CancelOrder(OrderRequestDO& orderInfo)
 
 	OrderStatus currStatus;
 	OTCOrderDAO::CancelOrder(orderInfo, currStatus);
-	std::lock_guard<std::mutex> guard(_userOrderCtx.Mutex(orderInfo));
 	OrderDO_Ptr ret = _userOrderCtx.RemoveOrder(orderInfo.OrderID);
 	if (ret) ret->OrderStatus = OrderStatus::CANCELED;
 
@@ -158,7 +156,6 @@ OrderDO_Ptr OTCOrderManager::RejectOrder(OrderRequestDO& orderInfo)
 {
 	OrderStatus currStatus;
 	OTCOrderDAO::RejectOrder(orderInfo, currStatus);
-	std::lock_guard<std::mutex> guard(_userOrderCtx.Mutex(orderInfo));
 	OrderDO_Ptr ret = _userOrderCtx.RemoveOrder(orderInfo.OrderID);
 	if (ret)	ret->OrderStatus = OrderStatus::REJECTED;
 
@@ -209,13 +206,11 @@ HedgeOrderManager_Ptr OTCOrderManager::FindHedgeManager(const PortfolioKey& port
 	auto it = _hedgeMgr.find(portfolioKey);
 
 	return (it != _hedgeMgr.end()) ? it->second : _hedgeMgr.getorfillfunc
-	(portfolioKey,
-		&OTCOrderManager::initHedgeOrderMgr,
-		this, portfolioKey.UserID());
+	(portfolioKey, &OTCOrderManager::initHedgeOrderMgr, this, portfolioKey);
 }
 
 
-HedgeOrderManager_Ptr OTCOrderManager::initHedgeOrderMgr(const std::string& userID)
+HedgeOrderManager_Ptr OTCOrderManager::initHedgeOrderMgr(const PortfolioKey& portfolio)
 {
-	return std::make_shared<HedgeOrderManager>(userID, _pOrderAPI, _pricingCtx);
+	return std::make_shared<HedgeOrderManager>(portfolio, _pOrderAPI, _pricingCtx);
 }

@@ -40,9 +40,9 @@ dataobj_ptr TestingSubMarketDataHandler::HandleRequest(const dataobj_ptr& reqDO,
 		session->getContext()->setAttribute(STR_KEY_USER_CONTRACTS, mdDOMap_Ptr);
 	}
 
-	if (stdo->Data.size() > 0)
+	if (!stdo->Data.empty())
 	{
-		auto& instList = stdo->Data[STR_INSTRUMENT_ID];
+		auto& instList = stdo->Data.begin()->second;;
 		for (auto& inst : instList)
 		{
 			MarketDataDO mdDO("TestExchange", inst);

@@ -160,6 +160,7 @@
     <ClInclude Include="OTCOptionVolatility.h" />
     <ClInclude Include="otcoption_bizhandlers.h" />
     <ClInclude Include="otcoption_export.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="OTCOptionVolatility.cpp" />
@@ -175,6 +176,9 @@
     <ProjectReference Include="..\pricingengine\pricingengine.vcxproj">
       <Project>{001a89a1-70d7-4a9b-a7b2-82d0be1ba07c}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="OptionServer.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

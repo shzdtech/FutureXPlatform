@@ -72,7 +72,8 @@ IMessageProcessor_Ptr CTPMDServiceFactory::CreateMessageProcessor(IServerContext
 IMessageProcessor_Ptr CTPMDServiceFactory::CreateWorkerProcessor(IServerContext* serverCtx)
 {
 	std::string loadWkProc;
-	if (serverCtx->getConfigVal("load_workprocessor", loadWkProc))
+	if (serverCtx->getConfigVal("load_workprocessor", loadWkProc) &&
+		stringutility::compare(loadWkProc.data(), "true") == 0)
 	{
 		if (!serverCtx->getWorkerProcessor())
 		{

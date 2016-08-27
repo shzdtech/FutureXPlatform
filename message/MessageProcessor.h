@@ -22,9 +22,9 @@ public:
 	MessageProcessor();
 	~MessageProcessor();
 	IMessageSession_Ptr LockMessageSession(void);
-	void setSession(IMessageSession_WkPtr msgSession_wk_ptr);
+	void setSession(const IMessageSession_WkPtr& msgSession_wk_ptr);
 	IMessageServiceLocator_Ptr getServiceLocator(void);
-	void setServiceLocator(IMessageServiceLocator_Ptr svc_locator_ptr);
+	void setServiceLocator(const IMessageServiceLocator_Ptr& svc_locator_ptr);
 
 	virtual void setServerContext(IServerContext* serverCtx);
 	virtual IServerContext* getServerContext(void);

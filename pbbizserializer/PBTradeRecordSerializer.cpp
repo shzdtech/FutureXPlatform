@@ -41,6 +41,7 @@ data_buffer PBTradeRecordSerializer::Serialize(const dataobj_ptr& abstractDO)
 	PB.set_tradetime(pDO->TradeTime);
 	PB.set_tradetype(pDO->TradeType);
 	PB.set_hedgeflag(pDO->HedgeFlag);
+	PB.set_portfolio(pDO->PortfolioID());
 
 	SerializeWithReturn(PB);
 }

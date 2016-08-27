@@ -40,7 +40,7 @@ dataobj_ptr CTPQueryTrade::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawA
 		  MessageUtility::ServerWorkerProcessor<CTPTradeWorkerProcessor>(session->getProcessor()))
 	{
 		auto& userMap = wkProcPtr->GetUserTradeMap(session->getUserInfo()->getUserId());
-		if (userMap.size() < 1)
+		if (userMap.empty())
 		{
 			auto stdo = (MapDO<std::string>*)reqDO.get();
 
@@ -103,6 +103,11 @@ dataobj_ptr CTPQueryTrade::HandleResponse(const uint32_t serialId, param_vector&
 		if (auto wkProcPtr =
 			  MessageUtility::ServerWorkerProcessor<CTPTradeWorkerProcessor>(session->getProcessor()))
 		{
+			if (auto order_ptr = wkProcPtr->GetUserOrderContext().FindOrder(ret->OrderID))
+			{
+				ret->SetUserID(order_ptr->PortfolioID());
+				ret->SetPortfolioID(order_ptr->PortfolioID());
+			}
 			auto& tradeMap = wkProcPtr->GetUserTradeMap(pTradeInfo->UserID);
 			auto& trade = tradeMap.getorfill(ret->TradeID, *ret);
 			trade = *ret;

@@ -17,21 +17,31 @@
 
 template <typename T>
 class VectorDO : public std::vector<T>, public dataobjectbase
-{};
+{
+public:
+	VectorDO() = default;
+	VectorDO(const std::vector<T>& other) : std::vector<T>(other) {}
+};
 template <typename T> using VectorDO_Ptr = typename std::shared_ptr<VectorDO<T>>;
 
 template <typename T>
 class SetDO : public std::set<T>, public dataobjectbase
-{};
+{
+public:
+	SetDO() = default;
+	SetDO(const std::set<T>& other) : std::set<T>(other) {}
+};
 template <typename T> using SetDO_Ptr = typename std::shared_ptr<SetDO<T>>;
 
 template <typename T>
 class MapDO : public std::map<std::string, T>, public dataobjectbase
 {
 public:
-	MapDO() {};
+	MapDO() = default;
 
 	typedef std::map<std::string, T> _baseMap;
+	MapDO(const _baseMap& other) : _baseMap(other) {}
+
 	template <typename TIt>
 	MapDO(TIt first, TIt last)
 		: _baseMap(first, last) {}

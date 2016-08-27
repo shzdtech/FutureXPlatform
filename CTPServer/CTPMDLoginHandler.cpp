@@ -23,9 +23,9 @@ int CTPMDLoginHandler::LoginFunction(IRawAPI* rawAPI, ISession* session, CThostF
 
 	if (loginInfo->BrokerID[0] == 0)
 	{
-		if (!session->getProcessor()->getServerContext()->getConfigVal(CTP_MD_SERVER, value))
+		if (!session->getProcessor()->getServerContext()->getConfigVal(CTP_MD_BROKERID, value))
 		{
-			value = SysParam::Get(CTP_MD_SERVER);
+			value = SysParam::Get(CTP_MD_BROKERID);
 		}
 		std::strcpy(loginInfo->BrokerID, value.data());
 	}

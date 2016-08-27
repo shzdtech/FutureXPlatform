@@ -47,6 +47,7 @@ data_buffer PBOrderSerializer::Serialize(const dataobj_ptr& abstractDO)
 	PB.set_openclose(pDO->OpenClose);
 	PB.set_message(pDO->Message);
 	PB.set_sessionid(pDO->SessionID);
+	PB.set_portfolio(pDO->PortfolioID());
 	
 	SerializeWithReturn(PB);
 }
@@ -64,7 +65,7 @@ dataobj_ptr PBOrderSerializer::Deserialize(const data_buffer& rawdata)
 	Micro::Future::Message::Business::PBOrderRequest PB;
 	ParseWithReturn(PB, rawdata);
 
-	auto ret = std::make_shared<OrderRequestDO>(PB.orderid(), PB.exchange(), PB.contract(), "");
+	auto ret = std::make_shared<OrderRequestDO>(PB.orderid(), PB.exchange(), PB.contract(), "", PB.portfolio());
 	FillDOHeader(ret, PB);
 
 	ret->OrderSysID = PB.ordersysid();

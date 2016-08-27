@@ -17,7 +17,8 @@
 class DATABASEOP_CLASS_EXPORTS OrderDAO
 {
 public:
-	OrderDO_Ptr CreateOrder(const OrderDO& orderDO);
+	bool CreateOrder(OrderRequestDO& orderDO);
+	bool QueryAllOrderPortfolio(std::map<uint64_t, std::string>& memoryPortfolio);
 
 protected:
 private:

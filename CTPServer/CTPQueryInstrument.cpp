@@ -20,6 +20,7 @@
 #include "../utility/stringutility.h"
 
 #include "../bizutility/ContractCache.h"
+#include "../bizutility/UnderlyingMap.h"
 
 #include "CTPUtility.h"
 
@@ -89,7 +90,7 @@ dataobj_ptr CTPQueryInstrument::HandleResponse(const uint32_t serialId, param_ve
 		InstrumentDO insDO(pData->ExchangeID, pData->InstrumentID);
 
 		insDO.Name = Encoding::ToUTF8(pData->InstrumentName, CHARSET_GB2312);
-		insDO.ProductID = pData->ProductID;
+		UnderlyingMap::TryFind(pData->ProductID, insDO.ProductID);
 		insDO.ProductType = (ProductType)(pData->ProductClass - THOST_FTDC_PC_Futures);
 		insDO.DeliveryYear = pData->DeliveryYear;
 		insDO.DeliveryMonth = pData->DeliveryMonth;

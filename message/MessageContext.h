@@ -16,7 +16,7 @@ class MESSAGE_CLASS_EXPORT MessageContext : public IMessageContext
 {
 public:
    attribute_ptr getAttribute(const std::string& key);
-   void setAttribute(const std::string& key, attribute_ptr value);
+   void setAttribute(const std::string& key, const attribute_ptr& value);
 
 protected:
 

@@ -28,20 +28,19 @@ dataobj_ptr CTPUnsubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI*
 {
 	auto stdo = (StringTableDO*)reqDO.get();
 	int ret = 0;
-	if (stdo->Data.size() > 0)
+	if (!stdo->Data.empty())
 	{
-		auto& instList = stdo->Data[STR_INSTRUMENT_ID];
-		char* pContract[1];
-		for (auto& inst : instList)
+		auto& instList = stdo->Data.begin()->second;
+		auto nInstrument = instList.size();
+		if (nInstrument > 0)
 		{
-			std::transform(inst.begin(), inst.end(), inst.begin(), ::tolower);
-			pContract[0] = const_cast<char*>(inst.data());
-			ret = ((CTPRawAPI*)rawAPI)->MdAPI->UnSubscribeMarketData(pContract, 1);
-			CTPUtility::CheckReturnError(ret);
-
-			std::transform(inst.begin(), inst.end(), inst.begin(), ::toupper);
-			pContract[0] = const_cast<char*>(inst.data());
-			ret = ((CTPRawAPI*)rawAPI)->MdAPI->UnSubscribeMarketData(pContract, 1);
+			auto ppInstrments = new char*[nInstrument];
+			std::unique_ptr<char*[]> instrmentsPtr(ppInstrments);
+			for (int i = 0; i < nInstrument; i++)
+			{
+				ppInstrments[i] = const_cast<char*>(instList[i].data());
+			}
+			ret = ((CTPRawAPI*)rawAPI)->MdAPI->UnSubscribeMarketData(ppInstrments, nInstrument);
 			CTPUtility::CheckReturnError(ret);
 		}
 	}

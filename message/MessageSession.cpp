@@ -54,7 +54,7 @@ MessageSession::~MessageSession()
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void MessageSession::RegistProcessor(IMessageProcessor_Ptr msgProcessor)
+void MessageSession::RegistProcessor(const IMessageProcessor_Ptr& msgProcessor)
 {
 	_messageProcessor_ptr = msgProcessor;
 	_messageProcessor_ptr->setSession(shared_from_this());
@@ -116,7 +116,7 @@ bool MessageSession::Close(void)
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void MessageSession::addListener(IMessageSessionEvent_WkPtr listener)
+void MessageSession::addListener(const IMessageSessionEvent_WkPtr& listener)
 {
 	removeListener(listener);
 	_sessionEventList.push_back(listener);
@@ -130,7 +130,7 @@ void MessageSession::addListener(IMessageSessionEvent_WkPtr listener)
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void MessageSession::removeListener(IMessageSessionEvent_WkPtr listener)
+void MessageSession::removeListener(const IMessageSessionEvent_WkPtr& listener)
 {
 	if (auto lsnPtr = listener.lock())
 	{

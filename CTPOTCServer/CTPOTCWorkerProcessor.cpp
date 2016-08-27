@@ -54,7 +54,7 @@ CTPOTCWorkerProcessor::~CTPOTCWorkerProcessor()
 	LOG_DEBUG << __FUNCTION__;
 }
 
-void CTPOTCWorkerProcessor::setSession(IMessageSession_WkPtr msgSession_wk_ptr)
+void CTPOTCWorkerProcessor::setSession(const IMessageSession_WkPtr& msgSession_wk_ptr)
 {
 	CTPMarketDataProcessor::setSession(msgSession_wk_ptr);
 	((CTPOTCTradeProcessor*)GetOTCTradeProcessor())->setSession(msgSession_wk_ptr);
@@ -75,7 +75,7 @@ void CTPOTCWorkerProcessor::Initialize(IServerContext* serverCtx)
 		LOG_INFO << _serverCtx->getServerUri() << ": " << vectPtr->size() << " contracts are preloaded";
 	}
 
-	if (auto sDOVec_Ptr = StrategyContractDAO::FindStrategyContractByClient(EMPTY_STRING, productType))
+	if (auto sDOVec_Ptr = StrategyContractDAO::FindStrategyContractByUser(EMPTY_STRING, productType))
 	{
 		auto strategyMap = PricingDataContext()->GetStrategyMap();
 		for (auto& strategy : *sDOVec_Ptr)

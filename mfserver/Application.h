@@ -18,11 +18,14 @@ public:
 	~Application();
 	bool Initialize(const std::string& configFile);
 	void Start(void);
+	bool Exited(void);
+	int Exit(void);
 	void Join(long seconds = -1);
 	int Stop(void);
 
 protected:
 private:
+	volatile bool _exited;
 };
 
 #endif

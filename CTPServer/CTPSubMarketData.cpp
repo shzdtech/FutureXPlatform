@@ -30,13 +30,13 @@ dataobj_ptr CTPSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 {
 	auto stdo = (StringTableDO*)reqDO.get();
 	int ret = 0;
-	if (stdo->Data.size() > 0)
+	if (!stdo->Data.empty())
 	{
-		auto& instList = stdo->Data[STR_INSTRUMENT_ID];
+		auto& instList = stdo->Data.begin()->second;
 		auto nInstrument = instList.size();
 		if (nInstrument > 0)
 		{
-			std::unique_ptr<char*[]> ppInstrments(new char* [nInstrument]);
+			std::unique_ptr<char*[]> ppInstrments(new char*[nInstrument]);
 			int i = 0;
 			for (auto& inst : instList)
 			{
@@ -45,7 +45,7 @@ dataobj_ptr CTPSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 				std::transform(inst.begin(), inst.end(), instrument.begin(), ::tolower);
 				if (auto pInstumentDO = ContractCache::Get(ProductType::PRODUCT_FUTURE).QueryInstrumentById(instrument))
 				{
-						ppInstrments[i] = const_cast<char*>(pInstumentDO->InstrumentID().data());
+					ppInstrments[i] = const_cast<char*>(pInstumentDO->InstrumentID().data());
 				}
 				else
 				{
@@ -57,7 +57,7 @@ dataobj_ptr CTPSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 				}
 				i++;
 			}
-			ret = ((CTPRawAPI*)rawAPI)->MdAPI->SubscribeMarketData(ppInstrments.get(), nInstrument);
+			ret = ((CTPRawAPI*)rawAPI)->MdAPI->SubscribeMarketData(ppInstrments.get(), i);
 			CTPUtility::CheckReturnError(ret);
 		}
 	}
@@ -91,7 +91,7 @@ dataobj_ptr CTPSubMarketData::HandleResponse(const uint32_t serialId, param_vect
 			exchange = pInstumentDO->ExchangeID();
 		}
 		else
-		{ 
+		{
 			std::string errmsg("Contract code: ");
 			throw NotFoundException(errmsg + pRspInstr->InstrumentID + " does not exists.");
 		}

@@ -19,7 +19,7 @@
 
 #include "ctpotc_export.h"
 
-class CTP_OTC_CLASS_EXPORT CTPOTCTradeProcessor : public OTCTradeProcessor, public CTPTradeWorkerProcessor
+class CTP_OTC_CLASS_EXPORT CTPOTCTradeProcessor : public CTPTradeWorkerProcessor, public OTCTradeProcessor
 {
 public:
 	CTPOTCTradeProcessor(IServerContext* pServerCtx, 
@@ -34,6 +34,7 @@ public:
 
 	virtual OTCOrderManager* GetOTCOrderManager(void);
 	virtual AutoOrderManager* GetAutoOrderManager(void);
+	virtual void RegisterLoggedSession(IMessageSession * pMessageSession);
 
 protected:
 	OTCOrderManager _otcOrderMgr;
@@ -54,7 +55,8 @@ public:
 	void OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
 	void OnRtnOrder(CThostFtdcOrderField *pOrder);
-	void RegisterLoggedSession(IMessageSession * pMessageSession);
+
+	void OnRtnTrade(CThostFtdcTradeField * pTrade);
 };
 
 #endif

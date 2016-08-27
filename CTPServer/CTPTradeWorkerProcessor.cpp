@@ -14,6 +14,8 @@
 #include "../message/DefMessageID.h"
 #include "../message/message_macro.h"
 
+#include "../databaseop/TradeDAO.h"
+
 #include "../litelogger/LiteLogger.h"
 
  ////////////////////////////////////////////////////////////////////////
@@ -75,65 +77,42 @@ void CTPTradeWorkerProcessor::Initialize(IServerContext* pServerCtx)
 		_rawAPI->TrdAPI->SubscribePrivateTopic(THOST_TERT_RESUME);
 		_rawAPI->TrdAPI->SubscribePublicTopic(THOST_TERT_RESUME);
 		_rawAPI->TrdAPI->Init();
+		std::this_thread::sleep_for(std::chrono::seconds(3)); //wait 3 secs for connecting to CTP server
 	}
 
-	if (_systemUser.getPassword().length() < 1)
-		return;
-
-	auto trdAPI = _rawAPI->TrdAPI;
-	_initializer = std::move(std::thread([trdAPI, this]() {
-		std::this_thread::sleep_for(std::chrono::seconds(1)); //wait 1 secs for connecting to CTP server
-		auto millsec = std::chrono::milliseconds(500);
-		while (!this->DataLoaded)
-		{
-			if (!this->HasLogged())
-			{
-				LoginSystemUser();
-				std::this_thread::sleep_for(std::chrono::seconds(5)); //wait 5 secs for login CTP server
-			}
-
-			if (!DataLoaded)
-			{
-				LoadSystemData(trdAPI);
-			}
-
-			for (int cum_ms = 0; cum_ms < this->RetryInterval && !DataLoaded; cum_ms += millsec.count())
-			{
-				std::this_thread::sleep_for(millsec);
-			}
-		}
-	}));
+	LoadDataAsync();
 }
 
-int CTPTradeWorkerProcessor::LoadSystemData(CThostFtdcTraderApi * trdAPI)
+int CTPTradeWorkerProcessor::RequestExchangeData(void)
 {
 	int ret = -1;
 
 	if (HasLogged())
 	{
 		// LOG_INFO << _serverCtx->getServerUri() << ": Try loading data...";
+		auto trdAPI = _rawAPI->TrdAPI;
 
-		auto delay = std::chrono::seconds(2);
+		auto delay = std::chrono::seconds(3);
 
-		std::this_thread::sleep_for(delay);
+		/*std::this_thread::sleep_for(delay);
 		CThostFtdcQryTradingAccountField reqaccount{};
 		ret = trdAPI->ReqQryTradingAccount(&reqaccount, 0);
 
 		std::this_thread::sleep_for(delay);
 		CThostFtdcQryInvestorPositionField reqposition{};
-		ret = trdAPI->ReqQryInvestorPosition(&reqposition, 0);
+		ret = trdAPI->ReqQryInvestorPosition(&reqposition, 0);*/
 
 		std::this_thread::sleep_for(delay);
-		CThostFtdcQryTradeField reqtrd{};
-		ret = trdAPI->ReqQryTrade(&reqtrd, 0);
+		CThostFtdcQryExchangeField reqexchange{};
+		ret = trdAPI->ReqQryExchange(&reqexchange, 0);
 
 		std::this_thread::sleep_for(delay);
 		CThostFtdcQryOrderField reqorder{};
 		ret = trdAPI->ReqQryOrder(&reqorder, 0);
 
 		std::this_thread::sleep_for(delay);
-		CThostFtdcQryExchangeField reqexchange{};
-		ret = trdAPI->ReqQryExchange(&reqexchange, 0);
+		CThostFtdcQryTradeField reqtrd{};
+		ret = trdAPI->ReqQryTrade(&reqtrd, 0);
 
 		std::this_thread::sleep_for(delay);
 		CThostFtdcQryInstrumentField reqinstr{};
@@ -160,6 +139,37 @@ int CTPTradeWorkerProcessor::LoginSystemUserIfNeed(void)
 		ret = LoginSystemUser();
 
 	return ret;
+}
+
+int CTPTradeWorkerProcessor::LoadDataAsync(void)
+{
+	if (!DataLoaded)
+	{
+		auto trdAPI = _rawAPI->TrdAPI;
+		_initializer = std::move(std::thread([trdAPI, this]() {
+			auto millsec = std::chrono::milliseconds(500);
+			while (!DataLoaded)
+			{
+				if (!HasLogged())
+				{
+					LoginSystemUser();
+					std::this_thread::sleep_for(std::chrono::seconds(3)); //wait 3 secs for login CTP server
+				}
+
+				if (!DataLoaded)
+				{
+					RequestExchangeData();
+				}
+
+				for (int cum_ms = 0; cum_ms < RetryInterval && !DataLoaded; cum_ms += millsec.count())
+				{
+					std::this_thread::sleep_for(millsec);
+				}
+			}
+		}));
+	}
+
+	return 0;
 }
 
 ///登录请求响应
@@ -190,6 +200,7 @@ void CTPTradeWorkerProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUs
 		_isLogged = true;
 
 		LOG_INFO << getServerContext()->getServerUri() << ": System user has logged.";
+		LOG_FLUSH;
 	}
 }
 
@@ -202,6 +213,20 @@ void CTPTradeWorkerProcessor::OnRspQryInstrument(CThostFtdcInstrumentField * pIn
 			if (DataLoaded = bIsLast)
 			{
 				LOG_INFO << getServerContext()->getServerUri() << ": Data preloading finished.";
+
+				std::string logout_dataloaded;
+				if (getServerContext()->getConfigVal("logout_dataloaded", logout_dataloaded) &&
+					stringutility::compare(logout_dataloaded.data(), "true") == 0)
+				{
+					CThostFtdcUserLogoutField logout{};
+					std::strcpy(logout.BrokerID, _systemUser.getBrokerId().data());
+					std::strcpy(logout.UserID, _systemUser.getUserId().data());
+					_rawAPI->TrdAPI->ReqUserLogout(&logout, 0);
+					_isLogged = false;
+
+					LOG_INFO << getServerContext()->getServerUri() << ": System user has logout.";
+				}
+
 				LOG_FLUSH;
 			}
 		}
@@ -216,8 +241,12 @@ void CTPTradeWorkerProcessor::OnErrRtnOrderInsert(CThostFtdcInputOrderField *pIn
 {
 	if (pInputOrder)
 	{
-		auto orderptr = CTPUtility::ParseRawOrderInput(pInputOrder, pRspInfo, _systemUser.getSessionId());
-		DispatchUserMessage(MSG_ID_ORDER_UPDATE, 0, orderptr->UserID(), orderptr);
+		if (auto orderptr = CTPUtility::ParseRawOrderInput(pInputOrder, pRspInfo, _systemUser.getSessionId(),
+			_userOrderCtx.FindOrder(CTPUtility::ToUInt64(pInputOrder->OrderRef))))
+		{
+			orderptr->HasMore = false;
+			DispatchUserMessage(MSG_ID_ORDER_UPDATE, 0, orderptr->UserID(), orderptr);
+		}
 	}
 }
 
@@ -228,8 +257,12 @@ void CTPTradeWorkerProcessor::OnErrRtnOrderAction(CThostFtdcOrderActionField *pO
 	{
 		if (pOrderAction->ActionFlag == THOST_FTDC_AF_Delete)
 		{
-			auto orderptr = CTPUtility::ParseRawOrderAction(pOrderAction, pRspInfo);
-			DispatchUserMessage(MSG_ID_ORDER_UPDATE, 0, orderptr->UserID(), orderptr);
+			if (auto orderptr = CTPUtility::ParseRawOrderAction(pOrderAction, pRspInfo,
+				_userOrderCtx.FindOrder(CTPUtility::ToUInt64(pOrderAction->OrderRef))))
+			{
+				orderptr->HasMore = false;
+				DispatchUserMessage(MSG_ID_ORDER_UPDATE, 0, orderptr->UserID(), orderptr);
+			}
 		}
 	}
 }
@@ -239,95 +272,108 @@ void CTPTradeWorkerProcessor::OnRspOrderInsert(CThostFtdcInputOrderField *pInput
 {
 	if (pInputOrder)
 	{
-		auto orderptr = CTPUtility::ParseRawOrderInput(pInputOrder, pRspInfo, _systemUser.getSessionId());
-
-		orderptr->HasMore = !bIsLast;
-		DispatchUserMessage(MSG_ID_ORDER_UPDATE, 0, orderptr->UserID(), orderptr);
-	}
-}
-
-void CTPTradeWorkerProcessor::OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
-{
-	if (pInputOrderAction)
-	{
-		if (pInputOrderAction->ActionFlag == THOST_FTDC_AF_Delete)
+		if (auto orderptr = CTPUtility::ParseRawOrderInput(pInputOrder, pRspInfo,
+			_systemUser.getSessionId(),
+			_userOrderCtx.FindOrder(CTPUtility::ToUInt64(pInputOrder->OrderRef))))
 		{
-			auto orderptr = CTPUtility::ParseRawOrderInputAction(pInputOrderAction, pRspInfo);
-
 			orderptr->HasMore = !bIsLast;
 			DispatchUserMessage(MSG_ID_ORDER_UPDATE, 0, orderptr->UserID(), orderptr);
 		}
 	}
 }
 
-void CTPTradeWorkerProcessor::OnRtnOrder(CThostFtdcOrderField *pOrder)
-{
-	if (pOrder)
+	void CTPTradeWorkerProcessor::OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 	{
-		auto orderptr = CTPUtility::ParseRawOrder(pOrder);
-		auto& orderDO = _userOrderMap.getorfill(orderptr->UserID()).
-			getorfill(orderptr->OrderSysID, *orderptr);
-		orderDO = *orderptr;
-		DispatchUserMessage(MSG_ID_ORDER_UPDATE, 0, orderptr->UserID(), orderptr);
-	}
-}
-
-void CTPTradeWorkerProcessor::OnRtnTrade(CThostFtdcTradeField * pTrade)
-{
-	if (pTrade)
-	{
-		auto trdDO_Ptr = CTPUtility::ParseRawTrade(pTrade);
-		_userTradeMap.getorfill(trdDO_Ptr->UserID()).
-			getorfill(trdDO_Ptr->TradeID, *trdDO_Ptr);
-		DispatchUserMessage(MSG_ID_TRADE_RTN, 0, pTrade->UserID, trdDO_Ptr);
-	}
-}
-
-void CTPTradeWorkerProcessor::RegisterLoggedSession(IMessageSession * pMessageSession)
-{
-	if (pMessageSession->getLoginTimeStamp() && _isLogged)
-	{
-		if (auto userInfoPtr = pMessageSession->getUserInfo())
+		if (pInputOrderAction)
 		{
-			userInfoPtr->setBrokerId(_systemUser.getBrokerId());
-			userInfoPtr->setInvestorId(_systemUser.getInvestorId());
-			userInfoPtr->setFrontId(_systemUser.getFrontId());
-			userInfoPtr->setSessionId(_systemUser.getSessionId());
-			_userSessionCtn_Ptr->add(userInfoPtr->getUserId(), pMessageSession);
+			if (pInputOrderAction->ActionFlag == THOST_FTDC_AF_Delete)
+			{
+				if (auto orderptr = CTPUtility::ParseRawOrderInputAction(pInputOrderAction, pRspInfo,
+					_userOrderCtx.FindOrder(CTPUtility::ToUInt64(pInputOrderAction->OrderRef))))
+				{
+					orderptr->HasMore = !bIsLast;
+					DispatchUserMessage(MSG_ID_ORDER_UPDATE, 0, orderptr->UserID(), orderptr);
+				}
+			}
 		}
 	}
-}
 
-std::vector<AccountInfoDO>& CTPTradeWorkerProcessor::GetAccountInfo(const std::string userId)
-{
-	return _accountInfoMap.getorfill(userId);
-}
+	void CTPTradeWorkerProcessor::OnRtnOrder(CThostFtdcOrderField *pOrder)
+	{
+		if (pOrder)
+		{
+			if (auto orderptr = CTPUtility::ParseRawOrder(pOrder,
+				_userOrderCtx.FindOrder(CTPUtility::ToUInt64(pOrder->OrderRef))))
+			{
+				orderptr->HasMore = false;
+				DispatchUserMessage(MSG_ID_ORDER_UPDATE, 0, orderptr->UserID(), orderptr);
+			}
+		}
+	}
 
-std::set<ExchangeDO>& CTPTradeWorkerProcessor::GetExchangeInfo()
-{
-	return _exchangeInfo_Set;
-}
+	void CTPTradeWorkerProcessor::OnRtnTrade(CThostFtdcTradeField * pTrade)
+	{
+		if (pTrade)
+		{
+			if (auto trdDO_Ptr = CTPUtility::ParseRawTrade(pTrade))
+			{
+				if (auto order_ptr = _userOrderCtx.FindOrder(trdDO_Ptr->OrderID))
+				{
+					trdDO_Ptr->SetUserID(order_ptr->UserID());
+					trdDO_Ptr->SetPortfolioID(order_ptr->PortfolioID());
+				}
+				TradeDAO::SaveExchangeTrade(*trdDO_Ptr);
+				_userTradeMap.getorfill(trdDO_Ptr->UserID()).getorfill(trdDO_Ptr->TradeID, *trdDO_Ptr);
+				DispatchUserMessage(MSG_ID_TRADE_RTN, 0, trdDO_Ptr->UserID(), trdDO_Ptr);
+			}
+		}
+	}
 
-UserPositionExDOMap& CTPTradeWorkerProcessor::GetUserPositionMap()
-{
-	return _userPositionMap;
-}
+	void CTPTradeWorkerProcessor::RegisterLoggedSession(IMessageSession * pMessageSession)
+	{
+		if (pMessageSession->getLoginTimeStamp() && _isLogged)
+		{
+			if (auto userInfoPtr = pMessageSession->getUserInfo())
+			{
+				userInfoPtr->setBrokerId(_systemUser.getBrokerId());
+				userInfoPtr->setInvestorId(_systemUser.getInvestorId());
+				userInfoPtr->setFrontId(_systemUser.getFrontId());
+				userInfoPtr->setSessionId(_systemUser.getSessionId());
+				_userSessionCtn_Ptr->add(userInfoPtr->getUserId(), pMessageSession);
+			}
+		}
+	}
 
-autofillmap<uint64_t, TradeRecordDO>& CTPTradeWorkerProcessor::GetUserTradeMap(const std::string userId)
-{
-	return _userTradeMap.getorfill(userId);
-}
+	std::vector<AccountInfoDO>& CTPTradeWorkerProcessor::GetAccountInfo(const std::string userId)
+	{
+		return _accountInfoMap.getorfill(userId);
+	}
 
-autofillmap<uint64_t, OrderDO>& CTPTradeWorkerProcessor::GetUserOrderMap(const std::string userId)
-{
-	return _userOrderMap.getorfill(userId);
-}
+	std::set<ExchangeDO>& CTPTradeWorkerProcessor::GetExchangeInfo()
+	{
+		return _exchangeInfo_Set;
+	}
 
-void CTPTradeWorkerProcessor::DispatchUserMessage(int msgId, int serialId, const std::string& userId,
-	const dataobj_ptr& dataobj_ptr)
-{
-	_userSessionCtn_Ptr->foreach(userId, [msgId, serialId, dataobj_ptr, this](IMessageSession* pSession)
-	{this->SendDataObject(pSession, msgId, serialId, dataobj_ptr); });
-}
+	UserPositionExDOMap& CTPTradeWorkerProcessor::GetUserPositionMap()
+	{
+		return _userPositionMap;
+	}
+
+	autofillmap<uint64_t, TradeRecordDO>& CTPTradeWorkerProcessor::GetUserTradeMap(const std::string userId)
+	{
+		return _userTradeMap.getorfill(userId);
+	}
+
+	UserOrderContext & CTPTradeWorkerProcessor::GetUserOrderContext(void)
+	{
+		return _userOrderCtx;
+	}
+
+	void CTPTradeWorkerProcessor::DispatchUserMessage(int msgId, int serialId, const std::string& userId,
+		const dataobj_ptr& dataobj_ptr)
+	{
+		_userSessionCtn_Ptr->foreach(userId, [msgId, serialId, dataobj_ptr, this](IMessageSession* pSession)
+		{this->SendDataObject(pSession, msgId, serialId, dataobj_ptr); });
+	}
 
 

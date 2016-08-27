@@ -28,7 +28,7 @@ dataobj_ptr TestingUnsubMarketDataHandler::HandleRequest(const dataobj_ptr& reqD
 	{
 		auto stdo = (StringTableDO*)reqDO.get();
 
-		if (stdo->Data.size() > 0)
+		if (!stdo->Data.empty())
 		{
 			auto& instList = stdo->Data[STR_INSTRUMENT_ID];
 			for (auto& inst : instList)

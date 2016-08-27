@@ -92,7 +92,7 @@ bool ASIOTCPServer::Stop(void) {
 	_messageThreads.clear();
 
 	_running = false;
-	return true;
+	return !_running;
 }
 
 ////////////////////////////////////////////////////////////////////////

@@ -23,10 +23,10 @@ public:
 	void OnServerClosing(void);
 
 protected:
-	void AssembleSession(IMessageSession_Ptr msgSessionPtr);
+	void AssembleSession(const IMessageSession_Ptr& msgSessionPtr);
 	IMessageServiceLocator_Ptr _msgsvclocator;
 
-	void OnSessionClosing(IMessageSession_Ptr msgSessionPtr);
+	void OnSessionClosing(const IMessageSession_Ptr& msgSessionPtr);
 private:
 
 };

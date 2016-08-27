@@ -64,7 +64,7 @@ void SessionManager::OnServerClosing(void)
 // Return:     bool
 ////////////////////////////////////////////////////////////////////////
 
-void SessionManager::OnSessionClosing(IMessageSession_Ptr sessionPtr)
+void SessionManager::OnSessionClosing(const IMessageSession_Ptr& sessionPtr)
 {
 	if (_sessionSet.find(sessionPtr) != _sessionSet.end())
 		_sessionSet.erase(sessionPtr);

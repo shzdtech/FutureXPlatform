@@ -9,9 +9,9 @@
 #include "../utility/atomicutil.h"
 #include "../utility/epsdouble.h"
 
-HedgeOrderManager::HedgeOrderManager(const std::string& user,
+HedgeOrderManager::HedgeOrderManager(const PortfolioKey& portfolio,
 	IOrderAPI* pOrderAPI, IPricingDataContext* pricingCtx)
-	: _user(user), AutoOrderManager(pOrderAPI, pricingCtx)
+	: _portfolio(portfolio), AutoOrderManager(pOrderAPI, pricingCtx)
 {
 
 }
@@ -121,7 +121,6 @@ int HedgeOrderManager::OnOrderUpdated(OrderDO& orderInfo)
 
 		if (!orderInfo.Active)
 		{
-			std::lock_guard<std::mutex> guard(_userOrderCtx.Mutex(orderInfo));
 			_userOrderCtx.RemoveOrder(orderInfo.OrderID);
 		}
 
@@ -147,7 +146,8 @@ int HedgeOrderManager::Hedge(void)
 			if (_contractMutex.getorfill(it.first).mutex().try_lock()) //if hedging for this contract
 			{
 				// Make new orders
-				OrderRequestDO newOrder(0, it.first.ExchangeID(), it.first.InstrumentID(), _user);
+				OrderRequestDO newOrder(0, it.first.ExchangeID(), it.first.InstrumentID(),
+					_portfolio.UserID(), _portfolio.PortfolioID());
 				newOrder.Volume = std::labs(position);
 				newOrder.Direction = position < 0 ? DirectionType::SELL : DirectionType::BUY;
 				CreateOrder(newOrder);

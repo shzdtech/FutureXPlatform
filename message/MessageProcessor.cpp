@@ -37,12 +37,12 @@ IMessageSession_Ptr MessageProcessor::LockMessageSession(void)
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void MessageProcessor::setSession(IMessageSession_WkPtr msgSession_wk_ptr)
+void MessageProcessor::setSession(const IMessageSession_WkPtr& msgSession_wk_ptr)
 {
 	_msgsession_wk_ptr = msgSession_wk_ptr;
 }
 
-void MessageProcessor::setServiceLocator(IMessageServiceLocator_Ptr svcLct_Ptr)
+void MessageProcessor::setServiceLocator(const IMessageServiceLocator_Ptr& svcLct_Ptr)
 {
 	_svc_locator_ptr = svcLct_Ptr;
 }

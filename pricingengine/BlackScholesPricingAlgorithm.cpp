@@ -55,20 +55,23 @@ std::shared_ptr<PricingDO> BlackScholesPricingAlgorithm::Compute(
 	double bidPrice = pMdDO->BidPrice;
 	double askdPrice = pMdDO->AskPrice;
 
+	if (bidPrice < 0.01 || askdPrice < 0.01)
+		return nullptr;
+
 	auto pricingDO = std::make_shared<PricingDO>(sdo.ExchangeID(), sdo.InstrumentID());
 
 	auto& pairObj = OptionPricingCache::FindOption(sdo, bidPrice);
-	if (pairObj.first == paramObj.volatility)
+	if (pairObj.first == paramObj.volatility && pairObj.second > 0)
 		pricingDO->BidPrice = pairObj.second;
 	else
-	{ 
+	{
 		pricingDO->BidPrice = std::floor(ComputeOptionPrice(bidPrice, paramObj, sdo) / sdo.TickSize) * sdo.TickSize;
 		pairObj.first = paramObj.volatility;
 		pairObj.second = pricingDO->BidPrice;
 	}
-	
+
 	pairObj = OptionPricingCache::FindOption(sdo, askdPrice);
-	if (pairObj.first == paramObj.volatility)
+	if (pairObj.first == paramObj.volatility && pairObj.second > 0)
 		pricingDO->AskPrice = pairObj.second;
 	else
 	{
@@ -85,7 +88,7 @@ const std::map<std::string, double>& BlackScholesPricingAlgorithm::DefaultParams
 	static std::map<std::string, double> defaultParams = {
 		{ BlackScholesParams::volatility_name , 0.2 },
 		{ BlackScholesParams::riskFreeRate_name , 0.05},
-		{ BlackScholesParams::spread_name , 1 },
+		{ BlackScholesParams::spread_name , 0 },
 	};
 	return defaultParams;
 }

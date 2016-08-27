@@ -43,7 +43,7 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 		auto& exchangeid = stdo->TryFind(STR_EXCHANGE_ID, EMPTY_STRING);
 
 		auto& exchangeInfo = wkProcPtr->GetExchangeInfo();
-		if (exchangeInfo.size() < 1)
+		if (exchangeInfo.empty())
 		{
 			CThostFtdcQryExchangeField req{};
 			int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryExchange(&req, reqDO->SerialId);

@@ -16,15 +16,15 @@
 
 #include "../common/BizErrorIDs.h"
 
-////////////////////////////////////////////////////////////////////////
-// Name:       RegisterUserHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of RegisterUserHandler::HandleRequest()
-// Parameters:
-// - reqDO
-// - rawAPI
-// - session
-// Return:     dataobj_ptr
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       RegisterUserHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Purpose:    Implementation of RegisterUserHandler::HandleRequest()
+ // Parameters:
+ // - reqDO
+ // - rawAPI
+ // - session
+ // Return:     dataobj_ptr
+ ////////////////////////////////////////////////////////////////////////
 
 dataobj_ptr RegisterUserHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
@@ -40,7 +40,7 @@ dataobj_ptr RegisterUserHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI
 		if (UserInfoDAO::FindUser(pUserInfoDO->UserName))
 			throw UserException(UserErrorID::USERID_HAS_EXISTED, '"' + pUserInfoDO->UserName + "\" has been registered.");
 
-		if (pUserInfoDO->Company.length() < 1)
+		if (pUserInfoDO->Company.empty())
 			pUserInfoDO->Company = SysParam::Get(STR_KEY_DEFAULT_CLIENT_SYMBOL);
 
 		if (UserInfoDAO::InsertUser(*pUserInfoDO) != 0)
@@ -48,7 +48,7 @@ dataobj_ptr RegisterUserHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI
 
 		ret = UserInfoDAO::FindUser(pUserInfoDO->UserName);
 
-		if(!ret)
+		if (!ret)
 			throw DatabaseException("Fail to insert user info.");
 
 		ret->HasMore = false;

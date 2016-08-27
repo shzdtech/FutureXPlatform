@@ -41,14 +41,14 @@ public:
 template <class T>
 inline void ThrowNotFoundExceptionIfEmpty(const T* pContainer)
 {
-	if (!pContainer || pContainer->begin() == pContainer->end())
+	if (!pContainer || pContainer->empty())
 		throw NotFoundException();
 }
 
 template <class T>
 inline void ThrowNotFoundExceptionIfEmpty(const std::shared_ptr<T>& containerptr)
 {
-	if (!containerptr || containerptr->begin() == containerptr->end())
+	if (!containerptr || containerptr->empty())
 		throw NotFoundException();
 }
 

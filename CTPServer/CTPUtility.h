@@ -26,12 +26,16 @@ public:
 	static bool IsOrderActive(const int status);
 	static OrderStatus CheckOrderStatus(const int status, const int submitStatus);
 
-	static OrderDO_Ptr ParseRawOrderInput(CThostFtdcInputOrderField *pOrder, CThostFtdcRspInfoField *pRsp, int sessionID);
-	static OrderDO_Ptr ParseRawOrder(CThostFtdcOrderField *pOrder);
-	static OrderDO_Ptr ParseRawOrderInputAction(CThostFtdcInputOrderActionField *pOrderAction, CThostFtdcRspInfoField *pRsp);
-	static OrderDO_Ptr ParseRawOrderAction(CThostFtdcOrderActionField *pOrderAction, CThostFtdcRspInfoField *pRsp);
+	static OrderDO_Ptr ParseRawOrderInput(CThostFtdcInputOrderField *pOrder, CThostFtdcRspInfoField *pRsp, int sessionID, OrderDO_Ptr baseOrder = nullptr);
+	static OrderDO_Ptr ParseRawOrder(CThostFtdcOrderField *pOrder, OrderDO_Ptr baseOrder = nullptr);
+	static OrderDO_Ptr ParseRawOrderInputAction(CThostFtdcInputOrderActionField *pOrderAction, CThostFtdcRspInfoField *pRsp, OrderDO_Ptr baseOrder = nullptr);
+	static OrderDO_Ptr ParseRawOrderAction(CThostFtdcOrderActionField *pOrderAction, CThostFtdcRspInfoField *pRsp, OrderDO_Ptr baseOrder = nullptr);
 	
 	static TradeRecordDO_Ptr ParseRawTrade(CThostFtdcTradeField *pTrade);
+
+	static uint64_t GenOrderID();
+
+	static inline uint64_t ToUInt64(char* str) { return std::strtoull(str, nullptr, 0); }
 
 protected:
 private:

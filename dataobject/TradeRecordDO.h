@@ -12,11 +12,14 @@
 #include "dataobjectbase.h"
 #include "OrderDO.h"
 
-class TradeRecordDO : public UserContractKey, public dataobjectbase
+class TradeRecordDO : public UserContractKey, public PortfolioKey, public dataobjectbase
 {
 public:
-	TradeRecordDO(const std::string& exchangeID, const std::string& instrumentID, const std::string& userID)
-		: UserKey(userID), UserContractKey(exchangeID, instrumentID, userID) {}
+	TradeRecordDO(const std::string& exchangeID, const std::string& instrumentID, const std::string& userID, const std::string& portfolioID)
+		: UserKey(userID), UserContractKey(exchangeID, instrumentID, userID), PortfolioKey(portfolioID, userID){}
+
+	TradeRecordDO(const char* exchangeID, const char* instrumentID, const char* userID, const char* portfolioID)
+		: UserKey(userID), UserContractKey(exchangeID, instrumentID, userID), PortfolioKey(portfolioID, userID) {}
 
 	uint64_t OrderID = 0;
 	uint64_t TradeID = 0;
@@ -33,6 +36,7 @@ public:
 
 	std::string TradeDate;
 	std::string TradeTime;
+	std::string TradingDay;
 
 protected:
 

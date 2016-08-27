@@ -180,6 +180,10 @@
     <ClInclude Include="GoogleLogSink.h" />
     <ClInclude Include="LiteLogger.h" />
     <ClInclude Include="LiteLogger_Export.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="litelogger.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

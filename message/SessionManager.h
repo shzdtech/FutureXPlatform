@@ -13,7 +13,7 @@
 #include <set>
 #include "message_exp.h"
 
-class MESSAGE_CLASS_EXPORT SessionManager : public ISessionManager, public std::enable_shared_from_this < SessionManager >
+class MESSAGE_CLASS_EXPORT SessionManager : public ISessionManager, public std::enable_shared_from_this<SessionManager>
 {
 public:
 	SessionManager(IMessageServer* server);
@@ -21,12 +21,12 @@ public:
 
 	void OnServerStarting(void);
 	void OnServerClosing(void);
-	
+
 protected:
 	std::set<IMessageSession_Ptr> _sessionSet;
 	IMessageServer* _server;
 
-	void OnSessionClosing(IMessageSession_Ptr msgSessionPtr);
+	void OnSessionClosing(const IMessageSession_Ptr& msgSessionPtr);
 private:
 
 };
