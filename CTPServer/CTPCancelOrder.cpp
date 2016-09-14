@@ -28,6 +28,8 @@
 
 dataobj_ptr CTPCancelOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
+	CheckLogin(session);
+
 	auto pDO = (OrderRequestDO*)reqDO.get();
 
 	auto userinfo = session->getUserInfo();
@@ -62,7 +64,7 @@ dataobj_ptr CTPCancelOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* raw
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPCancelOrder::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPCancelOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPCancleOrder::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
@@ -71,7 +73,7 @@ dataobj_ptr CTPCancelOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* raw
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPCancelOrder::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPCancelOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	dataobj_ptr ret;
 

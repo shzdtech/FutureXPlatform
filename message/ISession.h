@@ -23,6 +23,7 @@ public:
 	virtual IMessageContext_Ptr getContext(void) = 0;
 	virtual time_t getLoginTimeStamp(void) = 0;
 	virtual void setLoginTimeStamp(time_t tm = 0) = 0;
+	virtual void setLogout(void) = 0;
 	virtual IUserInfo_Ptr getUserInfo(void) = 0;
 	virtual IProcessorBase_Ptr getProcessor(void) = 0;
 

@@ -33,6 +33,7 @@ public:
    virtual int LoginSystemUser(void);
    virtual int LoginSystemUserIfNeed(void);
    virtual int LoadDataAsync(void);
+   virtual void OnDataLoaded(void);
 
    virtual void RegisterLoggedSession(IMessageSession* pMessageSession);
    virtual void DispatchUserMessage(int msgId, int serialId, const std::string& userId, const dataobj_ptr& dataobj_ptr);

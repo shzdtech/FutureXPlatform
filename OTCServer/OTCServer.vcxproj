@@ -160,6 +160,7 @@
   <ItemGroup>
     <ClCompile Include="OTCNewPortfolio.cpp" />
     <ClCompile Include="OTCQueryInstrument.cpp" />
+    <ClCompile Include="OTCQueryModelParams.cpp" />
     <ClCompile Include="OTCQueryPortfolio.cpp" />
     <ClCompile Include="OTCQueryTrade.cpp" />
     <ClCompile Include="OTCUnSubMarketData.cpp" />
@@ -174,6 +175,7 @@
     <ClCompile Include="OTCSubMarketData.cpp" />
     <ClCompile Include="OTCTradeProcessor.cpp" />
     <ClCompile Include="OTCUpdateContractParam.cpp" />
+    <ClCompile Include="OTCUpdateModelParams.cpp" />
     <ClCompile Include="OTCUpdateStrategy.cpp" />
     <ClCompile Include="OTCUpdateUserParam.cpp" />
     <ClCompile Include="OTCUserContextBuilder.cpp" />
@@ -183,6 +185,7 @@
   <ItemGroup>
     <ClInclude Include="OTCNewPortfolio.h" />
     <ClInclude Include="OTCQueryInstrument.h" />
+    <ClInclude Include="OTCQueryModelParams.h" />
     <ClInclude Include="OTCQueryPortfolio.h" />
     <ClInclude Include="OTCQueryTrade.h" />
     <ClInclude Include="OTCUnSubMarketData.h" />
@@ -197,6 +200,7 @@
     <ClInclude Include="OTCSubMarketData.h" />
     <ClInclude Include="OTCTradeProcessor.h" />
     <ClInclude Include="OTCUpdateContractParam.h" />
+    <ClInclude Include="OTCUpdateModelParams.h" />
     <ClInclude Include="OTCUpdateStrategy.h" />
     <ClInclude Include="OTCUpdateUserParam.h" />
     <ClInclude Include="OTCUserContextBuilder.h" />
@@ -211,6 +215,9 @@
     </ProjectReference>
     <ProjectReference Include="..\databaseop\databaseop.vcxproj">
       <Project>{dc2aae7b-2f79-42fc-94c2-bc3c9c1108c9}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\litelogger\litelogger.vcxproj">
+      <Project>{c1d53247-d933-4f39-9b56-09909f6a1c27}</Project>
     </ProjectReference>
     <ProjectReference Include="..\message\message.vcxproj">
       <Project>{e9adaa2b-1ccb-4111-9ac3-bddb3dc114f2}</Project>

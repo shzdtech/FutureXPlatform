@@ -28,6 +28,8 @@
 
 dataobj_ptr CTPSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
+	CheckLogin(session);
+
 	auto stdo = (StringTableDO*)reqDO.get();
 	int ret = 0;
 	if (!stdo->Data.empty())
@@ -43,14 +45,14 @@ dataobj_ptr CTPSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 				ppInstrments[i] = const_cast<char*>(inst.data());
 				std::string instrument(inst);
 				std::transform(inst.begin(), inst.end(), instrument.begin(), ::tolower);
-				if (auto pInstumentDO = ContractCache::Get(ProductType::PRODUCT_FUTURE).QueryInstrumentById(instrument))
+				if (auto pInstumentDO = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(instrument))
 				{
 					ppInstrments[i] = const_cast<char*>(pInstumentDO->InstrumentID().data());
 				}
 				else
 				{
 					std::transform(inst.begin(), inst.end(), instrument.begin(), ::toupper);
-					if (auto pInstumentDO = ContractCache::Get(ProductType::PRODUCT_FUTURE).QueryInstrumentById(instrument))
+					if (auto pInstumentDO = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(instrument))
 					{
 						ppInstrments[i] = const_cast<char*>(pInstumentDO->InstrumentID().data());
 					}
@@ -66,7 +68,7 @@ dataobj_ptr CTPSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPSubMarketData::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPSubMarketData::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPSubMarketData::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
@@ -75,7 +77,7 @@ dataobj_ptr CTPSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPSubMarketData::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPSubMarketData::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	CTPUtility::CheckError(rawRespParams[1]);
 
@@ -86,7 +88,7 @@ dataobj_ptr CTPSubMarketData::HandleResponse(const uint32_t serialId, param_vect
 	if (auto pRspInstr = (CThostFtdcSpecificInstrumentField*)rawRespParams[0])
 	{
 		std::string exchange;
-		if (auto pInstumentDO = ContractCache::Get(ProductType::PRODUCT_FUTURE).QueryInstrumentById(pRspInstr->InstrumentID))
+		if (auto pInstumentDO = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(pRspInstr->InstrumentID))
 		{
 			exchange = pInstumentDO->ExchangeID();
 		}

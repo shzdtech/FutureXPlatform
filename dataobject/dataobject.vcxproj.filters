@@ -108,6 +108,12 @@
     <ClInclude Include="DateType.h">
       <Filter>头文件\common</Filter>
     </ClInclude>
+    <ClInclude Include="Pricing.h">
+      <Filter>头文件\common</Filter>
+    </ClInclude>
+    <ClInclude Include="TradingDeskOptionParams.h">
+      <Filter>头文件\otc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

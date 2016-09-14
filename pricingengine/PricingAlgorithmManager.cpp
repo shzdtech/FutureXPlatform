@@ -12,14 +12,14 @@ std::once_flag PricingAlgorithmManager::_instance_flag;
 std::shared_ptr<PricingAlgorithmManager> PricingAlgorithmManager::_instance = nullptr;
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       PricingAlgorithmManager::FindAlgorithm(const std::string& name)
-// Purpose:    Implementation of PricingAlgorithmManager::FindAlgorithm()
+// Name:       PricingAlgorithmManager::FindModel(const std::string& name)
+// Purpose:    Implementation of PricingAlgorithmManager::FindModel()
 // Parameters:
 // - name
 // Return:     IPricingAlgorithm_Ptr
 ////////////////////////////////////////////////////////////////////////
 
-IPricingAlgorithm_Ptr PricingAlgorithmManager::FindAlgorithm(const std::string& name) const
+IPricingAlgorithm_Ptr PricingAlgorithmManager::FindModel(const std::string& name) const
 {
 	IPricingAlgorithm_Ptr ret;
 	auto it = _algMap.find(name);

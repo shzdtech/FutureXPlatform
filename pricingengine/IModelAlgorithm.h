@@ -4,15 +4,17 @@
 #include <string>
 #include <memory>
 #include "IAlgorithmBase.h"
-#include "../dataobject/ModelParamsDO.h"
+#include "../dataobject/StrategyContractDO.h"
 #include "../common/typedefs.h"
+#include "IPricingDataContext.h"
 
 class IModelAlgorithm : public IAlgorithmBase
 {
 public:
 	virtual dataobj_ptr Compute(
 		const void* pInputObject,
-		const ModelParamsDO& modelParams,
+		const StrategyContractDO& sdo,
+		IPricingDataContext& priceCtx,
 		const param_vector* params) = 0;
 };
 

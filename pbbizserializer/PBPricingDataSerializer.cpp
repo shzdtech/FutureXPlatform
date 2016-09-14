@@ -30,8 +30,8 @@ data_buffer PBPricingDataSerializer::Serialize(const dataobj_ptr& abstractDO)
 
 	PB.set_exchange(pDO->ExchangeID());
 	PB.set_contract(pDO->InstrumentID());
-	PB.set_bidprice(pDO->BidPrice);
-	PB.set_askprice(pDO->AskPrice);
+	PB.set_bidprice(pDO->Bid().Price);
+	PB.set_askprice(pDO->Ask().Price);
 
 	SerializeWithReturn(PB);
 }

@@ -28,7 +28,7 @@ dataobj_ptr OTCCancelOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* raw
 
 	auto& orderDO = *((OrderRequestDO*)reqDO.get());
 	
-	if (auto wkProcPtr = MessageUtility::ServerWorkerProcessor<OTCWorkerProcessor>(session->getProcessor()))
+	if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
 	{
 		wkProcPtr->GetOTCTradeProcessor()->OTCCancelOrder(orderDO);
 	}
@@ -46,7 +46,7 @@ dataobj_ptr OTCCancelOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* raw
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr OTCCancelOrder::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr OTCCancelOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	auto& orderDO = *((OrderDO*)rawRespParams[0]);
 

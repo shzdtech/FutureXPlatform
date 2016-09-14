@@ -13,7 +13,6 @@
 #include "../common/Attribute_Key.h"
 
 #include "../message/DefMessageID.h"
-#include "../message/SysParam.h"
 #include "../message/message_macro.h"
 #include "../message/AppContext.h"
 #include "../dataobject/EnumTypes.h"
@@ -22,9 +21,12 @@
 #include "../databaseop/OTCOrderDAO.h"
 #include "../databaseop/ContractDAO.h"
 #include "../databaseop/StrategyContractDAO.h"
+#include "../databaseop/ModelParamsDAO.h"
 #include "../pricingengine/PricingAlgorithmManager.h"
+#include "../pricingengine/ModelAlgorithmManager.h"
 
 #include "../bizutility/ContractCache.h"
+#include "../bizutility/StrategyModelCache.h"
 
 #include "../ordermanager/OrderSeqGen.h"
  ////////////////////////////////////////////////////////////////////////
@@ -67,28 +69,7 @@ bool CTPOTCWorkerProcessor::OnSessionClosing(void)
 
 void CTPOTCWorkerProcessor::Initialize(IServerContext* serverCtx)
 {
-	auto productType = GetProductType();
-	if (auto vectPtr = ContractDAO::FindContractByProductType(productType))
-	{
-		for (auto& contract : *vectPtr)
-			ContractCache::Get(productType).Add(contract);
-		LOG_INFO << _serverCtx->getServerUri() << ": " << vectPtr->size() << " contracts are preloaded";
-	}
-
-	if (auto sDOVec_Ptr = StrategyContractDAO::FindStrategyContractByUser(EMPTY_STRING, productType))
-	{
-		auto strategyMap = PricingDataContext()->GetStrategyMap();
-		for (auto& strategy : *sDOVec_Ptr)
-		{
-			if (auto model = PricingAlgorithmManager::Instance()->FindAlgorithm(strategy.ModelParams.ModelName))
-			{
-				auto& params = model->DefaultParams();
-				strategy.ModelParams.ScalaParams.insert(params.begin(), params.end());
-			}
-			strategyMap->emplace(strategy, strategy);
-		}
-		LOG_INFO << _serverCtx->getServerUri() << ": " << sDOVec_Ptr->size() << " stratigies are preloaded";
-	}
+	OTCWorkerProcessor::Initialize();
 
 	CTPMarketDataProcessor::Initialize(serverCtx);
 
@@ -128,29 +109,10 @@ int CTPOTCWorkerProcessor::LoginSystemUserIfNeed(void)
 	return ret;
 }
 
-int CTPOTCWorkerProcessor::RefreshStrategy(const StrategyContractDO& strategyDO)
+int CTPOTCWorkerProcessor::SubscribeMarketData(const ContractKey& contractId)
 {
-	int ret = OTCWorkerProcessor::RefreshStrategy(strategyDO);
-
-	if (ret > 0)
-	{
-		auto instPtr = std::make_unique<char*[]>(ret);
-		if (strategyDO.IsOTC())
-		{
-			int i = 0;
-			for (auto& contract : strategyDO.PricingContracts)
-			{
-				instPtr[i++] = const_cast<char*>(contract.InstrumentID().data());
-			}
-		}
-		else
-		{
-			instPtr[0] = const_cast<char*>(strategyDO.InstrumentID().data());
-		}
-		ret = _rawAPI->MdAPI->SubscribeMarketData(instPtr.get(), ret);
-	}
-
-	return ret;
+	char* contract[] = { const_cast<char*>(contractId.InstrumentID().data()) };
+	return _rawAPI->MdAPI->SubscribeMarketData(contract, 1);
 }
 
 void CTPOTCWorkerProcessor::RegisterLoggedSession(IMessageSession * pMessageSession)
@@ -158,10 +120,17 @@ void CTPOTCWorkerProcessor::RegisterLoggedSession(IMessageSession * pMessageSess
 	((CTPOTCTradeProcessor*)GetOTCTradeProcessor())->RegisterLoggedSession(pMessageSession);
 }
 
-ProductType CTPOTCWorkerProcessor::GetProductType()
+ProductType CTPOTCWorkerProcessor::GetContractProductType() const
 {
 	return ProductType::PRODUCT_OTC;
 }
+
+const std::vector<ProductType>& CTPOTCWorkerProcessor::GetStrategyProductTypes() const
+{
+	static const std::vector<ProductType> productTypes = { ProductType::PRODUCT_OTC };
+	return productTypes;
+}
+
 
 OTCTradeProcessor * CTPOTCWorkerProcessor::GetOTCTradeProcessor()
 {
@@ -178,15 +147,15 @@ void CTPOTCWorkerProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField 
 	if (it != mdMap->end())
 	{
 		auto& mdo = it->second;
-		if (mdo.BidPrice != pDepthMarketData->BidPrice1 ||
-			mdo.AskPrice != pDepthMarketData->AskPrice1 ||
-			mdo.BidVolume != pDepthMarketData->BidVolume1 ||
-			mdo.AskVolume != pDepthMarketData->AskVolume1)
+		if (mdo.Bid().Price != pDepthMarketData->BidPrice1 ||
+			mdo.Ask().Price != pDepthMarketData->AskPrice1 ||
+			mdo.Bid().Volume != pDepthMarketData->BidVolume1 ||
+			mdo.Ask().Volume != pDepthMarketData->AskVolume1)
 		{
-			mdo.BidPrice = pDepthMarketData->BidPrice1;
-			mdo.AskPrice = pDepthMarketData->AskPrice1;
-			mdo.BidVolume = pDepthMarketData->BidVolume1;
-			mdo.AskVolume = pDepthMarketData->AskVolume1;
+			mdo.Bid().Price = pDepthMarketData->BidPrice1;
+			mdo.Ask().Price = pDepthMarketData->AskPrice1;
+			mdo.Bid().Volume = pDepthMarketData->BidVolume1;
+			mdo.Ask().Volume = pDepthMarketData->AskVolume1;
 
 			//mdo.PreClosePrice = pDepthMarketData->PreClosePrice;
 			//mdo.OpenPrice = pDepthMarketData->OpenPrice;

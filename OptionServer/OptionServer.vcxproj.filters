@@ -24,10 +24,13 @@
     <ClInclude Include="otcoption_export.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="OTCOptionVolatility.h">
+    <ClInclude Include="resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
+    <ClInclude Include="OTCOptionSubMarketData.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="OTCOptionPricingParams.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -35,7 +38,10 @@
     <ClCompile Include="otcoption_export.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="OTCOptionVolatility.cpp">
+    <ClCompile Include="OTCOptionSubMarketData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="OTCOptionPricingParams.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

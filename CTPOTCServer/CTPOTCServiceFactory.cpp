@@ -72,6 +72,10 @@ std::map<uint, IMessageHandler_Ptr> CTPOTCServiceFactory::CreateMessageHandlers(
 
 	msg_hdl_map[MSD_ID_PORTFOLIO_NEW] = std::make_shared<OTCNewPortfolio>();
 
+	msg_hdl_map[MSG_ID_UPDATE_MODELPARAMS] = std::make_shared<OTCUpdateModelParams>();
+
+	msg_hdl_map[MSG_ID_QUERY_MODELPARAMS] = std::make_shared<OTCQueryModelParams>();
+
 	return msg_hdl_map;
 }
 
@@ -85,7 +89,7 @@ std::map<uint, IDataSerializer_Ptr> CTPOTCServiceFactory::CreateDataSerializers(
 {
 	std::map<uint, IDataSerializer_Ptr> ret;
 	AbstractDataSerializerFactory::Instance()->CreateDataSerializers(ret);
-	ret[MSG_ID_VOLITALITY_MODEL] = ret[MSG_ID_MODELALGORITHM];
+
 	return ret;
 }
 

@@ -92,10 +92,10 @@ public:
 	OrderStatus OrderStatus = OrderStatus::UNDEFINED;
 	int VolumeTraded = 0;
 	int VolumeRemain = 0;
-	int TradingDay = 0;
 	int SessionID = 0;
 	bool Active = false;
 	double StopPrice = 0;
+	std::string TradingDay;
 	std::string InsertTime;
 	std::string UpdateTime;
 	std::string CancelTime;

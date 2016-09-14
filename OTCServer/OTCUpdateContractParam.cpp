@@ -38,7 +38,7 @@ dataobj_ptr OTCUpdateContractParam::HandleRequest(const dataobj_ptr& reqDO, IRaw
 
 	auto vecConDO_Ptr = (VectorDO<ContractParamDO>*)reqDO.get();
 
-	if (auto wkProcPtr = MessageUtility::ServerWorkerProcessor<OTCWorkerProcessor>(session->getProcessor()))
+	if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
 	{
 
 		auto mdMap = wkProcPtr->PricingDataContext()->GetMarketDataMap();

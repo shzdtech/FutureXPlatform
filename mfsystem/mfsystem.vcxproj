@@ -198,6 +198,9 @@
     <ProjectReference Include="..\message\message.vcxproj">
       <Project>{e9adaa2b-1ccb-4111-9ac3-bddb3dc114f2}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\systemsettings\systemsettings.vcxproj">
+      <Project>{b2408e62-da0a-4f39-8257-b9c33d09bd03}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="factory.xml">

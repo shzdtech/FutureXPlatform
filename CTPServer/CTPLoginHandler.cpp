@@ -67,8 +67,7 @@ dataobj_ptr CTPLoginHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* ra
 		LOG_DEBUG << "Login: " << req.BrokerID << ":" << userid << ":" << password;
 	}
 
-	auto userInfoDO_Ptr = std::static_pointer_cast<UserInfoDO>
-		(session->getUserInfo()->getAttribute(STR_KEY_USER_INFO_DETAIL));
+	auto userInfoDO_Ptr = std::static_pointer_cast<UserInfoDO>(session->getUserInfo()->getExtInfo());
 
 	return userInfoDO_Ptr;
 }
@@ -83,7 +82,7 @@ dataobj_ptr CTPLoginHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* ra
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPLoginHandler::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPLoginHandler::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	CTPUtility::CheckError(rawRespParams[1]);
 
@@ -107,7 +106,7 @@ dataobj_ptr CTPLoginHandler::HandleResponse(const uint32_t serialId, param_vecto
 	pDO->Role = pUserInfo->getRole();
 	pDO->UserId = pUserInfo->getUserId();
 
-	session->getUserInfo()->setAttribute(STR_KEY_USER_INFO_DETAIL, ret);
+	session->getUserInfo()->setExtInfo(ret);
 	session->setLoginTimeStamp();
 
 	LOG_DEBUG << pDO->UserId << " login successful.";

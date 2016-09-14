@@ -78,6 +78,9 @@
     <ClCompile Include="PBPortfolioSerializer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="PBTradingDeskParamsSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Protos\businessobj.pb.h">
@@ -141,6 +144,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="PBPortfolioSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PBTradingDeskParamsSerializer.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

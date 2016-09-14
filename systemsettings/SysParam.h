@@ -5,13 +5,13 @@
  * Purpose: Declaration of the class SysParam
  ***********************************************************************/
 
-#if !defined(__message_SysParam_h)
-#define __message_SysParam_h
+#if !defined(__systemsettings_SysParam_h)
+#define __systemsettings_SysParam_h
 #include <string>
 #include <map>
-#include "message_exp.h"
+#include "systemsettings_exp.h"
 
-class MESSAGE_CLASS_EXPORT SysParam
+class SYSTEMSETTINGS_CLASS_EXPORT SysParam
 {
 public:
 	static bool Contains(const std::string& key);

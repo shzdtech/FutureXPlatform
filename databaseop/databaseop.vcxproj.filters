@@ -71,6 +71,9 @@
     <ClInclude Include="TradeDAO.h">
       <Filter>头文件\DAO</Filter>
     </ClInclude>
+    <ClInclude Include="ModelParamsDAO.h">
+      <Filter>头文件\DAO</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AbstractConnectionManager.cpp">
@@ -101,6 +104,9 @@
       <Filter>源文件\DAO</Filter>
     </ClCompile>
     <ClCompile Include="TradeDAO.cpp">
+      <Filter>源文件\DAO</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelParamsDAO.cpp">
       <Filter>源文件\DAO</Filter>
     </ClCompile>
   </ItemGroup>

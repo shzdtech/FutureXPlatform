@@ -34,6 +34,7 @@ public:
 	IMessageContext_Ptr getContext(void);
 	time_t getLoginTimeStamp(void);
 	void setLoginTimeStamp(time_t tm);
+	void setLogout(void);
 	IUserInfo_Ptr getUserInfo(void);
 	IProcessorBase_Ptr getProcessor(void);
 

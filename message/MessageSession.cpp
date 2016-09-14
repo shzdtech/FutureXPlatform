@@ -170,6 +170,11 @@ void MessageSession::setLoginTimeStamp(time_t tm)
 	_loginTimeStamp = tm;
 }
 
+void MessageSession::setLogout(void)
+{
+	_loginTimeStamp = 0;
+}
+
 ////////////////////////////////////////////////////////////////////////
 // Name:       MessageSession::getUserInfo()
 // Purpose:    Implementation of MessageSession::getUserInfo()

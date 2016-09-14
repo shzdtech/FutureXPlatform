@@ -36,7 +36,7 @@ public:
 	virtual void setName(const std::string& newName);
 
 	virtual void setExtInfo(std::shared_ptr<void> extInfo);
-	virtual void* getExtInfo(void) const;
+	virtual std::shared_ptr<void> getExtInfo(void) const;
 
 	virtual const std::string& getAuthorizedKey(void) const;
 	virtual void setAuthorizedKey(const std::string& newAuthKey);

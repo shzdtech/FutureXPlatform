@@ -201,10 +201,10 @@ void CTSAPIWrapperImpl::OnMarketDataUpdated(Market^ poMarket)
 	CTSConvertor::MarshalString(poMarket->ExchangeID, exchange);
 	CTSConvertor::MarshalString(poMarket->ContractID, contract);
 	MarketDataDO mdDO(exchange, contract);
-	mdDO.BidVolume = poMarket->LastDepth->Bids[0]->Volume;
-	mdDO.BidPrice = poMarket->LastDepth->Bids[0]->Ticks;
-	mdDO.AskVolume = poMarket->LastDepth->Offers[0]->Volume;
-	mdDO.AskPrice = poMarket->LastDepth->Offers[0]->Ticks;
+	mdDO.Bid().Volume = poMarket->LastDepth->Bids[0]->Volume;
+	mdDO.Bid().Price = poMarket->LastDepth->Bids[0]->Ticks;
+	mdDO.Ask().Volume = poMarket->LastDepth->Offers[0]->Volume;
+	mdDO.Ask().Price = poMarket->LastDepth->Offers[0]->Ticks;
 	mdDO.LastPrice = poMarket->StrikePrice.Value;
 
 	mdDO.HighestPrice = poMarket->ConvertTicksToDecimal(poMarket->LastHighLow->HighTicks);

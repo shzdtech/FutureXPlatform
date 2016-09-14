@@ -1,13 +1,13 @@
 syntax = "proto3";
 
+import "commondefine.proto";
+
 package Micro.Future.Message;
 
 message ModelParams
 {
-	string modelName = 1;
-	map<string, double> scalaParams = 2;
-
-	message double_vector
-	{ repeated double entry = 1;}
-	map<string, double_vector> vectorParams = 5;
+	DataHeader header = 1;
+	string instanceName = 2;
+	string model = 3;
+	map<string, double> params = 4;
 }

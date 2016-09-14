@@ -73,12 +73,12 @@ OrderDOVec_Ptr OTCOrderManager::UpdateOrderByStrategy(const StrategyContractDO& 
 					bool accept = false;
 					if (orderDO.Direction == DirectionType::BUY)
 					{
-						if (orderDO.LimitPrice >= pricingDO_ptr->AskPrice)
+						if (orderDO.LimitPrice >= pricingDO_ptr->Ask().Price)
 							accept = true;
 					}
 					else
 					{
-						if (orderDO.LimitPrice <= pricingDO_ptr->BidPrice)
+						if (orderDO.LimitPrice <= pricingDO_ptr->Bid().Price)
 							accept = true;
 					}
 

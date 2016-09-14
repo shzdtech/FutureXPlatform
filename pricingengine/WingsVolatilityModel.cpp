@@ -1,10 +1,12 @@
 #include "WingsVolatilityModel.h"
+#include <boost/date_time/gregorian/greg_date.hpp>
 #include "../dataobject/TemplateDO.h"
 
-const std::string WingsParams::PARAM_F_ATM("f_atm");
+const std::string WingsParams::PARAM_ALPHA("alpha");
 const std::string WingsParams::PARAM_SSR("ssr");
-const std::string WingsParams::PARAM_SCR("scr");
 const std::string WingsParams::PARAM_F_REF("f_ref");
+
+const std::string WingsParams::PARAM_SCR("scr");
 const std::string WingsParams::PARAM_VCR("vcr");
 const std::string WingsParams::PARAM_VOL_REF("vol_ref");
 const std::string WingsParams::PARAM_SLOPE_REF("slope_ref");
@@ -16,45 +18,95 @@ const std::string WingsParams::PARAM_PUT_CURV("put_curv");
 const std::string WingsParams::PARAM_CALL_CURV("call_curv");
 const std::string WingsParams::PARAM_DN_SLOPE("dn_slope");
 const std::string WingsParams::PARAM_UP_SLOPE("up_slope");
-const std::string WingsParams::PARAM_DAYS("days");
-const std::string WingsParams::PARAM_ALPHA("alpha");
+
+const std::string WingsParams::PARAM_SCR_OFFSET("scr_offset");
+const std::string WingsParams::PARAM_VCR_OFFSET("vcr_offset");
+const std::string WingsParams::PARAM_VOL_REF_OFFSET("vol_ref_offset");
+const std::string WingsParams::PARAM_SLOPE_REF_OFFSET("slope_ref_offset");
+const std::string WingsParams::PARAM_DN_CF_OFFSET("dn_cf_offset");
+const std::string WingsParams::PARAM_UP_CF_OFFSET("up_cf_offset");
+const std::string WingsParams::PARAM_UP_SM_OFFSET("up_sm_offset");
+const std::string WingsParams::PARAM_DN_SM_OFFSET("dn_sm_offset");
+const std::string WingsParams::PARAM_PUT_CURV_OFFSET("put_curv_offset");
+const std::string WingsParams::PARAM_CALL_CURV_OFFSET("call_curv_offset");
+const std::string WingsParams::PARAM_DN_SLOPE_OFFSET("dn_slope_offset");
+const std::string WingsParams::PARAM_UP_SLOPE_OFFSET("up_slope_offset");
+
+
 
 const std::string & WingsVolatilityModel::Name(void) const
 {
-	static const std::string ws("wings-volatility");
+	static const std::string ws("wing");
 	return ws;
 }
 
 dataobj_ptr WingsVolatilityModel::Compute(
 	const void* pInputObject,
-	const ModelParamsDO& modelParams,
+	const StrategyContractDO& sdo,
+	IPricingDataContext& priceCtx,
 	const param_vector* params)
 {
-	WingsParams paramObj;
-	if (!ParseParams(modelParams, &paramObj))
+	if (!sdo.VolModel && sdo.VolModel->ParsedParams)
 		return nullptr;
 
-	auto& moneyVector = *(std::vector<double>*)pInputObject;
+	auto paramObj = (WingsParams*)sdo.VolModel->ParsedParams.get();
+	double f_atm;
+
+	if (pInputObject)
+	{
+		f_atm = *(double*)pInputObject;
+	}
+	else
+	{
+		auto& mdo = priceCtx.GetMarketDataMap()->at(sdo.InstrumentID());
+		f_atm = (mdo.Ask().Price + mdo.Bid().Price) / 2;
+	}
+
+	auto strikeprice = sdo.StrikePrice;
+
+	boost::gregorian::date settleDate(sdo.TradingDay.Year, sdo.TradingDay.Month, sdo.TradingDay.Day);
+	boost::gregorian::date mutureDate(sdo.Expiration.Year, sdo.Expiration.Month, sdo.Expiration.Day);
+	int days = (settleDate - mutureDate).days();
 
 	// synthetic forward price
-	double f_atm = paramObj.f_atm;
-	double ssr = paramObj.ssr;
-	double scr = paramObj.scr;
-	double f_ref = paramObj.f_ref;
-	double vcr = paramObj.vcr;
-	double vol_ref = paramObj.vol_ref;
-	double slope_ref = paramObj.slope_ref;
-	double dn_cf = paramObj.dn_cf;
-	double up_cf = paramObj.up_cf;
-	double dn_sm = paramObj.dn_sm;
-	double up_sm = paramObj.up_sm;
-	double put_curv = paramObj.put_curv;
-	double call_curv = paramObj.call_curv;
-	double dn_slope = paramObj.dn_slope;
-	double up_slope = paramObj.up_slope;
-	double days = paramObj.days;
-	double alpha = paramObj.alpha;
+	double alpha = paramObj->alpha;
+	double ssr = paramObj->ssr;
+	double f_ref = paramObj->f_ref;
 
+	double midVol = ComputeVolatility(f_atm, strikeprice, days, alpha, f_ref, ssr, paramObj->scr,
+		paramObj->vcr, paramObj->vol_ref, paramObj->slope_ref, paramObj->dn_cf, paramObj->up_cf, paramObj->dn_sm, paramObj->up_sm, paramObj->dn_slope, paramObj->up_slope, paramObj->put_curv, paramObj->call_curv);
+
+	double offsetVol = ComputeVolatility(f_atm, strikeprice, days, alpha, f_ref, ssr, paramObj->scr,
+		paramObj->vcr_offset, paramObj->vol_ref_offset, paramObj->slope_ref_offset, paramObj->dn_cf_offset, paramObj->up_cf_offset, paramObj->dn_sm_offset, paramObj->up_sm_offset, paramObj->dn_slope_offset, paramObj->up_slope_offset, paramObj->put_curv_offset, paramObj->call_curv_offset);
+
+	auto ret = std::make_shared<TDataObject<std::pair<double, double>>>();
+	ret->Data.first = midVol - offsetVol;
+	ret->Data.second = midVol + offsetVol;
+
+	return ret;
+}
+
+double WingsVolatilityModel::ComputeVolatility(
+	double f_atm,
+	double strikeprice,
+	int days,
+	double alpha,
+	double f_ref,
+	double ssr,
+	double scr,
+	double vcr,
+	double vol_ref,
+	double slope_ref,
+	double dn_cf,
+	double up_cf,
+	double dn_sm,
+	double up_sm,
+	double dn_slope,
+	double up_slope,
+	double put_curv,
+	double call_curv
+)
+{
 	double f_syn = std::pow(f_atm, (ssr / 100)) * std::pow(f_ref, (1 - f_ref / 100));
 	// current volatility and current slope, i.e., when log - moneyness x = 0
 	double vol_curr = vol_ref - vcr * ssr * (f_syn - f_ref) / f_ref;
@@ -86,53 +138,47 @@ dataobj_ptr WingsVolatilityModel::Compute(
 	double up_sm_a = sigma_x2 - up_sm_b * x2 - up_sm_c * x2 * x2;
 	double sigma_x3 = up_sm_a + up_sm_b * x3 + up_sm_c * x3 * x3;
 
-	auto ret = std::make_shared<VectorDO<double>>();
+	// log - moneyness, i.e., transformed strike price
+	double x = (1 / std::pow((days / 365), alpha)) * std::log(strikeprice / f_syn);
 
-	for (double moneyness : moneyVector)
-	{
-		// log - moneyness, i.e., transformed strike price
-		double x = (1 / std::pow((days / 365), alpha)) * std::log(moneyness / f_syn);
-
-		double theo = 0;
-		// regions of the wing model
-		if ((x1 <= x) & (x < 0)) {
-			// 	put wing
-			theo = vol_curr + slope_curr * x + put_curv * x * x;
-		}
-		else if ((0 <= x) & (x <= x2)) {
-			// 	call wing
-			theo = vol_curr + slope_curr * x + call_curv * x * x;
-		}
-		else if ((x0 <= x) & (x < x1)) {
-			// 	down smoothing range
-			theo = dn_sm_a + dn_sm_b * x + dn_sm_c * x * x;
-		}
-		else if ((x2 < x) & (x <= x3)) {
-			// 	up smoothing range
-			theo = up_sm_a + up_sm_b * x + up_sm_c * x * x;
-		}
-		else if (x < x0) {
-			// 	down affine range
-			theo = dn_slope * (x - x0) + sigma_x0;
-		}
-		else if (x3 < x) {
-			// 	up affine range
-			theo = up_slope * (x - x3) + sigma_x3;
-		}
-
-		ret->push_back(theo);
+	double theo = 0;
+	// regions of the wing model
+	if ((x1 <= x) & (x < 0)) {
+		// 	put wing
+		theo = vol_curr + slope_curr * x + put_curv * x * x;
+	}
+	else if ((0 <= x) & (x <= x2)) {
+		// 	call wing
+		theo = vol_curr + slope_curr * x + call_curv * x * x;
+	}
+	else if ((x0 <= x) & (x < x1)) {
+		// 	down smoothing range
+		theo = dn_sm_a + dn_sm_b * x + dn_sm_c * x * x;
+	}
+	else if ((x2 < x) & (x <= x3)) {
+		// 	up smoothing range
+		theo = up_sm_a + up_sm_b * x + up_sm_c * x * x;
+	}
+	else if (x < x0) {
+		// 	down affine range
+		theo = dn_slope * (x - x0) + sigma_x0;
+	}
+	else if (x3 < x) {
+		// 	up affine range
+		theo = up_slope * (x - x3) + sigma_x3;
 	}
 
-	return ret;
+	return theo;
 }
 
-const std::map<std::string, double>& WingsVolatilityModel::DefaultParams(void)
+const std::map<std::string, double>& WingsVolatilityModel::DefaultParams(void) const
 {
 	static std::map<std::string, double> defaultParams = {
-		{WingsParams::PARAM_F_ATM, 0},
+		{WingsParams::PARAM_ALPHA, 0 },
 		{WingsParams::PARAM_SSR,0},
-		{WingsParams::PARAM_SCR, 0},
 		{WingsParams::PARAM_F_REF, 0 },
+
+		{WingsParams::PARAM_SCR, 0 },
 		{WingsParams::PARAM_VCR, 0 },
 		{WingsParams::PARAM_VOL_REF, 0 },
 		{WingsParams::PARAM_SLOPE_REF, 0 },
@@ -144,33 +190,56 @@ const std::map<std::string, double>& WingsVolatilityModel::DefaultParams(void)
 		{WingsParams::PARAM_CALL_CURV, 0 },
 		{WingsParams::PARAM_DN_SLOPE, 0 },
 		{WingsParams::PARAM_UP_SLOPE, 0 },
-		{WingsParams::PARAM_DAYS, 0 },
-		{WingsParams::PARAM_ALPHA, 0 }
+
+		{ WingsParams::PARAM_SCR_OFFSET, 0 },
+		{ WingsParams::PARAM_VCR_OFFSET, 0 },
+		{ WingsParams::PARAM_VOL_REF_OFFSET, 0 },
+		{ WingsParams::PARAM_SLOPE_REF_OFFSET, 0 },
+		{ WingsParams::PARAM_DN_CF_OFFSET, 0 },
+		{ WingsParams::PARAM_UP_CF_OFFSET, 0 },
+		{ WingsParams::PARAM_UP_SM_OFFSET, 0 },
+		{ WingsParams::PARAM_DN_SM_OFFSET, 0 },
+		{ WingsParams::PARAM_PUT_CURV_OFFSET, 0 },
+		{ WingsParams::PARAM_CALL_CURV_OFFSET, 0 },
+		{ WingsParams::PARAM_DN_SLOPE_OFFSET, 0 },
+		{ WingsParams::PARAM_UP_SLOPE_OFFSET, 0 },
+
 	};
 	return defaultParams;
 }
 
-bool WingsVolatilityModel::ParseParams(const ModelParamsDO& modelParams, void * pParamObj)
+std::shared_ptr<void> WingsVolatilityModel::ParseParams(const std::map<std::string, double>& modelParams)
 {
-	bool ret = true;
-	WingsParams* pParams = (WingsParams*)pParamObj;
-	pParams->f_atm = modelParams.ScalaParams.at(WingsParams::PARAM_F_ATM);
-	pParams->ssr = modelParams.ScalaParams.at(WingsParams::PARAM_SSR);
-	pParams->scr = modelParams.ScalaParams.at(WingsParams::PARAM_SCR);
-	pParams->f_ref = modelParams.ScalaParams.at(WingsParams::PARAM_F_REF);
-	pParams->vcr = modelParams.ScalaParams.at(WingsParams::PARAM_VCR);
-	pParams->vol_ref = modelParams.ScalaParams.at(WingsParams::PARAM_VOL_REF);
-	pParams->slope_ref = modelParams.ScalaParams.at(WingsParams::PARAM_SLOPE_REF);
-	pParams->dn_cf = modelParams.ScalaParams.at(WingsParams::PARAM_DN_CF);
-	pParams->up_cf = modelParams.ScalaParams.at(WingsParams::PARAM_UP_CF);
-	pParams->dn_sm = modelParams.ScalaParams.at(WingsParams::PARAM_DN_SM);
-	pParams->up_sm = modelParams.ScalaParams.at(WingsParams::PARAM_UP_SM);
-	pParams->put_curv = modelParams.ScalaParams.at(WingsParams::PARAM_PUT_CURV);
-	pParams->call_curv = modelParams.ScalaParams.at(WingsParams::PARAM_CALL_CURV);
-	pParams->dn_slope = modelParams.ScalaParams.at(WingsParams::PARAM_DN_SLOPE);
-	pParams->up_slope = modelParams.ScalaParams.at(WingsParams::PARAM_UP_SLOPE);
-	pParams->days = modelParams.ScalaParams.at(WingsParams::PARAM_DAYS);
-	pParams->alpha = modelParams.ScalaParams.at(WingsParams::PARAM_ALPHA);
+	auto ret = std::make_shared<WingsParams>();
+	ret->alpha = modelParams.at(WingsParams::PARAM_ALPHA);
+	ret->ssr = modelParams.at(WingsParams::PARAM_SSR);
+	ret->f_ref = modelParams.at(WingsParams::PARAM_F_REF);
+
+	ret->scr = modelParams.at(WingsParams::PARAM_SCR);
+	ret->vcr = modelParams.at(WingsParams::PARAM_VCR);
+	ret->vol_ref = modelParams.at(WingsParams::PARAM_VOL_REF);
+	ret->slope_ref = modelParams.at(WingsParams::PARAM_SLOPE_REF);
+	ret->dn_cf = modelParams.at(WingsParams::PARAM_DN_CF);
+	ret->up_cf = modelParams.at(WingsParams::PARAM_UP_CF);
+	ret->dn_sm = modelParams.at(WingsParams::PARAM_DN_SM);
+	ret->up_sm = modelParams.at(WingsParams::PARAM_UP_SM);
+	ret->put_curv = modelParams.at(WingsParams::PARAM_PUT_CURV);
+	ret->call_curv = modelParams.at(WingsParams::PARAM_CALL_CURV);
+	ret->dn_slope = modelParams.at(WingsParams::PARAM_DN_SLOPE);
+	ret->up_slope = modelParams.at(WingsParams::PARAM_UP_SLOPE);
+
+	ret->scr_offset = modelParams.at(WingsParams::PARAM_SCR_OFFSET);
+	ret->vcr_offset = modelParams.at(WingsParams::PARAM_VCR_OFFSET);
+	ret->vol_ref_offset = modelParams.at(WingsParams::PARAM_VOL_REF_OFFSET);
+	ret->slope_ref_offset = modelParams.at(WingsParams::PARAM_SLOPE_REF_OFFSET);
+	ret->dn_cf_offset = modelParams.at(WingsParams::PARAM_DN_CF_OFFSET);
+	ret->up_cf_offset = modelParams.at(WingsParams::PARAM_UP_CF_OFFSET);
+	ret->dn_sm_offset = modelParams.at(WingsParams::PARAM_DN_SM_OFFSET);
+	ret->up_sm_offset = modelParams.at(WingsParams::PARAM_UP_SM_OFFSET);
+	ret->put_curv_offset = modelParams.at(WingsParams::PARAM_PUT_CURV_OFFSET);
+	ret->call_curv_offset = modelParams.at(WingsParams::PARAM_CALL_CURV_OFFSET);
+	ret->dn_slope_offset = modelParams.at(WingsParams::PARAM_DN_SLOPE_OFFSET);
+	ret->up_slope_offset = modelParams.at(WingsParams::PARAM_UP_SLOPE_OFFSET);
 
 	return ret;
 }

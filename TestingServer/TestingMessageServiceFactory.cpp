@@ -16,7 +16,9 @@
 #include "TestingCancelOrderHandler.h"
 #include "TestingPositionHandler.h"
 #include "TestingAccountInfoHandler.h"
+#include "TestingQueryInstruments.h"
 
+#include "../utility/stringutility.h"
 #include "../message/EchoMessageHandler.h"
 #include "../message/EchoMessageSerializer.h"
 #include "../message/DefMessageID.h"
@@ -57,6 +59,8 @@ std::map<uint, IMessageHandler_Ptr> TestingMessageServiceFactory::CreateMessageH
 	msg_hdl_map[MSG_ID_QUERY_POSITION] = std::make_shared<TestingPositionHandler>();
 
 	msg_hdl_map[MSG_ID_QUERY_ACCOUNT_INFO] = std::make_shared<TestingAccountInfoHandler>();
+
+	msg_hdl_map[MSG_ID_QUERY_INSTRUMENT] = std::make_shared<TestingQueryInstruments>();
 
 	return msg_hdl_map;
 }

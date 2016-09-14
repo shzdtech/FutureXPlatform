@@ -161,14 +161,14 @@
     <ClInclude Include="bizutility_exp.h" />
     <ClInclude Include="ContractCache.h" />
     <ClInclude Include="InstrumentCache.h" />
-    <ClInclude Include="OptionPricingCache.h" />
+    <ClInclude Include="StrategyModelCache.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="UnderlyingMap.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ContractCache.cpp" />
     <ClCompile Include="InstrumentCache.cpp" />
-    <ClCompile Include="OptionPricingCache.cpp" />
+    <ClCompile Include="StrategyModelCache.cpp" />
     <ClCompile Include="UnderlyingMap.cpp" />
   </ItemGroup>
   <ItemGroup>

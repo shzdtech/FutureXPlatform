@@ -36,10 +36,10 @@ data_buffer PBMarketDataSerializer::Serialize(const dataobj_ptr& abstractDO)
 	PB.set_matchprice(pDO->LastPrice);
 	PB.set_volume(pDO->Volume);
 	PB.set_turnover(pDO->Turnover);
-	PB.add_askprice(pDO->AskPrice);
-	PB.add_askvolume(pDO->AskVolume);
-	PB.add_bidprice(pDO->BidPrice);
-	PB.add_bidvolume(pDO->BidVolume);
+	PB.add_askprice(pDO->Ask().Price);
+	PB.add_askvolume(pDO->Ask().Volume);
+	PB.add_bidprice(pDO->Bid().Price);
+	PB.add_bidvolume(pDO->Bid().Volume);
 	PB.set_averageprice(pDO->AveragePrice);
 
 	// Doesn't change after openning

@@ -38,17 +38,18 @@ const std::string& ETPPricingAlgorithm::Name(void) const
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-std::shared_ptr<PricingDO> ETPPricingAlgorithm::Compute(
+IPricingDO_Ptr ETPPricingAlgorithm::Compute(
 	const void* pInputObject,
 	const StrategyContractDO& sdo,
 	IPricingDataContext& priceCtx,
 	const param_vector* params)
 {
-	ETPParams paramObj;
-	if (!ParseParams(sdo.ModelParams, &paramObj))
+	if (!sdo.PricingModel && !sdo.PricingModel->ParsedParams)
 		return nullptr;
 
-	std::shared_ptr<PricingDO> ret;
+	auto paramObj = (ETPParams*)sdo.VolModel->ParsedParams.get();
+
+	IPricingDO_Ptr ret;
 
 	auto& mdDOMap = *(priceCtx.GetMarketDataMap());
 	auto& conDOMap = *(priceCtx.GetContractParamMap());
@@ -70,12 +71,12 @@ std::shared_ptr<PricingDO> ETPPricingAlgorithm::Compute(
 
 
 			double VolAdjBidPrice =
-				md.BidPrice - baseCon.TickSize *
-				(std::fmax(K - md.BidVolume, 0.0) / baseCon.DepthVol + baseCon.Gamma);
+				md.Bid().Price - baseCon.TickSize *
+				(std::fmax(K - md.Bid().Volume, 0.0) / baseCon.DepthVol + baseCon.Gamma);
 
 			double VolAdjAskPrice =
-				md.AskPrice + baseCon.TickSize *
-				(std::fmax(K - md.AskVolume, 0.0) / baseCon.DepthVol + baseCon.Gamma);
+				md.Ask().Price + baseCon.TickSize *
+				(std::fmax(K - md.Ask().Volume, 0.0) / baseCon.DepthVol + baseCon.Gamma);
 
 			if (conparam.Weight < 0)
 				std::swap(VolAdjBidPrice, VolAdjAskPrice);
@@ -85,8 +86,8 @@ std::shared_ptr<PricingDO> ETPPricingAlgorithm::Compute(
 			AskPrice += conparam.Weight * VolAdjAskPrice;
 		}
 
-		BidPrice = paramObj.coeff * BidPrice + paramObj.offset - paramObj.spread;
-		AskPrice = paramObj.coeff * AskPrice + paramObj.offset + paramObj.spread;
+		BidPrice = paramObj->coeff * BidPrice + paramObj->offset - paramObj->spread;
+		AskPrice = paramObj->coeff * AskPrice + paramObj->offset + paramObj->spread;
 
 		BidPrice = std::floor(BidPrice / sdo.TickSize) * sdo.TickSize;
 		AskPrice = std::ceil(AskPrice / sdo.TickSize) * sdo.TickSize;
@@ -94,21 +95,21 @@ std::shared_ptr<PricingDO> ETPPricingAlgorithm::Compute(
 		if (!sdo.IsOTC())
 		{
 			auto& md = mdDOMap.at(sdo.InstrumentID());
-			BidPrice = std::fmin(BidPrice, md.BidPrice);
-			AskPrice = std::fmax(AskPrice, md.AskPrice);
+			BidPrice = std::fmin(BidPrice, md.Bid().Price);
+			AskPrice = std::fmax(AskPrice, md.Ask().Price);
 		}
 
 		PricingDO* pDO = new PricingDO(sdo.ExchangeID(), sdo.InstrumentID());
 		ret.reset(pDO);
 
-		pDO->BidPrice = BidPrice;
-		pDO->AskPrice = AskPrice;
+		pDO->Bid().Price = BidPrice;
+		pDO->Ask().Price = AskPrice;
 	}
 
 	return ret;
 }
 
-const std::map<std::string, double>& ETPPricingAlgorithm::DefaultParams(void)
+const std::map<std::string, double>& ETPPricingAlgorithm::DefaultParams(void) const
 {
 	static std::map<std::string, double> defaultParams = {
 		{ ETPParams::coeff_name, 1 },
@@ -118,14 +119,13 @@ const std::map<std::string, double>& ETPPricingAlgorithm::DefaultParams(void)
 	return defaultParams;
 }
 
-bool ETPPricingAlgorithm::ParseParams(const ModelParamsDO& modelParams, void * pParamObj)
+std::shared_ptr<void> ETPPricingAlgorithm::ParseParams(const std::map<std::string, double>& modelParams)
 {
-	bool ret = true;
+	auto ret = std::make_shared<ETPParams>();
 
-	ETPParams* pParams = (ETPParams*)pParamObj;
-	pParams->coeff = modelParams.ScalaParams.at(ETPParams::coeff_name);
-	pParams->offset = modelParams.ScalaParams.at(ETPParams::offset_name);
-	pParams->spread = modelParams.ScalaParams.at(ETPParams::spread_name);
+	ret->coeff = modelParams.at(ETPParams::coeff_name);
+	ret->offset = modelParams.at(ETPParams::offset_name);
+	ret->spread = modelParams.at(ETPParams::spread_name);
 
 	return ret;
 }

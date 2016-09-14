@@ -36,17 +36,18 @@ const std::string& BetaSumPricingAlgorithm::Name(void) const
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-std::shared_ptr<PricingDO> BetaSumPricingAlgorithm::Compute(
+IPricingDO_Ptr BetaSumPricingAlgorithm::Compute(
 	const void* pInputObject,
 	const StrategyContractDO& sdo,
 	IPricingDataContext& priceCtx,
 	const param_vector* params)
 {
-	BetaSumParams paramObj;
-	if (!ParseParams(sdo.ModelParams, &paramObj))
+	if (!sdo.PricingModel && !sdo.PricingModel->ParsedParams)
 		return nullptr;
 
-	std::shared_ptr<PricingDO> ret;
+	auto paramObj = (BetaSumParams*)sdo.VolModel->ParsedParams.get();
+
+	IPricingDO_Ptr ret;
 
 	auto& mdDOMap = *(priceCtx.GetMarketDataMap());
 	auto& conDOMap = *(priceCtx.GetContractParamMap());
@@ -68,12 +69,12 @@ std::shared_ptr<PricingDO> BetaSumPricingAlgorithm::Compute(
 
 
 			double VolAdjBidPrice =
-				md.BidPrice - baseCon.TickSize *
-				(std::fmax(K - md.BidVolume, 0.0) / baseCon.DepthVol + baseCon.Gamma);
+				md.Bid().Price - baseCon.TickSize *
+				(std::fmax(K - md.Bid().Volume, 0.0) / baseCon.DepthVol + baseCon.Gamma);
 
 			double VolAdjAskPrice =
-				md.AskPrice + baseCon.TickSize *
-				(std::fmax(K - md.AskVolume, 0.0) / baseCon.DepthVol + baseCon.Gamma);
+				md.Ask().Price + baseCon.TickSize *
+				(std::fmax(K - md.Ask().Volume, 0.0) / baseCon.DepthVol + baseCon.Gamma);
 
 			if (conparam.Weight < 0)
 				std::swap(VolAdjBidPrice, VolAdjAskPrice);
@@ -83,8 +84,8 @@ std::shared_ptr<PricingDO> BetaSumPricingAlgorithm::Compute(
 			AskPrice += conparam.Weight * VolAdjAskPrice;
 		}
 
-		BidPrice += paramObj.offset - paramObj.spread;
-		AskPrice += paramObj.offset + paramObj.spread;
+		BidPrice += paramObj->offset - paramObj->spread;
+		AskPrice += paramObj->offset + paramObj->spread;
 
 		BidPrice = std::floor(BidPrice / sdo.TickSize) * sdo.TickSize;
 
@@ -93,21 +94,21 @@ std::shared_ptr<PricingDO> BetaSumPricingAlgorithm::Compute(
 		if (!sdo.IsOTC())
 		{
 			auto& md = mdDOMap.at(sdo.InstrumentID());
-			BidPrice = std::fmin(BidPrice, md.BidPrice);
-			AskPrice = std::fmax(AskPrice, md.AskPrice);
+			BidPrice = std::fmin(BidPrice, md.Bid().Price);
+			AskPrice = std::fmax(AskPrice, md.Ask().Price);
 		}
 
 		PricingDO* pDO = new PricingDO(sdo.ExchangeID(), sdo.InstrumentID());
 		ret.reset(pDO);
 
-		pDO->BidPrice = BidPrice;
-		pDO->AskPrice = AskPrice;
+		pDO->Bid().Price = BidPrice;
+		pDO->Ask().Price = AskPrice;
 	}
 
 	return ret;
 }
 
-const std::map<std::string, double>& BetaSumPricingAlgorithm::DefaultParams(void)
+const std::map<std::string, double>& BetaSumPricingAlgorithm::DefaultParams(void) const
 {
 	static std::map<std::string, double> defaultParams = { 
 		{ BetaSumParams::offset_name , 0},
@@ -116,13 +117,12 @@ const std::map<std::string, double>& BetaSumPricingAlgorithm::DefaultParams(void
 	return defaultParams;
 }
 
-bool BetaSumPricingAlgorithm::ParseParams(const ModelParamsDO& modelParams, void * pParamObj)
+std::shared_ptr<void> BetaSumPricingAlgorithm::ParseParams(const std::map<std::string, double>& modelParams)
 {
-	bool ret = true;
+	auto ret = std::make_shared<BetaSumParams>();
 
-	BetaSumParams* pParams = (BetaSumParams*)pParamObj;
-	pParams->offset = modelParams.ScalaParams.at(BetaSumParams::offset_name);
-	pParams->spread = modelParams.ScalaParams.at(BetaSumParams::spread_name);
+	ret->offset = modelParams.at(BetaSumParams::offset_name);
+	ret->spread = modelParams.at(BetaSumParams::spread_name);
 
 	return ret;
 }

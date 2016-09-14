@@ -65,9 +65,9 @@ OrderDOVec_Ptr AutoOrderManager::UpdateOrderByStrategy(
 			ret = std::make_shared<VectorDO<OrderDO>>();
 
 			int depth = strategyDO.Depth;
-			double pricingbuyMax = pricingDO_ptr->BidPrice;
+			double pricingbuyMax = pricingDO_ptr->Bid().Price;
 			double pricingbuyMin = pricingbuyMax - (depth - 1)*strategyDO.TickSize;
-			double pricingsellMin = pricingDO_ptr->AskPrice;
+			double pricingsellMin = pricingDO_ptr->Ask().Price;
 			double pricingsellMax = pricingsellMin + (depth - 1)*strategyDO.TickSize;
 
 			std::vector<double> tlBuyPrices;

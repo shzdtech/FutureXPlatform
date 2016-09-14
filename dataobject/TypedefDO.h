@@ -33,7 +33,7 @@ typedef ContractMap<UserContractParamDO> UserContractParamDOMap;
 
 typedef ContractMap<ContractParamDO> ContractParamDOMap;
 
-typedef std::map<std::string, InstrumentDO> InstrumentDOMap;
+typedef autofillmap<std::string, InstrumentDO> InstrumentDOMap;
 
 typedef autofillmap<std::string, autofillmap<std::pair<PositionDateFlagType, PositionDirectionType>, UserPositionExDO>>
 UserPositionExDOMap;

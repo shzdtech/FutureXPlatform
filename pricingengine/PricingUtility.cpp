@@ -15,25 +15,25 @@
 // Parameters:
 // - alg
 // - params
-// Return:     PricingDO_Ptr
+// Return:     IPricingDO_Ptr
 ////////////////////////////////////////////////////////////////////////
 
-std::shared_ptr<PricingDO> PricingUtility::Pricing(
+IPricingDO_Ptr PricingUtility::Pricing(
 	const void* pInputObject,
 	const StrategyContractDO& sdo,
 	IPricingDataContext& priceCtx,
 	const param_vector* params)
 {
 	auto algorithm =
-		PricingAlgorithmManager::Instance()->FindAlgorithm(sdo.ModelParams.ModelName);
+		PricingAlgorithmManager::Instance()->FindModel(sdo.PricingModel->Model);
 
 	if (!algorithm)
-		throw NotFoundException("Prcing algorithm '" + sdo.ModelParams.ModelName + "' not found");
+		throw NotFoundException("Prcing algorithm '" + sdo.PricingModel->Model + "' not found");
 
 	return algorithm->Compute(pInputObject, sdo, priceCtx, params);
 }
 
-std::shared_ptr<PricingDO> PricingUtility::Pricing(
+IPricingDO_Ptr PricingUtility::Pricing(
 	const void* pInputObject,
 	const StrategyContractDO& sdo,
 	IPricingDataContext& priceCtx)
@@ -41,7 +41,7 @@ std::shared_ptr<PricingDO> PricingUtility::Pricing(
 	return Pricing(pInputObject, sdo, priceCtx, nullptr);
 }
 
-std::shared_ptr<PricingDO> PricingUtility::Pricing(
+IPricingDO_Ptr PricingUtility::Pricing(
 	const void* pInputObject,
 	const ContractKey& contractKey,
 	IPricingDataContext& priceCtx,
@@ -54,7 +54,7 @@ std::shared_ptr<PricingDO> PricingUtility::Pricing(
 	return Pricing(pInputObject, it->second, priceCtx);
 }
 
-std::shared_ptr<PricingDO> PricingUtility::Pricing(
+IPricingDO_Ptr PricingUtility::Pricing(
 	const void* pInputObject,
 	const ContractKey& contractKey,
 	IPricingDataContext& priceCtx)

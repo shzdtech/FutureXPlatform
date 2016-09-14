@@ -21,9 +21,6 @@
     <ClInclude Include="bizutility_exp.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="OptionPricingCache.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -33,18 +30,21 @@
     <ClInclude Include="UnderlyingMap.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="StrategyModelCache.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InstrumentCache.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="OptionPricingCache.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ContractCache.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="UnderlyingMap.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="StrategyModelCache.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

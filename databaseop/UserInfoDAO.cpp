@@ -7,6 +7,7 @@
 
 #include "../message/IUserInfo.h"
 #include "UserInfoDAO.h"
+#include "PortfolioDAO.h"
 #include "MySqlConnectionManager.h"
 
 int UserInfoDAO::InsertUser(UserInfoDO & userDO)

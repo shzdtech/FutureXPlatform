@@ -24,9 +24,11 @@ VectorDO_Ptr<InstrumentDO> InstrumentCache::QueryInstrument(const std::string & 
 	{
 		using namespace boolinq;
 		ret = std::make_shared<VectorDO<InstrumentDO>>();
+		auto instrumentMap = static_cast<std::map<std::string, InstrumentDO>>(_instrumentDOMap);
+
 		if (instrumentId != EMPTY_STRING)
 		{
-			auto enumerator = from(_instrumentDOMap)
+			auto enumerator = from(instrumentMap)
 				.where([&instrumentId](const std::pair<const std::string, InstrumentDO>& pair)
 			{ return pair.first.find_first_of(instrumentId) == 0; })._enumerator;
 
@@ -35,7 +37,7 @@ VectorDO_Ptr<InstrumentDO> InstrumentCache::QueryInstrument(const std::string & 
 		}
 		else if (productId != EMPTY_STRING)
 		{
-			auto enumerator = from(_instrumentDOMap)
+			auto enumerator = from(instrumentMap)
 				.where([&productId](const std::pair<const std::string, InstrumentDO>& pair)
 			{ return  pair.second.ProductID.find_first_of(productId) == 0; })._enumerator;
 
@@ -44,7 +46,7 @@ VectorDO_Ptr<InstrumentDO> InstrumentCache::QueryInstrument(const std::string & 
 		}
 		else if (exchangeId != EMPTY_STRING)
 		{
-			auto enumerator = from(_instrumentDOMap)
+			auto enumerator = from(instrumentMap)
 				.where([&exchangeId](const std::pair<const std::string, InstrumentDO>& pair)
 			{ return stringutility::compare(pair.second.ExchangeID().data(), exchangeId.data()) == 0; })._enumerator;
 
@@ -58,12 +60,7 @@ VectorDO_Ptr<InstrumentDO> InstrumentCache::QueryInstrument(const std::string & 
 
 InstrumentDO * InstrumentCache::QueryInstrumentById(const std::string & instrumentId)
 {
-	InstrumentDO* ret = nullptr;
-	auto it = _instrumentDOMap.find(instrumentId);
-	if (it != _instrumentDOMap.end())
-		ret = &it->second;
-
-	return ret;
+	return _instrumentDOMap.tryfind(instrumentId);
 }
 
 VectorDO_Ptr<InstrumentDO> InstrumentCache::AllInstruments(void)

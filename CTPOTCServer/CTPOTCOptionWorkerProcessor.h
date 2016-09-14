@@ -10,8 +10,9 @@
 
 
 #include "CTPOTCWorkerProcessor.h"
-
+#include <thread>
 #include "ctpotc_export.h"
+
 
 class CTP_OTC_CLASS_EXPORT CTPOTCOptionWorkerProcessor : public CTPOTCWorkerProcessor
 {
@@ -21,13 +22,19 @@ public:
 
 	~CTPOTCOptionWorkerProcessor();
 
-	virtual void TriggerPricing(const StrategyContractDO& strategyDO);
+	virtual void TriggerOTCPricing(const StrategyContractDO& strategyDO);
 
-	virtual ProductType GetProductType();
+	virtual ProductType GetContractProductType() const;
 
-	void OnRtnDepthMarketData(CThostFtdcDepthMarketDataField * pDepthMarketData);
+	virtual const std::vector<ProductType>& GetStrategyProductTypes() const;
+
+	virtual InstrumentCache & GetInstrumentCache();
+
+	// CTP API
+	virtual void OnRtnDepthMarketData(CThostFtdcDepthMarketDataField * pDepthMarketData);
 
 protected:
+
 
 private:
 

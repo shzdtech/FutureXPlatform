@@ -19,6 +19,8 @@
 
 dataobj_ptr OTCQueryTradingDesks::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
+	CheckLogin(session);
+
 	auto userDOVec = UserInfoDAO::FindAllUserByRole(ROLE_TRADINGDESK);
 
 	ThrowNotFoundExceptionIfEmpty(userDOVec);

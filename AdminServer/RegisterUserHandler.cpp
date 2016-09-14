@@ -7,7 +7,6 @@
 
 #include "RegisterUserHandler.h"
 #include "../message/MessageUtility.h"
-#include "../message/SysParam.h"
 
 #include "../common/Attribute_Key.h"
 #include "../dataobject/UserInfoDO.h"

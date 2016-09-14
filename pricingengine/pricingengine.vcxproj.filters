@@ -81,6 +81,15 @@
     <ClInclude Include="IAlgorithmBase.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="OptionParams.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ComplexAlgoirthmManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BlackScholesIVM.h">
+      <Filter>头文件\model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PricingAlgorithmManager.cpp">
@@ -112,6 +121,15 @@
     </ClCompile>
     <ClCompile Include="BlackScholesPricingAlgorithm.cpp">
       <Filter>源文件\pricing</Filter>
+    </ClCompile>
+    <ClCompile Include="ComplexAlgoirthmManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BlackScholesIVM.cpp">
+      <Filter>源文件\model</Filter>
+    </ClCompile>
+    <ClCompile Include="OptionParams.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

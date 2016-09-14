@@ -19,24 +19,24 @@
 class PRICINGENGINE_CLASS_EXPORTS PricingUtility
 {
 public:
-	static std::shared_ptr<PricingDO> Pricing(
+	static IPricingDO_Ptr Pricing(
 		const void* pInputObject,
 		const StrategyContractDO& strategy,
 		IPricingDataContext& priceCtx,
 		const param_vector* params);
 
-	static std::shared_ptr<PricingDO> Pricing(
+	static IPricingDO_Ptr Pricing(
 		const void* pInputObject,
 		const StrategyContractDO& strategy,
 		IPricingDataContext& priceCtx);
 
-	static std::shared_ptr<PricingDO> Pricing(
+	static IPricingDO_Ptr Pricing(
 		const void* pInputObject,
 		const ContractKey& contractKey,
 		IPricingDataContext& priceCtx,
 		const param_vector* params);
 
-	static std::shared_ptr<PricingDO> Pricing(
+	static IPricingDO_Ptr Pricing(
 		const void* pInputObject,
 		const ContractKey& contractKey,
 		IPricingDataContext& priceCtx);

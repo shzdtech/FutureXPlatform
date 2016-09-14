@@ -51,6 +51,11 @@ PBBizMessageSerializerFactory::PBBizMessageSerializerFactory()
 	_serializer_map[MSG_ID_MODIFY_CONTRACT_PARAM] = std::make_shared<PBCombineSerializer>
 		(PBResultSerializer::Instance(), PBContractParamSerializer::Instance());
 	_serializer_map[MSG_ID_MODIFY_STRATEGY] = PBStrategySerializer::Instance();
+	_serializer_map[MSG_ID_QUERY_PORTFOLIO] = std::make_shared<PBCombineSerializer>
+		(PBPortfolioSerializer::Instance(), PBStringMapSerializer::Instance());
+	_serializer_map[MSD_ID_PORTFOLIO_NEW] = std::make_shared<PBCombineSerializer>
+		(PBResultSerializer::Instance(), PBPortfolioSerializer::Instance());
+	_serializer_map[MSG_ID_RTN_TRADINGDESK_PRICING] = PBTradingDeskParamsSerializer::Instance();
 }
 
 ////////////////////////////////////////////////////////////////////////

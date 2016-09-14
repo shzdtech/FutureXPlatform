@@ -26,6 +26,8 @@
 #include "PBStrategySerializer.h"
 #include "PBUserParamSerializer.h"
 #include "PBSubPricingDataSerializer.h"
+#include "PBPortfolioSerializer.h"
+#include "PBTradingDeskParamsSerializer.h"
 
 
 #endif

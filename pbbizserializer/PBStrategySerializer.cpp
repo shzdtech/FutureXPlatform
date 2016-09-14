@@ -49,21 +49,22 @@ data_buffer PBStrategySerializer::Serialize(const dataobj_ptr& abstractDO)
 			}
 		}
 
-		// Fill Model Param
-		auto pbModelParams = pStrategy->mutable_modelparams();
-
-		pbModelParams->set_modelname(sdo.ModelParams.ModelName);
-
-		pbModelParams->mutable_scalaparams()->insert(sdo.ModelParams.ScalaParams.begin(), sdo.ModelParams.ScalaParams.end());
-
-		for (auto& pair : sdo.ModelParams.VectorParams)
+		// Fill Models
+		if (sdo.PricingModel)
 		{
-			Micro::Future::Message::ModelParams_double_vector double_vector;
-			for (double val : pair.second)
-				double_vector.add_entry(val);
-
-			(*pbModelParams->mutable_vectorparams())[pair.first] = double_vector;
+			pStrategy->set_pricingmodel(sdo.PricingModel->InstanceName);
 		}
+
+		if (sdo.IVModel)
+		{
+			pStrategy->set_ivmodel(sdo.IVModel->InstanceName);
+		}
+
+		if (sdo.VolModel)
+		{
+			pStrategy->set_volmodel(sdo.VolModel->InstanceName);
+		}
+
 	}
 
 	int bufsize = PB.ByteSize();
@@ -104,16 +105,20 @@ dataobj_ptr PBStrategySerializer::Deserialize(const data_buffer& rawdata)
 		}
 	}
 
-	// Model Params
-	sdo->ModelParams.ScalaParams.insert(
-		pbstrtg.modelparams().scalaparams().begin(), pbstrtg.modelparams().scalaparams().end());
-
-	auto& vectorParams = pbstrtg.modelparams().vectorparams();
-	for (auto& pair : vectorParams)
+	// Fill Models
+	if (!pbstrtg.pricingmodel().empty())
 	{
-		std::vector<double> double_vec(pair.second.entry().begin(),
-			pair.second.entry().end());
-		sdo->ModelParams.VectorParams.emplace(pair.first, double_vec);
+		sdo->PricingModel = std::make_shared<ModelParamsDO>(pbstrtg.pricingmodel(), "", "");
+	}
+
+	if (!pbstrtg.ivmodel().empty())
+	{
+		sdo->IVModel = std::make_shared<ModelParamsDO>(pbstrtg.ivmodel(), "", "");
+	}
+
+	if (!pbstrtg.volmodel().empty())
+	{
+		sdo->IVModel = std::make_shared<ModelParamsDO>(pbstrtg.volmodel(), "", "");
 	}
 
 	return sdo;

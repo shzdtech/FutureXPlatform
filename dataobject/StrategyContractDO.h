@@ -32,6 +32,7 @@ public:
 	std::string Underlying;
 	DateType Expiration;
 	DateType TradingDay;
+	ProductType ProductType;
 	ContractType ContractType;
 	int Quantity = 1;
 	int Depth = 2;
@@ -42,7 +43,10 @@ public:
 	double Multiplier = 1;
 	double StrikePrice;
 
-	ModelParamsDO ModelParams;
+	ModelParamsDO_Ptr PricingModel;
+	ModelParamsDO_Ptr IVModel;
+	ModelParamsDO_Ptr VolModel;
+
 	std::vector<PricingContract> PricingContracts;
 
 protected:

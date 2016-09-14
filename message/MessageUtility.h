@@ -15,7 +15,7 @@ public:
 	}
 
 	template <typename T>
-	static T* ServerWorkerProcessor(const IProcessorBase_Ptr& processorPtr)
+	static T* WorkerProcessorPtr(const IProcessorBase_Ptr& processorPtr)
 	{
 		return (T*)(processorPtr->getServerContext()->getSubTypeWorkerPtr());
 	}

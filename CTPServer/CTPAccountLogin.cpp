@@ -21,7 +21,6 @@
 #include "../message/AppContext.h"
 #include "../message/BizError.h"
 #include "../message/UserInfo.h"
-#include "../message/SysParam.h"
 #include "../message/MessageUtility.h"
 
 #include "../common/BizErrorIDs.h"
@@ -44,20 +43,20 @@
 dataobj_ptr CTPAccountLogin::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	auto ret = Login(reqDO, rawAPI, session);
-
-	if (auto wkProcPtr = MessageUtility::ServerWorkerProcessor<CTPTradeWorkerProcessor>(session->getProcessor()))
+	if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
 	{
-		if (!(wkProcPtr->ConnectedToServer() && wkProcPtr->HasLogged()))
-			throw SystemException(CONNECTION_ERROR, "Cannot connect to CTP Trading Server!");
-
 		wkProcPtr->RegisterLoggedSession(session->getProcessor()->LockMessageSession().get());
+		if (wkProcPtr->ConnectedToServer() && wkProcPtr->HasLogged())
+		{
+			// throw SystemException(CONNECTION_ERROR, "Cannot connect to CTP Server!");
+		}
 	}
 
 	return ret;
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPAccountLogin::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, IMessageProcessor* session)
+// Name:       CTPAccountLogin::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, IMessageProcessor* session)
 // Purpose:    Implementation of CTPAccountLogin::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
@@ -66,7 +65,7 @@ dataobj_ptr CTPAccountLogin::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* ra
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPAccountLogin::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPAccountLogin::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	return nullptr;
 }
@@ -87,7 +86,7 @@ std::shared_ptr<UserInfoDO> CTPAccountLogin::Login(const dataobj_ptr reqDO, IRaw
 			auto it = userInfoCache->find(userid);
 			if (it != userInfoCache->end())
 			{
-				userInfo_Ptr = std::static_pointer_cast<UserInfoDO>(it->second->getAttribute(STR_KEY_USER_INFO_DETAIL));
+				userInfo_Ptr = std::static_pointer_cast<UserInfoDO>(it->second->getExtInfo());
 				userInCache = true;
 			}
 		}
@@ -114,13 +113,13 @@ std::shared_ptr<UserInfoDO> CTPAccountLogin::Login(const dataobj_ptr reqDO, IRaw
 		pUserInfo->setRole(userInfo_Ptr->Role);
 		pUserInfo->setPermission(userInfo_Ptr->Permission);
 
-		session->getUserInfo()->setAttribute(STR_KEY_USER_INFO_DETAIL, userInfo_Ptr);
+		session->getUserInfo()->setExtInfo(userInfo_Ptr);
 
 		session->setLoginTimeStamp();
 	}
 
 	auto userInfoDO_Ptr = std::static_pointer_cast<UserInfoDO>
-		(session->getUserInfo()->getAttribute(STR_KEY_USER_INFO_DETAIL));
+		(session->getUserInfo()->getExtInfo());
 
 	return userInfoDO_Ptr;
 }

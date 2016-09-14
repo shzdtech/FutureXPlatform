@@ -36,8 +36,10 @@
 
 dataobj_ptr CTPQueryTrade::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
+	CheckLogin(session);
+
 	if (auto wkProcPtr =
-		  MessageUtility::ServerWorkerProcessor<CTPTradeWorkerProcessor>(session->getProcessor()))
+		  MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
 	{
 		auto& userMap = wkProcPtr->GetUserTradeMap(session->getUserInfo()->getUserId());
 		if (userMap.empty())
@@ -80,7 +82,7 @@ dataobj_ptr CTPQueryTrade::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawA
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPQueryTrade::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPQueryTrade::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPQueryTrade::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
@@ -89,7 +91,7 @@ dataobj_ptr CTPQueryTrade::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawA
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryTrade::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryTrade::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	CTPUtility::CheckNotFound(rawRespParams[0]);
 	CTPUtility::CheckError(rawRespParams[1]);
@@ -101,7 +103,7 @@ dataobj_ptr CTPQueryTrade::HandleResponse(const uint32_t serialId, param_vector&
 		ret->HasMore = !*(bool*)rawRespParams[3];
 
 		if (auto wkProcPtr =
-			  MessageUtility::ServerWorkerProcessor<CTPTradeWorkerProcessor>(session->getProcessor()))
+			  MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
 		{
 			if (auto order_ptr = wkProcPtr->GetUserOrderContext().FindOrder(ret->OrderID))
 			{

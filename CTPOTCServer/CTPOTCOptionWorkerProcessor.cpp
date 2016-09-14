@@ -31,7 +31,7 @@ CTPOTCOptionWorkerProcessor::~CTPOTCOptionWorkerProcessor()
 	LOG_DEBUG << __FUNCTION__;
 }
 
-void CTPOTCOptionWorkerProcessor::TriggerPricing(const StrategyContractDO& strategyDO)
+void CTPOTCOptionWorkerProcessor::TriggerOTCPricing(const StrategyContractDO& strategyDO)
 {
 	if (strategyDO.Enabled)
 	{
@@ -49,28 +49,45 @@ void CTPOTCOptionWorkerProcessor::TriggerPricing(const StrategyContractDO& strat
 	}
 }
 
-ProductType CTPOTCOptionWorkerProcessor::GetProductType()
+
+ProductType CTPOTCOptionWorkerProcessor::GetContractProductType() const
 {
-	return ProductType::PRODUCT_OPTIONS;
+	return ProductType::PRODUCT_OTC_OPTION;
+}
+
+const std::vector<ProductType>& CTPOTCOptionWorkerProcessor::GetStrategyProductTypes() const
+{
+	static const std::vector<ProductType> productTypes = { ProductType::PRODUCT_OTC_OPTION, ProductType::PRODUCT_OPTIONS };
+	return productTypes;
+}
+
+
+InstrumentCache & CTPOTCOptionWorkerProcessor::GetInstrumentCache()
+{
+	static InstrumentCache& cache = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_OTC_OPTION);
+	return cache;
 }
 
 
 //CTP APIs
-
 void CTPOTCOptionWorkerProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
 {
-	auto mdMap = PricingDataContext()->GetMarketDataMap();
-	auto it = mdMap->find(pDepthMarketData->InstrumentID);
-	if (it != mdMap->end())
+	if (auto pMDO = PricingDataContext()->GetMarketDataMap()->tryfind(pDepthMarketData->InstrumentID))
 	{
-		auto& mdo = it->second;
-		if (mdo.BidPrice != pDepthMarketData->BidPrice1 ||
-			mdo.AskPrice != pDepthMarketData->AskPrice1 )
+		if (pMDO->Bid().Price != pDepthMarketData->BidPrice1 ||
+			pMDO->Ask().Price != pDepthMarketData->AskPrice1)
 		{
-			mdo.BidPrice = pDepthMarketData->BidPrice1;
-			mdo.AskPrice = pDepthMarketData->AskPrice1;
+			pMDO->Bid().Price = pDepthMarketData->BidPrice1;
+			pMDO->Ask().Price = pDepthMarketData->AskPrice1;
 
-			TriggerUpdating(mdo);
+			if (_exchangeStrategySet.find(*pMDO) != _exchangeStrategySet.end())
+			{
+				if (auto pStrategyDO = PricingDataContext()->GetStrategyMap()->tryfind(*pMDO))
+				{
+					TriggerTadingDeskParams(*pStrategyDO);
+					TriggerOTCUpdating(*pStrategyDO);
+				}
+			}
 		}
 	}
 }

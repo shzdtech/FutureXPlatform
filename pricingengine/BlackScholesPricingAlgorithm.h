@@ -5,41 +5,36 @@
  * Purpose: Declaration of the class BlackScholesPricingAlgorithm
  ***********************************************************************/
 
-#if !defined(__pricingalgorithm_BlackScholesPricingAlgorithm_h)
-#define __pricingalgorithm_BlackScholesPricingAlgorithm_h
+#if !defined(__pricingengine_BlackScholesPricingAlgorithm_h)
+#define __pricingengine_BlackScholesPricingAlgorithm_h
 
-#include "../pricingengine/IPricingAlgorithm.h"
-
-class BlackScholesParams
-{
-public:
-	static const std::string volatility_name;
-	static const std::string spread_name;
-	static const std::string riskFreeRate_name;
-
-	double volatility;
-	double riskFreeRate;
-	double spread;
-};
+#include "../dataobject/Pricing.h"
+#include "IPricingAlgorithm.h"
+#include "OptionParams.h"
 
 
 class BlackScholesPricingAlgorithm : public IPricingAlgorithm
 {
 public:
 	virtual const std::string& Name(void) const;
-	virtual std::shared_ptr<PricingDO> Compute(
+	virtual IPricingDO_Ptr Compute(
 		const void* pInputObject,
 		const StrategyContractDO& sdo,
 		IPricingDataContext& priceCtx,
 		const param_vector* params);
-	virtual const std::map<std::string, double>& DefaultParams(void);
-	virtual bool ParseParams(const ModelParamsDO& modelParams, void* pParamObj);
+	virtual const std::map<std::string, double>& DefaultParams(void) const;
+	virtual std::shared_ptr<void> ParseParams(const std::map<std::string, double>& modelParams);
 
-protected:
-	double ComputeOptionPrice(
+	void ComputeOptionPrice(
 		double underlyingPrice,
-		const BlackScholesParams& params,
-		const StrategyContractDO& sdo);
+		double strikePrice,
+		double volatility,
+		double riskFreeRate,
+		double dividendYield,
+		ContractType contractType,
+		const DateType& tradingDate,
+		const DateType& maturityDate,
+		OptionPricing & option);
 
 private:
 

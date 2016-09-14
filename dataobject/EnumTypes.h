@@ -84,6 +84,7 @@ enum HedgeType
 
 enum ProductType
 {
+	PRODUCT_UNSPECIFIED = -1,
 	///期货
 	PRODUCT_FUTURE = 0,
 	///期货期权
@@ -98,6 +99,8 @@ enum ProductType
 	PRODUCT_SPOTOPTION = 5,
 	///OTC合约
 	PRODUCT_OTC = 6,
+	///OTC期权
+	PRODUCT_OTC_OPTION = 7,
 	///
 	PRODUCT_UPPERBOUND,
 };

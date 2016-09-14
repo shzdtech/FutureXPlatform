@@ -10,8 +10,10 @@
 
 #include <set>
 #include <list>
+#include <thread>
 #include "../ordermanager/OTCOrderManager.h"
 #include "../dataobject/TypedefDO.h"
+#include "../bizutility/ContractCache.h"
 #include "../message/SessionContainer.h"
 #include "OTCTradeProcessor.h"
 
@@ -21,33 +23,55 @@ class OTCSERVER_CLASS_EXPORT OTCWorkerProcessor
 {
 public:
 	OTCWorkerProcessor(IPricingDataContext* pricingCtx);
-   ~OTCWorkerProcessor();
+	~OTCWorkerProcessor();
 
-   virtual int LoginSystemUserIfNeed(void) = 0;
-   virtual int RefreshStrategy(const StrategyContractDO& strategyDO);
-   virtual void AddContractToMonitor(const ContractKey& contractId);
-  
-   virtual void TriggerPricing(const StrategyContractDO& strategyDO);
-   virtual void TriggerUpdating(const MarketDataDO& mdDO);
-   
-   virtual void RegisterPricingListener(const ContractKey& contractId,
-	   IMessageSession* pMsgSession);
+	virtual void Initialize();
+	virtual int LoginSystemUserIfNeed(void) = 0;
 
-   virtual void UnregisterPricingListener(const ContractKey& contractId,
-	   IMessageSession* pMsgSession);
+	virtual int LoadContractToCache(ProductType productType);
+	virtual int LoadStrategyToCache(ProductType productType);
 
-   virtual ProductType GetProductType() = 0;
+	virtual int SubscribeStrategy(const StrategyContractDO& strategyDO);
+	virtual void AddContractToMonitor(const ContractKey& contractId);
 
-   virtual OTCTradeProcessor* GetOTCTradeProcessor() = 0;
+	virtual void TriggerOTCPricing(const StrategyContractDO& strategyDO);
+	virtual void TriggerTadingDeskParams(const StrategyContractDO& strategyDO);
+	virtual void TriggerUpdating(const MarketDataDO& mdDO);
+	virtual void TriggerOTCUpdating(const StrategyContractDO& strategyDO);
 
-   IPricingDataContext* PricingDataContext();
+	virtual void RegisterPricingListener(const ContractKey& contractId,
+		IMessageSession* pMsgSession);
+	virtual void UnregisterPricingListener(const ContractKey& contractId,
+		IMessageSession* pMsgSession);
+
+	virtual void RegisterTradingDeskListener(const ContractKey& contractId,
+		IMessageSession* pMsgSession);
+	virtual void UnregisterTradingDeskListener(const ContractKey& contractId,
+		IMessageSession* pMsgSession);
+
+	virtual InstrumentCache& GetInstrumentCache();
+
+	virtual int SubscribeMarketData(const ContractKey& contractId) = 0;
+
+	virtual ProductType GetContractProductType() const = 0;
+
+	virtual const std::vector<ProductType>& GetStrategyProductTypes() const = 0;
+
+	virtual OTCTradeProcessor* GetOTCTradeProcessor() = 0;
+
+	IPricingDataContext* PricingDataContext();
 
 protected:
-	ContractMap<std::set<ContractKey >> _contract_strategy_map;
+	ContractMap<std::set<ContractKey>> _baseContractStrategyMap;
+	std::set<ContractKey> _exchangeStrategySet;
+	std::set<ContractKey> _otcStrategySet;
 	SessionContainer_Ptr<ContractKey> _pricingNotifers;
+	SessionContainer_Ptr<ContractKey> _tradingDeskNotifers;
 	SessionContainer_Ptr<uint64_t> _otcOrderNotifers;
-
 	IPricingDataContext* _pricingCtx;
+
+	bool _runingTradingDeskFlag;
+	std::thread _tradingDeskWorderThread;
 
 private:
 

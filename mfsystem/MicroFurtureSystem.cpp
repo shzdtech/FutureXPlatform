@@ -11,7 +11,7 @@
 #include "../utility/stringutility.h"
 #include "../configuration/AbstractConfigReaderFactory.h"
 #include "../dynamicloader/ConfigBasedCreator.h"
-#include "../message/SysParam.h"
+#include "../systemsettings/SysParam.h"
 
 #include "../databaseop/SysParamsDAO.h"
 #include "../databaseop/AbstractConnectionManager.h"

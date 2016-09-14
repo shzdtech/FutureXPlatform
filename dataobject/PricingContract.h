@@ -16,6 +16,9 @@ public:
 	PricingContract(const std::string& exchangeID, const std::string& instrumentID)
 		: ContractKey(exchangeID, instrumentID){}
 
+	PricingContract(const std::string& exchangeID, const std::string& instrumentID, double weight)
+		: ContractKey(exchangeID, instrumentID), Weight(weight) {}
+
 	double Weight = 1;
 
 protected:

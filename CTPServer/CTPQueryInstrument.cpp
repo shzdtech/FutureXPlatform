@@ -10,6 +10,7 @@
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/FieldName.h"
 #include "../dataobject/TypedefDO.h"
+#include "../dataobject/DateType.h"
 
 #include "../message/BizError.h"
 #include "../message/message_macro.h"
@@ -37,6 +38,8 @@
 
 dataobj_ptr CTPQueryInstrument::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
+	// CheckLogin(session);
+
 	auto stdo = (MapDO<std::string>*)reqDO.get();
 
 	auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
@@ -46,19 +49,21 @@ dataobj_ptr CTPQueryInstrument::HandleRequest(const dataobj_ptr& reqDO, IRawAPI*
 	VectorDO_Ptr<InstrumentDO> ret;
 
 	if (instrumentid == EMPTY_STRING && exchangeid == EMPTY_STRING && productid == EMPTY_STRING)
-		ret = ContractCache::Get(ProductType::PRODUCT_FUTURE).AllInstruments();
+		ret = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).AllInstruments();
 	else
-		ret = ContractCache::Get(ProductType::PRODUCT_FUTURE).QueryInstrument(instrumentid, exchangeid, productid);
+		ret = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrument(instrumentid, exchangeid, productid);
 
 	if (TUtil::IsNullOrEmpty(ret))
 	{
-		CThostFtdcQryInstrumentField req{};
-		std::strcpy(req.ExchangeID, exchangeid.data());
-		std::strcpy(req.InstrumentID, instrumentid.data());
-		std::strcpy(req.ProductID, productid.data());
-		auto retCode = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryInstrument(&req, reqDO->SerialId);
-		// CTPUtility::CheckReturnError(retCode);
-
+		if (auto pTradeAPI = ((CTPRawAPI*)rawAPI)->TrdAPI)
+		{
+			CThostFtdcQryInstrumentField req{};
+			std::strcpy(req.ExchangeID, exchangeid.data());
+			std::strcpy(req.InstrumentID, instrumentid.data());
+			std::strcpy(req.ProductID, productid.data());
+			auto retCode = pTradeAPI->ReqQryInstrument(&req, reqDO->SerialId);
+			// CTPUtility::CheckReturnError(retCode);
+		}
 		throw NotFoundException();
 	}
 
@@ -67,7 +72,7 @@ dataobj_ptr CTPQueryInstrument::HandleRequest(const dataobj_ptr& reqDO, IRawAPI*
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPQueryInstrument::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPQueryInstrument::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPQueryInstrument::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
@@ -76,7 +81,7 @@ dataobj_ptr CTPQueryInstrument::HandleRequest(const dataobj_ptr& reqDO, IRawAPI*
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryInstrument::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryInstrument::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	CTPUtility::CheckNotFound(rawRespParams[0]);
 	CTPUtility::CheckError(rawRespParams[1]);
@@ -102,7 +107,7 @@ dataobj_ptr CTPQueryInstrument::HandleResponse(const uint32_t serialId, param_ve
 		insDO.PriceTick = pData->PriceTick;
 		insDO.CreateDate = pData->CreateDate;
 		insDO.OpenDate = pData->OpenDate;
-		insDO.ExpireDate = pData->ExpireDate;
+		DateType::YYYYMMDD2YYYY_MM_DD(pData->ExpireDate, insDO.ExpireDate);
 		insDO.StartDelivDate = pData->StartDelivDate;
 		insDO.EndDelivDate = pData->EndDelivDate;
 		insDO.LifePhase = (LifePhaseType)(pData->InstLifePhase - THOST_FTDC_IP_NotStart);
@@ -131,9 +136,9 @@ dataobj_ptr CTPQueryInstrument::HandleResponse(const uint32_t serialId, param_ve
 			}
 		}
 
-		if (!ContractCache::Get(ProductType::PRODUCT_FUTURE).QueryInstrumentById(pData->InstrumentID))
+		if (!ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(pData->InstrumentID))
 		{
-			ContractCache::Get(ProductType::PRODUCT_FUTURE).Add(insDO);
+			ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).Add(insDO);
 		}
 
 		ret->push_back(std::move(insDO));

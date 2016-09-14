@@ -33,7 +33,7 @@ OrderDO_Ptr HedgeOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 
 	if (orderInfo.Direction == DirectionType::SELL)
 	{
-		orderInfo.LimitPrice = mdo.AskPrice;
+		orderInfo.LimitPrice = mdo.Ask().Price;
 
 		int pos = _mktPosCtx.GetBuyPosition(orderInfo);
 		if (pos >= orderInfo.Volume)
@@ -43,7 +43,7 @@ OrderDO_Ptr HedgeOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 	}
 	else
 	{
-		orderInfo.LimitPrice = mdo.BidPrice;
+		orderInfo.LimitPrice = mdo.Bid().Price;
 
 		int pos = _mktPosCtx.GetSellPosition(orderInfo);
 		if (pos >= orderInfo.Volume)

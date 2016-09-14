@@ -87,9 +87,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>TESTING_LIBRARY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(SolutionDir)include\sqlite;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib\sqlite\$(Platform)\$(Configuration);</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -99,9 +102,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>TESTING_LIBRARY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(SolutionDir)include\sqlite;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib\sqlite\$(Platform)\$(Configuration);</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -113,11 +119,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>TESTING_LIBRARY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(SolutionDir)include\sqlite;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib\sqlite\$(Platform)\$(Configuration);</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -129,14 +138,20 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>TESTING_LIBRARY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(SolutionDir)include\sqlite;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib\sqlite\$(Platform)\$(Configuration);</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ProjectReference Include="..\bizutility\bizutility.vcxproj">
+      <Project>{e3f399cf-2d32-49a8-b536-ea7fad14483f}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\configuration\configuration.vcxproj">
       <Project>{6ca92597-54a1-435d-b200-41860f096abc}</Project>
     </ProjectReference>
@@ -157,6 +172,7 @@
     <ClCompile Include="TestingLoginHandler.cpp" />
     <ClCompile Include="TestingMessageServiceFactory.cpp" />
     <ClCompile Include="TestingPositionHandler.cpp" />
+    <ClCompile Include="TestingQueryInstruments.cpp" />
     <ClCompile Include="TestingReturnMarketDataHandler.cpp" />
     <ClCompile Include="TestingServerExport.cpp" />
     <ClCompile Include="TestingServerMessageProcessor.cpp" />
@@ -170,6 +186,7 @@
     <ClInclude Include="TestingLoginHandler.h" />
     <ClInclude Include="TestingMessageServiceFactory.h" />
     <ClInclude Include="TestingPositionHandler.h" />
+    <ClInclude Include="TestingQueryInstruments.h" />
     <ClInclude Include="TestingReturnMarketDataHandler.h" />
     <ClInclude Include="TestingServerExport.h" />
     <ClInclude Include="TestingServerMessageProcessor.h" />

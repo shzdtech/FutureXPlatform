@@ -16,7 +16,7 @@
 class DATABASEOP_CLASS_EXPORTS OTCOrderDAO
 {
 public:
-	static OrderDO_Ptr CreateOrder(const OrderRequestDO& orderDO, const PricingDO& pricingDO);
+	static OrderDO_Ptr CreateOrder(const OrderRequestDO& orderDO, const IPricingDO& pricingDO);
 	static bool CancelOrder(const OrderRequestDO& orderDO, OrderStatus& status);
 	static bool AcceptOrder(const OrderRequestDO& orderDO, OrderStatus& status);
 	static bool RejectOrder(const OrderRequestDO& orderDO, OrderStatus& status);

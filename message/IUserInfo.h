@@ -33,7 +33,7 @@ public:
 	virtual const std::string& getName(void) const = 0;
 
 	virtual void setExtInfo(std::shared_ptr<void> extInfo) = 0;
-	virtual void* getExtInfo(void) const = 0;
+	virtual std::shared_ptr<void> getExtInfo(void) const = 0;
 
 	virtual const std::string& getAuthorizedKey(void) const = 0;
 	virtual void setAuthorizedKey(const std::string& newAuthKey) = 0;

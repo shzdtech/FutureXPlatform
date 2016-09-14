@@ -160,6 +160,7 @@
     <ClInclude Include="ComplexTableDO.h" />
     <ClInclude Include="ContractParamDO.h" />
     <ClInclude Include="ContractKey.h" />
+    <ClInclude Include="Pricing.h" />
     <ClInclude Include="PricingContract.h" />
     <ClInclude Include="EchoMessageDO.h" />
     <ClInclude Include="EnumTypes.h" />
@@ -176,6 +177,7 @@
     <ClInclude Include="TemplateDO.h" />
     <ClInclude Include="MarketDataDO.h" />
     <ClInclude Include="TradeRecordDO.h" />
+    <ClInclude Include="TradingDeskOptionParams.h" />
     <ClInclude Include="TypedefDO.h" />
     <ClInclude Include="UserContractParamDO.h" />
     <ClInclude Include="UserInfoDO.h" />

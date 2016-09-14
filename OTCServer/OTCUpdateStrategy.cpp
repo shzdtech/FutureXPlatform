@@ -33,7 +33,7 @@ dataobj_ptr OTCUpdateStrategy::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* 
 
 	auto ret = std::make_shared<VectorDO<StrategyContractDO>>();
 
-	if (auto wkProcPtr = MessageUtility::ServerWorkerProcessor<OTCWorkerProcessor>(session->getProcessor()))
+	if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
 	{
 		auto strategyMap = wkProcPtr->PricingDataContext()->GetStrategyMap();
 
@@ -56,14 +56,8 @@ dataobj_ptr OTCUpdateStrategy::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* 
 
 			scDO.Enabled = strategyDO.Enabled;
 
-			for (auto& pair : strategyDO.ModelParams.ScalaParams)
-				scDO.ModelParams.ScalaParams[pair.first] = pair.second;
-
-			for (auto& pair : strategyDO.ModelParams.VectorParams)
-				scDO.ModelParams.VectorParams[pair.first] = pair.second;
-
 			if (scDO.Enabled)
-				wkProcPtr->TriggerPricing(scDO);
+				wkProcPtr->TriggerOTCPricing(scDO);
 			else
 				strategyDO.Trading = false;
 

@@ -8,8 +8,6 @@
 #if !defined(__utility_autofillmap_h)
 #define __utility_autofillmap_h
 #include <map>
-#include <mutex>
-#include <thread>
 #include <functional>
 
 template <class K, class V>
@@ -18,6 +16,29 @@ class autofillmap : public std::map<K, V>
 public:
 	autofillmap() = default;
 	autofillmap(const std::map<K, V>& others) : std::map<K, V>(others) {}
+
+	bool tryfind(const K& key, V& value)
+	{
+		auto it = find(key);
+		if (it != end())
+		{
+			value = it->second;
+			return true;
+		}
+
+		return false;
+	}
+
+	V* tryfind(const K& key)
+	{
+		auto it = find(key);
+		if (it != end())
+		{
+			return &it->second;
+		}
+
+		return nullptr;
+	}
 
 	V& getorfill(const K& key)
 	{

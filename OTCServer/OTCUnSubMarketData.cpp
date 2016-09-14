@@ -26,7 +26,7 @@
 
 dataobj_ptr OTCUnSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
-	// CheckLogin(session);
+	CheckLogin(session);
 
 	auto ret = std::make_shared<StringTableDO>();
 
@@ -38,11 +38,11 @@ dataobj_ptr OTCUnSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI*
 		auto nInstrument = instList.size();
 
 		if (nInstrument > 0)
-			if (auto wkProcPtr = MessageUtility::ServerWorkerProcessor<OTCWorkerProcessor>(session->getProcessor()))
+			if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
 			{
 				for (auto& inst : instList)
 				{
-					if (auto contract = ContractCache::Get(wkProcPtr->GetProductType()).QueryInstrumentById(inst))
+					if (auto contract = wkProcPtr->GetInstrumentCache().QueryInstrumentById(inst))
 					{
 						wkProcPtr->UnregisterPricingListener(*contract,
 							session->getProcessor()->LockMessageSession().get());

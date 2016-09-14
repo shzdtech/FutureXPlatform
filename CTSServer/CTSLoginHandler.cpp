@@ -55,7 +55,7 @@ dataobj_ptr CTSLoginHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* ra
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTSLoginHandler::HandleResponse(const uint32_t serialId, param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTSLoginHandler::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTSLoginHandler::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawParams
@@ -64,7 +64,7 @@ dataobj_ptr CTSLoginHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* ra
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTSLoginHandler::HandleResponse(const uint32_t serialId, param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTSLoginHandler::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
 {
 	auto errCode = *(int*)rawParams[0];
 	if (errCode)

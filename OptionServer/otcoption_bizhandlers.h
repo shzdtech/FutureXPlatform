@@ -3,6 +3,6 @@
 
 //OTC
 
-#include "OTCOptionVolatility.h"
+#include "OTCOptionPricingParams.h"
 
 #endif

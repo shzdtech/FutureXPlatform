@@ -74,6 +74,12 @@
         "class.uuid": "factory.testing.sim.service",
         "mdInterval": "3000",
         "params": {
+          "load_workprocessor": "true",
+          "logout_dataloaded": "true",
+          "CTP.TRADER.SERVER": "tcp://ctpfz1-front3.citicsf.com:51205",
+          "CTP.TRADER.LOGIN.BROKERID": "66666",
+          "CTP.TRADER.LOGIN.USERID": "895816",
+          "CTP.TRADER.LOGIN.PASSWORD": "260519"
         }
       }
     }

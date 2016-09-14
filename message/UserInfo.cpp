@@ -57,9 +57,9 @@ void UserInfo::setExtInfo(std::shared_ptr<void> extInfo)
 	_extInfo = extInfo;
 }
 
-void * UserInfo::getExtInfo(void) const
+std::shared_ptr<void> UserInfo::getExtInfo(void) const
 {
-	return _extInfo.get();
+	return _extInfo;
 }
 
 ////////////////////////////////////////////////////////////////////////

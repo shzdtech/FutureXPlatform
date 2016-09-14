@@ -21,7 +21,6 @@
 #include "../message/AppContext.h"
 #include "../message/BizError.h"
 #include "../message/UserInfo.h"
-#include "../message/SysParam.h"
 #include "../message/MessageUtility.h"
 
 #include "../common/BizErrorIDs.h"
@@ -45,15 +44,18 @@ dataobj_ptr CTPOTCLogin::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI
 {
 	auto ret = Login(reqDO, rawAPI, session);
 
-	if (auto wkProcPtr = MessageUtility::ServerWorkerProcessor<CTPOTCWorkerProcessor>(session->getProcessor()))
+	if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<CTPOTCWorkerProcessor>(session->getProcessor()))
 	{
-		if (!(wkProcPtr->ConnectedToServer() && wkProcPtr->HasLogged()))
-			throw SystemException(CONNECTION_ERROR, "Cannot connect to CTP Trading Server!");
 		wkProcPtr->RegisterLoggedSession(session->getProcessor()->LockMessageSession().get());
 
 		if (session->getUserInfo()->getRole() == ROLE_TRADINGDESK)
 		{
 			wkProcPtr->LoginSystemUserIfNeed();
+		}
+
+		if (!(wkProcPtr->ConnectedToServer() && wkProcPtr->HasLogged()))
+		{
+			// throw SystemException(CONNECTION_ERROR, "Cannot connect to CTP Trading Server!");
 		}
 	}
 	

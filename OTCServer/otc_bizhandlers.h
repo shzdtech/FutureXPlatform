@@ -18,5 +18,7 @@
 #include "OTCQueryTrade.h"
 #include "OTCQueryPortfolio.h"
 #include "OTCNewPortfolio.h"
+#include "OTCUpdateModelParams.h"
+#include "OTCQueryModelParams.h"
 
 #endif

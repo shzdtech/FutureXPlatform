@@ -11,6 +11,7 @@
 
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/ResultDO.h"
+#include "../dataobject/UserInfoDO.h"
 
 #include "../databaseop/PortfolioDAO.h"
 
@@ -20,13 +21,18 @@ dataobj_ptr OTCNewPortfolio::HandleRequest(const dataobj_ptr & reqDO, IRawAPI * 
 
 	auto vecDO_Ptr = (VectorDO<PortfolioDO>*)reqDO.get();
 
-	if (auto wkProcPtr = MessageUtility::ServerWorkerProcessor<OTCWorkerProcessor>(session->getProcessor()))
+	if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
 	{
 		auto& userid = session->getUserInfo()->getUserId();
+		auto pUserInfo = (UserInfoDO*)session->getUserInfo()->getExtInfo().get();
 		for (auto& portfolioDO : *vecDO_Ptr)
 		{
 			portfolioDO.SetUserID(userid);
 			PortfolioDAO::CreatePortofolio(portfolioDO);
+			if (pUserInfo)
+			{
+				pUserInfo->Portfolios->push_back(portfolioDO);
+			}
 		}
 	}
 

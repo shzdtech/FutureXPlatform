@@ -15,7 +15,7 @@
 #include "CTPUtility.h"
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       CTPDepthMarketData::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+ // Name:       CTPDepthMarketData::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
  // Purpose:    Implementation of CTPDepthMarketData::HandleResponse(const uint32_t serialId, )
  // Parameters:
  // - rawRespParams
@@ -24,7 +24,7 @@
  // Return:     dataobj_ptr
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPDepthMarketData::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPDepthMarketData::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	auto pData = (CThostFtdcDepthMarketDataField*)rawRespParams[0];
 	MarketDataDO* mdo = new MarketDataDO(pData->ExchangeID, pData->InstrumentID);
@@ -54,14 +54,14 @@ dataobj_ptr CTPDepthMarketData::HandleResponse(const uint32_t serialId, param_ve
 
 	if (pData->BidPrice1 < 1e32)
 	{
-		mdo->BidPrice = pData->BidPrice1;
-		mdo->BidVolume = pData->BidVolume1;
+		mdo->Bid().Price = pData->BidPrice1;
+		mdo->Bid().Volume = pData->BidVolume1;
 	}
 
 	if (pData->AskPrice1 < 1e32)
 	{
-		mdo->AskPrice = pData->AskPrice1;
-		mdo->AskVolume = pData->AskVolume1;
+		mdo->Ask().Price = pData->AskPrice1;
+		mdo->Ask().Volume = pData->AskVolume1;
 	}
 
 	return ret;

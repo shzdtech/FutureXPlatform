@@ -1,0 +1,21 @@
+#if !defined(__pricingengine_OptionParams_h)
+#define __pricingengine_OptionParams_h
+
+#include <string>
+
+class OptionParams
+{
+public:
+	double askVolatility = 0.2;
+	double bidVolatility = 0.2;
+	double riskFreeRate = 0;
+	double dividend = 0;
+	double atmOffset = 0;
+
+public:
+	static const std::string dividend_name;
+	static const std::string riskFreeRate_name;
+	static const std::string atmOffset_name;
+};
+
+#endif

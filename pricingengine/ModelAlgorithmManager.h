@@ -16,7 +16,7 @@
 class PRICINGENGINE_CLASS_EXPORTS ModelAlgorithmManager : public singleton_mt_ptr<ModelAlgorithmManager>
 {
 public:
-	IModelAlgorithm_Ptr FindModelAlgorithm(const std::string& name) const;
+	IModelAlgorithm_Ptr FindModel(const std::string& name) const;
 	void InitializeInstance();
 
 protected:

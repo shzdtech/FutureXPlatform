@@ -24,18 +24,12 @@ data_buffer PBModelParamsSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	auto pDO = (ModelParamsDO*)abstractDO.get();
 	ModelParams pb;
-	pb.set_modelname(pDO->ModelName);
+	FillPBHeader(pb, pDO);
 
-	pb.mutable_scalaparams()->insert(pDO->ScalaParams.begin(), pDO->ScalaParams.end());
+	pb.set_instancename(pDO->InstanceName);
+	pb.set_model(pDO->Model);
 
-	for(auto& pair : pDO->VectorParams)
-	{ 
-		ModelParams_double_vector double_vector;
-		for(double val : pair.second)
-			double_vector.add_entry(val);
-
-		(*pb.mutable_vectorparams())[pair.first] = double_vector;
-	}
+	pb.mutable_params()->insert(pDO->Params.begin(), pDO->Params.end());
 
 	int bufsize = pb.ByteSize();
 	uint8_t* buf = new uint8_t[bufsize];
@@ -58,18 +52,13 @@ dataobj_ptr PBModelParamsSerializer::Deserialize(const data_buffer& rawdata)
 	ParseWithReturn(pb, rawdata)
 
 	auto pDO = new ModelParamsDO;
+	FillDOHeader(pDO, pb);
+
 	dataobj_ptr ret(pDO);
-	pDO->ModelName = pb.modelname();	
+	pDO->InstanceName = pb.instancename();
+	pDO->Model = pb.model();	
 
-	pDO->ScalaParams.insert(pb.scalaparams().begin(), pb.scalaparams().end());
-
-	auto& vectorParams = pb.vectorparams();
-	for (auto& pair : vectorParams)
-	{
-		std::vector<double> double_vec(pair.second.entry().begin(),
-			pair.second.entry().end());
-		pDO->VectorParams.emplace(pair.first, double_vec);
-	}
+	pDO->Params.insert(pb.params().begin(), pb.params().end());
 
 	return ret;
 }

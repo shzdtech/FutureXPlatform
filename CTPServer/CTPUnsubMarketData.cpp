@@ -26,6 +26,8 @@
 
 dataobj_ptr CTPUnsubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
+	CheckLogin(session);
+
 	auto stdo = (StringTableDO*)reqDO.get();
 	int ret = 0;
 	if (!stdo->Data.empty())
@@ -49,7 +51,7 @@ dataobj_ptr CTPUnsubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI*
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPUnsubMarketData::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPUnsubMarketData::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPUnsubMarketData::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
@@ -58,7 +60,7 @@ dataobj_ptr CTPUnsubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI*
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPUnsubMarketData::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPUnsubMarketData::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	CTPUtility::CheckError(rawRespParams[1]);
 

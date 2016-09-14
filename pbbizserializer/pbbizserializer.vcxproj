@@ -212,6 +212,7 @@
     <ClCompile Include="PBSubMarketDataSerializer.cpp" />
     <ClCompile Include="PBSubPricingDataSerializer.cpp" />
     <ClCompile Include="PBTradeRecordSerializer.cpp" />
+    <ClCompile Include="PBTradingDeskParamsSerializer.cpp" />
     <ClCompile Include="PBUserParamSerializer.cpp" />
     <ClCompile Include="PBUserPositionSerializer.cpp" />
   </ItemGroup>
@@ -234,6 +235,7 @@
     <ClInclude Include="PBSubMarketDataSerializer.h" />
     <ClInclude Include="PBSubPricingDataSerializer.h" />
     <ClInclude Include="PBTradeRecordSerializer.h" />
+    <ClInclude Include="PBTradingDeskParamsSerializer.h" />
     <ClInclude Include="PBUserParamSerializer.h" />
     <ClInclude Include="PBUserPositionSerializer.h" />
     <ClInclude Include="resource.h" />

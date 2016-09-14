@@ -96,9 +96,6 @@
     <ClInclude Include="IProcessorBase.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="SysParam.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="IRawAPI.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -174,9 +171,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="MessageServiceFactory.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="SysParam.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ServerSessionManager.cpp">

@@ -12,8 +12,9 @@
 
 #include "../CTPServer/CTPWorkerProcessorID.h"
 #include "../OTCServer/otc_bizhandlers.h"
+#include "../OptionServer/otcoption_bizhandlers.h"
 #include "../CTPServer/ctp_bizhandlers.h"
-#include "../OptionServer/OTCOptionVolatility.h"
+#include "../OptionServer/OTCOptionPricingParams.h"
 #include "ctpotc_bizhandlers.h"
 
 #include "../message/MessageUtility.h"
@@ -38,7 +39,7 @@ std::map<uint, IMessageHandler_Ptr> CTPOTCOptionServiceFactory::CreateMessageHan
 	std::map<uint, IMessageHandler_Ptr> msg_hdl_map =
 		CTPOTCServiceFactory::CreateMessageHandlers(serverCtx);
 
-	msg_hdl_map[MSG_ID_VOLITALITY_MODEL] = std::make_shared<OTCOptionVolatility>();
+	msg_hdl_map[MSG_ID_RTN_TRADINGDESK_PRICING] = std::make_shared<OTCUpdateContractParam>();
 
 	return msg_hdl_map;
 }

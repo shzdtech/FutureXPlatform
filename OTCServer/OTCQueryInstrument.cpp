@@ -36,6 +36,8 @@
 
 dataobj_ptr OTCQueryInstrument::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
+	CheckLogin(session);
+
 	auto stdo = (MapDO<std::string>*)reqDO.get();
 
 	auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
@@ -44,12 +46,12 @@ dataobj_ptr OTCQueryInstrument::HandleRequest(const dataobj_ptr& reqDO, IRawAPI*
 
 	VectorDO_Ptr<InstrumentDO> ret;
 
-	if (auto wkProcPtr = MessageUtility::ServerWorkerProcessor<OTCWorkerProcessor>(session->getProcessor()))
+	if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
 	{
 		if (instrumentid == EMPTY_STRING && exchangeid == EMPTY_STRING && productid == EMPTY_STRING)
-			ret = ContractCache::Get(wkProcPtr->GetProductType()).AllInstruments();
+			ret = wkProcPtr->GetInstrumentCache().AllInstruments();
 		else
-			ret = ContractCache::Get(wkProcPtr->GetProductType()).QueryInstrument(instrumentid, exchangeid, productid);
+			ret = wkProcPtr->GetInstrumentCache().QueryInstrument(instrumentid, exchangeid, productid);
 	}
 
 	ret->HasMore = false;

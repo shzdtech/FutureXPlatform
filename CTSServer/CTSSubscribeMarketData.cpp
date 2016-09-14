@@ -45,7 +45,7 @@ dataobj_ptr CTSSubscribeMarketData::HandleRequest(const dataobj_ptr& reqDO, IRaw
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTSSubscribeMarketData::HandleResponse(const uint32_t serialId, param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTSSubscribeMarketData::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTSSubscribeMarketData::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawParams
@@ -54,7 +54,7 @@ dataobj_ptr CTSSubscribeMarketData::HandleRequest(const dataobj_ptr& reqDO, IRaw
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTSSubscribeMarketData::HandleResponse(const uint32_t serialId, param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTSSubscribeMarketData::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
 {
 	return nullptr;
 }

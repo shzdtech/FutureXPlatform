@@ -8,6 +8,7 @@
 #include "CTPTradeProcessor.h"
 #include "CTPUtility.h"
 #include "CTPConstant.h"
+#include <thread>
 #include "../litelogger/LiteLogger.h"
 #include "../message/DefMessageID.h"
 #include "../message/message_macro.h"

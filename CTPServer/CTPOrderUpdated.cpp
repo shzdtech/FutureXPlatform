@@ -6,7 +6,7 @@
 #include "../dataobject/OrderDO.h"
 #include "tradeapi/ThostFtdcTraderApi.h"
 
-dataobj_ptr CTPOrderUpdated::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOrderUpdated::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	dataobj_ptr ret;
 	ret = CTPUtility::ParseRawOrder((CThostFtdcOrderField*)rawRespParams[0]);

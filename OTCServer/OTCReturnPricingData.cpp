@@ -26,33 +26,29 @@
 #include "../message/message_macro.h"
 #include "../pricingengine/IPricingDataContext.h"
 
-////////////////////////////////////////////////////////////////////////
-// Name:       OTCReturnPricingData::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of OTCReturnPricingData::HandleResponse(const uint32_t serialId, )
-// Parameters:
-// - rawRespParams
-// - rawAPI
-// - session
-// Return:     dataobj_ptr
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       OTCReturnPricingData::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+ // Purpose:    Implementation of OTCReturnPricingData::HandleResponse(const uint32_t serialId, )
+ // Parameters:
+ // - rawRespParams
+ // - rawAPI
+ // - session
+ // Return:     dataobj_ptr
+ ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr OTCReturnPricingData::HandleResponse(const uint32_t serialId, param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr OTCReturnPricingData::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	auto pStrategyDO = (StrategyContractDO*)rawRespParams[0];
+	auto pPricingCtx = (IPricingDataContext*)rawRespParams[1];
 
-	std::shared_ptr<PricingDO> ret;
+	IPricingDO_Ptr ret;
 
-	if (auto wkProcPtr =
-		MessageUtility::ServerWorkerProcessor<OTCWorkerProcessor>(session->getProcessor()))
-	{
-		auto userContractMap = std::static_pointer_cast<UserContractParamDOMap>
-			(session->getContext()->getAttribute(STR_KEY_USER_CONTRACTS));
+	auto userContractMap = std::static_pointer_cast<UserContractParamDOMap>
+		(session->getContext()->getAttribute(STR_KEY_USER_CONTRACTS));
 
-		int quantity = userContractMap->at(*pStrategyDO).Quantity;
+	int quantity = userContractMap->at(*pStrategyDO).Quantity;
 
-		ret = PricingUtility::Pricing(&quantity, *pStrategyDO,
-			*wkProcPtr->PricingDataContext());
-	}
+	ret = PricingUtility::Pricing(&quantity, *pStrategyDO, *pPricingCtx);
 
 	return ret;
 }

@@ -41,7 +41,7 @@ dataobj_ptr OTCQueryStrategy::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 
 	if (auto strategyVec_Ptr = std::static_pointer_cast<std::vector<ContractKey>>(
 		session->getContext()->getAttribute(STR_KEY_USER_STRATEGY)))
-		if (auto wkProcPtr = MessageUtility::ServerWorkerProcessor<OTCWorkerProcessor>(session->getProcessor()))
+		if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
 		{
 			auto pStrategyMap = wkProcPtr->PricingDataContext()->GetStrategyMap();
 
@@ -49,12 +49,9 @@ dataobj_ptr OTCQueryStrategy::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 			{
 				auto& strategy = pStrategyMap->at(strategyKey);
 
-				if (wkProcPtr)
-				{
-					int ret = wkProcPtr->RefreshStrategy(strategy);
-					wkProcPtr->RegisterPricingListener(strategy,
-						session->getProcessor()->LockMessageSession().get());
-				}
+				wkProcPtr->RegisterPricingListener(strategy, session->getProcessor()->LockMessageSession().get());
+
+				wkProcPtr->SubscribeStrategy(strategy);
 
 				sDOVec_Ptr->push_back(strategy);
 			}

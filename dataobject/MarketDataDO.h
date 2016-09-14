@@ -16,9 +16,6 @@ public:
 	MarketDataDO(const std::string& exchangeID, const std::string& instrumentID)
 		: PricingDO(exchangeID, instrumentID)	{}
 
-	int BidVolume = 0;
-	int AskVolume = 0;
-
 	int Volume = 0;
 	double LastPrice = 0;
 	double AveragePrice = 0;

@@ -25,13 +25,13 @@ class BetaSumPricingAlgorithm : public IPricingAlgorithm
 {
 public:
 	virtual const std::string& Name(void) const;
-	virtual std::shared_ptr<PricingDO> Compute(
+	virtual IPricingDO_Ptr Compute(
 		const void* pInputObject,
 		const StrategyContractDO& sdo,
 		IPricingDataContext& priceCtx,
 		const param_vector* params);
-	virtual const std::map<std::string, double>& DefaultParams(void);
-	virtual bool ParseParams(const ModelParamsDO& modelParams, void* pParamObj);
+	virtual const std::map<std::string, double>& DefaultParams(void) const;
+	virtual std::shared_ptr<void> ParseParams(const std::map<std::string, double>& modelParams);
 
 protected:
 private:

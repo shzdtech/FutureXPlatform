@@ -27,8 +27,6 @@ dataobj_ptr TestingSubMarketDataHandler::HandleRequest(const dataobj_ptr& reqDO,
 
 	auto stdo = (StringTableDO*)reqDO.get();
 
-	ret->HasMore = stdo->HasMore;
-
 	std::shared_ptr<MarketDataDOMap> mdDOMap_Ptr =
 		std::static_pointer_cast<MarketDataDOMap>
 		(session->getContext()->getAttribute(STR_KEY_USER_CONTRACTS));
@@ -49,6 +47,8 @@ dataobj_ptr TestingSubMarketDataHandler::HandleRequest(const dataobj_ptr& reqDO,
 			ret->push_back(mdDO);
 			mdDOMap_Ptr->emplace(inst, std::move(mdDO));
 		}
+
+		ret->HasMore = false;
 	}
 
 	return ret;

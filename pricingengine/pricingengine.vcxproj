@@ -19,11 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BlackScholesIVM.h" />
+    <ClInclude Include="ComplexAlgoirthmManager.h" />
     <ClInclude Include="IAlgorithmBase.h" />
     <ClInclude Include="IModelAlgorithmFactory.h" />
     <ClInclude Include="IModelAlgorithm.h" />
     <ClInclude Include="ModelAlgorithmFactory.h" />
     <ClInclude Include="ModelAlgorithmManager.h" />
+    <ClInclude Include="OptionParams.h" />
     <ClInclude Include="PricingAlgorithmManager.h" />
     <ClInclude Include="BetaSumPricingAlgorithm.h" />
     <ClInclude Include="BlackScholesPricingAlgorithm.h" />
@@ -39,8 +42,11 @@
     <ClInclude Include="WingsVolatilityModel.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BlackScholesIVM.cpp" />
+    <ClCompile Include="ComplexAlgoirthmManager.cpp" />
     <ClCompile Include="ModelAlgorithmFactory.cpp" />
     <ClCompile Include="ModelAlgorithmManager.cpp" />
+    <ClCompile Include="OptionParams.cpp" />
     <ClCompile Include="PricingAlgorithmManager.cpp" />
     <ClCompile Include="BetaSumPricingAlgorithm.cpp" />
     <ClCompile Include="BlackScholesPricingAlgorithm.cpp" />
@@ -51,8 +57,8 @@
     <ClCompile Include="WingsVolatilityModel.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\bizutility\bizutility.vcxproj">
-      <Project>{e3f399cf-2d32-49a8-b536-ea7fad14483f}</Project>
+    <ProjectReference Include="..\systemsettings\systemsettings.vcxproj">
+      <Project>{b2408e62-da0a-4f39-8257-b9c33d09bd03}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

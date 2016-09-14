@@ -14,7 +14,6 @@
 #include "../message/EchoMessageHandler.h"
 #include "../message/EchoMessageSerializer.h"
 #include "../message/DefMessageID.h"
-#include "../message/SysParam.h"
 
 #include "../dataserializer/AbstractDataSerializerFactory.h"
 

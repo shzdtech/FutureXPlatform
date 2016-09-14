@@ -15,7 +15,6 @@
 #include <set>
 
 #include "../message/BizError.h"
-#include "../message/SysParam.h"
 
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/PricingDO.h"
@@ -38,14 +37,14 @@
 
 dataobj_ptr OTCSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
-	// CheckLogin(session);
+	CheckLogin(session);
 
 	auto ret = std::make_shared<VectorDO<PricingDO>>();
 
 	auto stdo = (StringTableDO*)reqDO.get();
 
 	if (auto wkProcPtr =
-		MessageUtility::ServerWorkerProcessor<OTCWorkerProcessor>(session->getProcessor()))
+		MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
 	{
 		if (!stdo->Data.empty())
 		{
@@ -61,18 +60,21 @@ dataobj_ptr OTCSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 
 			if (session->getUserInfo()->getRole() == ROLE_TRADINGDESK)
 			{
-				if (auto vectorPtr = ContractDAO::FindContractByUser(session->getUserInfo()->getUserId()))
-					for (auto& contract : *vectorPtr)
+				if (auto strategyVec_Ptr = std::static_pointer_cast<std::vector<ContractKey>>(
+					session->getContext()->getAttribute(STR_KEY_USER_STRATEGY)))
+				{
+					for (auto& contract : *strategyVec_Ptr)
 					{
 						PricingDO mdo(contract.ExchangeID(), contract.InstrumentID());
 						ret->push_back(std::move(mdo));
 					}
+				}
 			}
 			else
 			{
 				for (auto& inst : instList)
 				{
-					if (auto contract = ContractCache::Get(wkProcPtr->GetProductType()).QueryInstrumentById(inst))
+					if (auto contract = wkProcPtr->GetInstrumentCache().QueryInstrumentById(inst))
 					{
 						PricingDO mdo(contract->ExchangeID(), contract->InstrumentID());
 						ret->push_back(std::move(mdo));

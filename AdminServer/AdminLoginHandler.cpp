@@ -16,7 +16,6 @@
 #include "../message/AppContext.h"
 #include "../message/BizError.h"
 #include "../message/UserInfo.h"
-#include "../message/SysParam.h"
 
 #include "../common/BizErrorIDs.h"
 
@@ -69,7 +68,7 @@ dataobj_ptr AdminLoginHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* 
 		pUserInfo->setRole(userInfo_Ptr->Role);
 		pUserInfo->setPermission(userInfo_Ptr->Permission);
 
-		pUserInfo->setAttribute(STR_KEY_USER_INFO_DETAIL, userInfo_Ptr);
+		pUserInfo->setExtInfo(userInfo_Ptr);
 
 		session->setLoginTimeStamp();
 
@@ -83,7 +82,7 @@ dataobj_ptr AdminLoginHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* 
 		userInfoCache->emplace(pUserInfo->getUserId(), pUserInfo);
 	}
 
-	ret = std::static_pointer_cast<UserInfoDO>(pUserInfo->getAttribute(STR_KEY_USER_INFO_DETAIL));
+	ret = std::static_pointer_cast<UserInfoDO>(pUserInfo->getExtInfo());
 
 	return ret;
 }

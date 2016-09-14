@@ -16,7 +16,7 @@
 class PRICINGENGINE_CLASS_EXPORTS PricingAlgorithmManager : public singleton_mt_ptr<PricingAlgorithmManager>
 {
 public:
-   IPricingAlgorithm_Ptr FindAlgorithm(const std::string& name) const;
+   IPricingAlgorithm_Ptr FindModel(const std::string& name) const;
    void InitializeInstance();
 
 protected:

@@ -30,8 +30,7 @@ public:
 	{
 		int cmp = stringutility::compare(_portfolioID.data(), portfolioKey._portfolioID.data());
 
-		return cmp != 0 ? cmp : 
-			stringutility::compare(_userID.data(), portfolioKey._userID.data());
+		return cmp != 0 ? cmp : _userID.compare(portfolioKey._userID);;
 	}
 
 	bool operator< (const PortfolioKey& portfolioKey) const

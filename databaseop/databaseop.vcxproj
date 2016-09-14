@@ -101,7 +101,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\lib\mysql\debug;$(SolutionDir)\lib\google;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib\mysql\$(Platform)\$(Configuration);</AdditionalLibraryDirectories>
       <AdditionalDependencies>mysqlcppconn.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -141,7 +141,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)\lib\mysql\release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib\mysql\$(Platform)\$(Configuration);</AdditionalLibraryDirectories>
       <AdditionalDependencies>mysqlcppconn.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -172,6 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractConnectionManager.h" />
+    <ClInclude Include="ModelParamsDAO.h" />
     <ClInclude Include="MySqlConnectionManager.h" />
     <ClInclude Include="ConnectionPool.h" />
     <ClInclude Include="ContractDAO.h" />
@@ -189,6 +190,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AbstractConnectionManager.cpp" />
+    <ClCompile Include="ModelParamsDAO.cpp" />
     <ClCompile Include="MySqlConnectionManager.cpp" />
     <ClCompile Include="ContractDAO.cpp" />
     <ClCompile Include="OrderDAO.cpp" />

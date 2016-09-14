@@ -48,6 +48,9 @@
     <ClCompile Include="TestingAccountInfoHandler.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="TestingQueryInstruments.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TestingLoginHandler.h">
@@ -81,6 +84,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="TestingAccountInfoHandler.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TestingQueryInstruments.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

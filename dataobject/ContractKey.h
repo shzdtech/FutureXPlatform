@@ -61,20 +61,14 @@ public:
 		_exchangeID = exchangeId;
 	}
 
-	const std::string& OTCExchange() const
-	{
-		static const std::string OTC("otc");
-		return OTC;
-	}
-
 	void ConvertToOTC()
 	{
-		_exchangeID = OTCExchange();
+		_exchangeID = "otc";
 	}
 
 	bool IsOTC() const
 	{
-		return stringutility::compare(_exchangeID, OTCExchange()) == 0;
+		return stringutility::startwith(_exchangeID.data(), "otc");
 	}
 
 protected:
@@ -87,6 +81,7 @@ private:
 class UserKey
 {
 public:
+	UserKey() {};
 	UserKey(const std::string& userID) : _userID(userID) {};
 	UserKey(const char* userID) : _userID(userID) {};
 

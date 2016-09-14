@@ -5,7 +5,8 @@ import "modelalgorithm.proto";
 
 package Micro.Future.Message.Business;
 
-message PBMarketData {
+message PBMarketData 
+{
 	//MD Common Data
 	string exchange = 1;
 	string contract = 2;
@@ -56,7 +57,8 @@ message PBPortfolioList
 	repeated PBPortfolio portfolio = 2;
 }
 
-message PBPricingData {
+message PBPricingData
+{
 	DataHeader header = 1;
 	
 	//MD Common Data
@@ -66,6 +68,8 @@ message PBPricingData {
 	//Equity Data
 	double askPrice = 4;
 	double bidPrice = 5;
+	int32 askSize = 6;
+	int32 bidSize = 7;
 
 }
 
@@ -73,6 +77,33 @@ message PBPricingDataList
 {
 	repeated PBPricingData pricingData = 1;
 	DataHeader header = 2;
+}
+
+message PBOptionData
+{
+	double askPrice = 1;
+	double bidPrice = 2;
+	int32 askSize = 3;
+	int32 bidSize = 4;
+	double askVolatility = 5;
+	double bidVolatility = 6;
+	double askDelta = 7;
+	double bidDelta = 8;
+	double askTheta = 9;
+	double bidTheta = 10;
+	double askGamma = 11;
+	double bidGamma = 12;
+	double askVega = 13;
+	double bidVega = 14;
+}
+
+message PBTradingDeskOptionParams
+{
+	DataHeader header = 1;
+	string exchange = 2;
+	string contract = 3;
+	PBOptionData MarketData = 4;
+	PBOptionData TheoData = 5;
 }
 
 message PBPricingContract
@@ -95,7 +126,9 @@ message PBStrategy
 	int32 quantity = 9;
 	int32 depth = 10;
 	repeated PBPricingContract pricingContracts = 11;
-	ModelParams modelParams = 12;
+	string pricingModel = 12;
+	string ivModel = 13;
+	string volModel = 14;
 }
 
 message PBStrategyList
@@ -205,7 +238,7 @@ message PBOrderInfo {
 	///成交量类型
 	int32 volumeCondition = 22;
 	///交易日
-	int32 tradingDay = 23;
+	string tradingDay = 23;
 	///活动状态
 	bool active = 24;
 	///开平标志

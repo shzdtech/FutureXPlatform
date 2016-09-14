@@ -209,7 +209,7 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(CThostFtdcOrderField *pOrder, OrderDO_Ptr 
 	pDO->InsertTime = timebuf;
 	pDO->UpdateTime = pOrder->UpdateTime;
 	pDO->CancelTime = pOrder->CancelTime;
-	pDO->TradingDay = ToUInt64(pOrder->TradingDay);
+	pDO->TradingDay = pOrder->TradingDay;
 	pDO->Message = std::move(Encoding::ToUTF8(pOrder->StatusMsg, CHARSET_GB2312));
 	pDO->SessionID = pOrder->SessionID;
 
@@ -249,7 +249,7 @@ OrderDO_Ptr CTPUtility::ParseRawOrderInput(
 	if (!baseOrder)
 	{
 		const char* pExchange = "";
-		if (auto pInstument = ContractCache::Get(ProductType::PRODUCT_FUTURE).QueryInstrumentById(pOrderInput->InstrumentID))
+		if (auto pInstument = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(pOrderInput->InstrumentID))
 			pExchange = pInstument->ExchangeID().data();
 
 		baseOrder.reset(new OrderDO(ToUInt64(pOrderInput->OrderRef),

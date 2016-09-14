@@ -33,11 +33,13 @@ public:
 
 	int LoginSystemUserIfNeed(void);
 
-	int RefreshStrategy(const StrategyContractDO& strategyDO);
+	int SubscribeMarketData(const ContractKey & contractId);
 
 	void RegisterLoggedSession(IMessageSession* pMessageSession);
 
-	ProductType GetProductType();
+	ProductType GetContractProductType() const;
+
+	const std::vector<ProductType>& GetStrategyProductTypes() const;
 
 	OTCTradeProcessor* GetOTCTradeProcessor();
 

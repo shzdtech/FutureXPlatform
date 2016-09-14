@@ -17,9 +17,7 @@
 class DATABASEOP_CLASS_EXPORTS ContractDAO
 {
 public:
-	static VectorDO_Ptr<ContractKey> FindContractByUser(const std::string& userid);
 	static VectorDO_Ptr<InstrumentDO> FindContractByProductType(int productType);
-	static VectorDO_Ptr<ContractParamDO> FindContractParamByUser(const std::string& userid);
 
 protected:
 private:

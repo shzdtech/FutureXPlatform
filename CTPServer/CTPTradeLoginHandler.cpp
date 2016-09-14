@@ -51,10 +51,3 @@ int CTPTradeLoginHandler::LoginFunction(IRawAPI* rawAPI, ISession* session, CTho
 
 	return ((CTPRawAPI*)rawAPI)->TrdAPI->ReqUserLogin(loginInfo, requestId);
 }
-
-dataobj_ptr CTPTradeLoginHandler::HandleResponse(const uint32_t serialId, param_vector & rawRespParams, IRawAPI * rawAPI, ISession * session)
-{
-	auto ret = CTPLoginHandler::HandleResponse(serialId, rawRespParams, rawAPI, session);
-
-	return ret;
-}

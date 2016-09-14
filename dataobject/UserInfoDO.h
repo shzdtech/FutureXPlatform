@@ -8,7 +8,7 @@
 #if !defined(__dataobject_UserInfoDO_h)
 #define __dataobject_UserInfoDO_h
 
-#include "dataobjectbase.h"
+#include "PortfolioDO.h"
 #include <string>
 
 enum GenderType
@@ -36,6 +36,8 @@ public:
 	GenderType Gender;
 	int Role;
 	int Permission;
+
+	vector_ptr<PortfolioDO> Portfolios;
 
 protected:
 

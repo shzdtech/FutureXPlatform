@@ -13,7 +13,6 @@
 
 #include "../message/message_macro.h"
 #include "../message/DefMessageID.h"
-#include "../message/SysParam.h"
 #include "../message/AppContext.h"
 #include "../databaseop/TradeDAO.h"
 #include "../litelogger/LiteLogger.h"

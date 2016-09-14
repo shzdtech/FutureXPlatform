@@ -12,14 +12,14 @@ std::once_flag ModelAlgorithmManager::_instance_flag;
 std::shared_ptr<ModelAlgorithmManager> ModelAlgorithmManager::_instance = nullptr;
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       ModelAlgorithmManager::FindAlgorithm(const std::string& name)
-// Purpose:    Implementation of ModelAlgorithmManager::FindAlgorithm()
+// Name:       ModelAlgorithmManager::FindModel(const std::string& name)
+// Purpose:    Implementation of ModelAlgorithmManager::FindModel()
 // Parameters:
 // - name
 // Return:     IPricingAlgorithm_Ptr
 ////////////////////////////////////////////////////////////////////////
 
-IModelAlgorithm_Ptr ModelAlgorithmManager::FindModelAlgorithm(const std::string& name) const
+IModelAlgorithm_Ptr ModelAlgorithmManager::FindModel(const std::string& name) const
 {
 	IModelAlgorithm_Ptr ret;
 	auto it = _algMap.find(name);

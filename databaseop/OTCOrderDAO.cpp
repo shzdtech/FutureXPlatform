@@ -16,7 +16,7 @@
 // Return:     bool
 ////////////////////////////////////////////////////////////////////////
 
-OrderDO_Ptr OTCOrderDAO::CreateOrder(const OrderRequestDO& orderDO, const PricingDO& pricingDO)
+OrderDO_Ptr OTCOrderDAO::CreateOrder(const OrderRequestDO& orderDO, const IPricingDO& pricingDO)
 {
 	static const std::string sql_proc_createorder("CALL Order_OTC_New(?,?,?,?,?,?,?,?,?,?,@orderID,@orderSysID,@orderStatus)");
 
@@ -27,8 +27,8 @@ OrderDO_Ptr OTCOrderDAO::CreateOrder(const OrderRequestDO& orderDO, const Pricin
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
 			session->getConnection()->prepareStatement(sql_proc_createorder));
-		prestmt->setDouble(1, pricingDO.BidPrice);
-		prestmt->setDouble(2, pricingDO.AskPrice);
+		prestmt->setDouble(1, pricingDO.Bid().Price);
+		prestmt->setDouble(2, pricingDO.Ask().Price);
 		prestmt->setString(3, orderDO.UserID());
 		prestmt->setString(4, orderDO.ExchangeID());
 		prestmt->setString(5, orderDO.InstrumentID());

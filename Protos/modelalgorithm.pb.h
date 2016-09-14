@@ -29,6 +29,7 @@
 #include <google/protobuf/map.h>
 #include <google/protobuf/map_field_inl.h>
 #include <google/protobuf/unknown_field_set.h>
+#include "commondefine.pb.h"
 // @@protoc_insertion_point(includes)
 
 namespace Micro {
@@ -41,94 +42,8 @@ void protobuf_AssignDesc_modelalgorithm_2eproto();
 void protobuf_ShutdownFile_modelalgorithm_2eproto();
 
 class ModelParams;
-class ModelParams_double_vector;
 
 // ===================================================================
-
-class ModelParams_double_vector : public ::google::protobuf::Message {
- public:
-  ModelParams_double_vector();
-  virtual ~ModelParams_double_vector();
-
-  ModelParams_double_vector(const ModelParams_double_vector& from);
-
-  inline ModelParams_double_vector& operator=(const ModelParams_double_vector& from) {
-    CopyFrom(from);
-    return *this;
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const ModelParams_double_vector& default_instance();
-
-  void Swap(ModelParams_double_vector* other);
-
-  // implements Message ----------------------------------------------
-
-  inline ModelParams_double_vector* New() const { return New(NULL); }
-
-  ModelParams_double_vector* New(::google::protobuf::Arena* arena) const;
-  void CopyFrom(const ::google::protobuf::Message& from);
-  void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const ModelParams_double_vector& from);
-  void MergeFrom(const ModelParams_double_vector& from);
-  void Clear();
-  bool IsInitialized() const;
-
-  int ByteSize() const;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input);
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
-  int GetCachedSize() const { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const;
-  void InternalSwap(ModelParams_double_vector* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return _internal_metadata_.arena();
-  }
-  inline void* MaybeArenaPtr() const {
-    return _internal_metadata_.raw_arena_ptr();
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // repeated double entry = 1;
-  int entry_size() const;
-  void clear_entry();
-  static const int kEntryFieldNumber = 1;
-  double entry(int index) const;
-  void set_entry(int index, double value);
-  void add_entry(double value);
-  const ::google::protobuf::RepeatedField< double >&
-      entry() const;
-  ::google::protobuf::RepeatedField< double >*
-      mutable_entry();
-
-  // @@protoc_insertion_point(class_scope:Micro.Future.Message.ModelParams.double_vector)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  bool _is_default_instance_;
-  ::google::protobuf::RepeatedField< double > entry_;
-  mutable int _entry_cached_byte_size_;
-  mutable int _cached_size_;
-  friend void  protobuf_AddDesc_modelalgorithm_2eproto();
-  friend void protobuf_AssignDesc_modelalgorithm_2eproto();
-  friend void protobuf_ShutdownFile_modelalgorithm_2eproto();
-
-  void InitAsDefaultInstance();
-  static ModelParams_double_vector* default_instance_;
-};
-// -------------------------------------------------------------------
 
 class ModelParams : public ::google::protobuf::Message {
  public:
@@ -184,67 +99,68 @@ class ModelParams : public ::google::protobuf::Message {
 
   // nested types ----------------------------------------------------
 
-  typedef ModelParams_double_vector double_vector;
 
   // accessors -------------------------------------------------------
 
-  // optional string modelName = 1;
-  void clear_modelname();
-  static const int kModelNameFieldNumber = 1;
-  const ::std::string& modelname() const;
-  void set_modelname(const ::std::string& value);
-  void set_modelname(const char* value);
-  void set_modelname(const char* value, size_t size);
-  ::std::string* mutable_modelname();
-  ::std::string* release_modelname();
-  void set_allocated_modelname(::std::string* modelname);
+  // optional .Micro.Future.Message.DataHeader header = 1;
+  bool has_header() const;
+  void clear_header();
+  static const int kHeaderFieldNumber = 1;
+  const ::Micro::Future::Message::DataHeader& header() const;
+  ::Micro::Future::Message::DataHeader* mutable_header();
+  ::Micro::Future::Message::DataHeader* release_header();
+  void set_allocated_header(::Micro::Future::Message::DataHeader* header);
 
-  // map<string, double> scalaParams = 2;
-  int scalaparams_size() const;
-  void clear_scalaparams();
-  static const int kScalaParamsFieldNumber = 2;
+  // optional string instanceName = 2;
+  void clear_instancename();
+  static const int kInstanceNameFieldNumber = 2;
+  const ::std::string& instancename() const;
+  void set_instancename(const ::std::string& value);
+  void set_instancename(const char* value);
+  void set_instancename(const char* value, size_t size);
+  ::std::string* mutable_instancename();
+  ::std::string* release_instancename();
+  void set_allocated_instancename(::std::string* instancename);
+
+  // optional string model = 3;
+  void clear_model();
+  static const int kModelFieldNumber = 3;
+  const ::std::string& model() const;
+  void set_model(const ::std::string& value);
+  void set_model(const char* value);
+  void set_model(const char* value, size_t size);
+  ::std::string* mutable_model();
+  ::std::string* release_model();
+  void set_allocated_model(::std::string* model);
+
+  // map<string, double> params = 4;
+  int params_size() const;
+  void clear_params();
+  static const int kParamsFieldNumber = 4;
   const ::google::protobuf::Map< ::std::string, double >&
-      scalaparams() const;
+      params() const;
   ::google::protobuf::Map< ::std::string, double >*
-      mutable_scalaparams();
-
-  // map<string, .Micro.Future.Message.ModelParams.double_vector> vectorParams = 5;
-  int vectorparams_size() const;
-  void clear_vectorparams();
-  static const int kVectorParamsFieldNumber = 5;
-  const ::google::protobuf::Map< ::std::string, ::Micro::Future::Message::ModelParams_double_vector >&
-      vectorparams() const;
-  ::google::protobuf::Map< ::std::string, ::Micro::Future::Message::ModelParams_double_vector >*
-      mutable_vectorparams();
+      mutable_params();
 
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.ModelParams)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   bool _is_default_instance_;
-  ::google::protobuf::internal::ArenaStringPtr modelname_;
+  ::Micro::Future::Message::DataHeader* header_;
+  ::google::protobuf::internal::ArenaStringPtr instancename_;
+  ::google::protobuf::internal::ArenaStringPtr model_;
   typedef ::google::protobuf::internal::MapEntryLite<
       ::std::string, double,
       ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
       ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE,
       0 >
-      ModelParams_ScalaParamsEntry;
+      ModelParams_ParamsEntry;
   ::google::protobuf::internal::MapField<
       ::std::string, double,
       ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
       ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE,
-      0 > scalaparams_;
-  typedef ::google::protobuf::internal::MapEntryLite<
-      ::std::string, ::Micro::Future::Message::ModelParams_double_vector,
-      ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
-      ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE,
-      0 >
-      ModelParams_VectorParamsEntry;
-  ::google::protobuf::internal::MapField<
-      ::std::string, ::Micro::Future::Message::ModelParams_double_vector,
-      ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
-      ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE,
-      0 > vectorparams_;
+      0 > params_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_modelalgorithm_2eproto();
   friend void protobuf_AssignDesc_modelalgorithm_2eproto();
@@ -259,125 +175,153 @@ class ModelParams : public ::google::protobuf::Message {
 // ===================================================================
 
 #if !PROTOBUF_INLINE_NOT_IN_HEADERS
-// ModelParams_double_vector
-
-// repeated double entry = 1;
-inline int ModelParams_double_vector::entry_size() const {
-  return entry_.size();
-}
-inline void ModelParams_double_vector::clear_entry() {
-  entry_.Clear();
-}
-inline double ModelParams_double_vector::entry(int index) const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.ModelParams.double_vector.entry)
-  return entry_.Get(index);
-}
-inline void ModelParams_double_vector::set_entry(int index, double value) {
-  entry_.Set(index, value);
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.ModelParams.double_vector.entry)
-}
-inline void ModelParams_double_vector::add_entry(double value) {
-  entry_.Add(value);
-  // @@protoc_insertion_point(field_add:Micro.Future.Message.ModelParams.double_vector.entry)
-}
-inline const ::google::protobuf::RepeatedField< double >&
-ModelParams_double_vector::entry() const {
-  // @@protoc_insertion_point(field_list:Micro.Future.Message.ModelParams.double_vector.entry)
-  return entry_;
-}
-inline ::google::protobuf::RepeatedField< double >*
-ModelParams_double_vector::mutable_entry() {
-  // @@protoc_insertion_point(field_mutable_list:Micro.Future.Message.ModelParams.double_vector.entry)
-  return &entry_;
-}
-
-// -------------------------------------------------------------------
-
 // ModelParams
 
-// optional string modelName = 1;
-inline void ModelParams::clear_modelname() {
-  modelname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// optional .Micro.Future.Message.DataHeader header = 1;
+inline bool ModelParams::has_header() const {
+  return !_is_default_instance_ && header_ != NULL;
 }
-inline const ::std::string& ModelParams::modelname() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.ModelParams.modelName)
-  return modelname_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+inline void ModelParams::clear_header() {
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
 }
-inline void ModelParams::set_modelname(const ::std::string& value) {
+inline const ::Micro::Future::Message::DataHeader& ModelParams::header() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.ModelParams.header)
+  return header_ != NULL ? *header_ : *default_instance_->header_;
+}
+inline ::Micro::Future::Message::DataHeader* ModelParams::mutable_header() {
   
-  modelname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.ModelParams.modelName)
+  if (header_ == NULL) {
+    header_ = new ::Micro::Future::Message::DataHeader;
+  }
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.ModelParams.header)
+  return header_;
 }
-inline void ModelParams::set_modelname(const char* value) {
+inline ::Micro::Future::Message::DataHeader* ModelParams::release_header() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.ModelParams.header)
   
-  modelname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.ModelParams.modelName)
+  ::Micro::Future::Message::DataHeader* temp = header_;
+  header_ = NULL;
+  return temp;
 }
-inline void ModelParams::set_modelname(const char* value, size_t size) {
-  
-  modelname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.ModelParams.modelName)
-}
-inline ::std::string* ModelParams::mutable_modelname() {
-  
-  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.ModelParams.modelName)
-  return modelname_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* ModelParams::release_modelname() {
-  // @@protoc_insertion_point(field_release:Micro.Future.Message.ModelParams.modelName)
-  
-  return modelname_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void ModelParams::set_allocated_modelname(::std::string* modelname) {
-  if (modelname != NULL) {
+inline void ModelParams::set_allocated_header(::Micro::Future::Message::DataHeader* header) {
+  delete header_;
+  header_ = header;
+  if (header) {
     
   } else {
     
   }
-  modelname_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), modelname);
-  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.ModelParams.modelName)
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.ModelParams.header)
 }
 
-// map<string, double> scalaParams = 2;
-inline int ModelParams::scalaparams_size() const {
-  return scalaparams_.size();
+// optional string instanceName = 2;
+inline void ModelParams::clear_instancename() {
+  instancename_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void ModelParams::clear_scalaparams() {
-  scalaparams_.Clear();
+inline const ::std::string& ModelParams::instancename() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.ModelParams.instanceName)
+  return instancename_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ModelParams::set_instancename(const ::std::string& value) {
+  
+  instancename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.ModelParams.instanceName)
+}
+inline void ModelParams::set_instancename(const char* value) {
+  
+  instancename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.ModelParams.instanceName)
+}
+inline void ModelParams::set_instancename(const char* value, size_t size) {
+  
+  instancename_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.ModelParams.instanceName)
+}
+inline ::std::string* ModelParams::mutable_instancename() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.ModelParams.instanceName)
+  return instancename_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ModelParams::release_instancename() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.ModelParams.instanceName)
+  
+  return instancename_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ModelParams::set_allocated_instancename(::std::string* instancename) {
+  if (instancename != NULL) {
+    
+  } else {
+    
+  }
+  instancename_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), instancename);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.ModelParams.instanceName)
+}
+
+// optional string model = 3;
+inline void ModelParams::clear_model() {
+  model_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ModelParams::model() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.ModelParams.model)
+  return model_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ModelParams::set_model(const ::std::string& value) {
+  
+  model_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.ModelParams.model)
+}
+inline void ModelParams::set_model(const char* value) {
+  
+  model_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.ModelParams.model)
+}
+inline void ModelParams::set_model(const char* value, size_t size) {
+  
+  model_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.ModelParams.model)
+}
+inline ::std::string* ModelParams::mutable_model() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.ModelParams.model)
+  return model_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ModelParams::release_model() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.ModelParams.model)
+  
+  return model_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ModelParams::set_allocated_model(::std::string* model) {
+  if (model != NULL) {
+    
+  } else {
+    
+  }
+  model_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), model);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.ModelParams.model)
+}
+
+// map<string, double> params = 4;
+inline int ModelParams::params_size() const {
+  return params_.size();
+}
+inline void ModelParams::clear_params() {
+  params_.Clear();
 }
 inline const ::google::protobuf::Map< ::std::string, double >&
-ModelParams::scalaparams() const {
-  // @@protoc_insertion_point(field_map:Micro.Future.Message.ModelParams.scalaParams)
-  return scalaparams_.GetMap();
+ModelParams::params() const {
+  // @@protoc_insertion_point(field_map:Micro.Future.Message.ModelParams.params)
+  return params_.GetMap();
 }
 inline ::google::protobuf::Map< ::std::string, double >*
-ModelParams::mutable_scalaparams() {
-  // @@protoc_insertion_point(field_mutable_map:Micro.Future.Message.ModelParams.scalaParams)
-  return scalaparams_.MutableMap();
-}
-
-// map<string, .Micro.Future.Message.ModelParams.double_vector> vectorParams = 5;
-inline int ModelParams::vectorparams_size() const {
-  return vectorparams_.size();
-}
-inline void ModelParams::clear_vectorparams() {
-  vectorparams_.Clear();
-}
-inline const ::google::protobuf::Map< ::std::string, ::Micro::Future::Message::ModelParams_double_vector >&
-ModelParams::vectorparams() const {
-  // @@protoc_insertion_point(field_map:Micro.Future.Message.ModelParams.vectorParams)
-  return vectorparams_.GetMap();
-}
-inline ::google::protobuf::Map< ::std::string, ::Micro::Future::Message::ModelParams_double_vector >*
-ModelParams::mutable_vectorparams() {
-  // @@protoc_insertion_point(field_mutable_map:Micro.Future.Message.ModelParams.vectorParams)
-  return vectorparams_.MutableMap();
+ModelParams::mutable_params() {
+  // @@protoc_insertion_point(field_mutable_map:Micro.Future.Message.ModelParams.params)
+  return params_.MutableMap();
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
-// -------------------------------------------------------------------
-
 
 // @@protoc_insertion_point(namespace_scope)
 

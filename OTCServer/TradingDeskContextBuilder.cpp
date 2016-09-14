@@ -11,6 +11,7 @@
 #include "../databaseop/PortfolioDAO.h"
 #include "../databaseop/ContractDAO.h"
 #include "../databaseop/StrategyContractDAO.h"
+#include "../dataobject/UserInfoDO.h"
 
 #include "../common/Attribute_Key.h"
 #include "../message/message_macro.h"
@@ -59,7 +60,7 @@ void TradingDeskContextBuilder::LoadPortfolio(ISession* pSession)
 {
 	if (auto portfolioDOVec_Ptr = PortfolioDAO::FindPortfolioByUser(pSession->getUserInfo()->getUserId()))
 	{
-		if (auto wkProcPtr = MessageUtility::ServerWorkerProcessor<OTCWorkerProcessor>(pSession->getProcessor()))
+		if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(pSession->getProcessor()))
 		{
 			auto pPortfoliorMap = wkProcPtr->PricingDataContext()->GetPortfolioMap();
 
@@ -76,73 +77,67 @@ void TradingDeskContextBuilder::LoadPortfolio(ISession* pSession)
 				}
 			}
 
-			auto portfolioVec_Ptr = std::make_shared<std::vector<PortfolioKey>>();
-			portfolioVec_Ptr->assign(portfolioDOVec_Ptr->begin(), portfolioDOVec_Ptr->end());
-			pSession->getContext()->setAttribute(STR_KEY_USER_PORTFOLIO, portfolioVec_Ptr);
+			if (auto userInfoPtr = std::static_pointer_cast<UserInfoDO>(pSession->getUserInfo()->getExtInfo()))
+				userInfoPtr->Portfolios = portfolioDOVec_Ptr;
 		}
 	}
 }
 
 void TradingDeskContextBuilder::LoadContractParam(ISession* pSession)
 {
-	auto contractVec_Ptr =
-		ContractDAO::FindContractParamByUser(pSession->getUserInfo()->getUserId());
+	auto conParamVec_Ptr = std::make_shared<std::vector<ContractKey>>();
+	pSession->getContext()->setAttribute(STR_KEY_USER_CONTRACT_PARAM, conParamVec_Ptr);
 
-	if (auto wkProcPtr = MessageUtility::ServerWorkerProcessor<OTCWorkerProcessor>(pSession->getProcessor()))
+	if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(pSession->getProcessor()))
 	{
-		auto contractMap = wkProcPtr->PricingDataContext()->GetContractParamMap();
-
-		for (auto& con : *contractVec_Ptr)
+		if (auto contractVec_Ptr = StrategyContractDAO::RetrieveContractParamByUser(pSession->getUserInfo()->getUserId()))
 		{
-			auto it = contractMap->find(con);
-			if (it != contractMap->end())
-			{
-				con = it->second;
-			}
-			else
-			{
-				contractMap->emplace(con, con);
-			}
+			auto contractMap = wkProcPtr->PricingDataContext()->GetContractParamMap();
 
-			auto conParamVec_Ptr = std::make_shared<std::vector<ContractKey>>();
-			conParamVec_Ptr->assign(contractVec_Ptr->begin(), contractVec_Ptr->end());
-			pSession->getContext()->setAttribute(STR_KEY_USER_CONTRACT_PARAM, conParamVec_Ptr);
+			for (auto& con : *contractVec_Ptr)
+			{
+				if (!contractMap->tryfind(con))
+				{
+					contractMap->emplace(con, con);
+				}
+
+				conParamVec_Ptr->assign(contractVec_Ptr->begin(), contractVec_Ptr->end());
+			}
 		}
 	}
 }
 
 void TradingDeskContextBuilder::LoadStrategy(ISession* pSession)
 {
+	auto strategyVec_Ptr = std::make_shared<std::vector<ContractKey>>();
+	pSession->getContext()->setAttribute(STR_KEY_USER_STRATEGY, strategyVec_Ptr);
 
-	if (auto wkProcPtr = MessageUtility::ServerWorkerProcessor<OTCWorkerProcessor>(pSession->getProcessor()))
+	if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(pSession->getProcessor()))
 	{
-		if (auto sDOVec_Ptr = StrategyContractDAO::FindStrategyContractByUser(
-			pSession->getUserInfo()->getUserId(), wkProcPtr->GetProductType()))
+		for (auto productType : wkProcPtr->GetStrategyProductTypes())
 		{
-			auto strategyMap = wkProcPtr->PricingDataContext()->GetStrategyMap();
-
-			for (auto& strategy : *sDOVec_Ptr)
+			if (auto sDOVec_Ptr = StrategyContractDAO::FindStrategyContractByUser(
+				pSession->getUserInfo()->getUserId(), productType))
 			{
-				auto it = strategyMap->find(strategy);
-				if (it != strategyMap->end())
+				auto strategyMap = wkProcPtr->PricingDataContext()->GetStrategyMap();
+
+				for (auto& strategy : *sDOVec_Ptr)
 				{
-					strategy = it->second;
-				}
-				else
-				{
-					if (auto model = PricingAlgorithmManager::Instance()->FindAlgorithm(strategy.ModelParams.ModelName))
+					auto pStrategyDO = strategyMap->tryfind(strategy);
+					if (!pStrategyDO)
 					{
-						auto& params = model->DefaultParams();
-						strategy.ModelParams.ScalaParams.insert(params.begin(), params.end());
+						if (auto model = PricingAlgorithmManager::Instance()->FindModel(strategy.PricingModel->Model))
+						{
+							auto& params = model->DefaultParams();
+							strategy.PricingModel->Params.insert(params.begin(), params.end());
+						}
+
+						strategyMap->emplace(strategy, strategy);
 					}
-
-					strategyMap->emplace(strategy, strategy);
 				}
-			}
 
-			auto strategyVec_Ptr = std::make_shared<std::vector<ContractKey>>();
-			strategyVec_Ptr->assign(sDOVec_Ptr->begin(), sDOVec_Ptr->end());
-			pSession->getContext()->setAttribute(STR_KEY_USER_STRATEGY, strategyVec_Ptr);
+				strategyVec_Ptr->insert(strategyVec_Ptr->end(), sDOVec_Ptr->begin(), sDOVec_Ptr->end());
+			}
 		}
 	}
 }
