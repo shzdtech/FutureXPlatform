@@ -119,13 +119,13 @@ const std::map<std::string, double>& ETPPricingAlgorithm::DefaultParams(void) co
 	return defaultParams;
 }
 
-std::shared_ptr<void> ETPPricingAlgorithm::ParseParams(const std::map<std::string, double>& modelParams)
+void ETPPricingAlgorithm::ParseParams(const std::map<std::string, double>& modelParams, std::unique_ptr<ParamsBase>& target)
 {
-	auto ret = std::make_shared<ETPParams>();
+	auto ret = std::make_unique<ETPParams>();
 
 	ret->coeff = modelParams.at(ETPParams::coeff_name);
 	ret->offset = modelParams.at(ETPParams::offset_name);
 	ret->spread = modelParams.at(ETPParams::spread_name);
 
-	return ret;
+	target = std::move(ret);
 }

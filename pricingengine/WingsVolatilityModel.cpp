@@ -208,9 +208,9 @@ const std::map<std::string, double>& WingsVolatilityModel::DefaultParams(void) c
 	return defaultParams;
 }
 
-std::shared_ptr<void> WingsVolatilityModel::ParseParams(const std::map<std::string, double>& modelParams)
+void WingsVolatilityModel::ParseParams(const std::map<std::string, double>& modelParams, std::unique_ptr<ParamsBase>& target)
 {
-	auto ret = std::make_shared<WingsParams>();
+	auto ret = std::make_unique<WingsParams>();
 	ret->alpha = modelParams.at(WingsParams::PARAM_ALPHA);
 	ret->ssr = modelParams.at(WingsParams::PARAM_SSR);
 	ret->f_ref = modelParams.at(WingsParams::PARAM_F_REF);
@@ -241,5 +241,5 @@ std::shared_ptr<void> WingsVolatilityModel::ParseParams(const std::map<std::stri
 	ret->dn_slope_offset = modelParams.at(WingsParams::PARAM_DN_SLOPE_OFFSET);
 	ret->up_slope_offset = modelParams.at(WingsParams::PARAM_UP_SLOPE_OFFSET);
 
-	return ret;
+	target = std::move(ret);
 }

@@ -19,6 +19,10 @@
 #include "../pricingengine/IPricingDataContext.h"
 #include "../pricingengine/PricingAlgorithmManager.h"
 
+#include "../bizutility/StrategyModelCache.h"
+
+#include <algorithm>
+
  ////////////////////////////////////////////////////////////////////////
  // Name:       TradingDeskContextBuilder::TradingDeskContextBuilder()
  // Purpose:    Implementation of TradingDeskContextBuilder::TradingDeskContextBuilder()
@@ -116,27 +120,32 @@ void TradingDeskContextBuilder::LoadStrategy(ISession* pSession)
 	{
 		for (auto productType : wkProcPtr->GetStrategyProductTypes())
 		{
-			if (auto sDOVec_Ptr = StrategyContractDAO::FindStrategyContractByUser(
-				pSession->getUserInfo()->getUserId(), productType))
+			auto& models = StrategyModelCache::ModelCache();
+			auto& userid = pSession->getUserInfo()->getUserId();
+
+			auto strategyMap = wkProcPtr->PricingDataContext()->GetStrategyMap();
+
+			auto it = std::find_if(strategyMap->begin(), strategyMap->end(),
+				[&userid, productType](const std::pair<ContractKey, StrategyContractDO>& pair) { return  pair.second.UserID() == userid && pair.second.ProductType == productType; });
+
+
+			while (it != strategyMap->end())
 			{
-				auto strategyMap = wkProcPtr->PricingDataContext()->GetStrategyMap();
-
-				for (auto& strategy : *sDOVec_Ptr)
+				auto& strategy = it->second;
+				if (!strategy.PricingModel->ParsedParams)
 				{
-					auto pStrategyDO = strategyMap->tryfind(strategy);
-					if (!pStrategyDO)
+					if (auto model = PricingAlgorithmManager::Instance()->FindModel(strategy.PricingModel->Model))
 					{
-						if (auto model = PricingAlgorithmManager::Instance()->FindModel(strategy.PricingModel->Model))
-						{
-							auto& params = model->DefaultParams();
-							strategy.PricingModel->Params.insert(params.begin(), params.end());
-						}
-
-						strategyMap->emplace(strategy, strategy);
+						auto& params = model->DefaultParams();
+						strategy.PricingModel->Params.insert(params.begin(), params.end());
+						model->ParseParams(strategy.PricingModel->Params, strategy.PricingModel->ParsedParams);
 					}
 				}
 
-				strategyVec_Ptr->insert(strategyVec_Ptr->end(), sDOVec_Ptr->begin(), sDOVec_Ptr->end());
+				strategyVec_Ptr->push_back(strategy);
+
+				it = std::find_if(it, strategyMap->end(),
+					[&userid, productType](const std::pair<ContractKey, StrategyContractDO>& pair) { return  pair.second.UserID() == userid && pair.second.ProductType == productType; });
 			}
 		}
 	}

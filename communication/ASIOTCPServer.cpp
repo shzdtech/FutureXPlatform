@@ -21,7 +21,7 @@ ASIOTCPServer::ASIOTCPServer() :
 	_sessiontimeout(SESSION_TIMEOUT),
 	_max_msg_size(MAX_MSG_SIZE),
 	_socket(_iosrv),
-	_acceptor(new tcp::acceptor(_iosrv))
+	_acceptor(_iosrv)
 {
 	_manager_ptr = std::make_shared<ASIOSessionManager>(this);
 
@@ -82,14 +82,17 @@ bool ASIOTCPServer::Initialize(const std::string& uri, const std::string& config
 ////////////////////////////////////////////////////////////////////////
 
 bool ASIOTCPServer::Stop(void) {
+	std::lock_guard<std::mutex> lock(_startcloseLock);
+
 	_manager_ptr->OnServerClosing();
 
-	_acceptor->close();
 	_iosrv.stop();
-	for (auto& th : _messageThreads) {
-		th->join();
+	_acceptor.close();
+
+	for (auto& th : _workers) {
+		th.join();
 	}
-	_messageThreads.clear();
+	_workers.clear();
 
 	_running = false;
 	return !_running;
@@ -104,17 +107,19 @@ bool ASIOTCPServer::Stop(void) {
 ////////////////////////////////////////////////////////////////////////
 
 bool ASIOTCPServer::Start(void) {
+	std::lock_guard<std::mutex> lock(_startcloseLock);
+
 	if (!_running)
 	{
-		if (!_acceptor->is_open())
+		if (!_acceptor.is_open())
 		{
 			boost::system::error_code ec;
 			tcp::endpoint endpoint(tcp::v4(), _port);
-			if (!_acceptor->open(endpoint.protocol(), ec))
+			if (!_acceptor.open(endpoint.protocol(), ec))
 			{
-				if (!_acceptor->bind(endpoint, ec))
+				if (!_acceptor.bind(endpoint, ec))
 				{
-					if (!_acceptor->listen(socket_base::max_connections, ec))
+					if (!_acceptor.listen(socket_base::max_connections, ec))
 					{
 						// Start #pool_sz threads for handling io services
 						_iosrv.reset();
@@ -125,9 +130,7 @@ bool ASIOTCPServer::Start(void) {
 
 						for (int i = 0; i < _nthread; i++)
 						{
-							_messageThreads.push_back(
-								std::make_shared<std::thread>
-								(&ASIOTCPServer::work_thread, this));
+							_workers.push_back(std::move(std::thread(&ASIOTCPServer::work_thread, this)));
 						}
 
 						_running = true;
@@ -184,15 +187,12 @@ void ASIOTCPServer::work_thread(void) {
 ////////////////////////////////////////////////////////////////////////
 
 void ASIOTCPServer::asyc_accept(void) {
-	_acceptor->async_accept(_socket,
-		[this](boost::system::error_code ec) {
+	_acceptor.async_accept(_socket, [this](boost::system::error_code ec) {
 		if (!ec)
 		{
-			LOG_DEBUG << "Creating session: " <<
-				_socket.remote_endpoint().address().to_string() << ':'
-				<< std::to_string(_socket.remote_endpoint().port());
-			auto newsessionptr = ((ASIOSessionManager*)_manager_ptr.get())->
-				CreateSession(std::move(_socket));
+			LOG_DEBUG << "Creating session: " << _socket.remote_endpoint().address().to_string()
+				<< ':' << std::to_string(_socket.remote_endpoint().port());
+			auto newsessionptr = ((ASIOSessionManager*)_manager_ptr.get())->CreateSession(std::move(_socket));
 			newsessionptr->setMaxMessageSize(this->_max_msg_size);
 			newsessionptr->setTimeout(_sessiontimeout);
 			asyc_accept();

@@ -117,12 +117,12 @@ const std::map<std::string, double>& BetaSumPricingAlgorithm::DefaultParams(void
 	return defaultParams;
 }
 
-std::shared_ptr<void> BetaSumPricingAlgorithm::ParseParams(const std::map<std::string, double>& modelParams)
+void BetaSumPricingAlgorithm::ParseParams(const std::map<std::string, double>& modelParams, std::unique_ptr<ParamsBase>& target)
 {
-	auto ret = std::make_shared<BetaSumParams>();
+	auto ret = std::make_unique<BetaSumParams>();
 
 	ret->offset = modelParams.at(BetaSumParams::offset_name);
 	ret->spread = modelParams.at(BetaSumParams::spread_name);
 
-	return ret;
+	target = std::move(ret);
 }

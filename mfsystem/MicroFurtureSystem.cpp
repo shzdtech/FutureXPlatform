@@ -12,6 +12,7 @@
 #include "../configuration/AbstractConfigReaderFactory.h"
 #include "../dynamicloader/ConfigBasedCreator.h"
 #include "../systemsettings/SysParam.h"
+#include <mutex>
 
 #include "../databaseop/SysParamsDAO.h"
 #include "../databaseop/AbstractConnectionManager.h"
@@ -240,11 +241,11 @@ bool MicroFurtureSystem::Stop(void)
 		}
 	}
 
-	_running = false;
-
 	ret = i == _servers.size();
 
 	LOG_INFO << i << " servers have stopped.";
+
+	_running = false;
 
 	LOG_FLUSH;
 

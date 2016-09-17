@@ -38,8 +38,9 @@ bool Application::Exited(void)
 
 int Application::Exit(void)
 {
+	int ret = Stop();
 	_exited = true;
-	return Stop();
+	return ret;
 }
 ////////////////////////////////////////////////////////////////////////
 // Name:       Application::Exit()

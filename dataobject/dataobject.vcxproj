@@ -160,6 +160,7 @@
     <ClInclude Include="ComplexTableDO.h" />
     <ClInclude Include="ContractParamDO.h" />
     <ClInclude Include="ContractKey.h" />
+    <ClInclude Include="ParamsBase.h" />
     <ClInclude Include="Pricing.h" />
     <ClInclude Include="PricingContract.h" />
     <ClInclude Include="EchoMessageDO.h" />

@@ -3,7 +3,7 @@
 
 #include "IModelAlgorithm.h"
 
-class WingsParams
+class WingsParams : public ParamsBase
 {
 public:
 	static const std::string PARAM_ALPHA;
@@ -82,7 +82,7 @@ public:
 	static double ComputeVolatility(double f_atm, double strikeprice, int days, double alpha, double f_ref, double ssr,
 		double scr, double vcr, double vol_ref, double slope_ref, double dn_cf, double up_cf, double dn_sm, double up_sm, double dn_slope, double up_slope, double put_curv, double call_curv);
 	virtual const std::map<std::string, double>& DefaultParams(void) const;
-	virtual std::shared_ptr<void> ParseParams(const std::map<std::string, double>& modelParams);
+	virtual void ParseParams(const std::map<std::string, double>& modelParams, std::unique_ptr<ParamsBase>& target);
 
 private:
 	static int _yearDays;

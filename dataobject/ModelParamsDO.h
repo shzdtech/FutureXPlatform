@@ -3,6 +3,7 @@
 
 #include "dataobjectbase.h"
 #include "ContractKey.h"
+#include "ParamsBase.h"
 #include <string>
 #include <map>
 #include <memory>
@@ -40,6 +41,8 @@ class ModelParamsDO : public ModelKey, public dataobjectbase
 public:
 	ModelParamsDO() = default;
 
+	ModelParamsDO(const ModelKey& modelKey) : ModelKey(modelKey) {}
+
 	ModelParamsDO(const std::string& instanceName, const std::string& modelType, const std::string& userID)
 		: ModelKey(instanceName, userID), Model(modelType) {}
 
@@ -47,7 +50,7 @@ public:
 
 	std::map<std::string, double> Params;
 
-	std::shared_ptr<void> ParsedParams;
+	std::unique_ptr<ParamsBase> ParsedParams;
 };
 
 typedef std::shared_ptr<ModelParamsDO> ModelParamsDO_Ptr;

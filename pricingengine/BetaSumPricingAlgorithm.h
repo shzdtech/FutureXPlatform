@@ -10,7 +10,7 @@
 
 #include "IPricingAlgorithm.h"
 
-class BetaSumParams
+class BetaSumParams : public ParamsBase
 {
 public:
 	static const std::string offset_name;
@@ -31,7 +31,7 @@ public:
 		IPricingDataContext& priceCtx,
 		const param_vector* params);
 	virtual const std::map<std::string, double>& DefaultParams(void) const;
-	virtual std::shared_ptr<void> ParseParams(const std::map<std::string, double>& modelParams);
+	virtual void ParseParams(const std::map<std::string, double>& modelParams, std::unique_ptr<ParamsBase>& target);
 
 protected:
 private:

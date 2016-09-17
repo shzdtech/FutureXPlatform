@@ -114,6 +114,9 @@
     <ClInclude Include="TradingDeskOptionParams.h">
       <Filter>头文件\otc</Filter>
     </ClInclude>
+    <ClInclude Include="ParamsBase.h">
+      <Filter>头文件\system</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

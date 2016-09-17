@@ -12,6 +12,7 @@
 #include "communication_exp.h"
 #include <boost/asio.hpp>
 #include <thread>
+#include <mutex>
 
 using namespace boost::asio;
 using boost::asio::ip::tcp;
@@ -28,14 +29,15 @@ public:
 
 protected:
 	io_service _iosrv;
-	std::shared_ptr<tcp::acceptor> _acceptor;
-	std::vector<std::shared_ptr<std::thread>> _messageThreads;
+	tcp::socket _socket;
+	tcp::acceptor _acceptor;
+	std::vector<std::thread> _workers;
+	std::mutex _startcloseLock;
 	bool _running;
 	int _nthread;
 	int _sessiontimeout;
 	int _port;
 	uint _max_msg_size;
-	tcp::socket _socket;
 
 private:
 	void work_thread(void);

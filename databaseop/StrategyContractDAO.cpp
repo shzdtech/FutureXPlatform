@@ -9,32 +9,35 @@
 #include "MySqlConnectionManager.h"
 #include <ctime>
 
-////////////////////////////////////////////////////////////////////////
-// Name:       StrategyConstractDAO::FindStrategyContractByKey(const ContractKey& contractID)
-// Purpose:    Implementation of StrategyConstractDAO::FindStrategyContractByKey()
-// Parameters:
-// - contractID
-// Return:     std::shared_ptr<std::vector<StrategyContractDO>>
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       StrategyConstractDAO::FindStrategyContractByKey(const ContractKey& contractID)
+ // Purpose:    Implementation of StrategyConstractDAO::FindStrategyContractByKey()
+ // Parameters:
+ // - contractID
+ // Return:     std::shared_ptr<std::vector<StrategyContractDO>>
+ ////////////////////////////////////////////////////////////////////////
 
-VectorDO_Ptr<StrategyContractDO> StrategyContractDAO::FindStrategyContractByUser(
-	const std::string& userid, int productType)
+void StrategyContractDAO::LoadStrategyContractByProductType(int productType, UserContractMap<StrategyContractDO>& strategyMap)
 {
 	static const std::string sql_findstrategy(
 		"SELECT exchange_symbol, contract_symbol, underlying_symbol, tick_size, multiplier, "
 		"strategy_symbol, descript, portfolio_symbol, contract_type, "
 		"strikeprice, expiration, accountid, is_trading_allowed, product_type "
 		"FROM vw_strategy_contract_info "
-		"WHERE accountid like ? and product_type = ?");
+		"WHERE product_type = ?");
 
-	auto ret = std::make_shared<VectorDO<StrategyContractDO>>();
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
 	{
+		autofillmap<UserContractKey, std::vector<PricingContract>> pricingContractMap;
+		RetrievePricingContractsByProductType(productType, pricingContractMap);
+
+		autofillmap<UserStrategyName, autofillmap<std::string, std::string>> strategyDOMap;
+		RetrieveStrategyModels(strategyDOMap);
+
 		AutoClosePreparedStmt_Ptr prestmt(
 			session->getConnection()->prepareStatement(sql_findstrategy));
-		prestmt->setString(1, userid.empty() ? "%" : userid);
-		prestmt->setInt(2, productType);
+		prestmt->setInt(1, productType);
 
 		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
 
@@ -63,10 +66,23 @@ VectorDO_Ptr<StrategyContractDO> StrategyContractDAO::FindStrategyContractByUser
 			stcdo.Enabled = rs->getBoolean(13);
 			stcdo.ProductType = (ProductType)rs->getInt(14);
 
-			RetrievePricingContracts(stcdo.ExchangeID(), stcdo.InstrumentID(), accountid, stcdo.PricingContracts);
-			RetrieveStrategyModels(stcdo.StrategyName, accountid, stcdo);
+			stcdo.PricingContracts = pricingContractMap.getorfill(stcdo);
+			auto& modelMap = strategyDOMap.getorfill(UserStrategyName(stcdo.UserID(), stcdo.StrategyName));
 
-			ret->push_back(std::move(stcdo));
+			std::string modelInstance;
+			static const std::string PM("pm");
+			if (modelMap.tryfind(PM, modelInstance))
+				stcdo.PricingModel = std::make_shared<ModelParamsDO>(modelInstance, "", stcdo.UserID());
+
+			static const std::string IVM("ivm");
+			if (modelMap.tryfind(IVM, modelInstance))
+				stcdo.IVModel = std::make_shared<ModelParamsDO>(modelInstance, "", stcdo.UserID());
+
+			static const std::string VM("vm");
+			if (modelMap.tryfind(VM, modelInstance))
+				stcdo.VolModel = std::make_shared<ModelParamsDO>(modelInstance, "", stcdo.UserID());
+
+			strategyMap.emplace(stcdo, std::move(stcdo));
 		}
 	}
 	catch (sql::SQLException& sqlEx)
@@ -74,13 +90,11 @@ VectorDO_Ptr<StrategyContractDO> StrategyContractDAO::FindStrategyContractByUser
 		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
 		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
 	}
-
-	return ret;
 }
 
 
 void StrategyContractDAO::RetrievePricingContracts(const std::string& strategyExchange, const std::string& strategyContract, const std::string& userid,
-std::vector<PricingContract>& pricingContracts)
+	std::vector<PricingContract>& pricingContracts)
 {
 	static const std::string sql_findcontractparam(
 		"SELECT pricing_exchange, pricing_contract, weight FROM strategy_pricing_contract "
@@ -110,25 +124,58 @@ std::vector<PricingContract>& pricingContracts)
 	}
 }
 
-void StrategyContractDAO::RetrieveStrategyModels(const std::string & strategySym, const std::string & userid, StrategyContractDO& sto)
+
+void StrategyContractDAO::RetrievePricingContractsByProductType(int productType, autofillmap<UserContractKey, std::vector<PricingContract>>& pricingContractMap)
 {
-	std::string modelInstance;
-	static const std::string PM("pm");
-	if (FindStrategyModelByAim(strategySym, PM, userid, modelInstance))
-	{
-		sto.PricingModel = std::make_shared<ModelParamsDO>(modelInstance, "", userid);
-	}
+	static const std::string sql_findcontractparam(
+		"SELECT accountid, strategy_exchange, strategy_contract, pricing_exchange, pricing_contract from vw_pricing_contract_property "
+		"WHERE strategy_product_type = ?");
 
-	static const std::string IVM("ivm");
-	if (FindStrategyModelByAim(strategySym, IVM, userid, modelInstance))
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
+	try
 	{
-		sto.IVModel = std::make_shared<ModelParamsDO>(modelInstance, "", userid);
-	}
+		AutoClosePreparedStmt_Ptr prestmt(
+			session->getConnection()->prepareStatement(sql_findcontractparam));
+		prestmt->setInt(1, productType);
 
-	static const std::string VM("vm");
-	if (FindStrategyModelByAim(strategySym, VM, userid, modelInstance))
+		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
+
+		while (rs->next())
+		{
+			auto& pricingVector = pricingContractMap.getorfill(UserContractKey(rs->getString(2), rs->getString(3), rs->getString(1)));
+			PricingContract cp(rs->getString(1), rs->getString(2), rs->getDouble(3));
+			pricingVector.push_back(std::move(cp));
+		}
+	}
+	catch (sql::SQLException& sqlEx)
 	{
-		sto.VolModel = std::make_shared<ModelParamsDO>(modelInstance, "", userid);
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
+	}
+}
+
+void StrategyContractDAO::RetrieveStrategyModels(autofillmap<UserStrategyName, autofillmap<std::string, std::string>>& strategyDOMap)
+{
+	static const std::string sql_findstrategymodel(
+		"SELECT accountid, strategy_symbol, modelaim, modelinstance FROM strategy_model ");
+
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
+	try
+	{
+		AutoClosePreparedStmt_Ptr prestmt(
+			session->getConnection()->prepareStatement(sql_findstrategymodel));
+
+		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
+
+		while (rs->next())
+		{
+			strategyDOMap.getorfill(UserStrategyName(rs->getString(1), rs->getString(2))).emplace(rs->getString(3), rs->getString(4));
+		}
+	}
+	catch (sql::SQLException& sqlEx)
+	{
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
 	}
 }
 

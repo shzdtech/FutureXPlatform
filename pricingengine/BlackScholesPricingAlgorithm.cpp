@@ -76,15 +76,15 @@ const std::map<std::string, double>& BlackScholesPricingAlgorithm::DefaultParams
 	return defaultParams;
 }
 
-std::shared_ptr<void> BlackScholesPricingAlgorithm::ParseParams(const std::map<std::string, double>& modelParams)
+void BlackScholesPricingAlgorithm::ParseParams(const std::map<std::string, double>& modelParams, std::unique_ptr<ParamsBase>& target)
 {
-	auto ret = std::make_shared<OptionParams>();
+	auto ret = std::make_unique<OptionParams>();
 
 	ret->riskFreeRate = modelParams.at(OptionParams::riskFreeRate_name);
 	ret->dividend = modelParams.at(OptionParams::dividend_name);
 	ret->atmOffset = modelParams.at(OptionParams::atmOffset_name);
 
-	return ret;
+	target = std::move(ret);
 }
 
 

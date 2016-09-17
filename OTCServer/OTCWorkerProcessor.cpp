@@ -71,90 +71,72 @@ int OTCWorkerProcessor::LoadContractToCache(ProductType productType)
 
 int OTCWorkerProcessor::LoadStrategyToCache(ProductType productType)
 {
-	if (auto sDOVec_Ptr = StrategyContractDAO::FindStrategyContractByUser(EMPTY_STRING, productType))
+	UserContractMap<StrategyContractDO> allStrategy;
+	StrategyContractDAO::LoadStrategyContractByProductType(productType, allStrategy);
+	auto strategyMap = PricingDataContext()->GetStrategyMap();
+	for (auto& pair : allStrategy)
 	{
-		auto strategyMap = PricingDataContext()->GetStrategyMap();
-		for (auto& strategy : *sDOVec_Ptr)
+		auto& strategy = pair.second;
+		if (strategy.PricingModel)
 		{
-			if (strategy.PricingModel)
+			// Pricing Model Initialization
+			if (auto modelptr = StrategyModelCache::FindOrCreateModel(*strategy.PricingModel))
 			{
-				// Pricing Model Initialization
-				auto modelptr = StrategyModelCache::FindModel(*strategy.PricingModel);
-				if (!modelptr)
-				{
-					if (modelptr = ModelParamsDAO::FindUserModel(strategy.UserID(), strategy.PricingModel->InstanceName))
-					{
-						strategy.PricingModel = modelptr;
-					}
-				}
-
-				if (auto model = ComplexAlgoirthmManager::Instance()->FindModel(strategy.PricingModel->Model))
-				{
-					auto& params = model->DefaultParams();
-					strategy.PricingModel->Params.insert(params.begin(), params.end());
-					strategy.PricingModel->ParsedParams = model->ParseParams(strategy.PricingModel->Params);
-				}
-				StrategyModelCache::AddModel(strategy.PricingModel);
+				strategy.PricingModel = modelptr;
 			}
 
-			// Implied Volatility Model Initialization
-			if (strategy.IVModel)
+			if (auto model = ComplexAlgoirthmManager::Instance()->FindModel(strategy.PricingModel->Model))
 			{
-
-				auto modelptr = StrategyModelCache::FindModel(*strategy.IVModel);
-				if (!modelptr)
-				{
-					if (modelptr = ModelParamsDAO::FindUserModel(strategy.UserID(), strategy.IVModel->InstanceName))
-					{
-						strategy.IVModel = modelptr;
-					}
-				}
-
-				if (auto model = ComplexAlgoirthmManager::Instance()->FindModel(strategy.PricingModel->Model))
-				{
-					auto& params = model->DefaultParams();
-					strategy.PricingModel->Params.insert(params.begin(), params.end());
-					strategy.PricingModel->ParsedParams = model->ParseParams(strategy.PricingModel->Params);
-				}
-				StrategyModelCache::AddModel(strategy.PricingModel);
+				auto& params = model->DefaultParams();
+				strategy.PricingModel->Params.insert(params.begin(), params.end());
+				model->ParseParams(strategy.PricingModel->Params, strategy.PricingModel->ParsedParams);
 			}
-
-
-			// Volatility Model Initialization
-			if (strategy.IVModel)
-			{
-				auto modelptr = StrategyModelCache::FindModel(*strategy.VolModel);
-				if (!modelptr)
-				{
-					if (modelptr = ModelParamsDAO::FindUserModel(strategy.UserID(), strategy.VolModel->InstanceName))
-					{
-						strategy.VolModel = modelptr;
-					}
-				}
-
-				if (auto model = ComplexAlgoirthmManager::Instance()->FindModel(strategy.PricingModel->Model))
-				{
-					auto& params = model->DefaultParams();
-					strategy.PricingModel->Params.insert(params.begin(), params.end());
-					strategy.PricingModel->ParsedParams = model->ParseParams(strategy.PricingModel->Params);
-				}
-				StrategyModelCache::AddModel(strategy.PricingModel);
-			}
-
-			strategyMap->emplace(strategy, strategy);
 		}
 
-		return sDOVec_Ptr->size();
+		// Implied Volatility Model Initialization
+		if (strategy.IVModel)
+		{
+			if (auto modelptr = StrategyModelCache::FindOrCreateModel(*strategy.IVModel))
+			{
+				strategy.IVModel = modelptr;
+			}
+
+			if (auto model = ComplexAlgoirthmManager::Instance()->FindModel(strategy.IVModel->Model))
+			{
+				auto& params = model->DefaultParams();
+				strategy.IVModel->Params.insert(params.begin(), params.end());
+				model->ParseParams(strategy.IVModel->Params, strategy.IVModel->ParsedParams);
+			}
+		}
+
+
+		// Volatility Model Initialization
+		if (strategy.VolModel)
+		{
+			if (auto modelptr = StrategyModelCache::FindOrCreateModel(*strategy.VolModel))
+			{
+				strategy.VolModel = modelptr;
+			}
+
+			if (auto model = ComplexAlgoirthmManager::Instance()->FindModel(strategy.VolModel->Model))
+			{
+				auto& params = model->DefaultParams();
+				strategy.VolModel->Params.insert(params.begin(), params.end());
+				model->ParseParams(strategy.VolModel->Params, strategy.VolModel->ParsedParams);
+			}
+		}
+
+		strategyMap->emplace(strategy, strategy);
 	}
 
-	return 0;
+	return allStrategy.size();
 }
 
 
 void OTCWorkerProcessor::Initialize()
 {
 	LoadContractToCache(GetContractProductType());
-	for(auto productType : GetStrategyProductTypes())
+	for (auto productType : GetStrategyProductTypes())
 		LoadStrategyToCache(productType);
 }
 

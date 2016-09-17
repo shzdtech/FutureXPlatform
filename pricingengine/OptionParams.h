@@ -2,8 +2,9 @@
 #define __pricingengine_OptionParams_h
 
 #include <string>
+#include "../dataobject/ParamsBase.h"
 
-class OptionParams
+class OptionParams : public ParamsBase
 {
 public:
 	double askVolatility = 0.2;

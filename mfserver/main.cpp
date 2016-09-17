@@ -23,7 +23,7 @@ void siginthandler(int code)
 {
 	int retcode = app.Exit();
 	LOG_INFO << "Server has exited.";
-	std::fprintf(stdin, "exit");
+	std::exit(retcode);
 }
 
 void registsignal()

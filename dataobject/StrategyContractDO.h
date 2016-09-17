@@ -55,6 +55,8 @@ private:
 
 };
 
+typedef std::pair<std::string, std::string> UserStrategyName;
+
 typedef std::shared_ptr<StrategyContractDO> StrategyContractDO_Ptr;
 
 

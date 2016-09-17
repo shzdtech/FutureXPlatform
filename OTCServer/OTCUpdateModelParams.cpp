@@ -44,7 +44,7 @@ dataobj_ptr OTCUpdateModelParams::HandleRequest(const dataobj_ptr & reqDO, IRawA
 					it = pModelParam->Params.erase(it);
 				}				
 			}
-			modelptr->ParsedParams = modelAlg->ParseParams(modelptr->Params);
+			modelAlg->ParseParams(modelptr->Params, modelptr->ParsedParams);
 		}
 
 		ModelParamsDAO::SaveModelParams(*pModelParam);
