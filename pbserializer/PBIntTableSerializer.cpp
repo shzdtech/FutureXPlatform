@@ -56,9 +56,5 @@ data_buffer PBIntTableSerializer::Serialize(const dataobj_ptr& abstractDO)
 			namedVec->add_entry(val);
 	}
 
-	int bufsize = simpleTbl.ByteSize();
-	uint8_t* buf = new uint8_t[bufsize];
-	simpleTbl.SerializeToArray(buf, bufsize);
-
-	return data_buffer(buf, bufsize);
+	SerializeWithReturn(simpleTbl);
 }

@@ -157,6 +157,7 @@
   <ItemGroup>
     <ClInclude Include="atomicutil.h" />
     <ClInclude Include="autofillmap.h" />
+    <ClInclude Include="autofillptrmap.h" />
     <ClInclude Include="commonconst.h" />
     <ClInclude Include="entrywisemutex.h" />
     <ClInclude Include="Encoding.h" />

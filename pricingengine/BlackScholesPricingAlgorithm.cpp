@@ -44,8 +44,10 @@ IPricingDO_Ptr BlackScholesPricingAlgorithm::Compute(
 	IPricingDataContext& priceCtx,
 	const param_vector* params)
 {
-	if (!sdo.PricingModel && !sdo.PricingModel->ParsedParams)
-		return nullptr;
+	if (!sdo.PricingModel->ParsedParams)
+	{
+		ParseParams(sdo.PricingModel->Params, sdo.PricingModel->ParsedParams);
+	}
 
 	auto paramObj = (OptionParams*)sdo.VolModel->ParsedParams.get();
 
@@ -99,15 +101,15 @@ void BlackScholesPricingAlgorithm::ComputeOptionPrice(
 	const DateType& maturityDate,
 	OptionPricing & option)
 {
-	Calendar calendar = TARGET();
 	DayCounter dayCounter = Actual365Fixed();
 
 	Date maturity((Day)maturityDate.Day, (Month)(maturityDate.Month), (Year)(maturityDate.Year));
 
 	Date settlementDate((Day)tradingDate.Day, (Month)(tradingDate.Month), (Year)(tradingDate.Year));
 
-	Handle<Quote> underlyingH(
-		boost::shared_ptr<Quote>(new SimpleQuote(underlyingPrice)));
+	Option::Type optionType = contractType == ContractType::CONTRACTTYPE_CALL_OPTION ? Option::Call : Option::Put;
+
+	Handle<Quote> underlyingH(boost::shared_ptr<Quote>(new SimpleQuote(underlyingPrice)));
 
 	// bootstrap the yield/dividend/vol curves
 	Handle<YieldTermStructure> flatTermStructure(
@@ -115,13 +117,11 @@ void BlackScholesPricingAlgorithm::ComputeOptionPrice(
 	Handle<YieldTermStructure> flatDividendTS(
 		boost::shared_ptr<YieldTermStructure>(new FlatForward(settlementDate, dividendYield, dayCounter)));
 	Handle<BlackVolTermStructure> flatVolTS(
-		boost::shared_ptr<BlackVolTermStructure>(new BlackConstantVol(settlementDate, calendar, volatility, dayCounter)));
+		boost::shared_ptr<BlackVolTermStructure>(new BlackConstantVol(settlementDate, TARGET(), volatility, dayCounter)));
 
-	boost::shared_ptr<StrikedTypePayoff> payoff(
-		new PlainVanillaPayoff(contractType == ContractType::CONTRACTTYPE_CALL_OPTION ? Option::Call : Option::Put, strikePrice));
+	boost::shared_ptr<StrikedTypePayoff> payoff(new PlainVanillaPayoff(optionType, strikePrice));
 
-	boost::shared_ptr<BlackScholesMertonProcess> bsmProcess(
-		new BlackScholesMertonProcess(underlyingH, flatDividendTS, flatTermStructure, flatVolTS));
+	boost::shared_ptr<BlackScholesMertonProcess> bsmProcess(new BlackScholesMertonProcess(underlyingH, flatDividendTS, flatTermStructure, flatVolTS));
 
 	boost::shared_ptr<PricingEngine> pricingEngine(new AnalyticEuropeanEngine(bsmProcess));
 

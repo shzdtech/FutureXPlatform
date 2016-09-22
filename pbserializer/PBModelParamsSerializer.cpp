@@ -31,11 +31,7 @@ data_buffer PBModelParamsSerializer::Serialize(const dataobj_ptr& abstractDO)
 
 	pb.mutable_params()->insert(pDO->Params.begin(), pDO->Params.end());
 
-	int bufsize = pb.ByteSize();
-	uint8_t* buf = new uint8_t[bufsize];
-	pb.SerializeToArray(buf, bufsize);
-
-	return data_buffer(buf, bufsize);
+	SerializeWithReturn(pb);
 }
 
 ////////////////////////////////////////////////////////////////////////

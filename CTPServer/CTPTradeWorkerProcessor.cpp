@@ -25,7 +25,7 @@
  ////////////////////////////////////////////////////////////////////////
 
 CTPTradeWorkerProcessor::CTPTradeWorkerProcessor(IServerContext* pServerCtx)
-	: _userSessionCtn_Ptr(SessionContainer<std::string>::NewInstance())
+	: _userSessionCtn_Ptr(SessionContainer<std::string>::NewInstancePtr())
 {
 	_serverCtx = pServerCtx;
 	DataLoaded = false;

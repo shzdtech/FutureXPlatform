@@ -13,6 +13,9 @@
 #include "ASIOTCPConsts.h"
 #include <boost/asio.hpp>
 #include <mutex>
+#include <array>
+#include <atomic>
+#include <boost/lockfree/spsc_queue.hpp>
 
 using namespace boost::asio;
 using boost::asio::ip::tcp;
@@ -24,28 +27,31 @@ typedef std::weak_ptr<ASIOTCPSession> ASIOTCPSession_WkPtr;
 class ASIOTCPSession : public MessageSession
 {
 public:
-   ASIOTCPSession(tcp::socket&& socket);
-   ~ASIOTCPSession();
-   void setMaxMessageSize(uint maxMsgSize);
-   virtual int WriteMessage(const uint msgId, const data_buffer& msg);
-   virtual int WriteMessage(const data_buffer& msg);
-   bool Start(void);
-   bool Close(void);
+	ASIOTCPSession(tcp::socket&& socket);
+	~ASIOTCPSession();
+	void setMaxMessageSize(uint maxMsgSize);
+	virtual int WriteMessage(const uint msgId, const data_buffer& msg);
+	virtual int WriteMessage(const data_buffer& msg);
+	bool Start(void);
+	bool Close(void);
 
 protected:
-   tcp::socket _socket;
-   deadline_timer _heartbeat_timer;
-   byte _header[HEADER_SIZE];
-   bool _alive;
-   bool _started;
-   bool _closed;
-   uint _max_msg_size;
-   std::mutex _clsmutex;
+	tcp::socket _socket;
+	deadline_timer _heartbeat_timer;
+	byte _header[HEADER_SIZE];
+	bool _alive;
+	bool _started;
+	bool _closed;
+	uint _max_msg_size;
+	std::mutex _clsmutex;
+	boost::lockfree::spsc_queue<data_buffer> _databufferQueue;
+	std::atomic_flag _sendingFlag;
 
 private:
-   static void asyn_read_header(const ASIOTCPSession_Ptr& this_ptr);
-   static void asyn_read_body(const ASIOTCPSession_Ptr& this_ptr, uint msgSize);
-   static void asyn_timeout(const ASIOTCPSession_WkPtr& this_wk_ptr);
+	void SendQueueAsync(void);
+	static void asyn_read_header(const ASIOTCPSession_Ptr& this_ptr);
+	static void asyn_read_body(const ASIOTCPSession_Ptr& this_ptr, uint msgSize);
+	static void asyn_timeout(const ASIOTCPSession_WkPtr& this_wk_ptr);
 };
 
 #endif

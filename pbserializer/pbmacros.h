@@ -25,7 +25,7 @@ if (!PbO.ParseFromArray(rawdata.get(), rawdata.size())) \
 
 #define SerializeWithReturn(PbO) \
 int bufSz = PbO.ByteSize(); \
-auto buffer = new uint8_t[bufSz]; \
+auto buffer = new byte[bufSz]; \
 if(PbO.SerializePartialToArray(buffer, bufSz)) return data_buffer(buffer, bufSz); \
 else { delete []buffer; return data_buffer(); }
 

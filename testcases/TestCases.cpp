@@ -9,6 +9,7 @@
 #include <map>
 #include <iostream>
 #include "../message/SessionContainer.h"
+#include "../utility/autofillmap.h"
 #include "../utility/epsdouble.h"
 #include "../utility/stringutility.h"
 #include "../litelogger/LiteLogger.h"
@@ -57,7 +58,7 @@ void testAutoFillMap()
 
 void testSessionContainer()
 {
-	auto sc = SessionContainer<int>::NewInstance();
+	auto sc = SessionContainer<int>::NewInstancePtr();
 }
 
 void testepsilondouble(const epsdouble& epsdbl)

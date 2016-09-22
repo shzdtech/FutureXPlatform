@@ -29,11 +29,7 @@ data_buffer PBResultSerializer::Serialize(const dataobj_ptr& abstractDO)
 
 	PB.set_code(pDO->Code);
 
-	int bufsize = PB.ByteSize();
-	uint8_t* buf = new uint8_t[bufsize];
-	PB.SerializeToArray(buf, bufsize);
-
-	return data_buffer(buf, bufsize);
+	SerializeWithReturn(PB);
 }
 
 ////////////////////////////////////////////////////////////////////////

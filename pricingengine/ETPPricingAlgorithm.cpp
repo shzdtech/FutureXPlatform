@@ -44,10 +44,12 @@ IPricingDO_Ptr ETPPricingAlgorithm::Compute(
 	IPricingDataContext& priceCtx,
 	const param_vector* params)
 {
-	if (!sdo.PricingModel && !sdo.PricingModel->ParsedParams)
-		return nullptr;
+	if (!sdo.PricingModel->ParsedParams)
+	{
+		ParseParams(sdo.PricingModel->Params, sdo.PricingModel->ParsedParams);
+	}
 
-	auto paramObj = (ETPParams*)sdo.VolModel->ParsedParams.get();
+	auto paramObj = (ETPParams*)sdo.PricingModel->ParsedParams.get();
 
 	IPricingDO_Ptr ret;
 

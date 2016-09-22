@@ -19,7 +19,7 @@
  ////////////////////////////////////////////////////////////////////////
 
 CTPOTCOptionWorkerProcessor::CTPOTCOptionWorkerProcessor(
-	IServerContext* pServerCtx, 
+	IServerContext* pServerCtx,
 	const std::shared_ptr<CTPOTCTradeProcessor>& otcTradeProcessorPtr) :
 	CTPOTCWorkerProcessor(pServerCtx, otcTradeProcessorPtr)
 {
@@ -33,7 +33,7 @@ CTPOTCOptionWorkerProcessor::~CTPOTCOptionWorkerProcessor()
 
 void CTPOTCOptionWorkerProcessor::TriggerOTCPricing(const StrategyContractDO& strategyDO)
 {
-	if (strategyDO.Enabled)
+	if (strategyDO.BidEnabled || strategyDO.AskEnabled)
 	{
 		if (auto pricingCtx = PricingDataContext())
 		{
@@ -74,18 +74,22 @@ void CTPOTCOptionWorkerProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketData
 {
 	if (auto pMDO = PricingDataContext()->GetMarketDataMap()->tryfind(pDepthMarketData->InstrumentID))
 	{
-		if (pMDO->Bid().Price != pDepthMarketData->BidPrice1 ||
-			pMDO->Ask().Price != pDepthMarketData->AskPrice1)
+		double bidPrice = pDepthMarketData->BidPrice1;
+		double askPrice = pDepthMarketData->AskPrice1;
+		if (bidPrice >= 0.001 && bidPrice < 1e32 && askPrice >= 0.001 && askPrice < 1e32)
 		{
-			pMDO->Bid().Price = pDepthMarketData->BidPrice1;
-			pMDO->Ask().Price = pDepthMarketData->AskPrice1;
-
-			if (_exchangeStrategySet.find(*pMDO) != _exchangeStrategySet.end())
+			if (pMDO->Bid().Price != bidPrice || pMDO->Ask().Price != askPrice)
 			{
-				if (auto pStrategyDO = PricingDataContext()->GetStrategyMap()->tryfind(*pMDO))
+				pMDO->Bid().Price = bidPrice;
+				pMDO->Ask().Price = askPrice;
+
+				if (_exchangeStrategySet.find(*pMDO) != _exchangeStrategySet.end())
 				{
-					TriggerTadingDeskParams(*pStrategyDO);
-					TriggerOTCUpdating(*pStrategyDO);
+					if (auto pStrategyDO = PricingDataContext()->GetStrategyMap()->tryfind(*pMDO))
+					{
+						TriggerTadingDeskParams(*pStrategyDO);
+						TriggerOTCUpdating(*pStrategyDO);
+					}
 				}
 			}
 		}

@@ -46,8 +46,10 @@ dataobj_ptr WingsVolatilityModel::Compute(
 	IPricingDataContext& priceCtx,
 	const param_vector* params)
 {
-	if (!sdo.VolModel && sdo.VolModel->ParsedParams)
-		return nullptr;
+	if (!sdo.VolModel->ParsedParams)
+	{
+		ParseParams(sdo.VolModel->Params, sdo.VolModel->ParsedParams);
+	}
 
 	auto paramObj = (WingsParams*)sdo.VolModel->ParsedParams.get();
 	double f_atm;

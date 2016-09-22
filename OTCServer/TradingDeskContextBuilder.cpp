@@ -144,7 +144,7 @@ void TradingDeskContextBuilder::LoadStrategy(ISession* pSession)
 
 				strategyVec_Ptr->push_back(strategy);
 
-				it = std::find_if(it, strategyMap->end(),
+				it = std::find_if(std::next(it), strategyMap->end(),
 					[&userid, productType](const std::pair<ContractKey, StrategyContractDO>& pair) { return  pair.second.UserID() == userid && pair.second.ProductType == productType; });
 			}
 		}

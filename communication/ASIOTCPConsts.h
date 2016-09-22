@@ -17,6 +17,7 @@ static const uint HEADER_LAST = HEADER_SIZE - 1;
 static const uint EXINFO_SIZE = 6;
 static const uint EXINFO_LAST = EXINFO_SIZE - 1;
 static const uint MAX_MSG_SIZE = 0x100000 + EXINFO_SIZE;
+static const uint QUEUE_SIZE = 10;
 
 namespace CTRLCHAR {
 	static const byte SOH = 0x01;

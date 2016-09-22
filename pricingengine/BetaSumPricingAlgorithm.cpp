@@ -42,10 +42,12 @@ IPricingDO_Ptr BetaSumPricingAlgorithm::Compute(
 	IPricingDataContext& priceCtx,
 	const param_vector* params)
 {
-	if (!sdo.PricingModel && !sdo.PricingModel->ParsedParams)
-		return nullptr;
+	if (!sdo.PricingModel->ParsedParams)
+	{ 
+		ParseParams(sdo.PricingModel->Params, sdo.PricingModel->ParsedParams);
+	}
 
-	auto paramObj = (BetaSumParams*)sdo.VolModel->ParsedParams.get();
+	auto paramObj = (BetaSumParams*)sdo.PricingModel->ParsedParams.get();
 
 	IPricingDO_Ptr ret;
 

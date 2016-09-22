@@ -95,11 +95,12 @@ bool MessageSession::Close(void)
 	if (_messageProcessor_ptr &&
 		_messageProcessor_ptr->OnSessionClosing())
 	{
+		auto this_ptr = shared_from_this();
 		for (auto& event_wkptr : _sessionEventList)
 		{
 			if (auto event_ptr = event_wkptr.lock())
 			{
-				event_ptr->OnSessionClosing(shared_from_this());
+				event_ptr->OnSessionClosing(this_ptr);
 			}
 		}
 		_closed = true;

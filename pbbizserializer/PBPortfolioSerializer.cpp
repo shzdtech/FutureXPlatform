@@ -19,11 +19,7 @@ data_buffer PBPortfolioSerializer::Serialize(const dataobj_ptr & abstractDO)
 		// pParam->set_description(po.di)
 	}
 
-	int bufsize = PB.ByteSize();
-	uint8_t* buf = new uint8_t[bufsize];
-	PB.SerializeToArray(buf, bufsize);
-
-	return data_buffer(buf, bufsize);
+	SerializeWithReturn(PB);
 }
 
 dataobj_ptr PBPortfolioSerializer::Deserialize(const data_buffer & rawdata)

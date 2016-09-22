@@ -3,6 +3,7 @@
 
 //OTC
 
+#include "OTCOptionSubMarketData.h"
 #include "OTCOptionPricingParams.h"
 
 #endif

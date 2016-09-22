@@ -1366,34 +1366,40 @@ class PBStrategy : public ::google::protobuf::Message {
   ::std::string* release_description();
   void set_allocated_description(::std::string* description);
 
-  // optional bool allowTrading = 7;
-  void clear_allowtrading();
-  static const int kAllowTradingFieldNumber = 7;
-  bool allowtrading() const;
-  void set_allowtrading(bool value);
+  // optional bool hedging = 7;
+  void clear_hedging();
+  static const int kHedgingFieldNumber = 7;
+  bool hedging() const;
+  void set_hedging(bool value);
 
-  // optional bool enabled = 8;
-  void clear_enabled();
-  static const int kEnabledFieldNumber = 8;
-  bool enabled() const;
-  void set_enabled(bool value);
+  // optional bool bidEnabled = 8;
+  void clear_bidenabled();
+  static const int kBidEnabledFieldNumber = 8;
+  bool bidenabled() const;
+  void set_bidenabled(bool value);
 
-  // optional int32 quantity = 9;
+  // optional bool askEnabled = 9;
+  void clear_askenabled();
+  static const int kAskEnabledFieldNumber = 9;
+  bool askenabled() const;
+  void set_askenabled(bool value);
+
+  // optional int32 quantity = 10;
   void clear_quantity();
-  static const int kQuantityFieldNumber = 9;
+  static const int kQuantityFieldNumber = 10;
   ::google::protobuf::int32 quantity() const;
   void set_quantity(::google::protobuf::int32 value);
 
-  // optional int32 depth = 10;
+  // optional int32 depth = 11;
   void clear_depth();
-  static const int kDepthFieldNumber = 10;
+  static const int kDepthFieldNumber = 11;
   ::google::protobuf::int32 depth() const;
   void set_depth(::google::protobuf::int32 value);
 
-  // repeated .Micro.Future.Message.Business.PBPricingContract pricingContracts = 11;
+  // repeated .Micro.Future.Message.Business.PBPricingContract pricingContracts = 12;
   int pricingcontracts_size() const;
   void clear_pricingcontracts();
-  static const int kPricingContractsFieldNumber = 11;
+  static const int kPricingContractsFieldNumber = 12;
   const ::Micro::Future::Message::Business::PBPricingContract& pricingcontracts(int index) const;
   ::Micro::Future::Message::Business::PBPricingContract* mutable_pricingcontracts(int index);
   ::Micro::Future::Message::Business::PBPricingContract* add_pricingcontracts();
@@ -1402,9 +1408,9 @@ class PBStrategy : public ::google::protobuf::Message {
   const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBPricingContract >&
       pricingcontracts() const;
 
-  // optional string pricingModel = 12;
+  // optional string pricingModel = 13;
   void clear_pricingmodel();
-  static const int kPricingModelFieldNumber = 12;
+  static const int kPricingModelFieldNumber = 13;
   const ::std::string& pricingmodel() const;
   void set_pricingmodel(const ::std::string& value);
   void set_pricingmodel(const char* value);
@@ -1413,9 +1419,9 @@ class PBStrategy : public ::google::protobuf::Message {
   ::std::string* release_pricingmodel();
   void set_allocated_pricingmodel(::std::string* pricingmodel);
 
-  // optional string ivModel = 13;
+  // optional string ivModel = 14;
   void clear_ivmodel();
-  static const int kIvModelFieldNumber = 13;
+  static const int kIvModelFieldNumber = 14;
   const ::std::string& ivmodel() const;
   void set_ivmodel(const ::std::string& value);
   void set_ivmodel(const char* value);
@@ -1424,9 +1430,9 @@ class PBStrategy : public ::google::protobuf::Message {
   ::std::string* release_ivmodel();
   void set_allocated_ivmodel(::std::string* ivmodel);
 
-  // optional string volModel = 14;
+  // optional string volModel = 15;
   void clear_volmodel();
-  static const int kVolModelFieldNumber = 14;
+  static const int kVolModelFieldNumber = 15;
   const ::std::string& volmodel() const;
   void set_volmodel(const ::std::string& value);
   void set_volmodel(const char* value);
@@ -1446,8 +1452,9 @@ class PBStrategy : public ::google::protobuf::Message {
   ::google::protobuf::internal::ArenaStringPtr underlying_;
   ::google::protobuf::internal::ArenaStringPtr symbol_;
   ::google::protobuf::internal::ArenaStringPtr description_;
-  bool allowtrading_;
-  bool enabled_;
+  bool hedging_;
+  bool bidenabled_;
+  bool askenabled_;
   ::google::protobuf::int32 quantity_;
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBPricingContract > pricingcontracts_;
   ::google::protobuf::internal::ArenaStringPtr pricingmodel_;
@@ -5490,35 +5497,49 @@ inline void PBStrategy::set_allocated_description(::std::string* description) {
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBStrategy.description)
 }
 
-// optional bool allowTrading = 7;
-inline void PBStrategy::clear_allowtrading() {
-  allowtrading_ = false;
+// optional bool hedging = 7;
+inline void PBStrategy::clear_hedging() {
+  hedging_ = false;
 }
-inline bool PBStrategy::allowtrading() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.allowTrading)
-  return allowtrading_;
+inline bool PBStrategy::hedging() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.hedging)
+  return hedging_;
 }
-inline void PBStrategy::set_allowtrading(bool value) {
+inline void PBStrategy::set_hedging(bool value) {
   
-  allowtrading_ = value;
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.allowTrading)
+  hedging_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.hedging)
 }
 
-// optional bool enabled = 8;
-inline void PBStrategy::clear_enabled() {
-  enabled_ = false;
+// optional bool bidEnabled = 8;
+inline void PBStrategy::clear_bidenabled() {
+  bidenabled_ = false;
 }
-inline bool PBStrategy::enabled() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.enabled)
-  return enabled_;
+inline bool PBStrategy::bidenabled() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.bidEnabled)
+  return bidenabled_;
 }
-inline void PBStrategy::set_enabled(bool value) {
+inline void PBStrategy::set_bidenabled(bool value) {
   
-  enabled_ = value;
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.enabled)
+  bidenabled_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.bidEnabled)
 }
 
-// optional int32 quantity = 9;
+// optional bool askEnabled = 9;
+inline void PBStrategy::clear_askenabled() {
+  askenabled_ = false;
+}
+inline bool PBStrategy::askenabled() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.askEnabled)
+  return askenabled_;
+}
+inline void PBStrategy::set_askenabled(bool value) {
+  
+  askenabled_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.askEnabled)
+}
+
+// optional int32 quantity = 10;
 inline void PBStrategy::clear_quantity() {
   quantity_ = 0;
 }
@@ -5532,7 +5553,7 @@ inline void PBStrategy::set_quantity(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.quantity)
 }
 
-// optional int32 depth = 10;
+// optional int32 depth = 11;
 inline void PBStrategy::clear_depth() {
   depth_ = 0;
 }
@@ -5546,7 +5567,7 @@ inline void PBStrategy::set_depth(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.depth)
 }
 
-// repeated .Micro.Future.Message.Business.PBPricingContract pricingContracts = 11;
+// repeated .Micro.Future.Message.Business.PBPricingContract pricingContracts = 12;
 inline int PBStrategy::pricingcontracts_size() const {
   return pricingcontracts_.size();
 }
@@ -5576,7 +5597,7 @@ PBStrategy::pricingcontracts() const {
   return pricingcontracts_;
 }
 
-// optional string pricingModel = 12;
+// optional string pricingModel = 13;
 inline void PBStrategy::clear_pricingmodel() {
   pricingmodel_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -5620,7 +5641,7 @@ inline void PBStrategy::set_allocated_pricingmodel(::std::string* pricingmodel) 
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBStrategy.pricingModel)
 }
 
-// optional string ivModel = 13;
+// optional string ivModel = 14;
 inline void PBStrategy::clear_ivmodel() {
   ivmodel_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -5664,7 +5685,7 @@ inline void PBStrategy::set_allocated_ivmodel(::std::string* ivmodel) {
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBStrategy.ivModel)
 }
 
-// optional string volModel = 14;
+// optional string volModel = 15;
 inline void PBStrategy::clear_volmodel() {
   volmodel_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }

@@ -56,9 +56,5 @@ data_buffer PBExceptionSerializer::Serialize(const dataobj_ptr& abstractDO)
 	if(!pDO->ErrorMessage.empty())
 		exceptionMsg.set_description(pDO->ErrorMessage);
 	
-	int bufsz = exceptionMsg.ByteSize();
-	char* buf = new char[bufsz];
-	exceptionMsg.SerializeToArray(buf, bufsz);
-
-	return data_buffer(buf, bufsz);
+	SerializeWithReturn(exceptionMsg);
 }

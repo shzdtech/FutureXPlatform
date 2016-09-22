@@ -54,16 +54,14 @@ dataobj_ptr OTCUpdateStrategy::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* 
 					uit->second.Quantity = scDO.Quantity;
 			}
 
-			scDO.Enabled = strategyDO.Enabled;
+			scDO.BidEnabled = strategyDO.BidEnabled;
+			scDO.AskEnabled = strategyDO.AskEnabled;
 
-			if (scDO.Enabled)
-				wkProcPtr->TriggerOTCPricing(scDO);
-			else
-				strategyDO.Trading = false;
+			wkProcPtr->TriggerOTCPricing(scDO);
 
-			scDO.Trading = strategyDO.Trading;
+			scDO.Hedging = strategyDO.Hedging;
 
-			if (scDO.Trading)
+			if (scDO.Hedging)
 				wkProcPtr->GetOTCTradeProcessor()->TriggerHedgeOrderUpdating(scDO);
 			else
 				wkProcPtr->GetOTCTradeProcessor()->CancelHedgeOrder(scDO);

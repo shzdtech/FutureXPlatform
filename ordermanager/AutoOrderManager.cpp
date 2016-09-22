@@ -56,7 +56,7 @@ OrderDOVec_Ptr AutoOrderManager::UpdateOrderByStrategy(
 {
 	OrderDOVec_Ptr ret;
 
-	if (strategyDO.Trading)
+	if (strategyDO.Hedging)
 	{
 		std::lock_guard<std::shared_mutex> guard(_userOrderCtx.UserMutex(strategyDO.UserID()));
 

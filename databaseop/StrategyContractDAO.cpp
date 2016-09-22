@@ -17,14 +17,16 @@
  // Return:     std::shared_ptr<std::vector<StrategyContractDO>>
  ////////////////////////////////////////////////////////////////////////
 
-void StrategyContractDAO::LoadStrategyContractByProductType(int productType, UserContractMap<StrategyContractDO>& strategyMap)
+VectorDO_Ptr<StrategyContractDO> StrategyContractDAO::LoadStrategyContractByProductType(int productType)
 {
 	static const std::string sql_findstrategy(
 		"SELECT exchange_symbol, contract_symbol, underlying_symbol, tick_size, multiplier, "
 		"strategy_symbol, descript, portfolio_symbol, contract_type, "
-		"strikeprice, expiration, accountid, is_trading_allowed, product_type "
+		"strikeprice, expiration, accountid, product_type, bid_allowed, ask_allowed "
 		"FROM vw_strategy_contract_info "
 		"WHERE product_type = ?");
+
+	VectorDO_Ptr<StrategyContractDO> ret = std::make_shared<VectorDO<StrategyContractDO>>();
 
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
@@ -63,8 +65,10 @@ void StrategyContractDAO::LoadStrategyContractByProductType(int productType, Use
 				std::string strDate = rs->getString(11);
 				stcdo.Expiration = DateType(strDate);
 			}
-			stcdo.Enabled = rs->getBoolean(13);
-			stcdo.ProductType = (ProductType)rs->getInt(14);
+			
+			stcdo.ProductType = (ProductType)rs->getInt(13);
+			stcdo.BidEnabled = rs->getBoolean(14);
+			stcdo.AskEnabled = rs->getBoolean(15);
 
 			stcdo.PricingContracts = pricingContractMap.getorfill(stcdo);
 			auto& modelMap = strategyDOMap.getorfill(UserStrategyName(stcdo.UserID(), stcdo.StrategyName));
@@ -82,7 +86,7 @@ void StrategyContractDAO::LoadStrategyContractByProductType(int productType, Use
 			if (modelMap.tryfind(VM, modelInstance))
 				stcdo.VolModel = std::make_shared<ModelParamsDO>(modelInstance, "", stcdo.UserID());
 
-			strategyMap.emplace(stcdo, std::move(stcdo));
+			ret->push_back(std::move(stcdo));
 		}
 	}
 	catch (sql::SQLException& sqlEx)
@@ -90,6 +94,8 @@ void StrategyContractDAO::LoadStrategyContractByProductType(int productType, Use
 		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
 		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
 	}
+
+	return ret;
 }
 
 
@@ -128,7 +134,7 @@ void StrategyContractDAO::RetrievePricingContracts(const std::string& strategyEx
 void StrategyContractDAO::RetrievePricingContractsByProductType(int productType, autofillmap<UserContractKey, std::vector<PricingContract>>& pricingContractMap)
 {
 	static const std::string sql_findcontractparam(
-		"SELECT accountid, strategy_exchange, strategy_contract, pricing_exchange, pricing_contract from vw_pricing_contract_property "
+		"SELECT accountid, strategy_exchange, strategy_contract, pricing_exchange, pricing_contract, weight from vw_pricing_contract_property "
 		"WHERE strategy_product_type = ?");
 
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
@@ -143,7 +149,7 @@ void StrategyContractDAO::RetrievePricingContractsByProductType(int productType,
 		while (rs->next())
 		{
 			auto& pricingVector = pricingContractMap.getorfill(UserContractKey(rs->getString(2), rs->getString(3), rs->getString(1)));
-			PricingContract cp(rs->getString(1), rs->getString(2), rs->getDouble(3));
+			PricingContract cp(rs->getString(4), rs->getString(5), rs->getDouble(6));
 			pricingVector.push_back(std::move(cp));
 		}
 	}

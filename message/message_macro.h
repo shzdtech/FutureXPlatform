@@ -5,18 +5,15 @@
 #include "../message/IProcessorBase.h"
 
 #define OnResponseMacro(MSG_ID, SERIAL_ID, ...){\
-	param_vector resp_param_vec = {__VA_ARGS__}; \
-	OnResponse(MSG_ID, SERIAL_ID, resp_param_vec); \
+	OnResponse(MSG_ID, SERIAL_ID, param_vector{__VA_ARGS__}); \
 }
 
 #define OnResponseProcMacro(processor, MSG_ID, SERIAL_ID, ...){\
-	param_vector resp_param_vec = {__VA_ARGS__}; \
-	processor->OnResponse(MSG_ID, SERIAL_ID, resp_param_vec); \
+	processor->OnResponse(MSG_ID, SERIAL_ID, param_vector{__VA_ARGS__}); \
 }
 
 #define ProcessResponseMacro(processor, MSG_ID, SERIAL_ID, ...){\
-	param_vector resp_param_vec = {__VA_ARGS__}; \
-	processor->ProcessResponse(MSG_ID, SERIAL_ID, resp_param_vec, false); \
+	processor->ProcessResponse(MSG_ID, SERIAL_ID, param_vector{__VA_ARGS__}, false); \
 }
 
 #define ServerAttribPtrCast(processor, key, T) \

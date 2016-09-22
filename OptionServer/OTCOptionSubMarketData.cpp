@@ -63,7 +63,6 @@ dataobj_ptr OTCOptionSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRaw
 							if (std::find(strategyVec_Ptr->begin(), strategyVec_Ptr->end(), *pContract) != strategyVec_Ptr->end())
 							{
 								PricingDO mdo(pContract->ExchangeID(), pContract->InstrumentID());
-								wkProcPtr->RegisterTradingDeskListener(mdo, pSession);
 								ret->push_back(std::move(mdo));
 							}
 						}

@@ -10,22 +10,22 @@
 
 #include "../common/typedefs.h"
 
-class data_buffer
+class buffer_ptr : public std::shared_ptr<byte>
+{
+public:
+	buffer_ptr() = default;
+	buffer_ptr(byte* buffer) : std::shared_ptr<byte>(buffer, std::default_delete<byte[]>()) {}
+};
+
+class data_buffer : public buffer_ptr
 {
 public:
 	data_buffer() = default;
-	data_buffer(buffer_ptr buf, std::size_t bufsz) :_buffer_ptr(buf), _buffer_size(bufsz) {}
-	data_buffer(void* buf, std::size_t bufsz) :_buffer_ptr(buf), _buffer_size(bufsz) {}
-	buffer_ptr get_buffer() const { return _buffer_ptr; }
-	void* get() const { return _buffer_ptr.get(); }
-	int size() const { return _buffer_size; }
-	operator bool() const
-	{
-		return _buffer_ptr.operator bool();
-	}
+	data_buffer(const buffer_ptr& buf, std::size_t bufsz) : buffer_ptr(buf), _buffer_size(bufsz) {}
+	data_buffer(byte* buf, std::size_t bufsz) : buffer_ptr(buf), _buffer_size(bufsz) {}
+	std::size_t size() const { return _buffer_size; }
 
 private:
-	buffer_ptr _buffer_ptr;
 	std::size_t _buffer_size;
 };
 

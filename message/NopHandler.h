@@ -13,8 +13,8 @@
 class MESSAGE_CLASS_EXPORT NopHandler : public MessageHandler
 {
 public:
-	dataobj_ptr HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session){ return nullptr; };
-	dataobj_ptr HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session){ return nullptr; }
+	virtual dataobj_ptr HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session){ return nullptr; };
+	virtual dataobj_ptr HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session){ return nullptr; }
 
 protected:
 private:

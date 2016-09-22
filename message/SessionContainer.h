@@ -15,13 +15,13 @@
 
 
 template <typename K>
-class SessionContainer : public IMessageSessionEvent, public std::enable_shared_from_this < SessionContainer<K> >
+class SessionContainer : public IMessageSessionEvent, public std::enable_shared_from_this<SessionContainer<K>>
 {
 private:
 	SessionContainer() {}
 
 public:
-	static std::shared_ptr<SessionContainer<K>> NewInstance()
+	static std::shared_ptr<SessionContainer<K>> NewInstancePtr()
 	{
 		return std::shared_ptr<SessionContainer<K>>(new SessionContainer<K>());
 	}
@@ -32,8 +32,7 @@ public:
 		auto it = _sessionMap.find(key);
 		if (it != _sessionMap.end())
 		{
-			auto& sessionSet = it->second;
-			for (auto pSession : sessionSet)
+			for (auto pSession : it->second)
 			{
 				func(pSession);
 			}
@@ -45,8 +44,7 @@ public:
 		std::shared_lock<std::shared_mutex> read_lock(_mutex);
 		for (auto& pair : _sessionMap)
 		{
-			auto& sessionSet = pair.second;
-			for (auto pSession : sessionSet)
+			for (auto pSession : pair.second)
 			{
 				func(pSession);
 			}
@@ -80,15 +78,17 @@ public:
 			auto it = _sessionMap.find(key);
 			if (it != _sessionMap.end())
 			{
-				auto& sessionSet = it->second;
-				auto sit = sessionSet.find(pSession);
-				if (sessionSet.erase(sit) == sessionSet.end())
-					_sessionMap.erase(key);
+				it->second.erase(pSession);
+				if (it->second.empty())
+					_sessionMap.erase(it);
 
-				auto& keySet = _reverseMap.at(pSession);
-				auto keyit = keySet.find(key);
-				if (keySet.erase(keyit) == keySet.end())
-					_reverseMap.erase(pSession);
+				auto rit = _reverseMap.find(pSession);
+				if (rit != _reverseMap.end())
+				{
+					rit->second.erase(key);
+					if (rit->second.empty())
+						_reverseMap.erase(rit);
+				}
 
 				ret = 0;
 			}
@@ -106,10 +106,13 @@ public:
 			auto& sessionSet = it->second;
 			for (auto pSession : sessionSet)
 			{
-				auto& keySet = _reverseMap.at(pSession);
-				auto keyit = keySet.find(key);
-				if (keySet.erase(keyit) == keySet.end())
-					_reverseMap.erase(pSession);
+				auto rit = _reverseMap.find(pSession);
+				if (rit != _reverseMap.end())
+				{
+					rit->second.erase(key);
+					if (rit->second.empty())
+						_reverseMap.erase(rit);
+				}
 			}
 			_sessionMap.erase(it);
 			ret = 0;
@@ -128,13 +131,12 @@ public:
 			{
 				for (auto& key : it->second)
 				{
-					auto mit = _sessionMap.find(key);
-					if (mit != _sessionMap.end())
+					auto sit = _sessionMap.find(key);
+					if (sit != _sessionMap.end())
 					{
-						auto& sessionSet = mit->second;
-						sessionSet.erase(pSession);
-						if (sessionSet.empty())
-							_sessionMap.erase(mit);
+						sit->second.erase(pSession);
+						if (sit->second.empty())
+							_sessionMap.erase(sit);
 					}
 				}
 				_reverseMap.erase(it);

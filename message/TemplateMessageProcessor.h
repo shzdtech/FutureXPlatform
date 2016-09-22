@@ -18,8 +18,8 @@
 class MESSAGE_CLASS_EXPORT TemplateMessageProcessor : public MessageProcessor
 {
 public:
-	virtual void ProcessRequest(const uint msgId, const dataobj_ptr& reqDO, bool sendRsp);
-	virtual void ProcessResponse(const uint msgId, const uint serialId, param_vector& rawRespParamsconst, bool sendRsp);
+	virtual dataobj_ptr ProcessRequest(const uint msgId, const dataobj_ptr& reqDO, bool sendRsp);
+	virtual dataobj_ptr ProcessResponse(const uint msgId, const uint serialId, param_vector& rawRespParamsconst, bool sendRsp);
 	virtual int SendDataObject(ISession* pSession, const uint msgId, const uint serialId, const dataobj_ptr& dataobj);
 
 	int OnRequest(const uint msgId, const data_buffer& msg);

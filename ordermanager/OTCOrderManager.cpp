@@ -27,15 +27,40 @@ OrderDO_Ptr OTCOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 {
 	OrderDO_Ptr ret;
 
-	if (!orderInfo.IsOTC()) orderInfo.ConvertToOTC();
+	auto pStrategyMap = _pricingCtx->GetStrategyMap();
 
-	if (auto pricingDO_ptr = PricingUtility::Pricing(&orderInfo.Volume, orderInfo, *_pricingCtx))
+	if (auto pStrategy = pStrategyMap->tryfind(orderInfo))
 	{
-		if (ret = OTCOrderDAO::CreateOrder(orderInfo, *pricingDO_ptr))
+		bool reject = false;
+		if (orderInfo.Direction == DirectionType::BUY)
 		{
-			if (ret->OrderStatus == OrderStatus::OPENED)
+			if (!pStrategy->BidEnabled)
+				reject = true;
+		}
+		else
+		{
+			if (!pStrategy->AskEnabled)
+				reject = true;
+		}
+
+		if (reject)
+		{
+			ret = std::make_shared<OrderDO>(orderInfo);
+			ret->OrderStatus = OrderStatus::OPEN_REJECTED;
+		}
+		else
+		{
+			if (!orderInfo.IsOTC()) orderInfo.ConvertToOTC();
+
+			if (auto pricingDO_ptr = PricingUtility::Pricing(&orderInfo.Volume, orderInfo, *_pricingCtx))
 			{
-				_userOrderCtx.AddOrder(*ret);
+				if (ret = OTCOrderDAO::CreateOrder(orderInfo, *pricingDO_ptr))
+				{
+					if (ret->OrderStatus == OrderStatus::OPENED)
+					{
+						_userOrderCtx.AddOrder(*ret);
+					}
+				}
 			}
 		}
 	}
@@ -55,56 +80,59 @@ OrderDOVec_Ptr OTCOrderManager::UpdateOrderByStrategy(const StrategyContractDO& 
 {
 	OrderDOVec_Ptr ret;
 
-	if (strategyDO.Enabled)
+	std::lock_guard<std::shared_mutex> guard(_userOrderCtx.UserMutex(strategyDO.UserID()));
+
+	auto& tradingMap = _userOrderCtx.GetOrderMapByUserContract(strategyDO);
+
+	if (!tradingMap.empty())
 	{
-		std::lock_guard<std::shared_mutex> guard(_userOrderCtx.UserMutex(strategyDO.UserID()));
+		ret = std::make_shared<VectorDO<OrderDO>>();
 
-		auto& tradingMap = _userOrderCtx.GetOrderMapByUserContract(strategyDO);
-
-		if (!tradingMap.empty())
+		for (auto& it : tradingMap)
 		{
-			ret = std::make_shared<VectorDO<OrderDO>>();
-
-			for (auto& it : tradingMap)
+			auto& orderDO = *it.second;
+			bool accept = false;
+			if (orderDO.Direction == DirectionType::BUY)
 			{
-				auto& orderDO = *it.second;
-				if (auto pricingDO_ptr = PricingUtility::Pricing(&orderDO.Volume, strategyDO, *_pricingCtx))
+				if (strategyDO.BidEnabled)
 				{
-					bool accept = false;
-					if (orderDO.Direction == DirectionType::BUY)
-					{
-						if (orderDO.LimitPrice >= pricingDO_ptr->Ask().Price)
-							accept = true;
-					}
-					else
-					{
-						if (orderDO.LimitPrice <= pricingDO_ptr->Bid().Price)
-							accept = true;
-					}
-
-					if (accept)
-					{
-						OrderStatus currStatus;
-						if (OTCOrderDAO::AcceptOrder(orderDO, currStatus))
-						{
-							orderDO.OrderStatus = currStatus;
-							orderDO.VolumeTraded = orderDO.Volume;
-							orderDO.VolumeRemain = 0;
-							ret->push_back(orderDO);
-							_positionCtx.UpdatePosition(strategyDO,
-								(DirectionType)orderDO.Direction,
-								(OrderOpenCloseType)orderDO.OpenClose,
-								orderDO.Volume);
-							_userOrderCtx.RemoveOrder(orderDO.OrderID);
-						}
-					}
+					auto pricingDO_ptr = PricingUtility::Pricing(&orderDO.Volume, strategyDO, *_pricingCtx);
+					if (pricingDO_ptr && orderDO.LimitPrice >= pricingDO_ptr->Ask().Price)
+						accept = true;
 				}
 			}
-			if (ret->size() > 0)
+			else
 			{
-				Hedge(strategyDO);
+				if (strategyDO.AskEnabled)
+				{
+					auto pricingDO_ptr = PricingUtility::Pricing(&orderDO.Volume, strategyDO, *_pricingCtx);
+					if (pricingDO_ptr && orderDO.LimitPrice <= pricingDO_ptr->Bid().Price)
+						accept = true;
+				}
+			}
+
+			if (accept)
+			{
+				OrderStatus currStatus;
+				if (OTCOrderDAO::AcceptOrder(orderDO, currStatus))
+				{
+					orderDO.OrderStatus = currStatus;
+					orderDO.VolumeTraded = orderDO.Volume;
+					orderDO.VolumeRemain = 0;
+					ret->push_back(orderDO);
+					_positionCtx.UpdatePosition(strategyDO,
+						(DirectionType)orderDO.Direction,
+						(OrderOpenCloseType)orderDO.OpenClose,
+						orderDO.Volume);
+					_userOrderCtx.RemoveOrder(orderDO.OrderID);
+				}
 			}
 		}
+	}
+
+	if (ret && ret->size() > 0)
+	{
+		Hedge(strategyDO);
 	}
 
 	return ret;

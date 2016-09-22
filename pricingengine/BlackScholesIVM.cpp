@@ -45,24 +45,25 @@ dataobj_ptr BlackScholesIVM::Compute(
 	IPricingDataContext& priceCtx,
 	const param_vector* params)
 {
-	if (!sdo.PricingModel && !sdo.PricingModel->ParsedParams)
-		return nullptr;
+	if (!sdo.IVModel->ParsedParams)
+	{
+		ParseParams(sdo.IVModel->Params, sdo.IVModel->ParsedParams);
+	}
 
-	auto paramObj = (OptionParams*)sdo.VolModel->ParsedParams.get();
+	auto paramObj = (OptionParams*)sdo.IVModel->ParsedParams.get();
 
 	auto& mdo = priceCtx.GetMarketDataMap()->at(sdo.InstrumentID());
 	auto& base_mdo = priceCtx.GetMarketDataMap()->at(sdo.PricingContracts[0].InstrumentID());
 
-	double bidPrice = mdo.Bid().Price;
-	double askdPrice = mdo.Ask().Price;
+	double f_atm = (mdo.Bid().Price + mdo.Ask().Price) / 2;
 
 	double base_bidPrice = base_mdo.Bid().Price + paramObj->atmOffset;
 	double base_askdPrice = base_mdo.Ask().Price + paramObj->atmOffset;
 
 	auto ret = std::make_shared<TDataObject<std::pair<double, double>>>();
 
-	ret->Data.first = ImpliedVolatility(bidPrice, base_bidPrice, sdo.StrikePrice, paramObj->bidVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration);
-	ret->Data.second = ImpliedVolatility(askdPrice, base_askdPrice, sdo.StrikePrice, paramObj->askVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration);
+	ret->Data.first = ImpliedVolatility(f_atm, base_bidPrice, sdo.StrikePrice, paramObj->bidVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration);
+	ret->Data.second = ImpliedVolatility(f_atm, base_askdPrice, sdo.StrikePrice, paramObj->askVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration);
 
 	return ret;
 }
@@ -99,36 +100,44 @@ double BlackScholesIVM::ImpliedVolatility(
 	const DateType& tradingDate,
 	const DateType& maturityDate)
 {
-	Calendar calendar = TARGET();
-	DayCounter dayCounter = Actual365Fixed();
-
 	Date maturity((Day)maturityDate.Day, (Month)(maturityDate.Month), (Year)(maturityDate.Year));
 
 	Date settlementDate((Day)tradingDate.Day, (Month)(tradingDate.Month), (Year)(tradingDate.Year));
 
-	Handle<Quote> underlyingH(boost::shared_ptr<Quote>(new SimpleQuote(underlyingPrice)));
+	Time timeToMaturity = Actual365Fixed().yearFraction(settlementDate, maturity);
 
-	// bootstrap the yield/dividend/vol curves
-	Handle<YieldTermStructure> flatTermStructure(
-		boost::shared_ptr<YieldTermStructure>(new FlatForward(settlementDate, riskFreeRate, dayCounter)));
-	Handle<YieldTermStructure> flatDividendTS(
-		boost::shared_ptr<YieldTermStructure>(new FlatForward(settlementDate, dividendYield, dayCounter)));
-	Handle<BlackVolTermStructure> flatVolTS(
-		boost::shared_ptr<BlackVolTermStructure>(new BlackConstantVol(settlementDate, calendar, volatility, dayCounter)));
+	Option::Type optionType = contractType == ContractType::CONTRACTTYPE_CALL_OPTION ? Option::Call : Option::Put;
 
-	boost::shared_ptr<StrikedTypePayoff> payoff(
-		new PlainVanillaPayoff(contractType == ContractType::CONTRACTTYPE_CALL_OPTION ? Option::Call : Option::Put, strikePrice));
+	Bisection bisection;
+	Volatility sigma = bisection.solve([&] (const Volatility & sigma) {
+		Real stdDev = sigma * std::sqrt(timeToMaturity);
+		BlackCalculator blackCalculator(optionType, strikePrice, underlyingPrice, stdDev);
+		return blackCalculator.value() - marketOptionPrice;},
+		1.0e-4, 1.0e-4, 2.0);
 
-	boost::shared_ptr<BlackScholesMertonProcess> bsmProcess(
-		new BlackScholesMertonProcess(underlyingH, flatDividendTS, flatTermStructure, flatVolTS));
 
-	boost::shared_ptr<PricingEngine> pricingEngine(new AnalyticEuropeanEngine(bsmProcess));
+	//Handle<Quote> underlyingH(boost::shared_ptr<Quote>(new SimpleQuote(underlyingPrice)));
 
-	// options
-	boost::shared_ptr<Exercise> europeanExercise(new EuropeanExercise(maturity));
+	//// bootstrap the yield/dividend/vol curves
+	//Handle<YieldTermStructure> flatTermStructure(
+	//	boost::shared_ptr<YieldTermStructure>(new FlatForward(settlementDate, riskFreeRate, dayCounter)));
+	//Handle<YieldTermStructure> flatDividendTS(
+	//	boost::shared_ptr<YieldTermStructure>(new FlatForward(settlementDate, dividendYield, dayCounter)));
+	//Handle<BlackVolTermStructure> flatVolTS(
+	//	boost::shared_ptr<BlackVolTermStructure>(new BlackConstantVol(settlementDate, TARGET(), volatility, dayCounter)));
 
-	VanillaOption europeanOption(payoff, europeanExercise);
-	europeanOption.setPricingEngine(pricingEngine);
+	//boost::shared_ptr<StrikedTypePayoff> payoff(
+	//	new PlainVanillaPayoff(optionType, strikePrice));
 
-	return europeanOption.impliedVolatility(marketOptionPrice, bsmProcess);
+	//// options
+	//boost::shared_ptr<Exercise> europeanExercise(new EuropeanExercise(maturity));
+
+	//VanillaOption europeanOption(payoff, europeanExercise);
+
+	//boost::shared_ptr<BlackScholesMertonProcess> bsmProcess(
+	//	new BlackScholesMertonProcess(underlyingH, flatDividendTS, flatTermStructure, flatVolTS));
+
+	//sigma = europeanOption.impliedVolatility(marketOptionPrice, bsmProcess);
+
+	return sigma;
 }

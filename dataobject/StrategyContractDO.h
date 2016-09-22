@@ -36,8 +36,9 @@ public:
 	ContractType ContractType;
 	int Quantity = 1;
 	int Depth = 2;
-	bool Trading = false;
-	bool Enabled = false;
+	bool Hedging = false;
+	bool BidEnabled = true;
+	bool AskEnabled = true;
 
 	double TickSize = 1;
 	double Multiplier = 1;

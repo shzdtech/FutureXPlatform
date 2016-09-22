@@ -11,15 +11,15 @@ struct DateType
 		auto len = strDate.length();
 		if (len == 8)
 		{
-			Year = std::stoi(strDate.substr(0, 4), nullptr, 0);
-			Month = std::stoi(strDate.substr(4, 2), nullptr, 0);
-			Day = std::stoi(strDate.substr(6, 2), nullptr, 0);
+			Year = std::stoi(strDate.substr(0, 4));
+			Month = std::stoi(strDate.substr(4, 2));
+			Day = std::stoi(strDate.substr(6, 2));
 		}
 		else if (len == 10)
 		{
-			Year = std::stoi(strDate.substr(0, 4), nullptr, 0);
-			Month = std::stoi(strDate.substr(5, 2), nullptr, 0);
-			Day = std::stoi(strDate.substr(8, 2), nullptr, 0);
+			Year = std::stoi(strDate.substr(0, 4));
+			Month = std::stoi(strDate.substr(5, 2));
+			Day = std::stoi(strDate.substr(8, 2));
 		}
 		else
 			throw std::exception("Wrong date format, it should be yyyymmdd or yyyy-mm-dd");

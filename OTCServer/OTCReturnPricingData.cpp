@@ -49,6 +49,15 @@ dataobj_ptr OTCReturnPricingData::HandleResponse(const uint32_t serialId, const 
 	int quantity = userContractMap->at(*pStrategyDO).Quantity;
 
 	ret = PricingUtility::Pricing(&quantity, *pStrategyDO, *pPricingCtx);
+	if (!pStrategyDO->BidEnabled)
+	{
+		ret->Bid().Clear();
+	}
+
+	if (!pStrategyDO->AskEnabled)
+	{
+		ret->Ask().Clear();
+	}
 
 	return ret;
 }

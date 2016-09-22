@@ -60,10 +60,10 @@ bool CTPOTCSessionProcessor::OnSessionClosing(void)
 					for (auto& contract : *strategyVec_Ptr)
 					{
 						auto& strategy = pStrategyMap->at(contract);
-						strategy.Enabled = false;
-						if (strategy.Trading)
+						strategy.AskEnabled = strategy.BidEnabled = false;
+						if (strategy.Hedging)
 						{
-							strategy.Trading = false;
+							strategy.Hedging = false;
 							OrderRequestDO orderDO(strategy);
 							wkProcPtr->GetOTCTradeProcessor()->CancelHedgeOrder(orderDO);
 						}

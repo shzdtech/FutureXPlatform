@@ -66,8 +66,9 @@ void ServerSessionManager::AssembleSession(const IMessageSession_Ptr& msgSession
 
 void ServerSessionManager::OnSessionClosing(const IMessageSession_Ptr& msgSessionPtr)
 {
-	if (_sessionSet.find(msgSessionPtr) != _sessionSet.end())
-		_sessionSet.erase(msgSessionPtr);
+	auto it = _sessionSet.find(msgSessionPtr);
+	if (it != _sessionSet.end())
+		_sessionSet.erase(it);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -80,17 +81,17 @@ void ServerSessionManager::OnSessionClosing(const IMessageSession_Ptr& msgSessio
 
 void ServerSessionManager::OnServerClosing(void)
 {
-	auto it = _sessionSet.begin();
-	while (it != _sessionSet.end())
+	
+	while (_sessionSet.empty())
 	{
+		auto it = _sessionSet.begin();
 		try
 		{
 			if (auto sessionPtr = *it)
 				sessionPtr->Close();
 		}
 		catch (...) {}
-
-		it = _sessionSet.erase(it);
+		_sessionSet.erase(it);
 	}
 	_server->getContext()->Reset();
 }

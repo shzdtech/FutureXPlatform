@@ -19,8 +19,8 @@ bool OTCTradeProcessor::Dispose(void)
 		for (auto& it : *pMap)
 		{
 			auto& stragety = it.second;
-			stragety.Enabled = false;
-			stragety.Trading = false;
+			stragety.BidEnabled = stragety.AskEnabled = false;
+			stragety.Hedging = false;
 		}
 	}
 

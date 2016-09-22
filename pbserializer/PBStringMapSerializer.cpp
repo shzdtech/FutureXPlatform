@@ -24,9 +24,5 @@ data_buffer PBStringMapSerializer::Serialize(const dataobj_ptr& abstractDO)
 	auto pEntry = PBMap.mutable_entry();
 	pEntry->insert(pMapDO->begin(), pMapDO->end());
 
-	int bufsz = PBMap.ByteSize();
-	char* buf = new char[bufsz];
-	PBMap.SerializeToArray(buf, bufsz);
-
-	return data_buffer(buf, bufsz);
+	SerializeWithReturn(PBMap);
 }

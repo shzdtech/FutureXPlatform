@@ -58,11 +58,7 @@ data_buffer PBComplexTableSerializer::Serialize(const dataobj_ptr& abstractDO)
 		fillTable(nestDO, nestTbl);
 	}
 
-	int bufsize = ct.ByteSize();
-	uint8_t* buf = new uint8_t[bufsize];
-	ct.SerializeToArray(buf, bufsize);
-
-	return data_buffer(buf, bufsize);
+	SerializeWithReturn(ct);
 }
 
 void fillDO(ComplexTable& ct, ComplexTableDO* ctDO)

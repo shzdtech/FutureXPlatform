@@ -36,11 +36,7 @@ data_buffer PBContractParamSerializer::Serialize(const dataobj_ptr& abstractDO)
 		pParam->set_gamma(cto.Gamma);
 	}
 
-	int bufsize = PB.ByteSize();
-	uint8_t* buf = new uint8_t[bufsize];
-	PB.SerializeToArray(buf, bufsize);
-
-	return data_buffer(buf, bufsize);
+	SerializeWithReturn(PB);
 }
 
 ////////////////////////////////////////////////////////////////////////

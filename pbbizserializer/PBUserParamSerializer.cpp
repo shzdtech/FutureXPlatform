@@ -34,11 +34,7 @@ data_buffer PBUserParamSerializer::Serialize(const dataobj_ptr& abstractDO)
 		pParam->set_quantity(ucp.Quantity);
 	}
 
-	int bufsize = PB.ByteSize();
-	uint8_t* buf = new uint8_t[bufsize];
-	PB.SerializeToArray(buf, bufsize);
-
-	return data_buffer(buf, bufsize);
+	SerializeWithReturn(PB);
 }
 
 ////////////////////////////////////////////////////////////////////////

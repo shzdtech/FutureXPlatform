@@ -57,6 +57,9 @@
     <ClInclude Include="entrywisemutex.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="autofillptrmap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Encoding.cpp">

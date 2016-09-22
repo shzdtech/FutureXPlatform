@@ -30,12 +30,13 @@ data_buffer PBStrategySerializer::Serialize(const dataobj_ptr& abstractDO)
 		auto pStrategy = PB.add_strategy();
 		pStrategy->set_exchange(sdo.ExchangeID());
 		pStrategy->set_contract(sdo.InstrumentID());
-		pStrategy->set_allowtrading(sdo.Trading);
+		pStrategy->set_hedging(sdo.Hedging);
 		pStrategy->set_underlying(sdo.Underlying);
 		pStrategy->set_symbol(sdo.StrategyName);
 		pStrategy->set_description(sdo.Description);
 		pStrategy->set_depth(sdo.Depth);
-		pStrategy->set_enabled(sdo.Enabled);
+		pStrategy->set_bidenabled(sdo.BidEnabled);
+		pStrategy->set_askenabled(sdo.AskEnabled);
 		pStrategy->set_quantity(sdo.Quantity);
 
 		if (!sdo.PricingContracts.empty())
@@ -67,11 +68,7 @@ data_buffer PBStrategySerializer::Serialize(const dataobj_ptr& abstractDO)
 
 	}
 
-	int bufsize = PB.ByteSize();
-	uint8_t* buf = new uint8_t[bufsize];
-	PB.SerializeToArray(buf, bufsize);
-
-	return data_buffer(buf, bufsize);
+	SerializeWithReturn(PB);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -91,8 +88,9 @@ dataobj_ptr PBStrategySerializer::Deserialize(const data_buffer& rawdata)
 	FillDOHeader(sdo, pbstrtg);
 
 	sdo->Depth = pbstrtg.depth();
-	sdo->Trading = pbstrtg.allowtrading();
-	sdo->Enabled = pbstrtg.enabled();
+	sdo->Hedging = pbstrtg.hedging();
+	sdo->BidEnabled = pbstrtg.bidenabled();
+	sdo->AskEnabled = pbstrtg.askenabled();
 	sdo->Quantity = pbstrtg.quantity();
 
 	if (!pbstrtg.pricingcontracts().empty())

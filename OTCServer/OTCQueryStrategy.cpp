@@ -45,11 +45,20 @@ dataobj_ptr OTCQueryStrategy::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 		{
 			auto pStrategyMap = wkProcPtr->PricingDataContext()->GetStrategyMap();
 
+			auto role = session->getUserInfo()->getRole();
+
 			for (auto& strategyKey : *strategyVec_Ptr)
 			{
 				auto& strategy = pStrategyMap->at(strategyKey);
 
-				wkProcPtr->RegisterPricingListener(strategy, session->getProcessor()->LockMessageSession().get());
+				if (role == ROLE_TRADINGDESK)
+				{
+					wkProcPtr->RegisterTradingDeskListener(strategy, session->getProcessor()->LockMessageSession().get());
+				}
+				else
+				{
+					wkProcPtr->RegisterPricingListener(strategy, session->getProcessor()->LockMessageSession().get());
+				}
 
 				wkProcPtr->SubscribeStrategy(strategy);
 

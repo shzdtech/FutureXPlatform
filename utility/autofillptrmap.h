@@ -1,21 +1,22 @@
 /***********************************************************************
- * Module:  AutoMap.h
+ * Module:  autofillptrmap.h
  * Author:  milk
- * Modified: 2015年10月28日 14:33:18
+ * Modified: 2016年10月28日 14:33:18
  * Purpose: Declaration of the class autofillmap
  ***********************************************************************/
 
-#if !defined(__utility_autofillmap_h)
-#define __utility_autofillmap_h
+#if !defined(__utility_autofillptrmap_h)
+#define __utility_autofillptrmap_h
 #include <map>
+#include <memory>
 #include <functional>
 
 template <class K, class V>
-class autofillmap : public std::map<K, V>
+class autofillptrmap : public std::map<K, std::shared_ptr<V>>
 {
 public:
-	autofillmap() = default;
-	autofillmap(const std::map<K, V>& others) : std::map<K, V>(others) {}
+	autofillptrmap() = default;
+	autofillptrmap(const std::map<K, std::shared_ptr<V>>& others) :std::map<K, std::shared_ptr<V>>(others) {}
 
 	bool tryfind(const K& key, V& value)
 	{
@@ -29,69 +30,69 @@ public:
 		return false;
 	}
 
-	V* tryfind(const K& key)
+	std::shared_ptr<V> tryfind(const K& key)
 	{
 		auto it = find(key);
 		if (it != end())
 		{
-			return &it->second;
+			return it->second;
 		}
 
 		return nullptr;
 	}
 
-	V& getorfill(const K& key)
+	std::shared_ptr<V>& getorfill(const K& key)
 	{
 		auto it = find(key);
 		if (it != end())
 			return it->second;
 		else
 		{
-			auto iter = emplace(key, std::move(V{}));
+			auto iter = emplace(key, std::make_shared<V>());
 			return (iter.first)->second;
 		}
 	}
 
 	template <class T>
-	V& getorfill(const K& key)
+	std::shared_ptr<V>& getorfill(const K& key)
 	{
 		auto it = find(key);
 		if (it != end())
 			return it->second;
 		else
 		{
-			auto iter = emplace(key, std::move(T{}));
+			auto iter = emplace(key, std::make_shared<T>());
 			return (iter.first)->second;
 		}
 	}
 
-	V& getorfill(const K& key, V&& value)
+	std::shared_ptr<V>& getorfill(const K& key, V&& value)
 	{
 		auto it = find(key);
 		if (it != end())
 			return it->second;
 		else
 		{
-			auto iter = emplace(key, std::move(value));
+			auto iter = emplace(key, std::make_shared<T>(std::move(value)));
 			return (iter.first)->second;
 		}
 	}
 
 	template <class T>
-	V& getorfill(const K& key, const T& value)
+	std::shared_ptr<V>& getorfill(const K& key, const T& value)
 	{
 		auto it = find(key);
 		if (it != end())
 			return it->second;
 		else
 		{
-			auto iter = emplace(key, value);
+			auto iter = emplace(key, std::make_shared<T>(value));
 			return (iter.first)->second;
 		}
 	}
 
 	template <class Fn, class... Args>
-	V& getorfillfunc(const K& key, Fn&& fn, Args&&... args)
+	std::shared_ptr<V>& getorfillfunc(const K& key, Fn&& fn, Args&&... args)
 	{
 		auto it = find(key);
 		if (it != end())

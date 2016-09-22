@@ -22,9 +22,10 @@
  ////////////////////////////////////////////////////////////////////////
 
 ASIOTCPSession::ASIOTCPSession(tcp::socket&& socket) :
-	_alive(true), _closed(false), _started(false),
+	_alive(true), _closed(false), _started(false), _databufferQueue(QUEUE_SIZE),
 	_socket(std::move(socket)), _max_msg_size(MAX_MSG_SIZE),
-	_heartbeat_timer(_socket.get_io_service()) {
+	_heartbeat_timer(_socket.get_io_service())
+{
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -33,7 +34,8 @@ ASIOTCPSession::ASIOTCPSession(tcp::socket&& socket) :
 // Return:     
 ////////////////////////////////////////////////////////////////////////
 
-ASIOTCPSession::~ASIOTCPSession() {
+ASIOTCPSession::~ASIOTCPSession()
+{
 	LOG_DEBUG << __FUNCTION__;
 }
 
@@ -42,45 +44,60 @@ void ASIOTCPSession::setMaxMessageSize(uint maxMsgSize)
 	_max_msg_size = maxMsgSize;
 }
 
-int ASIOTCPSession::WriteMessage(const uint msgId, const data_buffer& msg) {
-	int packetSz = msg.size() + EXINFO_SIZE; // Total packet size
+int ASIOTCPSession::WriteMessage(const uint msgId, const data_buffer& msg)
+{
+	std::size_t contentSz = msg.size();
+	std::size_t payload_sz = contentSz + EXINFO_SIZE;
+	std::size_t package_sz = HEADER_SIZE + payload_sz;
+	auto pPackage = new byte[package_sz];
+	data_buffer package(pPackage, package_sz);
 	// Assemble Header
-	buffer_ptr msg_header(new byte[HEADER_SIZE]);
-	byte* buf_header = (byte*)msg_header.get();
-	buf_header[0] = CTRLCHAR::SOH; //Start of Header 
-	buf_header[1] = packetSz;
-	buf_header[2] = packetSz >> 8;
-	buf_header[3] = packetSz >> 16;
-	buf_header[4] = packetSz >> 24;
-	buf_header[HEADER_LAST] = CTRLCHAR::STX; //Start of Text
+	pPackage[0] = CTRLCHAR::SOH; //Start of Header 
+	pPackage[1] = payload_sz;
+	pPackage[2] = payload_sz >> 8;
+	pPackage[3] = payload_sz >> 16;
+	pPackage[4] = payload_sz >> 24;
+	pPackage[HEADER_LAST] = CTRLCHAR::STX; //Start of Text
+
+	// Copy content
+	pPackage += HEADER_SIZE;
+	std::memcpy(pPackage, msg.get(), contentSz);
 
 	// Assemble Extra Info
-	buffer_ptr msg_exinfo(new byte[EXINFO_SIZE]);
-	byte* buf_exinfo = (byte*)msg_exinfo.get();
-	buf_exinfo[0] = CTRLCHAR::ETX; //End of Text
-	buf_exinfo[1] = msgId;
-	buf_exinfo[2] = msgId >> 8;
-	buf_exinfo[3] = msgId >> 16;
-	buf_exinfo[4] = msgId >> 24;
-	buf_exinfo[EXINFO_LAST] = CTRLCHAR::ETB; //End of Block
+	pPackage += contentSz;
+	pPackage[0] = CTRLCHAR::ETX; //End of Text
+	pPackage[1] = msgId;
+	pPackage[2] = msgId >> 8;
+	pPackage[3] = msgId >> 16;
+	pPackage[4] = msgId >> 24;
+	pPackage[EXINFO_LAST] = CTRLCHAR::ETB; //End of Block
 
-	std::array<const_buffer, 3> packet = {
-		buffer(buf_header, HEADER_SIZE),
-		buffer(msg.get(), msg.size()),
-		buffer(buf_exinfo, EXINFO_SIZE)
-	};
+	_databufferQueue.push(package);
 
-	LOG_DEBUG << "Sending message: Id: " << msgId << " Size:" << packetSz;
-	async_write(_socket, packet,
-		[this, msg_header, msg, msg_exinfo](boost::system::error_code ec, std::size_t /*length*/) {
-		if (ec) {
-			LOG_DEBUG << ec.message();
-			//this->Close();
-		}
-	});
+	if (!_sendingFlag.test_and_set())
+		SendQueueAsync();
 
-	return HEADER_SIZE + packetSz;
+	return package_sz;
 }
+
+
+void ASIOTCPSession::SendQueueAsync(void)
+{
+	data_buffer package;
+	if (_databufferQueue.pop(package))
+	{
+		async_write(_socket, boost::asio::buffer(package.get(), package.size()),
+			[this, package](boost::system::error_code ec, std::size_t /*length*/)
+			{
+				SendQueueAsync();
+			});
+	}
+	else
+	{
+		_sendingFlag.clear();
+	}
+}
+
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       ASIOTCPSession::SendMessage(const data_buffer msg)
@@ -90,7 +107,8 @@ int ASIOTCPSession::WriteMessage(const uint msgId, const data_buffer& msg) {
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-int ASIOTCPSession::WriteMessage(const data_buffer& msg) {
+int ASIOTCPSession::WriteMessage(const data_buffer& msg)
+{
 	return WriteMessage(0, msg);
 }
 
@@ -99,6 +117,7 @@ bool ASIOTCPSession::Start(void)
 	if (!_started)
 	{
 		_started = true;
+		_sendingFlag.clear();
 		auto this_ptr = std::static_pointer_cast<ASIOTCPSession>(shared_from_this());
 		asyn_read_header(this_ptr);
 		asyn_timeout(this_ptr);
@@ -113,9 +132,11 @@ bool ASIOTCPSession::Start(void)
 // Return:     bool
 ////////////////////////////////////////////////////////////////////////
 
-bool ASIOTCPSession::Close(void) {
+bool ASIOTCPSession::Close(void)
+{
 	std::lock_guard<std::mutex> lock(_clsmutex);
-	if (!_closed) {
+	if (!_closed)
+	{
 		if (_socket.is_open())
 		{
 			LOG_DEBUG << "Session on " << _socket.remote_endpoint().address().to_string()
@@ -134,27 +155,33 @@ bool ASIOTCPSession::Close(void) {
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void ASIOTCPSession::asyn_read_header(const ASIOTCPSession_Ptr& this_ptr) {
+void ASIOTCPSession::asyn_read_header(const ASIOTCPSession_Ptr& this_ptr)
+{
 	async_read(this_ptr->_socket, buffer(this_ptr->_header, HEADER_SIZE),
-		[this_ptr](boost::system::error_code ec, std::size_t length) {
+		[this_ptr](boost::system::error_code ec, std::size_t length)
+	{
 		auto this_ins = this_ptr.get();
-		if (!ec && length == HEADER_SIZE) {
+		if (!ec && length == HEADER_SIZE)
+		{
 			// Check Sync Flag
 			byte* header = this_ins->_header;
-			if (CTRLCHAR::SOH == header[0] && CTRLCHAR::STX == header[HEADER_LAST]) {
+			if (CTRLCHAR::SOH == header[0] && CTRLCHAR::STX == header[HEADER_LAST])
+			{
 				uint msg_size = (header[1] | header[2] << 8 | header[3] << 16 | header[4] << 24);
-				if (msg_size > this_ins->_max_msg_size) {
-					LOG_INFO << "Client message exceed max size ("
-						<< this_ins->_max_msg_size << "): " << msg_size;
+				if (msg_size > this_ins->_max_msg_size)
+				{
+					LOG_INFO << "Client message exceed max size (" << this_ins->_max_msg_size << "): " << msg_size;
 					this_ins->Close();
 				}
-				else {
+				else
+				{
 					asyn_read_body(this_ptr, msg_size);
 					this_ins->_alive = true;
 				}
 			}
 		}
-		else {
+		else
+		{
 			LOG_DEBUG << "asyn_read_header: " << ec.message();
 			this_ins->Close();
 		}
@@ -169,24 +196,31 @@ void ASIOTCPSession::asyn_read_header(const ASIOTCPSession_Ptr& this_ptr) {
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void ASIOTCPSession::asyn_read_body(const ASIOTCPSession_Ptr& this_ptr, uint msgSize) {
+void ASIOTCPSession::asyn_read_body(const ASIOTCPSession_Ptr& this_ptr, uint msgSize)
+{
 	buffer_ptr msgbuf(new byte[msgSize]);
 	async_read(this_ptr->_socket, buffer(msgbuf.get(), msgSize),
-		[this_ptr, msgbuf](boost::system::error_code ec, std::size_t length) {
+		[this_ptr, msgbuf](boost::system::error_code ec, std::size_t length)
+	{
 		auto this_ins = this_ptr.get();
-		if (!ec && length >= EXINFO_SIZE) {
+		if (!ec && length >= EXINFO_SIZE)
+		{
 			//Start recieve next message
 			this_ins->asyn_read_header(this_ptr);
 			//
 			int bufSz = length - EXINFO_SIZE;
-			byte* exinfo = (byte*)msgbuf.get() + bufSz;
+			auto exinfo = msgbuf.get() + bufSz;
+
 			//Check Sync Flag
-			if (CTRLCHAR::ETX == exinfo[0] && CTRLCHAR::ETB == exinfo[EXINFO_LAST]) {
+			if (CTRLCHAR::ETX == exinfo[0] && CTRLCHAR::ETB == exinfo[EXINFO_LAST])
+			{
 				uint msgId = (exinfo[1] | exinfo[2] << 8 | exinfo[3] << 16 | exinfo[4] << 24);
+				LOG_DEBUG << "Receiving message: Id: " << msgId << " Size:" << bufSz;
 				this_ins->_messageProcessor_ptr->OnRequest(msgId, data_buffer(msgbuf, bufSz));
 			}
 		}
-		else {
+		else
+		{
 			LOG_DEBUG << "asyn_read_body: " << ec.message();
 			this_ins->Close();
 		}
@@ -199,20 +233,28 @@ void ASIOTCPSession::asyn_read_body(const ASIOTCPSession_Ptr& this_ptr, uint msg
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void ASIOTCPSession::asyn_timeout(const ASIOTCPSession_WkPtr& this_wk_ptr) {
-	if (auto this_ptr = this_wk_ptr.lock()) {
+void ASIOTCPSession::asyn_timeout(const ASIOTCPSession_WkPtr& this_wk_ptr)
+{
+	if (auto this_ptr = this_wk_ptr.lock())
+	{
 		auto this_ins = this_ptr.get();
-		if (this_ins->_timeout > 0) {
+		if (this_ins->_timeout > 0)
+		{
 			this_ins->_heartbeat_timer.expires_from_now(boost::posix_time::seconds(this_ins->_timeout));
-			this_ins->_heartbeat_timer.async_wait([this_wk_ptr](boost::system::error_code ec) {
-				if (!ec) {
-					if (auto this_ptr = this_wk_ptr.lock()) {
+			this_ins->_heartbeat_timer.async_wait([this_wk_ptr](boost::system::error_code ec)
+			{
+				if (!ec)
+				{
+					if (auto this_ptr = this_wk_ptr.lock())
+					{
 						auto this_ins = this_ptr.get();
-						if (this_ins->_alive && this_ins->getLoginTimeStamp()) {
+						if (this_ins->_alive && this_ins->getLoginTimeStamp())
+						{
 							this_ins->_alive = false;
 							asyn_timeout(this_ptr);
 						}
-						else {
+						else
+						{
 							LOG_DEBUG << "Session timeout.";
 							this_ins->Close();
 						}

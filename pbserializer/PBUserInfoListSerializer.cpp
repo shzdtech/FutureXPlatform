@@ -43,11 +43,7 @@ data_buffer PBUserInfoListSerializer::Serialize(const dataobj_ptr& abstractDO)
 		pUserInfo->set_role(userDO.Role);
 	}
 
-	int bufsize = PB.ByteSize();
-	uint8_t* buf = new uint8_t[bufsize];
-	PB.SerializeToArray(buf, bufsize);
-
-	return data_buffer(buf, bufsize);
+	SerializeWithReturn(PB);
 }
 
 ////////////////////////////////////////////////////////////////////////

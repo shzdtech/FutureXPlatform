@@ -36,9 +36,9 @@
  ////////////////////////////////////////////////////////////////////////
 
 OTCWorkerProcessor::OTCWorkerProcessor(IPricingDataContext* pricingCtx) :
-	_pricingNotifers(SessionContainer<ContractKey>::NewInstance()),
-	_tradingDeskNotifers(SessionContainer<ContractKey>::NewInstance()),
-	_otcOrderNotifers(SessionContainer<uint64_t>::NewInstance()),
+	_pricingNotifers(SessionContainer<ContractKey>::NewInstancePtr()),
+	_tradingDeskNotifers(SessionContainer<ContractKey>::NewInstancePtr()),
+	_otcOrderNotifers(SessionContainer<uint64_t>::NewInstancePtr()),
 	_pricingCtx(pricingCtx)
 {
 	_runingTradingDeskFlag = true;
@@ -71,12 +71,10 @@ int OTCWorkerProcessor::LoadContractToCache(ProductType productType)
 
 int OTCWorkerProcessor::LoadStrategyToCache(ProductType productType)
 {
-	UserContractMap<StrategyContractDO> allStrategy;
-	StrategyContractDAO::LoadStrategyContractByProductType(productType, allStrategy);
+	auto allStrategy = StrategyContractDAO::LoadStrategyContractByProductType(productType);
 	auto strategyMap = PricingDataContext()->GetStrategyMap();
-	for (auto& pair : allStrategy)
+	for (auto& strategy : *allStrategy)
 	{
-		auto& strategy = pair.second;
 		if (strategy.PricingModel)
 		{
 			// Pricing Model Initialization
@@ -129,7 +127,7 @@ int OTCWorkerProcessor::LoadStrategyToCache(ProductType productType)
 		strategyMap->emplace(strategy, strategy);
 	}
 
-	return allStrategy.size();
+	return allStrategy->size();
 }
 
 
@@ -172,6 +170,7 @@ int OTCWorkerProcessor::SubscribeStrategy(const StrategyContractDO& strategyDO)
 	{
 		AddContractToMonitor(strategyDO);
 		_exchangeStrategySet.emplace(strategyDO);
+		SubscribeMarketData(strategyDO);
 		for (auto& bsContract : strategyDO.PricingContracts)
 		{
 			if (!bsContract.IsOTC())
@@ -219,7 +218,7 @@ IPricingDataContext * OTCWorkerProcessor::PricingDataContext()
 
 void OTCWorkerProcessor::TriggerOTCPricing(const StrategyContractDO& strategyDO)
 {
-	if (strategyDO.Enabled)
+	if (strategyDO.BidEnabled || strategyDO.AskEnabled)
 	{
 		auto pPricingCtx = PricingDataContext();
 		_pricingNotifers->foreach(strategyDO, [&strategyDO, pPricingCtx](IMessageSession* pSession)
@@ -231,7 +230,7 @@ void OTCWorkerProcessor::TriggerOTCPricing(const StrategyContractDO& strategyDO)
 void OTCWorkerProcessor::TriggerTadingDeskParams(const StrategyContractDO & strategyDO)
 {
 	auto pPricingCtx = PricingDataContext();
-	_tradingDeskNotifers->foreach(strategyDO, [&strategyDO, pPricingCtx](IMessageSession* pSession)
+	_pricingNotifers->foreach(strategyDO, [&strategyDO, pPricingCtx](IMessageSession* pSession)
 	{OnResponseProcMacro(pSession->getProcessor(),
 		MSG_ID_RTN_TRADINGDESK_PRICING, strategyDO.SerialId, &strategyDO, pPricingCtx); });
 }

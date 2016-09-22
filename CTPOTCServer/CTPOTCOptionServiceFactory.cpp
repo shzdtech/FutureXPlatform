@@ -36,10 +36,10 @@
 
 std::map<uint, IMessageHandler_Ptr> CTPOTCOptionServiceFactory::CreateMessageHandlers(IServerContext* serverCtx)
 {
-	std::map<uint, IMessageHandler_Ptr> msg_hdl_map =
-		CTPOTCServiceFactory::CreateMessageHandlers(serverCtx);
+	std::map<uint, IMessageHandler_Ptr> msg_hdl_map(std::move(CTPOTCServiceFactory::CreateMessageHandlers(serverCtx)));
 
-	msg_hdl_map[MSG_ID_RTN_TRADINGDESK_PRICING] = std::make_shared<OTCUpdateContractParam>();
+	msg_hdl_map[MSG_ID_SUB_PRICING] = std::make_shared<OTCOptionSubMarketData>();
+	msg_hdl_map[MSG_ID_RTN_TRADINGDESK_PRICING] = std::make_shared<OTCOptionPricingParams>();
 
 	return msg_hdl_map;
 }

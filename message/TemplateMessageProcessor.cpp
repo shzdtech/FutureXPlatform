@@ -13,7 +13,7 @@
 #include "../dataserializer/ExceptionSerializer.h"
 
 
-void TemplateMessageProcessor::ProcessRequest(const uint msgId, const dataobj_ptr& reqDO, bool sendRsp)
+dataobj_ptr TemplateMessageProcessor::ProcessRequest(const uint msgId, const dataobj_ptr& reqDO, bool sendRsp)
 {
 	try
 	{
@@ -29,6 +29,7 @@ void TemplateMessageProcessor::ProcessRequest(const uint msgId, const dataobj_pt
 						{
 							SendDataObject(pMsgSession, msgId, reqDO->SerialId, dataobj_ptr);
 						}
+						return dataobj_ptr;
 					}
 				}
 			}
@@ -43,9 +44,10 @@ void TemplateMessageProcessor::ProcessRequest(const uint msgId, const dataobj_pt
 	catch (...) {
 		LOG_ERROR << __FUNCTION__ << ": Unknown error occured!";
 	}
+	return nullptr;
 }
 
-void TemplateMessageProcessor::ProcessResponse(const uint msgId, const uint serialId, param_vector & rawRespParams, bool sendRsp)
+dataobj_ptr TemplateMessageProcessor::ProcessResponse(const uint msgId, const uint serialId, param_vector & rawRespParams, bool sendRsp)
 {
 	try
 	{
@@ -61,6 +63,7 @@ void TemplateMessageProcessor::ProcessResponse(const uint msgId, const uint seri
 						{
 							SendDataObject(pMsgSession, msgId, serialId, dataobj_ptr);
 						}
+						return dataobj_ptr;
 					}
 				}
 			}
@@ -75,6 +78,7 @@ void TemplateMessageProcessor::ProcessResponse(const uint msgId, const uint seri
 	catch (...) {
 		LOG_ERROR << __FUNCTION__ << ": Unknown error occured!";
 	}
+	return nullptr;
 }
 
 int TemplateMessageProcessor::SendDataObject(ISession* session,

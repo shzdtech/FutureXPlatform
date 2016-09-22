@@ -121,14 +121,15 @@ message PBStrategy
 	string underlying = 4;
 	string symbol = 5;
 	string description = 6;
-	bool allowTrading = 7;
-	bool enabled = 8;
-	int32 quantity = 9;
-	int32 depth = 10;
-	repeated PBPricingContract pricingContracts = 11;
-	string pricingModel = 12;
-	string ivModel = 13;
-	string volModel = 14;
+	bool hedging = 7;
+	bool bidEnabled = 8;
+	bool askEnabled = 9;
+	int32 quantity = 10;
+	int32 depth = 11;
+	repeated PBPricingContract pricingContracts = 12;
+	string pricingModel = 13;
+	string ivModel = 14;
+	string volModel = 15;
 }
 
 message PBStrategyList
