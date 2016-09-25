@@ -28,4 +28,7 @@ private:
 	static std::shared_ptr<T> _instance;
 };
 
+template<typename T> std::once_flag singleton_mt_ptr<T>::_instance_flag;
+template<typename T> std::shared_ptr<T> singleton_mt_ptr<T>::_instance;
+
 #endif

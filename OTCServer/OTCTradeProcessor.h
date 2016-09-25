@@ -18,7 +18,7 @@
 class OTCSERVER_CLASS_EXPORT OTCTradeProcessor : public IOrderAPI
 {
 public:
-	OTCTradeProcessor(IPricingDataContext* pricingCtx);
+	OTCTradeProcessor(const IPricingDataContext_Ptr& pricingCtx);
 
 	virtual OrderDOVec_Ptr TriggerHedgeOrderUpdating(const StrategyContractDO& strategyDO);
 	virtual OrderDOVec_Ptr TriggerOTCOrderUpdating(const StrategyContractDO& strategyDO);
@@ -27,14 +27,14 @@ public:
 	virtual OrderDO_Ptr OTCCancelOrder(OrderRequestDO& orderReq);
 	virtual OrderDO_Ptr CancelHedgeOrder(const UserContractKey& userContractKey);
 
-	virtual IPricingDataContext* PricingDataContext(void);
+	virtual IPricingDataContext_Ptr& PricingDataContext(void);
 	virtual OTCOrderManager* GetOTCOrderManager(void) = 0;
 	virtual AutoOrderManager* GetAutoOrderManager(void) = 0;
 
 	virtual bool Dispose(void);
 
 protected:
-	IPricingDataContext * _pricingCtx;
+	IPricingDataContext_Ptr _pricingCtx;
 
 private:
 

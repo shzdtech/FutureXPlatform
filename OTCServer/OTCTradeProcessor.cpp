@@ -16,7 +16,7 @@ bool OTCTradeProcessor::Dispose(void)
 {
 	if (auto pMap = PricingDataContext()->GetStrategyMap())
 	{
-		for (auto& it : *pMap)
+		for (auto it : *pMap)
 		{
 			auto& stragety = it.second;
 			stragety.BidEnabled = stragety.AskEnabled = false;
@@ -31,7 +31,7 @@ bool OTCTradeProcessor::Dispose(void)
 }
 
 
-OTCTradeProcessor::OTCTradeProcessor(IPricingDataContext * pricingCtx) :
+OTCTradeProcessor::OTCTradeProcessor(const IPricingDataContext_Ptr& pricingCtx) :
 	_pricingCtx(pricingCtx)
 {
 }
@@ -61,7 +61,7 @@ OrderDO_Ptr OTCTradeProcessor::CancelHedgeOrder(const UserContractKey& userContr
 	return GetAutoOrderManager()->CancelOrder(OrderRequestDO(userContractKey));
 }
 
-IPricingDataContext * OTCTradeProcessor::PricingDataContext(void)
+IPricingDataContext_Ptr& OTCTradeProcessor::PricingDataContext(void)
 {
 	return _pricingCtx;
 }

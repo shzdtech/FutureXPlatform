@@ -8,8 +8,8 @@
 #include "ModelAlgorithmManager.h"
 #include "ModelAlgorithmFactory.h"
 
-std::once_flag ModelAlgorithmManager::_instance_flag;
-std::shared_ptr<ModelAlgorithmManager> ModelAlgorithmManager::_instance = nullptr;
+//std::once_flag ModelAlgorithmManager::_instance_flag;
+//std::shared_ptr<ModelAlgorithmManager> ModelAlgorithmManager::_instance = nullptr;
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       ModelAlgorithmManager::FindModel(const std::string& name)

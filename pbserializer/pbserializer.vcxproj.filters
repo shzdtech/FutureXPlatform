@@ -161,15 +161,13 @@
     <CustomBuild Include="..\Protos\usermanager.proto">
       <Filter>protos</Filter>
     </CustomBuild>
+    <CustomBuild Include="..\Protos\modelalgorithm.proto">
+      <Filter>protos</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="pbserializer.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Protos\modelalgorithm.proto">
-      <Filter>protos</Filter>
-    </None>
   </ItemGroup>
 </Project>

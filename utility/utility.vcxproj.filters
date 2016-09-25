@@ -45,19 +45,16 @@
     <ClInclude Include="commonconst.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="epsdouble.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="epsvaluetype.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="entrywisemutex.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="autofillptrmap.h">
+    <ClInclude Include="cuckoohashmap_wrapper.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="epsdouble.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

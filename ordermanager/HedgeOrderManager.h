@@ -12,13 +12,15 @@
 #include "MarketPositionContext.h"
 #include "../dataobject/TypedefDO.h"
 #include "../dataobject/PortfolioDO.h"
+#include <libcuckoo/cuckoohash_map.hh>
+#include <atomic>
 
 #include "ordermgr_export.h"
 
 class ORDERMGR_CLASS_EXPORT HedgeOrderManager : public AutoOrderManager
 {
 public:
-	HedgeOrderManager(const PortfolioKey& portfolio, IOrderAPI* pOrderAPI, IPricingDataContext* pricingCtx);
+	HedgeOrderManager(const PortfolioKey& portfolio, IOrderAPI* pOrderAPI, const IPricingDataContext_Ptr& pricingCtx);
 
 	OrderDO_Ptr CreateOrder(OrderRequestDO& orderInfo);
 
@@ -30,14 +32,15 @@ public:
 
 	OrderDOVec_Ptr UpdateOrderByStrategy(const StrategyContractDO& strategyDO);
 
-	void FillPosition(ContractMap<double>& position);
+	void FillPosition(const ContractMap<double>& positionMap);
 
 protected:
 	PortfolioKey _portfolio;
-	ContractMap<movable_mutex<std::mutex>> _contractMutex;
-	ContractMap<std::atomic<double>> _contractPosition;
+	cuckoohash_map<ContractKey, bool, ContractKeyHash> _contractFlag;
+	cuckoohash_map<ContractKey, double, ContractKeyHash> _contractPosition;
 	MarketPositionContext _mktPosCtx;
 
+	void SplitOrders(const OrderRequestDO& orderInfo, std::shared_ptr<OrderRequestDO>& req1, std::shared_ptr<OrderRequestDO>& req2);
 private:
 
 };

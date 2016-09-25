@@ -26,7 +26,6 @@ protected:
 	void AssembleSession(const IMessageSession_Ptr& msgSessionPtr);
 	IMessageServiceLocator_Ptr _msgsvclocator;
 
-	void OnSessionClosing(const IMessageSession_Ptr& msgSessionPtr);
 private:
 
 };

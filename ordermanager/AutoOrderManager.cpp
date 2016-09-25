@@ -13,7 +13,7 @@
 #include "../pricingengine/PricingUtility.h"
 
 
-AutoOrderManager::AutoOrderManager(IOrderAPI* pOrderAPI, IPricingDataContext* pricingCtx)
+AutoOrderManager::AutoOrderManager(IOrderAPI* pOrderAPI, const IPricingDataContext_Ptr& pricingCtx)
 	: OrderManager(pOrderAPI, pricingCtx)
 {
 }
@@ -33,10 +33,12 @@ OrderDO_Ptr AutoOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 	auto orderId = orderInfo.OrderID;
 	if (orderId == 0 || !FindOrder(orderId))
 	{
+		orderInfo.OrderID = OrderSeqGen::GenOrderID();
+		_userOrderCtx.AddOrder(orderInfo);
 		ret = _pOrderAPI->CreateOrder(orderInfo);
-		if (ret->OrderStatus == OrderStatus::OPENED)
+		if (!ret)
 		{
-			_userOrderCtx.AddOrder(orderInfo);
+			_userOrderCtx.RemoveOrder(orderInfo.OrderID);
 		}
 	}
 
@@ -55,11 +57,10 @@ OrderDOVec_Ptr AutoOrderManager::UpdateOrderByStrategy(
 	const StrategyContractDO& strategyDO)
 {
 	OrderDOVec_Ptr ret;
+	std::vector<uint64_t> orderCancelList;
 
-	if (strategyDO.Hedging)
+	_userOrderCtx.UserOrderMap().update_fn(strategyDO.UserID(), [&](cuckoohashmap_wrapper<std::string, cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>>& orderMap)
 	{
-		std::lock_guard<std::shared_mutex> guard(_userOrderCtx.UserMutex(strategyDO.UserID()));
-
 		if (auto pricingDO_ptr = PricingUtility::Pricing(&strategyDO.Quantity, strategyDO, *_pricingCtx))
 		{
 			ret = std::make_shared<VectorDO<OrderDO>>();
@@ -73,80 +74,84 @@ OrderDOVec_Ptr AutoOrderManager::UpdateOrderByStrategy(
 			std::vector<double> tlBuyPrices;
 			std::vector<double> tlSellPrices;
 
-			auto& tradingOrders = _userOrderCtx.GetOrderMapByUserContract(strategyDO);
-
-			for (auto it = tradingOrders.begin(); it != tradingOrders.end();)
+			orderMap.map().update_fn(strategyDO.InstrumentID(), [&](cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>& orders)
 			{
-				auto& order = *it->second;
-				bool canceled = false;
-				if (order.Direction == DirectionType::SELL)
+				auto tradingOrders = orders.map().lock_table();
+
+				for (auto& pair : tradingOrders)
 				{
-					if (order.LimitPrice < pricingsellMin || order.LimitPrice > pricingsellMax)
+					auto& order = *pair.second;
+					bool canceled = false;
+					if (order.Direction == DirectionType::SELL)
 					{
-						canceled = true;
+						if (order.LimitPrice < pricingsellMin || order.LimitPrice > pricingsellMax)
+						{
+							canceled = true;
+						}
+						else
+						{
+							tlSellPrices.push_back(order.LimitPrice);
+						}
 					}
 					else
 					{
-						tlSellPrices.push_back(order.LimitPrice);
+						if (order.LimitPrice > pricingbuyMax || order.LimitPrice < pricingbuyMin)
+						{
+							canceled = true;
+						}
+						else
+						{
+							tlBuyPrices.push_back(order.LimitPrice);
+						}
 					}
-				}
-				else
-				{
-					if (order.LimitPrice > pricingbuyMax || order.LimitPrice < pricingbuyMin)
+
+					if (canceled)
 					{
-						canceled = true;
+						auto order_ptr = _pOrderAPI->CancelOrder(order);
+						order.OrderStatus = OrderStatus::CANCELED;
+						orderCancelList.push_back(order.OrderID);
+						ret->push_back(order);
 					}
-					else
+				}
+
+				// Make new orders
+				OrderRequestDO newOrder(strategyDO);
+				newOrder.Volume = strategyDO.Quantity;
+
+				double sellPrice = pricingsellMin;
+				double buyPrice = pricingbuyMax;
+				double tickSize = strategyDO.TickSize;
+
+				for (int i = 0; i < strategyDO.Depth; i++)
+				{
+					if (std::find(tlSellPrices.begin(), tlSellPrices.end(), sellPrice) == tlSellPrices.end())
 					{
-						tlBuyPrices.push_back(order.LimitPrice);
+						newOrder.OrderID = 0;
+						newOrder.Direction = DirectionType::SELL;
+						newOrder.LimitPrice = sellPrice;
+						CreateOrder(newOrder);
+						ret->push_back(newOrder);
 					}
+
+					if (std::find(tlBuyPrices.begin(), tlBuyPrices.end(), buyPrice) == tlBuyPrices.end())
+					{
+						newOrder.OrderID = 0;
+						newOrder.Direction = DirectionType::BUY;
+						newOrder.LimitPrice = buyPrice;
+						CreateOrder(newOrder);
+						ret->push_back(newOrder);
+					}
+
+					sellPrice += tickSize;
+					buyPrice -= tickSize;
 				}
-
-				if (canceled)
-				{
-					auto order_ptr = _pOrderAPI->CancelOrder(order);
-					order.OrderStatus = OrderStatus::CANCELED;
-					it = tradingOrders.erase(it);
-					ret->push_back(order);
-				}
-				else
-				{
-					it++;
-				}
-			}
-
-			// Make new orders
-			OrderRequestDO newOrder(strategyDO);
-			newOrder.Volume = strategyDO.Quantity;
-
-			double sellPrice = pricingsellMin;
-			double buyPrice = pricingbuyMax;
-			double tickSize = strategyDO.TickSize;
-
-			for (int i = 0; i < strategyDO.Depth; i++)
-			{
-				if (std::find(tlSellPrices.begin(), tlSellPrices.end(), sellPrice) == tlSellPrices.end())
-				{
-					newOrder.OrderID = 0;
-					newOrder.Direction = DirectionType::SELL;
-					newOrder.LimitPrice = sellPrice;
-					CreateOrder(newOrder);
-					ret->push_back(newOrder);
-				}
-
-				if (std::find(tlBuyPrices.begin(), tlBuyPrices.end(), buyPrice) == tlBuyPrices.end())
-				{
-					newOrder.OrderID = 0;
-					newOrder.Direction = DirectionType::BUY;
-					newOrder.LimitPrice = buyPrice;
-					CreateOrder(newOrder);
-					ret->push_back(newOrder);
-				}
-
-				sellPrice += tickSize;
-				buyPrice -= tickSize;
-			}
+			});
 		}
+	});
+
+	for (auto orderId : orderCancelList)
+	{
+		_userOrderCtx.RemoveOrder(orderId);
 	}
 
 	return ret;
@@ -212,23 +217,12 @@ int AutoOrderManager::OnOrderUpdated(OrderDO& orderInfo)
 OrderDO_Ptr AutoOrderManager::CancelOrder(OrderRequestDO& orderInfo)
 {
 	OrderDO_Ptr ret;
-	auto& orderMap = _userOrderCtx.GetOrderMapByUserContract(orderInfo);
 	if (orderInfo.OrderID != 0)
 	{
-		auto it = orderMap.find(orderInfo.OrderID);
-		if (it != orderMap.end())
+		if (ret = FindOrder(orderInfo.OrderID))
 		{
-			it->second->OrderStatus = OrderStatus::CANCELING;
 			ret = _pOrderAPI->CancelOrder(orderInfo);
-			orderMap.erase(it);
-		}
-	}
-	else
-	{
-		for (auto it = orderMap.begin(); it != orderMap.end();)
-		{
-			ret = _pOrderAPI->CancelOrder(*it->second);
-			it = orderMap.erase(it);
+			_userOrderCtx.RemoveOrder(orderInfo.OrderID);
 		}
 	}
 
@@ -250,14 +244,14 @@ OrderDO_Ptr AutoOrderManager::RejectOrder(OrderRequestDO& orderInfo)
 
 int AutoOrderManager::Reset()
 {
-	std::lock_guard<std::mutex> scopelock(_mutex);
-
 	auto& orderMap = _userOrderCtx.GetAllOrder();
-	for (auto& it : orderMap)
 	{
-		RejectOrder(*(it.second));
-		_userOrderCtx.RemoveOrder(it.second->OrderID);
+		auto lt = orderMap.lock_table();
+		for (auto& it : lt)
+		{
+			RejectOrder(*(it.second));
+		}
 	}
-
+	_userOrderCtx.Clear();
 	return 0;
 }

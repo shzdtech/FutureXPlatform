@@ -76,20 +76,23 @@ void CTPOTCOptionWorkerProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketData
 	{
 		double bidPrice = pDepthMarketData->BidPrice1;
 		double askPrice = pDepthMarketData->AskPrice1;
-		if (bidPrice >= 0.001 && bidPrice < 1e32 && askPrice >= 0.001 && askPrice < 1e32)
+		if (bidPrice < 1e-2 || bidPrice > 1e32 || askPrice < 1e-2 || askPrice > 1e32)
 		{
-			if (pMDO->Bid().Price != bidPrice || pMDO->Ask().Price != askPrice)
-			{
-				pMDO->Bid().Price = bidPrice;
-				pMDO->Ask().Price = askPrice;
+			return;
+		}
+		if (pMDO->Bid().Price != bidPrice || pMDO->Ask().Price != askPrice)
+		{
+			pMDO->Bid().Price = bidPrice;
+			pMDO->Ask().Price = askPrice;
+			pMDO->Bid().Volume = pDepthMarketData->BidVolume1;
+			pMDO->Ask().Volume = pDepthMarketData->AskVolume1;
 
-				if (_exchangeStrategySet.find(*pMDO) != _exchangeStrategySet.end())
+			if (_exchangeStrategySet.find(*pMDO) != _exchangeStrategySet.end())
+			{
+				if (auto pStrategyDO = PricingDataContext()->GetStrategyMap()->tryfind(*pMDO))
 				{
-					if (auto pStrategyDO = PricingDataContext()->GetStrategyMap()->tryfind(*pMDO))
-					{
-						TriggerTadingDeskParams(*pStrategyDO);
-						TriggerOTCUpdating(*pStrategyDO);
-					}
+					TriggerTadingDeskParams(*pStrategyDO);
+					TriggerOTCUpdating(*pStrategyDO);
 				}
 			}
 		}

@@ -99,7 +99,7 @@ public:
 		else
 		{
 			auto finit = std::bind(fn, args ...);
-			auto iter = emplace(key, finit(args ...));
+			auto iter = emplace(key, std::move(finit(args ...)));
 			return (iter.first)->second;
 		}
 	}

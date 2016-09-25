@@ -41,8 +41,8 @@ dataobj_ptr CTPQueryTrade::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawA
 	if (auto wkProcPtr =
 		  MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
 	{
-		auto& userMap = wkProcPtr->GetUserTradeMap(session->getUserInfo()->getUserId());
-		if (userMap.empty())
+		auto userTrades = wkProcPtr->GetUserTradeContext().GetTradesByUser(session->getUserInfo()->getUserId());
+		if (userTrades->empty())
 		{
 			auto stdo = (MapDO<std::string>*)reqDO.get();
 
@@ -68,12 +68,12 @@ dataobj_ptr CTPQueryTrade::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawA
 			std::this_thread::sleep_for(std::chrono::seconds(2));
 		}
 
-		ThrowNotFoundExceptionIfEmpty(&userMap);
+		ThrowNotFoundExceptionIfEmpty(userTrades);
 
-		auto lastit = std::prev(userMap.end());
-		for (auto it = userMap.begin(); it != userMap.end(); it++)
+		auto lastit = std::prev(userTrades->end());
+		for (auto it = userTrades->begin(); it != userTrades->end(); it++)
 		{
-			auto tradeptr = std::make_shared<TradeRecordDO>(it->second);
+			auto tradeptr = std::make_shared<TradeRecordDO>(*it);
 			tradeptr->HasMore = it != lastit;
 			wkProcPtr->SendDataObject(session, MSG_ID_QUERY_TRADE, reqDO->SerialId, tradeptr);
 		}
@@ -110,9 +110,8 @@ dataobj_ptr CTPQueryTrade::HandleResponse(const uint32_t serialId, const param_v
 				ret->SetUserID(order_ptr->PortfolioID());
 				ret->SetPortfolioID(order_ptr->PortfolioID());
 			}
-			auto& tradeMap = wkProcPtr->GetUserTradeMap(pTradeInfo->UserID);
-			auto& trade = tradeMap.getorfill(ret->TradeID, *ret);
-			trade = *ret;
+
+			wkProcPtr->GetUserTradeContext().AddTrade(*ret);
 		}
 	}
 

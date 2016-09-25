@@ -12,7 +12,7 @@
 #include "CTPConstant.h"
 #include "CTPTradeWorkerProcessor.h"
 
-
+#include "../ordermanager/OrderSeqGen.h"
 #include "../message/message_macro.h"
 #include "../message/DefMessageID.h"
 #include "../message/MessageUtility.h"
@@ -48,7 +48,8 @@ dataobj_ptr CTPNewOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI
 	// 合约代码
 	std::strcpy(req.InstrumentID, pDO->InstrumentID().data());
 	///报单引用
-	pDO->OrderID = CTPUtility::GenOrderID();
+	pDO->OrderID = OrderSeqGen::GenOrderID();
+
 	std::sprintf(req.OrderRef, FMT_PADDING_ORDERREF, pDO->OrderID);
 	// 用户代码
 	pDO->SetUserID(userinfo->getUserId());

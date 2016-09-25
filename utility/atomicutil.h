@@ -2,7 +2,6 @@
 #define __utility_atomicutil_h
 
 #include <atomic>
-#include "epsdouble.h"
 
 class atomicutil
 {

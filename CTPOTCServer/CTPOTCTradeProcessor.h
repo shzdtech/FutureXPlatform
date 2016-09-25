@@ -22,8 +22,7 @@
 class CTP_OTC_CLASS_EXPORT CTPOTCTradeProcessor : public CTPTradeWorkerProcessor, public OTCTradeProcessor
 {
 public:
-	CTPOTCTradeProcessor(IServerContext* pServerCtx, 
-		IPricingDataContext* pricingDataCtx);
+	CTPOTCTradeProcessor(IServerContext* pServerCtx, const IPricingDataContext_Ptr& pricingDataCtx);
 	~CTPOTCTradeProcessor();
 
 	virtual OrderDOVec_Ptr TriggerHedgeOrderUpdating(const StrategyContractDO& strategyDO);

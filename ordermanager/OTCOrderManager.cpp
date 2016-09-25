@@ -10,7 +10,7 @@
 #include "../databaseop/OTCOrderDAO.h"
 
 
-OTCOrderManager::OTCOrderManager(IOrderAPI* pOrderAPI, IPricingDataContext* pricingCtx)
+OTCOrderManager::OTCOrderManager(IOrderAPI* pOrderAPI, const IPricingDataContext_Ptr& pricingCtx)
 	: OrderManager(pOrderAPI, pricingCtx),
 	_positionCtx(pricingCtx)
 { }
@@ -80,55 +80,55 @@ OrderDOVec_Ptr OTCOrderManager::UpdateOrderByStrategy(const StrategyContractDO& 
 {
 	OrderDOVec_Ptr ret;
 
-	std::lock_guard<std::shared_mutex> guard(_userOrderCtx.UserMutex(strategyDO.UserID()));
-
-	auto& tradingMap = _userOrderCtx.GetOrderMapByUserContract(strategyDO);
-
-	if (!tradingMap.empty())
+	_userOrderCtx.UserOrderMap().update_fn(strategyDO.UserID(),
+		[&](cuckoohashmap_wrapper<std::string, cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>>& orderMap)
 	{
-		ret = std::make_shared<VectorDO<OrderDO>>();
-
-		for (auto& it : tradingMap)
+		orderMap.map().update_fn(strategyDO.InstrumentID(), [&](cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>& orders)
 		{
-			auto& orderDO = *it.second;
-			bool accept = false;
-			if (orderDO.Direction == DirectionType::BUY)
+			ret = std::make_shared<VectorDO<OrderDO>>();
+			auto lt = orders.map().lock_table();
+			for (auto& it : lt)
 			{
-				if (strategyDO.BidEnabled)
+				auto& orderDO = *it.second;
+				bool accept = false;
+				if (orderDO.Direction == DirectionType::BUY)
 				{
-					auto pricingDO_ptr = PricingUtility::Pricing(&orderDO.Volume, strategyDO, *_pricingCtx);
-					if (pricingDO_ptr && orderDO.LimitPrice >= pricingDO_ptr->Ask().Price)
-						accept = true;
+					if (strategyDO.BidEnabled)
+					{
+						auto pricingDO_ptr = PricingUtility::Pricing(&orderDO.Volume, strategyDO, *_pricingCtx);
+						if (pricingDO_ptr && orderDO.LimitPrice >= pricingDO_ptr->Ask().Price)
+							accept = true;
+					}
 				}
-			}
-			else
-			{
-				if (strategyDO.AskEnabled)
+				else
 				{
-					auto pricingDO_ptr = PricingUtility::Pricing(&orderDO.Volume, strategyDO, *_pricingCtx);
-					if (pricingDO_ptr && orderDO.LimitPrice <= pricingDO_ptr->Bid().Price)
-						accept = true;
+					if (strategyDO.AskEnabled)
+					{
+						auto pricingDO_ptr = PricingUtility::Pricing(&orderDO.Volume, strategyDO, *_pricingCtx);
+						if (pricingDO_ptr && orderDO.LimitPrice <= pricingDO_ptr->Bid().Price)
+							accept = true;
+					}
 				}
-			}
 
-			if (accept)
-			{
-				OrderStatus currStatus;
-				if (OTCOrderDAO::AcceptOrder(orderDO, currStatus))
+				if (accept)
 				{
-					orderDO.OrderStatus = currStatus;
-					orderDO.VolumeTraded = orderDO.Volume;
-					orderDO.VolumeRemain = 0;
-					ret->push_back(orderDO);
-					_positionCtx.UpdatePosition(strategyDO,
-						(DirectionType)orderDO.Direction,
-						(OrderOpenCloseType)orderDO.OpenClose,
-						orderDO.Volume);
-					_userOrderCtx.RemoveOrder(orderDO.OrderID);
+					OrderStatus currStatus;
+					if (OTCOrderDAO::AcceptOrder(orderDO, currStatus))
+					{
+						orderDO.OrderStatus = currStatus;
+						orderDO.VolumeTraded = orderDO.Volume;
+						orderDO.VolumeRemain = 0;
+						ret->push_back(orderDO);
+						_positionCtx.UpdatePosition(strategyDO,
+							(DirectionType)orderDO.Direction,
+							(OrderOpenCloseType)orderDO.OpenClose,
+							orderDO.Volume);
+						_userOrderCtx.RemoveOrder(orderDO.OrderID);
+					}
 				}
 			}
-		}
-	}
+		});
+	});
 
 	if (ret && ret->size() > 0)
 	{
@@ -188,7 +188,6 @@ OrderDO_Ptr OTCOrderManager::RejectOrder(OrderRequestDO& orderInfo)
 	if (ret)	ret->OrderStatus = OrderStatus::REJECTED;
 
 	return ret;
-
 }
 
 
@@ -196,8 +195,8 @@ int OTCOrderManager::Reset()
 {
 	std::lock_guard<std::mutex> scopelock(_mutex);
 
-	auto& orderMap = _userOrderCtx.GetAllOrder();
-	for (auto& it : orderMap)
+	auto lt = _userOrderCtx.GetAllOrder().lock_table();
+	for (auto& it : lt)
 	{
 		RejectOrder(*(it.second));
 	}
@@ -214,13 +213,11 @@ void OTCOrderManager::Hedge(const PortfolioKey& portfolioKey)
 {
 	auto& portfolio = _pricingCtx->GetPortfolioMap()->at(portfolioKey);
 	auto now = std::chrono::steady_clock::now();
-	auto int_ms =
-		std::chrono::duration_cast<std::chrono::milliseconds>
-		(now - portfolio.LastHedge);
+	auto int_ms = std::chrono::duration_cast<std::chrono::milliseconds>(now - portfolio.LastHedge);
 
 	if (int_ms.count() > portfolio.HedgeDelay)
 	{
-		auto addedHedgePos = _positionCtx.GenSpreadPoints(portfolio, true);
+		auto addedHedgePos = _positionCtx.GenSpreadPoints(portfolio);
 		auto hedgeMgr_ptr = FindHedgeManager(portfolio);
 		hedgeMgr_ptr->FillPosition(addedHedgePos);
 		hedgeMgr_ptr->Hedge();
@@ -233,8 +230,8 @@ HedgeOrderManager_Ptr OTCOrderManager::FindHedgeManager(const PortfolioKey& port
 {
 	auto it = _hedgeMgr.find(portfolioKey);
 
-	return (it != _hedgeMgr.end()) ? it->second : _hedgeMgr.getorfillfunc
-	(portfolioKey, &OTCOrderManager::initHedgeOrderMgr, this, portfolioKey);
+	return (it != _hedgeMgr.end()) ? it->second :
+		_hedgeMgr.getorfillfunc(portfolioKey, &OTCOrderManager::initHedgeOrderMgr, this, portfolioKey);
 }
 
 

@@ -20,6 +20,7 @@ dataobj_ptr OTCOptionPricingParams::HandleResponse(const uint32_t serialId, cons
 		auto pBaseMD = pricingCtx.GetMarketDataMap()->tryfind(pStrategy->PricingContracts[0].InstrumentID());
 		auto pMD = pricingCtx.GetMarketDataMap()->tryfind(pStrategy->InstrumentID());
 
+		// Implied Volatility Model
 		if (auto ivmodel_ptr = ModelAlgorithmManager::Instance()->FindModel(pStrategy->IVModel->Model))
 		{
 			if (auto result = ivmodel_ptr->Compute(nullptr, *pStrategy, pricingCtx, nullptr))
@@ -35,6 +36,7 @@ dataobj_ptr OTCOptionPricingParams::HandleResponse(const uint32_t serialId, cons
 			}
 		}
 
+		// Volatility Model
 		if (auto volmodel_ptr = ModelAlgorithmManager::Instance()->FindModel(pStrategy->VolModel->Model))
 		{
 			auto f_atm = (pMD->Ask().Price + pMD->Bid().Price) / 2;
@@ -47,25 +49,26 @@ dataobj_ptr OTCOptionPricingParams::HandleResponse(const uint32_t serialId, cons
 				auto pOptionParams = (OptionParams*)pStrategy->PricingModel->ParsedParams.get();
 				pOptionParams->bidVolatility = volBidAsk.first;
 				pOptionParams->askVolatility = volBidAsk.second;
-			}
-		}
 
-		if (auto prcingmodel_ptr = PricingAlgorithmManager::Instance()->FindModel(pStrategy->PricingModel->Model))
-		{
-			if (auto result = prcingmodel_ptr->Compute(nullptr, *pStrategy, pricingCtx, nullptr))
-			{
-				auto pOptionPricing = (OptionPricingDO*)result.get();
-				ret->TheoData.TBid().Price = pOptionPricing->TBid().Price;
-				ret->TheoData.TBid().Delta = pOptionPricing->TBid().Delta;
-				ret->TheoData.TBid().Gamma = pOptionPricing->TBid().Gamma;
-				ret->TheoData.TBid().Vega = pOptionPricing->TBid().Vega;
-				ret->TheoData.TBid().Theta = pOptionPricing->TBid().Theta;
+				// Pricing Model				
+				if (auto prcingmodel_ptr = PricingAlgorithmManager::Instance()->FindModel(pStrategy->PricingModel->Model))
+				{
+					if (auto result = prcingmodel_ptr->Compute(nullptr, *pStrategy, pricingCtx, nullptr))
+					{
+						auto pOptionPricing = (OptionPricingDO*)result.get();
+						ret->TheoData.TBid().Price = pOptionPricing->TBid().Price;
+						ret->TheoData.TBid().Delta = pOptionPricing->TBid().Delta;
+						ret->TheoData.TBid().Gamma = pOptionPricing->TBid().Gamma;
+						ret->TheoData.TBid().Vega = pOptionPricing->TBid().Vega;
+						ret->TheoData.TBid().Theta = pOptionPricing->TBid().Theta;
 
-				ret->TheoData.TAsk().Price = pOptionPricing->TAsk().Price;
-				ret->TheoData.TAsk().Delta = pOptionPricing->TAsk().Delta;
-				ret->TheoData.TAsk().Gamma = pOptionPricing->TAsk().Gamma;
-				ret->TheoData.TAsk().Vega = pOptionPricing->TAsk().Vega;
-				ret->TheoData.TAsk().Theta = pOptionPricing->TAsk().Theta;
+						ret->TheoData.TAsk().Price = pOptionPricing->TAsk().Price;
+						ret->TheoData.TAsk().Delta = pOptionPricing->TAsk().Delta;
+						ret->TheoData.TAsk().Gamma = pOptionPricing->TAsk().Gamma;
+						ret->TheoData.TAsk().Vega = pOptionPricing->TAsk().Vega;
+						ret->TheoData.TAsk().Theta = pOptionPricing->TAsk().Theta;
+					}
+				}
 			}
 		}
 	}

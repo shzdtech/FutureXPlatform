@@ -14,6 +14,7 @@
 #include "../message/SessionContainer.h"
 #include "../ordermanager/IOrderAPI.h"
 #include "../ordermanager/UserOrderContext.h"
+#include "../ordermanager/UserTradeContext..h"
 #include "../utility/autofillmap.h"
 #include "../dataobject/AccountInfoDO.h"
 #include "../dataobject/ExchangeDO.h"
@@ -40,7 +41,7 @@ public:
    virtual std::vector<AccountInfoDO>& GetAccountInfo(const std::string userId);
    virtual std::set<ExchangeDO>& GetExchangeInfo();
    virtual UserPositionExDOMap& GetUserPositionMap();
-   virtual autofillmap<uint64_t, TradeRecordDO>& GetUserTradeMap(const std::string userId);
+   virtual UserTradeContext& GetUserTradeContext();
    virtual UserOrderContext& GetUserOrderContext(void);
 
    int RetryInterval = 60000;
@@ -53,7 +54,7 @@ protected:
    autofillmap<std::string, std::vector<AccountInfoDO>> _accountInfoMap;
    UserPositionExDOMap _userPositionMap;
    std::set<ExchangeDO> _exchangeInfo_Set;
-   autofillmap<std::string, autofillmap<uint64_t, TradeRecordDO>> _userTradeMap;
+   UserTradeContext _userTradeCtx;
    UserOrderContext _userOrderCtx;
 
 

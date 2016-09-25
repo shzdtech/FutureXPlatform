@@ -51,24 +51,9 @@ void ServerSessionManager::AssembleSession(const IMessageSession_Ptr& msgSession
 	msgSessionPtr->RegistProcessor(msgProcessor);
 	if (msgSessionPtr->Start())
 	{
-		_sessionSet.insert(msgSessionPtr);
+		_sessionMap.insert(msgSessionPtr.get(), msgSessionPtr);
 		msgSessionPtr->WriteMessage(MSG_ID_SESSION_CREATED, ZERO_RETURN);
 	}
-}
-
-////////////////////////////////////////////////////////////////////////
-// Name:       ServerSessionManager::OnSessionClosing(IMessageSession_Ptr& msgSessionPtr)
-// Purpose:    Implementation of ServerSessionManager::OnSessionClosing()
-// Parameters:
-// - msgSessionPtr
-// Return:     void
-////////////////////////////////////////////////////////////////////////
-
-void ServerSessionManager::OnSessionClosing(const IMessageSession_Ptr& msgSessionPtr)
-{
-	auto it = _sessionSet.find(msgSessionPtr);
-	if (it != _sessionSet.end())
-		_sessionSet.erase(it);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -81,17 +66,21 @@ void ServerSessionManager::OnSessionClosing(const IMessageSession_Ptr& msgSessio
 
 void ServerSessionManager::OnServerClosing(void)
 {
-	
-	while (_sessionSet.empty())
+	std::vector<IMessageSession_Ptr> sessionvector;
 	{
-		auto it = _sessionSet.begin();
+		auto lt = _sessionMap.lock_table();
+		for (auto& pair : lt)
+		{
+			sessionvector.push_back(pair.second);
+		}
+	}
+	for (auto& sessionPtr : sessionvector)
+	{
 		try
 		{
-			if (auto sessionPtr = *it)
-				sessionPtr->Close();
+			sessionPtr->Close();
 		}
 		catch (...) {}
-		_sessionSet.erase(it);
 	}
 	_server->getContext()->Reset();
 }
@@ -112,6 +101,7 @@ void ServerSessionManager::OnServerStarting(void)
 		workProcPtr->setServiceLocator(_msgsvclocator);
 		msgSession_Ptr->RegistProcessor(workProcPtr);
 		workProcPtr->setSession(msgSession_Ptr);
-		_sessionSet.insert(msgSession_Ptr);
+
+		_sessionMap.insert(msgSession_Ptr.get(), msgSession_Ptr);
 	}
 }

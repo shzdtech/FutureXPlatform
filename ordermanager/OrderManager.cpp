@@ -15,7 +15,7 @@
 // Return:     
 ////////////////////////////////////////////////////////////////////////
 
-OrderManager::OrderManager(IOrderAPI* pOrderAPI, IPricingDataContext* pricingCtx)
+OrderManager::OrderManager(IOrderAPI* pOrderAPI, const IPricingDataContext_Ptr& pricingCtx)
 {
 	_pOrderAPI = pOrderAPI;
 	_pricingCtx = pricingCtx;

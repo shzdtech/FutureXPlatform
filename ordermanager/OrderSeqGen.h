@@ -16,6 +16,7 @@ public:
 	static void SetStartSeq(uint64_t value);
 	static uint64_t GetNextSeq(void);
 	static uint64_t GetCurrentSeq(void);
+	static uint64_t GenOrderID(void);
 
 protected:
 private:

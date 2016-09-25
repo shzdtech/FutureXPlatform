@@ -53,15 +53,18 @@ dataobj_ptr BlackScholesIVM::Compute(
 	auto paramObj = (OptionParams*)sdo.IVModel->ParsedParams.get();
 
 	auto& mdo = priceCtx.GetMarketDataMap()->at(sdo.InstrumentID());
-	auto& base_mdo = priceCtx.GetMarketDataMap()->at(sdo.PricingContracts[0].InstrumentID());
 
 	double f_atm = (mdo.Bid().Price + mdo.Ask().Price) / 2;
-
+	auto& base_mdo = priceCtx.GetMarketDataMap()->at(sdo.PricingContracts[0].InstrumentID());
 	double base_bidPrice = base_mdo.Bid().Price + paramObj->atmOffset;
 	double base_askdPrice = base_mdo.Ask().Price + paramObj->atmOffset;
 
-	auto ret = std::make_shared<TDataObject<std::pair<double, double>>>();
+	if (f_atm <= 0 || base_bidPrice <= 0 || base_askdPrice <= 0)
+	{
+		return nullptr;
+	}
 
+	auto ret = std::make_shared<TDataObject<std::pair<double, double>>>();
 	ret->Data.first = ImpliedVolatility(f_atm, base_bidPrice, sdo.StrikePrice, paramObj->bidVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration);
 	ret->Data.second = ImpliedVolatility(f_atm, base_askdPrice, sdo.StrikePrice, paramObj->askVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration);
 
@@ -100,20 +103,30 @@ double BlackScholesIVM::ImpliedVolatility(
 	const DateType& tradingDate,
 	const DateType& maturityDate)
 {
+	DayCounter dayCounter = Actual365Fixed();
+
 	Date maturity((Day)maturityDate.Day, (Month)(maturityDate.Month), (Year)(maturityDate.Year));
 
 	Date settlementDate((Day)tradingDate.Day, (Month)(tradingDate.Month), (Year)(tradingDate.Year));
 
-	Time timeToMaturity = Actual365Fixed().yearFraction(settlementDate, maturity);
+	Time timeToMaturity = dayCounter.yearFraction(settlementDate, maturity);
 
 	Option::Type optionType = contractType == ContractType::CONTRACTTYPE_CALL_OPTION ? Option::Call : Option::Put;
 
+	auto volatilityPtr = boost::shared_ptr<SimpleQuote>(new SimpleQuote(volatility));
+	Handle<Quote> hQute(volatilityPtr);
+
+	BlackConstantVol blackVol(settlementDate, TARGET(), hQute, dayCounter);
+
 	Bisection bisection;
-	Volatility sigma = bisection.solve([&] (const Volatility & sigma) {
-		Real stdDev = sigma * std::sqrt(timeToMaturity);
+	Volatility imv = bisection.solve([&](const Volatility & sigma) {
+		// Real stdDev = sigma * std::sqrt(timeToMaturity);
+		volatilityPtr->setValue(sigma);
+		Real variance = blackVol.blackVariance(timeToMaturity, strikePrice);
+		Real stdDev = std::sqrt(variance);
 		BlackCalculator blackCalculator(optionType, strikePrice, underlyingPrice, stdDev);
-		return blackCalculator.value() - marketOptionPrice;},
-		1.0e-4, 1.0e-4, 2.0);
+		return blackCalculator.value() - marketOptionPrice; },
+		1.0e-2, volatility, 1.0e-2, 4.0);
 
 
 	//Handle<Quote> underlyingH(boost::shared_ptr<Quote>(new SimpleQuote(underlyingPrice)));
@@ -137,7 +150,7 @@ double BlackScholesIVM::ImpliedVolatility(
 	//boost::shared_ptr<BlackScholesMertonProcess> bsmProcess(
 	//	new BlackScholesMertonProcess(underlyingH, flatDividendTS, flatTermStructure, flatVolTS));
 
-	//sigma = europeanOption.impliedVolatility(marketOptionPrice, bsmProcess);
+	//Volatility imv = europeanOption.impliedVolatility(marketOptionPrice, bsmProcess, 1e-4, 100, 1e-2, 2);
 
-	return sigma;
+	return imv;
 }

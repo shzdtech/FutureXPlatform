@@ -15,8 +15,6 @@
 #include "../utility/stringutility.h"
 #include "../ordermanager/OrderSeqGen.h"
 
-static uint64_t timestamp = std::time(nullptr);
-
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPUtility::CheckError()
 // Purpose:    Implementation of CTPUtility::CheckError()
@@ -323,10 +321,4 @@ TradeRecordDO_Ptr CTPUtility::ParseRawTrade(CThostFtdcTradeField * pTrade)
 	}
 
 	return ret;
-}
-
-uint64_t CTPUtility::GenOrderID()
-{
-	uint64_t ret = OrderSeqGen::GetNextSeq();
-	return (ret << 16) + (timestamp & 0xFFFF);
 }

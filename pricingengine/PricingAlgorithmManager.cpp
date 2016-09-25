@@ -8,8 +8,8 @@
 #include "PricingAlgorithmManager.h"
 #include "PricingAlgorithmFactory.h"
 
-std::once_flag PricingAlgorithmManager::_instance_flag;
-std::shared_ptr<PricingAlgorithmManager> PricingAlgorithmManager::_instance = nullptr;
+//std::once_flag PricingAlgorithmManager::_instance_flag;
+//std::shared_ptr<PricingAlgorithmManager> PricingAlgorithmManager::_instance = nullptr;
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       PricingAlgorithmManager::FindModel(const std::string& name)

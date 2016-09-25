@@ -6,6 +6,7 @@
  ***********************************************************************/
 
 #include "OrderSeqGen.h"
+#include <ctime>
 #include <atomic>
 
 static std::atomic_uint64_t _seqGen(0);
@@ -23,4 +24,11 @@ uint64_t OrderSeqGen::GetNextSeq(void)
 uint64_t OrderSeqGen::GetCurrentSeq(void)
 {
 	return _seqGen;
+}
+
+uint64_t OrderSeqGen::GenOrderID(void)
+{
+	static uint64_t timestamp = std::time(nullptr);
+	uint64_t ret = OrderSeqGen::GetNextSeq();
+	return (ret << 16) + (timestamp & 0xFFFF);
 }

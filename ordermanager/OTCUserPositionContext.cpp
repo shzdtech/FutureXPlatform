@@ -9,15 +9,15 @@
 #include "../utility/atomicutil.h"
 #include "../utility/epsdouble.h"
 
-OTCUserPositionContext::OTCUserPositionContext(IPricingDataContext * pricingCtx)
+OTCUserPositionContext::OTCUserPositionContext(const IPricingDataContext_Ptr & pricingCtx)
+	: _pricingCtx(pricingCtx)
 {
-	_pricingCtx = pricingCtx;
 }
 
 int OTCUserPositionContext::UpdatePosition(
 	const StrategyContractDO& strategyDO,
 	DirectionType direction,
-	OrderOpenCloseType openClose, 
+	OrderOpenCloseType openClose,
 	int newTraded)
 {
 	int pos = -1;
@@ -27,12 +27,18 @@ int OTCUserPositionContext::UpdatePosition(
 		if (direction == DirectionType::SELL)
 			newTraded = -newTraded;
 
-		if (openClose != OrderOpenCloseType::OPEN)
-			newTraded = -newTraded;
-
-		pos = (_position.
-			getorfill(strategyDO).
-			getorfill<int>(strategyDO) += newTraded);
+		while (!_position.update_fn(strategyDO, [&](cuckoohashmap_wrapper<ContractKey, int, ContractKeyHash>& contractPos)
+		{
+			contractPos.map().update_fn(strategyDO, [&](int& position)
+			{
+				pos = (position += newTraded);
+			});
+		}))
+		{
+			cuckoohashmap_wrapper<ContractKey, int, ContractKeyHash> contractPos;
+			contractPos.map().insert(strategyDO, 0);
+			_position.insert(strategyDO, contractPos);
+		}
 	}
 
 	return pos;
@@ -47,30 +53,33 @@ int OTCUserPositionContext::UpdatePosition(
 // Return:     VectorDO_Ptr<OrderDO>
 ////////////////////////////////////////////////////////////////////////
 
-ContractMap<double> OTCUserPositionContext::GenSpreadPoints(
-	const PortfolioKey& portfolioKey,
-	bool updatePosition)
+ContractMap<double> OTCUserPositionContext::GenSpreadPoints(const PortfolioKey& portfolioKey)
 {
 	ContractMap<double> hedgeMap;
 	auto pStrategyMap = _pricingCtx->GetStrategyMap();
 
 	double initPos = 0;
 	double sumPos = 0;
-	auto& positionMap = _position.getorfill(portfolioKey);
-	for (auto &it : positionMap)
+
+	_position.update_fn(portfolioKey, [&](cuckoohashmap_wrapper<ContractKey, int, ContractKeyHash>& contractPos)
 	{
-		int position = it.second;
-		if (position != 0)
+		static const double EPSILON = 1e-6;
+		auto lt = contractPos.map().lock_table();
+		for (auto &it : lt)
 		{
-			auto& strategy = pStrategyMap->at(it.first);
-			for (auto& bit : strategy.PricingContracts)
+			int position = it.second;
+			if (position != 0)
 			{
-				double pos = bit.Weight*position;
-				auto &mktpos = hedgeMap.getorfill(bit);
-				atomicutil::round_add(mktpos, pos, epsdouble::EPSILON);
+				auto& strategy = pStrategyMap->at(it.first);
+				for (auto& bit : strategy.PricingContracts)
+				{
+					double pos = bit.Weight*position;
+					auto &mktpos = hedgeMap.getorfill(bit);
+					atomicutil::round_add(mktpos, pos, EPSILON);
+				}
 			}
 		}
-	}
+	});
 
 	return hedgeMap;
 }

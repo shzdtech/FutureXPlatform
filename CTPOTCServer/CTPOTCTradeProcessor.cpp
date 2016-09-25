@@ -20,7 +20,7 @@
 
 CTPOTCTradeProcessor::CTPOTCTradeProcessor(
 	IServerContext* pServerCtx,
-	IPricingDataContext* pricingDataCtx)
+	const IPricingDataContext_Ptr& pricingDataCtx)
 	: OTCTradeProcessor(pricingDataCtx), CTPTradeWorkerProcessor(pServerCtx),
 	_otcOrderMgr(this, pricingDataCtx),
 	_autoOrderMgr(this, pricingDataCtx)
@@ -82,7 +82,6 @@ OrderDO_Ptr CTPOTCTradeProcessor::CreateOrder(OrderRequestDO& orderInfo)
 	// 合约代码
 	std::strcpy(req.InstrumentID, orderInfo.InstrumentID().data());
 	///报单引用
-	orderInfo.OrderID = CTPUtility::GenOrderID();
 	std::sprintf(req.OrderRef, FMT_PADDING_ORDERREF, orderInfo.OrderID);
 	// 用户代码
 	std::strcpy(req.UserID, orderInfo.UserPortfolioID().data());
@@ -113,7 +112,8 @@ OrderDO_Ptr CTPOTCTradeProcessor::CreateOrder(OrderRequestDO& orderInfo)
 	// 自动挂起标志
 	req.IsAutoSuspend = false;
 
-	_rawAPI->TrdAPI->ReqOrderInsert(&req, AppContext::GenNextSeq());
+	if(_rawAPI->TrdAPI->ReqOrderInsert(&req, AppContext::GenNextSeq()) != 0)
+		return nullptr;
 
 	return CTPUtility::ParseRawOrderInput(&req, nullptr, _systemUser.getSessionId());
 }
@@ -141,7 +141,8 @@ OrderDO_Ptr CTPOTCTradeProcessor::CancelOrder(OrderRequestDO& orderInfo)
 		std::sprintf(req.OrderRef, FMT_PADDING_ORDERREF, orderInfo.OrderID);
 	}
 
-	_rawAPI->TrdAPI->ReqOrderAction(&req, AppContext::GenNextSeq());
+	if (_rawAPI->TrdAPI->ReqOrderAction(&req, AppContext::GenNextSeq()) != 0)
+		return nullptr;
 	
 	req.SessionID = _systemUser.getSessionId();
 	return CTPUtility::ParseRawOrderInputAction(&req, nullptr);
@@ -159,7 +160,6 @@ AutoOrderManager * CTPOTCTradeProcessor::GetAutoOrderManager(void)
 
 
 //CTP API
-///报单操作请求响应
 
 ///登录请求响应
 void CTPOTCTradeProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)

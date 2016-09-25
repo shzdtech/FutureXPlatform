@@ -11,12 +11,11 @@
 #include "../dataobject/data_buffer.h"
 #include "IMessageProcessor.h"
 #include "IMessageServiceLocator.h"
-#include "SessionManager.h"
 #include "message_exp.h"
 
 class MESSAGE_CLASS_EXPORT MessageProcessor : 
 	public IMessageProcessor,
-	public std::enable_shared_from_this < MessageProcessor >
+	public std::enable_shared_from_this<MessageProcessor>
 {
 public:
 	MessageProcessor();

@@ -35,7 +35,7 @@
  // Return:     
  ////////////////////////////////////////////////////////////////////////
 
-OTCWorkerProcessor::OTCWorkerProcessor(IPricingDataContext* pricingCtx) :
+OTCWorkerProcessor::OTCWorkerProcessor(const IPricingDataContext_Ptr& pricingCtx) :
 	_pricingNotifers(SessionContainer<ContractKey>::NewInstancePtr()),
 	_tradingDeskNotifers(SessionContainer<ContractKey>::NewInstancePtr()),
 	_otcOrderNotifers(SessionContainer<uint64_t>::NewInstancePtr()),
@@ -211,7 +211,7 @@ InstrumentCache & OTCWorkerProcessor::GetInstrumentCache()
 	return cache;
 }
 
-IPricingDataContext * OTCWorkerProcessor::PricingDataContext()
+IPricingDataContext_Ptr& OTCWorkerProcessor::PricingDataContext()
 {
 	return _pricingCtx;
 }
@@ -220,19 +220,19 @@ void OTCWorkerProcessor::TriggerOTCPricing(const StrategyContractDO& strategyDO)
 {
 	if (strategyDO.BidEnabled || strategyDO.AskEnabled)
 	{
-		auto pPricingCtx = PricingDataContext();
-		_pricingNotifers->foreach(strategyDO, [&strategyDO, pPricingCtx](IMessageSession* pSession)
+		auto pricingCtx = PricingDataContext();
+		_pricingNotifers->foreach(strategyDO, [&strategyDO, &pricingCtx](IMessageSession* pSession)
 		{OnResponseProcMacro(pSession->getProcessor(),
-			MSG_ID_RTN_PRICING, strategyDO.SerialId, &strategyDO, pPricingCtx); });
+			MSG_ID_RTN_PRICING, strategyDO.SerialId, &strategyDO, pricingCtx.get()); });
 	}
 }
 
 void OTCWorkerProcessor::TriggerTadingDeskParams(const StrategyContractDO & strategyDO)
 {
-	auto pPricingCtx = PricingDataContext();
-	_pricingNotifers->foreach(strategyDO, [&strategyDO, pPricingCtx](IMessageSession* pSession)
+	auto pricingCtx = PricingDataContext();
+	_tradingDeskNotifers->foreach(strategyDO, [&strategyDO, &pricingCtx](IMessageSession* pSession)
 	{OnResponseProcMacro(pSession->getProcessor(),
-		MSG_ID_RTN_TRADINGDESK_PRICING, strategyDO.SerialId, &strategyDO, pPricingCtx); });
+		MSG_ID_RTN_TRADINGDESK_PRICING, strategyDO.SerialId, &strategyDO, pricingCtx.get()); });
 }
 
 void OTCWorkerProcessor::TriggerUpdating(const MarketDataDO& mdDO)

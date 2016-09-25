@@ -15,26 +15,25 @@
 
 int MarketPositionContext::UpdatePosition(
 	const ContractKey& contractId,
-	DirectionType direction,
-	OrderOpenCloseType openClose, int deltaPos)
+	DirectionType direction, int deltaPos)
 {
-	if (openClose != OrderOpenCloseType::OPEN)
-		deltaPos = -deltaPos;
+	int updatedPos = 0;
 
-	auto& pos = direction == DirectionType::SELL ?
-		_sellPosition.getorfill<int>(contractId) : _buyPosition.getorfill<int>(contractId);
+	if (deltaPos > 0 && direction == DirectionType::SELL) deltaPos = -deltaPos;
 
-	pos += deltaPos;
+	_contractPosition.upsert(contractId, [&](int& pos)
+	{
+		pos += deltaPos;
+		updatedPos = pos;
+	}, deltaPos);
 
-	return pos;
+	return updatedPos;
 }
 
-int MarketPositionContext::GetBuyPosition(const ContractKey& contractId)
+int MarketPositionContext::GetPosition(const ContractKey & contractId)
 {
-	return _buyPosition.getorfill<int>(contractId);
-}
+	int position;
+	_contractPosition.find(contractId, position);
 
-int MarketPositionContext::GetSellPosition(const ContractKey& contractId)
-{
-	return _sellPosition.getorfill<int>(contractId);
+	return position;
 }

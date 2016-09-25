@@ -56,7 +56,7 @@ IPricingDO_Ptr BlackScholesPricingAlgorithm::Compute(
 	double bidPrice = mdo.Bid().Price + paramObj->atmOffset;
 	double askdPrice = mdo.Ask().Price + paramObj->atmOffset;
 
-	if (bidPrice < 0.01 || askdPrice < 0.01)
+	if (bidPrice <= 0 || askdPrice <= 0)
 		return nullptr;
 
 	auto pricingDO = std::make_shared<OptionPricingDO>(sdo.ExchangeID(), sdo.InstrumentID());

@@ -18,14 +18,14 @@
 class ORDERMGR_CLASS_EXPORT OrderManager : public IOrderManager
 {
 public:
-   OrderManager(IOrderAPI* pOrderAPI, IPricingDataContext* pricingCtx);
+   OrderManager(IOrderAPI* pOrderAPI, const IPricingDataContext_Ptr& pricingCtx);
    ~OrderManager();
 
    OrderDO_Ptr FindOrder(uint64_t orderID);
 
 protected:
    IOrderAPI* _pOrderAPI;
-   IPricingDataContext* _pricingCtx;
+   IPricingDataContext_Ptr _pricingCtx;
    UserOrderContext _userOrderCtx;
 
 private:

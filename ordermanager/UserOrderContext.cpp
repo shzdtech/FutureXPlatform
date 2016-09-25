@@ -9,10 +9,21 @@
 
 void UserOrderContext::AddOrder(const OrderDO_Ptr & orderDO_Ptr)
 {
-	auto& usercontract = _userContractOrderMap.getorfill(orderDO_Ptr->UserID());
-	std::lock_guard<std::shared_mutex> write_lock(usercontract.mutex());
-	_orderIdMap.emplace(orderDO_Ptr->OrderID, orderDO_Ptr);
-	usercontract.entry.getorfill(orderDO_Ptr->InstrumentID()).emplace(orderDO_Ptr->OrderID, orderDO_Ptr);
+	if (!_userContractOrderMap.contains(orderDO_Ptr->UserID()))
+		_userContractOrderMap.insert(orderDO_Ptr->UserID(), std::move(cuckoohashmap_wrapper<std::string, cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>>{}));
+
+	_userContractOrderMap.update_fn(orderDO_Ptr->UserID(), [&orderDO_Ptr](cuckoohashmap_wrapper<std::string, cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>>& orderMap)
+	{
+		if (!orderMap.map().contains(orderDO_Ptr->InstrumentID()))
+			orderMap.map().insert(orderDO_Ptr->InstrumentID(), std::move(cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>{}));
+
+		orderMap.map().update_fn(orderDO_Ptr->InstrumentID(), [&orderDO_Ptr](cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>& orders)
+		{
+			orders.map().insert(orderDO_Ptr->OrderID, orderDO_Ptr);
+		});
+	});
+
+	_orderIdMap.insert(orderDO_Ptr->OrderID, orderDO_Ptr);
 }
 
 void UserOrderContext::AddOrder(const OrderDO& orderDO)
@@ -20,54 +31,57 @@ void UserOrderContext::AddOrder(const OrderDO& orderDO)
 	AddOrder(std::make_shared<OrderDO>(orderDO));
 }
 
+void UserOrderContext::Clear(void)
+{
+	_orderIdMap.clear();
+	_userContractOrderMap.clear();
+}
+
 OrderDO_Ptr UserOrderContext::RemoveOrder(uint64_t orderID)
 {
 	OrderDO_Ptr ret;
-	auto it = _orderIdMap.find(orderID);
-	if (it != _orderIdMap.end())
+	if (_orderIdMap.find(orderID, ret))
 	{
-		ret = it->second;
-		auto& usercontract = _userContractOrderMap.getorfill(ret->UserID());
-		std::lock_guard<std::shared_mutex> write_lock(usercontract.mutex());
-		_orderIdMap.erase(it);
-		auto& order = *it->second;
-		auto& orderMap = GetOrderMapByUserContract(order);
-		orderMap.erase(orderID);
+		_orderIdMap.erase(orderID);
+
+		cuckoohashmap_wrapper<std::string, cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>> orderMap;
+		if(_userContractOrderMap.find(ret->UserID(), orderMap))
+		{
+			cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr> orders;
+			if(orderMap.map().find(ret->InstrumentID(), orders))
+			{
+				orders.map().erase(ret->OrderID);
+			}
+		}
 	}
 
 	return ret;
 }
 
-std::shared_mutex& UserOrderContext::UserMutex(const std::string& userID)
-{
-	return _userContractOrderMap.getorfill(userID).mutex();
-}
-
-std::map<uint64_t, OrderDO_Ptr>& UserOrderContext::GetAllOrder()
+cuckoohash_map<uint64_t, OrderDO_Ptr>& UserOrderContext::GetAllOrder()
 {
 	return _orderIdMap;
 }
 
-std::map<uint64_t, OrderDO_Ptr>& UserOrderContext::GetOrderMapByUserContract(const UserContractKey& userContractID)
+cuckoohash_map<std::string, cuckoohashmap_wrapper<std::string, cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>>>& UserOrderContext::UserOrderMap()
 {
-	return GetOrderMapByUserContract(userContractID.UserID(), userContractID.InstrumentID());
-}
-
-std::map<uint64_t, OrderDO_Ptr>& UserOrderContext::GetOrderMapByUserContract(const std::string & userID, const std::string & contractID)
-{
-	return _userContractOrderMap.getorfill(userID).entry.getorfill(contractID);
+	return _userContractOrderMap;
 }
 
 vector_ptr<OrderDO> UserOrderContext::GetOrdersByUser(const std::string & userID)
 {
 	auto ret = std::make_shared<std::vector<OrderDO>>();
-	auto& usercontract = _userContractOrderMap.getorfill(userID);
-	std::shared_lock<std::shared_mutex> read_lock(usercontract.mutex());
-	for (auto& uc : usercontract.entry)
+	cuckoohashmap_wrapper<std::string, cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>> orderMap;
+	if (_userContractOrderMap.find(userID, orderMap))
 	{
-		for (auto& c : uc.second)
+		auto lt = orderMap.map().lock_table();
+		for (auto& uc : lt)
 		{
-			ret->push_back(*c.second);
+			auto ltlt = uc.second.map().lock_table();
+			for (auto& c : ltlt)
+			{
+				ret->push_back(*c.second);
+			}
 		}
 	}
 
@@ -78,9 +92,7 @@ vector_ptr<OrderDO> UserOrderContext::GetOrdersByUser(const std::string & userID
 OrderDO_Ptr UserOrderContext::FindOrder(uint64_t orderID)
 {
 	OrderDO_Ptr ret;
-	auto it = _orderIdMap.find(orderID);
-	if (it != _orderIdMap.end())
-		ret = it->second;
+	_orderIdMap.find(orderID, ret);
 
 	return ret;
 }

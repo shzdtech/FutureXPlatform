@@ -32,9 +32,6 @@ public:
 	static OrderDO_Ptr ParseRawOrderAction(CThostFtdcOrderActionField *pOrderAction, CThostFtdcRspInfoField *pRsp, OrderDO_Ptr baseOrder = nullptr);
 	
 	static TradeRecordDO_Ptr ParseRawTrade(CThostFtdcTradeField *pTrade);
-
-	static uint64_t GenOrderID();
-
 	static inline uint64_t ToUInt64(char* str) { return std::strtoull(str, nullptr, 0); }
 
 protected:

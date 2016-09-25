@@ -54,7 +54,7 @@ IMessageProcessor_Ptr CTPOTCOptionServiceFactory::CreateWorkerProcessor(IServerC
 {
 	if (!serverCtx->getWorkerProcessor())
 	{
-		auto pricingCtx = (IPricingDataContext*)serverCtx->getAttribute(STR_KEY_SERVER_PRICING_DATACONTEXT).get();
+		auto pricingCtx = std::static_pointer_cast<IPricingDataContext>(serverCtx->getAttribute(STR_KEY_SERVER_PRICING_DATACONTEXT));
 		auto tradeProcessor = std::make_shared<CTPOTCTradeProcessor>(serverCtx, pricingCtx);
 		tradeProcessor->Initialize(serverCtx);
 		auto worker_ptr = std::make_shared<CTPOTCOptionWorkerProcessor>(serverCtx, tradeProcessor);

@@ -13,8 +13,8 @@
 #include <future>
 
 
-std::once_flag MySqlConnectionManager::_instance_flag;
-std::shared_ptr<MySqlConnectionManager> MySqlConnectionManager::_instance;
+//std::once_flag MySqlConnectionManager::_instance_flag;
+//std::shared_ptr<MySqlConnectionManager> MySqlConnectionManager::_instance;
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       MySqlConnectionManager::LoadConfig(std::string& config)

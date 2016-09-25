@@ -10,20 +10,17 @@
 
 #include "../dataobject/OrderDO.h"
 #include "../dataobject/TypedefDO.h"
-#include <atomic>
+#include "../utility/cuckoohashmap_wrapper.h"
 
 class MarketPositionContext
 {
 public:
-	int UpdatePosition(const ContractKey& contractId, DirectionType direction,
-		OrderOpenCloseType openClose, int deltaPos);
+	int UpdatePosition(const ContractKey& contractId, DirectionType direction, int deltaPos);
 
-	int GetBuyPosition(const ContractKey& contractId);
-	int GetSellPosition(const ContractKey& contractId);
+	int GetPosition(const ContractKey& contractId);
 
 protected:
-	ContractMap<std::atomic_int> _buyPosition;
-	ContractMap<std::atomic_int> _sellPosition;
+	cuckoohash_map<ContractKey, int, ContractKeyHash> _contractPosition;
 
 private:
 

@@ -65,6 +65,16 @@ private:
 };
 
 
+class PortfolioKeyHash
+{
+public:
+	std::size_t operator()(const PortfolioKey& k) const {
+		static std::hash<std::string> hasher;
+		return hasher(k.PortfolioID()) ^ hasher(k.UserID());
+	}
+};
+
+
 class PortfolioDO : public PortfolioKey, public dataobjectbase
 {
 public:

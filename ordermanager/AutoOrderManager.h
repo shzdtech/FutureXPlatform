@@ -15,18 +15,16 @@
 class ORDERMGR_CLASS_EXPORT AutoOrderManager : public OrderManager
 {
 public:
-	AutoOrderManager(IOrderAPI* pOrderAPI, IPricingDataContext* pricingCtx);
+	AutoOrderManager(IOrderAPI* pOrderAPI, const IPricingDataContext_Ptr& pricingCtx);
 
 	int Reset();
 	OrderDO_Ptr CreateOrder(OrderRequestDO& orderInfo);
 	OrderDO_Ptr CancelOrder(OrderRequestDO& orderInfo);
 	OrderDO_Ptr RejectOrder(OrderRequestDO& orderInfo);
 	int OnOrderUpdated(OrderDO& orderInfo);
-	OrderDOVec_Ptr UpdateOrderByStrategy(
-		const StrategyContractDO& strategyDO);
+	OrderDOVec_Ptr UpdateOrderByStrategy(const StrategyContractDO& strategyDO);
 
 protected:
-	std::mutex _mutex;
 
 private:
 

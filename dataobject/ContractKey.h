@@ -9,6 +9,7 @@
 #define __dataobject_ContractKey_h
 
 #include <string>
+#include <functional>
 #include "../utility/stringutility.h"
 
 class ContractKey
@@ -23,16 +24,16 @@ public:
 		_instrumentID(instrumentID) {}
 
 	ContractKey(const char* exchangeID, const char* instrumentID) :
-		_exchangeID(exchangeID), _instrumentID(instrumentID){}
+		_exchangeID(exchangeID), _instrumentID(instrumentID) {}
 
 	ContractKey(const std::string& exchangeID, const std::string& instrumentID) :
-		_exchangeID(exchangeID), _instrumentID(instrumentID){}
+		_exchangeID(exchangeID), _instrumentID(instrumentID) {}
 
 	inline int compare(const ContractKey& contractKey) const
 	{
 		int cmp = stringutility::compare(_instrumentID, contractKey._instrumentID);
 
-		return cmp != 0 ? cmp : 
+		return cmp != 0 ? cmp :
 			stringutility::compare(_exchangeID, contractKey._exchangeID);
 	}
 
@@ -78,6 +79,16 @@ protected:
 private:
 };
 
+
+class ContractKeyHash
+{
+public:
+	std::size_t operator()(const ContractKey& k) const {
+		static std::hash<std::string> hasher;
+		return hasher(k.ExchangeID())^ hasher(k.InstrumentID());
+	}
+};
+
 class UserKey
 {
 public:
@@ -117,7 +128,7 @@ public:
 		ContractKey(exchangeID, instrumentID), UserKey(userID) {}
 
 	UserContractKey(const std::string& exchangeID, const std::string& instrumentID, const std::string& userID) :
-		ContractKey(exchangeID, instrumentID), UserKey(userID){}
+		ContractKey(exchangeID, instrumentID), UserKey(userID) {}
 
 	UserContractKey& operator= (const UserContractKey& userContractKey)
 	{
@@ -139,7 +150,7 @@ public:
 	bool operator== (const UserContractKey& userContractKey) const
 	{
 		return compare(userContractKey) == 0;
-	}	
+	}
 };
 
 #endif

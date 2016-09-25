@@ -8,6 +8,7 @@
 #if !defined(__pricingengine_IPricingDataContext_h)
 #define __pricingengine_IPricingDataContext_h
 
+#include <memory>
 #include "../dataobject/TypedefDO.h"
 
 class IPricingDataContext
@@ -22,5 +23,7 @@ protected:
 private:
 
 };
+
+typedef std::shared_ptr<IPricingDataContext> IPricingDataContext_Ptr;
 
 #endif

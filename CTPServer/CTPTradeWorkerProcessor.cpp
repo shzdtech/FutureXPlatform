@@ -329,7 +329,7 @@ void CTPTradeWorkerProcessor::OnRtnTrade(CThostFtdcTradeField * pTrade)
 				trdDO_Ptr->SetPortfolioID(order_ptr->PortfolioID());
 			}
 			TradeDAO::SaveExchangeTrade(*trdDO_Ptr);
-			_userTradeMap.getorfill(trdDO_Ptr->UserID()).getorfill(trdDO_Ptr->TradeID, *trdDO_Ptr);
+			_userTradeCtx.AddTrade(*trdDO_Ptr);
 			DispatchUserMessage(MSG_ID_TRADE_RTN, 0, trdDO_Ptr->UserID(), trdDO_Ptr);
 		}
 	}
@@ -365,9 +365,9 @@ UserPositionExDOMap& CTPTradeWorkerProcessor::GetUserPositionMap()
 	return _userPositionMap;
 }
 
-autofillmap<uint64_t, TradeRecordDO>& CTPTradeWorkerProcessor::GetUserTradeMap(const std::string userId)
+UserTradeContext& CTPTradeWorkerProcessor::GetUserTradeContext()
 {
-	return _userTradeMap.getorfill(userId);
+	return _userTradeCtx;
 }
 
 UserOrderContext & CTPTradeWorkerProcessor::GetUserOrderContext(void)

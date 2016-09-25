@@ -1,1 +1,1 @@
-b2 stage -link=static runtime-link=static runtime-link=static threading=multi address-model=64 --with-locale --with-regex --with-date_times
+b2 stage -link=static runtime-link=shared runtime-link=static threading=multi address-model=64 --with-locale --with-regex --with-date_time

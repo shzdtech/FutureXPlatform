@@ -7,6 +7,7 @@
 #include <thread>
 #include <set>
 #include <map>
+#include <atomic>
 #include <iostream>
 #include "../message/SessionContainer.h"
 #include "../utility/autofillmap.h"
@@ -52,8 +53,13 @@ void testConnectHelper()
 
 void testAutoFillMap()
 {
-	autofillmap< int, double > autoMap;
-	auto& vec = autoMap.getorfillfunc(1, [](int a){ return 0.5; }, 123);
+	auto pflag = std::make_shared<std::atomic_flag>();
+	auto flag = pflag->test_and_set();
+	if (!flag)
+	{
+		autofillmap< int, double > autoMap;
+		auto& vec = autoMap.getorfillfunc(1, [](int a) { return 0.5; }, 123);
+	}
 }
 
 void testSessionContainer()

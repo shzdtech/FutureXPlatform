@@ -68,7 +68,7 @@ int CTPMarketDataProcessor::Login(CThostFtdcReqUserLoginField* loginInfo, uint32
 
 void CTPMarketDataProcessor::OnRspError(CThostFtdcRspInfoField *pRspInfo,
 	int nRequestID, bool bIsLast) {
-	LOG_DEBUG << __FUNCTION__ << ": " << pRspInfo->ErrorMsg << '\n';
+	LOG_DEBUG << __FUNCTION__ << ": " << pRspInfo->ErrorMsg;
 }
 
 void CTPMarketDataProcessor::OnFrontConnected() {
