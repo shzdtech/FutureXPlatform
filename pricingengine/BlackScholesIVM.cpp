@@ -6,7 +6,9 @@
  ***********************************************************************/
 
 #include "BlackScholesIVM.h"
-#include <ql/quantlib.hpp>
+#include <ql/pricingengines/blackcalculator.hpp>
+#include <ql/time/daycounters/actual365fixed.hpp>
+#include <ql/math/solvers1d/brent.hpp>
 
 #include "../dataobject/StrategyContractDO.h"
 #include "../dataobject/MarketDataDO.h"
@@ -52,21 +54,35 @@ dataobj_ptr BlackScholesIVM::Compute(
 
 	auto paramObj = (OptionParams*)sdo.IVModel->ParsedParams.get();
 
-	auto& mdo = priceCtx.GetMarketDataMap()->at(sdo.InstrumentID());
+	auto pMdo = priceCtx.GetMarketDataMap()->tryfind(sdo.InstrumentID());
+	if (!pMdo)
+		return nullptr;
 
-	double f_atm = (mdo.Bid().Price + mdo.Ask().Price) / 2;
-	auto& base_mdo = priceCtx.GetMarketDataMap()->at(sdo.PricingContracts[0].InstrumentID());
-	double base_bidPrice = base_mdo.Bid().Price + paramObj->atmOffset;
-	double base_askdPrice = base_mdo.Ask().Price + paramObj->atmOffset;
+	auto pBase_Mdo = priceCtx.GetMarketDataMap()->tryfind(sdo.PricingContracts[0].InstrumentID());
+	if (!pBase_Mdo)
+		return nullptr;
 
-	if (f_atm <= 0 || base_bidPrice <= 0 || base_askdPrice <= 0)
+	double price = (pMdo->Bid().Price + pMdo->Ask().Price) / 2;
+
+	double base_bidPrice = pBase_Mdo->Bid().Price + paramObj->atmOffset;
+	double base_askdPrice = pBase_Mdo->Ask().Price + paramObj->atmOffset;
+
+	if (price <= 0 || base_bidPrice <= 0 || base_askdPrice <= 0)
 	{
 		return nullptr;
 	}
 
 	auto ret = std::make_shared<TDataObject<std::pair<double, double>>>();
-	ret->Data.first = ImpliedVolatility(f_atm, base_bidPrice, sdo.StrikePrice, paramObj->bidVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration);
-	ret->Data.second = ImpliedVolatility(f_atm, base_askdPrice, sdo.StrikePrice, paramObj->askVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration);
+
+	try
+	{
+		ret->Data.first = ImpliedVolatility(price, base_bidPrice, sdo.StrikePrice, paramObj->bidVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration);
+		ret->Data.second = ImpliedVolatility(price, base_askdPrice, sdo.StrikePrice, paramObj->askVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration);
+	}
+	catch(...)
+	{
+		ret = nullptr;
+	}
 
 	return ret;
 }
@@ -113,20 +129,26 @@ double BlackScholesIVM::ImpliedVolatility(
 
 	Option::Type optionType = contractType == ContractType::CONTRACTTYPE_CALL_OPTION ? Option::Call : Option::Put;
 
-	auto volatilityPtr = boost::shared_ptr<SimpleQuote>(new SimpleQuote(volatility));
-	Handle<Quote> hQute(volatilityPtr);
+	//auto volatilityPtr = boost::shared_ptr<SimpleQuote>(new SimpleQuote(volatility));
+	//Handle<Quote> hQute(volatilityPtr);
 
-	BlackConstantVol blackVol(settlementDate, TARGET(), hQute, dayCounter);
+	// BlackConstantVol blackVol(settlementDate, TARGET(), hQute, dayCounter);
 
-	Bisection bisection;
-	Volatility imv = bisection.solve([&](const Volatility & sigma) {
-		// Real stdDev = sigma * std::sqrt(timeToMaturity);
-		volatilityPtr->setValue(sigma);
+	const static double accuracy = 1e-3, xMin = 0, xMax = 5;
+	const int maxit = 200;
+
+	Volatility guess = (volatility < xMin || volatility > xMax) ? (xMin + xMax) / 2 : volatility;
+
+	Brent solver1D;
+	solver1D.setMaxEvaluations(maxit);
+	Volatility imv = solver1D.solve([&](const Volatility & sigma) {
+		/* volatilityPtr->setValue(sigma);
 		Real variance = blackVol.blackVariance(timeToMaturity, strikePrice);
-		Real stdDev = std::sqrt(variance);
+		Real stdDev = std::sqrt(variance);*/
+		Real stdDev = std::abs(sigma) * std::sqrt(timeToMaturity);
 		BlackCalculator blackCalculator(optionType, strikePrice, underlyingPrice, stdDev);
 		return blackCalculator.value() - marketOptionPrice; },
-		1.0e-2, volatility, 1.0e-2, 4.0);
+		accuracy, guess, xMin, xMax);
 
 
 	//Handle<Quote> underlyingH(boost::shared_ptr<Quote>(new SimpleQuote(underlyingPrice)));

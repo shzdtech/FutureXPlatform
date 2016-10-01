@@ -11,5 +11,6 @@ public:
 	static ModelParamsDO_Ptr FindUserModel(const std::string& userid, const std::string& modelInstance);
 	static void FindAllModels(autofillmap<ModelKey, ModelParamsDO_Ptr>& modelMap);
 	static void SaveModelParams(const ModelParamsDO& modelParams);
+	static void NewUserModel(const ModelParamsDO & modelParams);
 };
 

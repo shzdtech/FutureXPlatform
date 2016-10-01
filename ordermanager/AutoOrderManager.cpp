@@ -61,7 +61,7 @@ OrderDOVec_Ptr AutoOrderManager::UpdateOrderByStrategy(
 
 	_userOrderCtx.UserOrderMap().update_fn(strategyDO.UserID(), [&](cuckoohashmap_wrapper<std::string, cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>>& orderMap)
 	{
-		if (auto pricingDO_ptr = PricingUtility::Pricing(&strategyDO.Quantity, strategyDO, *_pricingCtx))
+		if (auto pricingDO_ptr = PricingUtility::Pricing(nullptr, strategyDO, *_pricingCtx))
 		{
 			ret = std::make_shared<VectorDO<OrderDO>>();
 
@@ -116,7 +116,7 @@ OrderDOVec_Ptr AutoOrderManager::UpdateOrderByStrategy(
 
 				// Make new orders
 				OrderRequestDO newOrder(strategyDO);
-				newOrder.Volume = strategyDO.Quantity;
+				newOrder.Volume = strategyDO.BidQT;
 
 				double sellPrice = pricingsellMin;
 				double buyPrice = pricingbuyMax;

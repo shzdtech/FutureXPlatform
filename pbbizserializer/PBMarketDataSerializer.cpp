@@ -65,5 +65,18 @@ data_buffer PBMarketDataSerializer::Serialize(const dataobj_ptr& abstractDO)
 
 dataobj_ptr PBMarketDataSerializer::Deserialize(const data_buffer& rawdata)
 {
-	return nullptr;
+	using namespace Micro::Future::Message::Business;
+	PBMarketData PB;
+	ParseWithReturn(PB, rawdata);
+
+	auto ret = std::make_shared<MarketDataDO>(PB.exchange(), PB.contract());
+	FillDOHeader(ret, PB);
+
+	ret->Bid().Price = PB.bidprice().Get(0);
+	ret->Bid().Volume = PB.bidvolume().Get(0);
+
+	ret->Ask().Price = PB.askprice().Get(0);
+	ret->Ask().Volume = PB.askvolume().Get(0);
+
+	return ret;
 }

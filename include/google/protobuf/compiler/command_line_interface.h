@@ -55,6 +55,11 @@ class FileDescriptor;        // descriptor.h
 class FileDescriptorProto;   // descriptor.pb.h
 template<typename T> class RepeatedPtrField;  // repeated_field.h
 
+}  // namespace protobuf
+}  // namespace google
+
+namespace google {
+namespace protobuf {
 namespace compiler {
 
 class CodeGenerator;        // code_generator.h
@@ -211,6 +216,7 @@ class LIBPROTOC_EXPORT CommandLineInterface {
 
   // Parse all command-line arguments.
   ParseArgumentStatus ParseArguments(int argc, const char* const argv[]);
+
 
   // Parses a command-line argument into a name/value pair.  Returns
   // true if the next argument in the argv should be used as the value,

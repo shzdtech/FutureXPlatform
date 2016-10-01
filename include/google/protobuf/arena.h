@@ -28,6 +28,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+// This file defines an Arena allocator for better allocation performance.
+
 #ifndef GOOGLE_PROTOBUF_ARENA_H__
 #define GOOGLE_PROTOBUF_ARENA_H__
 
@@ -55,6 +57,7 @@ using type_info = ::type_info;
 #include <google/protobuf/stubs/logging.h>
 #include <google/protobuf/stubs/mutex.h>
 #include <google/protobuf/stubs/type_traits.h>
+
 
 namespace google {
 namespace protobuf {
@@ -210,6 +213,9 @@ struct ArenaOptions {
 //
 // This protocol is implemented by all arena-enabled proto2 message classes as
 // well as RepeatedPtrField.
+//
+// Do NOT subclass Arena. This class will be marked as final when C++11 is
+// enabled.
 class LIBPROTOBUF_EXPORT Arena {
  public:
   // Arena constructor taking custom options. See ArenaOptions below for
@@ -446,6 +452,10 @@ class LIBPROTOBUF_EXPORT Arena {
   // As above, but does not include any free space in underlying blocks.
   GOOGLE_ATTRIBUTE_NOINLINE uint64 SpaceUsed() const;
 
+  // Combines SpaceAllocated and SpaceUsed. Returns a pair of
+  // <space_allocated, space_used>.
+  GOOGLE_ATTRIBUTE_NOINLINE pair<uint64, uint64> SpaceAllocatedAndUsed() const;
+
   // Frees all storage allocated by this arena after calling destructors
   // registered with OwnDestructor() and freeing objects registered with Own().
   // Any objects allocated on this arena are unusable after this call. It also
@@ -507,11 +517,11 @@ class LIBPROTOBUF_EXPORT Arena {
   //
   // This is inside Arena because only Arena has the friend relationships
   // necessary to see the underlying generated code traits.
-  template<typename T>
-  struct is_arena_constructable :
-      public google::protobuf::internal::integral_constant<bool,
-          sizeof(InternalIsArenaConstructableHelper::ArenaConstructable<
-                 const T>(static_cast<const T*>(0))) == sizeof(char)> {
+  template <typename T>
+  struct is_arena_constructable
+      : public google::protobuf::internal::integral_constant<
+            bool, sizeof(InternalIsArenaConstructableHelper::ArenaConstructable<
+                         const T>(static_cast<const T*>(0))) == sizeof(char)> {
   };
 
  private:
@@ -791,7 +801,7 @@ class LIBPROTOBUF_EXPORT Arena {
   template <typename T>
   static void CreateInArenaStorageInternal(
       T* ptr, Arena* arena, google::protobuf::internal::false_type) {
-    new (ptr) T;
+    new (ptr) T();
   }
 
   template <typename T>

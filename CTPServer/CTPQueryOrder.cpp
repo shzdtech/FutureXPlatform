@@ -14,7 +14,7 @@
 #include "../message/MessageUtility.h"
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/FieldName.h"
-#include "../utility/Encoding.h"
+#include <boost/locale/encoding.hpp>
 #include "../utility/TUtil.h"
 #include "../utility/stringutility.h"
 

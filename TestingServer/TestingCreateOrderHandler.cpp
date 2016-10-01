@@ -1,7 +1,7 @@
 #include "TestingCreateOrderHandler.h"
 #include "TestingServerMessageProcessor.h"
 
-#include "../message/AppContext.h"
+#include "../systemsettings/AppContext.h"
 #include "../message/DefMessageID.h"
 #include "../dataobject/OrderDO.h"
 #include "../dataobject/TradeRecordDO.h"

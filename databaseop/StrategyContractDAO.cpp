@@ -221,6 +221,37 @@ bool StrategyContractDAO::FindStrategyModelByAim(const std::string & strategySym
 	return ret;
 }
 
+void StrategyContractDAO::UpdateStrategy(const StrategyContractDO & strategyDO)
+{
+	static const std::string sql_savepStrategy(
+		"CALL Strategy_Upsert(?,?,?,?,?,?,?,?,?,?)");
+
+	ModelParamsDO_Ptr ret;
+
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
+	try
+	{
+		AutoClosePreparedStmt_Ptr prestmt(session->getConnection()->prepareStatement(sql_savepStrategy));
+		prestmt->setString(1, strategyDO.UserID());
+		prestmt->setString(2, strategyDO.ExchangeID());
+		prestmt->setString(3, strategyDO.InstrumentID());
+		prestmt->setString(4, strategyDO.PortfolioID());
+		prestmt->setBoolean(5, strategyDO.BidEnabled);
+		prestmt->setBoolean(6, strategyDO.AskEnabled);
+		prestmt->setString(7, strategyDO.StrategyName);
+		strategyDO.PricingModel ? prestmt->setString(8, strategyDO.PricingModel->InstanceName) : prestmt->setNull(8, 0);
+		strategyDO.IVModel ? prestmt->setString(9, strategyDO.IVModel->InstanceName) : prestmt->setNull(9, 0);
+		strategyDO.VolModel ? prestmt->setString(10, strategyDO.VolModel->InstanceName) : prestmt->setNull(10, 0);
+
+		prestmt->executeUpdate();
+	}
+	catch (sql::SQLException& sqlEx)
+	{
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
+	}
+}
+
 VectorDO_Ptr<ContractParamDO> StrategyContractDAO::RetrieveContractParamByUser(const std::string& userid)
 {
 	static const std::string sql_findcontractparam(

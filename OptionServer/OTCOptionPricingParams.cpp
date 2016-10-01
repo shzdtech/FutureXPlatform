@@ -11,7 +11,7 @@ dataobj_ptr OTCOptionPricingParams::HandleResponse(const uint32_t serialId, cons
 {
 	auto pStrategy = (StrategyContractDO*)rawRespParams[0];
 
-	auto ret = std::make_shared<TradingDeskOptionParams>(pStrategy->ExchangeID(), pStrategy->InstrumentID());
+	std::shared_ptr<TradingDeskOptionParams> ret;
 
 	if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
 	{
@@ -19,6 +19,13 @@ dataobj_ptr OTCOptionPricingParams::HandleResponse(const uint32_t serialId, cons
 
 		auto pBaseMD = pricingCtx.GetMarketDataMap()->tryfind(pStrategy->PricingContracts[0].InstrumentID());
 		auto pMD = pricingCtx.GetMarketDataMap()->tryfind(pStrategy->InstrumentID());
+		if (!pMD || !pBaseMD) return ret;
+
+		ret = std::make_shared<TradingDeskOptionParams>(pStrategy->ExchangeID(), pStrategy->InstrumentID());
+		ret->MarketData.TBid().Price = pMD->Bid().Price;
+		ret->MarketData.TBid().Volume = pMD->Bid().Volume;
+		ret->MarketData.TAsk().Price = pMD->Ask().Price;
+		ret->MarketData.TAsk().Volume = pMD->Ask().Volume;
 
 		// Implied Volatility Model
 		if (auto ivmodel_ptr = ModelAlgorithmManager::Instance()->FindModel(pStrategy->IVModel->Model))
@@ -26,12 +33,7 @@ dataobj_ptr OTCOptionPricingParams::HandleResponse(const uint32_t serialId, cons
 			if (auto result = ivmodel_ptr->Compute(nullptr, *pStrategy, pricingCtx, nullptr))
 			{
 				auto& impliedVolBidAsk = ((TDataObject<std::pair<double, double>>*)result.get())->Data;
-				ret->MarketData.TBid().Price = pMD->Bid().Price;
-				ret->MarketData.TBid().Volume = pMD->Bid().Volume;
 				ret->MarketData.TBid().Volatility = impliedVolBidAsk.first;
-
-				ret->MarketData.TAsk().Price = pMD->Ask().Price;
-				ret->MarketData.TAsk().Volume = pMD->Ask().Volume;
 				ret->MarketData.TAsk().Volatility = impliedVolBidAsk.second;
 			}
 		}

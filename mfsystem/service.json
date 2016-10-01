@@ -1,14 +1,14 @@
 {
   "service": {
     "servercfg": [
-      "service.admin",
       "service.ctp_md",
       "service.ctp_trade",
       "service.ctp_option",
       "service.otc",
       "service.otc_option",
       "service.cts",
-      "service.testing"
+      "service.testing",
+      "service.admin"
     ],
     "admin": {
       "server.uri": "admin.manage",

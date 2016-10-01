@@ -18,6 +18,7 @@
 #include "../message/MessageUtility.h"
 #include "../pricingengine/IPricingDataContext.h"
 #include "../pricingengine/PricingAlgorithmManager.h"
+#include "../pricingengine/ModelAlgorithmManager.h"
 
 #include "../bizutility/StrategyModelCache.h"
 
@@ -132,13 +133,33 @@ void TradingDeskContextBuilder::LoadStrategy(ISession* pSession)
 			while (it != strategyMap->end())
 			{
 				auto& strategy = it->second;
-				if (!strategy.PricingModel->ParsedParams)
+				if (strategy.IVModel && !strategy.IVModel->ParsedParams)
+				{
+					if (auto model = ModelAlgorithmManager::Instance()->FindModel(strategy.IVModel->Model))
+					{
+						auto& params = model->DefaultParams();
+						strategy.IVModel->Params.insert(params.begin(), params.end());
+						model->ParseParams(strategy.IVModel->Params, strategy.IVModel->ParsedParams);
+					}
+				}
+
+				if (strategy.PricingModel && !strategy.PricingModel->ParsedParams)
 				{
 					if (auto model = PricingAlgorithmManager::Instance()->FindModel(strategy.PricingModel->Model))
 					{
 						auto& params = model->DefaultParams();
 						strategy.PricingModel->Params.insert(params.begin(), params.end());
 						model->ParseParams(strategy.PricingModel->Params, strategy.PricingModel->ParsedParams);
+					}
+				}
+
+				if (strategy.VolModel && !strategy.VolModel->ParsedParams)
+				{
+					if (auto model = ModelAlgorithmManager::Instance()->FindModel(strategy.VolModel->Model))
+					{
+						auto& params = model->DefaultParams();
+						strategy.VolModel->Params.insert(params.begin(), params.end());
+						model->ParseParams(strategy.VolModel->Params, strategy.VolModel->ParsedParams);
 					}
 				}
 

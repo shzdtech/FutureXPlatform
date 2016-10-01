@@ -60,8 +60,10 @@ dataobj_ptr WingsVolatilityModel::Compute(
 	}
 	else
 	{
-		auto& mdo = priceCtx.GetMarketDataMap()->at(sdo.InstrumentID());
-		f_atm = (mdo.Ask().Price + mdo.Bid().Price) / 2;
+		auto pMdo = priceCtx.GetMarketDataMap()->tryfind(sdo.InstrumentID());
+		if (!pMdo)
+			return nullptr;
+		f_atm = (pMdo->Ask().Price + pMdo->Bid().Price) / 2;
 	}
 
 	auto strikeprice = sdo.StrikePrice;
@@ -74,11 +76,12 @@ dataobj_ptr WingsVolatilityModel::Compute(
 	double alpha = paramObj->alpha;
 	double ssr = paramObj->ssr;
 	double f_ref = paramObj->f_ref;
+	if (f_ref <= 0.01) f_ref = f_atm;
 
-	double midVol = ComputeVolatility(f_atm, strikeprice, days, alpha, f_ref, ssr, paramObj->scr,
+	double midVol = ComputeVolatility(f_atm, strikeprice, days, f_ref, alpha,ssr, paramObj->scr,
 		paramObj->vcr, paramObj->vol_ref, paramObj->slope_ref, paramObj->dn_cf, paramObj->up_cf, paramObj->dn_sm, paramObj->up_sm, paramObj->dn_slope, paramObj->up_slope, paramObj->put_curv, paramObj->call_curv);
 
-	double offsetVol = ComputeVolatility(f_atm, strikeprice, days, alpha, f_ref, ssr, paramObj->scr,
+	double offsetVol = ComputeVolatility(f_atm, strikeprice, days, f_ref, alpha,ssr, paramObj->scr,
 		paramObj->vcr_offset, paramObj->vol_ref_offset, paramObj->slope_ref_offset, paramObj->dn_cf_offset, paramObj->up_cf_offset, paramObj->dn_sm_offset, paramObj->up_sm_offset, paramObj->dn_slope_offset, paramObj->up_slope_offset, paramObj->put_curv_offset, paramObj->call_curv_offset);
 
 	auto ret = std::make_shared<TDataObject<std::pair<double, double>>>();
@@ -92,8 +95,8 @@ double WingsVolatilityModel::ComputeVolatility(
 	double f_atm,
 	double strikeprice,
 	int days,
-	double alpha,
 	double f_ref,
+	double alpha,
 	double ssr,
 	double scr,
 	double vcr,
@@ -109,8 +112,12 @@ double WingsVolatilityModel::ComputeVolatility(
 	double call_curv
 )
 {
-	double f_syn = std::pow(f_atm, (ssr / 100)) * std::pow(f_ref, (1 - f_ref / 100));
-	// current volatility and current slope, i.e., when log - moneyness x = 0
+	////synthetic forward price
+	//  f_syn = f_atm ^ (SSR / 100) * f_ref ^ (1 - SSR / 100)	
+	double f_syn = std::pow(f_atm, (ssr / 100)) * std::pow(f_ref, (1 - ssr / 100));
+	////current volatility and current slope, i.e., when log - moneyness x = 0
+	//  vol_curr = vol_ref - VCR * SSR * (f_syn - f_ref) / f_ref
+	// slope_curr = slope_ref - SCR * SSR * (f_syn - f_ref) / f_ref
 	double vol_curr = vol_ref - vcr * ssr * (f_syn - f_ref) / f_ref;
 	double slope_curr = slope_ref - scr * ssr * (f_syn - f_ref) / f_ref;
 
@@ -120,21 +127,33 @@ double WingsVolatilityModel::ComputeVolatility(
 	double x0 = (1 + dn_sm) * dn_cf;
 	double x3 = (1 + up_sm) * up_cf;
 
-	// "sigma_x1" is derived from put wing function 
+	//// "sigma_x1" is derived from put wing function
+	//   sigma_x1 = vol_curr + slope_curr * x1 + put_curv * x1 ^ 2
+	//	 d_sigma_x1 = slope_curr + put_curv * x1
 	double sigma_x1 = vol_curr + slope_curr * x1 + put_curv * x1 * x1;
 	double d_sigma_x1 = slope_curr + put_curv * x1;
 
-	// "sigma_x0" is derived from down smoothing range function
+	//// "sigma_x0" is derived from down smoothing range function
+	//   dn_sm_c = (d_sigma_x1 - dn_slope) / (2 * (x1 - x0))
+	//	 dn_sm_b = dn_slope - (d_sigma_x1 - dn_slope) * x0 / (x1 - x0)
+	//	 dn_sm_a = sigma_x1 - dn_sm_b * x1 - dn_sm_c * x1 ^ 2
+	//	 sigma_x0 = dn_sm_a + dn_sm_b * x0 + dn_sm_c * x0 ^ 2
 	double dn_sm_c = (d_sigma_x1 - dn_slope) / (2 * (x1 - x0));
 	double dn_sm_b = dn_slope - (d_sigma_x1 - dn_slope) * x0 / (x1 - x0);
 	double dn_sm_a = sigma_x1 - dn_sm_b * x1 - dn_sm_c * x1 * x1;
 	double sigma_x0 = dn_sm_a + dn_sm_b * x0 + dn_sm_c * x0 * x0;
 
-	// "sigma_x2" is derived from call wing function 
+	//// sigma_x2" is derived from call wing function 
+	//   sigma_x2 = vol_curr + slope_curr * x2 + call_curv * x2 ^ 2
+	//   d_sigma_x2 = slope_curr + call_curv * x2
 	double sigma_x2 = vol_curr + slope_curr * x2 + call_curv * x2 * x2;
 	double d_sigma_x2 = slope_curr + call_curv * x2;
 
-	// "sigma_x3" is derived from up smoothing range function
+	//// "sigma_x3" is derived from up smoothing range function
+	//  up_sm_c = (d_sigma_x2 - up_slope) / (2 * (x2 - x3))
+	//	up_sm_b = up_slope - (d_sigma_x2 - up_slope) * x3 / (x2 - x3)
+	//	up_sm_a = sigma_x2 - up_sm_b * x2 - up_sm_c * x2 ^ 2
+	//	sigma_x3 = up_sm_a + up_sm_b * x3 + up_sm_c * x3 ^ 2
 	double up_sm_c = (d_sigma_x2 - up_slope) / (2 * (x2 - x3));
 	double up_sm_b = up_slope - (d_sigma_x2 - up_slope) * x3 / (x2 - x3);
 	double up_sm_a = sigma_x2 - up_sm_b * x2 - up_sm_c * x2 * x2;

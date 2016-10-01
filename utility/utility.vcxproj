@@ -93,6 +93,8 @@
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>$(BOOST_ROOT)\stage\lib;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -110,6 +112,8 @@
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>$(BOOST_ROOT)\stage\lib;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -131,6 +135,8 @@
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>$(BOOST_ROOT)\stage\lib;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -152,6 +158,8 @@
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>$(BOOST_ROOT)\stage\lib;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -160,7 +168,6 @@
     <ClInclude Include="commonconst.h" />
     <ClInclude Include="cuckoohashmap_wrapper.h" />
     <ClInclude Include="entrywisemutex.h" />
-    <ClInclude Include="Encoding.h" />
     <ClInclude Include="epsdouble.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="semaphore.h" />
@@ -169,9 +176,6 @@
     <ClInclude Include="stringutility.h" />
     <ClInclude Include="TUtil.h" />
     <ClInclude Include="utility_exp.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Encoding.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="utility.rc" />

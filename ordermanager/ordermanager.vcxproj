@@ -96,7 +96,6 @@
       <PreprocessorDefinitions>WIN32;ORDERMGR_LIBRARY_EXPORTS;_DEBUG;_WINDOWS;_USRDLL;ORDERMANAGER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include;</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -112,7 +111,6 @@
       <PreprocessorDefinitions>WIN32;ORDERMGR_LIBRARY_EXPORTS;_DEBUG;_WINDOWS;_USRDLL;ORDERMANAGER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include;</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -130,7 +128,6 @@
       <PreprocessorDefinitions>WIN32;ORDERMGR_LIBRARY_EXPORTS;NDEBUG;_WINDOWS;_USRDLL;ORDERMANAGER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include;</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -150,7 +147,6 @@
       <PreprocessorDefinitions>WIN32;ORDERMGR_LIBRARY_EXPORTS;NDEBUG;_WINDOWS;_USRDLL;ORDERMANAGER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include;</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

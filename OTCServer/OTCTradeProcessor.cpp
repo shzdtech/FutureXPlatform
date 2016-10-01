@@ -9,7 +9,7 @@
 
 #include "../message/message_macro.h"
 #include "../message/DefMessageID.h"
-#include "../message/AppContext.h"
+#include "../systemsettings/AppContext.h"
 
 
 bool OTCTradeProcessor::Dispose(void)

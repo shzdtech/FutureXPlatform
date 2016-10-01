@@ -24,6 +24,7 @@ public:
 	static void RetrievePricingContractsByProductType(int productType, autofillmap<UserContractKey, std::vector<PricingContract>>& pricingContractMap);
 	static void RetrieveStrategyModels(autofillmap<UserStrategyName, autofillmap<std::string, std::string>>& strategyDOMap);
 	static bool FindStrategyModelByAim(const std::string& strategySym, const std::string& aim, const std::string& userid, std::string& modelinstance);
+	static void UpdateStrategy(const StrategyContractDO& strategyDO);
 	static VectorDO_Ptr<ContractParamDO> RetrieveContractParamByUser(const std::string & userid);
 
 protected:

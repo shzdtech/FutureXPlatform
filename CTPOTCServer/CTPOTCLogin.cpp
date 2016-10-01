@@ -10,7 +10,7 @@
 #include "CTPOTCWorkerProcessor.h"
 #include "../CTPServer/CTPWorkerProcessorID.h"
 
-#include "../utility/Encoding.h"
+#include <boost/locale/encoding.hpp>
 #include "../utility/TUtil.h"
 
 #include "../dataobject/UserInfoDO.h"
@@ -18,7 +18,7 @@
 #include "../dataobject/FieldName.h"
 
 #include "../message/MessageSession.h"
-#include "../message/AppContext.h"
+#include "../systemsettings/AppContext.h"
 #include "../message/BizError.h"
 #include "../message/UserInfo.h"
 #include "../message/MessageUtility.h"

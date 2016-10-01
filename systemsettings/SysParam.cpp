@@ -6,6 +6,7 @@
  ***********************************************************************/
 
 #include "SysParam.h"
+#include <map>
 
 static std::map<std::string, std::string> sysparamdata;
 

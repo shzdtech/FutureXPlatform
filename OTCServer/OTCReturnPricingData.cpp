@@ -18,7 +18,7 @@
 
 #include "../message/BizError.h"
 #include "../message/MessageUtility.h"
-#include "../utility/Encoding.h"
+#include <boost/locale/encoding.hpp>
 
 #include "../pricingengine/PricingUtility.h"
 

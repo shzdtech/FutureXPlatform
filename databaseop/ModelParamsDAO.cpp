@@ -100,3 +100,27 @@ void ModelParamsDAO::SaveModelParams(const ModelParamsDO & modelParams)
 		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
 	}
 }
+
+void ModelParamsDAO::NewUserModel(const ModelParamsDO & modelParams)
+{
+	static const std::string sql_saveparam(
+		"INSERT INTO usermodels (accountid, modelinstance, modelaim) VALUES (?,?,?)");
+
+	ModelParamsDO_Ptr ret;
+
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
+	try
+	{
+		AutoClosePreparedStmt_Ptr prestmt(session->getConnection()->prepareStatement(sql_saveparam));
+		prestmt->setString(1, modelParams.UserID());
+		prestmt->setString(2, modelParams.InstanceName);
+		prestmt->setString(3, modelParams.Model);
+
+		prestmt->executeUpdate();
+	}
+	catch (sql::SQLException& sqlEx)
+	{
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
+	}
+}

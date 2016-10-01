@@ -10,7 +10,7 @@
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/FieldName.h"
 #include "../message/BizError.h"
-#include "../utility/Encoding.h"
+#include <boost/locale/encoding.hpp>
 #include "CTPUtility.h"
 #include <algorithm>
 

@@ -93,7 +93,6 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>DATASERIALIZER_LIBRARY_EXPORTS;WIN32;_DEBUG;_WINDOWS;_USRDLL;DATASERIALIZER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -108,7 +107,6 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>DATASERIALIZER_LIBRARY_EXPORTS;_DEBUG;_WINDOWS;_USRDLL;DATASERIALIZER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -125,7 +123,6 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>DATASERIALIZER_LIBRARY_EXPORTS;WIN32;NDEBUG;_WINDOWS;_USRDLL;DATASERIALIZER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -144,7 +141,6 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>DATASERIALIZER_LIBRARY_EXPORTS;NDEBUG;_WINDOWS;_USRDLL;DATASERIALIZER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

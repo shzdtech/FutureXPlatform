@@ -16,7 +16,7 @@
 #include "../message/message_macro.h"
 #include "../message/DefMessageID.h"
 #include "../message/TemplateMessageProcessor.h"
-#include "../utility/Encoding.h"
+#include <boost/locale/encoding.hpp>
 #include "../utility/TUtil.h"
 
 #include "../dataobject/OrderDO.h"

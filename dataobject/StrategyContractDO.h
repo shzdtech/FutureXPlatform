@@ -34,7 +34,8 @@ public:
 	DateType TradingDay;
 	ProductType ProductType;
 	ContractType ContractType;
-	int Quantity = 1;
+	int BidQT = 1;
+	int AskQT = 1;
 	int Depth = 2;
 	bool Hedging = false;
 	bool BidEnabled = true;

@@ -14,7 +14,7 @@
 
 #include "../message/DefMessageID.h"
 #include "../message/message_macro.h"
-#include "../message/AppContext.h"
+#include "../systemsettings/AppContext.h"
 #include "../pricingengine/PricingUtility.h"
 
 #include "../databaseop/OTCOrderDAO.h"

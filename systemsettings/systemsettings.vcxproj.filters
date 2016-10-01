@@ -21,6 +21,9 @@
     <ClCompile Include="SysParam.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="AppContext.cpp">
+      <Filter>头文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GlobalSettings.h">
@@ -30,6 +33,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="systemsettings_exp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AppContext.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

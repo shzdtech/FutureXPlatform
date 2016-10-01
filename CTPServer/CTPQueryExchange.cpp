@@ -20,7 +20,7 @@
 #include "../message/BizError.h"
 #include "../message/DefMessageID.h"
 
-#include "../utility/Encoding.h"
+#include <boost/locale/encoding.hpp>
 #include "../utility/TUtil.h"
 
 
@@ -109,8 +109,8 @@ dataobj_ptr CTPQueryExchange::HandleResponse(const uint32_t serialId, const para
 
 	if (auto pData = (CThostFtdcExchangeField*)rawRespParams[0])
 	{
-		pDO->ExchangeID = Encoding::ToUTF8(pData->ExchangeID, CHARSET_GB2312);
-		pDO->Name = Encoding::ToUTF8(pData->ExchangeName, CHARSET_GB2312);
+		pDO->ExchangeID = boost::locale::conv::to_utf<char>(pData->ExchangeID, CHARSET_GB2312);
+		pDO->Name = boost::locale::conv::to_utf<char>(pData->ExchangeName, CHARSET_GB2312);
 		pDO->Property = pData->ExchangeProperty;
 
 		if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))

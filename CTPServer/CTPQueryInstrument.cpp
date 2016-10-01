@@ -16,7 +16,7 @@
 #include "../message/message_macro.h"
 #include "../message/IMessageServiceLocator.h"
 
-#include "../utility/Encoding.h"
+#include <boost/locale/encoding.hpp>
 #include "../utility/TUtil.h"
 #include "../utility/stringutility.h"
 
@@ -94,7 +94,7 @@ dataobj_ptr CTPQueryInstrument::HandleResponse(const uint32_t serialId, const pa
 	{
 		InstrumentDO insDO(pData->ExchangeID, pData->InstrumentID);
 
-		insDO.Name = Encoding::ToUTF8(pData->InstrumentName, CHARSET_GB2312);
+		insDO.Name = boost::locale::conv::to_utf<char>(pData->InstrumentName, CHARSET_GB2312);
 		UnderlyingMap::TryFind(pData->ProductID, insDO.ProductID);
 		insDO.ProductType = (ProductType)(pData->ProductClass - THOST_FTDC_PC_Futures);
 		insDO.DeliveryYear = pData->DeliveryYear;

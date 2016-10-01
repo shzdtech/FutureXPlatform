@@ -49,12 +49,14 @@ IPricingDO_Ptr BlackScholesPricingAlgorithm::Compute(
 		ParseParams(sdo.PricingModel->Params, sdo.PricingModel->ParsedParams);
 	}
 
-	auto paramObj = (OptionParams*)sdo.VolModel->ParsedParams.get();
+	auto paramObj = (OptionParams*)sdo.PricingModel->ParsedParams.get();
 
-	auto& mdo = priceCtx.GetMarketDataMap()->at(sdo.PricingContracts[0].InstrumentID());
+	auto pMdo = priceCtx.GetMarketDataMap()->tryfind(sdo.PricingContracts[0].InstrumentID());
+	if (!pMdo)
+		return nullptr;
 
-	double bidPrice = mdo.Bid().Price + paramObj->atmOffset;
-	double askdPrice = mdo.Ask().Price + paramObj->atmOffset;
+	double bidPrice = pMdo->Bid().Price + paramObj->atmOffset;
+	double askdPrice = pMdo->Ask().Price + paramObj->atmOffset;
 
 	if (bidPrice <= 0 || askdPrice <= 0)
 		return nullptr;

@@ -12,7 +12,7 @@ VectorDO_Ptr<InstrumentDO> InstrumentCache::QueryInstrument(const std::string & 
 
 	VectorDO_Ptr<InstrumentDO> ret;
 
-	if (instrumentId == EMPTY_STRING && exchangeId == EMPTY_STRING && productId == EMPTY_STRING)
+	if (instrumentId.empty() && exchangeId.empty() && productId.empty())
 		return ret;
 
 	if (auto pInstrument = QueryInstrumentById(instrumentId))

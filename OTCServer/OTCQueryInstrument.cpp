@@ -17,7 +17,7 @@
 #include "../message/IMessageServiceLocator.h"
 #include "../message/MessageUtility.h"
 
-#include "../utility/Encoding.h"
+#include <boost/locale/encoding.hpp>
 #include "../utility/TUtil.h"
 #include "../utility/stringutility.h"
 

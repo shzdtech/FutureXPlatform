@@ -10,7 +10,7 @@
 #include "../dataobject/FieldName.h"
 #include "../dataobject/UserInfoDO.h"
 
-#include "../utility/Encoding.h"
+#include <boost/locale/encoding.hpp>
 #include "../utility/TUtil.h"
 
 ////////////////////////////////////////////////////////////////////////

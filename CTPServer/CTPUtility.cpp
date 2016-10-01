@@ -8,7 +8,7 @@
 #include "CTPUtility.h"
 #include "tradeapi/ThostFtdcUserApiStruct.h"
 #include "../message/BizError.h"
-#include "../utility/Encoding.h"
+#include <boost/locale/encoding.hpp>
 #include "../utility/commonconst.h"
 #include "../common/BizErrorIDs.h"
 #include "../bizutility/ContractCache.h"
@@ -27,7 +27,7 @@ void CTPUtility::CheckError(const void* pRspInfo)
 	{
 		auto pRsp = (CThostFtdcRspInfoField*)pRspInfo;
 		throw ApiException(pRsp->ErrorID,
-			std::move(Encoding::ToUTF8(pRsp->ErrorMsg, CHARSET_GB2312)));
+			std::move(boost::locale::conv::to_utf<char>(pRsp->ErrorMsg, CHARSET_GB2312)));
 	}
 }
 
@@ -208,7 +208,7 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(CThostFtdcOrderField *pOrder, OrderDO_Ptr 
 	pDO->UpdateTime = pOrder->UpdateTime;
 	pDO->CancelTime = pOrder->CancelTime;
 	pDO->TradingDay = pOrder->TradingDay;
-	pDO->Message = std::move(Encoding::ToUTF8(pOrder->StatusMsg, CHARSET_GB2312));
+	pDO->Message = std::move(boost::locale::conv::to_utf<char>(pOrder->StatusMsg, CHARSET_GB2312));
 	pDO->SessionID = pOrder->SessionID;
 
 	return baseOrder;
@@ -232,7 +232,7 @@ OrderDO_Ptr CTPUtility::ParseRawOrderInputAction(
 
 	if (pRsp) {
 		pDO->ErrorCode = pRsp->ErrorID;
-		pDO->Message = std::move(Encoding::ToUTF8(pRsp->ErrorMsg, CHARSET_GB2312));
+		pDO->Message = std::move(boost::locale::conv::to_utf<char>(pRsp->ErrorMsg, CHARSET_GB2312));
 	}
 
 	return baseOrder;
@@ -272,7 +272,7 @@ OrderDO_Ptr CTPUtility::ParseRawOrderInput(
 
 	if (pRsp) {
 		pDO->ErrorCode = pRsp->ErrorID;
-		pDO->Message = std::move(Encoding::ToUTF8(pRsp->ErrorMsg, CHARSET_GB2312));
+		pDO->Message = std::move(boost::locale::conv::to_utf<char>(pRsp->ErrorMsg, CHARSET_GB2312));
 	}
 
 	return baseOrder;
@@ -293,7 +293,7 @@ OrderDO_Ptr CTPUtility::ParseRawOrderAction(CThostFtdcOrderActionField * pOrderA
 
 	if (pRsp) {
 		pDO->ErrorCode = pRsp->ErrorID;
-		pDO->Message = std::move(Encoding::ToUTF8(pRsp->ErrorMsg, CHARSET_GB2312));
+		pDO->Message = std::move(boost::locale::conv::to_utf<char>(pRsp->ErrorMsg, CHARSET_GB2312));
 	}
 
 	return baseOrder;

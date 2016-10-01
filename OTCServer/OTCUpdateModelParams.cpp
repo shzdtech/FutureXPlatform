@@ -32,22 +32,29 @@ dataobj_ptr OTCUpdateModelParams::HandleRequest(const dataobj_ptr & reqDO, IRawA
 		{
 			auto& paramsMap = modelAlg->DefaultParams();
 			pModelParam->Model = modelptr->Model;
-			for (auto it = pModelParam->Params.begin(); it != pModelParam->Params.end();)
-			{
-				if (paramsMap.find(it->first) != paramsMap.end())
-				{
-					modelptr->Params[it->first] = it->second;
-					it++;
-				}
-				else
-				{
-					it = pModelParam->Params.erase(it);
-				}				
-			}
-			modelAlg->ParseParams(modelptr->Params, modelptr->ParsedParams);
-		}
 
-		ModelParamsDAO::SaveModelParams(*pModelParam);
+			if (pModelParam->Params.empty())
+			{
+				ModelParamsDAO::NewUserModel(*pModelParam);
+			}
+			else
+			{
+				for (auto it = pModelParam->Params.begin(); it != pModelParam->Params.end();)
+				{
+					if (paramsMap.find(it->first) != paramsMap.end())
+					{
+						modelptr->Params[it->first] = it->second;
+						it++;
+					}
+					else
+					{
+						it = pModelParam->Params.erase(it);
+					}
+				}
+				modelAlg->ParseParams(modelptr->Params, modelptr->ParsedParams);
+			}
+			ModelParamsDAO::SaveModelParams(*pModelParam);
+		}
 	}
 	else
 	{

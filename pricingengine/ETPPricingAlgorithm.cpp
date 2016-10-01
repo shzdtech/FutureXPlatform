@@ -58,7 +58,8 @@ IPricingDO_Ptr ETPPricingAlgorithm::Compute(
 
 	double BidPrice = 0;
 	double AskPrice = 0;
-	double quantity = *(int*)pInputObject;
+
+	int quantity = pInputObject ? *(int*)pInputObject : sdo.BidQT;
 
 	if (!sdo.PricingContracts.empty())
 	{

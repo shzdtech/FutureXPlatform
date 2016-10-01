@@ -51,6 +51,9 @@
     <ClCompile Include="CTPOTCOptionServiceFactory.cpp">
       <Filter>源文件\Option</Filter>
     </ClCompile>
+    <ClCompile Include="CTPSimMarketData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ctpotc_bizhandlers.h">
@@ -82,6 +85,9 @@
     </ClInclude>
     <ClInclude Include="CTPOTCOptionServiceFactory.h">
       <Filter>头文件\Option</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPSimMarketData.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

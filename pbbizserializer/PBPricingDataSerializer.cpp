@@ -49,5 +49,18 @@ data_buffer PBPricingDataSerializer::Serialize(const dataobj_ptr& abstractDO)
 
 dataobj_ptr PBPricingDataSerializer::Deserialize(const data_buffer& rawdata)
 {
-	return PBStringTableSerializer::Instance()->Deserialize(rawdata);
+	using namespace Micro::Future::Message::Business;
+	PBPricingData PB;
+	ParseWithReturn(PB, rawdata);
+
+	auto ret = std::make_shared<PricingDO>(PB.exchange(), PB.contract());
+	FillDOHeader(ret, PB);
+
+	ret->Bid().Price = PB.bidprice();
+	ret->Bid().Volume = PB.bidsize();
+
+	ret->Ask().Price = PB.askprice();
+	ret->Ask().Volume = PB.asksize();
+
+	return ret;
 }

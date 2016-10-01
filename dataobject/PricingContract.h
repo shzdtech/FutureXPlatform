@@ -13,6 +13,8 @@
 class PricingContract : public ContractKey
 {
 public:
+	PricingContract() {}
+
 	PricingContract(const std::string& exchangeID, const std::string& instrumentID)
 		: ContractKey(exchangeID, instrumentID){}
 

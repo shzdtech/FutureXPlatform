@@ -19,6 +19,11 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
+dataobj_ptr TestingReturnMarketDataHandler::HandleRequest(const dataobj_ptr & reqDO, IRawAPI * rawAPI, ISession * session)
+{
+	return reqDO;
+}
+
 dataobj_ptr TestingReturnMarketDataHandler::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
 {
 	return std::make_shared<MarketDataDO>(*((MarketDataDO*)rawParams[0]));

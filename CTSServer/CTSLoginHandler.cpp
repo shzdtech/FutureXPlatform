@@ -14,7 +14,6 @@
 #include "../message/BizError.h"
 #include "../message/IUserInfo.h"
 
-#include "../utility/Encoding.h"
 #include "../utility/TUtil.h"
 #include "../litelogger/LiteLogger.h"
 

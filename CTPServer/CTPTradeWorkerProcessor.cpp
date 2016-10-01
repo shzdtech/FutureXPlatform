@@ -10,7 +10,7 @@
 #include "CTPConstant.h"
 #include "../dataobject/TradeRecordDO.h"
 #include "../common/Attribute_Key.h"
-#include "../message/AppContext.h"
+#include "../systemsettings/AppContext.h"
 #include "../message/DefMessageID.h"
 #include "../message/message_macro.h"
 

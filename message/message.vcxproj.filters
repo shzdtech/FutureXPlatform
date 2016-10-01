@@ -90,9 +90,6 @@
     <ClInclude Include="typedef.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="AppContext.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="IProcessorBase.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -165,9 +162,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="MessageServiceLocator.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="AppContext.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="MessageServiceFactory.cpp">

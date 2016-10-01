@@ -10,7 +10,7 @@
 #include "../dataobject/MarketDataDO.h"
 #include "../dataobject/TemplateDO.h"
 #include "../message/BizError.h"
-#include "../utility/Encoding.h"
+#include <boost/locale/encoding.hpp>
 
 #include "CTPUtility.h"
 

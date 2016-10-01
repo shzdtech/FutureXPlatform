@@ -14,9 +14,28 @@
 #include "../utility/epsdouble.h"
 #include "../utility/stringutility.h"
 #include "../litelogger/LiteLogger.h"
+#include "../dataobject/PricingContract.h"
 
 void testCollection()
 {
+	std::vector<PricingContract> tvec{ PricingContract("1","1"), PricingContract("2","2"), PricingContract("4","4") };
+	std::vector<PricingContract> trvec{ PricingContract("5","5"), PricingContract("6","6") };
+
+	if (auto cnt = trvec.size())
+	{
+		if (tvec.size() != cnt)
+		{
+			tvec.resize(cnt);
+		}
+
+		for (int i = 0; i < cnt; i++)
+		{
+			tvec[i] = trvec[i];
+		}
+	}
+
+
+
 	std::multimap<int, int> mmap;
 	mmap.emplace(1, 1);
 	mmap.emplace(1, 2);

@@ -124,12 +124,13 @@ message PBStrategy
 	bool hedging = 7;
 	bool bidEnabled = 8;
 	bool askEnabled = 9;
-	int32 quantity = 10;
-	int32 depth = 11;
-	repeated PBPricingContract pricingContracts = 12;
-	string pricingModel = 13;
-	string ivModel = 14;
-	string volModel = 15;
+	int32 bidQT = 10;
+	int32 askQT = 11;
+	int32 depth = 12;
+	repeated PBPricingContract pricingContracts = 13;
+	string pricingModel = 14;
+	string ivModel = 15;
+	string volModel = 16;
 }
 
 message PBStrategyList

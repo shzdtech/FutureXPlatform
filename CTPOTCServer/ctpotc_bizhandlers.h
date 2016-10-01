@@ -3,5 +3,6 @@
 
 //OTC
 #include "CTPOTCLogin.h"
+#include "CTPSimMarketData.h"
 
 #endif
