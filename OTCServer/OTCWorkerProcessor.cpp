@@ -78,7 +78,7 @@ int OTCWorkerProcessor::LoadStrategyToCache(ProductType productType)
 		if (strategy.PricingModel)
 		{
 			// Pricing Model Initialization
-			if (auto modelptr = StrategyModelCache::FindOrCreateModel(*strategy.PricingModel))
+			if (auto modelptr = StrategyModelCache::FindOrRetrieveModel(*strategy.PricingModel))
 			{
 				strategy.PricingModel = modelptr;
 			}
@@ -94,7 +94,7 @@ int OTCWorkerProcessor::LoadStrategyToCache(ProductType productType)
 		// Implied Volatility Model Initialization
 		if (strategy.IVModel)
 		{
-			if (auto modelptr = StrategyModelCache::FindOrCreateModel(*strategy.IVModel))
+			if (auto modelptr = StrategyModelCache::FindOrRetrieveModel(*strategy.IVModel))
 			{
 				strategy.IVModel = modelptr;
 			}
@@ -111,7 +111,7 @@ int OTCWorkerProcessor::LoadStrategyToCache(ProductType productType)
 		// Volatility Model Initialization
 		if (strategy.VolModel)
 		{
-			if (auto modelptr = StrategyModelCache::FindOrCreateModel(*strategy.VolModel))
+			if (auto modelptr = StrategyModelCache::FindOrRetrieveModel(*strategy.VolModel))
 			{
 				strategy.VolModel = modelptr;
 			}

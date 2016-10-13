@@ -48,6 +48,8 @@ public:
 
 	std::string Model;
 
+	std::string ModelAim;
+
 	std::map<std::string, double> Params;
 
 	std::unique_ptr<ParamsBase> ParsedParams;

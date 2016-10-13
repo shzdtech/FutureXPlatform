@@ -38,11 +38,11 @@ dataobj_ptr OTCUpdateContractParam::HandleRequest(const dataobj_ptr& reqDO, IRaw
 
 	auto vecConDO_Ptr = (VectorDO<ContractParamDO>*)reqDO.get();
 
-	if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
 	{
 
-		auto mdMap = wkProcPtr->PricingDataContext()->GetMarketDataMap();
-		auto contractMap = wkProcPtr->PricingDataContext()->GetContractParamMap();
+		auto mdMap = pWorkerProc->PricingDataContext()->GetMarketDataMap();
+		auto contractMap = pWorkerProc->PricingDataContext()->GetContractParamMap();
 
 		for (auto& conDO : *vecConDO_Ptr)
 		{
@@ -51,7 +51,7 @@ dataobj_ptr OTCUpdateContractParam::HandleRequest(const dataobj_ptr& reqDO, IRaw
 			contractDO.Gamma = conDO.Gamma;
 
 			auto& mdDO = mdMap->at(conDO.InstrumentID());
-			wkProcPtr->TriggerUpdating(mdDO);
+			pWorkerProc->TriggerUpdating(mdDO);
 		}
 	}
 

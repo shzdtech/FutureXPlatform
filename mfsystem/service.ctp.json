@@ -1,0 +1,61 @@
+{
+  "service": {
+    "servercfg": [
+      "service.ctp_md",
+      "service.ctp_trade",
+      "service.ctp_option",
+      "service.testing",
+      "service.admin"
+    ],
+    "admin": {
+      "server.uri": "admin.manage",
+      "server.module.uuid": "com.micro.future.asio.dll",
+      "server.module.path": "communication.dll",
+      "server.class.uuid": "server.asiotcp.lite",
+      "server.config": "server.json",
+      "server.config.section": "server.admin.manage",
+      "factory.config": "factory.ctp.json",
+      "factory.config.section": "factory.admin.manage"
+    },
+    "ctp_md": {
+      "server.uri": "ctp.marketdata",
+      "server.module.uuid": "com.micro.future.asio.dll",
+      "server.module.path": "communication.dll",
+      "server.class.uuid": "server.asiotcp.lite",
+      "server.config": "server.json",
+      "server.config.section": "server.ctp.marketdata",
+      "factory.config": "factory.ctp.json",
+      "factory.config.section": "factory.ctp.marketdata"
+    },
+    "ctp_trade": {
+      "server.uri": "ctp.trade",
+      "server.module.uuid": "com.micro.future.asio.dll",
+      "server.module.path": "communication.dll",
+      "server.class.uuid": "server.asiotcp.lite",
+      "server.config": "server.json",
+      "server.config.section": "server.ctp.trade",
+      "factory.config": "factory.ctp.json",
+      "factory.config.section": "factory.ctp.trade"
+    },
+    "ctp_option": {
+      "server.uri": "ctp.option",
+      "server.module.uuid": "com.micro.future.asio.dll",
+      "server.module.path": "communication.dll",
+      "server.class.uuid": "server.asiotcp.lite",
+      "server.config": "server.json",
+      "server.config.section": "server.ctp.option",
+      "factory.config": "factory.ctp.json",
+      "factory.config.section": "factory.ctp.option"
+    },
+    "testing": {
+      "server.uri": "testing.sim",
+      "server.module.uuid": "com.micro.future.asio.dll",
+      "server.module.path": "communication.dll",
+      "server.class.uuid": "server.asiotcp.lite",
+      "server.config": "server.json",
+      "server.config.section": "server.testing.sim",
+      "factory.config": "factory.ctp.json",
+      "factory.config.section": "factory.testing.sim"
+    }
+  }
+}

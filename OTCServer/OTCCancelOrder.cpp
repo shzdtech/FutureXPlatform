@@ -28,9 +28,9 @@ dataobj_ptr OTCCancelOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* raw
 
 	auto& orderDO = *((OrderRequestDO*)reqDO.get());
 	
-	if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
 	{
-		wkProcPtr->GetOTCTradeProcessor()->OTCCancelOrder(orderDO);
+		pWorkerProc->GetOTCTradeProcessor()->OTCCancelOrder(orderDO);
 	}
 
 	return reqDO;

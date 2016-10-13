@@ -26,19 +26,20 @@ dataobj_ptr OTCUpdateModelParams::HandleRequest(const dataobj_ptr & reqDO, IRawA
 	auto pModelParam = (ModelParamsDO*)reqDO.get();
 	pModelParam->SetUserID(session->getUserInfo()->getUserId());
 
-	if (auto modelptr = StrategyModelCache::FindModel(*pModelParam))
+	if (pModelParam->Params.empty())
 	{
-		if (auto modelAlg = ComplexAlgoirthmManager::Instance()->FindModel(modelptr->Model))
+		ModelParamsDAO::NewUserModel(*pModelParam);
+		StrategyModelCache::FindOrRetrieveModel(*pModelParam);
+	}
+	else
+	{
+		if (auto modelptr = StrategyModelCache::FindOrRetrieveModel(*pModelParam))
 		{
-			auto& paramsMap = modelAlg->DefaultParams();
-			pModelParam->Model = modelptr->Model;
+			if (auto modelAlg = ComplexAlgoirthmManager::Instance()->FindModel(modelptr->Model))
+			{
+				auto& paramsMap = modelAlg->DefaultParams();
+				pModelParam->Model = modelptr->Model;
 
-			if (pModelParam->Params.empty())
-			{
-				ModelParamsDAO::NewUserModel(*pModelParam);
-			}
-			else
-			{
 				for (auto it = pModelParam->Params.begin(); it != pModelParam->Params.end();)
 				{
 					if (paramsMap.find(it->first) != paramsMap.end())
@@ -55,10 +56,10 @@ dataobj_ptr OTCUpdateModelParams::HandleRequest(const dataobj_ptr & reqDO, IRawA
 			}
 			ModelParamsDAO::SaveModelParams(*pModelParam);
 		}
-	}
-	else
-	{
-		throw NotFoundException(pModelParam->InstanceName);
+		else
+		{
+			throw NotFoundException(pModelParam->InstanceName);
+		}
 	}
 
 	return std::make_shared<ResultDO>(reqDO->SerialId);

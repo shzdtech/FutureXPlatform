@@ -46,12 +46,12 @@ dataobj_ptr OTCQueryInstrument::HandleRequest(const dataobj_ptr& reqDO, IRawAPI*
 
 	VectorDO_Ptr<InstrumentDO> ret;
 
-	if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
 	{
 		if (instrumentid == EMPTY_STRING && exchangeid == EMPTY_STRING && productid == EMPTY_STRING)
-			ret = wkProcPtr->GetInstrumentCache().AllInstruments();
+			ret = pWorkerProc->GetInstrumentCache().AllInstruments();
 		else
-			ret = wkProcPtr->GetInstrumentCache().QueryInstrument(instrumentid, exchangeid, productid);
+			ret = pWorkerProc->GetInstrumentCache().QueryInstrument(instrumentid, exchangeid, productid);
 	}
 
 	ret->HasMore = false;

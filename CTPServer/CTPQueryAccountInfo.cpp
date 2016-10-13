@@ -37,22 +37,21 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const dataobj_ptr& reqDO, IRawAPI
 {
 	CheckLogin(session);
 
-	if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
+	auto stdo = (MapDO<std::string>*)reqDO.get();
+	auto& brokeid = session->getUserInfo()->getBrokerId();
+	auto& investorid = session->getUserInfo()->getInvestorId();
+
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
 	{
-		auto& accountInfoVec = wkProcPtr->GetAccountInfo(session->getUserInfo()->getInvestorId());
+		auto& accountInfoVec = pWorkerProc->GetAccountInfo(session->getUserInfo()->getInvestorId());
 
 		if (accountInfoVec.empty())
 		{
-			auto stdo = (MapDO<std::string>*)reqDO.get();
-			auto& brokeid = session->getUserInfo()->getBrokerId();
-			auto& investorid = session->getUserInfo()->getInvestorId();
-
 			CThostFtdcQryTradingAccountField req{};
 			std::strcpy(req.BrokerID, brokeid.data());
 			std::strcpy(req.InvestorID, investorid.data());
 
 			int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryTradingAccount(&req, reqDO->SerialId);
-			// CTPUtility::CheckReturnError(iRet);
 
 			std::this_thread::sleep_for(std::chrono::seconds(2));
 		}
@@ -64,8 +63,17 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const dataobj_ptr& reqDO, IRawAPI
 		{
 			auto accountptr = std::make_shared<AccountInfoDO>(*it);
 			accountptr->HasMore = it != lastit;
-			wkProcPtr->SendDataObject(session, MSG_ID_QUERY_ACCOUNT_INFO, reqDO->SerialId, accountptr);
+			pWorkerProc->SendDataObject(session, MSG_ID_QUERY_ACCOUNT_INFO, reqDO->SerialId, accountptr);
 		}
+	}
+	else
+	{
+		CThostFtdcQryTradingAccountField req{};
+		std::strcpy(req.BrokerID, brokeid.data());
+		std::strcpy(req.InvestorID, investorid.data());
+
+		int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryTradingAccount(&req, reqDO->SerialId);
+		CTPUtility::CheckReturnError(iRet);
 	}
 
 	return nullptr;
@@ -126,9 +134,9 @@ dataobj_ptr CTPQueryAccountInfo::HandleResponse(const uint32_t serialId, const p
 		pDO->ExchangeDeliveryMargin = pData->ExchangeDeliveryMargin;
 		pDO->ReserveBalance = pData->Reserve;
 
-		if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
 		{
-			wkProcPtr->GetAccountInfo(session->getUserInfo()->getUserId()).push_back(*pDO);
+			pWorkerProc->GetAccountInfo(session->getUserInfo()->getUserId()).push_back(*pDO);
 		}
 	}
 

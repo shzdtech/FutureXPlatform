@@ -31,10 +31,10 @@ dataobj_ptr OTCNewOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI
 
 	auto& orderDO = *((OrderRequestDO*)reqDO.get());
 	orderDO.SetUserID(session->getUserInfo()->getUserId());
-	if (auto wkProcPtr =
+	if (auto pWorkerProc =
 		MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
 	{
-		if (!(ret = wkProcPtr->GetOTCTradeProcessor()->OTCNewOrder(orderDO)))
+		if (!(ret = pWorkerProc->GetOTCTradeProcessor()->OTCNewOrder(orderDO)))
 		{
 			throw BizException("Creating OTC Order failed");
 		}	

@@ -39,12 +39,12 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 {
 	CheckLogin(session);
 
-	if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
 	{
 		auto stdo = (MapDO<std::string>*)reqDO.get();
 		auto& exchangeid = stdo->TryFind(STR_EXCHANGE_ID, EMPTY_STRING);
 
-		auto& exchangeInfo = wkProcPtr->GetExchangeInfo();
+		auto& exchangeInfo = pWorkerProc->GetExchangeInfo();
 		if (exchangeInfo.empty())
 		{
 			CThostFtdcQryExchangeField req{};
@@ -56,22 +56,7 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 
 		ThrowNotFoundExceptionIfEmpty(&exchangeInfo);
 
-		if (exchangeid != EMPTY_STRING)
-		{
-			ExchangeDO exchangeDO;
-			exchangeDO.ExchangeID = exchangeid;
-			auto it = exchangeInfo.find(exchangeDO);
-			if (it != exchangeInfo.end())
-			{
-				auto exchangeDO_Ptr = std::make_shared<ExchangeDO>(*it);
-				wkProcPtr->SendDataObject(session, MSG_ID_QUERY_EXCHANGE, reqDO->SerialId, exchangeDO_Ptr);
-			}
-			else
-			{
-				throw NotFoundException(exchangeid + " does not exist!");
-			}
-		}
-		else
+		if (exchangeid.empty())
 		{
 			auto lastit = std::prev(exchangeInfo.end());
 			for (auto it = exchangeInfo.begin(); it != exchangeInfo.end(); it++)
@@ -79,9 +64,30 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 				auto exchangeDO_Ptr = std::make_shared<ExchangeDO>(*it);
 				exchangeDO_Ptr->HasMore = it != lastit;
 
-				wkProcPtr->SendDataObject(session, MSG_ID_QUERY_EXCHANGE, reqDO->SerialId, exchangeDO_Ptr);
+				pWorkerProc->SendDataObject(session, MSG_ID_QUERY_EXCHANGE, reqDO->SerialId, exchangeDO_Ptr);
 			}
 		}
+		else
+		{
+			ExchangeDO exchangeDO;
+			exchangeDO.ExchangeID = exchangeid;
+			auto it = exchangeInfo.find(exchangeDO);
+			if (it != exchangeInfo.end())
+			{
+				auto exchangeDO_Ptr = std::make_shared<ExchangeDO>(*it);
+				pWorkerProc->SendDataObject(session, MSG_ID_QUERY_EXCHANGE, reqDO->SerialId, exchangeDO_Ptr);
+			}
+			else
+			{
+				throw NotFoundException(exchangeid + " does not exist!");
+			}
+		}
+	}
+	else
+	{
+		CThostFtdcQryExchangeField req{};
+		int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryExchange(&req, reqDO->SerialId);
+		CTPUtility::CheckReturnError(iRet);
 	}
 
 	return nullptr;
@@ -113,9 +119,9 @@ dataobj_ptr CTPQueryExchange::HandleResponse(const uint32_t serialId, const para
 		pDO->Name = boost::locale::conv::to_utf<char>(pData->ExchangeName, CHARSET_GB2312);
 		pDO->Property = pData->ExchangeProperty;
 
-		if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
 		{
-			auto& exchangeSet = wkProcPtr->GetExchangeInfo();
+			auto& exchangeSet = pWorkerProc->GetExchangeInfo();
 			if (exchangeSet.find(*pDO) == exchangeSet.end())
 			{
 				exchangeSet.insert(*pDO);

@@ -24,36 +24,33 @@
 
 #include "CTPUtility.h"
 #include "CTPConstant.h"
-////////////////////////////////////////////////////////////////////////
-// Name:       CTPQueryTrade::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of CTPQueryTrade::HandleRequest()
-// Parameters:
-// - reqDO
-// - rawAPI
-// - session
-// Return:     void
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       CTPQueryTrade::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Purpose:    Implementation of CTPQueryTrade::HandleRequest()
+ // Parameters:
+ // - reqDO
+ // - rawAPI
+ // - session
+ // Return:     void
+ ////////////////////////////////////////////////////////////////////////
 
 dataobj_ptr CTPQueryTrade::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	CheckLogin(session);
+	auto stdo = (MapDO<std::string>*)reqDO.get();
+	auto& brokeid = session->getUserInfo()->getBrokerId();
+	auto& investorid = session->getUserInfo()->getInvestorId();
+	auto& instrid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
+	auto& exchangeid = stdo->TryFind(STR_EXCHANGE_ID, EMPTY_STRING);
+	auto& tradeid = stdo->TryFind(STR_TRADE_ID, EMPTY_STRING);
+	auto& tmstart = stdo->TryFind(STR_TIME_START, EMPTY_STRING);
+	auto& tmend = stdo->TryFind(STR_TIME_END, EMPTY_STRING);
 
-	if (auto wkProcPtr =
-		  MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
 	{
-		auto userTrades = wkProcPtr->GetUserTradeContext().GetTradesByUser(session->getUserInfo()->getUserId());
+		auto userTrades = pWorkerProc->GetUserTradeContext().GetTradesByUser(session->getUserInfo()->getUserId());
 		if (userTrades->empty())
 		{
-			auto stdo = (MapDO<std::string>*)reqDO.get();
-
-			auto& brokeid = session->getUserInfo()->getBrokerId();
-			auto& investorid = session->getUserInfo()->getInvestorId();
-			auto& instrid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
-			auto& exchangeid = stdo->TryFind(STR_EXCHANGE_ID, EMPTY_STRING);
-			auto& tradeid = stdo->TryFind(STR_TRADE_ID, EMPTY_STRING);
-			auto& tmstart = stdo->TryFind(STR_TIME_START, EMPTY_STRING);
-			auto& tmend = stdo->TryFind(STR_TIME_END, EMPTY_STRING);
-
 			CThostFtdcQryTradeField req{};
 			std::strcpy(req.BrokerID, brokeid.data());
 			std::strcpy(req.InvestorID, investorid.data());
@@ -63,8 +60,8 @@ dataobj_ptr CTPQueryTrade::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawA
 			std::strcpy(req.TradeTimeStart, tmstart.data());
 			std::strcpy(req.TradeTimeEnd, tmend.data());
 
-			int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryTrade(&req, reqDO->SerialId);
-			// CTPUtility::CheckReturnError(iRet);
+			((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryTrade(&req, reqDO->SerialId);
+
 			std::this_thread::sleep_for(std::chrono::seconds(2));
 		}
 
@@ -75,9 +72,24 @@ dataobj_ptr CTPQueryTrade::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawA
 		{
 			auto tradeptr = std::make_shared<TradeRecordDO>(*it);
 			tradeptr->HasMore = it != lastit;
-			wkProcPtr->SendDataObject(session, MSG_ID_QUERY_TRADE, reqDO->SerialId, tradeptr);
+			pWorkerProc->SendDataObject(session, MSG_ID_QUERY_TRADE, reqDO->SerialId, tradeptr);
 		}
 	}
+	else
+	{
+		CThostFtdcQryTradeField req{};
+		std::strcpy(req.BrokerID, brokeid.data());
+		std::strcpy(req.InvestorID, investorid.data());
+		std::strcpy(req.InstrumentID, instrid.data());
+		std::strcpy(req.ExchangeID, exchangeid.data());
+		std::strcpy(req.TradeID, tradeid.data());
+		std::strcpy(req.TradeTimeStart, tmstart.data());
+		std::strcpy(req.TradeTimeEnd, tmend.data());
+
+		int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryTrade(&req, reqDO->SerialId);
+		CTPUtility::CheckReturnError(iRet);
+	}
+
 	return nullptr;
 }
 
@@ -102,16 +114,15 @@ dataobj_ptr CTPQueryTrade::HandleResponse(const uint32_t serialId, const param_v
 	{
 		ret->HasMore = !*(bool*)rawRespParams[3];
 
-		if (auto wkProcPtr =
-			  MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
 		{
-			if (auto order_ptr = wkProcPtr->GetUserOrderContext().FindOrder(ret->OrderID))
+			if (auto order_ptr = pWorkerProc->GetUserOrderContext().FindOrder(ret->OrderID))
 			{
 				ret->SetUserID(order_ptr->PortfolioID());
 				ret->SetPortfolioID(order_ptr->PortfolioID());
 			}
 
-			wkProcPtr->GetUserTradeContext().AddTrade(*ret);
+			pWorkerProc->GetUserTradeContext().AddTrade(*ret);
 		}
 	}
 

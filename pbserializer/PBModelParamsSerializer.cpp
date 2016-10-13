@@ -28,6 +28,7 @@ data_buffer PBModelParamsSerializer::Serialize(const dataobj_ptr& abstractDO)
 
 	pb.set_instancename(pDO->InstanceName);
 	pb.set_model(pDO->Model);
+	pb.set_modelaim(pDO->ModelAim);
 
 	pb.mutable_params()->insert(pDO->Params.begin(), pDO->Params.end());
 
@@ -53,6 +54,7 @@ dataobj_ptr PBModelParamsSerializer::Deserialize(const data_buffer& rawdata)
 	dataobj_ptr ret(pDO);
 	pDO->InstanceName = pb.instancename();
 	pDO->Model = pb.model();	
+	pDO->ModelAim = pb.modelaim();
 
 	pDO->Params.insert(pb.params().begin(), pb.params().end());
 

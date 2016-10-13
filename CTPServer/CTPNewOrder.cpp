@@ -85,9 +85,9 @@ dataobj_ptr CTPNewOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI
 
 	bool bLast = true;
 
-	if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
 	{
-		wkProcPtr->GetUserOrderContext().AddOrder(*pDO);
+		pWorkerProc->GetUserOrderContext().AddOrder(*pDO);
 	}
 
 	OnResponseProcMacro(session->getProcessor(), MSG_ID_ORDER_NEW, reqDO->SerialId, &req, nullptr, &reqDO->SerialId, &bLast);

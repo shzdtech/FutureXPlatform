@@ -133,10 +133,21 @@ class ModelParams : public ::google::protobuf::Message {
   ::std::string* release_model();
   void set_allocated_model(::std::string* model);
 
-  // map<string, double> params = 4;
+  // optional string modelAim = 4;
+  void clear_modelaim();
+  static const int kModelAimFieldNumber = 4;
+  const ::std::string& modelaim() const;
+  void set_modelaim(const ::std::string& value);
+  void set_modelaim(const char* value);
+  void set_modelaim(const char* value, size_t size);
+  ::std::string* mutable_modelaim();
+  ::std::string* release_modelaim();
+  void set_allocated_modelaim(::std::string* modelaim);
+
+  // map<string, double> params = 5;
   int params_size() const;
   void clear_params();
-  static const int kParamsFieldNumber = 4;
+  static const int kParamsFieldNumber = 5;
   const ::google::protobuf::Map< ::std::string, double >&
       params() const;
   ::google::protobuf::Map< ::std::string, double >*
@@ -150,6 +161,7 @@ class ModelParams : public ::google::protobuf::Message {
   ::Micro::Future::Message::DataHeader* header_;
   ::google::protobuf::internal::ArenaStringPtr instancename_;
   ::google::protobuf::internal::ArenaStringPtr model_;
+  ::google::protobuf::internal::ArenaStringPtr modelaim_;
   typedef ::google::protobuf::internal::MapEntryLite<
       ::std::string, double,
       ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
@@ -303,7 +315,51 @@ inline void ModelParams::set_allocated_model(::std::string* model) {
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.ModelParams.model)
 }
 
-// map<string, double> params = 4;
+// optional string modelAim = 4;
+inline void ModelParams::clear_modelaim() {
+  modelaim_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ModelParams::modelaim() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.ModelParams.modelAim)
+  return modelaim_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ModelParams::set_modelaim(const ::std::string& value) {
+  
+  modelaim_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.ModelParams.modelAim)
+}
+inline void ModelParams::set_modelaim(const char* value) {
+  
+  modelaim_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.ModelParams.modelAim)
+}
+inline void ModelParams::set_modelaim(const char* value, size_t size) {
+  
+  modelaim_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.ModelParams.modelAim)
+}
+inline ::std::string* ModelParams::mutable_modelaim() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.ModelParams.modelAim)
+  return modelaim_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ModelParams::release_modelaim() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.ModelParams.modelAim)
+  
+  return modelaim_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ModelParams::set_allocated_modelaim(::std::string* modelaim) {
+  if (modelaim != NULL) {
+    
+  } else {
+    
+  }
+  modelaim_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), modelaim);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.ModelParams.modelAim)
+}
+
+// map<string, double> params = 5;
 inline int ModelParams::params_size() const {
   return params_.size();
 }

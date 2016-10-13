@@ -81,4 +81,12 @@
       <Filter>config\json</Filter>
     </CustomBuild>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="service.ctp.json">
+      <Filter>config\json</Filter>
+    </None>
+    <None Include="factory.ctp.json">
+      <Filter>config\json</Filter>
+    </None>
+  </ItemGroup>
 </Project>

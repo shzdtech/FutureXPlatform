@@ -9,5 +9,6 @@ message ModelParams
 	DataHeader header = 1;
 	string instanceName = 2;
 	string model = 3;
-	map<string, double> params = 4;
+	string modelAim = 4;
+	map<string, double> params = 5;
 }

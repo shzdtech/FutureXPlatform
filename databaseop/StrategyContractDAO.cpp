@@ -252,12 +252,12 @@ void StrategyContractDAO::UpdateStrategy(const StrategyContractDO & strategyDO)
 	}
 }
 
-VectorDO_Ptr<ContractParamDO> StrategyContractDAO::RetrieveContractParamByUser(const std::string& userid)
+VectorDO_Ptr<ContractParamDO> StrategyContractDAO::RetrieveContractParamByUser(const std::string& userid, int productType)
 {
 	static const std::string sql_findcontractparam(
 		"SELECT distinct pricing_exchange, pricing_contract, tick_size, multiplier "
 		"FROM vw_pricing_contract_property "
-		"WHERE accountid = ?");
+		"WHERE accountid = ? and strategy_product_type = ?");
 
 	auto ret = std::make_shared<VectorDO<ContractParamDO>>();
 
@@ -267,6 +267,7 @@ VectorDO_Ptr<ContractParamDO> StrategyContractDAO::RetrieveContractParamByUser(c
 		AutoClosePreparedStmt_Ptr prestmt(
 			session->getConnection()->prepareStatement(sql_findcontractparam));
 		prestmt->setString(1, userid);
+		prestmt->setInt(2, productType);
 
 		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
 

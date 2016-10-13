@@ -50,9 +50,9 @@ bool CTPOTCSessionProcessor::OnSessionClosing(void)
 {
 	if (auto sessionPtr = LockMessageSession())
 		if (sessionPtr->getUserInfo()->getRole() == ROLE_TRADINGDESK)
-			if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(shared_from_this()))
+			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(shared_from_this()))
 			{
-				auto pStrategyMap = wkProcPtr->PricingDataContext()->GetStrategyMap();
+				auto pStrategyMap = pWorkerProc->PricingDataContext()->GetStrategyMap();
 
 				if (auto strategyVec_Ptr = std::static_pointer_cast<std::vector<ContractKey>>(
 					sessionPtr->getContext()->getAttribute(STR_KEY_USER_STRATEGY)))
@@ -65,7 +65,7 @@ bool CTPOTCSessionProcessor::OnSessionClosing(void)
 						{
 							strategy.Hedging = false;
 							OrderRequestDO orderDO(strategy);
-							wkProcPtr->GetOTCTradeProcessor()->CancelHedgeOrder(orderDO);
+							pWorkerProc->GetOTCTradeProcessor()->CancelHedgeOrder(orderDO);
 						}
 					}
 				}

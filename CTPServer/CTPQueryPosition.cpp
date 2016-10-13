@@ -39,28 +39,24 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 {
 	CheckLogin(session);
 
-	if (auto wkProcPtr =
-		  MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
+	auto stdo = (MapDO<std::string>*)reqDO.get();
+
+	auto& brokeid = session->getUserInfo()->getBrokerId();
+	auto& investorid = session->getUserInfo()->getInvestorId();
+	auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
+
+	CThostFtdcQryInvestorPositionField req{};
+	std::strcpy(req.BrokerID, brokeid.data());
+	std::strcpy(req.InvestorID, investorid.data());
+	std::strcpy(req.InstrumentID, instrumentid.data());
+
+	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryInvestorPosition(&req, reqDO->SerialId);
+
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
 	{
-		auto stdo = (MapDO<std::string>*)reqDO.get();
-
-		auto& brokeid = session->getUserInfo()->getBrokerId();
-		auto& investorid = session->getUserInfo()->getInvestorId();
-		auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
-
-		CThostFtdcQryInvestorPositionField req{};
-		std::strcpy(req.BrokerID, brokeid.data());
-		std::strcpy(req.InvestorID, investorid.data());
-		std::strcpy(req.InstrumentID, instrumentid.data());
-
-		int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryInvestorPosition(&req, reqDO->SerialId);
-		// CTPUtility::CheckReturnError(iRet);
-
-		auto& positionMap = wkProcPtr->GetUserPositionMap();
+		auto& positionMap = pWorkerProc->GetUserPositionMap();
 		if (positionMap.empty())
-		{
 			std::this_thread::sleep_for(std::chrono::seconds(2));
-		}
 
 		ThrowNotFoundExceptionIfEmpty(&positionMap);
 
@@ -78,7 +74,7 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 				auto position_ptr = std::make_shared<UserPositionExDO>(pit->second);
 				position_ptr->HasMore = pit != lastpit;
 
-				wkProcPtr->SendDataObject(session, MSG_ID_QUERY_POSITION, reqDO->SerialId, position_ptr);
+				pWorkerProc->SendDataObject(session, MSG_ID_QUERY_POSITION, reqDO->SerialId, position_ptr);
 			}
 		}
 		else
@@ -95,11 +91,15 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 						auto positionDO_Ptr = std::make_shared<UserPositionExDO>(pit->second);
 						positionDO_Ptr->HasMore = (it != lastit || pit != lastpit);
 
-						wkProcPtr->SendDataObject(session, MSG_ID_QUERY_POSITION, reqDO->SerialId, positionDO_Ptr);
+						pWorkerProc->SendDataObject(session, MSG_ID_QUERY_POSITION, reqDO->SerialId, positionDO_Ptr);
 					}
 				}
 			}
 		}
+	}
+	else
+	{
+		CTPUtility::CheckReturnError(iRet);
 	}
 
 	return nullptr;
@@ -173,10 +173,9 @@ dataobj_ptr CTPQueryPosition::HandleResponse(const uint32_t serialId, const para
 		pDO->MarginRateByMoney = pData->MarginRateByMoney;
 		pDO->MarginRateByVolume = pData->MarginRateByVolume;
 
-		if (auto wkProcPtr =
-			  MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
 		{
-			auto& positionMap = wkProcPtr->GetUserPositionMap();
+			auto& positionMap = pWorkerProc->GetUserPositionMap();
 			auto& positions = positionMap.getorfill(pDO->InstrumentID());
 			auto& position = positions.getorfill(std::make_pair(pDO->PositionDateFlag, pDO->Direction));
 			position = *pDO;

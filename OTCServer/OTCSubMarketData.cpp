@@ -43,7 +43,7 @@ dataobj_ptr OTCSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 
 	auto stdo = (StringTableDO*)reqDO.get();
 
-	if (auto wkProcPtr =
+	if (auto pWorkerProc =
 		MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
 	{
 		if (!stdo->Data.empty())
@@ -74,7 +74,7 @@ dataobj_ptr OTCSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 			{
 				for (auto& inst : instList)
 				{
-					if (auto contract = wkProcPtr->GetInstrumentCache().QueryInstrumentById(inst))
+					if (auto contract = pWorkerProc->GetInstrumentCache().QueryInstrumentById(inst))
 					{
 						PricingDO mdo(contract->ExchangeID(), contract->InstrumentID());
 						ret->push_back(std::move(mdo));
@@ -85,7 +85,7 @@ dataobj_ptr OTCSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 			auto pSession = session->getProcessor()->LockMessageSession().get();
 			for (auto& pDO : *ret)
 			{
-				wkProcPtr->RegisterPricingListener(pDO, pSession);
+				pWorkerProc->RegisterPricingListener(pDO, pSession);
 
 				UserContractParamDO ucp(pDO.ExchangeID(), pDO.InstrumentID());
 				userContractMap_Ptr->emplace(ucp, std::move(ucp));

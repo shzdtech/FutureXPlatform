@@ -38,13 +38,13 @@ dataobj_ptr OTCUnSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI*
 		auto nInstrument = instList.size();
 
 		if (nInstrument > 0)
-			if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
+			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
 			{
 				for (auto& inst : instList)
 				{
-					if (auto contract = wkProcPtr->GetInstrumentCache().QueryInstrumentById(inst))
+					if (auto contract = pWorkerProc->GetInstrumentCache().QueryInstrumentById(inst))
 					{
-						wkProcPtr->UnregisterPricingListener(*contract,
+						pWorkerProc->UnregisterPricingListener(*contract,
 							session->getProcessor()->LockMessageSession().get());
 
 						ret->Data[STR_INSTRUMENT_ID].push_back(inst);

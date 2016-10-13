@@ -45,7 +45,7 @@ dataobj_ptr OTCQueryOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawA
 		ContractKey(EMPTY_STRING, instrumentid));
 	ThrowNotFoundExceptionIfEmpty(ordervec_ptr);
 
-	if (auto wkProcPtr = std::static_pointer_cast<TemplateMessageProcessor>(session->getProcessor()))
+	if (auto pWorkerProc = std::static_pointer_cast<TemplateMessageProcessor>(session->getProcessor()))
 	{
 		auto lastit = std::prev(ordervec_ptr->end());
 		for (auto it = ordervec_ptr->begin(); it != ordervec_ptr->end(); it++)
@@ -53,7 +53,7 @@ dataobj_ptr OTCQueryOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawA
 			auto order_ptr = std::make_shared<OrderDO>(*it);
 			order_ptr->HasMore = it != lastit;
 
-			wkProcPtr->SendDataObject(session, MSG_ID_QUERY_ORDER, reqDO->SerialId, order_ptr);
+			pWorkerProc->SendDataObject(session, MSG_ID_QUERY_ORDER, reqDO->SerialId, order_ptr);
 		}
 	}
 

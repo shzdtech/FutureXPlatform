@@ -13,9 +13,9 @@ dataobj_ptr OTCOptionPricingParams::HandleResponse(const uint32_t serialId, cons
 
 	std::shared_ptr<TradingDeskOptionParams> ret;
 
-	if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
 	{
-		auto& pricingCtx = *wkProcPtr->PricingDataContext();
+		auto& pricingCtx = *pWorkerProc->PricingDataContext();
 
 		auto pBaseMD = pricingCtx.GetMarketDataMap()->tryfind(pStrategy->PricingContracts[0].InstrumentID());
 		auto pMD = pricingCtx.GetMarketDataMap()->tryfind(pStrategy->InstrumentID());

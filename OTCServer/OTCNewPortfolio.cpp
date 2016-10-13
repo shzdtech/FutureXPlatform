@@ -21,7 +21,7 @@ dataobj_ptr OTCNewPortfolio::HandleRequest(const dataobj_ptr & reqDO, IRawAPI * 
 
 	auto vecDO_Ptr = (VectorDO<PortfolioDO>*)reqDO.get();
 
-	if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
 	{
 		auto& userid = session->getUserInfo()->getUserId();
 		auto pUserInfo = (UserInfoDO*)session->getUserInfo()->getExtInfo().get();

@@ -36,8 +36,7 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawA
 {
 	CheckLogin(session);
 
-	if (auto wkProcPtr =
-		MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
 	{
 		auto stdo = (MapDO<std::string>*)reqDO.get();
 
@@ -49,7 +48,7 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawA
 		auto& tmstart = stdo->TryFind(STR_TIME_START, EMPTY_STRING);
 		auto& tmend = stdo->TryFind(STR_TIME_END, EMPTY_STRING);
 
-		auto vectorPtr = wkProcPtr->GetUserOrderContext().GetOrdersByUser(session->getUserInfo()->getUserId());
+		auto vectorPtr = pWorkerProc->GetUserOrderContext().GetOrdersByUser(session->getUserInfo()->getUserId());
 		if (vectorPtr->empty())
 		{
 			CThostFtdcQryOrderField req{};
@@ -70,10 +69,10 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawA
 		using namespace boolinq;
 		if (orderid != EMPTY_STRING)
 		{
-			if (auto orderptr = wkProcPtr->GetUserOrderContext().FindOrder(std::strtoull(orderid.data(), nullptr, 0)))
+			if (auto orderptr = pWorkerProc->GetUserOrderContext().FindOrder(std::strtoull(orderid.data(), nullptr, 0)))
 			{
 				orderptr->HasMore = false;
-				wkProcPtr->SendDataObject(session, MSG_ID_QUERY_ORDER, stdo->SerialId, orderptr);
+				pWorkerProc->SendDataObject(session, MSG_ID_QUERY_ORDER, stdo->SerialId, orderptr);
 			}
 			else
 				throw NotFoundException();
@@ -85,7 +84,7 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawA
 			{
 				auto orderptr = std::make_shared<OrderDO>(*it);
 				orderptr->HasMore = it != lastit;
-				wkProcPtr->SendDataObject(session, MSG_ID_QUERY_ORDER, stdo->SerialId, orderptr);
+				pWorkerProc->SendDataObject(session, MSG_ID_QUERY_ORDER, stdo->SerialId, orderptr);
 			}
 		}
 	}
@@ -118,14 +117,14 @@ dataobj_ptr CTPQueryOrder::HandleResponse(const uint32_t serialId, const param_v
 				ret->ErrorCode = pRsp->ErrorID;
 			ret->HasMore = !*(bool*)rawRespParams[3];
 
-			if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
+			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
 			{
-				if (auto order_ptr = wkProcPtr->GetUserOrderContext().FindOrder(ret->OrderID))
+				if (auto order_ptr = pWorkerProc->GetUserOrderContext().FindOrder(ret->OrderID))
 				{
 					ret->SetUserID(order_ptr->UserID());
 					ret->SetPortfolioID(order_ptr->PortfolioID());
 				}
-				wkProcPtr->GetUserOrderContext().AddOrder(*ret);
+				pWorkerProc->GetUserOrderContext().AddOrder(*ret);
 			}
 		}
 	}

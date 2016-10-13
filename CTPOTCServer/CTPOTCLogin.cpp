@@ -44,16 +44,16 @@ dataobj_ptr CTPOTCLogin::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI
 {
 	auto ret = Login(reqDO, rawAPI, session);
 
-	if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<CTPOTCWorkerProcessor>(session->getProcessor()))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCWorkerProcessor>(session->getProcessor()))
 	{
-		wkProcPtr->RegisterLoggedSession(session->getProcessor()->LockMessageSession().get());
+		pWorkerProc->RegisterLoggedSession(session->getProcessor()->LockMessageSession().get());
 
 		if (session->getUserInfo()->getRole() == ROLE_TRADINGDESK)
 		{
-			wkProcPtr->LoginSystemUserIfNeed();
+			pWorkerProc->LoginSystemUserIfNeed();
 		}
 
-		if (!(wkProcPtr->ConnectedToServer() && wkProcPtr->HasLogged()))
+		if (!(pWorkerProc->ConnectedToServer() && pWorkerProc->HasLogged()))
 		{
 			// throw SystemException(CONNECTION_ERROR, "Cannot connect to CTP Trading Server!");
 		}

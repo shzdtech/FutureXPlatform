@@ -37,9 +37,9 @@ dataobj_ptr OTCUpdateStrategy::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* 
 
 	auto ret = std::make_shared<VectorDO<StrategyContractDO>>();
 
-	if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
 	{
-		auto strategyMap = wkProcPtr->PricingDataContext()->GetStrategyMap();
+		auto strategyMap = pWorkerProc->PricingDataContext()->GetStrategyMap();
 
 		auto strategyDO = *(StrategyContractDO*)reqDO.get();
 		strategyDO.SetUserID(session->getUserInfo()->getUserId());
@@ -80,32 +80,32 @@ dataobj_ptr OTCUpdateStrategy::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* 
 
 			if (strategyDO.PricingModel && scDO.PricingModel->InstanceName != strategyDO.PricingModel->InstanceName)
 			{
-				if (auto model = StrategyModelCache::FindOrCreateModel(*strategyDO.PricingModel))
+				if (auto model = StrategyModelCache::FindOrRetrieveModel(*strategyDO.PricingModel))
 					scDO.PricingModel = model;
 			}
 
 			if (strategyDO.IVModel && scDO.IVModel->InstanceName != strategyDO.IVModel->InstanceName)
 			{
-				if (auto model = StrategyModelCache::FindOrCreateModel(*strategyDO.IVModel))
+				if (auto model = StrategyModelCache::FindOrRetrieveModel(*strategyDO.IVModel))
 					scDO.IVModel = model;
 			}
 
 			if (strategyDO.VolModel && scDO.VolModel->InstanceName != strategyDO.VolModel->InstanceName)
 			{
-				if (auto model = StrategyModelCache::FindOrCreateModel(*strategyDO.VolModel))
+				if (auto model = StrategyModelCache::FindOrRetrieveModel(*strategyDO.VolModel))
 					scDO.VolModel = model;
 			}
 
 			StrategyContractDAO::UpdateStrategy(scDO);
 
-			wkProcPtr->TriggerOTCPricing(scDO);
+			pWorkerProc->TriggerOTCPricing(scDO);
 
 			scDO.Hedging = strategyDO.Hedging;
 
 			if (scDO.Hedging)
-				wkProcPtr->GetOTCTradeProcessor()->TriggerHedgeOrderUpdating(scDO);
+				pWorkerProc->GetOTCTradeProcessor()->TriggerHedgeOrderUpdating(scDO);
 			else
-				wkProcPtr->GetOTCTradeProcessor()->CancelHedgeOrder(scDO);
+				pWorkerProc->GetOTCTradeProcessor()->CancelHedgeOrder(scDO);
 
 			ret->push_back(scDO);
 		}

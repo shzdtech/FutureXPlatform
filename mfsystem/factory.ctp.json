@@ -1,0 +1,62 @@
+{
+  "factory": {
+    "admin": {
+      "manage": {
+        "module.uuid": "com.micro.future.admin.dll",
+        "module.path": "AdminServer.dll",
+        "class.uuid": "factory.admin.service",
+        "params": {
+        }
+      }
+    },
+    "ctp": {
+      "marketdata": {
+        "module.uuid": "com.micro.future.ctp.dll",
+        "module.path": "CTPServer.dll",
+        "class.uuid": "factory.ctp.marketdata.service",
+        "params": {
+        }
+      },
+      "trade": {
+        "module.uuid": "com.micro.future.ctp.dll",
+        "module.path": "CTPServer.dll",
+        "class.uuid": "factory.ctp.trade.service",
+        "params": {
+        }
+      },
+      "option": {
+        "module.uuid": "com.micro.future.ctp.dll",
+        "module.path": "CTPServer.dll",
+        "class.uuid": "factory.ctp.marketdata.service",
+        "params": {
+          "load_workprocessor": "true",
+          "logout_dataloaded": "true",
+          "CTP.MD.SERVER": "tcp://ctpfz1-front3.citicsf.com:51213",
+          "CTP.MD.LOGIN.BROKERID": "66666",
+          "CTP.MD.LOGIN.USERID": "895816",
+          "CTP.MD.LOGIN.PASSWORD": "260519",
+          "CTP.TRADER.SERVER": "tcp://ctpfz1-front3.citicsf.com:51205",
+          "CTP.TRADER.LOGIN.BROKERID": "66666",
+          "CTP.TRADER.LOGIN.USERID": "895816",
+          "CTP.TRADER.LOGIN.PASSWORD": "260519"
+        }
+      }
+    },
+    "testing": {
+      "sim": {
+        "module.uuid": "com.micro.future.testing.dll",
+        "module.path": "TestingServer.dll",
+        "class.uuid": "factory.testing.sim.service",
+        "mdInterval": "3000",
+        "params": {
+          "load_workprocessor": "true",
+          "logout_dataloaded": "true",
+          "CTP.TRADER.SERVER": "tcp://ctpfz1-front3.citicsf.com:51205",
+          "CTP.TRADER.LOGIN.BROKERID": "66666",
+          "CTP.TRADER.LOGIN.USERID": "895816",
+          "CTP.TRADER.LOGIN.PASSWORD": "260519"
+        }
+      }
+    }
+  }
+}

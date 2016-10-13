@@ -31,6 +31,12 @@ namespace Micro.Future.Windows.Service
                 return;
             }
 
+            var idx = Array.IndexOf(args, "--config");
+            if (idx >= 0 && args.Length > idx + 1)
+            {
+                MFWinService.CONFIG_FILE = args[idx + 1];
+            }
+
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
                 {

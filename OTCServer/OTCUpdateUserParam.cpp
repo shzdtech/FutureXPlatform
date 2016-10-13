@@ -39,9 +39,9 @@ dataobj_ptr OTCUpdateUserParam::HandleRequest(const dataobj_ptr& reqDO, IRawAPI*
 	auto vecUserConDO_Ptr = (VectorDO<UserContractParamDO>*)reqDO.get();
 
 
-	if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
 	{
-		auto strategyMap = wkProcPtr->PricingDataContext()->GetStrategyMap();
+		auto strategyMap = pWorkerProc->PricingDataContext()->GetStrategyMap();
 
 		for (auto& userConDO : *vecUserConDO_Ptr)
 		{

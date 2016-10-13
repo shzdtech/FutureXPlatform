@@ -12,7 +12,7 @@ ModelParamsDO_Ptr StrategyModelCache::FindModel(const ModelKey & key)
 	return ret;
 }
 
-ModelParamsDO_Ptr StrategyModelCache::FindOrCreateModel(const ModelKey & key)
+ModelParamsDO_Ptr StrategyModelCache::FindOrRetrieveModel(const ModelKey & key)
 {
 	ModelParamsDO_Ptr ret = FindModel(key);
 
@@ -31,6 +31,23 @@ ModelParamsDO_Ptr StrategyModelCache::FindOrCreateModel(const ModelKey & key)
 const std::map<ModelKey, ModelParamsDO_Ptr>& StrategyModelCache::ModelCache()
 {
 	return _modelCache;
+}
+
+vector_ptr<ModelParamsDO_Ptr> StrategyModelCache::FindModelsByUser(const std::string& userId)
+{
+	vector_ptr<ModelParamsDO_Ptr> ret = std::make_shared<std::vector<ModelParamsDO_Ptr>>();
+
+	for (auto it = _modelCache.begin();;it++)
+	{
+		it = std::find_if(it, _modelCache.end(),
+			[&userId](std::pair<const ModelKey, ModelParamsDO_Ptr>& pair) { return pair.first.UserID() == userId; });
+		if (it == _modelCache.end())
+			break;
+
+		ret->push_back(it->second);
+	}
+
+	return ret;
 }
 
 void StrategyModelCache::Remove(const ModelKey & key)

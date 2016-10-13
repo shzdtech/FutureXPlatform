@@ -43,7 +43,7 @@ dataobj_ptr OTCOptionSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRaw
 
 	auto stdo = (StringTableDO*)reqDO.get();
 
-	if (auto wkProcPtr =
+	if (auto pWorkerProc =
 		MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
 	{
 		if (!stdo->Data.empty())
@@ -58,7 +58,7 @@ dataobj_ptr OTCOptionSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRaw
 				{
 					for (auto& inst : instList)
 					{
-						if (auto pContract = wkProcPtr->GetInstrumentCache().QueryInstrumentById(inst))
+						if (auto pContract = pWorkerProc->GetInstrumentCache().QueryInstrumentById(inst))
 						{
 							if (std::find(strategyVec_Ptr->begin(), strategyVec_Ptr->end(), *pContract) != strategyVec_Ptr->end())
 							{
@@ -73,10 +73,10 @@ dataobj_ptr OTCOptionSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRaw
 			{
 				for (auto& inst : instList)
 				{
-					if (auto pContract = wkProcPtr->GetInstrumentCache().QueryInstrumentById(inst))
+					if (auto pContract = pWorkerProc->GetInstrumentCache().QueryInstrumentById(inst))
 					{
 						PricingDO mdo(pContract->ExchangeID(), pContract->InstrumentID());
-						wkProcPtr->RegisterPricingListener(mdo, pSession);
+						pWorkerProc->RegisterPricingListener(mdo, pSession);
 						ret->push_back(std::move(mdo));
 					}
 				}

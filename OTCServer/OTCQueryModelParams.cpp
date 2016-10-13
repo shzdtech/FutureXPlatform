@@ -5,7 +5,7 @@
 #include "../common/Attribute_Key.h"
 
 #include "../message/BizError.h"
-
+#include "../message/DefMessageID.h"
 #include "../message/message_macro.h"
 #include "../pricingengine/IPricingDataContext.h"
 #include "../pricingengine/ComplexAlgoirthmManager.h"
@@ -24,14 +24,36 @@ dataobj_ptr OTCQueryModelParams::HandleRequest(const dataobj_ptr & reqDO, IRawAP
 	CheckLogin(session);
 
 	dataobj_ptr ret;
+	auto& userId = session->getUserInfo()->getUserId();
 
 	auto pModelParam = (ModelParamsDO*)reqDO.get();
-	pModelParam->SetUserID(session->getUserInfo()->getUserId());
-	ret = StrategyModelCache::FindModel(*pModelParam);
-	if (!ret)
+	if (pModelParam->InstanceName.empty())
 	{
-		throw NotFoundException(pModelParam->InstanceName);
+		auto models = StrategyModelCache::FindModelsByUser(userId);
+		if (!models)
+		{
+			throw NotFoundException();
+		}
+
+		for (auto& model : *models)
+		{
+			OnResponseProcMacro(session->getProcessor(), MSG_ID_QUERY_MODELPARAMS, reqDO->SerialId, &model);
+		}
+	}
+	else
+	{
+		pModelParam->SetUserID(userId);
+		ret = StrategyModelCache::FindOrRetrieveModel(*pModelParam);
+		if (!ret)
+		{
+			throw NotFoundException(pModelParam->InstanceName);
+		}
 	}
 
 	return ret;
+}
+
+dataobj_ptr OTCQueryModelParams::HandleResponse(const uint32_t serialId, const param_vector & rawRespParams, IRawAPI * rawAPI, ISession * session)
+{
+	return *(ModelParamsDO_Ptr*)rawRespParams[0];
 }

@@ -52,7 +52,7 @@ dataobj_ptr OTCQueryTrade::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawA
 		ContractKey(exchangeid, instrumentid), tmstart, tmend);
 	ThrowNotFoundExceptionIfEmpty(tradeVec_Ptr);
 
-	if (auto wkProcPtr = std::static_pointer_cast<TemplateMessageProcessor>(session->getProcessor()))
+	if (auto pWorkerProc = std::static_pointer_cast<TemplateMessageProcessor>(session->getProcessor()))
 	{
 		auto lastit = std::prev(tradeVec_Ptr->end());
 		for (auto it = tradeVec_Ptr->begin(); it != tradeVec_Ptr->end(); it++)
@@ -60,7 +60,7 @@ dataobj_ptr OTCQueryTrade::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawA
 			auto trade_ptr = std::make_shared<TradeRecordDO>(*it);
 			trade_ptr->HasMore = it != lastit;
 
-			wkProcPtr->SendDataObject(session, MSG_ID_QUERY_TRADE, reqDO->SerialId, trade_ptr);
+			pWorkerProc->SendDataObject(session, MSG_ID_QUERY_TRADE, reqDO->SerialId, trade_ptr);
 		}
 	}
 

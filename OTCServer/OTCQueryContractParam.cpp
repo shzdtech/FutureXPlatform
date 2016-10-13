@@ -42,9 +42,9 @@ dataobj_ptr OTCQueryContractParam::HandleRequest(const dataobj_ptr& reqDO, IRawA
 
 	auto contractVec_Ptr = std::make_shared<VectorDO<ContractParamDO>>();
 
-	if (auto wkProcPtr = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
 	{
-		auto contractMap = wkProcPtr->PricingDataContext()->GetContractParamMap();
+		auto contractMap = pWorkerProc->PricingDataContext()->GetContractParamMap();
 
 		for (auto& con : *cpVec_Ptr)
 		{
