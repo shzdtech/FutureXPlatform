@@ -26,7 +26,7 @@
 #include "../bizutility/ContractCache.h"
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       OTCSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       OTCSubMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
  // Purpose:    Implementation of OTCSubMarketData::HandleRequest()
  // Parameters:
  // - reqDO
@@ -35,7 +35,7 @@
  // Return:     dataobj_ptr
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr OTCSubMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr OTCSubMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	CheckLogin(session);
 

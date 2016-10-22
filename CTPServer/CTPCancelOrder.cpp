@@ -17,7 +17,7 @@
 #include "../message/DefMessageID.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPCancleOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPCancleOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTPCancelOrder::HandleRequest()
 // Parameters:
 // - reqDO
@@ -26,7 +26,7 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPCancelOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPCancelOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	CheckLogin(session);
 
@@ -35,29 +35,30 @@ dataobj_ptr CTPCancelOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* raw
 	auto userinfo = session->getUserInfo();
 
 	CThostFtdcInputOrderActionField req{};
+	req.RequestID = serialId;
 
 	req.ActionFlag = THOST_FTDC_AF_Delete;
-	std::strcpy(req.BrokerID, userinfo->getBrokerId().data());
-	std::strcpy(req.InvestorID, userinfo->getInvestorId().data());
-	std::strcpy(req.UserID, userinfo->getUserId().data());
+	std::strncpy(req.BrokerID, userinfo->getBrokerId().data(), sizeof(req.BrokerID) - 1);
+	std::strncpy(req.InvestorID, userinfo->getInvestorId().data(), sizeof(req.InvestorID) - 1);
+	std::strncpy(req.UserID, userinfo->getUserId().data(), sizeof(req.UserID) - 1);
 	
 	if (pDO->OrderSysID != 0)
 	{
-		std::strcpy(req.ExchangeID, pDO->ExchangeID().data());
+		std::strncpy(req.ExchangeID, pDO->ExchangeID().data(), sizeof(req.ExchangeID) - 1);;
 		std::sprintf(req.OrderSysID, FMT_PADDING_ORDERSYSID, pDO->OrderSysID);
 	}
 	else
 	{
 		req.SessionID = userinfo->getSessionId();
 		req.FrontID = userinfo->getFrontId();
-		std::strcpy(req.InstrumentID, pDO->InstrumentID().data());
+		std::strncpy(req.InstrumentID, pDO->InstrumentID().data(), sizeof(req.InstrumentID) - 1);
 		std::sprintf(req.OrderRef, FMT_PADDING_ORDERREF, pDO->OrderID);
 	}
 
 	bool bLast = true;
-	OnResponseProcMacro(session->getProcessor(), MSG_ID_ORDER_CANCEL, reqDO->SerialId, &req, nullptr, &reqDO->SerialId, &bLast);
+	OnResponseProcMacro(session->getProcessor(), MSG_ID_ORDER_CANCEL, serialId, &req, nullptr, &serialId, &bLast);
 
-	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqOrderAction(&req, reqDO->SerialId);
+	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqOrderAction(&req, serialId);
 	CTPUtility::CheckReturnError(iRet);
 
 	return nullptr;
@@ -81,13 +82,13 @@ dataobj_ptr CTPCancelOrder::HandleResponse(const uint32_t serialId, const param_
 	{
 		auto pData = (CThostFtdcInputOrderActionField*)rawRespParams[0];
 		auto pRsp = (CThostFtdcRspInfoField*)rawRespParams[1];
-		ret = CTPUtility::ParseRawOrderInputAction(pData, pRsp);
+		ret = CTPUtility::ParseRawOrder(pData, pRsp);
 	}
 	else
 	{
 		auto pData = (CThostFtdcOrderActionField*)rawRespParams[0];
 		auto pRsp = (CThostFtdcRspInfoField*)rawRespParams[1];
-		ret = CTPUtility::ParseRawOrderAction(pData, pRsp);
+		ret = CTPUtility::ParseRawOrder(pData, pRsp);
 	}
 
 	ret->HasMore = false;

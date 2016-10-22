@@ -110,7 +110,8 @@ message PBPricingContract
 {
 	string exchange = 1;
 	string contract = 2;
-	double weight = 3;	
+	double weight = 3;
+	double adjust = 4;	
 }
 
 message PBStrategy
@@ -472,4 +473,120 @@ message PBContractInfoList
 {
 	DataHeader header = 1;
 	repeated PBContractInfo contractInfo = 2;
+}
+
+///转账请求
+message PBBankOpRequest {
+	DataHeader header = 1;
+	///银行编码
+	string bankID = 2;
+	///银行分支机构编码
+	string bankBranchID = 3;
+	///银行密码
+	string bankPassword = 4;
+	///银行帐号
+	string bankAccount = 5;
+	///期货公司编码
+	string brokerID = 6;
+	///期商分支机构代码
+	string brokerBranchID = 7;
+	///投资者帐号
+	string accountID = 8;
+	///投资者密码
+	string password = 9;
+	///币种代码
+	string currencyID = 10;
+
+	double tradeAmount = 11;  
+}
+
+message PBBankOpResult {
+	DataHeader header = 1;
+	///银行编码
+	string bankID = 2;
+	///银行分支机构编码
+	string bankBranchID = 3;
+	///银行密码
+	string bankPassword = 4;
+	///银行帐号
+	string bankAccount = 5;
+	///期货公司编码
+	string brokerID = 6;
+	///期商分支机构代码
+	string brokerBranchID = 7;
+	///投资者帐号
+	string accountID = 8;
+	///投资者密码
+	string password = 9;
+	///币种代码
+	string currencyID = 10;
+
+	double tradeAmount = 11; 
+
+	///平台流水号
+	string SerialNum = 12; 
+	///交易日
+	string TradingDay = 13; 
+	///交易日期
+	string TradeDate = 14; 
+	///交易时间
+	string TradeTime = 15; 
+	///交易代码
+	string TradeCode = 16; 
+	///银行流水号
+	string BankSerial = 17;
+	///期货公司帐号类型
+	int32 FutureAccType = 18; 
+	///期货公司帐号类型
+	int32 BankAccType = 19; 
+	///期货公司流水号
+	string FutureSerial = 20; 
+	///应收客户费用
+	double CustFee = 21; 
+	///应收期货公司费用
+	double BrokerFee = 22; 
+	///错误代码
+	int32 ErrorID = 23; 
+	///错误信息
+	bytes ErrorMsg = 24; 
+}
+
+message PBBankInfo {
+	DataHeader header = 1;
+	///银行编码
+	string bankID = 2;
+	///银行分支机构编码
+	string branchID = 3;
+	///名称
+	bytes name = 4;
+}
+
+message PBUserAccountInfo {
+	DataHeader header = 1;
+	///银行编码
+	string bankID = 2;
+	///银行分支机构编码
+	string bankBranchID = 3;
+	///银行帐号
+	string bankAccount = 4;
+	///期货公司编码
+	string brokerID = 5;
+	///期货公司分支机构编码
+	string brokerBranchID = 6;
+	///投资者帐号
+	string accountID = 7;
+	///证件号码
+	string idCardNo = 8;
+	///客户姓名
+	bytes customerName = 9;
+	///币种代码
+	string currencyID = 10;
+	///客户类型
+	int32 custType = 11;
+	///银行帐号类型
+	int32 bankAccType = 12;
+	///银行可用金额
+	double bankUseAmount = 13;
+	///银行可取金额
+	double bankFetchAmount = 14;
 }

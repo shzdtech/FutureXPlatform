@@ -1,0 +1,48 @@
+{
+  "system": {
+    "version": "0.8-2016.10.19-00.00",
+    "service": {
+      "config": "service.ctp.json"
+    },
+    "databases": {
+      "configs": [ "mysql" ],
+      "mysql": {
+        "key": "default",
+        "dbtype": "mysql",
+        "url": "tcp://rm-uf61c095vt8jo2589o.mysql.rds.aliyuncs.com/futurexdb",
+        "user": "zhuyi",
+        "password": "Zhuyi@2701",
+        "autocommit": "1",
+        "poolsize": "2",
+        "heartbeat": "60000",
+        "checksql": "select 1"
+      }
+    },
+    "serializers": {
+      "modules": [ "default", "business" ],
+      "default": {
+        "module.uuid": "com.micro.future.message.serializer.dll",
+        "module.path": "pbserializer.dll",
+        "class.uuid": "factory.message.serializer"
+      },
+      "business": {
+        "module.uuid": "com.micro.future.message.biz.serializer.dll",
+        "module.path": "pbbizserializer.dll",
+        "class.uuid": "factory.message.biz.serializer"
+      }
+    },
+
+    "sysparam": {
+      "mergedbparam": "override",
+      "DEFAULT.CLIENT.SYMBOL": "boc_otc",
+      "CTP.MD.SERVER": "tcp://ctpfz1-front3.citicsf.com:51213",
+      "CTP.MD.LOGIN.BROKERID": "66666",
+      "CTP.MD.LOGIN.USERID": "895816",
+      "CTP.MD.LOGIN.PASSWORD": "260519",
+      "CTP.TRADER.SERVER": "tcp://ctpfz1-front3.citicsf.com:51205",
+      "CTP.TRADER.LOGIN.BROKERID": "66666",
+      "CTP.TRADER.LOGIN.USERID": "895816",
+      "CTP.TRADER.LOGIN.PASSWORD": "260519"
+    }
+  }
+}

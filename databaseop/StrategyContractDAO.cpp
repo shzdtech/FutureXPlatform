@@ -103,7 +103,7 @@ void StrategyContractDAO::RetrievePricingContracts(const std::string& strategyEx
 	std::vector<PricingContract>& pricingContracts)
 {
 	static const std::string sql_findcontractparam(
-		"SELECT pricing_exchange, pricing_contract, weight FROM strategy_pricing_contract "
+		"SELECT pricing_exchange, pricing_contract, weight, adjust FROM strategy_pricing_contract "
 		"WHERE strategy_exchange = ? and strategy_contract = ? and accountid = ?");
 
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
@@ -119,7 +119,7 @@ void StrategyContractDAO::RetrievePricingContracts(const std::string& strategyEx
 
 		while (rs->next())
 		{
-			PricingContract cp(rs->getString(1), rs->getString(2), rs->getDouble(3));
+			PricingContract cp(rs->getString(1), rs->getString(2), rs->getDouble(3), rs->getDouble(4));
 			pricingContracts.push_back(std::move(cp));
 		}
 	}
@@ -134,7 +134,7 @@ void StrategyContractDAO::RetrievePricingContracts(const std::string& strategyEx
 void StrategyContractDAO::RetrievePricingContractsByProductType(int productType, autofillmap<UserContractKey, std::vector<PricingContract>>& pricingContractMap)
 {
 	static const std::string sql_findcontractparam(
-		"SELECT accountid, strategy_exchange, strategy_contract, pricing_exchange, pricing_contract, weight from vw_pricing_contract_property "
+		"SELECT accountid, strategy_exchange, strategy_contract, pricing_exchange, pricing_contract, weight, adjust from vw_pricing_contract_property "
 		"WHERE strategy_product_type = ?");
 
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
@@ -149,7 +149,7 @@ void StrategyContractDAO::RetrievePricingContractsByProductType(int productType,
 		while (rs->next())
 		{
 			auto& pricingVector = pricingContractMap.getorfill(UserContractKey(rs->getString(2), rs->getString(3), rs->getString(1)));
-			PricingContract cp(rs->getString(4), rs->getString(5), rs->getDouble(6));
+			PricingContract cp(rs->getString(4), rs->getString(5), rs->getDouble(6), rs->getDouble(7));
 			pricingVector.push_back(std::move(cp));
 		}
 	}
@@ -244,6 +244,52 @@ void StrategyContractDAO::UpdateStrategy(const StrategyContractDO & strategyDO)
 		strategyDO.VolModel ? prestmt->setString(10, strategyDO.VolModel->InstanceName) : prestmt->setNull(10, 0);
 
 		prestmt->executeUpdate();
+	}
+	catch (sql::SQLException& sqlEx)
+	{
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
+	}
+}
+
+void StrategyContractDAO::UpdatePricingContract(const StrategyContractDO& sto)
+{
+	static const std::string sql_delricingcontract(
+		"DELETE FROM strategy_pricing_contract "
+		"WHERE accountid=? AND strategy_exchange=? AND strategy_contract=?");
+
+	static const std::string sql_savepricingcontract(
+		"INSERT INTO strategy_pricing_contract (accountid, strategy_exchange, strategy_contract, "
+		"pricing_exchange, pricing_contract, weight, adjust) VALUES (?,?,?,?,?,?,?) "
+		"ON DUPLICATE KEY UPDATE weight = ?, adjust = ?");
+
+	ModelParamsDO_Ptr ret;
+
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
+	try
+	{
+		auto conn = session->getConnection();
+		AutoClosePreparedStmt_Ptr delstmt(conn->prepareStatement(sql_delricingcontract));
+		delstmt->setString(1, sto.UserID());
+		delstmt->setString(2, sto.ExchangeID());
+		delstmt->setString(3, sto.InstrumentID());
+		delstmt->executeUpdate();
+
+		AutoClosePreparedStmt_Ptr prestmt(conn->prepareStatement(sql_savepricingcontract));
+		prestmt->setString(1, sto.UserID());
+		prestmt->setString(2, sto.ExchangeID());
+		prestmt->setString(3, sto.InstrumentID());
+
+		for (auto& contract : sto.PricingContracts)
+		{
+			prestmt->setDouble(4, contract.Weight);
+			prestmt->setDouble(5, contract.Adjust);
+			prestmt->setString(6, contract.ExchangeID());
+			prestmt->setString(7, contract.InstrumentID());
+			prestmt->setDouble(8, contract.Weight);
+			prestmt->setDouble(9, contract.Adjust);
+			prestmt->executeUpdate();
+		}
 	}
 	catch (sql::SQLException& sqlEx)
 	{

@@ -164,6 +164,7 @@
     <ClCompile Include="OrderManager.cpp" />
     <ClCompile Include="OrderSeqGen.cpp" />
     <ClCompile Include="OTCOrderManager.cpp" />
+    <ClCompile Include="UserPositionContext.cpp" />
     <ClCompile Include="UserTradeContext.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -179,7 +180,8 @@
     <ClInclude Include="OrderSeqGen.h" />
     <ClInclude Include="ordermgr_export.h" />
     <ClInclude Include="OTCOrderManager.h" />
-    <ClInclude Include="UserTradeContext..h" />
+    <ClInclude Include="UserPositionContext.h" />
+    <ClInclude Include="UserTradeContext.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\databaseop\databaseop.vcxproj">

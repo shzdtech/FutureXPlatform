@@ -5,24 +5,33 @@
  * Purpose: Implementation of the class UserOrderContext
  ***********************************************************************/
 
-#include "UserTradeContext..h"
+#include "UserTradeContext.h"
 
-void UserTradeContext::AddTrade(const TradeRecordDO_Ptr & tradeDO_Ptr)
+void UserTradeContext::UpsertTrade(const TradeRecordDO_Ptr & tradeDO_Ptr)
 {
-	if (!_userTradeMap.contains(tradeDO_Ptr->UserID()))
-		_userTradeMap.insert(tradeDO_Ptr->UserID(), std::move(cuckoohashmap_wrapper<uint64_t, TradeRecordDO_Ptr>{}));
-
-	_userTradeMap.update_fn(tradeDO_Ptr->UserID(), [&tradeDO_Ptr](cuckoohashmap_wrapper<uint64_t, TradeRecordDO_Ptr>& tradeMap)
+	_tradeIdMap.upsert(tradeDO_Ptr->TradeID, [&tradeDO_Ptr](TradeRecordDO_Ptr& tradeptr)
 	{
-		tradeMap.map().insert(tradeDO_Ptr->TradeID, tradeDO_Ptr);
-	});
+		*tradeptr = *tradeDO_Ptr;
+	}, tradeDO_Ptr);
 
-	_tradeIdMap.insert(tradeDO_Ptr->TradeID, tradeDO_Ptr);
+	if (!_userTradeMap.contains(tradeDO_Ptr->UserID()))
+		_userTradeMap.insert(tradeDO_Ptr->UserID(), std::move(cuckoohashmap_wrapper<uint64_t, TradeRecordDO_Ptr>(true)));
+
+	_userTradeMap.update_fn(tradeDO_Ptr->UserID(), [this, &tradeDO_Ptr](cuckoohashmap_wrapper<uint64_t, TradeRecordDO_Ptr>& tradeMap)
+	{
+		if (!tradeMap.map()->contains(tradeDO_Ptr->TradeID))
+		{
+			if (auto instoreptr = FindTrade(tradeDO_Ptr->TradeID))
+			{
+				tradeMap.map()->insert(tradeDO_Ptr->TradeID, instoreptr);
+			}
+		}
+	});
 }
 
-void UserTradeContext::AddTrade(const TradeRecordDO& tradeDO)
+void UserTradeContext::UpsertTrade(const TradeRecordDO& tradeDO)
 {
-	AddTrade(std::make_shared<TradeRecordDO>(tradeDO));
+	UpsertTrade(std::make_shared<TradeRecordDO>(tradeDO));
 }
 
 void UserTradeContext::Clear(void)
@@ -31,17 +40,17 @@ void UserTradeContext::Clear(void)
 	_tradeIdMap.clear();
 }
 
-TradeRecordDO_Ptr UserTradeContext::RemoveTrade(uint64_t orderID)
+TradeRecordDO_Ptr UserTradeContext::RemoveTrade(uint64_t tradeID)
 {
 	TradeRecordDO_Ptr ret;
-	if (_tradeIdMap.find(orderID, ret))
+	if (_tradeIdMap.find(tradeID, ret))
 	{
-		_tradeIdMap.erase(orderID);
+		_tradeIdMap.erase(tradeID);
 
 		cuckoohashmap_wrapper<uint64_t, TradeRecordDO_Ptr> tradeMap;
 		if(_userTradeMap.find(ret->UserID(), tradeMap))
 		{
-			tradeMap.map().erase(orderID);
+			tradeMap.map()->erase(tradeID);
 		}
 	}
 	return ret;
@@ -57,27 +66,19 @@ cuckoohash_map<std::string, cuckoohashmap_wrapper<uint64_t, TradeRecordDO_Ptr>>&
 	return _userTradeMap;
 }
 
-vector_ptr<TradeRecordDO> UserTradeContext::GetTradesByUser(const std::string & userID)
+cuckoohashmap_wrapper<uint64_t, TradeRecordDO_Ptr> UserTradeContext::GetTradesByUser(const std::string & userID)
 {
-	auto ret = std::make_shared<std::vector<TradeRecordDO>>();
-	cuckoohashmap_wrapper<uint64_t, TradeRecordDO_Ptr> tradeMap;
-	if (_userTradeMap.find(userID, tradeMap))
-	{
-		auto lt = tradeMap.map().lock_table();
-		for (auto& ut : lt)
-		{
-			ret->push_back(*ut.second);
-		}
-	}
+	cuckoohashmap_wrapper<uint64_t, TradeRecordDO_Ptr> ret;
+	_userTradeMap.find(userID, ret);
 
 	return ret;
 }
 
 
-TradeRecordDO_Ptr UserTradeContext::FindTrade(uint64_t orderID)
+TradeRecordDO_Ptr UserTradeContext::FindTrade(uint64_t tradeID)
 {
 	TradeRecordDO_Ptr ret;
-	_tradeIdMap.find(orderID, ret);
+	_tradeIdMap.find(tradeID, ret);
 
 	return ret;
 }

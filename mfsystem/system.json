@@ -11,7 +11,7 @@
         "dbtype": "mysql",
         "url": "tcp://rm-uf61c095vt8jo2589o.mysql.rds.aliyuncs.com/futurexdb",
         "user": "zhuyi",
-        "password": "Bocifco123",
+        "password": "Zhuyi@2701",
         "autocommit": "1",
         "poolsize": "2",
         "heartbeat": "60000",

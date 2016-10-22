@@ -62,10 +62,15 @@ dataobj_ptr BlackScholesIVM::Compute(
 	if (!pBase_Mdo)
 		return nullptr;
 
+	if(sdo.PricingContracts.empty())
+		return nullptr;
+
+	double adjust = sdo.PricingContracts[0].Adjust;
+
 	double price = (pMdo->Bid().Price + pMdo->Ask().Price) / 2;
 
-	double base_bidPrice = pBase_Mdo->Bid().Price + paramObj->atmOffset;
-	double base_askdPrice = pBase_Mdo->Ask().Price + paramObj->atmOffset;
+	double base_bidPrice = pBase_Mdo->Bid().Price + adjust;
+	double base_askdPrice = pBase_Mdo->Ask().Price + adjust;
 
 	if (price <= 0 || base_bidPrice <= 0 || base_askdPrice <= 0)
 	{
@@ -92,7 +97,6 @@ const std::map<std::string, double>& BlackScholesIVM::DefaultParams(void) const
 	static std::map<std::string, double> defaultParams = {
 		{ OptionParams::riskFreeRate_name , GlobalSettings::RiskFreeRate() },
 		{ OptionParams::dividend_name , 0 },
-		{ OptionParams::atmOffset_name, 0 },
 	};
 	return defaultParams;
 }
@@ -103,7 +107,6 @@ void BlackScholesIVM::ParseParams(const std::map<std::string, double>& modelPara
 
 	ret->riskFreeRate = modelParams.at(OptionParams::riskFreeRate_name);
 	ret->dividend = modelParams.at(OptionParams::dividend_name);
-	ret->atmOffset = modelParams.at(OptionParams::atmOffset_name);
 
 	target = std::move(ret);
 }

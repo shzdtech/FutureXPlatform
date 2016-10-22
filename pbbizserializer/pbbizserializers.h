@@ -29,5 +29,8 @@
 #include "PBPortfolioSerializer.h"
 #include "PBTradingDeskParamsSerializer.h"
 
+#include "PBBankSerializer.h"
+#include "PBBankOperationSerializer.h"
+#include "PBUserAccountSerializer.h"
 
 #endif

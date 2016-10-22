@@ -22,7 +22,7 @@
 #include "../bizutility/StrategyModelCache.h"
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       OTCUpdateStrategy::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       OTCUpdateStrategy::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
  // Purpose:    Implementation of OTCUpdateStrategy::HandleRequest()
  // Parameters:
  // - reqDO
@@ -31,7 +31,7 @@
  // Return:     dataobj_ptr
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr OTCUpdateStrategy::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr OTCUpdateStrategy::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	CheckLogin(session);
 
@@ -76,6 +76,8 @@ dataobj_ptr OTCUpdateStrategy::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* 
 				{
 					scDO.PricingContracts[i] = strategyDO.PricingContracts[i];
 				}
+
+				StrategyContractDAO::UpdatePricingContract(scDO);
 			}
 
 			if (strategyDO.PricingModel && scDO.PricingModel->InstanceName != strategyDO.PricingModel->InstanceName)

@@ -10,16 +10,16 @@
 
 #include "../message/LoginHandler.h"
 #include "../common/typedefs.h"
+#include "../bizutility/ExchangeRouterTable.h"
 #include "tradeapi/ThostFtdcUserApiStruct.h"
 #include "ctpexport.h"
 
 class CTP_CLASS_EXPORT CTPLoginHandler : public LoginHandler
 {
 public:
-	dataobj_ptr HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session);
+	dataobj_ptr HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session);
 	dataobj_ptr HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session);
-	virtual int LoginFunction(IRawAPI* rawAPI, ISession* session, 
-		CThostFtdcReqUserLoginField* loginInfo, uint requestId) = 0;
+	virtual int LoginFunction(ISession* session, CThostFtdcReqUserLoginField* loginInfo, uint requestId, const std::string& severName = "") = 0;
 
 protected:
 private:

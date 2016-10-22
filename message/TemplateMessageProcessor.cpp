@@ -13,7 +13,7 @@
 #include "../dataserializer/ExceptionSerializer.h"
 
 
-dataobj_ptr TemplateMessageProcessor::ProcessRequest(const uint msgId, const dataobj_ptr& reqDO, bool sendRsp)
+dataobj_ptr TemplateMessageProcessor::ProcessRequest(const uint32_t msgId, const uint32_t serialId, const dataobj_ptr& reqDO, bool sendRsp)
 {
 	try
 	{
@@ -23,11 +23,11 @@ dataobj_ptr TemplateMessageProcessor::ProcessRequest(const uint msgId, const dat
 			{
 				if (auto pMsgSession = LockMessageSession().get())
 				{
-					if (auto dataobj_ptr = msgHandler->HandleRequest(reqDO, getRawAPI(), pMsgSession))
+					if (auto dataobj_ptr = msgHandler->HandleRequest(serialId, reqDO, getRawAPI(), pMsgSession))
 					{
 						if (sendRsp)
 						{
-							SendDataObject(pMsgSession, msgId, reqDO->SerialId, dataobj_ptr);
+							SendDataObject(pMsgSession, msgId, serialId, dataobj_ptr);
 						}
 						return dataobj_ptr;
 					}
@@ -36,7 +36,7 @@ dataobj_ptr TemplateMessageProcessor::ProcessRequest(const uint msgId, const dat
 		}
 	}
 	catch (MessageException& msgEx) {
-		SendExceptionMessage(msgId, msgEx, reqDO ? reqDO->SerialId : 0);
+		SendExceptionMessage(msgId, msgEx, reqDO ? serialId : 0);
 	}
 	catch (std::exception& ex) {
 		LOG_ERROR << __FUNCTION__ << ": MsgId: " << msgId << ", Error: " << ex.what();
@@ -47,7 +47,7 @@ dataobj_ptr TemplateMessageProcessor::ProcessRequest(const uint msgId, const dat
 	return nullptr;
 }
 
-dataobj_ptr TemplateMessageProcessor::ProcessResponse(const uint msgId, const uint serialId, param_vector & rawRespParams, bool sendRsp)
+dataobj_ptr TemplateMessageProcessor::ProcessResponse(const uint32_t msgId, const uint32_t serialId, param_vector & rawRespParams, bool sendRsp)
 {
 	try
 	{
@@ -82,7 +82,7 @@ dataobj_ptr TemplateMessageProcessor::ProcessResponse(const uint msgId, const ui
 }
 
 int TemplateMessageProcessor::SendDataObject(ISession* session,
-	const uint msgId, const uint serialId, const dataobj_ptr& dataobj)
+	const uint32_t msgId, const uint32_t serialId, const dataobj_ptr& dataobj)
 {
 	int ret = 0;
 	if (_svc_locator_ptr)
@@ -99,7 +99,7 @@ int TemplateMessageProcessor::SendDataObject(ISession* session,
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       TemplateMessageProcessor::OnRequest(const uint msgId, const data_buffer msg)
+// Name:       TemplateMessageProcessor::OnRequest(const uint32_t msgId, const data_buffer msg)
 // Purpose:    Implementation of TemplateMessageProcessor::OnRequest()
 // Parameters:
 // - msgId
@@ -107,12 +107,12 @@ int TemplateMessageProcessor::SendDataObject(ISession* session,
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-int TemplateMessageProcessor::OnRequest(const uint msgId, const data_buffer& msg)
+int TemplateMessageProcessor::OnRequest(const uint32_t msgId, const data_buffer& msg)
 {
 	if (_svc_locator_ptr)
 		if (auto msgSerilzer = _svc_locator_ptr->FindDataSerializer(msgId))
 			if (auto reqDO = msgSerilzer->Deserialize(msg))
-				ProcessRequest(msgId, reqDO, true);
+				ProcessRequest(msgId, reqDO->SerialId, reqDO, true);
 
 	return 0;
 }
@@ -126,7 +126,7 @@ int TemplateMessageProcessor::OnRequest(const uint msgId, const data_buffer& msg
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-int TemplateMessageProcessor::OnResponse(const uint msgId, const uint serialId, param_vector& rawRespParams)
+int TemplateMessageProcessor::OnResponse(const uint32_t msgId, const uint32_t serialId, param_vector& rawRespParams)
 {
 	ProcessResponse(msgId, serialId, rawRespParams, true);
 	return 0;
@@ -140,7 +140,7 @@ int TemplateMessageProcessor::OnResponse(const uint msgId, const uint serialId, 
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void TemplateMessageProcessor::SendExceptionMessage(uint msgId, MessageException& msgException, uint serialId)
+void TemplateMessageProcessor::SendExceptionMessage(uint32_t msgId, MessageException& msgException, uint32_t serialId)
 {
 	dataobj_ptr dataobj(new MessageExceptionDO(msgId, serialId, msgException.ErrorType(), msgException.ErrorCode(),
 		msgException.what()));

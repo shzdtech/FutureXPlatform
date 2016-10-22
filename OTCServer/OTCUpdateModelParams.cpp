@@ -19,7 +19,7 @@
 
 
 
-dataobj_ptr OTCUpdateModelParams::HandleRequest(const dataobj_ptr & reqDO, IRawAPI * rawAPI, ISession * session)
+dataobj_ptr OTCUpdateModelParams::HandleRequest(const uint32_t serialId, const dataobj_ptr & reqDO, IRawAPI * rawAPI, ISession * session)
 {
 	CheckLogin(session);
 
@@ -62,5 +62,5 @@ dataobj_ptr OTCUpdateModelParams::HandleRequest(const dataobj_ptr & reqDO, IRawA
 		}
 	}
 
-	return std::make_shared<ResultDO>(reqDO->SerialId);
+	return std::make_shared<ResultDO>(serialId);
 }

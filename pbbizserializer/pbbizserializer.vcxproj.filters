@@ -81,6 +81,15 @@
     <ClCompile Include="PBTradingDeskParamsSerializer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="PBBankSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PBUserAccountSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PBBankOperationSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Protos\businessobj.pb.h">
@@ -147,6 +156,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="PBTradingDeskParamsSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PBBankSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PBUserAccountSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PBBankOperationSerializer.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

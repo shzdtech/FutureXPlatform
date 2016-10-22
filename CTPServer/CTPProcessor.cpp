@@ -7,6 +7,8 @@
 
 #include "CTPProcessor.h"
 
+std::chrono::seconds CTPProcessor::DefaultQueryTime(2);
+
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPProcessor::CTPProcessor()
 // Purpose:    Implementation of CTPProcessor::CTPProcessor()
@@ -48,6 +50,11 @@ IRawAPI* CTPProcessor::getRawAPI(void)
 
 void CTPProcessor::Initialize(IServerContext* serverCtx)
 {
+}
+
+int CTPProcessor::InitializeServer(const std::string& serverAddr)
+{
+	return 0;
 }
 
 bool CTPProcessor::HasLogged(void)

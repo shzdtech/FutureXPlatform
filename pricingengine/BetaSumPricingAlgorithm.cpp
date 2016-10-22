@@ -70,13 +70,15 @@ IPricingDO_Ptr BetaSumPricingAlgorithm::Compute(
 			double K = std::fabs(conparam.Weight) *	quantity * sdo.Multiplier /
 				baseCon.Multiplier;
 
+			double mdBidPrice = md.Bid().Price + conparam.Adjust;
+			double mdAskPrice = md.Ask().Price + conparam.Adjust;
 
 			double VolAdjBidPrice =
-				md.Bid().Price - baseCon.TickSize *
+				mdBidPrice - baseCon.TickSize *
 				(std::fmax(K - md.Bid().Volume, 0.0) / baseCon.DepthVol + baseCon.Gamma);
 
 			double VolAdjAskPrice =
-				md.Ask().Price + baseCon.TickSize *
+				mdAskPrice + baseCon.TickSize *
 				(std::fmax(K - md.Ask().Volume, 0.0) / baseCon.DepthVol + baseCon.Gamma);
 
 			if (conparam.Weight < 0)

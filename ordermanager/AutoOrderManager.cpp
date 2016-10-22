@@ -34,7 +34,7 @@ OrderDO_Ptr AutoOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 	if (orderId == 0 || !FindOrder(orderId))
 	{
 		orderInfo.OrderID = OrderSeqGen::GenOrderID();
-		_userOrderCtx.AddOrder(orderInfo);
+		_userOrderCtx.UpsertOrder(orderInfo.OrderID, orderInfo);
 		ret = _pOrderAPI->CreateOrder(orderInfo);
 		if (!ret)
 		{
@@ -74,9 +74,9 @@ OrderDOVec_Ptr AutoOrderManager::UpdateOrderByStrategy(
 			std::vector<double> tlBuyPrices;
 			std::vector<double> tlSellPrices;
 
-			orderMap.map().update_fn(strategyDO.InstrumentID(), [&](cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>& orders)
+			orderMap.map()->update_fn(strategyDO.InstrumentID(), [&](cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>& orders)
 			{
-				auto tradingOrders = orders.map().lock_table();
+				auto tradingOrders = orders.map()->lock_table();
 
 				for (auto& pair : tradingOrders)
 				{

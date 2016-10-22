@@ -20,6 +20,13 @@ public:
 
 protected:
 private:
+	class static_initializer
+	{
+	public:
+		static_initializer();
+	};
+
+	static static_initializer _static_init;
 };
 
 #endif

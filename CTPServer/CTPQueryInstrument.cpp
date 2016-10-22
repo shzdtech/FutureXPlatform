@@ -27,7 +27,7 @@
 
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       CTPQueryInstrument::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       CTPQueryInstrument::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
  // Purpose:    Implementation of CTPQueryInstrument::HandleRequest()
  // Parameters:
  // - reqDO
@@ -36,7 +36,7 @@
  // Return:     void
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryInstrument::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryInstrument::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	// CheckLogin(session);
 
@@ -58,10 +58,10 @@ dataobj_ptr CTPQueryInstrument::HandleRequest(const dataobj_ptr& reqDO, IRawAPI*
 		if (auto pTradeAPI = ((CTPRawAPI*)rawAPI)->TrdAPI)
 		{
 			CThostFtdcQryInstrumentField req{};
-			std::strcpy(req.ExchangeID, exchangeid.data());
-			std::strcpy(req.InstrumentID, instrumentid.data());
-			std::strcpy(req.ProductID, productid.data());
-			auto retCode = pTradeAPI->ReqQryInstrument(&req, reqDO->SerialId);
+			std::strncpy(req.ExchangeID, exchangeid.data(), sizeof(req.ExchangeID) - 1);
+			std::strncpy(req.InstrumentID, instrumentid.data(), sizeof(req.InstrumentID) - 1);
+			std::strncpy(req.ProductID, productid.data(), sizeof(req.ProductID) - 1);
+			auto retCode = pTradeAPI->ReqQryInstrument(&req, serialId);
 			// CTPUtility::CheckReturnError(retCode);
 		}
 		throw NotFoundException();

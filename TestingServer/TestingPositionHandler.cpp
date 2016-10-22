@@ -2,7 +2,7 @@
 #include "../dataobject/UserPositionDO.h"
 
 
-dataobj_ptr TestingPositionHandler::HandleRequest(const dataobj_ptr & reqDO, IRawAPI * rawAPI, ISession * session)
+dataobj_ptr TestingPositionHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr & reqDO, IRawAPI * rawAPI, ISession * session)
 {
 	UserPositionExDO position("TSEX", "TS1610");
 

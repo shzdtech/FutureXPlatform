@@ -27,6 +27,7 @@
 
 #include "../bizutility/ContractCache.h"
 #include "../bizutility/StrategyModelCache.h"
+#include "../bizutility/ExchangeRouterTable.h"
 
 #include "../ordermanager/OrderSeqGen.h"
  ////////////////////////////////////////////////////////////////////////
@@ -93,15 +94,19 @@ int CTPOTCWorkerProcessor::LoginSystemUserIfNeed(void)
 		CThostFtdcReqUserLoginField req{};
 		if (!_serverCtx->getConfigVal(CTP_MD_BROKERID, value))
 			value = SysParam::Get(CTP_MD_BROKERID);
-		std::strcpy(req.BrokerID, value.data());
+		std::strncpy(req.BrokerID, value.data(), sizeof(req.BrokerID) - 1);
+
+		std::string address;
+		ExchangeRouterTable::TryFind(value + ':' + ExchangeRouterTable::TARGET_MD, address);
+		InitializeServer(address);
 
 		if (!_serverCtx->getConfigVal(CTP_MD_USERID, value))
 			value = SysParam::Get(CTP_MD_USERID);
-		std::strcpy(req.UserID, value.data());
+		std::strncpy(req.UserID, value.data(), sizeof(req.UserID) - 1);
 
 		if (!_serverCtx->getConfigVal(CTP_MD_PASSWORD, value))
 			value = SysParam::Get(CTP_MD_PASSWORD);
-		std::strcpy(req.Password, value.data());
+		std::strncpy(req.Password, value.data(), sizeof(req.Password) - 1);
 
 		ret = ((CTPRawAPI*)getRawAPI())->MdAPI->ReqUserLogin(&req, AppContext::GenNextSeq());
 	}

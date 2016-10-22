@@ -19,7 +19,7 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr TestingReturnMarketDataHandler::HandleRequest(const dataobj_ptr & reqDO, IRawAPI * rawAPI, ISession * session)
+dataobj_ptr TestingReturnMarketDataHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr & reqDO, IRawAPI * rawAPI, ISession * session)
 {
 	return reqDO;
 }

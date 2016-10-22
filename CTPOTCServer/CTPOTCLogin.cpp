@@ -31,7 +31,7 @@
 
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       CTPOTCLogin::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, IMessageProcessor* session)
+ // Name:       CTPOTCLogin::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, IMessageProcessor* session)
  // Purpose:    Implementation of CTPOTCLogin::HandleRequest()
  // Parameters:
  // - reqDO
@@ -40,7 +40,7 @@
  // Return:     dataobj_ptr
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCLogin::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOTCLogin::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	auto ret = Login(reqDO, rawAPI, session);
 

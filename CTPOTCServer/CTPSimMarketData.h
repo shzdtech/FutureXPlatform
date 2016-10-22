@@ -14,7 +14,7 @@
 class CTP_OTC_CLASS_EXPORT CTPSimMarketData : public NopHandler
 {
 public:
-	virtual dataobj_ptr HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session);
+	virtual dataobj_ptr HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session);
 
 protected:
 private:

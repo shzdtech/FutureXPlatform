@@ -25,7 +25,7 @@ static int callback(void *NotUsed, int count, char **data, char **columns)
 	return 0;
 }
 
-dataobj_ptr TestingQueryInstruments::HandleRequest(const dataobj_ptr & reqDO, IRawAPI * rawAPI, ISession * session)
+dataobj_ptr TestingQueryInstruments::HandleRequest(const uint32_t serialId, const dataobj_ptr & reqDO, IRawAPI * rawAPI, ISession * session)
 {
 	if (!_loaded)
 	{

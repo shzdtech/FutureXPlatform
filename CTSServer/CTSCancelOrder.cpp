@@ -11,7 +11,7 @@
 #include "../common/BizErrorIDs.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTSCancelOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       CTSCancelOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTSCancelOrder::HandleRequest()
 // Parameters:
 // - reqDO
@@ -20,7 +20,7 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTSCancelOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTSCancelOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	auto pOrder = (OrderRequestDO*)reqDO.get();
 	auto api = (CTSAPIWrapper*)rawAPI;

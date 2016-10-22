@@ -15,11 +15,7 @@ class CTP_CLASS_EXPORT CTPMarketDataProcessor : public CTPProcessor, public CTho
 public:
 	CTPMarketDataProcessor();
 	~CTPMarketDataProcessor();
-	void Initialize(IServerContext* serverCtx);
-
-	int Login(CThostFtdcReqUserLoginField* loginInfo, uint32_t serialId);
-protected:
-	uint32_t _lastLoginSerialId;
+	int InitializeServer(const std::string& serverAddr);
 
 private:
 	CThostFtdcMdApi* _mdAPI;

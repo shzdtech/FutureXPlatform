@@ -80,12 +80,15 @@
     <CustomBuild Include="system.json">
       <Filter>config\json</Filter>
     </CustomBuild>
+    <CustomBuild Include="factory.ctp.json">
+      <Filter>config\json</Filter>
+    </CustomBuild>
+    <CustomBuild Include="service.ctp.json">
+      <Filter>config\json</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <None Include="service.ctp.json">
-      <Filter>config\json</Filter>
-    </None>
-    <None Include="factory.ctp.json">
+    <None Include="system.ctp.json">
       <Filter>config\json</Filter>
     </None>
   </ItemGroup>

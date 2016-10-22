@@ -23,7 +23,7 @@
 #include "../databaseop/StrategyContractDAO.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       OTCUpdateContractParam::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       OTCUpdateContractParam::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of OTCUpdateContractParam::HandleRequest()
 // Parameters:
 // - reqDO
@@ -32,7 +32,7 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr OTCUpdateContractParam::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr OTCUpdateContractParam::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	CheckLogin(session);
 
@@ -55,5 +55,5 @@ dataobj_ptr OTCUpdateContractParam::HandleRequest(const dataobj_ptr& reqDO, IRaw
 		}
 	}
 
-	return std::make_shared<ResultDO>(reqDO->SerialId);
+	return std::make_shared<ResultDO>(serialId);
 }

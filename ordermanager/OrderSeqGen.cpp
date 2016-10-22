@@ -10,6 +10,15 @@
 #include <atomic>
 
 static std::atomic_uint64_t _seqGen(0);
+static uint64_t _baseId = 0;
+OrderSeqGen::static_initializer OrderSeqGen::_static_init;
+
+OrderSeqGen::static_initializer::static_initializer()
+{
+	std::time_t timestamp = std::time(nullptr);
+	std::srand(timestamp);
+	_baseId = std::rand() % 0x1000;
+}
 
 void OrderSeqGen::SetStartSeq(uint64_t value)
 {
@@ -28,7 +37,6 @@ uint64_t OrderSeqGen::GetCurrentSeq(void)
 
 uint64_t OrderSeqGen::GenOrderID(void)
 {
-	static uint64_t timestamp = std::time(nullptr);
-	uint64_t ret = OrderSeqGen::GetNextSeq();
-	return (ret << 16) + (timestamp & 0xFFFF);
+	uint64_t ret = _baseId | (OrderSeqGen::GetNextSeq() << 12);
+	return ret;
 }

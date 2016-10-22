@@ -22,4 +22,13 @@
 #include "CTPTradeUpdated.h"
 #include "CTPAccountLogin.h"
 
+//Transfer
+#include "CTPFromBankToFuture.h"
+#include "CTPFromFutureToBank.h"
+#include "CTPQueryTransferBank.h"
+#include "CTPQueryTransferSerial.h"
+#include "CTPQueryUserRegAccount.h"
+#include "CTPTransferUpdated.h"
+#include "CTPQueryUserBankAccount.h"
+
 #endif

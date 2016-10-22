@@ -17,7 +17,7 @@ public:
 	CTPTradeProcessor();
 	CTPTradeProcessor(const CTPRawAPI_Ptr& rawAPI);
 	~CTPTradeProcessor();
-	void Initialize(IServerContext* serverCtx);
+	int InitializeServer(const std::string& serverAddr);
 
 protected:
 

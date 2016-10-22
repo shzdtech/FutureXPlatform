@@ -1,7 +1,7 @@
 #include "TestingCancelOrderHandler.h"
 #include "../dataobject/OrderDO.h"
 
-dataobj_ptr TestingCancelOrderHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI * rawAPI, ISession * session)
+dataobj_ptr TestingCancelOrderHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI * rawAPI, ISession * session)
 {
 	auto orderDO_ptr = std::make_shared<OrderDO>(*(OrderDO*)reqDO.get());
 

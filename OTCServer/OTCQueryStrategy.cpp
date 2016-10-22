@@ -24,7 +24,7 @@
 
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       OTCQueryStrategy::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       OTCQueryStrategy::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
  // Purpose:    Implementation of OTCQueryStrategy::HandleRequest()
  // Parameters:
  // - reqDO
@@ -33,7 +33,7 @@
  // Return:     dataobj_ptr
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr OTCQueryStrategy::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr OTCQueryStrategy::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	CheckLogin(session);
 	auto sDOVec_Ptr = std::make_shared<VectorDO<StrategyContractDO>>();

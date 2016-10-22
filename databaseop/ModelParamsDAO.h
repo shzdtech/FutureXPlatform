@@ -1,4 +1,6 @@
-#pragma once
+#if !defined(__databaseop_ModelParamsDAO_h)
+#define __databaseop_ModelParamsDAO_h
+
 #include <string>
 #include "../dataobject/ModelParamsDO.h"
 #include "../dataobject/TemplateDO.h"
@@ -14,3 +16,4 @@ public:
 	static void NewUserModel(const ModelParamsDO & modelParams);
 };
 
+#endif

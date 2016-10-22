@@ -45,20 +45,17 @@ CTPTradeProcessor::~CTPTradeProcessor()
 }
 
 
-////////////////////////////////////////////////////////////////////////
-// Name:       CTPTradeProcessor::OnInit()
-// Purpose:    Implementation of CTPTradeProcessor::OnInit()
-// Return:     void
-////////////////////////////////////////////////////////////////////////
+int CTPTradeProcessor::InitializeServer(const std::string & serverAddr)
+{
+	int ret = 0;
 
-void CTPTradeProcessor::Initialize(IServerContext * serverCtx) {
 	if (!_rawAPI->TrdAPI)
 	{
 		_rawAPI->TrdAPI = CThostFtdcTraderApi::CreateFtdcTraderApi();
 		_rawAPI->TrdAPI->RegisterSpi(this);
 
-		std::string server_addr;
-		if (!serverCtx->getConfigVal(CTP_TRADER_SERVER, server_addr))
+		std::string server_addr(serverAddr);
+		if (server_addr.empty() && !_serverCtx->getConfigVal(CTP_TRADER_SERVER, server_addr))
 		{
 			server_addr = SysParam::Get(CTP_TRADER_SERVER);
 		}
@@ -71,9 +68,9 @@ void CTPTradeProcessor::Initialize(IServerContext * serverCtx) {
 
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
+
+	return ret;
 }
-
-
 
 ///当客户端与交易后台建立起通信连接时（还未登录前），该方法被调用。
 void CTPTradeProcessor::OnFrontConnected()
@@ -105,6 +102,7 @@ void CTPTradeProcessor::OnRspAuthenticate(CThostFtdcRspAuthenticateField *pRspAu
 void CTPTradeProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
 	_isLogged = !CTPUtility::HasError(pRspInfo);
+	if (!nRequestID) nRequestID = LoginSerialId;
 	OnResponseMacro(MSG_ID_LOGIN, nRequestID, pRspUserLogin, pRspInfo, &nRequestID, &bIsLast)
 }
 
@@ -124,7 +122,7 @@ void CTPTradeProcessor::OnRspTradingAccountPasswordUpdate(CThostFtdcTradingAccou
 ///报单录入请求响应
 void CTPTradeProcessor::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	OnResponseMacro(MSG_ID_ORDER_UPDATE, nRequestID, pInputOrder, pRspInfo, &nRequestID, &bIsLast)
+	OnResponseMacro(MSG_ID_ORDER_NEW, nRequestID, pInputOrder, pRspInfo, &nRequestID, &bIsLast)
 }
 
 ///预埋单录入请求响应
@@ -137,7 +135,9 @@ void CTPTradeProcessor::OnRspParkedOrderAction(CThostFtdcParkedOrderActionField 
 void CTPTradeProcessor::OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (pInputOrderAction->ActionFlag == THOST_FTDC_AF_Delete)
-		OnResponseMacro(MSG_ID_ORDER_UPDATE, nRequestID, pInputOrderAction, pRspInfo, &nRequestID, &bIsLast)
+	{
+		OnResponseMacro(MSG_ID_ORDER_CANCEL, nRequestID, pInputOrderAction, pRspInfo, &nRequestID, &bIsLast)
+	}
 }
 
 ///查询最大报单数量响应
@@ -210,7 +210,10 @@ void CTPTradeProcessor::OnRspQryDepthMarketData(CThostFtdcDepthMarketDataField *
 void CTPTradeProcessor::OnRspQrySettlementInfo(CThostFtdcSettlementInfoField *pSettlementInfo, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
 
 ///请求查询转帐银行响应
-void CTPTradeProcessor::OnRspQryTransferBank(CThostFtdcTransferBankField *pTransferBank, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
+void CTPTradeProcessor::OnRspQryTransferBank(CThostFtdcTransferBankField *pTransferBank, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	OnResponseMacro(MSG_ID_QUERY_TRANSFER_BANK, nRequestID, pTransferBank, pRspInfo, &nRequestID, &bIsLast)
+}
 
 ///请求查询投资者持仓明细响应
 void CTPTradeProcessor::OnRspQryInvestorPositionDetail(CThostFtdcInvestorPositionDetailField *pInvestorPositionDetail, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
@@ -231,10 +234,16 @@ void CTPTradeProcessor::OnRspQryCFMMCTradingAccountKey(CThostFtdcCFMMCTradingAcc
 void CTPTradeProcessor::OnRspQryEWarrantOffset(CThostFtdcEWarrantOffsetField *pEWarrantOffset, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
 
 ///请求查询转帐流水响应
-void CTPTradeProcessor::OnRspQryTransferSerial(CThostFtdcTransferSerialField *pTransferSerial, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
+void CTPTradeProcessor::OnRspQryTransferSerial(CThostFtdcTransferSerialField *pTransferSerial, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	OnResponseMacro(MSG_ID_QUERY_TRANSFER_SERIAL, nRequestID, pTransferSerial, pRspInfo, &nRequestID, &bIsLast);
+}
 
 ///请求查询银期签约关系响应
-void CTPTradeProcessor::OnRspQryAccountregister(CThostFtdcAccountregisterField *pAccountregister, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
+void CTPTradeProcessor::OnRspQryAccountregister(CThostFtdcAccountregisterField *pAccountregister, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	OnResponseMacro(MSG_ID_QUERY_USER_BANKS, nRequestID, pAccountregister, pRspInfo, &nRequestID, &bIsLast);
+}
 
 ///错误应答
 void CTPTradeProcessor::OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
@@ -242,10 +251,7 @@ void CTPTradeProcessor::OnRspError(CThostFtdcRspInfoField *pRspInfo, int nReques
 ///报单通知
 void CTPTradeProcessor::OnRtnOrder(CThostFtdcOrderField *pOrder)
 {
-	if (pOrder)
-	{
-		OnResponseMacro(MSG_ID_ORDER_UPDATE, 0, pOrder);
-	}
+	OnResponseMacro(MSG_ID_ORDER_UPDATE, pOrder->RequestID, pOrder);
 }
 
 ///成交通知
@@ -255,28 +261,30 @@ void CTPTradeProcessor::OnRtnTrade(CThostFtdcTradeField *pTrade)
 	int nRequestID = 0;
 	OnResponseMacro(MSG_ID_TRADE_RTN, 0, pTrade, nullptr, &nRequestID, &bIsLast);
 
-	CThostFtdcQryInvestorPositionField req{};
-	std::strcpy(req.InstrumentID, pTrade->InstrumentID);
+	//CThostFtdcQryInvestorPositionField req{};
+	//std::strcpy(req.InstrumentID, pTrade->InstrumentID);
 
-	for (int i = 0; i < 5; i++) {
-		int iRet = _rawAPI->TrdAPI->ReqQryInvestorPosition(&req, 0);
-		if (iRet == 0) // Too many requests, wait for 1s
-			break;
-		std::this_thread::sleep_for(std::chrono::seconds(1));
-	}
+	//for (int i = 0; i < 5; i++) {
+	//	int iRet = _rawAPI->TrdAPI->ReqQryInvestorPosition(&req, 0);
+	//	if (iRet == 0) // Too many requests, wait for 1s
+	//		break;
+	//	std::this_thread::sleep_for(std::chrono::seconds(1));
+	//}
 }
 
 ///报单录入错误回报
 void CTPTradeProcessor::OnErrRtnOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo)
 {
-	OnResponseMacro(MSG_ID_ORDER_UPDATE, 0, pInputOrder, pRspInfo);
+	OnResponseMacro(MSG_ID_ORDER_NEW, pInputOrder->RequestID, pInputOrder, pRspInfo)
 }
 
 ///报单操作错误回报
 void CTPTradeProcessor::OnErrRtnOrderAction(CThostFtdcOrderActionField *pOrderAction, CThostFtdcRspInfoField *pRspInfo)
 {
 	if (pOrderAction->ActionFlag == THOST_FTDC_AF_Delete)
-		OnResponseMacro(MSG_ID_ORDER_UPDATE, 0, pOrderAction, pRspInfo);
+	{
+		OnResponseMacro(MSG_ID_ORDER_CANCEL, pOrderAction->RequestID, pOrderAction, pRspInfo)
+	}
 }
 
 ///合约交易状态通知
@@ -307,10 +315,16 @@ void CTPTradeProcessor::OnRspQryBrokerTradingParams(CThostFtdcBrokerTradingParam
 void CTPTradeProcessor::OnRspQryBrokerTradingAlgos(CThostFtdcBrokerTradingAlgosField *pBrokerTradingAlgos, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
 
 ///银行发起银行资金转期货通知
-void CTPTradeProcessor::OnRtnFromBankToFutureByBank(CThostFtdcRspTransferField *pRspTransfer) {};
+void CTPTradeProcessor::OnRtnFromBankToFutureByBank(CThostFtdcRspTransferField *pRspTransfer)
+{
+	OnResponseMacro(MSG_ID_RET_BANK_TO_FUTURE, pRspTransfer->RequestID, pRspTransfer);
+}
 
 ///银行发起期货资金转银行通知
-void CTPTradeProcessor::OnRtnFromFutureToBankByBank(CThostFtdcRspTransferField *pRspTransfer) {};
+void CTPTradeProcessor::OnRtnFromFutureToBankByBank(CThostFtdcRspTransferField *pRspTransfer)
+{
+	OnResponseMacro(MSG_ID_RET_FUTURE_TO_BANK, pRspTransfer->RequestID, pRspTransfer);
+}
 
 ///银行发起冲正银行转期货通知
 void CTPTradeProcessor::OnRtnRepealFromBankToFutureByBank(CThostFtdcRspRepealField *pRspRepeal) {};
@@ -319,10 +333,32 @@ void CTPTradeProcessor::OnRtnRepealFromBankToFutureByBank(CThostFtdcRspRepealFie
 void CTPTradeProcessor::OnRtnRepealFromFutureToBankByBank(CThostFtdcRspRepealField *pRspRepeal) {};
 
 ///期货发起银行资金转期货通知
-void CTPTradeProcessor::OnRtnFromBankToFutureByFuture(CThostFtdcRspTransferField *pRspTransfer) {};
+void CTPTradeProcessor::OnRtnFromBankToFutureByFuture(CThostFtdcRspTransferField *pRspTransfer)
+{
+	if (auto session = LockMessageSession())
+	{
+		if (pRspTransfer->SessionID == session->getUserInfo()->getSessionId())
+		{
+			OnResponseMacro(MSG_ID_REQ_BANK_TO_FUTURE, pRspTransfer->RequestID, pRspTransfer);
+		}
+	}
+
+	OnResponseMacro(MSG_ID_RET_BANK_TO_FUTURE, pRspTransfer->RequestID, pRspTransfer);
+}
 
 ///期货发起期货资金转银行通知
-void CTPTradeProcessor::OnRtnFromFutureToBankByFuture(CThostFtdcRspTransferField *pRspTransfer) {};
+void CTPTradeProcessor::OnRtnFromFutureToBankByFuture(CThostFtdcRspTransferField *pRspTransfer)
+{
+	if (auto session = LockMessageSession())
+	{
+		if (pRspTransfer->SessionID == session->getUserInfo()->getSessionId())
+		{
+			OnResponseMacro(MSG_ID_REQ_FUTURE_TO_BANK, pRspTransfer->RequestID, pRspTransfer);
+		}
+	}
+
+	OnResponseMacro(MSG_ID_RET_FUTURE_TO_BANK, pRspTransfer->RequestID, pRspTransfer);
+}
 
 ///系统运行时期货端手工发起冲正银行转期货请求，银行处理完毕后报盘发回的通知
 void CTPTradeProcessor::OnRtnRepealFromBankToFutureByFutureManual(CThostFtdcRspRepealField *pRspRepeal) {};
@@ -331,13 +367,22 @@ void CTPTradeProcessor::OnRtnRepealFromBankToFutureByFutureManual(CThostFtdcRspR
 void CTPTradeProcessor::OnRtnRepealFromFutureToBankByFutureManual(CThostFtdcRspRepealField *pRspRepeal) {};
 
 ///期货发起查询银行余额通知
-void CTPTradeProcessor::OnRtnQueryBankBalanceByFuture(CThostFtdcNotifyQueryAccountField *pNotifyQueryAccount) {};
+void CTPTradeProcessor::OnRtnQueryBankBalanceByFuture(CThostFtdcNotifyQueryAccountField *pNotifyQueryAccount)
+{
+	OnResponseMacro(MSG_ID_QUERY_USER_BANKACCOUNT, pNotifyQueryAccount->RequestID, pNotifyQueryAccount);
+}
 
 ///期货发起银行资金转期货错误回报
-void CTPTradeProcessor::OnErrRtnBankToFutureByFuture(CThostFtdcReqTransferField *pReqTransfer, CThostFtdcRspInfoField *pRspInfo) {};
+void CTPTradeProcessor::OnErrRtnBankToFutureByFuture(CThostFtdcReqTransferField *pReqTransfer, CThostFtdcRspInfoField *pRspInfo) 
+{
+	OnResponseMacro(MSG_ID_REQ_BANK_TO_FUTURE, pReqTransfer->RequestID, pReqTransfer, pRspInfo);
+}
 
 ///期货发起期货资金转银行错误回报
-void CTPTradeProcessor::OnErrRtnFutureToBankByFuture(CThostFtdcReqTransferField *pReqTransfer, CThostFtdcRspInfoField *pRspInfo) {};
+void CTPTradeProcessor::OnErrRtnFutureToBankByFuture(CThostFtdcReqTransferField *pReqTransfer, CThostFtdcRspInfoField *pRspInfo)
+{
+	OnResponseMacro(MSG_ID_REQ_FUTURE_TO_BANK, pReqTransfer->RequestID, pReqTransfer, pRspInfo);
+}
 
 ///系统运行时期货端手工发起冲正银行转期货错误回报
 void CTPTradeProcessor::OnErrRtnRepealBankToFutureByFutureManual(CThostFtdcReqRepealField *pReqRepeal, CThostFtdcRspInfoField *pRspInfo) {};
@@ -346,7 +391,10 @@ void CTPTradeProcessor::OnErrRtnRepealBankToFutureByFutureManual(CThostFtdcReqRe
 void CTPTradeProcessor::OnErrRtnRepealFutureToBankByFutureManual(CThostFtdcReqRepealField *pReqRepeal, CThostFtdcRspInfoField *pRspInfo) {};
 
 ///期货发起查询银行余额错误回报
-void CTPTradeProcessor::OnErrRtnQueryBankBalanceByFuture(CThostFtdcReqQueryAccountField *pReqQueryAccount, CThostFtdcRspInfoField *pRspInfo) {};
+void CTPTradeProcessor::OnErrRtnQueryBankBalanceByFuture(CThostFtdcReqQueryAccountField *pReqQueryAccount, CThostFtdcRspInfoField *pRspInfo)
+{
+	OnResponseMacro(MSG_ID_QUERY_USER_BANKACCOUNT, pReqQueryAccount->RequestID, pReqQueryAccount, pRspInfo);
+}
 
 ///期货发起冲正银行转期货请求，银行处理完毕后报盘发回的通知
 void CTPTradeProcessor::OnRtnRepealFromBankToFutureByFuture(CThostFtdcRspRepealField *pRspRepeal) {};
@@ -355,13 +403,22 @@ void CTPTradeProcessor::OnRtnRepealFromBankToFutureByFuture(CThostFtdcRspRepealF
 void CTPTradeProcessor::OnRtnRepealFromFutureToBankByFuture(CThostFtdcRspRepealField *pRspRepeal) {};
 
 ///期货发起银行资金转期货应答
-void CTPTradeProcessor::OnRspFromBankToFutureByFuture(CThostFtdcReqTransferField *pReqTransfer, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
+void CTPTradeProcessor::OnRspFromBankToFutureByFuture(CThostFtdcReqTransferField *pReqTransfer, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	OnResponseMacro(MSG_ID_REQ_BANK_TO_FUTURE, nRequestID, pReqTransfer, pRspInfo, &nRequestID, &bIsLast);
+}
 
 ///期货发起期货资金转银行应答
-void CTPTradeProcessor::OnRspFromFutureToBankByFuture(CThostFtdcReqTransferField *pReqTransfer, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
+void CTPTradeProcessor::OnRspFromFutureToBankByFuture(CThostFtdcReqTransferField *pReqTransfer, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	OnResponseMacro(MSG_ID_REQ_FUTURE_TO_BANK, nRequestID, pReqTransfer, pRspInfo, &nRequestID, &bIsLast);
+}
 
 ///期货发起查询银行余额应答
-void CTPTradeProcessor::OnRspQueryBankAccountMoneyByFuture(CThostFtdcReqQueryAccountField *pReqQueryAccount, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
+void CTPTradeProcessor::OnRspQueryBankAccountMoneyByFuture(CThostFtdcReqQueryAccountField *pReqQueryAccount, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	OnResponseMacro(MSG_ID_QUERY_USER_BANKACCOUNT, nRequestID, pReqQueryAccount, pRspInfo, &nRequestID, &bIsLast);
+}
 
 ///银行发起银期开户通知
 void CTPTradeProcessor::OnRtnOpenAccountByBank(CThostFtdcOpenAccountField *pOpenAccount) {};

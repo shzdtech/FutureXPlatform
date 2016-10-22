@@ -19,7 +19,7 @@
 
 
 
-dataobj_ptr OTCQueryModelParams::HandleRequest(const dataobj_ptr & reqDO, IRawAPI * rawAPI, ISession * session)
+dataobj_ptr OTCQueryModelParams::HandleRequest(const uint32_t serialId, const dataobj_ptr & reqDO, IRawAPI * rawAPI, ISession * session)
 {
 	CheckLogin(session);
 
@@ -37,7 +37,7 @@ dataobj_ptr OTCQueryModelParams::HandleRequest(const dataobj_ptr & reqDO, IRawAP
 
 		for (auto& model : *models)
 		{
-			OnResponseProcMacro(session->getProcessor(), MSG_ID_QUERY_MODELPARAMS, reqDO->SerialId, &model);
+			OnResponseProcMacro(session->getProcessor(), MSG_ID_QUERY_MODELPARAMS, serialId, &model);
 		}
 	}
 	else

@@ -37,6 +37,16 @@ PBBizMessageSerializerFactory::PBBizMessageSerializerFactory()
 	_serializer_map[MSG_ID_TRADE_RTN] = PBTradeRecordSerializer::Instance();
 	_serializer_map[MSG_ID_SETTLEMENT_INFO_CONFIRM] = PBStringMapSerializer::Instance();
 
+	//Transfer
+	_serializer_map[MSG_ID_QUERY_TRANSFER_BANK] = PBBankSerializer::Instance();
+	_serializer_map[MSG_ID_QUERY_USER_BANKS] = PBUserAccountSerializer::Instance();
+	_serializer_map[MSG_ID_QUERY_TRANSFER_SERIAL] = PBBankOperationSerializer::Instance();
+	_serializer_map[MSG_ID_REQ_BANK_TO_FUTURE] = PBBankOperationSerializer::Instance();
+	_serializer_map[MSG_ID_REQ_FUTURE_TO_BANK] = PBBankOperationSerializer::Instance();
+	_serializer_map[MSG_ID_RET_BANK_TO_FUTURE] = PBBankOperationSerializer::Instance();
+	_serializer_map[MSG_ID_RET_FUTURE_TO_BANK] = PBBankOperationSerializer::Instance();
+	_serializer_map[MSG_ID_QUERY_USER_BANKACCOUNT] = PBUserAccountSerializer::Instance();
+
 	//OTC
 	_serializer_map[MSG_ID_SUB_PRICING] = PBSubPricingDataSerializer::Instance();
 	_serializer_map[MSG_ID_RTN_PRICING] = PBPricingDataSerializer::Instance();

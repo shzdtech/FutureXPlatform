@@ -18,13 +18,14 @@
 #include "../utility/TUtil.h"
 #include "../litelogger/LiteLogger.h"
 
+#include "CTPProcessor.h"
 #include "CTPUtility.h"
 #include "CTPConstant.h"
 
 #include "../common/Attribute_Key.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPLoginHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, IMessageProcessor_Ptr session)
+// Name:       CTPLoginHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, IMessageProcessor_Ptr session)
 // Purpose:    Implementation of CTPLoginHandler::HandleRequest()
 // Parameters:
 // - reqDO
@@ -33,25 +34,28 @@
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPLoginHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPLoginHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	if (!session->getLoginTimeStamp())
 	{
+		auto pProcessor = (CTPProcessor*)session->getProcessor().get();
 
 		auto stdo = (MapDO<std::string>*)reqDO.get();
 
 		auto& brokeid = stdo->TryFind(STR_BROKER_ID, EMPTY_STRING);
 		auto& userid = stdo->TryFind(STR_USER_NAME, EMPTY_STRING);
 		auto& password = stdo->TryFind(STR_PASSWORD, EMPTY_STRING);
+		auto& routername = stdo->TryFind(STR_ROUTER_NAME, EMPTY_STRING);
 
 		CThostFtdcReqUserLoginField req{};
 
-		std::strcpy(req.BrokerID, brokeid.data());
-		std::strcpy(req.UserID, userid.data());
-		std::strcpy(req.Password, password.data());
-		std::strcpy(req.UserProductInfo, UUID_MICROFUTURE_CTP);
+		std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID) - 1);
+		std::strncpy(req.UserID, userid.data(), sizeof(req.UserID) - 1);
+		std::strncpy(req.Password, password.data(), sizeof(req.Password) - 1);
+		// std::strcpy(req.UserProductInfo, UUID_MICROFUTURE_CTP);
 
-		int ret = LoginFunction(rawAPI, session, &req, stdo->SerialId);
+		pProcessor->LoginSerialId = serialId;
+		int ret = LoginFunction(session, &req, pProcessor->LoginSerialId, routername);
 		CTPUtility::CheckReturnError(ret);
 		//int ret = ((CThostFtdcMdApi*)rawAPI)->ReqUserLogin(&req, 1);
 

@@ -14,7 +14,8 @@
 #include "../message/SessionContainer.h"
 #include "../ordermanager/IOrderAPI.h"
 #include "../ordermanager/UserOrderContext.h"
-#include "../ordermanager/UserTradeContext..h"
+#include "../ordermanager/UserTradeContext.h"
+#include "../ordermanager/UserPositionContext.h"
 #include "../utility/autofillmap.h"
 #include "../dataobject/AccountInfoDO.h"
 #include "../dataobject/ExchangeDO.h"
@@ -38,9 +39,9 @@ public:
 
    virtual void RegisterLoggedSession(IMessageSession* pMessageSession);
    virtual void DispatchUserMessage(int msgId, int serialId, const std::string& userId, const dataobj_ptr& dataobj_ptr);
-   virtual std::vector<AccountInfoDO>& GetAccountInfo(const std::string userId);
+   virtual autofillmap<std::string, AccountInfoDO>& GetAccountInfo(const std::string userId);
    virtual std::set<ExchangeDO>& GetExchangeInfo();
-   virtual UserPositionExDOMap& GetUserPositionMap();
+   virtual UserPositionContext& GetUserPositionContext();
    virtual UserTradeContext& GetUserTradeContext();
    virtual UserOrderContext& GetUserOrderContext(void);
 
@@ -51,9 +52,9 @@ protected:
    UserInfo _systemUser;
    std::thread _initializer;
    SessionContainer_Ptr<std::string> _userSessionCtn_Ptr;
-   autofillmap<std::string, std::vector<AccountInfoDO>> _accountInfoMap;
-   UserPositionExDOMap _userPositionMap;
+   autofillmap<std::string, autofillmap<std::string, AccountInfoDO>> _accountInfoMap;
    std::set<ExchangeDO> _exchangeInfo_Set;
+   UserPositionContext _userPositionCtx;
    UserTradeContext _userTradeCtx;
    UserOrderContext _userOrderCtx;
 

@@ -55,8 +55,13 @@ IPricingDO_Ptr BlackScholesPricingAlgorithm::Compute(
 	if (!pMdo)
 		return nullptr;
 
-	double bidPrice = pMdo->Bid().Price + paramObj->atmOffset;
-	double askdPrice = pMdo->Ask().Price + paramObj->atmOffset;
+	if (sdo.PricingContracts.empty())
+		return nullptr;
+
+	double adjust = sdo.PricingContracts[0].Adjust;
+
+	double bidPrice = pMdo->Bid().Price + adjust;
+	double askdPrice = pMdo->Ask().Price + adjust;
 
 	if (bidPrice <= 0 || askdPrice <= 0)
 		return nullptr;
@@ -75,7 +80,6 @@ const std::map<std::string, double>& BlackScholesPricingAlgorithm::DefaultParams
 	static std::map<std::string, double> defaultParams = {
 		{ OptionParams::riskFreeRate_name , GlobalSettings::RiskFreeRate() },
 		{ OptionParams::dividend_name , 0 },
-		{ OptionParams::atmOffset_name, 0 },
 	};
 	return defaultParams;
 }
@@ -86,7 +90,6 @@ void BlackScholesPricingAlgorithm::ParseParams(const std::map<std::string, doubl
 
 	ret->riskFreeRate = modelParams.at(OptionParams::riskFreeRate_name);
 	ret->dividend = modelParams.at(OptionParams::dividend_name);
-	ret->atmOffset = modelParams.at(OptionParams::atmOffset_name);
 
 	target = std::move(ret);
 }

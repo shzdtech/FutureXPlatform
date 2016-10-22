@@ -15,7 +15,7 @@
 
 
 
-dataobj_ptr OTCQueryPortfolio::HandleRequest(const dataobj_ptr & reqDO, IRawAPI * rawAPI, ISession * session)
+dataobj_ptr OTCQueryPortfolio::HandleRequest(const uint32_t serialId, const dataobj_ptr & reqDO, IRawAPI * rawAPI, ISession * session)
 {
 	CheckLogin(session);
 

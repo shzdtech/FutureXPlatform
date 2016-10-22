@@ -29,14 +29,14 @@ int OTCUserPositionContext::UpdatePosition(
 
 		while (!_position.update_fn(strategyDO, [&](cuckoohashmap_wrapper<ContractKey, int, ContractKeyHash>& contractPos)
 		{
-			contractPos.map().update_fn(strategyDO, [&](int& position)
+			contractPos.map()->update_fn(strategyDO, [&](int& position)
 			{
 				pos = (position += newTraded);
 			});
 		}))
 		{
 			cuckoohashmap_wrapper<ContractKey, int, ContractKeyHash> contractPos;
-			contractPos.map().insert(strategyDO, 0);
+			contractPos.map()->insert(strategyDO, 0);
 			_position.insert(strategyDO, contractPos);
 		}
 	}
@@ -64,7 +64,7 @@ ContractMap<double> OTCUserPositionContext::GenSpreadPoints(const PortfolioKey& 
 	_position.update_fn(portfolioKey, [&](cuckoohashmap_wrapper<ContractKey, int, ContractKeyHash>& contractPos)
 	{
 		static const double EPSILON = 1e-6;
-		auto lt = contractPos.map().lock_table();
+		auto lt = contractPos.map()->lock_table();
 		for (auto &it : lt)
 		{
 			int position = it.second;

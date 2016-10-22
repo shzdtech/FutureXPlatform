@@ -15,7 +15,7 @@
 
 #include "../databaseop/PortfolioDAO.h"
 
-dataobj_ptr OTCNewPortfolio::HandleRequest(const dataobj_ptr & reqDO, IRawAPI * rawAPI, ISession * session)
+dataobj_ptr OTCNewPortfolio::HandleRequest(const uint32_t serialId, const dataobj_ptr & reqDO, IRawAPI * rawAPI, ISession * session)
 {
 	CheckLogin(session);
 
@@ -36,5 +36,5 @@ dataobj_ptr OTCNewPortfolio::HandleRequest(const dataobj_ptr & reqDO, IRawAPI * 
 		}
 	}
 
-	return std::make_shared<ResultDO>(reqDO->SerialId);
+	return std::make_shared<ResultDO>(serialId);
 }

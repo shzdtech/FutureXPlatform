@@ -12,7 +12,7 @@
 #include "../common/Attribute_Key.h"
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       TestingUnsubMarketDataHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       TestingUnsubMarketDataHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
  // Purpose:    Implementation of TestingUnsubMarketDataHandler::HandleRequest()
  // Parameters:
  // - reqDO
@@ -21,7 +21,7 @@
  // Return:     dataobj_ptr
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr TestingUnsubMarketDataHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr TestingUnsubMarketDataHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	if (auto mdMapPtr = std::static_pointer_cast<MarketDataDOMap>
 		(session->getContext()->getAttribute(STR_KEY_USER_CONTRACTS)))

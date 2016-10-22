@@ -10,7 +10,7 @@
 #include "DefMessageID.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       EchoMessageHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, IMessageProcessor* session)
+// Name:       EchoMessageHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, IMessageProcessor* session)
 // Purpose:    Implementation of EchoMessageHandler::HandleRequest()
 // Parameters:
 // - reqDO
@@ -19,7 +19,7 @@
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr EchoMessageHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr EchoMessageHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
    auto kaDO = std::static_pointer_cast<EchoMessageDO>(reqDO);
    session->WriteMessage(MSG_ID_ECHO, kaDO->getDataBuffer());

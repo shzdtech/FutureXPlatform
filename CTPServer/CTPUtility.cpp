@@ -15,11 +15,13 @@
 #include "../utility/stringutility.h"
 #include "../ordermanager/OrderSeqGen.h"
 
-////////////////////////////////////////////////////////////////////////
-// Name:       CTPUtility::CheckError()
-// Purpose:    Implementation of CTPUtility::CheckError()
-// Return:     void
-////////////////////////////////////////////////////////////////////////
+#include "../message/DefMessageID.h"
+
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       CTPUtility::CheckError()
+ // Purpose:    Implementation of CTPUtility::CheckError()
+ // Return:     void
+ ////////////////////////////////////////////////////////////////////////
 
 void CTPUtility::CheckError(const void* pRspInfo)
 {
@@ -39,9 +41,9 @@ void CTPUtility::CheckError(const void* pRspInfo)
 // Return:     bool
 ////////////////////////////////////////////////////////////////////////
 
-void CTPUtility::CheckNotFound(const void * pRspInfo)
+void CTPUtility::CheckNotFound(const void * pRspData)
 {
-	if (!pRspInfo)
+	if (!pRspData)
 	{
 		throw NotFoundException();
 	}
@@ -171,6 +173,9 @@ OrderStatus CTPUtility::CheckOrderStatus(const int status, const int submitStatu
 		case THOST_FTDC_OSS_InsertRejected:
 			ret = OrderStatus::OPEN_REJECTED;
 			break;
+		case THOST_FTDC_OSS_CancelSubmitted:
+			ret = OrderStatus::CANCELING;
+			break;
 		case THOST_FTDC_OSS_CancelRejected:
 			ret = OrderStatus::CANCEL_REJECTED;
 			break;
@@ -214,7 +219,7 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(CThostFtdcOrderField *pOrder, OrderDO_Ptr 
 	return baseOrder;
 }
 
-OrderDO_Ptr CTPUtility::ParseRawOrderInputAction(
+OrderDO_Ptr CTPUtility::ParseRawOrder(
 	CThostFtdcInputOrderActionField *pOrderAction,
 	CThostFtdcRspInfoField *pRsp,
 	OrderDO_Ptr baseOrder)
@@ -230,7 +235,8 @@ OrderDO_Ptr CTPUtility::ParseRawOrderInputAction(
 	pDO->OrderStatus = pRsp ? OrderStatus::CANCEL_REJECTED : OrderStatus::CANCELING;
 	pDO->SessionID = pOrderAction->SessionID;
 
-	if (pRsp) {
+	if (pRsp)
+	{
 		pDO->ErrorCode = pRsp->ErrorID;
 		pDO->Message = std::move(boost::locale::conv::to_utf<char>(pRsp->ErrorMsg, CHARSET_GB2312));
 	}
@@ -238,7 +244,7 @@ OrderDO_Ptr CTPUtility::ParseRawOrderInputAction(
 	return baseOrder;
 }
 
-OrderDO_Ptr CTPUtility::ParseRawOrderInput(
+OrderDO_Ptr CTPUtility::ParseRawOrder(
 	CThostFtdcInputOrderField *pOrderInput,
 	CThostFtdcRspInfoField *pRsp,
 	int sessionID,
@@ -278,7 +284,7 @@ OrderDO_Ptr CTPUtility::ParseRawOrderInput(
 	return baseOrder;
 }
 
-OrderDO_Ptr CTPUtility::ParseRawOrderAction(CThostFtdcOrderActionField * pOrderAction, CThostFtdcRspInfoField * pRsp, OrderDO_Ptr baseOrder)
+OrderDO_Ptr CTPUtility::ParseRawOrder(CThostFtdcOrderActionField * pOrderAction, CThostFtdcRspInfoField * pRsp, OrderDO_Ptr baseOrder)
 {
 	if (!baseOrder)
 		baseOrder.reset(new OrderDO(ToUInt64(pOrderAction->OrderRef),
@@ -291,9 +297,14 @@ OrderDO_Ptr CTPUtility::ParseRawOrderAction(CThostFtdcOrderActionField * pOrderA
 	pDO->OrderStatus = pRsp ? OrderStatus::CANCEL_REJECTED : OrderStatus::CANCELING;
 	pDO->SessionID = pOrderAction->SessionID;
 
-	if (pRsp) {
+	if (pRsp)
+	{
 		pDO->ErrorCode = pRsp->ErrorID;
 		pDO->Message = std::move(boost::locale::conv::to_utf<char>(pRsp->ErrorMsg, CHARSET_GB2312));
+	}
+	else
+	{
+		pDO->Message = std::move(boost::locale::conv::to_utf<char>(pOrderAction->StatusMsg, CHARSET_GB2312));
 	}
 
 	return baseOrder;
@@ -321,4 +332,217 @@ TradeRecordDO_Ptr CTPUtility::ParseRawTrade(CThostFtdcTradeField * pTrade)
 	}
 
 	return ret;
+}
+
+BankOpResultDO_Ptr CTPUtility::ParseRawTransfer(CThostFtdcReqTransferField * pReqTransfer, CThostFtdcRspInfoField *pRsp)
+{
+	BankOpResultDO_Ptr ret;
+
+	if (pReqTransfer)
+	{
+		auto pDO = new BankOpResultDO;
+		ret.reset(pDO);
+
+		pDO->AccountID = pReqTransfer->AccountID;
+		pDO->Password = pReqTransfer->Password;
+		pDO->BankAccount = pReqTransfer->BankAccount;
+		pDO->BankAccType = (BankAccountType)(pReqTransfer->BankAccType - THOST_FTDC_FAT_BankBook + 1);
+		pDO->BankPassword = pReqTransfer->BankPassWord;
+		pDO->BankBranchID = pReqTransfer->BankBranchID;
+		pDO->BankID = pReqTransfer->BankID;
+		pDO->BankSerial = pReqTransfer->BankSerial;
+		pDO->BrokerBranchID = pReqTransfer->BrokerBranchID;
+		pDO->BrokerFee = pReqTransfer->BrokerFee;
+		pDO->BrokerID = pReqTransfer->BrokerID;
+		pDO->CurrencyID = pReqTransfer->CurrencyID;
+		pDO->CustFee = pReqTransfer->CustFee;
+		pDO->FutureSerial = std::to_string(pReqTransfer->FutureSerial);
+		pDO->SerialNum = std::to_string(pReqTransfer->PlateSerial);
+		pDO->TradeAmount = pReqTransfer->TradeAmount;
+		pDO->TradingDay = pReqTransfer->TradingDay;
+		pDO->TradeDate = pReqTransfer->TradeDate;
+		pDO->TradeTime = pReqTransfer->TradeTime;
+		pDO->TradeCode = pReqTransfer->TradeCode;
+
+		if (!pRsp)
+		{
+			pDO->ErrorID = pRsp->ErrorID;
+			if (!pRsp->ErrorMsg[0])
+				pDO->ErrorMsg = std::move(boost::locale::conv::to_utf<char>(pRsp->ErrorMsg, CHARSET_GB2312));
+		}
+	}
+
+	return ret;
+}
+
+BankOpResultDO_Ptr CTPUtility::ParseRawTransfer(CThostFtdcRspTransferField * pRspTransfer, CThostFtdcRspInfoField *pRsp)
+{
+	BankOpResultDO_Ptr ret;
+
+	if (pRspTransfer)
+	{
+		auto pDO = new BankOpResultDO;
+		ret.reset(pDO);
+
+		pDO->AccountID = pRspTransfer->AccountID;
+		pDO->Password = pRspTransfer->Password;
+		pDO->BankAccount = pRspTransfer->BankAccount;
+		pDO->BankAccType = (BankAccountType)(pRspTransfer->BankAccType - THOST_FTDC_FAT_BankBook + 1);
+		pDO->BankPassword = pRspTransfer->BankPassWord;
+		pDO->BankBranchID = pRspTransfer->BankBranchID;
+		pDO->BankID = pRspTransfer->BankID;
+		pDO->BankSerial = pRspTransfer->BankSerial;
+		pDO->BrokerBranchID = pRspTransfer->BrokerBranchID;
+		pDO->BrokerFee = pRspTransfer->BrokerFee;
+		pDO->BrokerID = pRspTransfer->BrokerID;
+		pDO->CurrencyID = pRspTransfer->CurrencyID;
+		pDO->CustFee = pRspTransfer->CustFee;
+		pDO->FutureSerial = std::to_string(pRspTransfer->FutureSerial);
+		pDO->SerialNum = std::to_string(pRspTransfer->PlateSerial);
+		pDO->TradeAmount = pRspTransfer->TradeAmount;
+		pDO->TradingDay = pRspTransfer->TradingDay;
+		pDO->TradeDate = pRspTransfer->TradeDate;
+		pDO->TradeTime = pRspTransfer->TradeTime;
+		pDO->TradeCode = pRspTransfer->TradeCode;
+
+		pDO->ErrorID = pRspTransfer->ErrorID;
+		if (pRspTransfer->ErrorMsg[0])
+			pDO->ErrorMsg = std::move(boost::locale::conv::to_utf<char>(pRspTransfer->ErrorMsg, CHARSET_GB2312));
+	}
+
+	return ret;
+}
+
+BankOpResultDO_Ptr CTPUtility::ParseRawTransfer(CThostFtdcTransferSerialField * pRspTransfer)
+{
+	BankOpResultDO_Ptr ret;
+
+	if (pRspTransfer)
+	{
+		auto pDO = new BankOpResultDO;
+		ret.reset(pDO);
+
+		pDO->AccountID = pRspTransfer->AccountID;
+		pDO->BankAccount = pRspTransfer->BankAccount;
+		pDO->BankAccType = (BankAccountType)(pRspTransfer->BankAccType - THOST_FTDC_FAT_BankBook + 1);
+		pDO->BankBranchID = pRspTransfer->BankBranchID;
+		pDO->BankID = pRspTransfer->BankID;
+		pDO->BankSerial = pRspTransfer->BankSerial;
+		pDO->BrokerBranchID = pRspTransfer->BrokerBranchID;
+		pDO->BrokerFee = pRspTransfer->BrokerFee;
+		pDO->BrokerID = pRspTransfer->BrokerID;
+		pDO->CurrencyID = pRspTransfer->CurrencyID;
+		pDO->CustFee = pRspTransfer->CustFee;
+		pDO->FutureAccType = (BankAccountType)(pRspTransfer->FutureAccType - THOST_FTDC_FAT_BankBook + 1);
+		pDO->FutureSerial = std::to_string(pRspTransfer->FutureSerial);
+		pDO->SerialNum = std::to_string(pRspTransfer->PlateSerial);
+		pDO->TradeAmount = pRspTransfer->TradeAmount;
+		pDO->TradingDay = pRspTransfer->TradingDay;
+		pDO->TradeDate = pRspTransfer->TradeDate;
+		pDO->TradeTime = pRspTransfer->TradeTime;
+		pDO->TradeCode = pRspTransfer->TradeCode;
+
+		pDO->ErrorID = pRspTransfer->ErrorID;
+		if (pRspTransfer->ErrorMsg[0])
+			pDO->ErrorMsg = std::move(boost::locale::conv::to_utf<char>(pRspTransfer->ErrorMsg, CHARSET_GB2312));
+	}
+
+	return ret;
+}
+
+UserAccountRegisterDO_Ptr CTPUtility::ParseUserBankAccout(CThostFtdcAccountregisterField * pAccount, CThostFtdcRspInfoField * pRsp)
+{
+	UserAccountRegisterDO_Ptr ret;
+
+	if (pAccount)
+	{
+		auto pDO = new UserAccountRegisterDO;
+		ret.reset(pDO);
+		pDO->AccountID = pAccount->AccountID;
+		pDO->BankAccount = pAccount->BankAccount;
+		pDO->BankAccType = (BankAccountType)(pAccount->BankAccType - THOST_FTDC_BAT_BankBook + 1);
+		pDO->BankBranchID = pAccount->BankBranchID;
+		pDO->BankID = pAccount->BankID;
+		pDO->BrokerBranchID = pAccount->BrokerBranchID;
+		pDO->BrokerID = pAccount->BrokerID;
+		pDO->CurrencyID = pAccount->CurrencyID;
+		if (pAccount->CustType >= THOST_FTDC_CUSTT_Person)
+			pDO->CustType = (CustomerType)(pAccount->CustType - THOST_FTDC_CUSTT_Person);
+		pDO->CustomerName = boost::locale::conv::to_utf<char>(pAccount->CustomerName, CHARSET_GB2312);
+		pDO->IdentifiedCardNo = pAccount->IdentifiedCardNo;
+	}
+
+	return ret;
+}
+
+UserAccountRegisterDO_Ptr CTPUtility::ParseUserBankAccout(CThostFtdcReqQueryAccountField * pAccount, CThostFtdcRspInfoField * pRsp)
+{
+	UserAccountRegisterDO_Ptr ret;
+
+	if (pAccount)
+	{
+		auto pDO = new UserAccountRegisterDO;
+		ret.reset(pDO);
+		pDO->AccountID = pAccount->AccountID;
+		pDO->BankAccount = pAccount->BankAccount;
+		pDO->BankAccType = (BankAccountType)(pAccount->BankAccType - THOST_FTDC_BAT_BankBook + 1);
+		pDO->BankBranchID = pAccount->BankBranchID;
+		pDO->BankID = pAccount->BankID;
+		pDO->BrokerBranchID = pAccount->BrokerBranchID;
+		pDO->BrokerID = pAccount->BrokerID;
+		pDO->CurrencyID = pAccount->CurrencyID;
+		if (pAccount->CustType >= THOST_FTDC_CUSTT_Person)
+			pDO->CustType = (CustomerType)(pAccount->CustType - THOST_FTDC_CUSTT_Person);
+		pDO->CustomerName = boost::locale::conv::to_utf<char>(pAccount->CustomerName, CHARSET_GB2312);
+		pDO->IdentifiedCardNo = pAccount->IdentifiedCardNo;
+	}
+
+	return ret;
+}
+
+UserAccountRegisterDO_Ptr CTPUtility::ParseUserBankAccout(CThostFtdcNotifyQueryAccountField * pAccount)
+{
+	UserAccountRegisterDO_Ptr ret;
+
+	if (pAccount)
+	{
+		auto pDO = new UserAccountRegisterDO;
+		ret.reset(pDO);
+		pDO->AccountID = pAccount->AccountID;
+		pDO->BankAccount = pAccount->BankAccount;
+		pDO->BankAccType = (BankAccountType)(pAccount->BankAccType - THOST_FTDC_BAT_BankBook + 1);
+		pDO->BankBranchID = pAccount->BankBranchID;
+		pDO->BankID = pAccount->BankID;
+		pDO->BrokerBranchID = pAccount->BrokerBranchID;
+		pDO->BrokerID = pAccount->BrokerID;
+		pDO->CurrencyID = pAccount->CurrencyID;
+		if (pAccount->CustType >= THOST_FTDC_CUSTT_Person)
+			pDO->CustType = (CustomerType)(pAccount->CustType - THOST_FTDC_CUSTT_Person);
+		pDO->CustomerName = boost::locale::conv::to_utf<char>(pAccount->CustomerName, CHARSET_GB2312);
+		pDO->IdentifiedCardNo = pAccount->IdentifiedCardNo;
+		pDO->BankFetchAmount = pAccount->BankFetchAmount;
+		pDO->BankUseAmount = pAccount->BankUseAmount;
+	}
+
+	return ret;
+}
+
+uint32_t CTPUtility::ParseMessageID(OrderStatus status)
+{
+	uint32_t msgId = MSG_ID_ORDER_UPDATE;
+	switch (status)
+	{
+	case OrderStatus::CANCELING:
+	case OrderStatus::CANCEL_REJECTED:
+		msgId = MSG_ID_ORDER_CANCEL;
+		break;
+	case OrderStatus::SUBMITTING:
+	case OrderStatus::OPEN_REJECTED:
+		msgId = MSG_ID_ORDER_NEW;
+		break;
+	default:
+		break;
+	}
+
+	return msgId;
 }

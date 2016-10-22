@@ -7,11 +7,11 @@
 #include "../dataobject/TradeRecordDO.h"
 
 
-dataobj_ptr TestingCreateOrderHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI * rawAPI, ISession * session)
+dataobj_ptr TestingCreateOrderHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI * rawAPI, ISession * session)
 {
 	auto pDO = (OrderRequestDO*)reqDO.get();
 
-	_tradingTask = std::async(std::launch::async, [pDO, session]()
+	_tradingTask = std::async(std::launch::async, [pDO, serialId, session]()
 	{
 		if (auto sessionptr = session->getProcessor()->LockMessageSession())
 		{
@@ -38,11 +38,11 @@ dataobj_ptr TestingCreateOrderHandler::HandleRequest(const dataobj_ptr& reqDO, I
 					orderptr->OrderStatus = OrderStatus::ALL_TRADED;
 
 
-				pProc->SendDataObject(sessionptr.get(), MSG_ID_ORDER_UPDATE, pDO->SerialId, orderptr);
+				pProc->SendDataObject(sessionptr.get(), MSG_ID_ORDER_UPDATE, serialId, orderptr);
 
 				tradeptr->Volume = 1;
 				tradeptr->TradeID = AppContext::GenNextSeq();
-				pProc->SendDataObject(sessionptr.get(), MSG_ID_TRADE_RTN, pDO->SerialId, tradeptr);
+				pProc->SendDataObject(sessionptr.get(), MSG_ID_TRADE_RTN, serialId, tradeptr);
 			}
 		}
 	});

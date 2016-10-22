@@ -3,7 +3,7 @@
 #include "../databaseop/ModelParamsDAO.h"
 
 static autofillmap<ModelKey, ModelParamsDO_Ptr> _modelCache;
-static StrategyModelCache::static_initializer _static_initializer;
+StrategyModelCache::static_initializer StrategyModelCache::_static_init;
 
 ModelParamsDO_Ptr StrategyModelCache::FindModel(const ModelKey & key)
 {

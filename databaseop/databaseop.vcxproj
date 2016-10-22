@@ -168,6 +168,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractConnectionManager.h" />
+    <ClInclude Include="ExchangeRouterDAO.h" />
     <ClInclude Include="ModelParamsDAO.h" />
     <ClInclude Include="MySqlConnectionManager.h" />
     <ClInclude Include="ConnectionPool.h" />
@@ -186,6 +187,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AbstractConnectionManager.cpp" />
+    <ClCompile Include="ExchangeRouterDAO.cpp" />
     <ClCompile Include="ModelParamsDAO.cpp" />
     <ClCompile Include="MySqlConnectionManager.cpp" />
     <ClCompile Include="ContractDAO.cpp" />

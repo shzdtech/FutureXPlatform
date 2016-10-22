@@ -14,7 +14,7 @@
 #include "../utility/TUtil.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       TestingLoginHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       TestingLoginHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of TestingLoginHandler::HandleRequest()
 // Parameters:
 // - reqDO
@@ -23,7 +23,7 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr TestingLoginHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr TestingLoginHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	auto stdo = (MapDO<std::string>*)reqDO.get();
 

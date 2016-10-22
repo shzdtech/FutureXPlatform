@@ -93,6 +93,18 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* PBContractInfoList_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   PBContractInfoList_reflection_ = NULL;
+const ::google::protobuf::Descriptor* PBBankOpRequest_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  PBBankOpRequest_reflection_ = NULL;
+const ::google::protobuf::Descriptor* PBBankOpResult_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  PBBankOpResult_reflection_ = NULL;
+const ::google::protobuf::Descriptor* PBBankInfo_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  PBBankInfo_reflection_ = NULL;
+const ::google::protobuf::Descriptor* PBUserAccountInfo_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  PBUserAccountInfo_reflection_ = NULL;
 
 }  // namespace
 
@@ -273,10 +285,11 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBTradingDeskOptionParams, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBTradingDeskOptionParams, _is_default_instance_));
   PBPricingContract_descriptor_ = file->message_type(8);
-  static const int PBPricingContract_offsets_[3] = {
+  static const int PBPricingContract_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPricingContract, exchange_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPricingContract, contract_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPricingContract, weight_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPricingContract, adjust_),
   };
   PBPricingContract_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
@@ -656,6 +669,115 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       sizeof(PBContractInfoList),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBContractInfoList, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBContractInfoList, _is_default_instance_));
+  PBBankOpRequest_descriptor_ = file->message_type(23);
+  static const int PBBankOpRequest_offsets_[11] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpRequest, header_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpRequest, bankid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpRequest, bankbranchid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpRequest, bankpassword_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpRequest, bankaccount_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpRequest, brokerid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpRequest, brokerbranchid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpRequest, accountid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpRequest, password_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpRequest, currencyid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpRequest, tradeamount_),
+  };
+  PBBankOpRequest_reflection_ =
+    ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
+      PBBankOpRequest_descriptor_,
+      PBBankOpRequest::default_instance_,
+      PBBankOpRequest_offsets_,
+      -1,
+      -1,
+      -1,
+      sizeof(PBBankOpRequest),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpRequest, _internal_metadata_),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpRequest, _is_default_instance_));
+  PBBankOpResult_descriptor_ = file->message_type(24);
+  static const int PBBankOpResult_offsets_[24] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpResult, header_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpResult, bankid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpResult, bankbranchid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpResult, bankpassword_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpResult, bankaccount_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpResult, brokerid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpResult, brokerbranchid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpResult, accountid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpResult, password_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpResult, currencyid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpResult, tradeamount_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpResult, serialnum_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpResult, tradingday_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpResult, tradedate_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpResult, tradetime_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpResult, tradecode_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpResult, bankserial_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpResult, futureacctype_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpResult, bankacctype_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpResult, futureserial_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpResult, custfee_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpResult, brokerfee_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpResult, errorid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpResult, errormsg_),
+  };
+  PBBankOpResult_reflection_ =
+    ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
+      PBBankOpResult_descriptor_,
+      PBBankOpResult::default_instance_,
+      PBBankOpResult_offsets_,
+      -1,
+      -1,
+      -1,
+      sizeof(PBBankOpResult),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpResult, _internal_metadata_),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpResult, _is_default_instance_));
+  PBBankInfo_descriptor_ = file->message_type(25);
+  static const int PBBankInfo_offsets_[4] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankInfo, header_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankInfo, bankid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankInfo, branchid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankInfo, name_),
+  };
+  PBBankInfo_reflection_ =
+    ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
+      PBBankInfo_descriptor_,
+      PBBankInfo::default_instance_,
+      PBBankInfo_offsets_,
+      -1,
+      -1,
+      -1,
+      sizeof(PBBankInfo),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankInfo, _internal_metadata_),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankInfo, _is_default_instance_));
+  PBUserAccountInfo_descriptor_ = file->message_type(26);
+  static const int PBUserAccountInfo_offsets_[14] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserAccountInfo, header_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserAccountInfo, bankid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserAccountInfo, bankbranchid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserAccountInfo, bankaccount_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserAccountInfo, brokerid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserAccountInfo, brokerbranchid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserAccountInfo, accountid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserAccountInfo, idcardno_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserAccountInfo, customername_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserAccountInfo, currencyid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserAccountInfo, custtype_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserAccountInfo, bankacctype_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserAccountInfo, bankuseamount_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserAccountInfo, bankfetchamount_),
+  };
+  PBUserAccountInfo_reflection_ =
+    ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
+      PBUserAccountInfo_descriptor_,
+      PBUserAccountInfo::default_instance_,
+      PBUserAccountInfo_offsets_,
+      -1,
+      -1,
+      -1,
+      sizeof(PBUserAccountInfo),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserAccountInfo, _internal_metadata_),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserAccountInfo, _is_default_instance_));
 }
 
 namespace {
@@ -714,6 +836,14 @@ void protobuf_RegisterTypes(const ::std::string&) {
       PBContractInfo_descriptor_, &PBContractInfo::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
       PBContractInfoList_descriptor_, &PBContractInfoList::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+      PBBankOpRequest_descriptor_, &PBBankOpRequest::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+      PBBankOpResult_descriptor_, &PBBankOpResult::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+      PBBankInfo_descriptor_, &PBBankInfo::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+      PBUserAccountInfo_descriptor_, &PBUserAccountInfo::default_instance());
 }
 
 }  // namespace
@@ -765,6 +895,14 @@ void protobuf_ShutdownFile_businessobj_2eproto() {
   delete PBContractInfo_reflection_;
   delete PBContractInfoList::default_instance_;
   delete PBContractInfoList_reflection_;
+  delete PBBankOpRequest::default_instance_;
+  delete PBBankOpRequest_reflection_;
+  delete PBBankOpResult::default_instance_;
+  delete PBBankOpResult_reflection_;
+  delete PBBankInfo::default_instance_;
+  delete PBBankInfo_reflection_;
+  delete PBUserAccountInfo::default_instance_;
+  delete PBUserAccountInfo_reflection_;
 }
 
 void protobuf_AddDesc_businessobj_2eproto() {
@@ -819,114 +957,145 @@ void protobuf_AddDesc_businessobj_2eproto() {
     "\020\n\010contract\030\003 \001(\t\022\?\n\nMarketData\030\004 \001(\0132+."
     "Micro.Future.Message.Business.PBOptionDa"
     "ta\022=\n\010TheoData\030\005 \001(\0132+.Micro.Future.Mess"
-    "age.Business.PBOptionData\"G\n\021PBPricingCo"
+    "age.Business.PBOptionData\"W\n\021PBPricingCo"
     "ntract\022\020\n\010exchange\030\001 \001(\t\022\020\n\010contract\030\002 \001"
-    "(\t\022\016\n\006weight\030\003 \001(\001\"\206\003\n\nPBStrategy\0220\n\006hea"
-    "der\030\001 \001(\0132 .Micro.Future.Message.DataHea"
-    "der\022\020\n\010exchange\030\002 \001(\t\022\020\n\010contract\030\003 \001(\t\022"
-    "\022\n\nunderlying\030\004 \001(\t\022\016\n\006symbol\030\005 \001(\t\022\023\n\013d"
-    "escription\030\006 \001(\t\022\017\n\007hedging\030\007 \001(\010\022\022\n\nbid"
-    "Enabled\030\010 \001(\010\022\022\n\naskEnabled\030\t \001(\010\022\r\n\005bid"
-    "QT\030\n \001(\005\022\r\n\005askQT\030\013 \001(\005\022\r\n\005depth\030\014 \001(\005\022J"
-    "\n\020pricingContracts\030\r \003(\01320.Micro.Future."
-    "Message.Business.PBPricingContract\022\024\n\014pr"
-    "icingModel\030\016 \001(\t\022\017\n\007ivModel\030\017 \001(\t\022\020\n\010vol"
-    "Model\030\020 \001(\t\"\177\n\016PBStrategyList\0220\n\006header\030"
-    "\001 \001(\0132 .Micro.Future.Message.DataHeader\022"
-    ";\n\010strategy\030\002 \003(\0132).Micro.Future.Message"
-    ".Business.PBStrategy\"V\n\017PBContractParam\022"
-    "\020\n\010exchange\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022\020\n\010d"
-    "epthVol\030\003 \001(\005\022\r\n\005gamma\030\004 \001(\001\"\207\001\n\023PBContr"
-    "actParamList\0220\n\006header\030\001 \001(\0132 .Micro.Fut"
-    "ure.Message.DataHeader\022>\n\006params\030\002 \003(\0132."
-    ".Micro.Future.Message.Business.PBContrac"
-    "tParam\"F\n\016PBOTCUserParam\022\020\n\010exchange\030\001 \001"
-    "(\t\022\020\n\010contract\030\002 \001(\t\022\020\n\010quantity\030\003 \001(\001\"\205"
-    "\001\n\022PBOTCUserParamList\0220\n\006header\030\001 \001(\0132 ."
-    "Micro.Future.Message.DataHeader\022=\n\006param"
-    "s\030\002 \003(\0132-.Micro.Future.Message.Business."
-    "PBOTCUserParam\"\207\002\n\016PBOrderRequest\0220\n\006hea"
-    "der\030\001 \001(\0132 .Micro.Future.Message.DataHea"
-    "der\022\017\n\007orderID\030\002 \001(\004\022\022\n\norderSysID\030\003 \001(\004"
-    "\022\020\n\010exchange\030\004 \001(\t\022\020\n\010contract\030\005 \001(\t\022\022\n\n"
-    "limitPrice\030\006 \001(\001\022\016\n\006volume\030\007 \001(\005\022\020\n\010exec"
-    "Type\030\010 \001(\005\022\013\n\003tif\030\t \001(\005\022\021\n\tdirection\030\n \001"
-    "(\005\022\021\n\topenclose\030\013 \001(\005\022\021\n\tportfolio\030\014 \001(\t"
-    "\"\303\004\n\013PBOrderInfo\0220\n\006header\030\001 \001(\0132 .Micro"
-    ".Future.Message.DataHeader\022\017\n\007orderID\030\002 "
-    "\001(\004\022\022\n\norderSysID\030\003 \001(\004\022\020\n\010brokerID\030\004 \001("
-    "\t\022\022\n\ninvestorID\030\005 \001(\t\022\020\n\010exchange\030\006 \001(\t\022"
-    "\020\n\010contract\030\007 \001(\t\022\020\n\010execType\030\010 \001(\005\022\013\n\003t"
-    "if\030\t \001(\005\022\023\n\013tradingType\030\n \001(\005\022\021\n\tdirecti"
-    "on\030\013 \001(\005\022\022\n\nlimitPrice\030\014 \001(\001\022\021\n\tstopPric"
-    "e\030\r \001(\001\022\023\n\013orderStatus\030\016 \001(\005\022\021\n\torderTyp"
-    "e\030\017 \001(\005\022\016\n\006volume\030\020 \001(\005\022\022\n\ninsertTime\030\021 "
-    "\001(\t\022\022\n\nupdateTime\030\022 \001(\t\022\022\n\ncancelTime\030\023 "
-    "\001(\t\022\024\n\014volumeTraded\030\024 \001(\005\022\024\n\014volumeRemai"
-    "n\030\025 \001(\005\022\027\n\017volumeCondition\030\026 \001(\005\022\022\n\ntrad"
-    "ingDay\030\027 \001(\t\022\016\n\006active\030\030 \001(\010\022\021\n\topenclos"
-    "e\030\031 \001(\005\022\017\n\007message\030\032 \001(\014\022\021\n\tsessionID\030\033 "
-    "\001(\005\022\021\n\tportfolio\030\034 \001(\t\"\207\003\n\013PBTradeInfo\0220"
-    "\n\006header\030\001 \001(\0132 .Micro.Future.Message.Da"
-    "taHeader\022\017\n\007tradeID\030\002 \001(\004\022\021\n\tdirection\030\003"
-    " \001(\005\022\021\n\topenclose\030\004 \001(\005\022\022\n\norderSysID\030\005 "
-    "\001(\004\022\017\n\007orderID\030\006 \001(\004\022\r\n\005price\030\007 \001(\001\022\016\n\006v"
-    "olume\030\010 \001(\005\022\020\n\010brokerID\030\t \001(\t\022\022\n\ninvesto"
-    "rID\030\n \001(\t\022\020\n\010exchange\030\013 \001(\t\022\020\n\010contract\030"
-    "\014 \001(\t\022\016\n\006userID\030\r \001(\t\022\021\n\ttradeDate\030\016 \001(\t"
-    "\022\021\n\ttradeTime\030\017 \001(\t\022\021\n\ttradeType\030\020 \001(\005\022\021"
-    "\n\thedgeFlag\030\021 \001(\005\022\022\n\ncommission\030\022 \001(\001\022\021\n"
-    "\tportfolio\030\023 \001(\t\"\362\002\n\nPBPosition\022\020\n\010excha"
-    "nge\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022\021\n\tdirection"
-    "\030\003 \001(\005\022\020\n\010position\030\005 \001(\005\022\022\n\nydPosition\030\004"
-    " \001(\005\022\030\n\020positionDateFlag\030\006 \001(\005\022\022\n\nopenVo"
-    "lume\030\007 \001(\005\022\023\n\013closeVolume\030\010 \001(\005\022\022\n\nopenA"
-    "mount\030\t \001(\001\022\023\n\013closeAmount\030\n \001(\001\022\014\n\004cost"
-    "\030\013 \001(\001\022\020\n\010openCost\030\014 \001(\001\022\016\n\006profit\030\r \001(\001"
-    "\022\023\n\013closeProfit\030\016 \001(\001\022\021\n\tuseMargin\030\017 \001(\001"
-    "\022\021\n\thedgeFlag\030\020 \001(\005\0220\n\006header\030\021 \001(\0132 .Mi"
-    "cro.Future.Message.DataHeader\"\275\005\n\rPBAcco"
-    "untInfo\022\020\n\010brokerID\030\002 \001(\t\022\021\n\taccountID\030\003"
-    " \001(\t\022\023\n\013preMortgage\030\004 \001(\001\022\021\n\tpreCredit\030\005"
-    " \001(\001\022\022\n\npreDeposit\030\006 \001(\001\022\022\n\npreBalance\030\007"
-    " \001(\001\022\021\n\tpreMargin\030\010 \001(\001\022\024\n\014interestBase\030"
-    "\t \001(\001\022\020\n\010interest\030\n \001(\001\022\017\n\007deposit\030\013 \001(\001"
-    "\022\020\n\010withdraw\030\014 \001(\001\022\024\n\014frozenMargin\030\r \001(\001"
-    "\022\022\n\nfrozenCash\030\016 \001(\001\022\030\n\020frozenCommission"
-    "\030\017 \001(\001\022\022\n\ncurrMargin\030\020 \001(\001\022\016\n\006cashIn\030\021 \001"
-    "(\001\022\022\n\ncommission\030\022 \001(\001\022\023\n\013closeProfit\030\023 "
-    "\001(\001\022\026\n\016positionProfit\030\024 \001(\001\022\017\n\007balance\030\025"
-    " \001(\001\022\021\n\tavailable\030\026 \001(\001\022\025\n\rwithdrawQuota"
-    "\030\027 \001(\001\022\017\n\007reserve\030\030 \001(\001\022\022\n\ntradingDay\030\031 "
-    "\001(\t\022\024\n\014settlementID\030\032 \001(\005\022\016\n\006credit\030\033 \001("
-    "\001\022\020\n\010mortgage\030\034 \001(\001\022\026\n\016exchangeMargin\030\035 "
-    "\001(\001\022\026\n\016deliveryMargin\030\036 \001(\001\022\036\n\026exchangeD"
-    "eliveryMargin\030\037 \001(\001\022\026\n\016reserveBalance\030  "
-    "\001(\001\0220\n\006header\030! \001(\0132 .Micro.Future.Messa"
-    "ge.DataHeader\"r\n\014PBMarketInfo\022\020\n\010exchang"
-    "e\030\001 \001(\t\022\014\n\004name\030\002 \001(\014\022\020\n\010property\030\003 \001(\014\022"
-    "0\n\006header\030\004 \001(\0132 .Micro.Future.Message.D"
-    "ataHeader\"\214\005\n\016PBContractInfo\022\020\n\010exchange"
-    "\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022\014\n\004name\030\003 \001(\014\022\021"
-    "\n\tproductID\030\004 \001(\t\022\023\n\013productType\030\005 \001(\005\022\024"
-    "\n\014deliveryYear\030\006 \001(\005\022\025\n\rdeliveryMonth\030\007 "
-    "\001(\005\022\034\n\024maxMarketOrderVolume\030\010 \001(\005\022\034\n\024min"
-    "MarketOrderVolume\030\t \001(\005\022\033\n\023maxLimitOrder"
-    "Volume\030\n \001(\005\022\033\n\023minLimitOrderVolume\030\013 \001("
-    "\005\022\026\n\016volumeMultiple\030\014 \001(\005\022\021\n\tpriceTick\030\r"
-    " \001(\001\022\022\n\ncreateDate\030\016 \001(\t\022\020\n\010openDate\030\017 \001"
-    "(\t\022\022\n\nexpireDate\030\020 \001(\t\022\026\n\016startDelivDate"
-    "\030\021 \001(\t\022\024\n\014endDelivDate\030\022 \001(\t\022\021\n\tlifePhas"
-    "e\030\023 \001(\005\022\021\n\tisTrading\030\024 \001(\010\022\024\n\014positionTy"
-    "pe\030\025 \001(\005\022\030\n\020positionDateType\030\026 \001(\005\022\027\n\017lo"
-    "ngMarginRatio\030\027 \001(\001\022\030\n\020shortMarginRatio\030"
-    "\030 \001(\001\022\032\n\022underlyingExchange\030\031 \001(\t\022\032\n\022und"
-    "erlyingContract\030\032 \001(\t\022\024\n\014contractType\030\033 "
-    "\001(\005\022\023\n\013strikePrice\030\034 \001(\001\"\213\001\n\022PBContractI"
-    "nfoList\0220\n\006header\030\001 \001(\0132 .Micro.Future.M"
-    "essage.DataHeader\022C\n\014contractInfo\030\002 \003(\0132"
-    "-.Micro.Future.Message.Business.PBContra"
-    "ctInfob\006proto3", 6014);
+    "(\t\022\016\n\006weight\030\003 \001(\001\022\016\n\006adjust\030\004 \001(\001\"\206\003\n\nP"
+    "BStrategy\0220\n\006header\030\001 \001(\0132 .Micro.Future"
+    ".Message.DataHeader\022\020\n\010exchange\030\002 \001(\t\022\020\n"
+    "\010contract\030\003 \001(\t\022\022\n\nunderlying\030\004 \001(\t\022\016\n\006s"
+    "ymbol\030\005 \001(\t\022\023\n\013description\030\006 \001(\t\022\017\n\007hedg"
+    "ing\030\007 \001(\010\022\022\n\nbidEnabled\030\010 \001(\010\022\022\n\naskEnab"
+    "led\030\t \001(\010\022\r\n\005bidQT\030\n \001(\005\022\r\n\005askQT\030\013 \001(\005\022"
+    "\r\n\005depth\030\014 \001(\005\022J\n\020pricingContracts\030\r \003(\013"
+    "20.Micro.Future.Message.Business.PBPrici"
+    "ngContract\022\024\n\014pricingModel\030\016 \001(\t\022\017\n\007ivMo"
+    "del\030\017 \001(\t\022\020\n\010volModel\030\020 \001(\t\"\177\n\016PBStrateg"
+    "yList\0220\n\006header\030\001 \001(\0132 .Micro.Future.Mes"
+    "sage.DataHeader\022;\n\010strategy\030\002 \003(\0132).Micr"
+    "o.Future.Message.Business.PBStrategy\"V\n\017"
+    "PBContractParam\022\020\n\010exchange\030\001 \001(\t\022\020\n\010con"
+    "tract\030\002 \001(\t\022\020\n\010depthVol\030\003 \001(\005\022\r\n\005gamma\030\004"
+    " \001(\001\"\207\001\n\023PBContractParamList\0220\n\006header\030\001"
+    " \001(\0132 .Micro.Future.Message.DataHeader\022>"
+    "\n\006params\030\002 \003(\0132..Micro.Future.Message.Bu"
+    "siness.PBContractParam\"F\n\016PBOTCUserParam"
+    "\022\020\n\010exchange\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022\020\n\010"
+    "quantity\030\003 \001(\001\"\205\001\n\022PBOTCUserParamList\0220\n"
+    "\006header\030\001 \001(\0132 .Micro.Future.Message.Dat"
+    "aHeader\022=\n\006params\030\002 \003(\0132-.Micro.Future.M"
+    "essage.Business.PBOTCUserParam\"\207\002\n\016PBOrd"
+    "erRequest\0220\n\006header\030\001 \001(\0132 .Micro.Future"
+    ".Message.DataHeader\022\017\n\007orderID\030\002 \001(\004\022\022\n\n"
+    "orderSysID\030\003 \001(\004\022\020\n\010exchange\030\004 \001(\t\022\020\n\010co"
+    "ntract\030\005 \001(\t\022\022\n\nlimitPrice\030\006 \001(\001\022\016\n\006volu"
+    "me\030\007 \001(\005\022\020\n\010execType\030\010 \001(\005\022\013\n\003tif\030\t \001(\005\022"
+    "\021\n\tdirection\030\n \001(\005\022\021\n\topenclose\030\013 \001(\005\022\021\n"
+    "\tportfolio\030\014 \001(\t\"\303\004\n\013PBOrderInfo\0220\n\006head"
+    "er\030\001 \001(\0132 .Micro.Future.Message.DataHead"
+    "er\022\017\n\007orderID\030\002 \001(\004\022\022\n\norderSysID\030\003 \001(\004\022"
+    "\020\n\010brokerID\030\004 \001(\t\022\022\n\ninvestorID\030\005 \001(\t\022\020\n"
+    "\010exchange\030\006 \001(\t\022\020\n\010contract\030\007 \001(\t\022\020\n\010exe"
+    "cType\030\010 \001(\005\022\013\n\003tif\030\t \001(\005\022\023\n\013tradingType\030"
+    "\n \001(\005\022\021\n\tdirection\030\013 \001(\005\022\022\n\nlimitPrice\030\014"
+    " \001(\001\022\021\n\tstopPrice\030\r \001(\001\022\023\n\013orderStatus\030\016"
+    " \001(\005\022\021\n\torderType\030\017 \001(\005\022\016\n\006volume\030\020 \001(\005\022"
+    "\022\n\ninsertTime\030\021 \001(\t\022\022\n\nupdateTime\030\022 \001(\t\022"
+    "\022\n\ncancelTime\030\023 \001(\t\022\024\n\014volumeTraded\030\024 \001("
+    "\005\022\024\n\014volumeRemain\030\025 \001(\005\022\027\n\017volumeConditi"
+    "on\030\026 \001(\005\022\022\n\ntradingDay\030\027 \001(\t\022\016\n\006active\030\030"
+    " \001(\010\022\021\n\topenclose\030\031 \001(\005\022\017\n\007message\030\032 \001(\014"
+    "\022\021\n\tsessionID\030\033 \001(\005\022\021\n\tportfolio\030\034 \001(\t\"\207"
+    "\003\n\013PBTradeInfo\0220\n\006header\030\001 \001(\0132 .Micro.F"
+    "uture.Message.DataHeader\022\017\n\007tradeID\030\002 \001("
+    "\004\022\021\n\tdirection\030\003 \001(\005\022\021\n\topenclose\030\004 \001(\005\022"
+    "\022\n\norderSysID\030\005 \001(\004\022\017\n\007orderID\030\006 \001(\004\022\r\n\005"
+    "price\030\007 \001(\001\022\016\n\006volume\030\010 \001(\005\022\020\n\010brokerID\030"
+    "\t \001(\t\022\022\n\ninvestorID\030\n \001(\t\022\020\n\010exchange\030\013 "
+    "\001(\t\022\020\n\010contract\030\014 \001(\t\022\016\n\006userID\030\r \001(\t\022\021\n"
+    "\ttradeDate\030\016 \001(\t\022\021\n\ttradeTime\030\017 \001(\t\022\021\n\tt"
+    "radeType\030\020 \001(\005\022\021\n\thedgeFlag\030\021 \001(\005\022\022\n\ncom"
+    "mission\030\022 \001(\001\022\021\n\tportfolio\030\023 \001(\t\"\362\002\n\nPBP"
+    "osition\022\020\n\010exchange\030\001 \001(\t\022\020\n\010contract\030\002 "
+    "\001(\t\022\021\n\tdirection\030\003 \001(\005\022\020\n\010position\030\005 \001(\005"
+    "\022\022\n\nydPosition\030\004 \001(\005\022\030\n\020positionDateFlag"
+    "\030\006 \001(\005\022\022\n\nopenVolume\030\007 \001(\005\022\023\n\013closeVolum"
+    "e\030\010 \001(\005\022\022\n\nopenAmount\030\t \001(\001\022\023\n\013closeAmou"
+    "nt\030\n \001(\001\022\014\n\004cost\030\013 \001(\001\022\020\n\010openCost\030\014 \001(\001"
+    "\022\016\n\006profit\030\r \001(\001\022\023\n\013closeProfit\030\016 \001(\001\022\021\n"
+    "\tuseMargin\030\017 \001(\001\022\021\n\thedgeFlag\030\020 \001(\005\0220\n\006h"
+    "eader\030\021 \001(\0132 .Micro.Future.Message.DataH"
+    "eader\"\275\005\n\rPBAccountInfo\022\020\n\010brokerID\030\002 \001("
+    "\t\022\021\n\taccountID\030\003 \001(\t\022\023\n\013preMortgage\030\004 \001("
+    "\001\022\021\n\tpreCredit\030\005 \001(\001\022\022\n\npreDeposit\030\006 \001(\001"
+    "\022\022\n\npreBalance\030\007 \001(\001\022\021\n\tpreMargin\030\010 \001(\001\022"
+    "\024\n\014interestBase\030\t \001(\001\022\020\n\010interest\030\n \001(\001\022"
+    "\017\n\007deposit\030\013 \001(\001\022\020\n\010withdraw\030\014 \001(\001\022\024\n\014fr"
+    "ozenMargin\030\r \001(\001\022\022\n\nfrozenCash\030\016 \001(\001\022\030\n\020"
+    "frozenCommission\030\017 \001(\001\022\022\n\ncurrMargin\030\020 \001"
+    "(\001\022\016\n\006cashIn\030\021 \001(\001\022\022\n\ncommission\030\022 \001(\001\022\023"
+    "\n\013closeProfit\030\023 \001(\001\022\026\n\016positionProfit\030\024 "
+    "\001(\001\022\017\n\007balance\030\025 \001(\001\022\021\n\tavailable\030\026 \001(\001\022"
+    "\025\n\rwithdrawQuota\030\027 \001(\001\022\017\n\007reserve\030\030 \001(\001\022"
+    "\022\n\ntradingDay\030\031 \001(\t\022\024\n\014settlementID\030\032 \001("
+    "\005\022\016\n\006credit\030\033 \001(\001\022\020\n\010mortgage\030\034 \001(\001\022\026\n\016e"
+    "xchangeMargin\030\035 \001(\001\022\026\n\016deliveryMargin\030\036 "
+    "\001(\001\022\036\n\026exchangeDeliveryMargin\030\037 \001(\001\022\026\n\016r"
+    "eserveBalance\030  \001(\001\0220\n\006header\030! \001(\0132 .Mi"
+    "cro.Future.Message.DataHeader\"r\n\014PBMarke"
+    "tInfo\022\020\n\010exchange\030\001 \001(\t\022\014\n\004name\030\002 \001(\014\022\020\n"
+    "\010property\030\003 \001(\014\0220\n\006header\030\004 \001(\0132 .Micro."
+    "Future.Message.DataHeader\"\214\005\n\016PBContract"
+    "Info\022\020\n\010exchange\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t"
+    "\022\014\n\004name\030\003 \001(\014\022\021\n\tproductID\030\004 \001(\t\022\023\n\013pro"
+    "ductType\030\005 \001(\005\022\024\n\014deliveryYear\030\006 \001(\005\022\025\n\r"
+    "deliveryMonth\030\007 \001(\005\022\034\n\024maxMarketOrderVol"
+    "ume\030\010 \001(\005\022\034\n\024minMarketOrderVolume\030\t \001(\005\022"
+    "\033\n\023maxLimitOrderVolume\030\n \001(\005\022\033\n\023minLimit"
+    "OrderVolume\030\013 \001(\005\022\026\n\016volumeMultiple\030\014 \001("
+    "\005\022\021\n\tpriceTick\030\r \001(\001\022\022\n\ncreateDate\030\016 \001(\t"
+    "\022\020\n\010openDate\030\017 \001(\t\022\022\n\nexpireDate\030\020 \001(\t\022\026"
+    "\n\016startDelivDate\030\021 \001(\t\022\024\n\014endDelivDate\030\022"
+    " \001(\t\022\021\n\tlifePhase\030\023 \001(\005\022\021\n\tisTrading\030\024 \001"
+    "(\010\022\024\n\014positionType\030\025 \001(\005\022\030\n\020positionDate"
+    "Type\030\026 \001(\005\022\027\n\017longMarginRatio\030\027 \001(\001\022\030\n\020s"
+    "hortMarginRatio\030\030 \001(\001\022\032\n\022underlyingExcha"
+    "nge\030\031 \001(\t\022\032\n\022underlyingContract\030\032 \001(\t\022\024\n"
+    "\014contractType\030\033 \001(\005\022\023\n\013strikePrice\030\034 \001(\001"
+    "\"\213\001\n\022PBContractInfoList\0220\n\006header\030\001 \001(\0132"
+    " .Micro.Future.Message.DataHeader\022C\n\014con"
+    "tractInfo\030\002 \003(\0132-.Micro.Future.Message.B"
+    "usiness.PBContractInfo\"\214\002\n\017PBBankOpReque"
+    "st\0220\n\006header\030\001 \001(\0132 .Micro.Future.Messag"
+    "e.DataHeader\022\016\n\006bankID\030\002 \001(\t\022\024\n\014bankBran"
+    "chID\030\003 \001(\t\022\024\n\014bankPassword\030\004 \001(\t\022\023\n\013bank"
+    "Account\030\005 \001(\t\022\020\n\010brokerID\030\006 \001(\t\022\026\n\016broke"
+    "rBranchID\030\007 \001(\t\022\021\n\taccountID\030\010 \001(\t\022\020\n\010pa"
+    "ssword\030\t \001(\t\022\022\n\ncurrencyID\030\n \001(\t\022\023\n\013trad"
+    "eAmount\030\013 \001(\001\"\210\004\n\016PBBankOpResult\0220\n\006head"
+    "er\030\001 \001(\0132 .Micro.Future.Message.DataHead"
+    "er\022\016\n\006bankID\030\002 \001(\t\022\024\n\014bankBranchID\030\003 \001(\t"
+    "\022\024\n\014bankPassword\030\004 \001(\t\022\023\n\013bankAccount\030\005 "
+    "\001(\t\022\020\n\010brokerID\030\006 \001(\t\022\026\n\016brokerBranchID\030"
+    "\007 \001(\t\022\021\n\taccountID\030\010 \001(\t\022\020\n\010password\030\t \001"
+    "(\t\022\022\n\ncurrencyID\030\n \001(\t\022\023\n\013tradeAmount\030\013 "
+    "\001(\001\022\021\n\tSerialNum\030\014 \001(\t\022\022\n\nTradingDay\030\r \001"
+    "(\t\022\021\n\tTradeDate\030\016 \001(\t\022\021\n\tTradeTime\030\017 \001(\t"
+    "\022\021\n\tTradeCode\030\020 \001(\t\022\022\n\nBankSerial\030\021 \001(\t\022"
+    "\025\n\rFutureAccType\030\022 \001(\005\022\023\n\013BankAccType\030\023 "
+    "\001(\005\022\024\n\014FutureSerial\030\024 \001(\t\022\017\n\007CustFee\030\025 \001"
+    "(\001\022\021\n\tBrokerFee\030\026 \001(\001\022\017\n\007ErrorID\030\027 \001(\005\022\020"
+    "\n\010ErrorMsg\030\030 \001(\014\"n\n\nPBBankInfo\0220\n\006header"
+    "\030\001 \001(\0132 .Micro.Future.Message.DataHeader"
+    "\022\016\n\006bankID\030\002 \001(\t\022\020\n\010branchID\030\003 \001(\t\022\014\n\004na"
+    "me\030\004 \001(\014\"\320\002\n\021PBUserAccountInfo\0220\n\006header"
+    "\030\001 \001(\0132 .Micro.Future.Message.DataHeader"
+    "\022\016\n\006bankID\030\002 \001(\t\022\024\n\014bankBranchID\030\003 \001(\t\022\023"
+    "\n\013bankAccount\030\004 \001(\t\022\020\n\010brokerID\030\005 \001(\t\022\026\n"
+    "\016brokerBranchID\030\006 \001(\t\022\021\n\taccountID\030\007 \001(\t"
+    "\022\020\n\010idCardNo\030\010 \001(\t\022\024\n\014customerName\030\t \001(\014"
+    "\022\022\n\ncurrencyID\030\n \001(\t\022\020\n\010custType\030\013 \001(\005\022\023"
+    "\n\013bankAccType\030\014 \001(\005\022\025\n\rbankUseAmount\030\r \001"
+    "(\001\022\027\n\017bankFetchAmount\030\016 \001(\001b\006proto3", 7275);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "businessobj.proto", &protobuf_RegisterTypes);
   PBMarketData::default_instance_ = new PBMarketData();
@@ -952,6 +1121,10 @@ void protobuf_AddDesc_businessobj_2eproto() {
   PBMarketInfo::default_instance_ = new PBMarketInfo();
   PBContractInfo::default_instance_ = new PBContractInfo();
   PBContractInfoList::default_instance_ = new PBContractInfoList();
+  PBBankOpRequest::default_instance_ = new PBBankOpRequest();
+  PBBankOpResult::default_instance_ = new PBBankOpResult();
+  PBBankInfo::default_instance_ = new PBBankInfo();
+  PBUserAccountInfo::default_instance_ = new PBUserAccountInfo();
   PBMarketData::default_instance_->InitAsDefaultInstance();
   PBMarketDataList::default_instance_->InitAsDefaultInstance();
   PBPortfolio::default_instance_->InitAsDefaultInstance();
@@ -975,6 +1148,10 @@ void protobuf_AddDesc_businessobj_2eproto() {
   PBMarketInfo::default_instance_->InitAsDefaultInstance();
   PBContractInfo::default_instance_->InitAsDefaultInstance();
   PBContractInfoList::default_instance_->InitAsDefaultInstance();
+  PBBankOpRequest::default_instance_->InitAsDefaultInstance();
+  PBBankOpResult::default_instance_->InitAsDefaultInstance();
+  PBBankInfo::default_instance_->InitAsDefaultInstance();
+  PBUserAccountInfo::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_businessobj_2eproto);
 }
 
@@ -6254,6 +6431,7 @@ void PBTradingDeskOptionParams::set_allocated_theodata(::Micro::Future::Message:
 const int PBPricingContract::kExchangeFieldNumber;
 const int PBPricingContract::kContractFieldNumber;
 const int PBPricingContract::kWeightFieldNumber;
+const int PBPricingContract::kAdjustFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 PBPricingContract::PBPricingContract()
@@ -6281,6 +6459,7 @@ void PBPricingContract::SharedCtor() {
   exchange_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   contract_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   weight_ = 0;
+  adjust_ = 0;
 }
 
 PBPricingContract::~PBPricingContract() {
@@ -6322,9 +6501,29 @@ PBPricingContract* PBPricingContract::New(::google::protobuf::Arena* arena) cons
 
 void PBPricingContract::Clear() {
 // @@protoc_insertion_point(message_clear_start:Micro.Future.Message.Business.PBPricingContract)
+#if defined(__clang__)
+#define ZR_HELPER_(f) \
+  _Pragma("clang diagnostic push") \
+  _Pragma("clang diagnostic ignored \"-Winvalid-offsetof\"") \
+  __builtin_offsetof(PBPricingContract, f) \
+  _Pragma("clang diagnostic pop")
+#else
+#define ZR_HELPER_(f) reinterpret_cast<char*>(\
+  &reinterpret_cast<PBPricingContract*>(16)->f)
+#endif
+
+#define ZR_(first, last) do {\
+  ::memset(&first, 0,\
+           ZR_HELPER_(last) - ZR_HELPER_(first) + sizeof(last));\
+} while (0)
+
+  ZR_(weight_, adjust_);
   exchange_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   contract_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  weight_ = 0;
+
+#undef ZR_HELPER_
+#undef ZR_
+
 }
 
 bool PBPricingContract::MergePartialFromCodedStream(
@@ -6377,6 +6576,21 @@ bool PBPricingContract::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
                  input, &weight_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(33)) goto parse_adjust;
+        break;
+      }
+
+      // optional double adjust = 4;
+      case 4: {
+        if (tag == 33) {
+         parse_adjust:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &adjust_)));
 
         } else {
           goto handle_unusual;
@@ -6434,6 +6648,11 @@ void PBPricingContract::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteDouble(3, this->weight(), output);
   }
 
+  // optional double adjust = 4;
+  if (this->adjust() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(4, this->adjust(), output);
+  }
+
   // @@protoc_insertion_point(serialize_end:Micro.Future.Message.Business.PBPricingContract)
 }
 
@@ -6467,6 +6686,11 @@ void PBPricingContract::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(3, this->weight(), target);
   }
 
+  // optional double adjust = 4;
+  if (this->adjust() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(4, this->adjust(), target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.Business.PBPricingContract)
   return target;
 }
@@ -6491,6 +6715,11 @@ int PBPricingContract::ByteSize() const {
 
   // optional double weight = 3;
   if (this->weight() != 0) {
+    total_size += 1 + 8;
+  }
+
+  // optional double adjust = 4;
+  if (this->adjust() != 0) {
     total_size += 1 + 8;
   }
 
@@ -6529,6 +6758,9 @@ void PBPricingContract::MergeFrom(const PBPricingContract& from) {
   if (from.weight() != 0) {
     set_weight(from.weight());
   }
+  if (from.adjust() != 0) {
+    set_adjust(from.adjust());
+  }
 }
 
 void PBPricingContract::CopyFrom(const ::google::protobuf::Message& from) {
@@ -6558,6 +6790,7 @@ void PBPricingContract::InternalSwap(PBPricingContract* other) {
   exchange_.Swap(&other->exchange_);
   contract_.Swap(&other->contract_);
   std::swap(weight_, other->weight_);
+  std::swap(adjust_, other->adjust_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -6673,6 +6906,20 @@ void PBPricingContract::clear_weight() {
   
   weight_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPricingContract.weight)
+}
+
+// optional double adjust = 4;
+void PBPricingContract::clear_adjust() {
+  adjust_ = 0;
+}
+ double PBPricingContract::adjust() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPricingContract.adjust)
+  return adjust_;
+}
+ void PBPricingContract::set_adjust(double value) {
+  
+  adjust_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPricingContract.adjust)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -20966,6 +21213,5352 @@ const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::
 PBContractInfoList::contractinfo() const {
   // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBContractInfoList.contractInfo)
   return contractinfo_;
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int PBBankOpRequest::kHeaderFieldNumber;
+const int PBBankOpRequest::kBankIDFieldNumber;
+const int PBBankOpRequest::kBankBranchIDFieldNumber;
+const int PBBankOpRequest::kBankPasswordFieldNumber;
+const int PBBankOpRequest::kBankAccountFieldNumber;
+const int PBBankOpRequest::kBrokerIDFieldNumber;
+const int PBBankOpRequest::kBrokerBranchIDFieldNumber;
+const int PBBankOpRequest::kAccountIDFieldNumber;
+const int PBBankOpRequest::kPasswordFieldNumber;
+const int PBBankOpRequest::kCurrencyIDFieldNumber;
+const int PBBankOpRequest::kTradeAmountFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+PBBankOpRequest::PBBankOpRequest()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:Micro.Future.Message.Business.PBBankOpRequest)
+}
+
+void PBBankOpRequest::InitAsDefaultInstance() {
+  _is_default_instance_ = true;
+  header_ = const_cast< ::Micro::Future::Message::DataHeader*>(&::Micro::Future::Message::DataHeader::default_instance());
+}
+
+PBBankOpRequest::PBBankOpRequest(const PBBankOpRequest& from)
+  : ::google::protobuf::Message(),
+    _internal_metadata_(NULL) {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:Micro.Future.Message.Business.PBBankOpRequest)
+}
+
+void PBBankOpRequest::SharedCtor() {
+    _is_default_instance_ = false;
+  ::google::protobuf::internal::GetEmptyString();
+  _cached_size_ = 0;
+  header_ = NULL;
+  bankid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  bankbranchid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  bankpassword_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  bankaccount_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  brokerid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  brokerbranchid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  accountid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  password_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  currencyid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  tradeamount_ = 0;
+}
+
+PBBankOpRequest::~PBBankOpRequest() {
+  // @@protoc_insertion_point(destructor:Micro.Future.Message.Business.PBBankOpRequest)
+  SharedDtor();
+}
+
+void PBBankOpRequest::SharedDtor() {
+  bankid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  bankbranchid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  bankpassword_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  bankaccount_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  brokerid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  brokerbranchid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  accountid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  password_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  currencyid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (this != default_instance_) {
+    delete header_;
+  }
+}
+
+void PBBankOpRequest::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* PBBankOpRequest::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return PBBankOpRequest_descriptor_;
+}
+
+const PBBankOpRequest& PBBankOpRequest::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_businessobj_2eproto();
+  return *default_instance_;
+}
+
+PBBankOpRequest* PBBankOpRequest::default_instance_ = NULL;
+
+PBBankOpRequest* PBBankOpRequest::New(::google::protobuf::Arena* arena) const {
+  PBBankOpRequest* n = new PBBankOpRequest;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void PBBankOpRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:Micro.Future.Message.Business.PBBankOpRequest)
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
+  bankid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  bankbranchid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  bankpassword_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  bankaccount_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  brokerid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  brokerbranchid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  accountid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  password_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  currencyid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  tradeamount_ = 0;
+}
+
+bool PBBankOpRequest::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:Micro.Future.Message.Business.PBBankOpRequest)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional .Micro.Future.Message.DataHeader header = 1;
+      case 1: {
+        if (tag == 10) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_header()));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(18)) goto parse_bankID;
+        break;
+      }
+
+      // optional string bankID = 2;
+      case 2: {
+        if (tag == 18) {
+         parse_bankID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_bankid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->bankid().data(), this->bankid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBBankOpRequest.bankID"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(26)) goto parse_bankBranchID;
+        break;
+      }
+
+      // optional string bankBranchID = 3;
+      case 3: {
+        if (tag == 26) {
+         parse_bankBranchID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_bankbranchid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->bankbranchid().data(), this->bankbranchid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBBankOpRequest.bankBranchID"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(34)) goto parse_bankPassword;
+        break;
+      }
+
+      // optional string bankPassword = 4;
+      case 4: {
+        if (tag == 34) {
+         parse_bankPassword:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_bankpassword()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->bankpassword().data(), this->bankpassword().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBBankOpRequest.bankPassword"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(42)) goto parse_bankAccount;
+        break;
+      }
+
+      // optional string bankAccount = 5;
+      case 5: {
+        if (tag == 42) {
+         parse_bankAccount:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_bankaccount()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->bankaccount().data(), this->bankaccount().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBBankOpRequest.bankAccount"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(50)) goto parse_brokerID;
+        break;
+      }
+
+      // optional string brokerID = 6;
+      case 6: {
+        if (tag == 50) {
+         parse_brokerID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_brokerid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->brokerid().data(), this->brokerid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBBankOpRequest.brokerID"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(58)) goto parse_brokerBranchID;
+        break;
+      }
+
+      // optional string brokerBranchID = 7;
+      case 7: {
+        if (tag == 58) {
+         parse_brokerBranchID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_brokerbranchid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->brokerbranchid().data(), this->brokerbranchid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBBankOpRequest.brokerBranchID"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(66)) goto parse_accountID;
+        break;
+      }
+
+      // optional string accountID = 8;
+      case 8: {
+        if (tag == 66) {
+         parse_accountID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_accountid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->accountid().data(), this->accountid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBBankOpRequest.accountID"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(74)) goto parse_password;
+        break;
+      }
+
+      // optional string password = 9;
+      case 9: {
+        if (tag == 74) {
+         parse_password:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_password()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->password().data(), this->password().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBBankOpRequest.password"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(82)) goto parse_currencyID;
+        break;
+      }
+
+      // optional string currencyID = 10;
+      case 10: {
+        if (tag == 82) {
+         parse_currencyID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_currencyid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->currencyid().data(), this->currencyid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBBankOpRequest.currencyID"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(89)) goto parse_tradeAmount;
+        break;
+      }
+
+      // optional double tradeAmount = 11;
+      case 11: {
+        if (tag == 89) {
+         parse_tradeAmount:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &tradeamount_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:Micro.Future.Message.Business.PBBankOpRequest)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:Micro.Future.Message.Business.PBBankOpRequest)
+  return false;
+#undef DO_
+}
+
+void PBBankOpRequest::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:Micro.Future.Message.Business.PBBankOpRequest)
+  // optional .Micro.Future.Message.DataHeader header = 1;
+  if (this->has_header()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, *this->header_, output);
+  }
+
+  // optional string bankID = 2;
+  if (this->bankid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->bankid().data(), this->bankid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpRequest.bankID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->bankid(), output);
+  }
+
+  // optional string bankBranchID = 3;
+  if (this->bankbranchid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->bankbranchid().data(), this->bankbranchid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpRequest.bankBranchID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      3, this->bankbranchid(), output);
+  }
+
+  // optional string bankPassword = 4;
+  if (this->bankpassword().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->bankpassword().data(), this->bankpassword().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpRequest.bankPassword");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      4, this->bankpassword(), output);
+  }
+
+  // optional string bankAccount = 5;
+  if (this->bankaccount().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->bankaccount().data(), this->bankaccount().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpRequest.bankAccount");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      5, this->bankaccount(), output);
+  }
+
+  // optional string brokerID = 6;
+  if (this->brokerid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->brokerid().data(), this->brokerid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpRequest.brokerID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      6, this->brokerid(), output);
+  }
+
+  // optional string brokerBranchID = 7;
+  if (this->brokerbranchid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->brokerbranchid().data(), this->brokerbranchid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpRequest.brokerBranchID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      7, this->brokerbranchid(), output);
+  }
+
+  // optional string accountID = 8;
+  if (this->accountid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->accountid().data(), this->accountid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpRequest.accountID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      8, this->accountid(), output);
+  }
+
+  // optional string password = 9;
+  if (this->password().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->password().data(), this->password().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpRequest.password");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      9, this->password(), output);
+  }
+
+  // optional string currencyID = 10;
+  if (this->currencyid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->currencyid().data(), this->currencyid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpRequest.currencyID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      10, this->currencyid(), output);
+  }
+
+  // optional double tradeAmount = 11;
+  if (this->tradeamount() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(11, this->tradeamount(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:Micro.Future.Message.Business.PBBankOpRequest)
+}
+
+::google::protobuf::uint8* PBBankOpRequest::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:Micro.Future.Message.Business.PBBankOpRequest)
+  // optional .Micro.Future.Message.DataHeader header = 1;
+  if (this->has_header()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        1, *this->header_, target);
+  }
+
+  // optional string bankID = 2;
+  if (this->bankid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->bankid().data(), this->bankid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpRequest.bankID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->bankid(), target);
+  }
+
+  // optional string bankBranchID = 3;
+  if (this->bankbranchid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->bankbranchid().data(), this->bankbranchid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpRequest.bankBranchID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->bankbranchid(), target);
+  }
+
+  // optional string bankPassword = 4;
+  if (this->bankpassword().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->bankpassword().data(), this->bankpassword().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpRequest.bankPassword");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        4, this->bankpassword(), target);
+  }
+
+  // optional string bankAccount = 5;
+  if (this->bankaccount().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->bankaccount().data(), this->bankaccount().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpRequest.bankAccount");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        5, this->bankaccount(), target);
+  }
+
+  // optional string brokerID = 6;
+  if (this->brokerid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->brokerid().data(), this->brokerid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpRequest.brokerID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        6, this->brokerid(), target);
+  }
+
+  // optional string brokerBranchID = 7;
+  if (this->brokerbranchid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->brokerbranchid().data(), this->brokerbranchid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpRequest.brokerBranchID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        7, this->brokerbranchid(), target);
+  }
+
+  // optional string accountID = 8;
+  if (this->accountid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->accountid().data(), this->accountid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpRequest.accountID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        8, this->accountid(), target);
+  }
+
+  // optional string password = 9;
+  if (this->password().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->password().data(), this->password().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpRequest.password");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        9, this->password(), target);
+  }
+
+  // optional string currencyID = 10;
+  if (this->currencyid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->currencyid().data(), this->currencyid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpRequest.currencyID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        10, this->currencyid(), target);
+  }
+
+  // optional double tradeAmount = 11;
+  if (this->tradeamount() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(11, this->tradeamount(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.Business.PBBankOpRequest)
+  return target;
+}
+
+int PBBankOpRequest::ByteSize() const {
+// @@protoc_insertion_point(message_byte_size_start:Micro.Future.Message.Business.PBBankOpRequest)
+  int total_size = 0;
+
+  // optional .Micro.Future.Message.DataHeader header = 1;
+  if (this->has_header()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->header_);
+  }
+
+  // optional string bankID = 2;
+  if (this->bankid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->bankid());
+  }
+
+  // optional string bankBranchID = 3;
+  if (this->bankbranchid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->bankbranchid());
+  }
+
+  // optional string bankPassword = 4;
+  if (this->bankpassword().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->bankpassword());
+  }
+
+  // optional string bankAccount = 5;
+  if (this->bankaccount().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->bankaccount());
+  }
+
+  // optional string brokerID = 6;
+  if (this->brokerid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->brokerid());
+  }
+
+  // optional string brokerBranchID = 7;
+  if (this->brokerbranchid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->brokerbranchid());
+  }
+
+  // optional string accountID = 8;
+  if (this->accountid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->accountid());
+  }
+
+  // optional string password = 9;
+  if (this->password().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->password());
+  }
+
+  // optional string currencyID = 10;
+  if (this->currencyid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->currencyid());
+  }
+
+  // optional double tradeAmount = 11;
+  if (this->tradeamount() != 0) {
+    total_size += 1 + 8;
+  }
+
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void PBBankOpRequest::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Micro.Future.Message.Business.PBBankOpRequest)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  const PBBankOpRequest* source = 
+      ::google::protobuf::internal::DynamicCastToGenerated<const PBBankOpRequest>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Micro.Future.Message.Business.PBBankOpRequest)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Micro.Future.Message.Business.PBBankOpRequest)
+    MergeFrom(*source);
+  }
+}
+
+void PBBankOpRequest::MergeFrom(const PBBankOpRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Micro.Future.Message.Business.PBBankOpRequest)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (from.has_header()) {
+    mutable_header()->::Micro::Future::Message::DataHeader::MergeFrom(from.header());
+  }
+  if (from.bankid().size() > 0) {
+
+    bankid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.bankid_);
+  }
+  if (from.bankbranchid().size() > 0) {
+
+    bankbranchid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.bankbranchid_);
+  }
+  if (from.bankpassword().size() > 0) {
+
+    bankpassword_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.bankpassword_);
+  }
+  if (from.bankaccount().size() > 0) {
+
+    bankaccount_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.bankaccount_);
+  }
+  if (from.brokerid().size() > 0) {
+
+    brokerid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.brokerid_);
+  }
+  if (from.brokerbranchid().size() > 0) {
+
+    brokerbranchid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.brokerbranchid_);
+  }
+  if (from.accountid().size() > 0) {
+
+    accountid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.accountid_);
+  }
+  if (from.password().size() > 0) {
+
+    password_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.password_);
+  }
+  if (from.currencyid().size() > 0) {
+
+    currencyid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.currencyid_);
+  }
+  if (from.tradeamount() != 0) {
+    set_tradeamount(from.tradeamount());
+  }
+}
+
+void PBBankOpRequest::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Micro.Future.Message.Business.PBBankOpRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void PBBankOpRequest::CopyFrom(const PBBankOpRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Micro.Future.Message.Business.PBBankOpRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool PBBankOpRequest::IsInitialized() const {
+
+  return true;
+}
+
+void PBBankOpRequest::Swap(PBBankOpRequest* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void PBBankOpRequest::InternalSwap(PBBankOpRequest* other) {
+  std::swap(header_, other->header_);
+  bankid_.Swap(&other->bankid_);
+  bankbranchid_.Swap(&other->bankbranchid_);
+  bankpassword_.Swap(&other->bankpassword_);
+  bankaccount_.Swap(&other->bankaccount_);
+  brokerid_.Swap(&other->brokerid_);
+  brokerbranchid_.Swap(&other->brokerbranchid_);
+  accountid_.Swap(&other->accountid_);
+  password_.Swap(&other->password_);
+  currencyid_.Swap(&other->currencyid_);
+  std::swap(tradeamount_, other->tradeamount_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata PBBankOpRequest::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = PBBankOpRequest_descriptor_;
+  metadata.reflection = PBBankOpRequest_reflection_;
+  return metadata;
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// PBBankOpRequest
+
+// optional .Micro.Future.Message.DataHeader header = 1;
+bool PBBankOpRequest::has_header() const {
+  return !_is_default_instance_ && header_ != NULL;
+}
+void PBBankOpRequest::clear_header() {
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
+}
+const ::Micro::Future::Message::DataHeader& PBBankOpRequest::header() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpRequest.header)
+  return header_ != NULL ? *header_ : *default_instance_->header_;
+}
+::Micro::Future::Message::DataHeader* PBBankOpRequest::mutable_header() {
+  
+  if (header_ == NULL) {
+    header_ = new ::Micro::Future::Message::DataHeader;
+  }
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankOpRequest.header)
+  return header_;
+}
+::Micro::Future::Message::DataHeader* PBBankOpRequest::release_header() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankOpRequest.header)
+  
+  ::Micro::Future::Message::DataHeader* temp = header_;
+  header_ = NULL;
+  return temp;
+}
+void PBBankOpRequest::set_allocated_header(::Micro::Future::Message::DataHeader* header) {
+  delete header_;
+  header_ = header;
+  if (header) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankOpRequest.header)
+}
+
+// optional string bankID = 2;
+void PBBankOpRequest::clear_bankid() {
+  bankid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBBankOpRequest::bankid() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpRequest.bankID)
+  return bankid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpRequest::set_bankid(const ::std::string& value) {
+  
+  bankid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpRequest.bankID)
+}
+ void PBBankOpRequest::set_bankid(const char* value) {
+  
+  bankid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBBankOpRequest.bankID)
+}
+ void PBBankOpRequest::set_bankid(const char* value, size_t size) {
+  
+  bankid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBBankOpRequest.bankID)
+}
+ ::std::string* PBBankOpRequest::mutable_bankid() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankOpRequest.bankID)
+  return bankid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBBankOpRequest::release_bankid() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankOpRequest.bankID)
+  
+  return bankid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpRequest::set_allocated_bankid(::std::string* bankid) {
+  if (bankid != NULL) {
+    
+  } else {
+    
+  }
+  bankid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), bankid);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankOpRequest.bankID)
+}
+
+// optional string bankBranchID = 3;
+void PBBankOpRequest::clear_bankbranchid() {
+  bankbranchid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBBankOpRequest::bankbranchid() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpRequest.bankBranchID)
+  return bankbranchid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpRequest::set_bankbranchid(const ::std::string& value) {
+  
+  bankbranchid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpRequest.bankBranchID)
+}
+ void PBBankOpRequest::set_bankbranchid(const char* value) {
+  
+  bankbranchid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBBankOpRequest.bankBranchID)
+}
+ void PBBankOpRequest::set_bankbranchid(const char* value, size_t size) {
+  
+  bankbranchid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBBankOpRequest.bankBranchID)
+}
+ ::std::string* PBBankOpRequest::mutable_bankbranchid() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankOpRequest.bankBranchID)
+  return bankbranchid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBBankOpRequest::release_bankbranchid() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankOpRequest.bankBranchID)
+  
+  return bankbranchid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpRequest::set_allocated_bankbranchid(::std::string* bankbranchid) {
+  if (bankbranchid != NULL) {
+    
+  } else {
+    
+  }
+  bankbranchid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), bankbranchid);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankOpRequest.bankBranchID)
+}
+
+// optional string bankPassword = 4;
+void PBBankOpRequest::clear_bankpassword() {
+  bankpassword_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBBankOpRequest::bankpassword() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpRequest.bankPassword)
+  return bankpassword_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpRequest::set_bankpassword(const ::std::string& value) {
+  
+  bankpassword_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpRequest.bankPassword)
+}
+ void PBBankOpRequest::set_bankpassword(const char* value) {
+  
+  bankpassword_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBBankOpRequest.bankPassword)
+}
+ void PBBankOpRequest::set_bankpassword(const char* value, size_t size) {
+  
+  bankpassword_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBBankOpRequest.bankPassword)
+}
+ ::std::string* PBBankOpRequest::mutable_bankpassword() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankOpRequest.bankPassword)
+  return bankpassword_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBBankOpRequest::release_bankpassword() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankOpRequest.bankPassword)
+  
+  return bankpassword_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpRequest::set_allocated_bankpassword(::std::string* bankpassword) {
+  if (bankpassword != NULL) {
+    
+  } else {
+    
+  }
+  bankpassword_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), bankpassword);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankOpRequest.bankPassword)
+}
+
+// optional string bankAccount = 5;
+void PBBankOpRequest::clear_bankaccount() {
+  bankaccount_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBBankOpRequest::bankaccount() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpRequest.bankAccount)
+  return bankaccount_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpRequest::set_bankaccount(const ::std::string& value) {
+  
+  bankaccount_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpRequest.bankAccount)
+}
+ void PBBankOpRequest::set_bankaccount(const char* value) {
+  
+  bankaccount_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBBankOpRequest.bankAccount)
+}
+ void PBBankOpRequest::set_bankaccount(const char* value, size_t size) {
+  
+  bankaccount_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBBankOpRequest.bankAccount)
+}
+ ::std::string* PBBankOpRequest::mutable_bankaccount() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankOpRequest.bankAccount)
+  return bankaccount_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBBankOpRequest::release_bankaccount() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankOpRequest.bankAccount)
+  
+  return bankaccount_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpRequest::set_allocated_bankaccount(::std::string* bankaccount) {
+  if (bankaccount != NULL) {
+    
+  } else {
+    
+  }
+  bankaccount_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), bankaccount);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankOpRequest.bankAccount)
+}
+
+// optional string brokerID = 6;
+void PBBankOpRequest::clear_brokerid() {
+  brokerid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBBankOpRequest::brokerid() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpRequest.brokerID)
+  return brokerid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpRequest::set_brokerid(const ::std::string& value) {
+  
+  brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpRequest.brokerID)
+}
+ void PBBankOpRequest::set_brokerid(const char* value) {
+  
+  brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBBankOpRequest.brokerID)
+}
+ void PBBankOpRequest::set_brokerid(const char* value, size_t size) {
+  
+  brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBBankOpRequest.brokerID)
+}
+ ::std::string* PBBankOpRequest::mutable_brokerid() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankOpRequest.brokerID)
+  return brokerid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBBankOpRequest::release_brokerid() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankOpRequest.brokerID)
+  
+  return brokerid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpRequest::set_allocated_brokerid(::std::string* brokerid) {
+  if (brokerid != NULL) {
+    
+  } else {
+    
+  }
+  brokerid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), brokerid);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankOpRequest.brokerID)
+}
+
+// optional string brokerBranchID = 7;
+void PBBankOpRequest::clear_brokerbranchid() {
+  brokerbranchid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBBankOpRequest::brokerbranchid() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpRequest.brokerBranchID)
+  return brokerbranchid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpRequest::set_brokerbranchid(const ::std::string& value) {
+  
+  brokerbranchid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpRequest.brokerBranchID)
+}
+ void PBBankOpRequest::set_brokerbranchid(const char* value) {
+  
+  brokerbranchid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBBankOpRequest.brokerBranchID)
+}
+ void PBBankOpRequest::set_brokerbranchid(const char* value, size_t size) {
+  
+  brokerbranchid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBBankOpRequest.brokerBranchID)
+}
+ ::std::string* PBBankOpRequest::mutable_brokerbranchid() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankOpRequest.brokerBranchID)
+  return brokerbranchid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBBankOpRequest::release_brokerbranchid() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankOpRequest.brokerBranchID)
+  
+  return brokerbranchid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpRequest::set_allocated_brokerbranchid(::std::string* brokerbranchid) {
+  if (brokerbranchid != NULL) {
+    
+  } else {
+    
+  }
+  brokerbranchid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), brokerbranchid);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankOpRequest.brokerBranchID)
+}
+
+// optional string accountID = 8;
+void PBBankOpRequest::clear_accountid() {
+  accountid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBBankOpRequest::accountid() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpRequest.accountID)
+  return accountid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpRequest::set_accountid(const ::std::string& value) {
+  
+  accountid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpRequest.accountID)
+}
+ void PBBankOpRequest::set_accountid(const char* value) {
+  
+  accountid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBBankOpRequest.accountID)
+}
+ void PBBankOpRequest::set_accountid(const char* value, size_t size) {
+  
+  accountid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBBankOpRequest.accountID)
+}
+ ::std::string* PBBankOpRequest::mutable_accountid() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankOpRequest.accountID)
+  return accountid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBBankOpRequest::release_accountid() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankOpRequest.accountID)
+  
+  return accountid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpRequest::set_allocated_accountid(::std::string* accountid) {
+  if (accountid != NULL) {
+    
+  } else {
+    
+  }
+  accountid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), accountid);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankOpRequest.accountID)
+}
+
+// optional string password = 9;
+void PBBankOpRequest::clear_password() {
+  password_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBBankOpRequest::password() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpRequest.password)
+  return password_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpRequest::set_password(const ::std::string& value) {
+  
+  password_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpRequest.password)
+}
+ void PBBankOpRequest::set_password(const char* value) {
+  
+  password_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBBankOpRequest.password)
+}
+ void PBBankOpRequest::set_password(const char* value, size_t size) {
+  
+  password_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBBankOpRequest.password)
+}
+ ::std::string* PBBankOpRequest::mutable_password() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankOpRequest.password)
+  return password_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBBankOpRequest::release_password() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankOpRequest.password)
+  
+  return password_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpRequest::set_allocated_password(::std::string* password) {
+  if (password != NULL) {
+    
+  } else {
+    
+  }
+  password_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), password);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankOpRequest.password)
+}
+
+// optional string currencyID = 10;
+void PBBankOpRequest::clear_currencyid() {
+  currencyid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBBankOpRequest::currencyid() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpRequest.currencyID)
+  return currencyid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpRequest::set_currencyid(const ::std::string& value) {
+  
+  currencyid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpRequest.currencyID)
+}
+ void PBBankOpRequest::set_currencyid(const char* value) {
+  
+  currencyid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBBankOpRequest.currencyID)
+}
+ void PBBankOpRequest::set_currencyid(const char* value, size_t size) {
+  
+  currencyid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBBankOpRequest.currencyID)
+}
+ ::std::string* PBBankOpRequest::mutable_currencyid() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankOpRequest.currencyID)
+  return currencyid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBBankOpRequest::release_currencyid() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankOpRequest.currencyID)
+  
+  return currencyid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpRequest::set_allocated_currencyid(::std::string* currencyid) {
+  if (currencyid != NULL) {
+    
+  } else {
+    
+  }
+  currencyid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), currencyid);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankOpRequest.currencyID)
+}
+
+// optional double tradeAmount = 11;
+void PBBankOpRequest::clear_tradeamount() {
+  tradeamount_ = 0;
+}
+ double PBBankOpRequest::tradeamount() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpRequest.tradeAmount)
+  return tradeamount_;
+}
+ void PBBankOpRequest::set_tradeamount(double value) {
+  
+  tradeamount_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpRequest.tradeAmount)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int PBBankOpResult::kHeaderFieldNumber;
+const int PBBankOpResult::kBankIDFieldNumber;
+const int PBBankOpResult::kBankBranchIDFieldNumber;
+const int PBBankOpResult::kBankPasswordFieldNumber;
+const int PBBankOpResult::kBankAccountFieldNumber;
+const int PBBankOpResult::kBrokerIDFieldNumber;
+const int PBBankOpResult::kBrokerBranchIDFieldNumber;
+const int PBBankOpResult::kAccountIDFieldNumber;
+const int PBBankOpResult::kPasswordFieldNumber;
+const int PBBankOpResult::kCurrencyIDFieldNumber;
+const int PBBankOpResult::kTradeAmountFieldNumber;
+const int PBBankOpResult::kSerialNumFieldNumber;
+const int PBBankOpResult::kTradingDayFieldNumber;
+const int PBBankOpResult::kTradeDateFieldNumber;
+const int PBBankOpResult::kTradeTimeFieldNumber;
+const int PBBankOpResult::kTradeCodeFieldNumber;
+const int PBBankOpResult::kBankSerialFieldNumber;
+const int PBBankOpResult::kFutureAccTypeFieldNumber;
+const int PBBankOpResult::kBankAccTypeFieldNumber;
+const int PBBankOpResult::kFutureSerialFieldNumber;
+const int PBBankOpResult::kCustFeeFieldNumber;
+const int PBBankOpResult::kBrokerFeeFieldNumber;
+const int PBBankOpResult::kErrorIDFieldNumber;
+const int PBBankOpResult::kErrorMsgFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+PBBankOpResult::PBBankOpResult()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:Micro.Future.Message.Business.PBBankOpResult)
+}
+
+void PBBankOpResult::InitAsDefaultInstance() {
+  _is_default_instance_ = true;
+  header_ = const_cast< ::Micro::Future::Message::DataHeader*>(&::Micro::Future::Message::DataHeader::default_instance());
+}
+
+PBBankOpResult::PBBankOpResult(const PBBankOpResult& from)
+  : ::google::protobuf::Message(),
+    _internal_metadata_(NULL) {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:Micro.Future.Message.Business.PBBankOpResult)
+}
+
+void PBBankOpResult::SharedCtor() {
+    _is_default_instance_ = false;
+  ::google::protobuf::internal::GetEmptyString();
+  _cached_size_ = 0;
+  header_ = NULL;
+  bankid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  bankbranchid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  bankpassword_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  bankaccount_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  brokerid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  brokerbranchid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  accountid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  password_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  currencyid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  tradeamount_ = 0;
+  serialnum_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  tradingday_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  tradedate_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  tradetime_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  tradecode_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  bankserial_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  futureacctype_ = 0;
+  bankacctype_ = 0;
+  futureserial_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  custfee_ = 0;
+  brokerfee_ = 0;
+  errorid_ = 0;
+  errormsg_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+PBBankOpResult::~PBBankOpResult() {
+  // @@protoc_insertion_point(destructor:Micro.Future.Message.Business.PBBankOpResult)
+  SharedDtor();
+}
+
+void PBBankOpResult::SharedDtor() {
+  bankid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  bankbranchid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  bankpassword_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  bankaccount_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  brokerid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  brokerbranchid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  accountid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  password_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  currencyid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  serialnum_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  tradingday_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  tradedate_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  tradetime_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  tradecode_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  bankserial_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  futureserial_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  errormsg_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (this != default_instance_) {
+    delete header_;
+  }
+}
+
+void PBBankOpResult::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* PBBankOpResult::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return PBBankOpResult_descriptor_;
+}
+
+const PBBankOpResult& PBBankOpResult::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_businessobj_2eproto();
+  return *default_instance_;
+}
+
+PBBankOpResult* PBBankOpResult::default_instance_ = NULL;
+
+PBBankOpResult* PBBankOpResult::New(::google::protobuf::Arena* arena) const {
+  PBBankOpResult* n = new PBBankOpResult;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void PBBankOpResult::Clear() {
+// @@protoc_insertion_point(message_clear_start:Micro.Future.Message.Business.PBBankOpResult)
+#if defined(__clang__)
+#define ZR_HELPER_(f) \
+  _Pragma("clang diagnostic push") \
+  _Pragma("clang diagnostic ignored \"-Winvalid-offsetof\"") \
+  __builtin_offsetof(PBBankOpResult, f) \
+  _Pragma("clang diagnostic pop")
+#else
+#define ZR_HELPER_(f) reinterpret_cast<char*>(\
+  &reinterpret_cast<PBBankOpResult*>(16)->f)
+#endif
+
+#define ZR_(first, last) do {\
+  ::memset(&first, 0,\
+           ZR_HELPER_(last) - ZR_HELPER_(first) + sizeof(last));\
+} while (0)
+
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
+  bankid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  bankbranchid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  bankpassword_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  bankaccount_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  brokerid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  brokerbranchid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  accountid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  password_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  currencyid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  tradeamount_ = 0;
+  serialnum_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  tradingday_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  tradedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  tradetime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  tradecode_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ZR_(futureacctype_, bankacctype_);
+  ZR_(custfee_, brokerfee_);
+  bankserial_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  futureserial_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  errorid_ = 0;
+  errormsg_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+
+#undef ZR_HELPER_
+#undef ZR_
+
+}
+
+bool PBBankOpResult::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:Micro.Future.Message.Business.PBBankOpResult)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(16383);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional .Micro.Future.Message.DataHeader header = 1;
+      case 1: {
+        if (tag == 10) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_header()));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(18)) goto parse_bankID;
+        break;
+      }
+
+      // optional string bankID = 2;
+      case 2: {
+        if (tag == 18) {
+         parse_bankID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_bankid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->bankid().data(), this->bankid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBBankOpResult.bankID"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(26)) goto parse_bankBranchID;
+        break;
+      }
+
+      // optional string bankBranchID = 3;
+      case 3: {
+        if (tag == 26) {
+         parse_bankBranchID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_bankbranchid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->bankbranchid().data(), this->bankbranchid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBBankOpResult.bankBranchID"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(34)) goto parse_bankPassword;
+        break;
+      }
+
+      // optional string bankPassword = 4;
+      case 4: {
+        if (tag == 34) {
+         parse_bankPassword:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_bankpassword()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->bankpassword().data(), this->bankpassword().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBBankOpResult.bankPassword"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(42)) goto parse_bankAccount;
+        break;
+      }
+
+      // optional string bankAccount = 5;
+      case 5: {
+        if (tag == 42) {
+         parse_bankAccount:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_bankaccount()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->bankaccount().data(), this->bankaccount().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBBankOpResult.bankAccount"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(50)) goto parse_brokerID;
+        break;
+      }
+
+      // optional string brokerID = 6;
+      case 6: {
+        if (tag == 50) {
+         parse_brokerID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_brokerid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->brokerid().data(), this->brokerid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBBankOpResult.brokerID"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(58)) goto parse_brokerBranchID;
+        break;
+      }
+
+      // optional string brokerBranchID = 7;
+      case 7: {
+        if (tag == 58) {
+         parse_brokerBranchID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_brokerbranchid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->brokerbranchid().data(), this->brokerbranchid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBBankOpResult.brokerBranchID"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(66)) goto parse_accountID;
+        break;
+      }
+
+      // optional string accountID = 8;
+      case 8: {
+        if (tag == 66) {
+         parse_accountID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_accountid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->accountid().data(), this->accountid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBBankOpResult.accountID"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(74)) goto parse_password;
+        break;
+      }
+
+      // optional string password = 9;
+      case 9: {
+        if (tag == 74) {
+         parse_password:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_password()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->password().data(), this->password().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBBankOpResult.password"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(82)) goto parse_currencyID;
+        break;
+      }
+
+      // optional string currencyID = 10;
+      case 10: {
+        if (tag == 82) {
+         parse_currencyID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_currencyid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->currencyid().data(), this->currencyid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBBankOpResult.currencyID"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(89)) goto parse_tradeAmount;
+        break;
+      }
+
+      // optional double tradeAmount = 11;
+      case 11: {
+        if (tag == 89) {
+         parse_tradeAmount:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &tradeamount_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(98)) goto parse_SerialNum;
+        break;
+      }
+
+      // optional string SerialNum = 12;
+      case 12: {
+        if (tag == 98) {
+         parse_SerialNum:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_serialnum()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->serialnum().data(), this->serialnum().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBBankOpResult.SerialNum"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(106)) goto parse_TradingDay;
+        break;
+      }
+
+      // optional string TradingDay = 13;
+      case 13: {
+        if (tag == 106) {
+         parse_TradingDay:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_tradingday()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->tradingday().data(), this->tradingday().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBBankOpResult.TradingDay"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(114)) goto parse_TradeDate;
+        break;
+      }
+
+      // optional string TradeDate = 14;
+      case 14: {
+        if (tag == 114) {
+         parse_TradeDate:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_tradedate()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->tradedate().data(), this->tradedate().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBBankOpResult.TradeDate"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(122)) goto parse_TradeTime;
+        break;
+      }
+
+      // optional string TradeTime = 15;
+      case 15: {
+        if (tag == 122) {
+         parse_TradeTime:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_tradetime()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->tradetime().data(), this->tradetime().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBBankOpResult.TradeTime"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(130)) goto parse_TradeCode;
+        break;
+      }
+
+      // optional string TradeCode = 16;
+      case 16: {
+        if (tag == 130) {
+         parse_TradeCode:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_tradecode()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->tradecode().data(), this->tradecode().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBBankOpResult.TradeCode"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(138)) goto parse_BankSerial;
+        break;
+      }
+
+      // optional string BankSerial = 17;
+      case 17: {
+        if (tag == 138) {
+         parse_BankSerial:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_bankserial()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->bankserial().data(), this->bankserial().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBBankOpResult.BankSerial"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(144)) goto parse_FutureAccType;
+        break;
+      }
+
+      // optional int32 FutureAccType = 18;
+      case 18: {
+        if (tag == 144) {
+         parse_FutureAccType:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &futureacctype_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(152)) goto parse_BankAccType;
+        break;
+      }
+
+      // optional int32 BankAccType = 19;
+      case 19: {
+        if (tag == 152) {
+         parse_BankAccType:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &bankacctype_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(162)) goto parse_FutureSerial;
+        break;
+      }
+
+      // optional string FutureSerial = 20;
+      case 20: {
+        if (tag == 162) {
+         parse_FutureSerial:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_futureserial()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->futureserial().data(), this->futureserial().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBBankOpResult.FutureSerial"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(169)) goto parse_CustFee;
+        break;
+      }
+
+      // optional double CustFee = 21;
+      case 21: {
+        if (tag == 169) {
+         parse_CustFee:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &custfee_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(177)) goto parse_BrokerFee;
+        break;
+      }
+
+      // optional double BrokerFee = 22;
+      case 22: {
+        if (tag == 177) {
+         parse_BrokerFee:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &brokerfee_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(184)) goto parse_ErrorID;
+        break;
+      }
+
+      // optional int32 ErrorID = 23;
+      case 23: {
+        if (tag == 184) {
+         parse_ErrorID:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &errorid_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(194)) goto parse_ErrorMsg;
+        break;
+      }
+
+      // optional bytes ErrorMsg = 24;
+      case 24: {
+        if (tag == 194) {
+         parse_ErrorMsg:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_errormsg()));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:Micro.Future.Message.Business.PBBankOpResult)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:Micro.Future.Message.Business.PBBankOpResult)
+  return false;
+#undef DO_
+}
+
+void PBBankOpResult::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:Micro.Future.Message.Business.PBBankOpResult)
+  // optional .Micro.Future.Message.DataHeader header = 1;
+  if (this->has_header()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, *this->header_, output);
+  }
+
+  // optional string bankID = 2;
+  if (this->bankid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->bankid().data(), this->bankid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.bankID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->bankid(), output);
+  }
+
+  // optional string bankBranchID = 3;
+  if (this->bankbranchid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->bankbranchid().data(), this->bankbranchid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.bankBranchID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      3, this->bankbranchid(), output);
+  }
+
+  // optional string bankPassword = 4;
+  if (this->bankpassword().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->bankpassword().data(), this->bankpassword().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.bankPassword");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      4, this->bankpassword(), output);
+  }
+
+  // optional string bankAccount = 5;
+  if (this->bankaccount().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->bankaccount().data(), this->bankaccount().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.bankAccount");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      5, this->bankaccount(), output);
+  }
+
+  // optional string brokerID = 6;
+  if (this->brokerid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->brokerid().data(), this->brokerid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.brokerID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      6, this->brokerid(), output);
+  }
+
+  // optional string brokerBranchID = 7;
+  if (this->brokerbranchid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->brokerbranchid().data(), this->brokerbranchid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.brokerBranchID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      7, this->brokerbranchid(), output);
+  }
+
+  // optional string accountID = 8;
+  if (this->accountid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->accountid().data(), this->accountid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.accountID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      8, this->accountid(), output);
+  }
+
+  // optional string password = 9;
+  if (this->password().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->password().data(), this->password().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.password");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      9, this->password(), output);
+  }
+
+  // optional string currencyID = 10;
+  if (this->currencyid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->currencyid().data(), this->currencyid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.currencyID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      10, this->currencyid(), output);
+  }
+
+  // optional double tradeAmount = 11;
+  if (this->tradeamount() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(11, this->tradeamount(), output);
+  }
+
+  // optional string SerialNum = 12;
+  if (this->serialnum().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->serialnum().data(), this->serialnum().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.SerialNum");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      12, this->serialnum(), output);
+  }
+
+  // optional string TradingDay = 13;
+  if (this->tradingday().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->tradingday().data(), this->tradingday().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.TradingDay");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      13, this->tradingday(), output);
+  }
+
+  // optional string TradeDate = 14;
+  if (this->tradedate().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->tradedate().data(), this->tradedate().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.TradeDate");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      14, this->tradedate(), output);
+  }
+
+  // optional string TradeTime = 15;
+  if (this->tradetime().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->tradetime().data(), this->tradetime().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.TradeTime");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      15, this->tradetime(), output);
+  }
+
+  // optional string TradeCode = 16;
+  if (this->tradecode().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->tradecode().data(), this->tradecode().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.TradeCode");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      16, this->tradecode(), output);
+  }
+
+  // optional string BankSerial = 17;
+  if (this->bankserial().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->bankserial().data(), this->bankserial().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.BankSerial");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      17, this->bankserial(), output);
+  }
+
+  // optional int32 FutureAccType = 18;
+  if (this->futureacctype() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(18, this->futureacctype(), output);
+  }
+
+  // optional int32 BankAccType = 19;
+  if (this->bankacctype() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(19, this->bankacctype(), output);
+  }
+
+  // optional string FutureSerial = 20;
+  if (this->futureserial().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->futureserial().data(), this->futureserial().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.FutureSerial");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      20, this->futureserial(), output);
+  }
+
+  // optional double CustFee = 21;
+  if (this->custfee() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(21, this->custfee(), output);
+  }
+
+  // optional double BrokerFee = 22;
+  if (this->brokerfee() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(22, this->brokerfee(), output);
+  }
+
+  // optional int32 ErrorID = 23;
+  if (this->errorid() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(23, this->errorid(), output);
+  }
+
+  // optional bytes ErrorMsg = 24;
+  if (this->errormsg().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
+      24, this->errormsg(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:Micro.Future.Message.Business.PBBankOpResult)
+}
+
+::google::protobuf::uint8* PBBankOpResult::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:Micro.Future.Message.Business.PBBankOpResult)
+  // optional .Micro.Future.Message.DataHeader header = 1;
+  if (this->has_header()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        1, *this->header_, target);
+  }
+
+  // optional string bankID = 2;
+  if (this->bankid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->bankid().data(), this->bankid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.bankID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->bankid(), target);
+  }
+
+  // optional string bankBranchID = 3;
+  if (this->bankbranchid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->bankbranchid().data(), this->bankbranchid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.bankBranchID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->bankbranchid(), target);
+  }
+
+  // optional string bankPassword = 4;
+  if (this->bankpassword().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->bankpassword().data(), this->bankpassword().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.bankPassword");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        4, this->bankpassword(), target);
+  }
+
+  // optional string bankAccount = 5;
+  if (this->bankaccount().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->bankaccount().data(), this->bankaccount().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.bankAccount");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        5, this->bankaccount(), target);
+  }
+
+  // optional string brokerID = 6;
+  if (this->brokerid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->brokerid().data(), this->brokerid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.brokerID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        6, this->brokerid(), target);
+  }
+
+  // optional string brokerBranchID = 7;
+  if (this->brokerbranchid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->brokerbranchid().data(), this->brokerbranchid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.brokerBranchID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        7, this->brokerbranchid(), target);
+  }
+
+  // optional string accountID = 8;
+  if (this->accountid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->accountid().data(), this->accountid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.accountID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        8, this->accountid(), target);
+  }
+
+  // optional string password = 9;
+  if (this->password().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->password().data(), this->password().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.password");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        9, this->password(), target);
+  }
+
+  // optional string currencyID = 10;
+  if (this->currencyid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->currencyid().data(), this->currencyid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.currencyID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        10, this->currencyid(), target);
+  }
+
+  // optional double tradeAmount = 11;
+  if (this->tradeamount() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(11, this->tradeamount(), target);
+  }
+
+  // optional string SerialNum = 12;
+  if (this->serialnum().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->serialnum().data(), this->serialnum().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.SerialNum");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        12, this->serialnum(), target);
+  }
+
+  // optional string TradingDay = 13;
+  if (this->tradingday().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->tradingday().data(), this->tradingday().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.TradingDay");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        13, this->tradingday(), target);
+  }
+
+  // optional string TradeDate = 14;
+  if (this->tradedate().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->tradedate().data(), this->tradedate().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.TradeDate");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        14, this->tradedate(), target);
+  }
+
+  // optional string TradeTime = 15;
+  if (this->tradetime().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->tradetime().data(), this->tradetime().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.TradeTime");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        15, this->tradetime(), target);
+  }
+
+  // optional string TradeCode = 16;
+  if (this->tradecode().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->tradecode().data(), this->tradecode().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.TradeCode");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        16, this->tradecode(), target);
+  }
+
+  // optional string BankSerial = 17;
+  if (this->bankserial().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->bankserial().data(), this->bankserial().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.BankSerial");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        17, this->bankserial(), target);
+  }
+
+  // optional int32 FutureAccType = 18;
+  if (this->futureacctype() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(18, this->futureacctype(), target);
+  }
+
+  // optional int32 BankAccType = 19;
+  if (this->bankacctype() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(19, this->bankacctype(), target);
+  }
+
+  // optional string FutureSerial = 20;
+  if (this->futureserial().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->futureserial().data(), this->futureserial().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankOpResult.FutureSerial");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        20, this->futureserial(), target);
+  }
+
+  // optional double CustFee = 21;
+  if (this->custfee() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(21, this->custfee(), target);
+  }
+
+  // optional double BrokerFee = 22;
+  if (this->brokerfee() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(22, this->brokerfee(), target);
+  }
+
+  // optional int32 ErrorID = 23;
+  if (this->errorid() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(23, this->errorid(), target);
+  }
+
+  // optional bytes ErrorMsg = 24;
+  if (this->errormsg().size() > 0) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        24, this->errormsg(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.Business.PBBankOpResult)
+  return target;
+}
+
+int PBBankOpResult::ByteSize() const {
+// @@protoc_insertion_point(message_byte_size_start:Micro.Future.Message.Business.PBBankOpResult)
+  int total_size = 0;
+
+  // optional .Micro.Future.Message.DataHeader header = 1;
+  if (this->has_header()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->header_);
+  }
+
+  // optional string bankID = 2;
+  if (this->bankid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->bankid());
+  }
+
+  // optional string bankBranchID = 3;
+  if (this->bankbranchid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->bankbranchid());
+  }
+
+  // optional string bankPassword = 4;
+  if (this->bankpassword().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->bankpassword());
+  }
+
+  // optional string bankAccount = 5;
+  if (this->bankaccount().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->bankaccount());
+  }
+
+  // optional string brokerID = 6;
+  if (this->brokerid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->brokerid());
+  }
+
+  // optional string brokerBranchID = 7;
+  if (this->brokerbranchid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->brokerbranchid());
+  }
+
+  // optional string accountID = 8;
+  if (this->accountid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->accountid());
+  }
+
+  // optional string password = 9;
+  if (this->password().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->password());
+  }
+
+  // optional string currencyID = 10;
+  if (this->currencyid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->currencyid());
+  }
+
+  // optional double tradeAmount = 11;
+  if (this->tradeamount() != 0) {
+    total_size += 1 + 8;
+  }
+
+  // optional string SerialNum = 12;
+  if (this->serialnum().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->serialnum());
+  }
+
+  // optional string TradingDay = 13;
+  if (this->tradingday().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->tradingday());
+  }
+
+  // optional string TradeDate = 14;
+  if (this->tradedate().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->tradedate());
+  }
+
+  // optional string TradeTime = 15;
+  if (this->tradetime().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->tradetime());
+  }
+
+  // optional string TradeCode = 16;
+  if (this->tradecode().size() > 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->tradecode());
+  }
+
+  // optional string BankSerial = 17;
+  if (this->bankserial().size() > 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->bankserial());
+  }
+
+  // optional int32 FutureAccType = 18;
+  if (this->futureacctype() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->futureacctype());
+  }
+
+  // optional int32 BankAccType = 19;
+  if (this->bankacctype() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->bankacctype());
+  }
+
+  // optional string FutureSerial = 20;
+  if (this->futureserial().size() > 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->futureserial());
+  }
+
+  // optional double CustFee = 21;
+  if (this->custfee() != 0) {
+    total_size += 2 + 8;
+  }
+
+  // optional double BrokerFee = 22;
+  if (this->brokerfee() != 0) {
+    total_size += 2 + 8;
+  }
+
+  // optional int32 ErrorID = 23;
+  if (this->errorid() != 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->errorid());
+  }
+
+  // optional bytes ErrorMsg = 24;
+  if (this->errormsg().size() > 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::BytesSize(
+        this->errormsg());
+  }
+
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void PBBankOpResult::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Micro.Future.Message.Business.PBBankOpResult)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  const PBBankOpResult* source = 
+      ::google::protobuf::internal::DynamicCastToGenerated<const PBBankOpResult>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Micro.Future.Message.Business.PBBankOpResult)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Micro.Future.Message.Business.PBBankOpResult)
+    MergeFrom(*source);
+  }
+}
+
+void PBBankOpResult::MergeFrom(const PBBankOpResult& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Micro.Future.Message.Business.PBBankOpResult)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (from.has_header()) {
+    mutable_header()->::Micro::Future::Message::DataHeader::MergeFrom(from.header());
+  }
+  if (from.bankid().size() > 0) {
+
+    bankid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.bankid_);
+  }
+  if (from.bankbranchid().size() > 0) {
+
+    bankbranchid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.bankbranchid_);
+  }
+  if (from.bankpassword().size() > 0) {
+
+    bankpassword_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.bankpassword_);
+  }
+  if (from.bankaccount().size() > 0) {
+
+    bankaccount_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.bankaccount_);
+  }
+  if (from.brokerid().size() > 0) {
+
+    brokerid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.brokerid_);
+  }
+  if (from.brokerbranchid().size() > 0) {
+
+    brokerbranchid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.brokerbranchid_);
+  }
+  if (from.accountid().size() > 0) {
+
+    accountid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.accountid_);
+  }
+  if (from.password().size() > 0) {
+
+    password_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.password_);
+  }
+  if (from.currencyid().size() > 0) {
+
+    currencyid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.currencyid_);
+  }
+  if (from.tradeamount() != 0) {
+    set_tradeamount(from.tradeamount());
+  }
+  if (from.serialnum().size() > 0) {
+
+    serialnum_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.serialnum_);
+  }
+  if (from.tradingday().size() > 0) {
+
+    tradingday_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.tradingday_);
+  }
+  if (from.tradedate().size() > 0) {
+
+    tradedate_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.tradedate_);
+  }
+  if (from.tradetime().size() > 0) {
+
+    tradetime_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.tradetime_);
+  }
+  if (from.tradecode().size() > 0) {
+
+    tradecode_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.tradecode_);
+  }
+  if (from.bankserial().size() > 0) {
+
+    bankserial_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.bankserial_);
+  }
+  if (from.futureacctype() != 0) {
+    set_futureacctype(from.futureacctype());
+  }
+  if (from.bankacctype() != 0) {
+    set_bankacctype(from.bankacctype());
+  }
+  if (from.futureserial().size() > 0) {
+
+    futureserial_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.futureserial_);
+  }
+  if (from.custfee() != 0) {
+    set_custfee(from.custfee());
+  }
+  if (from.brokerfee() != 0) {
+    set_brokerfee(from.brokerfee());
+  }
+  if (from.errorid() != 0) {
+    set_errorid(from.errorid());
+  }
+  if (from.errormsg().size() > 0) {
+
+    errormsg_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.errormsg_);
+  }
+}
+
+void PBBankOpResult::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Micro.Future.Message.Business.PBBankOpResult)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void PBBankOpResult::CopyFrom(const PBBankOpResult& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Micro.Future.Message.Business.PBBankOpResult)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool PBBankOpResult::IsInitialized() const {
+
+  return true;
+}
+
+void PBBankOpResult::Swap(PBBankOpResult* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void PBBankOpResult::InternalSwap(PBBankOpResult* other) {
+  std::swap(header_, other->header_);
+  bankid_.Swap(&other->bankid_);
+  bankbranchid_.Swap(&other->bankbranchid_);
+  bankpassword_.Swap(&other->bankpassword_);
+  bankaccount_.Swap(&other->bankaccount_);
+  brokerid_.Swap(&other->brokerid_);
+  brokerbranchid_.Swap(&other->brokerbranchid_);
+  accountid_.Swap(&other->accountid_);
+  password_.Swap(&other->password_);
+  currencyid_.Swap(&other->currencyid_);
+  std::swap(tradeamount_, other->tradeamount_);
+  serialnum_.Swap(&other->serialnum_);
+  tradingday_.Swap(&other->tradingday_);
+  tradedate_.Swap(&other->tradedate_);
+  tradetime_.Swap(&other->tradetime_);
+  tradecode_.Swap(&other->tradecode_);
+  bankserial_.Swap(&other->bankserial_);
+  std::swap(futureacctype_, other->futureacctype_);
+  std::swap(bankacctype_, other->bankacctype_);
+  futureserial_.Swap(&other->futureserial_);
+  std::swap(custfee_, other->custfee_);
+  std::swap(brokerfee_, other->brokerfee_);
+  std::swap(errorid_, other->errorid_);
+  errormsg_.Swap(&other->errormsg_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata PBBankOpResult::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = PBBankOpResult_descriptor_;
+  metadata.reflection = PBBankOpResult_reflection_;
+  return metadata;
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// PBBankOpResult
+
+// optional .Micro.Future.Message.DataHeader header = 1;
+bool PBBankOpResult::has_header() const {
+  return !_is_default_instance_ && header_ != NULL;
+}
+void PBBankOpResult::clear_header() {
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
+}
+const ::Micro::Future::Message::DataHeader& PBBankOpResult::header() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpResult.header)
+  return header_ != NULL ? *header_ : *default_instance_->header_;
+}
+::Micro::Future::Message::DataHeader* PBBankOpResult::mutable_header() {
+  
+  if (header_ == NULL) {
+    header_ = new ::Micro::Future::Message::DataHeader;
+  }
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankOpResult.header)
+  return header_;
+}
+::Micro::Future::Message::DataHeader* PBBankOpResult::release_header() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankOpResult.header)
+  
+  ::Micro::Future::Message::DataHeader* temp = header_;
+  header_ = NULL;
+  return temp;
+}
+void PBBankOpResult::set_allocated_header(::Micro::Future::Message::DataHeader* header) {
+  delete header_;
+  header_ = header;
+  if (header) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankOpResult.header)
+}
+
+// optional string bankID = 2;
+void PBBankOpResult::clear_bankid() {
+  bankid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBBankOpResult::bankid() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpResult.bankID)
+  return bankid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_bankid(const ::std::string& value) {
+  
+  bankid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpResult.bankID)
+}
+ void PBBankOpResult::set_bankid(const char* value) {
+  
+  bankid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBBankOpResult.bankID)
+}
+ void PBBankOpResult::set_bankid(const char* value, size_t size) {
+  
+  bankid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBBankOpResult.bankID)
+}
+ ::std::string* PBBankOpResult::mutable_bankid() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankOpResult.bankID)
+  return bankid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBBankOpResult::release_bankid() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankOpResult.bankID)
+  
+  return bankid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_allocated_bankid(::std::string* bankid) {
+  if (bankid != NULL) {
+    
+  } else {
+    
+  }
+  bankid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), bankid);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankOpResult.bankID)
+}
+
+// optional string bankBranchID = 3;
+void PBBankOpResult::clear_bankbranchid() {
+  bankbranchid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBBankOpResult::bankbranchid() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpResult.bankBranchID)
+  return bankbranchid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_bankbranchid(const ::std::string& value) {
+  
+  bankbranchid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpResult.bankBranchID)
+}
+ void PBBankOpResult::set_bankbranchid(const char* value) {
+  
+  bankbranchid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBBankOpResult.bankBranchID)
+}
+ void PBBankOpResult::set_bankbranchid(const char* value, size_t size) {
+  
+  bankbranchid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBBankOpResult.bankBranchID)
+}
+ ::std::string* PBBankOpResult::mutable_bankbranchid() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankOpResult.bankBranchID)
+  return bankbranchid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBBankOpResult::release_bankbranchid() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankOpResult.bankBranchID)
+  
+  return bankbranchid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_allocated_bankbranchid(::std::string* bankbranchid) {
+  if (bankbranchid != NULL) {
+    
+  } else {
+    
+  }
+  bankbranchid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), bankbranchid);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankOpResult.bankBranchID)
+}
+
+// optional string bankPassword = 4;
+void PBBankOpResult::clear_bankpassword() {
+  bankpassword_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBBankOpResult::bankpassword() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpResult.bankPassword)
+  return bankpassword_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_bankpassword(const ::std::string& value) {
+  
+  bankpassword_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpResult.bankPassword)
+}
+ void PBBankOpResult::set_bankpassword(const char* value) {
+  
+  bankpassword_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBBankOpResult.bankPassword)
+}
+ void PBBankOpResult::set_bankpassword(const char* value, size_t size) {
+  
+  bankpassword_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBBankOpResult.bankPassword)
+}
+ ::std::string* PBBankOpResult::mutable_bankpassword() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankOpResult.bankPassword)
+  return bankpassword_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBBankOpResult::release_bankpassword() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankOpResult.bankPassword)
+  
+  return bankpassword_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_allocated_bankpassword(::std::string* bankpassword) {
+  if (bankpassword != NULL) {
+    
+  } else {
+    
+  }
+  bankpassword_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), bankpassword);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankOpResult.bankPassword)
+}
+
+// optional string bankAccount = 5;
+void PBBankOpResult::clear_bankaccount() {
+  bankaccount_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBBankOpResult::bankaccount() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpResult.bankAccount)
+  return bankaccount_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_bankaccount(const ::std::string& value) {
+  
+  bankaccount_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpResult.bankAccount)
+}
+ void PBBankOpResult::set_bankaccount(const char* value) {
+  
+  bankaccount_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBBankOpResult.bankAccount)
+}
+ void PBBankOpResult::set_bankaccount(const char* value, size_t size) {
+  
+  bankaccount_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBBankOpResult.bankAccount)
+}
+ ::std::string* PBBankOpResult::mutable_bankaccount() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankOpResult.bankAccount)
+  return bankaccount_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBBankOpResult::release_bankaccount() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankOpResult.bankAccount)
+  
+  return bankaccount_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_allocated_bankaccount(::std::string* bankaccount) {
+  if (bankaccount != NULL) {
+    
+  } else {
+    
+  }
+  bankaccount_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), bankaccount);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankOpResult.bankAccount)
+}
+
+// optional string brokerID = 6;
+void PBBankOpResult::clear_brokerid() {
+  brokerid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBBankOpResult::brokerid() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpResult.brokerID)
+  return brokerid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_brokerid(const ::std::string& value) {
+  
+  brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpResult.brokerID)
+}
+ void PBBankOpResult::set_brokerid(const char* value) {
+  
+  brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBBankOpResult.brokerID)
+}
+ void PBBankOpResult::set_brokerid(const char* value, size_t size) {
+  
+  brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBBankOpResult.brokerID)
+}
+ ::std::string* PBBankOpResult::mutable_brokerid() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankOpResult.brokerID)
+  return brokerid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBBankOpResult::release_brokerid() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankOpResult.brokerID)
+  
+  return brokerid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_allocated_brokerid(::std::string* brokerid) {
+  if (brokerid != NULL) {
+    
+  } else {
+    
+  }
+  brokerid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), brokerid);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankOpResult.brokerID)
+}
+
+// optional string brokerBranchID = 7;
+void PBBankOpResult::clear_brokerbranchid() {
+  brokerbranchid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBBankOpResult::brokerbranchid() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpResult.brokerBranchID)
+  return brokerbranchid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_brokerbranchid(const ::std::string& value) {
+  
+  brokerbranchid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpResult.brokerBranchID)
+}
+ void PBBankOpResult::set_brokerbranchid(const char* value) {
+  
+  brokerbranchid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBBankOpResult.brokerBranchID)
+}
+ void PBBankOpResult::set_brokerbranchid(const char* value, size_t size) {
+  
+  brokerbranchid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBBankOpResult.brokerBranchID)
+}
+ ::std::string* PBBankOpResult::mutable_brokerbranchid() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankOpResult.brokerBranchID)
+  return brokerbranchid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBBankOpResult::release_brokerbranchid() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankOpResult.brokerBranchID)
+  
+  return brokerbranchid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_allocated_brokerbranchid(::std::string* brokerbranchid) {
+  if (brokerbranchid != NULL) {
+    
+  } else {
+    
+  }
+  brokerbranchid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), brokerbranchid);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankOpResult.brokerBranchID)
+}
+
+// optional string accountID = 8;
+void PBBankOpResult::clear_accountid() {
+  accountid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBBankOpResult::accountid() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpResult.accountID)
+  return accountid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_accountid(const ::std::string& value) {
+  
+  accountid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpResult.accountID)
+}
+ void PBBankOpResult::set_accountid(const char* value) {
+  
+  accountid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBBankOpResult.accountID)
+}
+ void PBBankOpResult::set_accountid(const char* value, size_t size) {
+  
+  accountid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBBankOpResult.accountID)
+}
+ ::std::string* PBBankOpResult::mutable_accountid() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankOpResult.accountID)
+  return accountid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBBankOpResult::release_accountid() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankOpResult.accountID)
+  
+  return accountid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_allocated_accountid(::std::string* accountid) {
+  if (accountid != NULL) {
+    
+  } else {
+    
+  }
+  accountid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), accountid);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankOpResult.accountID)
+}
+
+// optional string password = 9;
+void PBBankOpResult::clear_password() {
+  password_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBBankOpResult::password() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpResult.password)
+  return password_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_password(const ::std::string& value) {
+  
+  password_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpResult.password)
+}
+ void PBBankOpResult::set_password(const char* value) {
+  
+  password_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBBankOpResult.password)
+}
+ void PBBankOpResult::set_password(const char* value, size_t size) {
+  
+  password_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBBankOpResult.password)
+}
+ ::std::string* PBBankOpResult::mutable_password() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankOpResult.password)
+  return password_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBBankOpResult::release_password() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankOpResult.password)
+  
+  return password_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_allocated_password(::std::string* password) {
+  if (password != NULL) {
+    
+  } else {
+    
+  }
+  password_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), password);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankOpResult.password)
+}
+
+// optional string currencyID = 10;
+void PBBankOpResult::clear_currencyid() {
+  currencyid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBBankOpResult::currencyid() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpResult.currencyID)
+  return currencyid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_currencyid(const ::std::string& value) {
+  
+  currencyid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpResult.currencyID)
+}
+ void PBBankOpResult::set_currencyid(const char* value) {
+  
+  currencyid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBBankOpResult.currencyID)
+}
+ void PBBankOpResult::set_currencyid(const char* value, size_t size) {
+  
+  currencyid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBBankOpResult.currencyID)
+}
+ ::std::string* PBBankOpResult::mutable_currencyid() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankOpResult.currencyID)
+  return currencyid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBBankOpResult::release_currencyid() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankOpResult.currencyID)
+  
+  return currencyid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_allocated_currencyid(::std::string* currencyid) {
+  if (currencyid != NULL) {
+    
+  } else {
+    
+  }
+  currencyid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), currencyid);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankOpResult.currencyID)
+}
+
+// optional double tradeAmount = 11;
+void PBBankOpResult::clear_tradeamount() {
+  tradeamount_ = 0;
+}
+ double PBBankOpResult::tradeamount() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpResult.tradeAmount)
+  return tradeamount_;
+}
+ void PBBankOpResult::set_tradeamount(double value) {
+  
+  tradeamount_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpResult.tradeAmount)
+}
+
+// optional string SerialNum = 12;
+void PBBankOpResult::clear_serialnum() {
+  serialnum_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBBankOpResult::serialnum() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpResult.SerialNum)
+  return serialnum_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_serialnum(const ::std::string& value) {
+  
+  serialnum_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpResult.SerialNum)
+}
+ void PBBankOpResult::set_serialnum(const char* value) {
+  
+  serialnum_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBBankOpResult.SerialNum)
+}
+ void PBBankOpResult::set_serialnum(const char* value, size_t size) {
+  
+  serialnum_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBBankOpResult.SerialNum)
+}
+ ::std::string* PBBankOpResult::mutable_serialnum() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankOpResult.SerialNum)
+  return serialnum_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBBankOpResult::release_serialnum() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankOpResult.SerialNum)
+  
+  return serialnum_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_allocated_serialnum(::std::string* serialnum) {
+  if (serialnum != NULL) {
+    
+  } else {
+    
+  }
+  serialnum_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), serialnum);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankOpResult.SerialNum)
+}
+
+// optional string TradingDay = 13;
+void PBBankOpResult::clear_tradingday() {
+  tradingday_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBBankOpResult::tradingday() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpResult.TradingDay)
+  return tradingday_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_tradingday(const ::std::string& value) {
+  
+  tradingday_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpResult.TradingDay)
+}
+ void PBBankOpResult::set_tradingday(const char* value) {
+  
+  tradingday_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBBankOpResult.TradingDay)
+}
+ void PBBankOpResult::set_tradingday(const char* value, size_t size) {
+  
+  tradingday_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBBankOpResult.TradingDay)
+}
+ ::std::string* PBBankOpResult::mutable_tradingday() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankOpResult.TradingDay)
+  return tradingday_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBBankOpResult::release_tradingday() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankOpResult.TradingDay)
+  
+  return tradingday_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_allocated_tradingday(::std::string* tradingday) {
+  if (tradingday != NULL) {
+    
+  } else {
+    
+  }
+  tradingday_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), tradingday);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankOpResult.TradingDay)
+}
+
+// optional string TradeDate = 14;
+void PBBankOpResult::clear_tradedate() {
+  tradedate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBBankOpResult::tradedate() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpResult.TradeDate)
+  return tradedate_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_tradedate(const ::std::string& value) {
+  
+  tradedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpResult.TradeDate)
+}
+ void PBBankOpResult::set_tradedate(const char* value) {
+  
+  tradedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBBankOpResult.TradeDate)
+}
+ void PBBankOpResult::set_tradedate(const char* value, size_t size) {
+  
+  tradedate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBBankOpResult.TradeDate)
+}
+ ::std::string* PBBankOpResult::mutable_tradedate() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankOpResult.TradeDate)
+  return tradedate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBBankOpResult::release_tradedate() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankOpResult.TradeDate)
+  
+  return tradedate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_allocated_tradedate(::std::string* tradedate) {
+  if (tradedate != NULL) {
+    
+  } else {
+    
+  }
+  tradedate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), tradedate);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankOpResult.TradeDate)
+}
+
+// optional string TradeTime = 15;
+void PBBankOpResult::clear_tradetime() {
+  tradetime_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBBankOpResult::tradetime() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpResult.TradeTime)
+  return tradetime_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_tradetime(const ::std::string& value) {
+  
+  tradetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpResult.TradeTime)
+}
+ void PBBankOpResult::set_tradetime(const char* value) {
+  
+  tradetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBBankOpResult.TradeTime)
+}
+ void PBBankOpResult::set_tradetime(const char* value, size_t size) {
+  
+  tradetime_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBBankOpResult.TradeTime)
+}
+ ::std::string* PBBankOpResult::mutable_tradetime() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankOpResult.TradeTime)
+  return tradetime_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBBankOpResult::release_tradetime() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankOpResult.TradeTime)
+  
+  return tradetime_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_allocated_tradetime(::std::string* tradetime) {
+  if (tradetime != NULL) {
+    
+  } else {
+    
+  }
+  tradetime_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), tradetime);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankOpResult.TradeTime)
+}
+
+// optional string TradeCode = 16;
+void PBBankOpResult::clear_tradecode() {
+  tradecode_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBBankOpResult::tradecode() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpResult.TradeCode)
+  return tradecode_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_tradecode(const ::std::string& value) {
+  
+  tradecode_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpResult.TradeCode)
+}
+ void PBBankOpResult::set_tradecode(const char* value) {
+  
+  tradecode_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBBankOpResult.TradeCode)
+}
+ void PBBankOpResult::set_tradecode(const char* value, size_t size) {
+  
+  tradecode_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBBankOpResult.TradeCode)
+}
+ ::std::string* PBBankOpResult::mutable_tradecode() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankOpResult.TradeCode)
+  return tradecode_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBBankOpResult::release_tradecode() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankOpResult.TradeCode)
+  
+  return tradecode_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_allocated_tradecode(::std::string* tradecode) {
+  if (tradecode != NULL) {
+    
+  } else {
+    
+  }
+  tradecode_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), tradecode);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankOpResult.TradeCode)
+}
+
+// optional string BankSerial = 17;
+void PBBankOpResult::clear_bankserial() {
+  bankserial_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBBankOpResult::bankserial() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpResult.BankSerial)
+  return bankserial_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_bankserial(const ::std::string& value) {
+  
+  bankserial_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpResult.BankSerial)
+}
+ void PBBankOpResult::set_bankserial(const char* value) {
+  
+  bankserial_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBBankOpResult.BankSerial)
+}
+ void PBBankOpResult::set_bankserial(const char* value, size_t size) {
+  
+  bankserial_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBBankOpResult.BankSerial)
+}
+ ::std::string* PBBankOpResult::mutable_bankserial() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankOpResult.BankSerial)
+  return bankserial_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBBankOpResult::release_bankserial() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankOpResult.BankSerial)
+  
+  return bankserial_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_allocated_bankserial(::std::string* bankserial) {
+  if (bankserial != NULL) {
+    
+  } else {
+    
+  }
+  bankserial_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), bankserial);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankOpResult.BankSerial)
+}
+
+// optional int32 FutureAccType = 18;
+void PBBankOpResult::clear_futureacctype() {
+  futureacctype_ = 0;
+}
+ ::google::protobuf::int32 PBBankOpResult::futureacctype() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpResult.FutureAccType)
+  return futureacctype_;
+}
+ void PBBankOpResult::set_futureacctype(::google::protobuf::int32 value) {
+  
+  futureacctype_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpResult.FutureAccType)
+}
+
+// optional int32 BankAccType = 19;
+void PBBankOpResult::clear_bankacctype() {
+  bankacctype_ = 0;
+}
+ ::google::protobuf::int32 PBBankOpResult::bankacctype() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpResult.BankAccType)
+  return bankacctype_;
+}
+ void PBBankOpResult::set_bankacctype(::google::protobuf::int32 value) {
+  
+  bankacctype_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpResult.BankAccType)
+}
+
+// optional string FutureSerial = 20;
+void PBBankOpResult::clear_futureserial() {
+  futureserial_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBBankOpResult::futureserial() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpResult.FutureSerial)
+  return futureserial_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_futureserial(const ::std::string& value) {
+  
+  futureserial_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpResult.FutureSerial)
+}
+ void PBBankOpResult::set_futureserial(const char* value) {
+  
+  futureserial_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBBankOpResult.FutureSerial)
+}
+ void PBBankOpResult::set_futureserial(const char* value, size_t size) {
+  
+  futureserial_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBBankOpResult.FutureSerial)
+}
+ ::std::string* PBBankOpResult::mutable_futureserial() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankOpResult.FutureSerial)
+  return futureserial_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBBankOpResult::release_futureserial() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankOpResult.FutureSerial)
+  
+  return futureserial_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_allocated_futureserial(::std::string* futureserial) {
+  if (futureserial != NULL) {
+    
+  } else {
+    
+  }
+  futureserial_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), futureserial);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankOpResult.FutureSerial)
+}
+
+// optional double CustFee = 21;
+void PBBankOpResult::clear_custfee() {
+  custfee_ = 0;
+}
+ double PBBankOpResult::custfee() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpResult.CustFee)
+  return custfee_;
+}
+ void PBBankOpResult::set_custfee(double value) {
+  
+  custfee_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpResult.CustFee)
+}
+
+// optional double BrokerFee = 22;
+void PBBankOpResult::clear_brokerfee() {
+  brokerfee_ = 0;
+}
+ double PBBankOpResult::brokerfee() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpResult.BrokerFee)
+  return brokerfee_;
+}
+ void PBBankOpResult::set_brokerfee(double value) {
+  
+  brokerfee_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpResult.BrokerFee)
+}
+
+// optional int32 ErrorID = 23;
+void PBBankOpResult::clear_errorid() {
+  errorid_ = 0;
+}
+ ::google::protobuf::int32 PBBankOpResult::errorid() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpResult.ErrorID)
+  return errorid_;
+}
+ void PBBankOpResult::set_errorid(::google::protobuf::int32 value) {
+  
+  errorid_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpResult.ErrorID)
+}
+
+// optional bytes ErrorMsg = 24;
+void PBBankOpResult::clear_errormsg() {
+  errormsg_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBBankOpResult::errormsg() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankOpResult.ErrorMsg)
+  return errormsg_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_errormsg(const ::std::string& value) {
+  
+  errormsg_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankOpResult.ErrorMsg)
+}
+ void PBBankOpResult::set_errormsg(const char* value) {
+  
+  errormsg_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBBankOpResult.ErrorMsg)
+}
+ void PBBankOpResult::set_errormsg(const void* value, size_t size) {
+  
+  errormsg_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBBankOpResult.ErrorMsg)
+}
+ ::std::string* PBBankOpResult::mutable_errormsg() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankOpResult.ErrorMsg)
+  return errormsg_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBBankOpResult::release_errormsg() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankOpResult.ErrorMsg)
+  
+  return errormsg_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankOpResult::set_allocated_errormsg(::std::string* errormsg) {
+  if (errormsg != NULL) {
+    
+  } else {
+    
+  }
+  errormsg_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), errormsg);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankOpResult.ErrorMsg)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int PBBankInfo::kHeaderFieldNumber;
+const int PBBankInfo::kBankIDFieldNumber;
+const int PBBankInfo::kBranchIDFieldNumber;
+const int PBBankInfo::kNameFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+PBBankInfo::PBBankInfo()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:Micro.Future.Message.Business.PBBankInfo)
+}
+
+void PBBankInfo::InitAsDefaultInstance() {
+  _is_default_instance_ = true;
+  header_ = const_cast< ::Micro::Future::Message::DataHeader*>(&::Micro::Future::Message::DataHeader::default_instance());
+}
+
+PBBankInfo::PBBankInfo(const PBBankInfo& from)
+  : ::google::protobuf::Message(),
+    _internal_metadata_(NULL) {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:Micro.Future.Message.Business.PBBankInfo)
+}
+
+void PBBankInfo::SharedCtor() {
+    _is_default_instance_ = false;
+  ::google::protobuf::internal::GetEmptyString();
+  _cached_size_ = 0;
+  header_ = NULL;
+  bankid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  branchid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+PBBankInfo::~PBBankInfo() {
+  // @@protoc_insertion_point(destructor:Micro.Future.Message.Business.PBBankInfo)
+  SharedDtor();
+}
+
+void PBBankInfo::SharedDtor() {
+  bankid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  branchid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  name_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (this != default_instance_) {
+    delete header_;
+  }
+}
+
+void PBBankInfo::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* PBBankInfo::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return PBBankInfo_descriptor_;
+}
+
+const PBBankInfo& PBBankInfo::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_businessobj_2eproto();
+  return *default_instance_;
+}
+
+PBBankInfo* PBBankInfo::default_instance_ = NULL;
+
+PBBankInfo* PBBankInfo::New(::google::protobuf::Arena* arena) const {
+  PBBankInfo* n = new PBBankInfo;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void PBBankInfo::Clear() {
+// @@protoc_insertion_point(message_clear_start:Micro.Future.Message.Business.PBBankInfo)
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
+  bankid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  branchid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+bool PBBankInfo::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:Micro.Future.Message.Business.PBBankInfo)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional .Micro.Future.Message.DataHeader header = 1;
+      case 1: {
+        if (tag == 10) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_header()));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(18)) goto parse_bankID;
+        break;
+      }
+
+      // optional string bankID = 2;
+      case 2: {
+        if (tag == 18) {
+         parse_bankID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_bankid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->bankid().data(), this->bankid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBBankInfo.bankID"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(26)) goto parse_branchID;
+        break;
+      }
+
+      // optional string branchID = 3;
+      case 3: {
+        if (tag == 26) {
+         parse_branchID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_branchid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->branchid().data(), this->branchid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBBankInfo.branchID"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(34)) goto parse_name;
+        break;
+      }
+
+      // optional bytes name = 4;
+      case 4: {
+        if (tag == 34) {
+         parse_name:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_name()));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:Micro.Future.Message.Business.PBBankInfo)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:Micro.Future.Message.Business.PBBankInfo)
+  return false;
+#undef DO_
+}
+
+void PBBankInfo::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:Micro.Future.Message.Business.PBBankInfo)
+  // optional .Micro.Future.Message.DataHeader header = 1;
+  if (this->has_header()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, *this->header_, output);
+  }
+
+  // optional string bankID = 2;
+  if (this->bankid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->bankid().data(), this->bankid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankInfo.bankID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->bankid(), output);
+  }
+
+  // optional string branchID = 3;
+  if (this->branchid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->branchid().data(), this->branchid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankInfo.branchID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      3, this->branchid(), output);
+  }
+
+  // optional bytes name = 4;
+  if (this->name().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
+      4, this->name(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:Micro.Future.Message.Business.PBBankInfo)
+}
+
+::google::protobuf::uint8* PBBankInfo::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:Micro.Future.Message.Business.PBBankInfo)
+  // optional .Micro.Future.Message.DataHeader header = 1;
+  if (this->has_header()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        1, *this->header_, target);
+  }
+
+  // optional string bankID = 2;
+  if (this->bankid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->bankid().data(), this->bankid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankInfo.bankID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->bankid(), target);
+  }
+
+  // optional string branchID = 3;
+  if (this->branchid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->branchid().data(), this->branchid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBBankInfo.branchID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->branchid(), target);
+  }
+
+  // optional bytes name = 4;
+  if (this->name().size() > 0) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        4, this->name(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.Business.PBBankInfo)
+  return target;
+}
+
+int PBBankInfo::ByteSize() const {
+// @@protoc_insertion_point(message_byte_size_start:Micro.Future.Message.Business.PBBankInfo)
+  int total_size = 0;
+
+  // optional .Micro.Future.Message.DataHeader header = 1;
+  if (this->has_header()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->header_);
+  }
+
+  // optional string bankID = 2;
+  if (this->bankid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->bankid());
+  }
+
+  // optional string branchID = 3;
+  if (this->branchid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->branchid());
+  }
+
+  // optional bytes name = 4;
+  if (this->name().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::BytesSize(
+        this->name());
+  }
+
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void PBBankInfo::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Micro.Future.Message.Business.PBBankInfo)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  const PBBankInfo* source = 
+      ::google::protobuf::internal::DynamicCastToGenerated<const PBBankInfo>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Micro.Future.Message.Business.PBBankInfo)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Micro.Future.Message.Business.PBBankInfo)
+    MergeFrom(*source);
+  }
+}
+
+void PBBankInfo::MergeFrom(const PBBankInfo& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Micro.Future.Message.Business.PBBankInfo)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (from.has_header()) {
+    mutable_header()->::Micro::Future::Message::DataHeader::MergeFrom(from.header());
+  }
+  if (from.bankid().size() > 0) {
+
+    bankid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.bankid_);
+  }
+  if (from.branchid().size() > 0) {
+
+    branchid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.branchid_);
+  }
+  if (from.name().size() > 0) {
+
+    name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.name_);
+  }
+}
+
+void PBBankInfo::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Micro.Future.Message.Business.PBBankInfo)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void PBBankInfo::CopyFrom(const PBBankInfo& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Micro.Future.Message.Business.PBBankInfo)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool PBBankInfo::IsInitialized() const {
+
+  return true;
+}
+
+void PBBankInfo::Swap(PBBankInfo* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void PBBankInfo::InternalSwap(PBBankInfo* other) {
+  std::swap(header_, other->header_);
+  bankid_.Swap(&other->bankid_);
+  branchid_.Swap(&other->branchid_);
+  name_.Swap(&other->name_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata PBBankInfo::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = PBBankInfo_descriptor_;
+  metadata.reflection = PBBankInfo_reflection_;
+  return metadata;
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// PBBankInfo
+
+// optional .Micro.Future.Message.DataHeader header = 1;
+bool PBBankInfo::has_header() const {
+  return !_is_default_instance_ && header_ != NULL;
+}
+void PBBankInfo::clear_header() {
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
+}
+const ::Micro::Future::Message::DataHeader& PBBankInfo::header() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankInfo.header)
+  return header_ != NULL ? *header_ : *default_instance_->header_;
+}
+::Micro::Future::Message::DataHeader* PBBankInfo::mutable_header() {
+  
+  if (header_ == NULL) {
+    header_ = new ::Micro::Future::Message::DataHeader;
+  }
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankInfo.header)
+  return header_;
+}
+::Micro::Future::Message::DataHeader* PBBankInfo::release_header() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankInfo.header)
+  
+  ::Micro::Future::Message::DataHeader* temp = header_;
+  header_ = NULL;
+  return temp;
+}
+void PBBankInfo::set_allocated_header(::Micro::Future::Message::DataHeader* header) {
+  delete header_;
+  header_ = header;
+  if (header) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankInfo.header)
+}
+
+// optional string bankID = 2;
+void PBBankInfo::clear_bankid() {
+  bankid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBBankInfo::bankid() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankInfo.bankID)
+  return bankid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankInfo::set_bankid(const ::std::string& value) {
+  
+  bankid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankInfo.bankID)
+}
+ void PBBankInfo::set_bankid(const char* value) {
+  
+  bankid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBBankInfo.bankID)
+}
+ void PBBankInfo::set_bankid(const char* value, size_t size) {
+  
+  bankid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBBankInfo.bankID)
+}
+ ::std::string* PBBankInfo::mutable_bankid() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankInfo.bankID)
+  return bankid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBBankInfo::release_bankid() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankInfo.bankID)
+  
+  return bankid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankInfo::set_allocated_bankid(::std::string* bankid) {
+  if (bankid != NULL) {
+    
+  } else {
+    
+  }
+  bankid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), bankid);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankInfo.bankID)
+}
+
+// optional string branchID = 3;
+void PBBankInfo::clear_branchid() {
+  branchid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBBankInfo::branchid() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankInfo.branchID)
+  return branchid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankInfo::set_branchid(const ::std::string& value) {
+  
+  branchid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankInfo.branchID)
+}
+ void PBBankInfo::set_branchid(const char* value) {
+  
+  branchid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBBankInfo.branchID)
+}
+ void PBBankInfo::set_branchid(const char* value, size_t size) {
+  
+  branchid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBBankInfo.branchID)
+}
+ ::std::string* PBBankInfo::mutable_branchid() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankInfo.branchID)
+  return branchid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBBankInfo::release_branchid() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankInfo.branchID)
+  
+  return branchid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankInfo::set_allocated_branchid(::std::string* branchid) {
+  if (branchid != NULL) {
+    
+  } else {
+    
+  }
+  branchid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), branchid);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankInfo.branchID)
+}
+
+// optional bytes name = 4;
+void PBBankInfo::clear_name() {
+  name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBBankInfo::name() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBBankInfo.name)
+  return name_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankInfo::set_name(const ::std::string& value) {
+  
+  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBBankInfo.name)
+}
+ void PBBankInfo::set_name(const char* value) {
+  
+  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBBankInfo.name)
+}
+ void PBBankInfo::set_name(const void* value, size_t size) {
+  
+  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBBankInfo.name)
+}
+ ::std::string* PBBankInfo::mutable_name() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBBankInfo.name)
+  return name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBBankInfo::release_name() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBBankInfo.name)
+  
+  return name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBBankInfo::set_allocated_name(::std::string* name) {
+  if (name != NULL) {
+    
+  } else {
+    
+  }
+  name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), name);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBBankInfo.name)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int PBUserAccountInfo::kHeaderFieldNumber;
+const int PBUserAccountInfo::kBankIDFieldNumber;
+const int PBUserAccountInfo::kBankBranchIDFieldNumber;
+const int PBUserAccountInfo::kBankAccountFieldNumber;
+const int PBUserAccountInfo::kBrokerIDFieldNumber;
+const int PBUserAccountInfo::kBrokerBranchIDFieldNumber;
+const int PBUserAccountInfo::kAccountIDFieldNumber;
+const int PBUserAccountInfo::kIdCardNoFieldNumber;
+const int PBUserAccountInfo::kCustomerNameFieldNumber;
+const int PBUserAccountInfo::kCurrencyIDFieldNumber;
+const int PBUserAccountInfo::kCustTypeFieldNumber;
+const int PBUserAccountInfo::kBankAccTypeFieldNumber;
+const int PBUserAccountInfo::kBankUseAmountFieldNumber;
+const int PBUserAccountInfo::kBankFetchAmountFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+PBUserAccountInfo::PBUserAccountInfo()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:Micro.Future.Message.Business.PBUserAccountInfo)
+}
+
+void PBUserAccountInfo::InitAsDefaultInstance() {
+  _is_default_instance_ = true;
+  header_ = const_cast< ::Micro::Future::Message::DataHeader*>(&::Micro::Future::Message::DataHeader::default_instance());
+}
+
+PBUserAccountInfo::PBUserAccountInfo(const PBUserAccountInfo& from)
+  : ::google::protobuf::Message(),
+    _internal_metadata_(NULL) {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:Micro.Future.Message.Business.PBUserAccountInfo)
+}
+
+void PBUserAccountInfo::SharedCtor() {
+    _is_default_instance_ = false;
+  ::google::protobuf::internal::GetEmptyString();
+  _cached_size_ = 0;
+  header_ = NULL;
+  bankid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  bankbranchid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  bankaccount_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  brokerid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  brokerbranchid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  accountid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  idcardno_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  customername_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  currencyid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  custtype_ = 0;
+  bankacctype_ = 0;
+  bankuseamount_ = 0;
+  bankfetchamount_ = 0;
+}
+
+PBUserAccountInfo::~PBUserAccountInfo() {
+  // @@protoc_insertion_point(destructor:Micro.Future.Message.Business.PBUserAccountInfo)
+  SharedDtor();
+}
+
+void PBUserAccountInfo::SharedDtor() {
+  bankid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  bankbranchid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  bankaccount_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  brokerid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  brokerbranchid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  accountid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  idcardno_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  customername_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  currencyid_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (this != default_instance_) {
+    delete header_;
+  }
+}
+
+void PBUserAccountInfo::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* PBUserAccountInfo::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return PBUserAccountInfo_descriptor_;
+}
+
+const PBUserAccountInfo& PBUserAccountInfo::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_businessobj_2eproto();
+  return *default_instance_;
+}
+
+PBUserAccountInfo* PBUserAccountInfo::default_instance_ = NULL;
+
+PBUserAccountInfo* PBUserAccountInfo::New(::google::protobuf::Arena* arena) const {
+  PBUserAccountInfo* n = new PBUserAccountInfo;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void PBUserAccountInfo::Clear() {
+// @@protoc_insertion_point(message_clear_start:Micro.Future.Message.Business.PBUserAccountInfo)
+#if defined(__clang__)
+#define ZR_HELPER_(f) \
+  _Pragma("clang diagnostic push") \
+  _Pragma("clang diagnostic ignored \"-Winvalid-offsetof\"") \
+  __builtin_offsetof(PBUserAccountInfo, f) \
+  _Pragma("clang diagnostic pop")
+#else
+#define ZR_HELPER_(f) reinterpret_cast<char*>(\
+  &reinterpret_cast<PBUserAccountInfo*>(16)->f)
+#endif
+
+#define ZR_(first, last) do {\
+  ::memset(&first, 0,\
+           ZR_HELPER_(last) - ZR_HELPER_(first) + sizeof(last));\
+} while (0)
+
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
+  bankid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  bankbranchid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  bankaccount_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  brokerid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  brokerbranchid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  accountid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  idcardno_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ZR_(custtype_, bankfetchamount_);
+  customername_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  currencyid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+
+#undef ZR_HELPER_
+#undef ZR_
+
+}
+
+bool PBUserAccountInfo::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:Micro.Future.Message.Business.PBUserAccountInfo)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional .Micro.Future.Message.DataHeader header = 1;
+      case 1: {
+        if (tag == 10) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_header()));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(18)) goto parse_bankID;
+        break;
+      }
+
+      // optional string bankID = 2;
+      case 2: {
+        if (tag == 18) {
+         parse_bankID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_bankid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->bankid().data(), this->bankid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBUserAccountInfo.bankID"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(26)) goto parse_bankBranchID;
+        break;
+      }
+
+      // optional string bankBranchID = 3;
+      case 3: {
+        if (tag == 26) {
+         parse_bankBranchID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_bankbranchid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->bankbranchid().data(), this->bankbranchid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBUserAccountInfo.bankBranchID"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(34)) goto parse_bankAccount;
+        break;
+      }
+
+      // optional string bankAccount = 4;
+      case 4: {
+        if (tag == 34) {
+         parse_bankAccount:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_bankaccount()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->bankaccount().data(), this->bankaccount().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBUserAccountInfo.bankAccount"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(42)) goto parse_brokerID;
+        break;
+      }
+
+      // optional string brokerID = 5;
+      case 5: {
+        if (tag == 42) {
+         parse_brokerID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_brokerid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->brokerid().data(), this->brokerid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBUserAccountInfo.brokerID"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(50)) goto parse_brokerBranchID;
+        break;
+      }
+
+      // optional string brokerBranchID = 6;
+      case 6: {
+        if (tag == 50) {
+         parse_brokerBranchID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_brokerbranchid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->brokerbranchid().data(), this->brokerbranchid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBUserAccountInfo.brokerBranchID"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(58)) goto parse_accountID;
+        break;
+      }
+
+      // optional string accountID = 7;
+      case 7: {
+        if (tag == 58) {
+         parse_accountID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_accountid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->accountid().data(), this->accountid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBUserAccountInfo.accountID"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(66)) goto parse_idCardNo;
+        break;
+      }
+
+      // optional string idCardNo = 8;
+      case 8: {
+        if (tag == 66) {
+         parse_idCardNo:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_idcardno()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->idcardno().data(), this->idcardno().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBUserAccountInfo.idCardNo"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(74)) goto parse_customerName;
+        break;
+      }
+
+      // optional bytes customerName = 9;
+      case 9: {
+        if (tag == 74) {
+         parse_customerName:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_customername()));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(82)) goto parse_currencyID;
+        break;
+      }
+
+      // optional string currencyID = 10;
+      case 10: {
+        if (tag == 82) {
+         parse_currencyID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_currencyid()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->currencyid().data(), this->currencyid().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBUserAccountInfo.currencyID"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(88)) goto parse_custType;
+        break;
+      }
+
+      // optional int32 custType = 11;
+      case 11: {
+        if (tag == 88) {
+         parse_custType:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &custtype_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(96)) goto parse_bankAccType;
+        break;
+      }
+
+      // optional int32 bankAccType = 12;
+      case 12: {
+        if (tag == 96) {
+         parse_bankAccType:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &bankacctype_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(105)) goto parse_bankUseAmount;
+        break;
+      }
+
+      // optional double bankUseAmount = 13;
+      case 13: {
+        if (tag == 105) {
+         parse_bankUseAmount:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &bankuseamount_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(113)) goto parse_bankFetchAmount;
+        break;
+      }
+
+      // optional double bankFetchAmount = 14;
+      case 14: {
+        if (tag == 113) {
+         parse_bankFetchAmount:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &bankfetchamount_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:Micro.Future.Message.Business.PBUserAccountInfo)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:Micro.Future.Message.Business.PBUserAccountInfo)
+  return false;
+#undef DO_
+}
+
+void PBUserAccountInfo::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:Micro.Future.Message.Business.PBUserAccountInfo)
+  // optional .Micro.Future.Message.DataHeader header = 1;
+  if (this->has_header()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, *this->header_, output);
+  }
+
+  // optional string bankID = 2;
+  if (this->bankid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->bankid().data(), this->bankid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBUserAccountInfo.bankID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->bankid(), output);
+  }
+
+  // optional string bankBranchID = 3;
+  if (this->bankbranchid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->bankbranchid().data(), this->bankbranchid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBUserAccountInfo.bankBranchID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      3, this->bankbranchid(), output);
+  }
+
+  // optional string bankAccount = 4;
+  if (this->bankaccount().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->bankaccount().data(), this->bankaccount().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBUserAccountInfo.bankAccount");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      4, this->bankaccount(), output);
+  }
+
+  // optional string brokerID = 5;
+  if (this->brokerid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->brokerid().data(), this->brokerid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBUserAccountInfo.brokerID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      5, this->brokerid(), output);
+  }
+
+  // optional string brokerBranchID = 6;
+  if (this->brokerbranchid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->brokerbranchid().data(), this->brokerbranchid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBUserAccountInfo.brokerBranchID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      6, this->brokerbranchid(), output);
+  }
+
+  // optional string accountID = 7;
+  if (this->accountid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->accountid().data(), this->accountid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBUserAccountInfo.accountID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      7, this->accountid(), output);
+  }
+
+  // optional string idCardNo = 8;
+  if (this->idcardno().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->idcardno().data(), this->idcardno().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBUserAccountInfo.idCardNo");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      8, this->idcardno(), output);
+  }
+
+  // optional bytes customerName = 9;
+  if (this->customername().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
+      9, this->customername(), output);
+  }
+
+  // optional string currencyID = 10;
+  if (this->currencyid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->currencyid().data(), this->currencyid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBUserAccountInfo.currencyID");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      10, this->currencyid(), output);
+  }
+
+  // optional int32 custType = 11;
+  if (this->custtype() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(11, this->custtype(), output);
+  }
+
+  // optional int32 bankAccType = 12;
+  if (this->bankacctype() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(12, this->bankacctype(), output);
+  }
+
+  // optional double bankUseAmount = 13;
+  if (this->bankuseamount() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(13, this->bankuseamount(), output);
+  }
+
+  // optional double bankFetchAmount = 14;
+  if (this->bankfetchamount() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(14, this->bankfetchamount(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:Micro.Future.Message.Business.PBUserAccountInfo)
+}
+
+::google::protobuf::uint8* PBUserAccountInfo::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:Micro.Future.Message.Business.PBUserAccountInfo)
+  // optional .Micro.Future.Message.DataHeader header = 1;
+  if (this->has_header()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        1, *this->header_, target);
+  }
+
+  // optional string bankID = 2;
+  if (this->bankid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->bankid().data(), this->bankid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBUserAccountInfo.bankID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->bankid(), target);
+  }
+
+  // optional string bankBranchID = 3;
+  if (this->bankbranchid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->bankbranchid().data(), this->bankbranchid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBUserAccountInfo.bankBranchID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->bankbranchid(), target);
+  }
+
+  // optional string bankAccount = 4;
+  if (this->bankaccount().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->bankaccount().data(), this->bankaccount().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBUserAccountInfo.bankAccount");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        4, this->bankaccount(), target);
+  }
+
+  // optional string brokerID = 5;
+  if (this->brokerid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->brokerid().data(), this->brokerid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBUserAccountInfo.brokerID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        5, this->brokerid(), target);
+  }
+
+  // optional string brokerBranchID = 6;
+  if (this->brokerbranchid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->brokerbranchid().data(), this->brokerbranchid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBUserAccountInfo.brokerBranchID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        6, this->brokerbranchid(), target);
+  }
+
+  // optional string accountID = 7;
+  if (this->accountid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->accountid().data(), this->accountid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBUserAccountInfo.accountID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        7, this->accountid(), target);
+  }
+
+  // optional string idCardNo = 8;
+  if (this->idcardno().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->idcardno().data(), this->idcardno().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBUserAccountInfo.idCardNo");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        8, this->idcardno(), target);
+  }
+
+  // optional bytes customerName = 9;
+  if (this->customername().size() > 0) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        9, this->customername(), target);
+  }
+
+  // optional string currencyID = 10;
+  if (this->currencyid().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->currencyid().data(), this->currencyid().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBUserAccountInfo.currencyID");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        10, this->currencyid(), target);
+  }
+
+  // optional int32 custType = 11;
+  if (this->custtype() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(11, this->custtype(), target);
+  }
+
+  // optional int32 bankAccType = 12;
+  if (this->bankacctype() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(12, this->bankacctype(), target);
+  }
+
+  // optional double bankUseAmount = 13;
+  if (this->bankuseamount() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(13, this->bankuseamount(), target);
+  }
+
+  // optional double bankFetchAmount = 14;
+  if (this->bankfetchamount() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(14, this->bankfetchamount(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.Business.PBUserAccountInfo)
+  return target;
+}
+
+int PBUserAccountInfo::ByteSize() const {
+// @@protoc_insertion_point(message_byte_size_start:Micro.Future.Message.Business.PBUserAccountInfo)
+  int total_size = 0;
+
+  // optional .Micro.Future.Message.DataHeader header = 1;
+  if (this->has_header()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->header_);
+  }
+
+  // optional string bankID = 2;
+  if (this->bankid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->bankid());
+  }
+
+  // optional string bankBranchID = 3;
+  if (this->bankbranchid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->bankbranchid());
+  }
+
+  // optional string bankAccount = 4;
+  if (this->bankaccount().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->bankaccount());
+  }
+
+  // optional string brokerID = 5;
+  if (this->brokerid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->brokerid());
+  }
+
+  // optional string brokerBranchID = 6;
+  if (this->brokerbranchid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->brokerbranchid());
+  }
+
+  // optional string accountID = 7;
+  if (this->accountid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->accountid());
+  }
+
+  // optional string idCardNo = 8;
+  if (this->idcardno().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->idcardno());
+  }
+
+  // optional bytes customerName = 9;
+  if (this->customername().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::BytesSize(
+        this->customername());
+  }
+
+  // optional string currencyID = 10;
+  if (this->currencyid().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->currencyid());
+  }
+
+  // optional int32 custType = 11;
+  if (this->custtype() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->custtype());
+  }
+
+  // optional int32 bankAccType = 12;
+  if (this->bankacctype() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->bankacctype());
+  }
+
+  // optional double bankUseAmount = 13;
+  if (this->bankuseamount() != 0) {
+    total_size += 1 + 8;
+  }
+
+  // optional double bankFetchAmount = 14;
+  if (this->bankfetchamount() != 0) {
+    total_size += 1 + 8;
+  }
+
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void PBUserAccountInfo::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Micro.Future.Message.Business.PBUserAccountInfo)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  const PBUserAccountInfo* source = 
+      ::google::protobuf::internal::DynamicCastToGenerated<const PBUserAccountInfo>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Micro.Future.Message.Business.PBUserAccountInfo)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Micro.Future.Message.Business.PBUserAccountInfo)
+    MergeFrom(*source);
+  }
+}
+
+void PBUserAccountInfo::MergeFrom(const PBUserAccountInfo& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Micro.Future.Message.Business.PBUserAccountInfo)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (from.has_header()) {
+    mutable_header()->::Micro::Future::Message::DataHeader::MergeFrom(from.header());
+  }
+  if (from.bankid().size() > 0) {
+
+    bankid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.bankid_);
+  }
+  if (from.bankbranchid().size() > 0) {
+
+    bankbranchid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.bankbranchid_);
+  }
+  if (from.bankaccount().size() > 0) {
+
+    bankaccount_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.bankaccount_);
+  }
+  if (from.brokerid().size() > 0) {
+
+    brokerid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.brokerid_);
+  }
+  if (from.brokerbranchid().size() > 0) {
+
+    brokerbranchid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.brokerbranchid_);
+  }
+  if (from.accountid().size() > 0) {
+
+    accountid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.accountid_);
+  }
+  if (from.idcardno().size() > 0) {
+
+    idcardno_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.idcardno_);
+  }
+  if (from.customername().size() > 0) {
+
+    customername_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.customername_);
+  }
+  if (from.currencyid().size() > 0) {
+
+    currencyid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.currencyid_);
+  }
+  if (from.custtype() != 0) {
+    set_custtype(from.custtype());
+  }
+  if (from.bankacctype() != 0) {
+    set_bankacctype(from.bankacctype());
+  }
+  if (from.bankuseamount() != 0) {
+    set_bankuseamount(from.bankuseamount());
+  }
+  if (from.bankfetchamount() != 0) {
+    set_bankfetchamount(from.bankfetchamount());
+  }
+}
+
+void PBUserAccountInfo::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Micro.Future.Message.Business.PBUserAccountInfo)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void PBUserAccountInfo::CopyFrom(const PBUserAccountInfo& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Micro.Future.Message.Business.PBUserAccountInfo)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool PBUserAccountInfo::IsInitialized() const {
+
+  return true;
+}
+
+void PBUserAccountInfo::Swap(PBUserAccountInfo* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void PBUserAccountInfo::InternalSwap(PBUserAccountInfo* other) {
+  std::swap(header_, other->header_);
+  bankid_.Swap(&other->bankid_);
+  bankbranchid_.Swap(&other->bankbranchid_);
+  bankaccount_.Swap(&other->bankaccount_);
+  brokerid_.Swap(&other->brokerid_);
+  brokerbranchid_.Swap(&other->brokerbranchid_);
+  accountid_.Swap(&other->accountid_);
+  idcardno_.Swap(&other->idcardno_);
+  customername_.Swap(&other->customername_);
+  currencyid_.Swap(&other->currencyid_);
+  std::swap(custtype_, other->custtype_);
+  std::swap(bankacctype_, other->bankacctype_);
+  std::swap(bankuseamount_, other->bankuseamount_);
+  std::swap(bankfetchamount_, other->bankfetchamount_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata PBUserAccountInfo::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = PBUserAccountInfo_descriptor_;
+  metadata.reflection = PBUserAccountInfo_reflection_;
+  return metadata;
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// PBUserAccountInfo
+
+// optional .Micro.Future.Message.DataHeader header = 1;
+bool PBUserAccountInfo::has_header() const {
+  return !_is_default_instance_ && header_ != NULL;
+}
+void PBUserAccountInfo::clear_header() {
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
+}
+const ::Micro::Future::Message::DataHeader& PBUserAccountInfo::header() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBUserAccountInfo.header)
+  return header_ != NULL ? *header_ : *default_instance_->header_;
+}
+::Micro::Future::Message::DataHeader* PBUserAccountInfo::mutable_header() {
+  
+  if (header_ == NULL) {
+    header_ = new ::Micro::Future::Message::DataHeader;
+  }
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBUserAccountInfo.header)
+  return header_;
+}
+::Micro::Future::Message::DataHeader* PBUserAccountInfo::release_header() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserAccountInfo.header)
+  
+  ::Micro::Future::Message::DataHeader* temp = header_;
+  header_ = NULL;
+  return temp;
+}
+void PBUserAccountInfo::set_allocated_header(::Micro::Future::Message::DataHeader* header) {
+  delete header_;
+  header_ = header;
+  if (header) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBUserAccountInfo.header)
+}
+
+// optional string bankID = 2;
+void PBUserAccountInfo::clear_bankid() {
+  bankid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBUserAccountInfo::bankid() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBUserAccountInfo.bankID)
+  return bankid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBUserAccountInfo::set_bankid(const ::std::string& value) {
+  
+  bankid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBUserAccountInfo.bankID)
+}
+ void PBUserAccountInfo::set_bankid(const char* value) {
+  
+  bankid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBUserAccountInfo.bankID)
+}
+ void PBUserAccountInfo::set_bankid(const char* value, size_t size) {
+  
+  bankid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBUserAccountInfo.bankID)
+}
+ ::std::string* PBUserAccountInfo::mutable_bankid() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBUserAccountInfo.bankID)
+  return bankid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBUserAccountInfo::release_bankid() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserAccountInfo.bankID)
+  
+  return bankid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBUserAccountInfo::set_allocated_bankid(::std::string* bankid) {
+  if (bankid != NULL) {
+    
+  } else {
+    
+  }
+  bankid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), bankid);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBUserAccountInfo.bankID)
+}
+
+// optional string bankBranchID = 3;
+void PBUserAccountInfo::clear_bankbranchid() {
+  bankbranchid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBUserAccountInfo::bankbranchid() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBUserAccountInfo.bankBranchID)
+  return bankbranchid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBUserAccountInfo::set_bankbranchid(const ::std::string& value) {
+  
+  bankbranchid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBUserAccountInfo.bankBranchID)
+}
+ void PBUserAccountInfo::set_bankbranchid(const char* value) {
+  
+  bankbranchid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBUserAccountInfo.bankBranchID)
+}
+ void PBUserAccountInfo::set_bankbranchid(const char* value, size_t size) {
+  
+  bankbranchid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBUserAccountInfo.bankBranchID)
+}
+ ::std::string* PBUserAccountInfo::mutable_bankbranchid() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBUserAccountInfo.bankBranchID)
+  return bankbranchid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBUserAccountInfo::release_bankbranchid() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserAccountInfo.bankBranchID)
+  
+  return bankbranchid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBUserAccountInfo::set_allocated_bankbranchid(::std::string* bankbranchid) {
+  if (bankbranchid != NULL) {
+    
+  } else {
+    
+  }
+  bankbranchid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), bankbranchid);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBUserAccountInfo.bankBranchID)
+}
+
+// optional string bankAccount = 4;
+void PBUserAccountInfo::clear_bankaccount() {
+  bankaccount_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBUserAccountInfo::bankaccount() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBUserAccountInfo.bankAccount)
+  return bankaccount_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBUserAccountInfo::set_bankaccount(const ::std::string& value) {
+  
+  bankaccount_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBUserAccountInfo.bankAccount)
+}
+ void PBUserAccountInfo::set_bankaccount(const char* value) {
+  
+  bankaccount_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBUserAccountInfo.bankAccount)
+}
+ void PBUserAccountInfo::set_bankaccount(const char* value, size_t size) {
+  
+  bankaccount_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBUserAccountInfo.bankAccount)
+}
+ ::std::string* PBUserAccountInfo::mutable_bankaccount() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBUserAccountInfo.bankAccount)
+  return bankaccount_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBUserAccountInfo::release_bankaccount() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserAccountInfo.bankAccount)
+  
+  return bankaccount_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBUserAccountInfo::set_allocated_bankaccount(::std::string* bankaccount) {
+  if (bankaccount != NULL) {
+    
+  } else {
+    
+  }
+  bankaccount_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), bankaccount);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBUserAccountInfo.bankAccount)
+}
+
+// optional string brokerID = 5;
+void PBUserAccountInfo::clear_brokerid() {
+  brokerid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBUserAccountInfo::brokerid() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBUserAccountInfo.brokerID)
+  return brokerid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBUserAccountInfo::set_brokerid(const ::std::string& value) {
+  
+  brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBUserAccountInfo.brokerID)
+}
+ void PBUserAccountInfo::set_brokerid(const char* value) {
+  
+  brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBUserAccountInfo.brokerID)
+}
+ void PBUserAccountInfo::set_brokerid(const char* value, size_t size) {
+  
+  brokerid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBUserAccountInfo.brokerID)
+}
+ ::std::string* PBUserAccountInfo::mutable_brokerid() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBUserAccountInfo.brokerID)
+  return brokerid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBUserAccountInfo::release_brokerid() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserAccountInfo.brokerID)
+  
+  return brokerid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBUserAccountInfo::set_allocated_brokerid(::std::string* brokerid) {
+  if (brokerid != NULL) {
+    
+  } else {
+    
+  }
+  brokerid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), brokerid);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBUserAccountInfo.brokerID)
+}
+
+// optional string brokerBranchID = 6;
+void PBUserAccountInfo::clear_brokerbranchid() {
+  brokerbranchid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBUserAccountInfo::brokerbranchid() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBUserAccountInfo.brokerBranchID)
+  return brokerbranchid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBUserAccountInfo::set_brokerbranchid(const ::std::string& value) {
+  
+  brokerbranchid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBUserAccountInfo.brokerBranchID)
+}
+ void PBUserAccountInfo::set_brokerbranchid(const char* value) {
+  
+  brokerbranchid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBUserAccountInfo.brokerBranchID)
+}
+ void PBUserAccountInfo::set_brokerbranchid(const char* value, size_t size) {
+  
+  brokerbranchid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBUserAccountInfo.brokerBranchID)
+}
+ ::std::string* PBUserAccountInfo::mutable_brokerbranchid() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBUserAccountInfo.brokerBranchID)
+  return brokerbranchid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBUserAccountInfo::release_brokerbranchid() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserAccountInfo.brokerBranchID)
+  
+  return brokerbranchid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBUserAccountInfo::set_allocated_brokerbranchid(::std::string* brokerbranchid) {
+  if (brokerbranchid != NULL) {
+    
+  } else {
+    
+  }
+  brokerbranchid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), brokerbranchid);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBUserAccountInfo.brokerBranchID)
+}
+
+// optional string accountID = 7;
+void PBUserAccountInfo::clear_accountid() {
+  accountid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBUserAccountInfo::accountid() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBUserAccountInfo.accountID)
+  return accountid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBUserAccountInfo::set_accountid(const ::std::string& value) {
+  
+  accountid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBUserAccountInfo.accountID)
+}
+ void PBUserAccountInfo::set_accountid(const char* value) {
+  
+  accountid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBUserAccountInfo.accountID)
+}
+ void PBUserAccountInfo::set_accountid(const char* value, size_t size) {
+  
+  accountid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBUserAccountInfo.accountID)
+}
+ ::std::string* PBUserAccountInfo::mutable_accountid() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBUserAccountInfo.accountID)
+  return accountid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBUserAccountInfo::release_accountid() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserAccountInfo.accountID)
+  
+  return accountid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBUserAccountInfo::set_allocated_accountid(::std::string* accountid) {
+  if (accountid != NULL) {
+    
+  } else {
+    
+  }
+  accountid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), accountid);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBUserAccountInfo.accountID)
+}
+
+// optional string idCardNo = 8;
+void PBUserAccountInfo::clear_idcardno() {
+  idcardno_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBUserAccountInfo::idcardno() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBUserAccountInfo.idCardNo)
+  return idcardno_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBUserAccountInfo::set_idcardno(const ::std::string& value) {
+  
+  idcardno_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBUserAccountInfo.idCardNo)
+}
+ void PBUserAccountInfo::set_idcardno(const char* value) {
+  
+  idcardno_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBUserAccountInfo.idCardNo)
+}
+ void PBUserAccountInfo::set_idcardno(const char* value, size_t size) {
+  
+  idcardno_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBUserAccountInfo.idCardNo)
+}
+ ::std::string* PBUserAccountInfo::mutable_idcardno() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBUserAccountInfo.idCardNo)
+  return idcardno_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBUserAccountInfo::release_idcardno() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserAccountInfo.idCardNo)
+  
+  return idcardno_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBUserAccountInfo::set_allocated_idcardno(::std::string* idcardno) {
+  if (idcardno != NULL) {
+    
+  } else {
+    
+  }
+  idcardno_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), idcardno);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBUserAccountInfo.idCardNo)
+}
+
+// optional bytes customerName = 9;
+void PBUserAccountInfo::clear_customername() {
+  customername_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBUserAccountInfo::customername() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBUserAccountInfo.customerName)
+  return customername_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBUserAccountInfo::set_customername(const ::std::string& value) {
+  
+  customername_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBUserAccountInfo.customerName)
+}
+ void PBUserAccountInfo::set_customername(const char* value) {
+  
+  customername_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBUserAccountInfo.customerName)
+}
+ void PBUserAccountInfo::set_customername(const void* value, size_t size) {
+  
+  customername_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBUserAccountInfo.customerName)
+}
+ ::std::string* PBUserAccountInfo::mutable_customername() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBUserAccountInfo.customerName)
+  return customername_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBUserAccountInfo::release_customername() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserAccountInfo.customerName)
+  
+  return customername_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBUserAccountInfo::set_allocated_customername(::std::string* customername) {
+  if (customername != NULL) {
+    
+  } else {
+    
+  }
+  customername_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), customername);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBUserAccountInfo.customerName)
+}
+
+// optional string currencyID = 10;
+void PBUserAccountInfo::clear_currencyid() {
+  currencyid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBUserAccountInfo::currencyid() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBUserAccountInfo.currencyID)
+  return currencyid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBUserAccountInfo::set_currencyid(const ::std::string& value) {
+  
+  currencyid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBUserAccountInfo.currencyID)
+}
+ void PBUserAccountInfo::set_currencyid(const char* value) {
+  
+  currencyid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBUserAccountInfo.currencyID)
+}
+ void PBUserAccountInfo::set_currencyid(const char* value, size_t size) {
+  
+  currencyid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBUserAccountInfo.currencyID)
+}
+ ::std::string* PBUserAccountInfo::mutable_currencyid() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBUserAccountInfo.currencyID)
+  return currencyid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBUserAccountInfo::release_currencyid() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBUserAccountInfo.currencyID)
+  
+  return currencyid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBUserAccountInfo::set_allocated_currencyid(::std::string* currencyid) {
+  if (currencyid != NULL) {
+    
+  } else {
+    
+  }
+  currencyid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), currencyid);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBUserAccountInfo.currencyID)
+}
+
+// optional int32 custType = 11;
+void PBUserAccountInfo::clear_custtype() {
+  custtype_ = 0;
+}
+ ::google::protobuf::int32 PBUserAccountInfo::custtype() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBUserAccountInfo.custType)
+  return custtype_;
+}
+ void PBUserAccountInfo::set_custtype(::google::protobuf::int32 value) {
+  
+  custtype_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBUserAccountInfo.custType)
+}
+
+// optional int32 bankAccType = 12;
+void PBUserAccountInfo::clear_bankacctype() {
+  bankacctype_ = 0;
+}
+ ::google::protobuf::int32 PBUserAccountInfo::bankacctype() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBUserAccountInfo.bankAccType)
+  return bankacctype_;
+}
+ void PBUserAccountInfo::set_bankacctype(::google::protobuf::int32 value) {
+  
+  bankacctype_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBUserAccountInfo.bankAccType)
+}
+
+// optional double bankUseAmount = 13;
+void PBUserAccountInfo::clear_bankuseamount() {
+  bankuseamount_ = 0;
+}
+ double PBUserAccountInfo::bankuseamount() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBUserAccountInfo.bankUseAmount)
+  return bankuseamount_;
+}
+ void PBUserAccountInfo::set_bankuseamount(double value) {
+  
+  bankuseamount_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBUserAccountInfo.bankUseAmount)
+}
+
+// optional double bankFetchAmount = 14;
+void PBUserAccountInfo::clear_bankfetchamount() {
+  bankfetchamount_ = 0;
+}
+ double PBUserAccountInfo::bankfetchamount() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBUserAccountInfo.bankFetchAmount)
+  return bankfetchamount_;
+}
+ void PBUserAccountInfo::set_bankfetchamount(double value) {
+  
+  bankfetchamount_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBUserAccountInfo.bankFetchAmount)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

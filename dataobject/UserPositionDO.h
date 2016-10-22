@@ -75,4 +75,7 @@ public:
 	std::string TradingDay;
 };
 
+typedef std::shared_ptr<UserPositionDO> UserPositionDO_Ptr;
+typedef std::shared_ptr<UserPositionExDO> UserPositionExDO_Ptr;
+
 #endif

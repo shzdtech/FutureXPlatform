@@ -1,7 +1,7 @@
 #include "TestingAccountInfoHandler.h"
 #include "../dataobject/AccountInfoDO.h"
 
-dataobj_ptr TestingAccountInfoHandler::HandleRequest(const dataobj_ptr & reqDO, IRawAPI * rawAPI, ISession * session)
+dataobj_ptr TestingAccountInfoHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr & reqDO, IRawAPI * rawAPI, ISession * session)
 {
 	auto accountInfo = std::make_shared<AccountInfoDO>();
 

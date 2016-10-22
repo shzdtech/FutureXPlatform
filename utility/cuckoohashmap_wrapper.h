@@ -16,12 +16,22 @@ template <class K, class V, class Hash = DefaultHasher<K>, class Pred = std::equ
 class cuckoohashmap_wrapper
 {
 public:
-	cuckoohashmap_wrapper()
-		: _innerMap(new cuckoohash_map<K, V, Hash, Pred>()) {}
+	cuckoohashmap_wrapper() = default;
 
-	cuckoohash_map<K, V, Hash, Pred>& map()
+	cuckoohashmap_wrapper(bool initilizeMap)
 	{
-		return *_innerMap;
+		if (initilizeMap)
+			_innerMap.reset(new cuckoohash_map<K, V, Hash, Pred>());
+	}
+
+	std::shared_ptr<cuckoohash_map<K, V, Hash, Pred>>& map()
+	{
+		return _innerMap;
+	}
+
+	bool empty() const
+	{
+		return !_innerMap || _innerMap->empty();
 	}
 
 	operator bool() const

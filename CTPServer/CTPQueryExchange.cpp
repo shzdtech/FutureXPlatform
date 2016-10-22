@@ -26,7 +26,7 @@
 
 #include "CTPUtility.h"
  ////////////////////////////////////////////////////////////////////////
- // Name:       CTPQueryExchange::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       CTPQueryExchange::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
  // Purpose:    Implementation of CTPQueryExchange::HandleRequest()
  // Parameters:
  // - reqDO
@@ -35,7 +35,7 @@
  // Return:     void
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryExchange::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryExchange::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	CheckLogin(session);
 
@@ -48,10 +48,10 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 		if (exchangeInfo.empty())
 		{
 			CThostFtdcQryExchangeField req{};
-			int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryExchange(&req, reqDO->SerialId);
+			int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryExchange(&req, serialId);
 			// CTPUtility::CheckReturnError(iRet);
 
-			std::this_thread::sleep_for(std::chrono::seconds(2));
+			std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
 		}
 
 		ThrowNotFoundExceptionIfEmpty(&exchangeInfo);
@@ -64,7 +64,7 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 				auto exchangeDO_Ptr = std::make_shared<ExchangeDO>(*it);
 				exchangeDO_Ptr->HasMore = it != lastit;
 
-				pWorkerProc->SendDataObject(session, MSG_ID_QUERY_EXCHANGE, reqDO->SerialId, exchangeDO_Ptr);
+				pWorkerProc->SendDataObject(session, MSG_ID_QUERY_EXCHANGE, serialId, exchangeDO_Ptr);
 			}
 		}
 		else
@@ -75,7 +75,7 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 			if (it != exchangeInfo.end())
 			{
 				auto exchangeDO_Ptr = std::make_shared<ExchangeDO>(*it);
-				pWorkerProc->SendDataObject(session, MSG_ID_QUERY_EXCHANGE, reqDO->SerialId, exchangeDO_Ptr);
+				pWorkerProc->SendDataObject(session, MSG_ID_QUERY_EXCHANGE, serialId, exchangeDO_Ptr);
 			}
 			else
 			{
@@ -86,7 +86,7 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* r
 	else
 	{
 		CThostFtdcQryExchangeField req{};
-		int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryExchange(&req, reqDO->SerialId);
+		int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryExchange(&req, serialId);
 		CTPUtility::CheckReturnError(iRet);
 	}
 
@@ -126,6 +126,7 @@ dataobj_ptr CTPQueryExchange::HandleResponse(const uint32_t serialId, const para
 			{
 				exchangeSet.insert(*pDO);
 			}
+			ret.reset();
 		}
 	}
 

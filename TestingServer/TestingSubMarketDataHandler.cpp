@@ -12,7 +12,7 @@
 #include "../common/Attribute_Key.h"
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       TestingSubMarketDataHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       TestingSubMarketDataHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
  // Purpose:    Implementation of TestingSubMarketDataHandler::HandleRequest()
  // Parameters:
  // - reqDO
@@ -21,7 +21,7 @@
  // Return:     dataobj_ptr
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr TestingSubMarketDataHandler::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr TestingSubMarketDataHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	VectorDO_Ptr<MarketDataDO> ret = std::make_shared<VectorDO<MarketDataDO>>();
 

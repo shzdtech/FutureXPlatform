@@ -24,7 +24,7 @@
 
 #include "CTPUtility.h"
  ////////////////////////////////////////////////////////////////////////
- // Name:       CTPQueryAccountInfo::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       CTPQueryAccountInfo::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
  // Purpose:    Implementation of CTPQueryAccountInfo::HandleRequest()
  // Parameters:
  // - reqDO
@@ -33,7 +33,7 @@
  // Return:     void
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryAccountInfo::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryAccountInfo::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	CheckLogin(session);
 
@@ -41,38 +41,32 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const dataobj_ptr& reqDO, IRawAPI
 	auto& brokeid = session->getUserInfo()->getBrokerId();
 	auto& investorid = session->getUserInfo()->getInvestorId();
 
+	CThostFtdcQryTradingAccountField req{};
+	std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID) - 1);
+	std::strncpy(req.InvestorID, investorid.data(), sizeof(req.InvestorID) - 1);
+
+	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryTradingAccount(&req, serialId);
+
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
 	{
-		auto& accountInfoVec = pWorkerProc->GetAccountInfo(session->getUserInfo()->getInvestorId());
-
-		if (accountInfoVec.empty())
+		auto& accountInfoMap = pWorkerProc->GetAccountInfo(session->getUserInfo()->getInvestorId());
+		if (accountInfoMap.empty())
 		{
-			CThostFtdcQryTradingAccountField req{};
-			std::strcpy(req.BrokerID, brokeid.data());
-			std::strcpy(req.InvestorID, investorid.data());
-
-			int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryTradingAccount(&req, reqDO->SerialId);
-
-			std::this_thread::sleep_for(std::chrono::seconds(2));
+			std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
 		}
 
-		ThrowNotFoundExceptionIfEmpty(&accountInfoVec);
+		ThrowNotFoundExceptionIfEmpty(&accountInfoMap);
 
-		auto lastit = std::prev(accountInfoVec.end());
-		for (auto it = accountInfoVec.begin(); it != accountInfoVec.end(); it++)
+		auto lastit = std::prev(accountInfoMap.end());
+		for (auto it = accountInfoMap.begin(); it != accountInfoMap.end(); it++)
 		{
-			auto accountptr = std::make_shared<AccountInfoDO>(*it);
+			auto accountptr = std::make_shared<AccountInfoDO>(it->second);
 			accountptr->HasMore = it != lastit;
-			pWorkerProc->SendDataObject(session, MSG_ID_QUERY_ACCOUNT_INFO, reqDO->SerialId, accountptr);
+			pWorkerProc->SendDataObject(session, MSG_ID_QUERY_ACCOUNT_INFO, serialId, accountptr);
 		}
 	}
 	else
 	{
-		CThostFtdcQryTradingAccountField req{};
-		std::strcpy(req.BrokerID, brokeid.data());
-		std::strcpy(req.InvestorID, investorid.data());
-
-		int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryTradingAccount(&req, reqDO->SerialId);
 		CTPUtility::CheckReturnError(iRet);
 	}
 
@@ -136,7 +130,10 @@ dataobj_ptr CTPQueryAccountInfo::HandleResponse(const uint32_t serialId, const p
 
 		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
 		{
-			pWorkerProc->GetAccountInfo(session->getUserInfo()->getUserId()).push_back(*pDO);
+			auto& accountInfo = pWorkerProc->GetAccountInfo(session->getUserInfo()->getUserId()).getorfill(pDO->AccountID);
+			accountInfo = *pDO;
+
+			ret.reset();
 		}
 	}
 

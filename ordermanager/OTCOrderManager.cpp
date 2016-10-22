@@ -58,7 +58,7 @@ OrderDO_Ptr OTCOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 				{
 					if (ret->OrderStatus == OrderStatus::OPENED)
 					{
-						_userOrderCtx.AddOrder(*ret);
+						_userOrderCtx.UpsertOrder(ret->OrderID, *ret);
 					}
 				}
 			}
@@ -83,10 +83,10 @@ OrderDOVec_Ptr OTCOrderManager::UpdateOrderByStrategy(const StrategyContractDO& 
 	_userOrderCtx.UserOrderMap().update_fn(strategyDO.UserID(),
 		[&](cuckoohashmap_wrapper<std::string, cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>>& orderMap)
 	{
-		orderMap.map().update_fn(strategyDO.InstrumentID(), [&](cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>& orders)
+		orderMap.map()->update_fn(strategyDO.InstrumentID(), [&](cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>& orders)
 		{
 			ret = std::make_shared<VectorDO<OrderDO>>();
-			auto lt = orders.map().lock_table();
+			auto lt = orders.map()->lock_table();
 			for (auto& it : lt)
 			{
 				auto& orderDO = *it.second;

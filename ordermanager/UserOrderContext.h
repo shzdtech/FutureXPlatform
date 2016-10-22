@@ -18,13 +18,13 @@
 class ORDERMGR_CLASS_EXPORT UserOrderContext
 {
 public:
-	void AddOrder(const OrderDO_Ptr& orderDO_Ptr);
-	void AddOrder(const OrderDO& orderDO);
+	void UpsertOrder(uint64_t orderID, const OrderDO_Ptr& orderDO_Ptr);
+	void UpsertOrder(uint64_t orderID, const OrderDO& orderDO);
 	void Clear(void);
 	OrderDO_Ptr RemoveOrder(uint64_t orderID);
 	cuckoohash_map<uint64_t, OrderDO_Ptr>& GetAllOrder();
 	cuckoohash_map<std::string, cuckoohashmap_wrapper<std::string, cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>>>& UserOrderMap();
-	vector_ptr<OrderDO> GetOrdersByUser(const std::string& userID);
+	vector_ptr<OrderDO_Ptr> GetOrdersByUser(const std::string& userID);
 	OrderDO_Ptr FindOrder(uint64_t orderID);
 
 

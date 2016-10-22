@@ -31,6 +31,9 @@
     <Filter Include="源文件\CTPHandler\MarketData">
       <UniqueIdentifier>{1d20a9e3-101b-4839-8cde-8258c7ad7b3a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\apiheader">
+      <UniqueIdentifier>{cf7c6af4-cae9-4a60-b20a-de7632bda395}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ctpexport.h">
@@ -123,9 +126,6 @@
     <ClInclude Include="CTPWorkerProcessorID.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="CTPTradeUpdated.h">
-      <Filter>头文件\CTPHandler</Filter>
-    </ClInclude>
     <ClInclude Include="CTPOrderUpdated.h">
       <Filter>头文件\CTPHandler\Trader</Filter>
     </ClInclude>
@@ -134,6 +134,42 @@
     </ClInclude>
     <ClInclude Include="CTPAccountTradeServiceFactory.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPTradeUpdated.h">
+      <Filter>头文件\CTPHandler\Trader</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPFromBankToFuture.h">
+      <Filter>头文件\CTPHandler\Trader</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPFromFutureToBank.h">
+      <Filter>头文件\CTPHandler\Trader</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPQueryTransferBank.h">
+      <Filter>头文件\CTPHandler\Trader</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPQueryTransferSerial.h">
+      <Filter>头文件\CTPHandler\Trader</Filter>
+    </ClInclude>
+    <ClInclude Include="tradeapi\ThostFtdcMdApi.h">
+      <Filter>头文件\apiheader</Filter>
+    </ClInclude>
+    <ClInclude Include="tradeapi\ThostFtdcTraderApi.h">
+      <Filter>头文件\apiheader</Filter>
+    </ClInclude>
+    <ClInclude Include="tradeapi\ThostFtdcUserApiDataType.h">
+      <Filter>头文件\apiheader</Filter>
+    </ClInclude>
+    <ClInclude Include="tradeapi\ThostFtdcUserApiStruct.h">
+      <Filter>头文件\apiheader</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPTransferUpdated.h">
+      <Filter>头文件\CTPHandler\Trader</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPQueryUserBankAccount.h">
+      <Filter>头文件\CTPHandler\Trader</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPQueryUserRegAccount.h">
+      <Filter>头文件\CTPHandler\Trader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -218,10 +254,41 @@
     <ClCompile Include="CTPAccountTradeServiceFactory.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="CTPFromFutureToBank.cpp">
+      <Filter>源文件\CTPHandler\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPFromBankToFuture.cpp">
+      <Filter>源文件\CTPHandler\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPQueryTransferBank.cpp">
+      <Filter>源文件\CTPHandler\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPQueryTransferSerial.cpp">
+      <Filter>源文件\CTPHandler\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPTransferUpdated.cpp">
+      <Filter>源文件\CTPHandler\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPQueryUserBankAccount.cpp">
+      <Filter>源文件\CTPHandler\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPQueryUserRegAccount.cpp">
+      <Filter>源文件\CTPHandler\Trader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="CTPServer.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="tradeapi\error.dtd">
+      <Filter>头文件\apiheader</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="tradeapi\error.xml">
+      <Filter>头文件\apiheader</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

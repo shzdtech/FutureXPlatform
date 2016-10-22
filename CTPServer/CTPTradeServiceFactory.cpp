@@ -56,6 +56,22 @@ std::map<uint, IMessageHandler_Ptr> CTPTradeServiceFactory::CreateMessageHandler
 
 	msg_hdl_map[MSG_ID_SETTLEMENT_INFO_CONFIRM] = std::make_shared<CTPQuerySettlementInfoCfm>();
 
+	msg_hdl_map[MSG_ID_QUERY_TRANSFER_BANK] = std::make_shared<CTPQueryTransferBank>();
+
+	msg_hdl_map[MSG_ID_QUERY_USER_BANKS] = std::make_shared<CTPQueryUserRegAccount>();
+		
+	msg_hdl_map[MSG_ID_QUERY_TRANSFER_SERIAL] = std::make_shared<CTPQueryTransferSerial>();
+		
+	msg_hdl_map[MSG_ID_REQ_BANK_TO_FUTURE] = std::make_shared<CTPFromBankToFuture>();
+	
+	msg_hdl_map[MSG_ID_REQ_FUTURE_TO_BANK] = std::make_shared<CTPFromFutureToBank>();
+	
+	msg_hdl_map[MSG_ID_RET_BANK_TO_FUTURE] = std::make_shared<CTPTransferUpdated>();
+		
+	msg_hdl_map[MSG_ID_RET_FUTURE_TO_BANK] = msg_hdl_map[MSG_ID_RET_BANK_TO_FUTURE];
+
+	msg_hdl_map[MSG_ID_QUERY_USER_BANKACCOUNT] = std::make_shared<CTPQueryUserBankAccount>();
+
 	return msg_hdl_map;
 }
 

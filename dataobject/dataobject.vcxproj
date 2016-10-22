@@ -152,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BankDO.h" />
     <ClInclude Include="dataobjectbase.h" />
     <ClInclude Include="AccountInfoDO.h" />
     <ClInclude Include="data_buffer.h" />
@@ -179,7 +180,10 @@
     <ClInclude Include="MarketDataDO.h" />
     <ClInclude Include="TradeRecordDO.h" />
     <ClInclude Include="TradingDeskOptionParams.h" />
+    <ClInclude Include="BankOpRequestDO.h" />
+    <ClInclude Include="BankOpResultDO.h" />
     <ClInclude Include="TypedefDO.h" />
+    <ClInclude Include="UserAccountRegisterDO.h" />
     <ClInclude Include="UserContractParamDO.h" />
     <ClInclude Include="UserInfoDO.h" />
     <ClInclude Include="UserPositionDO.h" />

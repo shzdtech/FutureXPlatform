@@ -20,7 +20,7 @@
 #include "../dataobject/ResultDO.h"
 #include "../pricingengine/IPricingDataContext.h"
 ////////////////////////////////////////////////////////////////////////
-// Name:       OTCUpdateUserParam::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       OTCUpdateUserParam::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of OTCUpdateUserParam::HandleRequest()
 // Parameters:
 // - reqDO
@@ -29,7 +29,7 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr OTCUpdateUserParam::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr OTCUpdateUserParam::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	CheckLogin(session);
 
@@ -54,11 +54,11 @@ dataobj_ptr OTCUpdateUserParam::HandleRequest(const dataobj_ptr& reqDO, IRawAPI*
 				OnResponseProcMacro(
 					session->getProcessor(),
 					MSG_ID_RTN_PRICING,
-					reqDO->SerialId,
+					serialId,
 					&it->second);
 			}
 		}
 	}
 
-	return std::make_shared<ResultDO>(reqDO->SerialId);
+	return std::make_shared<ResultDO>(serialId);
 }

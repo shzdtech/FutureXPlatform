@@ -9,7 +9,7 @@
 #include "CTSAPIWrapper.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTSNewOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       CTSNewOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTSNewOrder::HandleRequest()
 // Parameters:
 // - reqDO
@@ -18,7 +18,7 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTSNewOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTSNewOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	auto pOrder = (OrderRequestDO*)reqDO.get();
 	pOrder->SetUserID(session->getUserInfo()->getUserId());

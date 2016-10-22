@@ -15,14 +15,14 @@
 
 #include "CTPOTCWorkerProcessor.h"
 
-dataobj_ptr CTPSimMarketData::HandleRequest(const dataobj_ptr & reqDO, IRawAPI * rawAPI, ISession * session)
+dataobj_ptr CTPSimMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr & reqDO, IRawAPI * rawAPI, ISession * session)
 {
 	MarketDataDO* pMdO = (MarketDataDO*)reqDO.get();
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCWorkerProcessor>(session->getProcessor()))
 	{
 		CThostFtdcDepthMarketDataField md{};
-		std::strcpy(md.ExchangeID, pMdO->ExchangeID().data());
-		std::strcpy(md.InstrumentID, pMdO->InstrumentID().data());
+		std::strncpy(md.ExchangeID, pMdO->ExchangeID().data(), sizeof(md.ExchangeID) - 1);
+		std::strncpy(md.InstrumentID, pMdO->InstrumentID().data(), sizeof(md.InstrumentID) - 1);
 		md.BidPrice1 = pMdO->Bid().Price;
 		md.BidVolume1 = pMdO->Bid().Volume;
 		md.AskPrice1 = pMdO->Ask().Price;

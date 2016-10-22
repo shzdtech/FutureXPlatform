@@ -14,7 +14,7 @@
 
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTSSubscribeMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       CTSSubscribeMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 // Purpose:    Implementation of CTSSubscribeMarketData::HandleRequest()
 // Parameters:
 // - reqDO
@@ -23,7 +23,7 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTSSubscribeMarketData::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTSSubscribeMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	auto stdo = (StringTableDO*)reqDO.get();
 	auto mdVec = std::make_shared<VectorDO<MarketDataDO>>();
@@ -36,7 +36,7 @@ dataobj_ptr CTSSubscribeMarketData::HandleRequest(const dataobj_ptr& reqDO, IRaw
 		auto api = (CTSAPIWrapper*)rawAPI;
 		for (int i = 0; i < nInst; i++)
 		{
-			if( api->Impl()->Subscribe(exchangeList[i].data(), instList[i].data(), reqDO->SerialId) == 0)
+			if( api->Impl()->Subscribe(exchangeList[i].data(), instList[i].data(), serialId) == 0)
 				mdVec->push_back(MarketDataDO(exchangeList[i], instList[i]));
 		}
 	}

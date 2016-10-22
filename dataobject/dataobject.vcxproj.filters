@@ -117,6 +117,18 @@
     <ClInclude Include="ParamsBase.h">
       <Filter>头文件\system</Filter>
     </ClInclude>
+    <ClInclude Include="UserAccountRegisterDO.h">
+      <Filter>头文件\common</Filter>
+    </ClInclude>
+    <ClInclude Include="BankDO.h">
+      <Filter>头文件\common</Filter>
+    </ClInclude>
+    <ClInclude Include="BankOpResultDO.h">
+      <Filter>头文件\common</Filter>
+    </ClInclude>
+    <ClInclude Include="BankOpRequestDO.h">
+      <Filter>头文件\common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

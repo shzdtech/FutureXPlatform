@@ -48,6 +48,7 @@ data_buffer PBStrategySerializer::Serialize(const dataobj_ptr& abstractDO)
 				pContract->set_exchange(pricingContract.ExchangeID());
 				pContract->set_contract(pricingContract.InstrumentID());
 				pContract->set_weight(pricingContract.Weight);
+				pContract->set_adjust(pricingContract.Adjust);
 			}
 		}
 
@@ -101,6 +102,7 @@ dataobj_ptr PBStrategySerializer::Deserialize(const data_buffer& rawdata)
 		{
 			PricingContract cp(bc.exchange(), bc.contract());
 			cp.Weight = bc.weight();
+			cp.Adjust = bc.adjust();
 			sdo->PricingContracts.push_back(std::move(cp));
 		}
 	}

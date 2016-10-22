@@ -17,34 +17,44 @@
  // Return:     int
  ////////////////////////////////////////////////////////////////////////
 
-int CTPMDLoginHandler::LoginFunction(IRawAPI* rawAPI, ISession* session, CThostFtdcReqUserLoginField* loginInfo, uint requestId)
+int CTPMDLoginHandler::LoginFunction(ISession* session, CThostFtdcReqUserLoginField* loginInfo, uint requestId, const std::string& severName)
 {
-	std::string value;
+	auto pProcessor = (CTPProcessor*)session->getProcessor().get();
 
-	if (loginInfo->BrokerID[0] == 0)
+	std::string brokerId(loginInfo->BrokerID);
+	if (brokerId.empty())
 	{
-		if (!session->getProcessor()->getServerContext()->getConfigVal(CTP_MD_BROKERID, value))
+		if (!session->getProcessor()->getServerContext()->getConfigVal(CTP_MD_BROKERID, brokerId))
 		{
-			value = SysParam::Get(CTP_MD_BROKERID);
+			brokerId = SysParam::Get(CTP_MD_BROKERID);
 		}
-		std::strcpy(loginInfo->BrokerID, value.data());
-	}
-	if (loginInfo->UserID[0] == 0)
-	{
-		if (!session->getProcessor()->getServerContext()->getConfigVal(CTP_MD_USERID, value))
-		{
-			value = SysParam::Get(CTP_MD_USERID);
-		}
-		std::strcpy(loginInfo->UserID, value.data());
-	}
-	if (loginInfo->Password[0] == 0)
-	{
-		if (!session->getProcessor()->getServerContext()->getConfigVal(CTP_MD_PASSWORD, value))
-		{
-			value = SysParam::Get(CTP_MD_PASSWORD);
-		}
-		std::strcpy(loginInfo->Password, value.data());
+		std::strncpy(loginInfo->BrokerID, brokerId.data(), sizeof(loginInfo->BrokerID) - 1);
 	}
 
-	return ((CTPMarketDataProcessor*)session->getProcessor().get())->Login(loginInfo, requestId);
+	std::string server = severName.empty() ? brokerId + ':' + ExchangeRouterTable::TARGET_MD : severName;
+	std::string address;
+	ExchangeRouterTable::TryFind(server, address);
+	pProcessor->InitializeServer(address);
+
+	std::string userId(loginInfo->UserID);
+	if (userId.empty())
+	{
+		if (!session->getProcessor()->getServerContext()->getConfigVal(CTP_MD_USERID, userId))
+		{
+			userId = SysParam::Get(CTP_MD_USERID);
+		}
+		std::strncpy(loginInfo->UserID, userId.data(), sizeof(loginInfo->UserID) - 1);
+	}
+	
+	std::string pwd(loginInfo->Password);
+	if (pwd.empty())
+	{
+		if (!session->getProcessor()->getServerContext()->getConfigVal(CTP_MD_PASSWORD, pwd))
+		{
+			pwd = SysParam::Get(CTP_MD_PASSWORD);
+		}
+		std::strncpy(loginInfo->Password, pwd.data(), sizeof(loginInfo->Password) - 1);
+	}
+
+	return ((CTPRawAPI*)pProcessor->getRawAPI())->MdAPI->ReqUserLogin(loginInfo, requestId);
 }

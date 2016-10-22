@@ -18,14 +18,14 @@
 class ORDERMGR_CLASS_EXPORT UserTradeContext
 {
 public:
-	void AddTrade(const TradeRecordDO_Ptr& tradeDO_Ptr);
-	void AddTrade(const TradeRecordDO& tradeDO);
+	void UpsertTrade(const TradeRecordDO_Ptr& tradeDO_Ptr);
+	void UpsertTrade(const TradeRecordDO& tradeDO);
 	void Clear(void);
-	TradeRecordDO_Ptr RemoveTrade(uint64_t orderID);
+	TradeRecordDO_Ptr RemoveTrade(uint64_t tradeID);
 	cuckoohash_map<uint64_t, TradeRecordDO_Ptr>& GetAllTrade();
 	cuckoohash_map<std::string, cuckoohashmap_wrapper<uint64_t, TradeRecordDO_Ptr>>& UserTradeMap();
-	vector_ptr<TradeRecordDO> GetTradesByUser(const std::string& userID);
-	TradeRecordDO_Ptr FindTrade(uint64_t orderID);
+	cuckoohashmap_wrapper<uint64_t, TradeRecordDO_Ptr> GetTradesByUser(const std::string& userID);
+	TradeRecordDO_Ptr FindTrade(uint64_t tradeID);
 
 
 private:

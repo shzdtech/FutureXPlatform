@@ -24,7 +24,7 @@
 
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       OTCQueryOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       OTCQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
  // Purpose:    Implementation of OTCQueryOrder::HandleRequest()
  // Parameters:
  // - reqDO
@@ -33,7 +33,7 @@
  // Return:     dataobj_ptr
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr OTCQueryTrade::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr OTCQueryTrade::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	CheckLogin(session);
 
@@ -60,7 +60,7 @@ dataobj_ptr OTCQueryTrade::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawA
 			auto trade_ptr = std::make_shared<TradeRecordDO>(*it);
 			trade_ptr->HasMore = it != lastit;
 
-			pWorkerProc->SendDataObject(session, MSG_ID_QUERY_TRADE, reqDO->SerialId, trade_ptr);
+			pWorkerProc->SendDataObject(session, MSG_ID_QUERY_TRADE, serialId, trade_ptr);
 		}
 	}
 

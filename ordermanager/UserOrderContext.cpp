@@ -7,28 +7,37 @@
 
 #include "UserOrderContext.h"
 
-void UserOrderContext::AddOrder(const OrderDO_Ptr & orderDO_Ptr)
+void UserOrderContext::UpsertOrder(uint64_t orderID, const OrderDO_Ptr & orderDO_Ptr)
 {
-	if (!_userContractOrderMap.contains(orderDO_Ptr->UserID()))
-		_userContractOrderMap.insert(orderDO_Ptr->UserID(), std::move(cuckoohashmap_wrapper<std::string, cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>>{}));
-
-	_userContractOrderMap.update_fn(orderDO_Ptr->UserID(), [&orderDO_Ptr](cuckoohashmap_wrapper<std::string, cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>>& orderMap)
+	_orderIdMap.upsert(orderID, [&orderDO_Ptr](OrderDO_Ptr& orderptr)
 	{
-		if (!orderMap.map().contains(orderDO_Ptr->InstrumentID()))
-			orderMap.map().insert(orderDO_Ptr->InstrumentID(), std::move(cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>{}));
+		*orderptr = *orderDO_Ptr;
+	}, orderDO_Ptr);
 
-		orderMap.map().update_fn(orderDO_Ptr->InstrumentID(), [&orderDO_Ptr](cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>& orders)
+	if (!_userContractOrderMap.contains(orderDO_Ptr->UserID()))
+		_userContractOrderMap.insert(orderDO_Ptr->UserID(), std::move(cuckoohashmap_wrapper<std::string, cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>>(true)));
+
+	_userContractOrderMap.update_fn(orderDO_Ptr->UserID(), [this, orderID, &orderDO_Ptr](cuckoohashmap_wrapper<std::string, cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>>& orderMap)
+	{
+		if (!orderMap.map()->contains(orderDO_Ptr->InstrumentID()))
+			orderMap.map()->insert(orderDO_Ptr->InstrumentID(), std::move(cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>(true)));
+
+		cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr> wrapper;
+		orderMap.map()->find(orderDO_Ptr->InstrumentID(), wrapper);
+
+		if (!wrapper.map()->contains(orderID))
 		{
-			orders.map().insert(orderDO_Ptr->OrderID, orderDO_Ptr);
-		});
+			if (auto instoreptr = FindOrder(orderID))
+			{
+				wrapper.map()->insert(orderID, instoreptr);
+			}
+		}
 	});
-
-	_orderIdMap.insert(orderDO_Ptr->OrderID, orderDO_Ptr);
 }
 
-void UserOrderContext::AddOrder(const OrderDO& orderDO)
+void UserOrderContext::UpsertOrder(uint64_t orderID, const OrderDO& orderDO)
 {
-	AddOrder(std::make_shared<OrderDO>(orderDO));
+	UpsertOrder(orderID, std::make_shared<OrderDO>(orderDO));
 }
 
 void UserOrderContext::Clear(void)
@@ -48,9 +57,9 @@ OrderDO_Ptr UserOrderContext::RemoveOrder(uint64_t orderID)
 		if(_userContractOrderMap.find(ret->UserID(), orderMap))
 		{
 			cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr> orders;
-			if(orderMap.map().find(ret->InstrumentID(), orders))
+			if(orderMap.map()->find(ret->InstrumentID(), orders))
 			{
-				orders.map().erase(ret->OrderID);
+				orders.map()->erase(orderID);
 			}
 		}
 	}
@@ -68,19 +77,19 @@ cuckoohash_map<std::string, cuckoohashmap_wrapper<std::string, cuckoohashmap_wra
 	return _userContractOrderMap;
 }
 
-vector_ptr<OrderDO> UserOrderContext::GetOrdersByUser(const std::string & userID)
+vector_ptr<OrderDO_Ptr> UserOrderContext::GetOrdersByUser(const std::string & userID)
 {
-	auto ret = std::make_shared<std::vector<OrderDO>>();
+	auto ret = std::make_shared<std::vector<OrderDO_Ptr>>();
 	cuckoohashmap_wrapper<std::string, cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>> orderMap;
 	if (_userContractOrderMap.find(userID, orderMap))
 	{
-		auto lt = orderMap.map().lock_table();
+		auto lt = orderMap.map()->lock_table();
 		for (auto& uc : lt)
 		{
-			auto ltlt = uc.second.map().lock_table();
+			auto ltlt = uc.second.map()->lock_table();
 			for (auto& c : ltlt)
 			{
-				ret->push_back(*c.second);
+				ret->push_back(c.second);
 			}
 		}
 	}

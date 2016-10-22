@@ -19,13 +19,13 @@ public:
 
 	static void Clear(void);
 
+private:
 	class static_initializer
 	{
 	public:
 		static_initializer();
 	};
 
-private:
-	static static_initializer _static_initializer;
+	static static_initializer _static_init;
 };
 

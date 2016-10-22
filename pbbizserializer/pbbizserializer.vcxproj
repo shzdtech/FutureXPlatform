@@ -197,6 +197,7 @@
     <ClCompile Include="..\Protos\commondefine.pb.cc" />
     <ClCompile Include="..\Protos\modelalgorithm.pb.cc" />
     <ClCompile Include="PBAccountInfoSerializer.cpp" />
+    <ClCompile Include="PBBankSerializer.cpp" />
     <ClCompile Include="PBBizMessageSerializerFactory.cpp" />
     <ClCompile Include="pbbizserializer_exp.cpp" />
     <ClCompile Include="PBContractParamSerializer.cpp" />
@@ -211,6 +212,8 @@
     <ClCompile Include="PBSubPricingDataSerializer.cpp" />
     <ClCompile Include="PBTradeRecordSerializer.cpp" />
     <ClCompile Include="PBTradingDeskParamsSerializer.cpp" />
+    <ClCompile Include="PBBankOperationSerializer.cpp" />
+    <ClCompile Include="PBUserAccountSerializer.cpp" />
     <ClCompile Include="PBUserParamSerializer.cpp" />
     <ClCompile Include="PBUserPositionSerializer.cpp" />
   </ItemGroup>
@@ -219,6 +222,7 @@
     <ClInclude Include="..\Protos\commondefine.pb.h" />
     <ClInclude Include="..\Protos\modelalgorithm.pb.h" />
     <ClInclude Include="PBAccountInfoSerializer.h" />
+    <ClInclude Include="PBBankSerializer.h" />
     <ClInclude Include="PBBizMessageSerializerFactory.h" />
     <ClInclude Include="pbbizserializers.h" />
     <ClInclude Include="pbbizserializer_exp.h" />
@@ -234,6 +238,8 @@
     <ClInclude Include="PBSubPricingDataSerializer.h" />
     <ClInclude Include="PBTradeRecordSerializer.h" />
     <ClInclude Include="PBTradingDeskParamsSerializer.h" />
+    <ClInclude Include="PBBankOperationSerializer.h" />
+    <ClInclude Include="PBUserAccountSerializer.h" />
     <ClInclude Include="PBUserParamSerializer.h" />
     <ClInclude Include="PBUserPositionSerializer.h" />
     <ClInclude Include="resource.h" />

@@ -15,7 +15,7 @@
 #include "CTPUtility.h"
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       CTPQuerySettlementInfoCfm::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       CTPQuerySettlementInfoCfm::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
  // Purpose:    Implementation of CTPQuerySettlementInfoCfm::HandleRequest()
  // Parameters:
  // - reqDO
@@ -24,7 +24,7 @@
  // Return:     void
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQuerySettlementInfoCfm::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQuerySettlementInfoCfm::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	CheckLogin(session);
 
@@ -36,12 +36,12 @@ dataobj_ptr CTPQuerySettlementInfoCfm::HandleRequest(const dataobj_ptr& reqDO, I
 	auto& cfmtime = stdo->TryFind(STR_TIME, EMPTY_STRING);
 
 	CThostFtdcSettlementInfoConfirmField req{};
-	std::strcpy(req.BrokerID, brokeid.data());
-	std::strcpy(req.InvestorID, investorid.data());
-	std::strcpy(req.ConfirmDate, cfmdate.data());
-	std::strcpy(req.ConfirmTime, cfmtime.data());
+	std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID) - 1);
+	std::strncpy(req.InvestorID, investorid.data(), sizeof(req.InvestorID) - 1);
+	std::strncpy(req.ConfirmDate, cfmdate.data(), sizeof(req.ConfirmDate) - 1);
+	std::strncpy(req.ConfirmTime, cfmtime.data(), sizeof(req.ConfirmTime) - 1);
 
-	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqSettlementInfoConfirm(&req, reqDO->SerialId);
+	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqSettlementInfoConfirm(&req, serialId);
 	CTPUtility::CheckReturnError(iRet);
 
 	return nullptr;

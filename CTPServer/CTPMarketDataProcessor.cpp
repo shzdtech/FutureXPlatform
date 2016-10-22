@@ -37,19 +37,16 @@ CTPMarketDataProcessor::~CTPMarketDataProcessor() {
 	LOG_DEBUG << __FUNCTION__;
 }
 
-////////////////////////////////////////////////////////////////////////
-// Name:       CTPMarketDataProcessor::OnInit()
-// Purpose:    Implementation of CTPMarketDataProcessor::OnInit()
-// Return:     void
-////////////////////////////////////////////////////////////////////////
+int CTPMarketDataProcessor::InitializeServer(const std::string & serverAddr)
+{
+	int ret = 0;
 
-void CTPMarketDataProcessor::Initialize(IServerContext* serverCtx) {
 	if (!_rawAPI->MdAPI) {
 		_rawAPI->MdAPI = CThostFtdcMdApi::CreateFtdcMdApi();
 		_rawAPI->MdAPI->RegisterSpi(this);
 
-		std::string server_addr;
-		if (!serverCtx->getConfigVal(CTP_MD_SERVER, server_addr))
+		std::string server_addr(serverAddr);
+		if (server_addr.empty() && !_serverCtx->getConfigVal(CTP_MD_SERVER, server_addr))
 		{
 			server_addr = SysParam::Get(CTP_MD_SERVER);
 		}
@@ -58,12 +55,8 @@ void CTPMarketDataProcessor::Initialize(IServerContext* serverCtx) {
 		_rawAPI->MdAPI->Init();
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
-}
 
-int CTPMarketDataProcessor::Login(CThostFtdcReqUserLoginField* loginInfo, uint32_t serialId)
-{
-	_lastLoginSerialId = serialId;
-	return _rawAPI->MdAPI->ReqUserLogin(loginInfo, _lastLoginSerialId);
+	return ret;
 }
 
 void CTPMarketDataProcessor::OnRspError(CThostFtdcRspInfoField *pRspInfo,
@@ -88,8 +81,8 @@ void CTPMarketDataProcessor::OnHeartBeatWarning(int nTimeLapse) {
 void CTPMarketDataProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin,
 	CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
 	_isLogged = !CTPUtility::HasError(pRspInfo);
-	OnResponseMacro(MSG_ID_LOGIN, _lastLoginSerialId,
-		pRspUserLogin, pRspInfo, &nRequestID, &bIsLast)
+	if (!nRequestID) nRequestID = LoginSerialId;
+	OnResponseMacro(MSG_ID_LOGIN, nRequestID, pRspUserLogin, pRspInfo, &nRequestID, &bIsLast)
 }
 
 void CTPMarketDataProcessor::OnRspUserLogout(CThostFtdcUserLogoutField *pUserLogout,

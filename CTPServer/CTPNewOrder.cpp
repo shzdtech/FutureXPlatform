@@ -21,7 +21,7 @@
 
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       CTPNewOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
  // Purpose:    Implementation of CTPNewOrder::HandleRequest()
  // Parameters:
  // - reqDO
@@ -30,7 +30,7 @@
  // Return:     dataobj_ptr
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPNewOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
 {
 	CheckLogin(session);
 
@@ -42,20 +42,21 @@ dataobj_ptr CTPNewOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI
 	CThostFtdcInputOrderField req{};
 
 	//经纪公司代码
-	std::strcpy(req.BrokerID, userinfo->getBrokerId().data());
+	std::strncpy(req.BrokerID, userinfo->getBrokerId().data(), sizeof(req.BrokerID) - 1);
 	//投资者代码
-	std::strcpy(req.InvestorID, userinfo->getInvestorId().data());
+	std::strncpy(req.InvestorID, userinfo->getInvestorId().data(), sizeof(req.InvestorID) - 1);
 	// 合约代码
-	std::strcpy(req.InstrumentID, pDO->InstrumentID().data());
+	std::strncpy(req.InstrumentID, pDO->InstrumentID().data(), sizeof(req.InstrumentID) - 1);
 	///报单引用
 	pDO->OrderID = OrderSeqGen::GenOrderID();
 
 	std::sprintf(req.OrderRef, FMT_PADDING_ORDERREF, pDO->OrderID);
 	// 用户代码
 	pDO->SetUserID(userinfo->getUserId());
-	std::strcpy(req.UserID, pDO->UserID().data());
+	std::strncpy(req.UserID, pDO->UserID().data(), sizeof(req.UserID) - 1);
 	// 报单价格条件
-	req.OrderPriceType = CTPExecPriceMapping.at((OrderExecType)pDO->ExecType);
+	auto it = CTPExecPriceMapping.find((OrderExecType)pDO->ExecType);
+	req.OrderPriceType = it != CTPExecPriceMapping.end() ? it->second : THOST_FTDC_OPT_LimitPrice;
 	// 买卖方向
 	req.Direction = pDO->Direction > 0 ? THOST_FTDC_D_Buy : THOST_FTDC_D_Sell;
 	///组合开平标志: 开仓
@@ -67,7 +68,8 @@ dataobj_ptr CTPNewOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI
 	// 数量
 	req.VolumeTotalOriginal = pDO->Volume;
 	// 有效期类型
-	req.TimeCondition = CTPTIFMapping.at((OrderTIFType)pDO->TIF);
+	auto tit = CTPTIFMapping.find((OrderTIFType)pDO->TIF);
+	req.TimeCondition = tit != CTPTIFMapping.end() ? it->second : THOST_FTDC_TC_GFD;
 	// GTD日期
 	//std::strcpy(req.GTDDate, "");
 	// 成交量类型
@@ -83,16 +85,9 @@ dataobj_ptr CTPNewOrder::HandleRequest(const dataobj_ptr& reqDO, IRawAPI* rawAPI
 	// 自动挂起标志
 	req.IsAutoSuspend = false;
 
-	bool bLast = true;
+	req.RequestID = serialId;
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
-	{
-		pWorkerProc->GetUserOrderContext().AddOrder(*pDO);
-	}
-
-	OnResponseProcMacro(session->getProcessor(), MSG_ID_ORDER_NEW, reqDO->SerialId, &req, nullptr, &reqDO->SerialId, &bLast);
-
-	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqOrderInsert(&req, reqDO->SerialId);
+	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqOrderInsert(&req, serialId);
 	CTPUtility::CheckReturnError(iRet);
 
 	return nullptr;
@@ -115,7 +110,7 @@ dataobj_ptr CTPNewOrder::HandleResponse(const uint32_t serialId, const param_vec
 	if (auto pData = (CThostFtdcInputOrderField*)rawRespParams[0])
 	{
 		auto pRsp = (CThostFtdcRspInfoField*)rawRespParams[1];
-		ret = CTPUtility::ParseRawOrderInput(pData, pRsp, session->getUserInfo()->getSessionId());
+		ret = CTPUtility::ParseRawOrder(pData, pRsp, session->getUserInfo()->getSessionId());
 		ret->HasMore = false;
 	}
 
