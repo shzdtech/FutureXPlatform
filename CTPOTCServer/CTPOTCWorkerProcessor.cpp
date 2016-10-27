@@ -89,24 +89,25 @@ int CTPOTCWorkerProcessor::LoginSystemUserIfNeed(void)
 
 	if (!_isLogged)
 	{
-		std::string value;
-
+		std::string brokerid;
 		CThostFtdcReqUserLoginField req{};
-		if (!_serverCtx->getConfigVal(CTP_MD_BROKERID, value))
-			value = SysParam::Get(CTP_MD_BROKERID);
-		std::strncpy(req.BrokerID, value.data(), sizeof(req.BrokerID) - 1);
+		if (!_serverCtx->getConfigVal(CTP_MD_BROKERID, brokerid))
+			brokerid = SysParam::Get(CTP_MD_BROKERID);
+		std::strncpy(req.BrokerID, brokerid.data(), sizeof(req.BrokerID) - 1);
+
+		std::string usrid;
+		if (!_serverCtx->getConfigVal(CTP_MD_USERID, usrid))
+			usrid = SysParam::Get(CTP_MD_USERID);
+		std::strncpy(req.UserID, usrid.data(), sizeof(req.UserID) - 1);
+
+		std::string pwd;
+		if (!_serverCtx->getConfigVal(CTP_MD_PASSWORD, pwd))
+			pwd = SysParam::Get(CTP_MD_PASSWORD);
+		std::strncpy(req.Password, pwd.data(), sizeof(req.Password) - 1);
 
 		std::string address;
-		ExchangeRouterTable::TryFind(value + ':' + ExchangeRouterTable::TARGET_MD, address);
-		InitializeServer(address);
-
-		if (!_serverCtx->getConfigVal(CTP_MD_USERID, value))
-			value = SysParam::Get(CTP_MD_USERID);
-		std::strncpy(req.UserID, value.data(), sizeof(req.UserID) - 1);
-
-		if (!_serverCtx->getConfigVal(CTP_MD_PASSWORD, value))
-			value = SysParam::Get(CTP_MD_PASSWORD);
-		std::strncpy(req.Password, value.data(), sizeof(req.Password) - 1);
+		ExchangeRouterTable::TryFind(brokerid + ':' + ExchangeRouterTable::TARGET_MD, address);
+		InitializeServer(usrid, address);
 
 		ret = ((CTPRawAPI*)getRawAPI())->MdAPI->ReqUserLogin(&req, AppContext::GenNextSeq());
 	}

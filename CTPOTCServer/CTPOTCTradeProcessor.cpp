@@ -245,7 +245,6 @@ void CTPOTCTradeProcessor::OnRtnTrade(CThostFtdcTradeField * pTrade)
 		{
 			if (auto order_ptr = _autoOrderMgr.FindOrder(trdDO_Ptr->OrderID))
 			{
-				trdDO_Ptr->SetUserID(order_ptr->PortfolioID());
 				trdDO_Ptr->SetPortfolioID(order_ptr->PortfolioID());
 			}
 			TradeDAO::SaveExchangeTrade(*trdDO_Ptr);

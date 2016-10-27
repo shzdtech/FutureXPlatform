@@ -57,11 +57,11 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const uint32_t serialId, const da
 
 		ThrowNotFoundExceptionIfEmpty(&accountInfoMap);
 
-		auto lastit = std::prev(accountInfoMap.end());
-		for (auto it = accountInfoMap.begin(); it != accountInfoMap.end(); it++)
+		auto endit = accountInfoMap.end();
+		for (auto it = accountInfoMap.begin(); it != endit; it++)
 		{
 			auto accountptr = std::make_shared<AccountInfoDO>(it->second);
-			accountptr->HasMore = it != lastit;
+			accountptr->HasMore = std::next(it) != endit;
 			pWorkerProc->SendDataObject(session, MSG_ID_QUERY_ACCOUNT_INFO, serialId, accountptr);
 		}
 	}

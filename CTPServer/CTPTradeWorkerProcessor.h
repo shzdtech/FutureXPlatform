@@ -44,6 +44,7 @@ public:
    virtual UserPositionContext& GetUserPositionContext();
    virtual UserTradeContext& GetUserTradeContext();
    virtual UserOrderContext& GetUserOrderContext(void);
+   //virtual UserOrderContext& GetUserErrOrderContext(void);
 
    int RetryInterval = 60000;
    bool DataLoaded;
@@ -57,6 +58,7 @@ protected:
    UserPositionContext _userPositionCtx;
    UserTradeContext _userTradeCtx;
    UserOrderContext _userOrderCtx;
+   //UserOrderContext _userErrOrderCtx;
 
 
 public:

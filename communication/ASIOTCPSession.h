@@ -15,7 +15,8 @@
 #include <mutex>
 #include <array>
 #include <atomic>
-#include <boost/lockfree/spsc_queue.hpp>
+// #include <boost/lockfree/spsc_queue.hpp>
+#include <concurrentqueue/concurrentqueue.h>
 
 using namespace boost::asio;
 using boost::asio::ip::tcp;
@@ -44,7 +45,7 @@ protected:
 	bool _closed;
 	uint _max_msg_size;
 	std::mutex _clsmutex;
-	boost::lockfree::spsc_queue<data_buffer> _databufferQueue;
+	moodycamel::ConcurrentQueue<data_buffer> _databufferQueue;
 	std::atomic_flag _sendingFlag;
 
 private:

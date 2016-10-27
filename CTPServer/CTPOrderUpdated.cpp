@@ -17,16 +17,11 @@ dataobj_ptr CTPOrderUpdated::HandleResponse(const uint32_t serialId, const param
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
 	{
 		orderPtr = pWorkerProc->GetUserOrderContext().FindOrder(CTPUtility::ToUInt64(pOrder->OrderSysID));
-		if (!orderPtr)
+		orderPtr = CTPUtility::ParseRawOrder(pOrder, orderPtr);
+		if (orderPtr && orderPtr->OrderSysID)
 		{
-			orderPtr = CTPUtility::ParseRawOrder(pOrder);
 			pWorkerProc->GetUserOrderContext().UpsertOrder(orderPtr->OrderSysID, orderPtr);
 		}
-		else
-		{
-			orderPtr = CTPUtility::ParseRawOrder(pOrder, orderPtr);
-		}
-
 	}
 	else
 	{
@@ -36,10 +31,8 @@ dataobj_ptr CTPOrderUpdated::HandleResponse(const uint32_t serialId, const param
 	if (orderPtr)
 	{
 		auto msgId = CTPUtility::ParseMessageID(orderPtr->OrderStatus);
-		if (auto pProcessor = (TemplateMessageProcessor*)session->getProcessor().get())
-		{
-			pProcessor->SendDataObject(session, msgId, serialId, orderPtr);
-		}
+		auto pProcessor = (TemplateMessageProcessor*)session->getProcessor().get();
+		pProcessor->SendDataObject(session, msgId, serialId, orderPtr);
 	}
 
 	return nullptr;

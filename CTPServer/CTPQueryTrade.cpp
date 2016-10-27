@@ -72,11 +72,11 @@ dataobj_ptr CTPQueryTrade::HandleRequest(const uint32_t serialId, const dataobj_
 			throw NotFoundException();
 
 		auto lockTb = userTrades.map()->lock_table();
-		auto lastit = std::prev(lockTb.end());
-		for (auto it = lockTb.begin(); it != lockTb.end(); it++)
+		auto endit = lockTb.end();
+		for (auto it = lockTb.begin(); it != endit; it++)
 		{
 			auto tradeptr = std::make_shared<TradeRecordDO>(*it->second);
-			tradeptr->HasMore = it != lastit;
+			tradeptr->HasMore = std::next(it) != endit;
 			pWorkerProc->SendDataObject(session, MSG_ID_QUERY_TRADE, serialId, tradeptr);
 		}
 	}
@@ -123,7 +123,6 @@ dataobj_ptr CTPQueryTrade::HandleResponse(const uint32_t serialId, const param_v
 		{
 			if (auto order_ptr = pWorkerProc->GetUserOrderContext().FindOrder(ret->OrderSysID))
 			{
-				ret->SetUserID(order_ptr->PortfolioID());
 				ret->SetPortfolioID(order_ptr->PortfolioID());
 			}
 

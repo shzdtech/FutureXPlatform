@@ -72,7 +72,7 @@ int ASIOTCPSession::WriteMessage(const uint msgId, const data_buffer& msg)
 	pPackage[4] = msgId >> 24;
 	pPackage[EXINFO_LAST] = CTRLCHAR::ETB; //End of Block
 
-	_databufferQueue.push(package);
+	_databufferQueue.enqueue(package);
 
 	if (!_sendingFlag.test_and_set())
 		SendQueueAsync();
@@ -84,7 +84,7 @@ int ASIOTCPSession::WriteMessage(const uint msgId, const data_buffer& msg)
 void ASIOTCPSession::SendQueueAsync(void)
 {
 	data_buffer package;
-	if (_databufferQueue.pop(package))
+	if (_databufferQueue.try_dequeue(package))
 	{
 		async_write(_socket, boost::asio::buffer(package.get(), package.size()),
 			[this, package](boost::system::error_code ec, std::size_t /*length*/)

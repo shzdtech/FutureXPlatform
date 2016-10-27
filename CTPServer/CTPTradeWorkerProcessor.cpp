@@ -73,7 +73,7 @@ CTPTradeWorkerProcessor::~CTPTradeWorkerProcessor()
 
 void CTPTradeWorkerProcessor::Initialize(IServerContext* pServerCtx)
 {
-	InitializeServer(_systemUser.getServer());
+	InitializeServer(_systemUser.getInvestorId(), _systemUser.getServer());
 
 	LoadDataAsync();
 }
@@ -300,16 +300,15 @@ void CTPTradeWorkerProcessor::OnRtnOrder(CThostFtdcOrderField *pOrder)
 {
 	if (pOrder)
 	{
-		OrderDO_Ptr ctxOrder = _userOrderCtx.FindOrder(CTPUtility::ToUInt64(pOrder->OrderSysID));
+		auto orderid = CTPUtility::ToUInt64(pOrder->OrderSysID);
+		OrderDO_Ptr ctxOrder = _userOrderCtx.FindOrder(orderid);
 		auto orderptr = CTPUtility::ParseRawOrder(pOrder, ctxOrder);
-		if (orderptr)
+		if (orderid && orderptr)
 		{
-			if(!ctxOrder)
-				_userOrderCtx.UpsertOrder(orderptr->OrderSysID, orderptr);
-
+			_userOrderCtx.UpsertOrder(orderid, orderptr);
 			orderptr->HasMore = false;
-			DispatchUserMessage(CTPUtility::ParseMessageID(orderptr->OrderStatus), pOrder->RequestID, orderptr->UserID(), orderptr);
 		}
+		DispatchUserMessage(CTPUtility::ParseMessageID(orderptr->OrderStatus), pOrder->RequestID, orderptr->UserID(), orderptr);
 	}
 }
 
@@ -321,7 +320,6 @@ void CTPTradeWorkerProcessor::OnRtnTrade(CThostFtdcTradeField * pTrade)
 		{
 			if (auto order_ptr = _userOrderCtx.FindOrder(trdDO_Ptr->OrderSysID))
 			{
-				trdDO_Ptr->SetUserID(order_ptr->UserID());
 				trdDO_Ptr->SetPortfolioID(order_ptr->PortfolioID());
 			}
 			TradeDAO::SaveExchangeTrade(*trdDO_Ptr);
@@ -370,6 +368,11 @@ UserOrderContext & CTPTradeWorkerProcessor::GetUserOrderContext(void)
 {
 	return _userOrderCtx;
 }
+
+//UserOrderContext & CTPTradeWorkerProcessor::GetUserErrOrderContext(void)
+//{
+//	return _userErrOrderCtx;
+//}
 
 void CTPTradeWorkerProcessor::DispatchUserMessage(int msgId, int serialId, const std::string& userId,
 	const dataobj_ptr& dataobj_ptr)

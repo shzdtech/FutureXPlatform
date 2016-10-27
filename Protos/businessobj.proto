@@ -252,6 +252,8 @@ message PBOrderInfo {
 	int32 sessionID = 27;
 	///
 	string portfolio = 28;
+	///委托日期
+	string insertDate = 29;
 }
 
 ///成交

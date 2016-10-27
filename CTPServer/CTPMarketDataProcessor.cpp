@@ -14,6 +14,9 @@
 #include "CTPConstant.h"
 
 #include <future>
+#include <filesystem>
+
+namespace fs = std::experimental::filesystem;
 
  ////////////////////////////////////////////////////////////////////////
  // Name:       CTPMarketDataProcessor::CTPMarketDataProcessor(const std::map<std::string, std::string>& configMap)
@@ -37,12 +40,20 @@ CTPMarketDataProcessor::~CTPMarketDataProcessor() {
 	LOG_DEBUG << __FUNCTION__;
 }
 
-int CTPMarketDataProcessor::InitializeServer(const std::string & serverAddr)
+int CTPMarketDataProcessor::InitializeServer(const std::string& localdir, const std::string & serverAddr)
 {
 	int ret = 0;
 
 	if (!_rawAPI->MdAPI) {
-		_rawAPI->MdAPI = CThostFtdcMdApi::CreateFtdcMdApi();
+		fs::path localpath = CTPProcessor::FlowPath;
+		localpath /= localdir;
+		localpath += fs::path::preferred_separator;
+		if (!fs::exists(localpath))
+		{
+			fs::create_directories(localpath);
+		}
+
+		_rawAPI->MdAPI = CThostFtdcMdApi::CreateFtdcMdApi(localpath.string().data());
 		_rawAPI->MdAPI->RegisterSpi(this);
 
 		std::string server_addr(serverAddr);

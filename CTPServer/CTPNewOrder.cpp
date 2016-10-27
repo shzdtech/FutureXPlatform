@@ -69,7 +69,7 @@ dataobj_ptr CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_pt
 	req.VolumeTotalOriginal = pDO->Volume;
 	// 有效期类型
 	auto tit = CTPTIFMapping.find((OrderTIFType)pDO->TIF);
-	req.TimeCondition = tit != CTPTIFMapping.end() ? it->second : THOST_FTDC_TC_GFD;
+	req.TimeCondition = tit != CTPTIFMapping.end() ? tit->second : THOST_FTDC_TC_GFD;
 	// GTD日期
 	//std::strcpy(req.GTDDate, "");
 	// 成交量类型
@@ -110,6 +110,7 @@ dataobj_ptr CTPNewOrder::HandleResponse(const uint32_t serialId, const param_vec
 	if (auto pData = (CThostFtdcInputOrderField*)rawRespParams[0])
 	{
 		auto pRsp = (CThostFtdcRspInfoField*)rawRespParams[1];
+		CTPUtility::CheckError(pRsp);
 		ret = CTPUtility::ParseRawOrder(pData, pRsp, session->getUserInfo()->getSessionId());
 		ret->HasMore = false;
 	}

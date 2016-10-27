@@ -27,6 +27,7 @@ data_buffer PBTradeRecordSerializer::Serialize(const dataobj_ptr& abstractDO)
 	auto pDO = (TradeRecordDO*)abstractDO.get();
 	FillPBHeader(PB, pDO);
 
+	PB.set_brokerid(pDO->BrokerID);
 	PB.set_exchange(pDO->ExchangeID().data());
 	PB.set_contract(pDO->InstrumentID().data());
 	PB.set_userid(pDO->UserID().data());

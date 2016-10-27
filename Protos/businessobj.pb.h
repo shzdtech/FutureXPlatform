@@ -2432,6 +2432,17 @@ class PBOrderInfo : public ::google::protobuf::Message {
   ::std::string* release_portfolio();
   void set_allocated_portfolio(::std::string* portfolio);
 
+  // optional string insertDate = 29;
+  void clear_insertdate();
+  static const int kInsertDateFieldNumber = 29;
+  const ::std::string& insertdate() const;
+  void set_insertdate(const ::std::string& value);
+  void set_insertdate(const char* value);
+  void set_insertdate(const char* value, size_t size);
+  ::std::string* mutable_insertdate();
+  ::std::string* release_insertdate();
+  void set_allocated_insertdate(::std::string* insertdate);
+
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.PBOrderInfo)
  private:
 
@@ -2464,6 +2475,7 @@ class PBOrderInfo : public ::google::protobuf::Message {
   ::google::protobuf::int32 openclose_;
   ::google::protobuf::internal::ArenaStringPtr message_;
   ::google::protobuf::internal::ArenaStringPtr portfolio_;
+  ::google::protobuf::internal::ArenaStringPtr insertdate_;
   ::google::protobuf::int32 sessionid_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
@@ -8078,6 +8090,50 @@ inline void PBOrderInfo::set_allocated_portfolio(::std::string* portfolio) {
   }
   portfolio_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), portfolio);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBOrderInfo.portfolio)
+}
+
+// optional string insertDate = 29;
+inline void PBOrderInfo::clear_insertdate() {
+  insertdate_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& PBOrderInfo::insertdate() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBOrderInfo.insertDate)
+  return insertdate_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void PBOrderInfo::set_insertdate(const ::std::string& value) {
+  
+  insertdate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBOrderInfo.insertDate)
+}
+inline void PBOrderInfo::set_insertdate(const char* value) {
+  
+  insertdate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBOrderInfo.insertDate)
+}
+inline void PBOrderInfo::set_insertdate(const char* value, size_t size) {
+  
+  insertdate_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBOrderInfo.insertDate)
+}
+inline ::std::string* PBOrderInfo::mutable_insertdate() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBOrderInfo.insertDate)
+  return insertdate_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* PBOrderInfo::release_insertdate() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBOrderInfo.insertDate)
+  
+  return insertdate_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void PBOrderInfo::set_allocated_insertdate(::std::string* insertdate) {
+  if (insertdate != NULL) {
+    
+  } else {
+    
+  }
+  insertdate_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), insertdate);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBOrderInfo.insertDate)
 }
 
 // -------------------------------------------------------------------

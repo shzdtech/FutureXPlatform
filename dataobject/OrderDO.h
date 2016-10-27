@@ -95,7 +95,9 @@ public:
 	int SessionID = 0;
 	bool Active = false;
 	double StopPrice = 0;
+	std::string BrokerID;
 	std::string TradingDay;
+	std::string InsertDate;
 	std::string InsertTime;
 	std::string UpdateTime;
 	std::string CancelTime;

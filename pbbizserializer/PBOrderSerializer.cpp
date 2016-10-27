@@ -28,6 +28,7 @@ data_buffer PBOrderSerializer::Serialize(const dataobj_ptr& abstractDO)
 	auto pDO = (OrderDO*)abstractDO.get();
 	FillPBHeader(PB, pDO);
 
+	PB.set_brokerid(pDO->BrokerID);
 	PB.set_orderid(pDO->OrderID);
 	PB.set_ordersysid(pDO->OrderSysID);
 	PB.set_exchange(pDO->ExchangeID());
@@ -48,6 +49,7 @@ data_buffer PBOrderSerializer::Serialize(const dataobj_ptr& abstractDO)
 	PB.set_message(pDO->Message);
 	PB.set_sessionid(pDO->SessionID);
 	PB.set_portfolio(pDO->PortfolioID());
+	PB.set_insertdate(pDO->InsertDate);
 	
 	SerializeWithReturn(PB);
 }

@@ -55,9 +55,6 @@ dataobj_ptr CTPCancelOrder::HandleRequest(const uint32_t serialId, const dataobj
 		std::sprintf(req.OrderRef, FMT_PADDING_ORDERREF, pDO->OrderID);
 	}
 
-	bool bLast = true;
-	OnResponseProcMacro(session->getProcessor(), MSG_ID_ORDER_CANCEL, serialId, &req, nullptr, &serialId, &bLast);
-
 	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqOrderAction(&req, serialId);
 	CTPUtility::CheckReturnError(iRet);
 
@@ -77,17 +74,16 @@ dataobj_ptr CTPCancelOrder::HandleRequest(const uint32_t serialId, const dataobj
 dataobj_ptr CTPCancelOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
 	dataobj_ptr ret;
-
+	auto pRsp = (CThostFtdcRspInfoField*)rawRespParams[1];
+	CTPUtility::CheckError(pRsp);
 	if (rawRespParams.size() > 2)
 	{
 		auto pData = (CThostFtdcInputOrderActionField*)rawRespParams[0];
-		auto pRsp = (CThostFtdcRspInfoField*)rawRespParams[1];
 		ret = CTPUtility::ParseRawOrder(pData, pRsp);
 	}
 	else
 	{
-		auto pData = (CThostFtdcOrderActionField*)rawRespParams[0];
-		auto pRsp = (CThostFtdcRspInfoField*)rawRespParams[1];
+		auto pData = (CThostFtdcOrderActionField*)rawRespParams[0];	
 		ret = CTPUtility::ParseRawOrder(pData, pRsp);
 	}
 

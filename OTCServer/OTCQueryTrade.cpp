@@ -54,11 +54,11 @@ dataobj_ptr OTCQueryTrade::HandleRequest(const uint32_t serialId, const dataobj_
 
 	if (auto pWorkerProc = std::static_pointer_cast<TemplateMessageProcessor>(session->getProcessor()))
 	{
-		auto lastit = std::prev(tradeVec_Ptr->end());
-		for (auto it = tradeVec_Ptr->begin(); it != tradeVec_Ptr->end(); it++)
+		auto lastIdx = tradeVec_Ptr->size() - 1;
+		for (int i = 0; i <= lastIdx; i++)
 		{
-			auto trade_ptr = std::make_shared<TradeRecordDO>(*it);
-			trade_ptr->HasMore = it != lastit;
+			auto trade_ptr = std::make_shared<TradeRecordDO>(tradeVec_Ptr->at(i));
+			trade_ptr->HasMore = i < lastIdx;
 
 			pWorkerProc->SendDataObject(session, MSG_ID_QUERY_TRADE, serialId, trade_ptr);
 		}

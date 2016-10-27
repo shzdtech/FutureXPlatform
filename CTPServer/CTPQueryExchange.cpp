@@ -58,11 +58,11 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const uint32_t serialId, const datao
 
 		if (exchangeid.empty())
 		{
-			auto lastit = std::prev(exchangeInfo.end());
-			for (auto it = exchangeInfo.begin(); it != exchangeInfo.end(); it++)
+			auto endit = exchangeInfo.end();
+			for (auto it = exchangeInfo.begin(); it != endit; it++)
 			{
 				auto exchangeDO_Ptr = std::make_shared<ExchangeDO>(*it);
-				exchangeDO_Ptr->HasMore = it != lastit;
+				exchangeDO_Ptr->HasMore = std::next(it) != endit ;
 
 				pWorkerProc->SendDataObject(session, MSG_ID_QUERY_EXCHANGE, serialId, exchangeDO_Ptr);
 			}

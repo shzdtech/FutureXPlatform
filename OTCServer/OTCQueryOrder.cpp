@@ -47,13 +47,12 @@ dataobj_ptr OTCQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 
 	if (auto pWorkerProc = std::static_pointer_cast<TemplateMessageProcessor>(session->getProcessor()))
 	{
-		auto lastit = std::prev(ordervec_ptr->end());
-		for (auto it = ordervec_ptr->begin(); it != ordervec_ptr->end(); it++)
+		auto lastidx = ordervec_ptr->size() - 1;
+		for (int i = 0; i <= lastidx; i++)
 		{
-			auto order_ptr = std::make_shared<OrderDO>(*it);
-			order_ptr->HasMore = it != lastit;
-
-			pWorkerProc->SendDataObject(session, MSG_ID_QUERY_ORDER, serialId, order_ptr);
+			auto rspOrderPtr = std::make_shared<OrderDO>(ordervec_ptr->at(i));
+			rspOrderPtr->HasMore = i < lastidx;
+			pWorkerProc->SendDataObject(session, MSG_ID_QUERY_ORDER, serialId, rspOrderPtr);
 		}
 	}
 

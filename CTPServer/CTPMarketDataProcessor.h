@@ -15,7 +15,7 @@ class CTP_CLASS_EXPORT CTPMarketDataProcessor : public CTPProcessor, public CTho
 public:
 	CTPMarketDataProcessor();
 	~CTPMarketDataProcessor();
-	int InitializeServer(const std::string& serverAddr);
+	int InitializeServer(const std::string& localdir, const std::string& serverAddr);
 
 private:
 	CThostFtdcMdApi* _mdAPI;

@@ -14,6 +14,9 @@
 #include "../message/message_macro.h"
 #include "../bizutility/ContractCache.h"
 
+#include <filesystem>
+
+namespace fs = std::experimental::filesystem;
  ////////////////////////////////////////////////////////////////////////
  // Name:       CTPTradeProcessor::CTPTradeProcessor(const std::map<std::string, std::string>& configMap)
  // Purpose:    Implementation of CTPTradeProcessor::CTPTradeProcessor()
@@ -45,13 +48,21 @@ CTPTradeProcessor::~CTPTradeProcessor()
 }
 
 
-int CTPTradeProcessor::InitializeServer(const std::string & serverAddr)
+int CTPTradeProcessor::InitializeServer(const std::string& localdir, const std::string & serverAddr)
 {
 	int ret = 0;
 
 	if (!_rawAPI->TrdAPI)
 	{
-		_rawAPI->TrdAPI = CThostFtdcTraderApi::CreateFtdcTraderApi();
+		fs::path localpath = CTPProcessor::FlowPath;
+		localpath /= localdir;
+		localpath += fs::path::preferred_separator;
+		if (!fs::exists(localpath))
+		{
+			fs::create_directories(localpath);
+		}
+
+		_rawAPI->TrdAPI = CThostFtdcTraderApi::CreateFtdcTraderApi(localpath.string().data());
 		_rawAPI->TrdAPI->RegisterSpi(this);
 
 		std::string server_addr(serverAddr);
@@ -62,8 +73,8 @@ int CTPTradeProcessor::InitializeServer(const std::string & serverAddr)
 
 		_rawAPI->TrdAPI->RegisterFront(const_cast<char*> (server_addr.data()));
 
-		_rawAPI->TrdAPI->SubscribePrivateTopic(THOST_TERT_RESUME);
-		_rawAPI->TrdAPI->SubscribePublicTopic(THOST_TERT_RESUME);
+		_rawAPI->TrdAPI->SubscribePrivateTopic(THOST_TERT_RESTART);
+		_rawAPI->TrdAPI->SubscribePublicTopic(THOST_TERT_RESTART);
 		_rawAPI->TrdAPI->Init();
 
 		std::this_thread::sleep_for(std::chrono::seconds(1));

@@ -126,7 +126,6 @@ bool CTPUtility::IsOrderActive(const int status)
 	case THOST_FTDC_OST_PartTradedNotQueueing:
 	case THOST_FTDC_OST_NoTradeNotQueueing:
 	case THOST_FTDC_OST_Canceled:
-	case THOST_FTDC_OST_Unknown:
 		ret = false;
 		break;
 	default:
@@ -191,7 +190,7 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(CThostFtdcOrderField *pOrder, OrderDO_Ptr 
 {
 	if (!baseOrder)
 		baseOrder.reset(new OrderDO(ToUInt64(pOrder->OrderRef),
-			pOrder->ExchangeID, pOrder->InstrumentID, pOrder->UserID));
+			pOrder->ExchangeID, pOrder->InstrumentID, pOrder->UserID[0] ? pOrder->UserID : pOrder->InvestorID));
 
 	auto pDO = baseOrder.get();
 	pDO->Direction = (pOrder->Direction == THOST_FTDC_D_Buy) ?
@@ -205,11 +204,11 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(CThostFtdcOrderField *pOrder, OrderDO_Ptr 
 	pDO->OrderStatus = CheckOrderStatus(pOrder->OrderStatus, pOrder->OrderSubmitStatus);
 	pDO->VolumeTraded = pOrder->VolumeTraded;
 	pDO->VolumeRemain = pOrder->VolumeTotal;
-	pDO->TIF = pOrder->TimeCondition == THOST_FTDC_TC_IOC ?
-		OrderTIFType::IOC : OrderTIFType::GFD;
-	char timebuf[20];
-	sprintf(timebuf, "%s %s", pOrder->InsertDate, pOrder->InsertTime);
-	pDO->InsertTime = timebuf;
+	pDO->TIF = pOrder->TimeCondition == THOST_FTDC_TC_IOC ? OrderTIFType::IOC : OrderTIFType::GFD;
+
+	pDO->BrokerID = pOrder->BrokerID;
+	pDO->InsertDate = pOrder->InsertDate;
+	pDO->InsertTime = pOrder->InsertTime;
 	pDO->UpdateTime = pOrder->UpdateTime;
 	pDO->CancelTime = pOrder->CancelTime;
 	pDO->TradingDay = pOrder->TradingDay;
@@ -226,7 +225,8 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(
 {
 	if (!baseOrder)
 		baseOrder.reset(new OrderDO(ToUInt64(pOrderAction->OrderRef),
-			pOrderAction->ExchangeID, pOrderAction->InstrumentID, pOrderAction->UserID));
+			pOrderAction->ExchangeID, pOrderAction->InstrumentID,
+			pOrderAction->UserID[0] ? pOrderAction->UserID : pOrderAction->InvestorID));
 
 	auto pDO = baseOrder.get();
 	pDO->OrderSysID = ToUInt64(pOrderAction->OrderSysID);
@@ -234,6 +234,8 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(
 	pDO->Active = pRsp == nullptr;
 	pDO->OrderStatus = pRsp ? OrderStatus::CANCEL_REJECTED : OrderStatus::CANCELING;
 	pDO->SessionID = pOrderAction->SessionID;
+
+	pDO->BrokerID = pOrderAction->BrokerID;
 
 	if (pRsp)
 	{
@@ -257,7 +259,7 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(
 			pExchange = pInstument->ExchangeID().data();
 
 		baseOrder.reset(new OrderDO(ToUInt64(pOrderInput->OrderRef),
-			pExchange, pOrderInput->InstrumentID, pOrderInput->UserID));
+			pExchange, pOrderInput->InstrumentID, pOrderInput->UserID[0] ? pOrderInput->UserID : pOrderInput->InvestorID));
 	}
 
 	auto pDO = baseOrder.get();
@@ -270,11 +272,12 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(
 	pDO->Active = pRsp == nullptr;
 	pDO->OrderStatus = pRsp ? OrderStatus::OPEN_REJECTED : OrderStatus::SUBMITTING;
 
-	auto now = std::time(nullptr);
-	auto tm = std::localtime(&now);
-	char timebuf[20];
-	std::strftime(timebuf, sizeof(timebuf), "%Y%m%d %T", tm);
-	pDO->InsertTime = timebuf;
+	pDO->BrokerID = pOrderInput->BrokerID;
+	//auto now = std::time(nullptr);
+	//auto tm = std::localtime(&now);
+	//char timebuf[20];
+	//std::strftime(timebuf, sizeof(timebuf), "%Y%m%d %T", tm);
+	//pDO->InsertTime = timebuf;
 
 	if (pRsp) {
 		pDO->ErrorCode = pRsp->ErrorID;
@@ -288,9 +291,12 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(CThostFtdcOrderActionField * pOrderAction,
 {
 	if (!baseOrder)
 		baseOrder.reset(new OrderDO(ToUInt64(pOrderAction->OrderRef),
-			pOrderAction->ExchangeID, pOrderAction->InstrumentID, pOrderAction->UserID));
+			pOrderAction->ExchangeID, pOrderAction->InstrumentID,
+			pOrderAction->UserID[0] ? pOrderAction->UserID : pOrderAction->InvestorID));
 
 	auto pDO = baseOrder.get();
+
+	pDO->BrokerID = pOrderAction->BrokerID;
 	pDO->OrderSysID = ToUInt64(pOrderAction->OrderSysID);
 	pDO->LimitPrice = pOrderAction->LimitPrice;
 	pDO->Active = pRsp == nullptr;
@@ -315,7 +321,8 @@ TradeRecordDO_Ptr CTPUtility::ParseRawTrade(CThostFtdcTradeField * pTrade)
 	TradeRecordDO_Ptr ret;
 	if (pTrade)
 	{
-		auto pDO = new TradeRecordDO(pTrade->ExchangeID, pTrade->InstrumentID, pTrade->UserID, "");
+		auto pDO = new TradeRecordDO(pTrade->ExchangeID, pTrade->InstrumentID,
+			pTrade->UserID[0] ? pTrade->UserID : pTrade->InvestorID, "");
 		ret.reset(pDO);
 		pDO->OrderID = ToUInt64(pTrade->OrderRef);
 		pDO->OrderSysID = ToUInt64(pTrade->OrderSysID);
@@ -329,6 +336,8 @@ TradeRecordDO_Ptr CTPUtility::ParseRawTrade(CThostFtdcTradeField * pTrade)
 		pDO->TradingDay = pTrade->TradingDay;
 		pDO->TradeType = (TradingType)pTrade->TradeType;
 		pDO->HedgeFlag = (HedgeType)(pTrade->HedgeFlag - THOST_FTDC_HF_Speculation);
+
+		pDO->BrokerID = pTrade->BrokerID;
 	}
 
 	return ret;

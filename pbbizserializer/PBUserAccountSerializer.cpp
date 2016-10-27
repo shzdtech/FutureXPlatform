@@ -40,8 +40,8 @@ data_buffer PBUserAccountSerializer::Serialize(const dataobj_ptr& abstractDO)
 	PB.set_custtype(pDO->CustType);
 	PB.set_idcardno(pDO->IdentifiedCardNo);
 
-	if (pDO->BankUseAmount > 1e-3)	PB.set_bankuseamount(pDO->BankUseAmount);
-	if (pDO->BankUseAmount > 1e-3)	PB.set_bankfetchamount(pDO->BankUseAmount);
+	if (pDO->BankFetchAmount > 1e-3) PB.set_bankfetchamount(pDO->BankFetchAmount);
+	if (pDO->BankUseAmount > 1e-3) PB.set_bankuseamount(pDO->BankUseAmount);
 
 	SerializeWithReturn(PB);
 }

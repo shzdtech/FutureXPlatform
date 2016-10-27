@@ -80,12 +80,12 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const uint32_t serialId, const datao
 		}
 		else
 		{
-			auto it = positionMap.map()->lock_table();
-			auto lastit = std::prev(it.end());
-			for (auto pit = it.begin(); pit != it.end(); pit++)
+			auto locktb = positionMap.map()->lock_table();
+			auto endit = locktb.end();
+			for (auto it = locktb.begin(); it != endit; it++)
 			{
-				auto positionDO_Ptr = std::make_shared<UserPositionExDO>(*pit->second);
-				positionDO_Ptr->HasMore = (pit != lastit);
+				auto positionDO_Ptr = std::make_shared<UserPositionExDO>(*it->second);
+				positionDO_Ptr->HasMore = std::next(it) != endit;
 
 				pWorkerProc->SendDataObject(session, MSG_ID_QUERY_POSITION, serialId, positionDO_Ptr);
 			}

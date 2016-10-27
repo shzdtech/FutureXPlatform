@@ -20,8 +20,6 @@
 
 #include "../dataobject/OrderDO.h"
 
-#include <boolinq/boolinq.h>
-
  ////////////////////////////////////////////////////////////////////////
  // Name:       CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
  // Purpose:    Implementation of CTPQueryOrder::HandleRequest()
@@ -48,7 +46,11 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 		auto& tmstart = stdo->TryFind(STR_TIME_START, EMPTY_STRING);
 		auto& tmend = stdo->TryFind(STR_TIME_END, EMPTY_STRING);
 
-		auto vectorPtr = pWorkerProc->GetUserOrderContext().GetOrdersByUser(session->getUserInfo()->getUserId());
+		auto& userOrderCtx = pWorkerProc->GetUserOrderContext();
+		// auto& userErrOrderCtx = pWorkerProc->GetUserErrOrderContext();
+
+		auto vectorPtr = userOrderCtx.GetOrdersByUser(session->getUserInfo()->getUserId());
+		// auto vectorErrPtr = userErrOrderCtx.GetOrdersByUser(session->getUserInfo()->getUserId());
 		if (vectorPtr->empty())
 		{
 			CThostFtdcQryOrderField req{};
@@ -62,14 +64,18 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 			int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryOrder(&req, serialId);
 			// CTPUtility::CheckReturnError(iRet);
 			std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
+			vectorPtr = userOrderCtx.GetOrdersByUser(session->getUserInfo()->getUserId());
+			// vectorErrPtr = userErrOrderCtx.GetOrdersByUser(session->getUserInfo()->getUserId());
 		}
 
-		ThrowNotFoundExceptionIfEmpty(vectorPtr.get());
+		ThrowNotFoundExceptionIfEmpty(vectorPtr);
 
-		using namespace boolinq;
 		if (orderid != EMPTY_STRING)
 		{
-			if (auto orderptr = pWorkerProc->GetUserOrderContext().FindOrder(std::strtoull(orderid.data(), nullptr, 0)))
+			/*if (!orderptr)
+				orderptr = userErrOrderCtx.FindOrder(std::strtoull(orderid.data(), nullptr, 0));*/
+
+			if (auto orderptr = userOrderCtx.FindOrder(std::strtoull(orderid.data(), nullptr, 0)))
 			{
 				auto rspOrderPtr = std::make_shared<OrderDO>(*orderptr);
 				rspOrderPtr->HasMore = false;
@@ -80,13 +86,25 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 		}
 		else
 		{
-			auto lastit = std::prev(vectorPtr->end());
-			for (auto it = vectorPtr->begin(); it != vectorPtr->end(); it++)
+			// bool hasMore = !vectorErrPtr->empty();
+			auto lastidx = vectorPtr->size() - 1;
+			for (int i = 0; i <= lastidx; i++)
 			{
-				auto rspOrderPtr = std::make_shared<OrderDO>(**it);
-				rspOrderPtr->HasMore = it != lastit;
+				auto rspOrderPtr = std::make_shared<OrderDO>(*vectorPtr->at(i));
+				rspOrderPtr->HasMore = i < lastidx;
 				pWorkerProc->SendDataObject(session, MSG_ID_QUERY_ORDER, serialId, rspOrderPtr);
 			}
+
+			/*if (hasMore)
+			{
+				lastit = std::prev(vectorErrPtr->end());
+				for (auto it = vectorErrPtr->begin(); it != vectorErrPtr->end(); it++)
+				{
+					auto rspOrderPtr = std::make_shared<OrderDO>(**it);
+					rspOrderPtr->HasMore = it != lastit;
+					pWorkerProc->SendDataObject(session, MSG_ID_QUERY_ORDER, serialId, rspOrderPtr);
+				}
+			}*/
 		}
 	}
 
@@ -110,24 +128,26 @@ dataobj_ptr CTPQueryOrder::HandleResponse(const uint32_t serialId, const param_v
 	OrderDO_Ptr ret;
 	if (auto pData = (CThostFtdcOrderField*)rawRespParams[0])
 	{
-		ret = CTPUtility::ParseRawOrder(pData);
-
-		if (rawRespParams.size() > 1)
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
 		{
-			if (auto pRsp = (CThostFtdcRspInfoField*)rawRespParams[1])
-				ret->ErrorCode = pRsp->ErrorID;
-			ret->HasMore = !*(bool*)rawRespParams[3];
-
-			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
+			if (auto orderid = CTPUtility::ToUInt64(pData->OrderSysID))
 			{
-				if (auto order_ptr = pWorkerProc->GetUserOrderContext().FindOrder(ret->OrderSysID))
-				{
-					ret->SetUserID(order_ptr->UserID());
-					ret->SetPortfolioID(order_ptr->PortfolioID());
-				}
-				pWorkerProc->GetUserOrderContext().UpsertOrder(ret->OrderSysID, *ret);
+				ret = pWorkerProc->GetUserOrderContext().FindOrder(orderid);
+				if (ret = CTPUtility::ParseRawOrder(pData, ret))
+					pWorkerProc->GetUserOrderContext().UpsertOrder(orderid, ret);
+
 				ret.reset();
 			}
+			/*else
+			{
+			if (!ret->Active)
+			pWorkerProc->GetUserErrOrderContext().UpsertOrder(CTPUtility::ToUInt64(ret->OrderID, ret->SessionID), ret);
+			}*/
+		}
+		else
+		{
+			ret = CTPUtility::ParseRawOrder(pData);
+			ret->HasMore = !*(bool*)rawRespParams[3];
 		}
 	}
 

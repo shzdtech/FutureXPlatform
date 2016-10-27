@@ -8,6 +8,7 @@
 #include "CTPProcessor.h"
 
 std::chrono::seconds CTPProcessor::DefaultQueryTime(2);
+std::string CTPProcessor::FlowPath("ctpflow");
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPProcessor::CTPProcessor()
@@ -52,7 +53,7 @@ void CTPProcessor::Initialize(IServerContext* serverCtx)
 {
 }
 
-int CTPProcessor::InitializeServer(const std::string& serverAddr)
+int CTPProcessor::InitializeServer(const std::string& localdir, const std::string& serverAddr)
 {
 	return 0;
 }

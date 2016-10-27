@@ -33,11 +33,6 @@ int CTPTradeLoginHandler::LoginFunction(ISession* session, CThostFtdcReqUserLogi
 		std::strncpy(loginInfo->BrokerID, brokerId.data(), sizeof(loginInfo->BrokerID) - 1);
 	}
 
-	std::string server = severName.empty() ? brokerId + ':' + ExchangeRouterTable::TARGET_TD : severName;
-	std::string address;
-	ExchangeRouterTable::TryFind(server, address);
-	pProcessor->InitializeServer(address);
-
 	std::string userId(loginInfo->UserID);
 	if (userId.empty())
 	{
@@ -57,6 +52,12 @@ int CTPTradeLoginHandler::LoginFunction(ISession* session, CThostFtdcReqUserLogi
 		}
 		std::strncpy(loginInfo->Password, pwd.data(), sizeof(loginInfo->Password) - 1);
 	}
+
+	std::string server = severName.empty() ? brokerId + ':' + ExchangeRouterTable::TARGET_TD : severName;
+	std::string address;
+	ExchangeRouterTable::TryFind(server, address);
+	pProcessor->InitializeServer(userId, address);
+
 
 	return ((CTPRawAPI*)pProcessor->getRawAPI())->TrdAPI->ReqUserLogin(loginInfo, requestId);
 }

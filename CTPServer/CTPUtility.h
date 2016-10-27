@@ -32,7 +32,7 @@ public:
 	static OrderDO_Ptr ParseRawOrder(CThostFtdcOrderField *pOrder, OrderDO_Ptr baseOrder = nullptr);
 	static OrderDO_Ptr ParseRawOrder(CThostFtdcInputOrderActionField *pOrderAction, CThostFtdcRspInfoField *pRsp, OrderDO_Ptr baseOrder = nullptr);
 	static OrderDO_Ptr ParseRawOrder(CThostFtdcOrderActionField *pOrderAction, CThostFtdcRspInfoField *pRsp, OrderDO_Ptr baseOrder = nullptr);
-	
+
 	static TradeRecordDO_Ptr ParseRawTrade(CThostFtdcTradeField *pTrade);
 
 	static BankOpResultDO_Ptr ParseRawTransfer(CThostFtdcReqTransferField *pReqTransfer, CThostFtdcRspInfoField *pRsp = nullptr);
@@ -45,7 +45,12 @@ public:
 
 	static uint32_t ParseMessageID(OrderStatus status);
 
-	static inline uint64_t ToUInt64(char* str) { return std::strtoull(str, nullptr, 0); }
+	static inline uint64_t ToUInt64(char* str) { return std::strtoull(str, nullptr, 10); }
+	static inline uint64_t ToUInt64(uint32_t low32, uint32_t high32) 
+	{ 
+		uint64_t ret = low32;
+		return ret | ((uint64_t)high32) << 32;
+	}
 
 
 
