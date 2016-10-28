@@ -12,9 +12,13 @@
 #include "../dataobject/TypedefDO.h"
 #include "../dataobject/DateType.h"
 
+#include "CTPTradeWorkerProcessor.h"
+#include "../message/DefMessageID.h"
+#include "../message/MessageUtility.h"
 #include "../message/BizError.h"
 #include "../message/message_macro.h"
 #include "../message/IMessageServiceLocator.h"
+
 
 #include <boost/locale/encoding.hpp>
 #include "../utility/TUtil.h"
@@ -86,9 +90,9 @@ dataobj_ptr CTPQueryInstrument::HandleResponse(const uint32_t serialId, const pa
 	CTPUtility::CheckNotFound(rawRespParams[0]);
 	CTPUtility::CheckError(rawRespParams[1]);
 
-	VectorDO_Ptr<InstrumentDO> ret = std::make_shared<VectorDO<InstrumentDO>>();
+	// VectorDO_Ptr<InstrumentDO> ret = std::make_shared<VectorDO<InstrumentDO>>();
 
-	ret->HasMore = !*(bool*)rawRespParams[3];
+	// ret->HasMore = !*(bool*)rawRespParams[3];
 
 	if (auto pData = (CThostFtdcInstrumentField*)rawRespParams[0])
 	{
@@ -138,11 +142,19 @@ dataobj_ptr CTPQueryInstrument::HandleResponse(const uint32_t serialId, const pa
 
 		if (!ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(pData->InstrumentID))
 		{
-			ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).Add(insDO);
+			bool cache = true;
+			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
+			{
+				auto& productSet = pWorkerProc->GetProductTypeToLoad();
+				cache = productSet.find(insDO.ProductType) != productSet.end();
+			}
+
+			if (cache)
+				ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).Add(insDO);
 		}
 
-		ret->push_back(std::move(insDO));
+		// ret->push_back(std::move(insDO));
 	}
 
-	return ret;
+	return nullptr;
 }

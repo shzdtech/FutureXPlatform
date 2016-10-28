@@ -2,8 +2,9 @@
 #define __utility_stringutility_h
 
 #include <string>
+#include <vector>
 
-static const char DEFAULT_DEMILITER = ':';
+static const char DEFAULT_DEMILITER = ';';
 
 class stringutility
 {
@@ -49,9 +50,9 @@ public:
 				c1 -= 32;
 			if (c2 >= 'a' && c2 <= 'z')
 				c2 -= 32;
-			
+
 			if (c2 != c1)
-			{ 
+			{
 				if (!c2)
 					return true;
 				else
@@ -85,6 +86,19 @@ public:
 		}
 
 		return pos;
+	}
+
+	static void split(const std::string& input, std::vector<std::string>& splitVec, const char demiliter = DEFAULT_DEMILITER)
+	{
+		std::string first, remain;
+		size_t pos = stringutility::split(input, first, remain);
+		splitVec.push_back(std::move(first));
+
+		while (pos != std::string::npos)
+		{
+			pos = stringutility::split(remain, first, remain);
+			splitVec.push_back(std::move(first));
+		}
 	}
 };
 

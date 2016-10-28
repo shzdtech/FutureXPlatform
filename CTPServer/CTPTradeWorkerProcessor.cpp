@@ -75,6 +75,21 @@ void CTPTradeWorkerProcessor::Initialize(IServerContext* pServerCtx)
 {
 	InitializeServer(_systemUser.getInvestorId(), _systemUser.getServer());
 
+	std::string productTypes;
+	if (getServerContext()->getConfigVal("product_type", productTypes))
+	{
+		std::vector<std::string> productVec;
+		stringutility::split(productTypes, productVec);
+
+		for(auto& strProductType : productVec)
+			_productTypes.emplace((ProductType)std::stoi(strProductType));
+	}
+	else
+	{
+		for (int i = 0; i < ProductType::PRODUCT_UPPERBOUND; i++)
+			_productTypes.emplace((ProductType)i);
+	}
+
 	LoadDataAsync();
 }
 
@@ -367,6 +382,11 @@ UserTradeContext& CTPTradeWorkerProcessor::GetUserTradeContext()
 UserOrderContext & CTPTradeWorkerProcessor::GetUserOrderContext(void)
 {
 	return _userOrderCtx;
+}
+
+std::set<ProductType>& CTPTradeWorkerProcessor::GetProductTypeToLoad()
+{
+	return _productTypes;
 }
 
 //UserOrderContext & CTPTradeWorkerProcessor::GetUserErrOrderContext(void)

@@ -22,6 +22,7 @@
 #include "../dataobject/TradeRecordDO.h"
 #include "../dataobject/TypedefDO.h"
 #include "../dataobject/OrderDO.h"
+#include "../dataobject/EnumTypes.h"
 
 #include "ctpexport.h"
 
@@ -44,6 +45,7 @@ public:
    virtual UserPositionContext& GetUserPositionContext();
    virtual UserTradeContext& GetUserTradeContext();
    virtual UserOrderContext& GetUserOrderContext(void);
+   virtual std::set<ProductType>& GetProductTypeToLoad();
    //virtual UserOrderContext& GetUserErrOrderContext(void);
 
    int RetryInterval = 60000;
@@ -59,6 +61,7 @@ protected:
    UserTradeContext _userTradeCtx;
    UserOrderContext _userOrderCtx;
    //UserOrderContext _userErrOrderCtx;
+   std::set<ProductType> _productTypes;
 
 
 public:

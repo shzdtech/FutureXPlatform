@@ -88,9 +88,9 @@ void ASIOTCPSession::SendQueueAsync(void)
 	{
 		async_write(_socket, boost::asio::buffer(package.get(), package.size()),
 			[this, package](boost::system::error_code ec, std::size_t /*length*/)
-			{
-				SendQueueAsync();
-			});
+		{
+			SendQueueAsync();
+		});
 	}
 	else
 	{
@@ -139,8 +139,7 @@ bool ASIOTCPSession::Close(void)
 	{
 		if (_socket.is_open())
 		{
-			LOG_DEBUG << "Session on " << _socket.remote_endpoint().address().to_string()
-				<< " is closing...";
+			LOG_DEBUG << "Session on " << _socket.remote_endpoint().address().to_string() << " is closing...";
 			_socket.shutdown(tcp::socket::shutdown_both);
 			_socket.close();
 		}
@@ -198,7 +197,7 @@ void ASIOTCPSession::asyn_read_header(const ASIOTCPSession_Ptr& this_ptr)
 
 void ASIOTCPSession::asyn_read_body(const ASIOTCPSession_Ptr& this_ptr, uint msgSize)
 {
-	buffer_ptr msgbuf(new byte[msgSize]);
+	data_buffer msgbuf(new byte[msgSize], msgSize);
 	async_read(this_ptr->_socket, buffer(msgbuf.get(), msgSize),
 		[this_ptr, msgbuf](boost::system::error_code ec, std::size_t length)
 	{
@@ -216,7 +215,8 @@ void ASIOTCPSession::asyn_read_body(const ASIOTCPSession_Ptr& this_ptr, uint msg
 			{
 				uint msgId = (exinfo[1] | exinfo[2] << 8 | exinfo[3] << 16 | exinfo[4] << 24);
 				LOG_DEBUG << "Receiving message: Id: " << msgId << " Size:" << bufSz;
-				this_ins->_messageProcessor_ptr->OnRequest(msgId, data_buffer(msgbuf, bufSz));
+				msgbuf.resize(bufSz);
+				this_ins->_messageProcessor_ptr->OnRequest(msgId, msgbuf);
 			}
 		}
 		else
