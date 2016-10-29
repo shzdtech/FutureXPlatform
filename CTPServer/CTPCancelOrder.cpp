@@ -78,16 +78,14 @@ dataobj_ptr CTPCancelOrder::HandleResponse(const uint32_t serialId, const param_
 	CTPUtility::CheckError(pRsp);
 	if (rawRespParams.size() > 2)
 	{
-		auto pData = (CThostFtdcInputOrderActionField*)rawRespParams[0];
-		ret = CTPUtility::ParseRawOrder(pData, pRsp);
+		if (auto pData = (CThostFtdcInputOrderActionField*)rawRespParams[0])
+			ret = CTPUtility::ParseRawOrder(pData, pRsp);
 	}
 	else
 	{
-		auto pData = (CThostFtdcOrderActionField*)rawRespParams[0];	
-		ret = CTPUtility::ParseRawOrder(pData, pRsp);
+		if (auto pData = (CThostFtdcOrderActionField*)rawRespParams[0])
+			ret = CTPUtility::ParseRawOrder(pData, pRsp);
 	}
-
-	ret->HasMore = false;
 
 	return ret;
 }

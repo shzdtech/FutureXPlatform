@@ -40,18 +40,19 @@ CTPMarketDataProcessor::~CTPMarketDataProcessor() {
 	LOG_DEBUG << __FUNCTION__;
 }
 
-int CTPMarketDataProcessor::InitializeServer(const std::string& localdir, const std::string & serverAddr)
+int CTPMarketDataProcessor::InitializeServer(const std::string& flowId, const std::string & serverAddr)
 {
 	int ret = 0;
 
 	if (!_rawAPI->MdAPI) {
 		fs::path localpath = CTPProcessor::FlowPath;
-		localpath /= localdir;
-		localpath += fs::path::preferred_separator;
 		if (!fs::exists(localpath))
 		{
-			fs::create_directories(localpath);
+			std::error_code ec;
+			fs::create_directories(localpath, ec);
 		}
+
+		localpath /= flowId + "_" + std::to_string(std::time(nullptr)) + "_";
 
 		_rawAPI->MdAPI = CThostFtdcMdApi::CreateFtdcMdApi(localpath.string().data());
 		_rawAPI->MdAPI->RegisterSpi(this);

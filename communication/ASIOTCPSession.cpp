@@ -22,7 +22,7 @@
  ////////////////////////////////////////////////////////////////////////
 
 ASIOTCPSession::ASIOTCPSession(tcp::socket&& socket) :
-	_alive(true), _closed(false), _started(false), _databufferQueue(QUEUE_SIZE),
+	_alive(true), _closed(false), _started(false),
 	_socket(std::move(socket)), _max_msg_size(MAX_MSG_SIZE),
 	_heartbeat_timer(_socket.get_io_service())
 {
@@ -72,10 +72,12 @@ int ASIOTCPSession::WriteMessage(const uint msgId, const data_buffer& msg)
 	pPackage[4] = msgId >> 24;
 	pPackage[EXINFO_LAST] = CTRLCHAR::ETB; //End of Block
 
-	_databufferQueue.enqueue(package);
+	_databufferQueue.push(package);
 
-	if (!_sendingFlag.test_and_set())
+	if (_sendingFlag.test_and_set());
+	{
 		SendQueueAsync();
+	}
 
 	return package_sz;
 }
@@ -84,7 +86,7 @@ int ASIOTCPSession::WriteMessage(const uint msgId, const data_buffer& msg)
 void ASIOTCPSession::SendQueueAsync(void)
 {
 	data_buffer package;
-	if (_databufferQueue.try_dequeue(package))
+	if (_databufferQueue.pop(package))
 	{
 		async_write(_socket, boost::asio::buffer(package.get(), package.size()),
 			[this, package](boost::system::error_code ec, std::size_t /*length*/)

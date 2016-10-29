@@ -17,7 +17,7 @@ public:
 	CTPTradeProcessor();
 	CTPTradeProcessor(const CTPRawAPI_Ptr& rawAPI);
 	~CTPTradeProcessor();
-	int InitializeServer(const std::string& localdir, const std::string& serverAddr);
+	int InitializeServer(const std::string& flowId, const std::string& serverAddr);
 
 protected:
 

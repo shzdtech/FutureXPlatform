@@ -53,7 +53,7 @@ void CTPProcessor::Initialize(IServerContext* serverCtx)
 {
 }
 
-int CTPProcessor::InitializeServer(const std::string& localdir, const std::string& serverAddr)
+int CTPProcessor::InitializeServer(const std::string& flowId, const std::string& serverAddr)
 {
 	return 0;
 }

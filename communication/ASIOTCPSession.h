@@ -16,7 +16,8 @@
 #include <array>
 #include <atomic>
 // #include <boost/lockfree/queue.hpp>
-#include <concurrentqueue/concurrentqueue.h>
+// #include <readerwriterqueue/readerwriterqueue.h>
+#include "../utility/lockfree_queue.h"
 
 using namespace boost::asio;
 using boost::asio::ip::tcp;
@@ -45,7 +46,7 @@ protected:
 	bool _closed;
 	uint _max_msg_size;
 	std::mutex _clsmutex;
-	moodycamel::ConcurrentQueue<data_buffer> _databufferQueue;
+	lockfree_queue<data_buffer> _databufferQueue;
 	std::atomic_flag _sendingFlag;
 
 private:

@@ -31,23 +31,25 @@ CTPTradeWorkerProcessor::CTPTradeWorkerProcessor(IServerContext* pServerCtx)
 	_serverCtx = pServerCtx;
 	DataLoaded = false;
 
-	std::string value;
-	if (!_serverCtx->getConfigVal(CTP_TRADER_BROKERID, value))
-		value = SysParam::Get(CTP_TRADER_BROKERID);
-	_systemUser.setBrokerId(value);
+	std::string brokerid;
+	if (!_serverCtx->getConfigVal(CTP_TRADER_BROKERID, brokerid))
+		brokerid = SysParam::Get(CTP_TRADER_BROKERID);
+	_systemUser.setBrokerId(brokerid);
 
-	if (!_serverCtx->getConfigVal(CTP_TRADER_USERID, value))
-		value = SysParam::Get(CTP_TRADER_USERID);
-	_systemUser.setInvestorId(value);
-	_systemUser.setUserId(value);
+	std::string userid;
+	if (!_serverCtx->getConfigVal(CTP_TRADER_USERID, userid))
+		userid = SysParam::Get(CTP_TRADER_USERID);
+	_systemUser.setInvestorId(userid);
+	_systemUser.setUserId(userid);
 
-	if (!_serverCtx->getConfigVal(CTP_TRADER_PASSWORD, value))
-		value = SysParam::Get(CTP_TRADER_PASSWORD);
-	_systemUser.setPassword(value);
+	std::string pwd;
+	if (!_serverCtx->getConfigVal(CTP_TRADER_PASSWORD, pwd))
+		pwd = SysParam::Get(CTP_TRADER_PASSWORD);
+	_systemUser.setPassword(pwd);
 
 	std::string address;
 	ExchangeRouterTable::TryFind(_systemUser.getBrokerId() + ':' + ExchangeRouterTable::TARGET_TD, address);
-	if (address.empty() && !_serverCtx->getConfigVal(CTP_TRADER_SERVER, value))
+	if (address.empty() && !_serverCtx->getConfigVal(CTP_TRADER_SERVER, address))
 		address = SysParam::Get(CTP_TRADER_SERVER);
 	_systemUser.setServer(address);
 }

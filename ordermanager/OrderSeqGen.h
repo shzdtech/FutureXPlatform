@@ -13,10 +13,11 @@
 class ORDERMGR_CLASS_EXPORT OrderSeqGen
 {
 public:
+	static uint32_t GetHigh32ID(uint64_t value);
 	static void SetStartSeq(uint64_t value);
 	static uint64_t GetNextSeq(void);
 	static uint64_t GetCurrentSeq(void);
-	static uint64_t GenOrderID(void);
+	static uint64_t GenOrderID(uint32_t high32 = 0);
 
 protected:
 private:

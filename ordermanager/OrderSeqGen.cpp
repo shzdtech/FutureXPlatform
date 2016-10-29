@@ -10,14 +10,19 @@
 #include <atomic>
 
 static std::atomic_uint64_t _seqGen(0);
-static uint64_t _baseId = 0;
+static uint32_t _high32Id = 0;
 OrderSeqGen::static_initializer OrderSeqGen::_static_init;
 
 OrderSeqGen::static_initializer::static_initializer()
 {
 	std::time_t timestamp = std::time(nullptr);
 	std::srand(timestamp);
-	_baseId = std::rand() % 0x1000;
+	_high32Id = std::rand() % 0x1000;
+}
+
+uint32_t OrderSeqGen::GetHigh32ID(uint64_t value)
+{
+	return _high32Id;
 }
 
 void OrderSeqGen::SetStartSeq(uint64_t value)
@@ -35,8 +40,9 @@ uint64_t OrderSeqGen::GetCurrentSeq(void)
 	return _seqGen;
 }
 
-uint64_t OrderSeqGen::GenOrderID(void)
+uint64_t OrderSeqGen::GenOrderID(uint32_t high32)
 {
-	uint64_t ret = _baseId | (OrderSeqGen::GetNextSeq() << 12);
+	uint64_t ret = high32 ? high32 : _high32Id;
+	ret = ret << 32 | OrderSeqGen::GetNextSeq();
 	return ret;
 }

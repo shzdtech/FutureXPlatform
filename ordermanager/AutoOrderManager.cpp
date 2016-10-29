@@ -31,9 +31,9 @@ OrderDO_Ptr AutoOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 	OrderDO_Ptr ret;
 
 	auto orderId = orderInfo.OrderID;
-	if (orderId == 0 || !FindOrder(orderId))
+	if (orderId == 0 || !FindOrder(ParseOrderID(orderId)))
 	{
-		orderInfo.OrderID = OrderSeqGen::GenOrderID();
+		orderInfo.OrderID = OrderSeqGen::GenOrderID(_pOrderAPI->GetSessionId());
 		_userOrderCtx.UpsertOrder(orderInfo.OrderID, orderInfo);
 		ret = _pOrderAPI->CreateOrder(orderInfo);
 		if (!ret)
@@ -107,10 +107,12 @@ OrderDOVec_Ptr AutoOrderManager::UpdateOrderByStrategy(
 
 					if (canceled)
 					{
-						auto order_ptr = _pOrderAPI->CancelOrder(order);
-						order.OrderStatus = OrderStatus::CANCELED;
-						orderCancelList.push_back(order.OrderID);
-						ret->push_back(order);
+						if (auto order_ptr = _pOrderAPI->CancelOrder(order))
+						{
+							order.OrderStatus = OrderStatus::CANCELED;
+							orderCancelList.push_back(order.OrderID);
+							ret->push_back(order);
+						}
 					}
 				}
 
@@ -151,7 +153,7 @@ OrderDOVec_Ptr AutoOrderManager::UpdateOrderByStrategy(
 
 	for (auto orderId : orderCancelList)
 	{
-		_userOrderCtx.RemoveOrder(orderId);
+		_userOrderCtx.RemoveOrder(ParseOrderID(orderId));
 	}
 
 	return ret;
@@ -169,7 +171,9 @@ int AutoOrderManager::OnOrderUpdated(OrderDO& orderInfo)
 {
 	int ret = -1;
 
-	if (auto order_ptr = FindOrder(orderInfo.OrderID))
+	auto orderId = (uint64_t)orderInfo.SessionID << 32 | orderInfo.OrderID;
+
+	if (auto order_ptr = FindOrder(orderId))
 	{
 		if (order_ptr->OrderSysID == 0 && orderInfo.OrderSysID != 0)
 			order_ptr->OrderSysID = orderInfo.OrderSysID;
@@ -189,7 +193,7 @@ int AutoOrderManager::OnOrderUpdated(OrderDO& orderInfo)
 
 		if (!orderInfo.Active)
 		{
-			_userOrderCtx.RemoveOrder(orderInfo.OrderID);
+			_userOrderCtx.RemoveOrder(orderId);
 		}
 
 		if (addnew)
@@ -206,6 +210,11 @@ int AutoOrderManager::OnOrderUpdated(OrderDO& orderInfo)
 	return ret;
 }
 
+uint64_t AutoOrderManager::ParseOrderID(uint64_t rawOrderId)
+{
+	return ((uint64_t)_pOrderAPI->GetSessionId()) << 32 | rawOrderId;
+}
+
 ////////////////////////////////////////////////////////////////////////
 // Name:       OTCOrderManager::CancelOrder(const OrderDO& orderInfo)
 // Purpose:    Implementation of OTCOrderManager::CancelOrder()
@@ -219,7 +228,7 @@ OrderDO_Ptr AutoOrderManager::CancelOrder(OrderRequestDO& orderInfo)
 	OrderDO_Ptr ret;
 	if (orderInfo.OrderID != 0)
 	{
-		if (ret = FindOrder(orderInfo.OrderID))
+		if (ret = FindOrder(ParseOrderID(orderInfo.OrderID)))
 		{
 			ret = _pOrderAPI->CancelOrder(orderInfo);
 			_userOrderCtx.RemoveOrder(orderInfo.OrderID);

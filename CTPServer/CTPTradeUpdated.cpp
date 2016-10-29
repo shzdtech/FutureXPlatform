@@ -6,12 +6,17 @@
 
 dataobj_ptr CTPTradeUpdated::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
-	auto ret = CTPUtility::ParseRawTrade((CThostFtdcTradeField*)rawRespParams[0]);
-
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
+	if (auto pTrade = (CThostFtdcTradeField*)rawRespParams[0])
 	{
-		pWorkerProc->GetUserTradeContext().UpsertTrade(ret);
+		auto ret = CTPUtility::ParseRawTrade(pTrade);
+
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
+		{
+			pWorkerProc->GetUserTradeContext().UpsertTrade(ret);
+		}
+
+		return ret;
 	}
 
-	return ret;
+	return nullptr;
 }

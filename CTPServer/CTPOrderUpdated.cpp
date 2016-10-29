@@ -11,28 +11,30 @@
 
 dataobj_ptr CTPOrderUpdated::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
-	auto pOrder = (CThostFtdcOrderField*)rawRespParams[0];
-
-	OrderDO_Ptr orderPtr;
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
+	if (auto pOrder = (CThostFtdcOrderField*)rawRespParams[0])
 	{
-		orderPtr = pWorkerProc->GetUserOrderContext().FindOrder(CTPUtility::ToUInt64(pOrder->OrderSysID));
-		orderPtr = CTPUtility::ParseRawOrder(pOrder, orderPtr);
-		if (orderPtr && orderPtr->OrderSysID)
+
+		OrderDO_Ptr orderPtr;
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
 		{
-			pWorkerProc->GetUserOrderContext().UpsertOrder(orderPtr->OrderSysID, orderPtr);
+			orderPtr = pWorkerProc->GetUserOrderContext().FindOrder(CTPUtility::ToUInt64(pOrder->OrderSysID));
+			orderPtr = CTPUtility::ParseRawOrder(pOrder, orderPtr);
+			if (orderPtr && orderPtr->OrderSysID)
+			{
+				pWorkerProc->GetUserOrderContext().UpsertOrder(orderPtr->OrderSysID, orderPtr);
+			}
 		}
-	}
-	else
-	{
-		orderPtr = CTPUtility::ParseRawOrder(pOrder);
-	}
+		else
+		{
+			orderPtr = CTPUtility::ParseRawOrder(pOrder);
+		}
 
-	if (orderPtr)
-	{
-		auto msgId = CTPUtility::ParseMessageID(orderPtr->OrderStatus);
-		auto pProcessor = (TemplateMessageProcessor*)session->getProcessor().get();
-		pProcessor->SendDataObject(session, msgId, serialId, orderPtr);
+		if (orderPtr)
+		{
+			auto msgId = CTPUtility::ParseMessageID(orderPtr->OrderStatus);
+			auto pProcessor = (TemplateMessageProcessor*)session->getProcessor().get();
+			pProcessor->SendDataObject(session, msgId, serialId, orderPtr);
+		}
 	}
 
 	return nullptr;

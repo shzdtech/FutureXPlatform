@@ -28,8 +28,9 @@ public:
 	virtual OrderDOVec_Ptr TriggerHedgeOrderUpdating(const StrategyContractDO& strategyDO);
 	virtual OrderDOVec_Ptr TriggerOTCOrderUpdating(const StrategyContractDO& strategyDO);
 
-	virtual OrderDO_Ptr CreateOrder(OrderRequestDO& orderInfo);
-	virtual OrderDO_Ptr CancelOrder(OrderRequestDO& orderInfo);
+	virtual OrderDO_Ptr CreateOrder(const OrderRequestDO& orderInfo);
+	virtual OrderDO_Ptr CancelOrder(const OrderRequestDO& orderInfo);
+	virtual uint32_t GetSessionId(void);
 
 	virtual OTCOrderManager* GetOTCOrderManager(void);
 	virtual AutoOrderManager* GetAutoOrderManager(void);
@@ -52,6 +53,10 @@ public:
 	void OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
 	void OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+
+	void OnErrRtnOrderInsert(CThostFtdcInputOrderField * pInputOrder, CThostFtdcRspInfoField * pRspInfo);
+
+	void OnErrRtnOrderAction(CThostFtdcOrderActionField * pOrderAction, CThostFtdcRspInfoField * pRspInfo);
 
 	void OnRtnOrder(CThostFtdcOrderField *pOrder);
 

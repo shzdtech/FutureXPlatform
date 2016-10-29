@@ -70,7 +70,7 @@ OrderDOVec_Ptr CTPOTCTradeProcessor::TriggerOTCOrderUpdating(const StrategyContr
 
 
 
-OrderDO_Ptr CTPOTCTradeProcessor::CreateOrder(OrderRequestDO& orderInfo)
+OrderDO_Ptr CTPOTCTradeProcessor::CreateOrder(const OrderRequestDO& orderInfo)
 {
 	// 端登成功,发出报单录入请求
 	CThostFtdcInputOrderField req{};
@@ -119,7 +119,7 @@ OrderDO_Ptr CTPOTCTradeProcessor::CreateOrder(OrderRequestDO& orderInfo)
 }
 
 
-OrderDO_Ptr CTPOTCTradeProcessor::CancelOrder(OrderRequestDO& orderInfo)
+OrderDO_Ptr CTPOTCTradeProcessor::CancelOrder(const OrderRequestDO& orderInfo)
 {
 	CThostFtdcInputOrderActionField req{};
 
@@ -146,6 +146,11 @@ OrderDO_Ptr CTPOTCTradeProcessor::CancelOrder(OrderRequestDO& orderInfo)
 	
 	req.SessionID = _systemUser.getSessionId();
 	return CTPUtility::ParseRawOrder(&req, nullptr);
+}
+
+uint32_t CTPOTCTradeProcessor::GetSessionId(void)
+{
+	return _systemUser.getSessionId();
 }
 
 OTCOrderManager * CTPOTCTradeProcessor::GetOTCOrderManager(void)
@@ -207,6 +212,35 @@ void CTPOTCTradeProcessor::OnRspOrderAction(CThostFtdcInputOrderActionField *pIn
 			auto orderptr = CTPUtility::ParseRawOrder(pInputOrderAction, pRspInfo);
 			int ret = _autoOrderMgr.OnOrderUpdated(*orderptr);
 			DispatchUserMessage(MSG_ID_ORDER_CANCEL, nRequestID, orderptr->UserID(), orderptr);
+		}
+	}
+}
+
+///报单录入错误回报
+void CTPOTCTradeProcessor::OnErrRtnOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo)
+{
+	if (pInputOrder)
+	{
+		if (auto orderptr = CTPUtility::ParseRawOrder(pInputOrder, pRspInfo, _systemUser.getSessionId()))
+		{
+			int ret = _autoOrderMgr.OnOrderUpdated(*orderptr);
+			DispatchUserMessage(MSG_ID_ORDER_NEW, pInputOrder->RequestID, orderptr->UserID(), orderptr);
+		}
+	}
+}
+
+///报单操作错误回报
+void CTPOTCTradeProcessor::OnErrRtnOrderAction(CThostFtdcOrderActionField *pOrderAction, CThostFtdcRspInfoField *pRspInfo)
+{
+	if (pOrderAction)
+	{
+		if (pOrderAction->ActionFlag == THOST_FTDC_AF_Delete)
+		{
+			if (auto orderptr = CTPUtility::ParseRawOrder(pOrderAction, pRspInfo))
+			{
+				int ret = _autoOrderMgr.OnOrderUpdated(*orderptr);
+				DispatchUserMessage(MSG_ID_ORDER_CANCEL, pOrderAction->RequestID, orderptr->UserID(), orderptr);
+			}
 		}
 	}
 }

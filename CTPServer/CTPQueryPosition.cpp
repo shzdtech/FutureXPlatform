@@ -69,14 +69,24 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const uint32_t serialId, const datao
 
 		if (instrumentid != EMPTY_STRING)
 		{
-			UserPositionExDO_Ptr userPositionPtr;
-			if (!positionMap.map()->find(instrumentid, userPositionPtr))
+			UserPositionExDO_Ptr longPosition;
+			positionMap.map()->find(std::make_pair(instrumentid, PD_LONG), longPosition);
+			UserPositionExDO_Ptr shortPosition;
+			positionMap.map()->find(std::make_pair(instrumentid, PD_SHORT), shortPosition);
+			if(!longPosition && !shortPosition)
 				throw NotFoundException();
 
-			auto position_ptr = std::make_shared<UserPositionExDO>(*userPositionPtr);
-			position_ptr->HasMore = false;
-
-			pWorkerProc->SendDataObject(session, MSG_ID_QUERY_POSITION, serialId, position_ptr);
+			if (longPosition)
+			{
+				auto position_ptr = std::make_shared<UserPositionExDO>(*longPosition);
+				position_ptr->HasMore = (bool)shortPosition;
+				pWorkerProc->SendDataObject(session, MSG_ID_QUERY_POSITION, serialId, position_ptr);
+			}
+			if (shortPosition)
+			{
+				auto position_ptr = std::make_shared<UserPositionExDO>(*shortPosition);
+				pWorkerProc->SendDataObject(session, MSG_ID_QUERY_POSITION, serialId, position_ptr);
+			}
 		}
 		else
 		{
@@ -173,7 +183,7 @@ dataobj_ptr CTPQueryPosition::HandleResponse(const uint32_t serialId, const para
 		}
 		else
 		{
-			auto position_ptr = pWorkerProc->GetUserPositionContext().GetPosition(session->getUserInfo()->getUserId(), pDO->InstrumentID());
+			auto position_ptr = pWorkerProc->GetUserPositionContext().GetPosition(session->getUserInfo()->getUserId(), pDO->InstrumentID(), pDO->Direction);
 			if (!position_ptr)
 			{
 				ret->PositionDateFlag = PositionDateFlagType::PSD_TODAY;

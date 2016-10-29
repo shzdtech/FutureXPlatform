@@ -36,9 +36,9 @@ int CTPTradeLoginHandler::LoginFunction(ISession* session, CThostFtdcReqUserLogi
 	std::string userId(loginInfo->UserID);
 	if (userId.empty())
 	{
-		if (!session->getProcessor()->getServerContext()->getConfigVal(CTP_TRADER_BROKERID, userId))
+		if (!session->getProcessor()->getServerContext()->getConfigVal(CTP_TRADER_USERID, userId))
 		{
-			userId = SysParam::Get(CTP_TRADER_BROKERID);
+			userId = SysParam::Get(CTP_TRADER_USERID);
 		}
 		std::strncpy(loginInfo->UserID, userId.data(), sizeof(loginInfo->UserID) - 1);
 	}
@@ -46,9 +46,9 @@ int CTPTradeLoginHandler::LoginFunction(ISession* session, CThostFtdcReqUserLogi
 	std::string pwd(loginInfo->Password);
 	if (pwd.empty())
 	{
-		if (!session->getProcessor()->getServerContext()->getConfigVal(CTP_TRADER_USERID, pwd))
+		if (!session->getProcessor()->getServerContext()->getConfigVal(CTP_TRADER_PASSWORD, pwd))
 		{
-			pwd = SysParam::Get(CTP_TRADER_USERID);
+			pwd = SysParam::Get(CTP_TRADER_PASSWORD);
 		}
 		std::strncpy(loginInfo->Password, pwd.data(), sizeof(loginInfo->Password) - 1);
 	}

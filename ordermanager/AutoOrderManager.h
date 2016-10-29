@@ -22,6 +22,8 @@ public:
 	OrderDO_Ptr CancelOrder(OrderRequestDO& orderInfo);
 	OrderDO_Ptr RejectOrder(OrderRequestDO& orderInfo);
 	int OnOrderUpdated(OrderDO& orderInfo);
+	uint64_t ParseOrderID(uint64_t rawOrderId);
+
 	OrderDOVec_Ptr UpdateOrderByStrategy(const StrategyContractDO& strategyDO);
 
 protected:

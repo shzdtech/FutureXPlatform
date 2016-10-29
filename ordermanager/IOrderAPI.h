@@ -13,8 +13,9 @@
 class IOrderAPI
 {
 public:
-	virtual OrderDO_Ptr CreateOrder(OrderRequestDO& orderInfo) = 0;
-	virtual OrderDO_Ptr CancelOrder(OrderRequestDO& orderInfo) = 0;
+	virtual OrderDO_Ptr CreateOrder(const OrderRequestDO& orderInfo) = 0;
+	virtual OrderDO_Ptr CancelOrder(const OrderRequestDO& orderInfo) = 0;
+	virtual uint32_t GetSessionId(void) = 0;
 
 protected:
 private:
