@@ -45,9 +45,11 @@ void testCollection()
 	testset.insert(1);
 	testset.insert(1);
 
-	char output[20];
-	uint64_t ull = 9;
+	char output[22];
+	uint64_t ull = (uint64_t)2 << 32 | 1;
 	sprintf(output, "%llu", ull);
+	sprintf(output, "%u", ull);
+	sprintf(output, "%12llu", ull);
 
 	std::map<int, int> testMap;
 	testMap[1] = 1;

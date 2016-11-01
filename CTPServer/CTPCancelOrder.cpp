@@ -38,21 +38,21 @@ dataobj_ptr CTPCancelOrder::HandleRequest(const uint32_t serialId, const dataobj
 	req.RequestID = serialId;
 
 	req.ActionFlag = THOST_FTDC_AF_Delete;
-	std::strncpy(req.BrokerID, userinfo->getBrokerId().data(), sizeof(req.BrokerID) - 1);
-	std::strncpy(req.InvestorID, userinfo->getInvestorId().data(), sizeof(req.InvestorID) - 1);
-	std::strncpy(req.UserID, userinfo->getUserId().data(), sizeof(req.UserID) - 1);
+	std::strncpy(req.BrokerID, userinfo->getBrokerId().data(), sizeof(req.BrokerID));
+	std::strncpy(req.InvestorID, userinfo->getInvestorId().data(), sizeof(req.InvestorID));
+	std::strncpy(req.UserID, userinfo->getUserId().data(), sizeof(req.UserID));
 	
 	if (pDO->OrderSysID != 0)
 	{
-		std::strncpy(req.ExchangeID, pDO->ExchangeID().data(), sizeof(req.ExchangeID) - 1);;
-		std::sprintf(req.OrderSysID, FMT_PADDING_ORDERSYSID, pDO->OrderSysID);
+		std::strncpy(req.ExchangeID, pDO->ExchangeID().data(), sizeof(req.ExchangeID));;
+		std::snprintf(req.OrderSysID, sizeof(req.OrderSysID), FMT_ORDERSYSID, pDO->OrderSysID);
 	}
 	else
 	{
 		req.SessionID = userinfo->getSessionId();
 		req.FrontID = userinfo->getFrontId();
-		std::strncpy(req.InstrumentID, pDO->InstrumentID().data(), sizeof(req.InstrumentID) - 1);
-		std::sprintf(req.OrderRef, FMT_PADDING_ORDERREF, pDO->OrderID);
+		std::strncpy(req.InstrumentID, pDO->InstrumentID().data(), sizeof(req.InstrumentID));
+		std::snprintf(req.OrderRef, sizeof(req.OrderRef), FMT_ORDERREF, pDO->OrderID);
 	}
 
 	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqOrderAction(&req, serialId);

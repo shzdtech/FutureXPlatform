@@ -74,16 +74,16 @@ int ASIOTCPSession::WriteMessage(const uint msgId, const data_buffer& msg)
 
 	_databufferQueue.push(package);
 
-	if (_sendingFlag.test_and_set());
+	if (!_sendingFlag.test_and_set(std::memory_order_acquire)) // try lock
 	{
-		SendQueueAsync();
+		asyn_send_queue();
 	}
 
 	return package_sz;
 }
 
 
-void ASIOTCPSession::SendQueueAsync(void)
+void ASIOTCPSession::asyn_send_queue()
 {
 	data_buffer package;
 	if (_databufferQueue.pop(package))
@@ -91,12 +91,13 @@ void ASIOTCPSession::SendQueueAsync(void)
 		async_write(_socket, boost::asio::buffer(package.get(), package.size()),
 			[this, package](boost::system::error_code ec, std::size_t /*length*/)
 		{
-			SendQueueAsync();
+			// if (ec) LOG_ERROR << ec.message();
+			asyn_send_queue();
 		});
 	}
 	else
 	{
-		_sendingFlag.clear();
+		_sendingFlag.clear(std::memory_order_release);
 	}
 }
 
@@ -119,7 +120,7 @@ bool ASIOTCPSession::Start(void)
 	if (!_started)
 	{
 		_started = true;
-		_sendingFlag.clear();
+		_sendingFlag.clear(std::memory_order_release);
 		auto this_ptr = std::static_pointer_cast<ASIOTCPSession>(shared_from_this());
 		asyn_read_header(this_ptr);
 		asyn_timeout(this_ptr);
@@ -146,7 +147,13 @@ bool ASIOTCPSession::Close(void)
 			_socket.close();
 		}
 		MessageSession::Close();
+
+		// lock sending queue
+		_databufferQueue.clear();
+		while (_sendingFlag.test_and_set(std::memory_order_acquire));
+		_databufferQueue.clear();
 	}
+
 	return true;
 }
 

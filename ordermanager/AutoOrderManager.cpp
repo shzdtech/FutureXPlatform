@@ -109,7 +109,7 @@ OrderDOVec_Ptr AutoOrderManager::UpdateOrderByStrategy(
 					{
 						if (auto order_ptr = _pOrderAPI->CancelOrder(order))
 						{
-							order.OrderStatus = OrderStatus::CANCELED;
+							order.OrderStatus = OrderStatusType::CANCELED;
 							orderCancelList.push_back(order.OrderID);
 							ret->push_back(order);
 						}
@@ -181,11 +181,11 @@ int AutoOrderManager::OnOrderUpdated(OrderDO& orderInfo)
 		bool addnew = false;
 		switch (orderInfo.OrderStatus)
 		{
-		case OrderStatus::ALL_TRADED:
-		case OrderStatus::CANCELED:
+		case OrderStatusType::ALL_TRADED:
+		case OrderStatusType::CANCELED:
 			addnew = true;
 			break;
-		case OrderStatus::PARTIAL_TRADING:
+		case OrderStatusType::PARTIAL_TRADING:
 			break;
 		default:
 			break;

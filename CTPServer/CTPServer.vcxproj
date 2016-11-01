@@ -168,6 +168,7 @@
     <ClInclude Include="CTPMDServiceFactory.h" />
     <ClInclude Include="CTPNewOrder.h" />
     <ClInclude Include="CTPOrderUpdated.h" />
+    <ClInclude Include="CTPPositionUpdated.h" />
     <ClInclude Include="CTPProcessor.h" />
     <ClInclude Include="CTPQueryExchange.h" />
     <ClInclude Include="CTPQueryInstrument.h" />
@@ -212,6 +213,7 @@
     <ClCompile Include="CTPMDServiceFactory.cpp" />
     <ClCompile Include="CTPNewOrder.cpp" />
     <ClCompile Include="CTPOrderUpdated.cpp" />
+    <ClCompile Include="CTPPositionUpdated.cpp" />
     <ClCompile Include="CTPProcessor.cpp" />
     <ClCompile Include="CTPQueryExchange.cpp" />
     <ClCompile Include="CTPQueryInstrument.cpp" />

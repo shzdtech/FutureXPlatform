@@ -10,8 +10,9 @@
 
 enum SystemMessageID
 {
-    MSG_ID_ERROR = 0,
-    MSG_ID_ECHO = 1,
+	MSG_ID_UNDEFINED = 0,
+    MSG_ID_ERROR = 1,
+    MSG_ID_ECHO = 2,
 
 	MSG_ID_SESSION_CREATED = 1001,
     MSG_ID_LOGIN = 1002,

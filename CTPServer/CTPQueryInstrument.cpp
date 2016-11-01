@@ -62,9 +62,9 @@ dataobj_ptr CTPQueryInstrument::HandleRequest(const uint32_t serialId, const dat
 		if (auto pTradeAPI = ((CTPRawAPI*)rawAPI)->TrdAPI)
 		{
 			CThostFtdcQryInstrumentField req{};
-			std::strncpy(req.ExchangeID, exchangeid.data(), sizeof(req.ExchangeID) - 1);
-			std::strncpy(req.InstrumentID, instrumentid.data(), sizeof(req.InstrumentID) - 1);
-			std::strncpy(req.ProductID, productid.data(), sizeof(req.ProductID) - 1);
+			std::strncpy(req.ExchangeID, exchangeid.data(), sizeof(req.ExchangeID));
+			std::strncpy(req.InstrumentID, instrumentid.data(), sizeof(req.InstrumentID));
+			std::strncpy(req.ProductID, productid.data(), sizeof(req.ProductID));
 			auto retCode = pTradeAPI->ReqQryInstrument(&req, serialId);
 			// CTPUtility::CheckReturnError(retCode);
 		}

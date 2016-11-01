@@ -60,8 +60,8 @@ int HedgeOrderManager::OnOrderUpdated(OrderDO& orderInfo)
 	{
 		switch (orderInfo.OrderStatus)
 		{
-		case OrderStatus::ALL_TRADED:
-		case OrderStatus::CANCELED:
+		case OrderStatusType::ALL_TRADED:
+		case OrderStatusType::CANCELED:
 		{
 			int delta = orderInfo.VolumeTraded - order_ptr->VolumeTraded;
 			if (delta > 0)

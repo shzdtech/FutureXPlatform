@@ -14,6 +14,7 @@
 #include "../dataobject/TradeRecordDO.h"
 #include "../dataobject/BankOpResultDO.h"
 #include "../dataobject/UserAccountRegisterDO.h"
+#include "../dataobject/UserPositionDO.h"
 #include "tradeapi/ThostFtdcUserApiStruct.h"
 #include "ctpexport.h"
 
@@ -25,8 +26,8 @@ public:
 	static void CheckError(const void* pRspInfo);
 	static std::shared_ptr<ApiException> HasReturnError(const int rtnCode);
 	static void CheckReturnError(const int rtncode);
-	static bool IsOrderActive(const int status);
-	static OrderStatus CheckOrderStatus(const int status, const int submitStatus);
+	static bool IsOrderActive(TThostFtdcOrderStatusType status);
+	static OrderStatusType CheckOrderStatus(TThostFtdcOrderStatusType status, TThostFtdcOrderSubmitStatusType submitStatus);
 
 	static OrderDO_Ptr ParseRawOrder(CThostFtdcInputOrderField *pOrder, CThostFtdcRspInfoField *pRsp, int sessionID, OrderDO_Ptr baseOrder = nullptr);
 	static OrderDO_Ptr ParseRawOrder(CThostFtdcOrderField *pOrder, OrderDO_Ptr baseOrder = nullptr);
@@ -39,11 +40,13 @@ public:
 	static BankOpResultDO_Ptr ParseRawTransfer(CThostFtdcRspTransferField *pRspTransfer, CThostFtdcRspInfoField *pRsp = nullptr);
 	static BankOpResultDO_Ptr ParseRawTransfer(CThostFtdcTransferSerialField *pRspTransfer);
 
+	static UserPositionExDO_Ptr ParseRawPostion(CThostFtdcInvestorPositionField* pRspPosition);
+
 	static UserAccountRegisterDO_Ptr ParseUserBankAccout(CThostFtdcAccountregisterField *pAccount, CThostFtdcRspInfoField *pRsp = nullptr);
 	static UserAccountRegisterDO_Ptr ParseUserBankAccout(CThostFtdcReqQueryAccountField *pAccount, CThostFtdcRspInfoField *pRsp = nullptr);
 	static UserAccountRegisterDO_Ptr ParseUserBankAccout(CThostFtdcNotifyQueryAccountField *pAccount);
 
-	static uint32_t ParseMessageID(OrderStatus status);
+	static uint32_t ParseOrderMessageID(OrderStatusType orderStatus);
 
 	static inline uint64_t ToUInt64(char* str) { return std::strtoull(str, nullptr, 10); }
 	static inline uint64_t ToUInt64(uint32_t low32, uint32_t high32) 

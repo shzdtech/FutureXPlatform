@@ -31,6 +31,8 @@ public:
 		GetPositionsByUser(const std::string& userID);
 	UserPositionExDO_Ptr GetPosition(const std::string& userID, const std::string& instumentID, PositionDirectionType direction);
 
+	bool RemovePosition(const std::string & userID, const std::string & instumentID, PositionDirectionType direction);
+
 private:
 	cuckoohash_map<std::string, cuckoohashmap_wrapper<std::pair<std::string, int>, UserPositionExDO_Ptr, pairhash<std::string, int>>> _userPositionMap;
 };

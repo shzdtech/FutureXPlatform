@@ -46,7 +46,7 @@ OrderDO_Ptr OTCOrderDAO::CreateOrder(const OrderRequestDO& orderDO, const IPrici
 		{
 			ret->OrderID = rsout->getUInt64(1);
 			ret->OrderSysID = rsout->getUInt64(2);
-			ret->OrderStatus = (OrderStatus)rsout->getInt(3);
+			ret->OrderStatus = (OrderStatusType)rsout->getInt(3);
 		}
 	}
 	catch (sql::SQLException& sqlEx)
@@ -66,13 +66,13 @@ OrderDO_Ptr OTCOrderDAO::CreateOrder(const OrderRequestDO& orderDO, const IPrici
 // Return:     bool
 ////////////////////////////////////////////////////////////////////////
 
-bool OTCOrderDAO::CancelOrder(const OrderRequestDO& orderDO, OrderStatus& status)
+bool OTCOrderDAO::CancelOrder(const OrderRequestDO& orderDO, OrderStatusType& status)
 {
 	static const std::string sql_proc_cancelorder
 	("CALL Order_OTC_Cancel(?,?)");
 
 	bool ret = true;
-	status = OrderStatus::UNDEFINED;
+	status = OrderStatusType::UNDEFINED;
 
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
@@ -84,7 +84,7 @@ bool OTCOrderDAO::CancelOrder(const OrderRequestDO& orderDO, OrderStatus& status
 
 		if (prestmt->executeUpdate() > 0)
 		{
-			ret = status == OrderStatus::CANCELED;
+			ret = status == OrderStatusType::CANCELED;
 		}
 	}
 	catch (sql::SQLException& sqlEx)
@@ -104,12 +104,12 @@ bool OTCOrderDAO::CancelOrder(const OrderRequestDO& orderDO, OrderStatus& status
 // Return:     bool
 ////////////////////////////////////////////////////////////////////////
 
-bool OTCOrderDAO::AcceptOrder(const OrderRequestDO& orderDO, OrderStatus& status)
+bool OTCOrderDAO::AcceptOrder(const OrderRequestDO& orderDO, OrderStatusType& status)
 {
 	static const std::string sql_proc_acceptorder("CALL Order_OTC_Accept(?)");
 
 	bool ret = true;
-	status = OrderStatus::UNDEFINED;
+	status = OrderStatusType::UNDEFINED;
 
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
@@ -120,7 +120,7 @@ bool OTCOrderDAO::AcceptOrder(const OrderRequestDO& orderDO, OrderStatus& status
 
 		if (prestmt->executeUpdate() > 0)
 		{
-			ret = status == OrderStatus::ALL_TRADED;
+			ret = status == OrderStatusType::ALL_TRADED;
 		}
 	}
 	catch (sql::SQLException& sqlEx)
@@ -140,12 +140,12 @@ bool OTCOrderDAO::AcceptOrder(const OrderRequestDO& orderDO, OrderStatus& status
 // Return:     bool
 ////////////////////////////////////////////////////////////////////////
 
-bool OTCOrderDAO::RejectOrder(const OrderRequestDO& orderDO, OrderStatus& status)
+bool OTCOrderDAO::RejectOrder(const OrderRequestDO& orderDO, OrderStatusType& status)
 {
 	static const std::string sql_proc_rejectorder("CALL Order_OTC_Reject(?)");
 
 	bool ret = true;
-	status = OrderStatus::UNDEFINED;
+	status = OrderStatusType::UNDEFINED;
 
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
@@ -156,7 +156,7 @@ bool OTCOrderDAO::RejectOrder(const OrderRequestDO& orderDO, OrderStatus& status
 
 		if (prestmt->executeUpdate() > 0)
 		{
-			ret = status == OrderStatus::REJECTED;
+			ret = status == OrderStatusType::REJECTED;
 		}
 	}
 	catch (sql::SQLException& sqlEx)
@@ -202,7 +202,7 @@ OrderDOVec_Ptr OTCOrderDAO::QueryTradingOrder(const ContractKey& contractKey)
 			obDO.VolumeTraded = rs->getInt(8);
 			obDO.VolumeRemain = obDO.Volume - obDO.VolumeTraded;
 			obDO.Direction = rs->getInt(9) != 0 ? DirectionType::BUY : DirectionType::SELL;
-			obDO.OrderStatus = (OrderStatus)rs->getInt(10);
+			obDO.OrderStatus = (OrderStatusType)rs->getInt(10);
 			obDO.TIF = (OrderTIFType)rs->getInt(11);
 			obDO.TradingType = (TradingType)rs->getInt(12);
 			obDO.InsertTime = rs->getString(14);
@@ -260,7 +260,7 @@ OrderDOVec_Ptr OTCOrderDAO::QueryTodayOrder(const std::string& userId, const Con
 			obDO.VolumeTraded = rs->getInt(8);
 			obDO.VolumeRemain = obDO.Volume - obDO.VolumeTraded;
 			obDO.Direction = rs->getInt(9) != 0 ? DirectionType::BUY : DirectionType::SELL;
-			obDO.OrderStatus = (OrderStatus)rs->getInt(10);
+			obDO.OrderStatus = (OrderStatusType)rs->getInt(10);
 			obDO.TIF = (OrderTIFType)rs->getInt(11);
 			obDO.TradingType = (TradingType)rs->getInt(12);
 			obDO.InsertTime = rs->getString(14);

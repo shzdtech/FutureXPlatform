@@ -93,17 +93,17 @@ int CTPOTCWorkerProcessor::LoginSystemUserIfNeed(void)
 		CThostFtdcReqUserLoginField req{};
 		if (!_serverCtx->getConfigVal(CTP_MD_BROKERID, brokerid))
 			brokerid = SysParam::Get(CTP_MD_BROKERID);
-		std::strncpy(req.BrokerID, brokerid.data(), sizeof(req.BrokerID) - 1);
+		std::strncpy(req.BrokerID, brokerid.data(), sizeof(req.BrokerID));
 
 		std::string usrid;
 		if (!_serverCtx->getConfigVal(CTP_MD_USERID, usrid))
 			usrid = SysParam::Get(CTP_MD_USERID);
-		std::strncpy(req.UserID, usrid.data(), sizeof(req.UserID) - 1);
+		std::strncpy(req.UserID, usrid.data(), sizeof(req.UserID));
 
 		std::string pwd;
 		if (!_serverCtx->getConfigVal(CTP_MD_PASSWORD, pwd))
 			pwd = SysParam::Get(CTP_MD_PASSWORD);
-		std::strncpy(req.Password, pwd.data(), sizeof(req.Password) - 1);
+		std::strncpy(req.Password, pwd.data(), sizeof(req.Password));
 
 		std::string address;
 		ExchangeRouterTable::TryFind(brokerid + ':' + ExchangeRouterTable::TARGET_MD, address);

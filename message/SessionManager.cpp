@@ -52,7 +52,7 @@ void SessionManager::OnServerStarting(void)
 
 void SessionManager::OnServerClosing(void)
 {
-	_sessionMap.clear();
+	_sessionSet.clear();
 	_server->getContext()->Reset();
 }
 
@@ -66,5 +66,5 @@ void SessionManager::OnServerClosing(void)
 
 void SessionManager::OnSessionClosing(const IMessageSession_Ptr& sessionPtr)
 {
-	_sessionMap.erase(sessionPtr.get());
+	_sessionSet.erase(sessionPtr);
 }

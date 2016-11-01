@@ -32,7 +32,7 @@ public:
    CTPTradeWorkerProcessor(IServerContext* pServerCtx);
    ~CTPTradeWorkerProcessor();
    virtual void Initialize(IServerContext* pServerCtx);
-   virtual int RequestExchangeData(void);
+   virtual int RequestData(void);
    virtual int LoginSystemUser(void);
    virtual int LoginSystemUserIfNeed(void);
    virtual int LoadDataAsync(void);
@@ -49,7 +49,6 @@ public:
    //virtual UserOrderContext& GetUserErrOrderContext(void);
 
    int RetryInterval = 60000;
-   bool DataLoaded;
 
 protected:
    UserInfo _systemUser;

@@ -171,6 +171,9 @@
     <ClInclude Include="CTPQueryUserRegAccount.h">
       <Filter>头文件\CTPHandler\Trader</Filter>
     </ClInclude>
+    <ClInclude Include="CTPPositionUpdated.h">
+      <Filter>头文件\CTPHandler\Trader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ctpexport.cpp">
@@ -273,6 +276,9 @@
       <Filter>源文件\CTPHandler\Trader</Filter>
     </ClCompile>
     <ClCompile Include="CTPQueryUserRegAccount.cpp">
+      <Filter>源文件\CTPHandler\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPPositionUpdated.cpp">
       <Filter>源文件\CTPHandler\Trader</Filter>
     </ClCompile>
   </ItemGroup>

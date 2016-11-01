@@ -14,7 +14,7 @@
 #include "PortfolioDO.h"
 #include "StrategyContractDO.h"
 
-enum OrderStatus
+enum OrderStatusType
 {
 	UNDEFINED = 0,
 	ALL_TRADED = 1,
@@ -26,7 +26,7 @@ enum OrderStatus
 	PARTIAL_TRADING = 11,
 	CANCELING = 12,
 	CANCEL_REJECTED = 13,
-	SUBMITTING = 14
+	OPENNING = 14
 };
 
 enum OrderExecType
@@ -89,7 +89,7 @@ public:
 	OrderDO(const uint64_t orderID) : OrderDO(orderID, "", "", "", ""){}
 
 	TradingType TradingType = TradingType::TRADINGTYPE_MANUAL;
-	OrderStatus OrderStatus = OrderStatus::UNDEFINED;
+	OrderStatusType OrderStatus = OrderStatusType::UNDEFINED;
 	int VolumeTraded = 0;
 	int VolumeRemain = 0;
 	int SessionID = 0;

@@ -47,25 +47,26 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const uint32_t serialId, const datao
 	auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
 
 	CThostFtdcQryInvestorPositionField req{};
-	std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID) - 1);
-	std::strncpy(req.InvestorID, investorid.data(), sizeof(req.InvestorID) - 1);
-	std::strncpy(req.InstrumentID, instrumentid.data(), sizeof(req.InstrumentID) - 1);
+	std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID));
+	std::strncpy(req.InvestorID, investorid.data(), sizeof(req.InvestorID));
+	std::strncpy(req.InstrumentID, instrumentid.data(), sizeof(req.InstrumentID));
 
 	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryInvestorPosition(&req, serialId);
-
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
 	{
 		auto positionMap = pWorkerProc->GetUserPositionContext().GetPositionsByUser(userid);
-		if (positionMap.empty())
+
+		auto pTradeProcessor = (CTPTradeProcessor*)session->getProcessor().get();
+		if (!(pTradeProcessor->DataLoadMask & CTPTradeProcessor::POSITION_DATA_LOADED))
 		{
+			CTPUtility::CheckReturnError(iRet);
+
 			std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
 			positionMap = pWorkerProc->GetUserPositionContext().GetPositionsByUser(userid);
+			pTradeProcessor->DataLoadMask |= CTPTradeProcessor::POSITION_DATA_LOADED;
 		}
 
-		if (positionMap.empty())
-		{
-			throw NotFoundException();
-		}
+		ThrowNotFoundExceptionIfEmpty(&positionMap);
 
 		if (instrumentid != EMPTY_STRING)
 		{
@@ -73,7 +74,7 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const uint32_t serialId, const datao
 			positionMap.map()->find(std::make_pair(instrumentid, PD_LONG), longPosition);
 			UserPositionExDO_Ptr shortPosition;
 			positionMap.map()->find(std::make_pair(instrumentid, PD_SHORT), shortPosition);
-			if(!longPosition && !shortPosition)
+			if (!longPosition && !shortPosition)
 				throw NotFoundException();
 
 			if (longPosition)
@@ -123,72 +124,35 @@ dataobj_ptr CTPQueryPosition::HandleResponse(const uint32_t serialId, const para
 {
 	CTPUtility::CheckNotFound(rawRespParams[0]);
 	CTPUtility::CheckError(rawRespParams[1]);
-	UserPositionExDO_Ptr ret;
+
 	auto pData = (CThostFtdcInvestorPositionField*)rawRespParams[0];
 
-	std::string exchange;
-	if (auto pInstrumentDO = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(pData->InstrumentID))
-	{
-		exchange = pInstrumentDO->ExchangeID();
-	}
+	UserPositionExDO_Ptr ret = CTPUtility::ParseRawPostion(pData);
 
-	auto pDO = new UserPositionExDO(exchange, pData->InstrumentID);
-	ret.reset(pDO);
-
-	pDO->HasMore = !*(bool*)rawRespParams[3];
-
-	pDO->Direction = (PositionDirectionType)(pData->PosiDirection - THOST_FTDC_PD_Net);
-	pDO->HedgeFlag = (HedgeType)(pData->HedgeFlag - THOST_FTDC_HF_Speculation);
-	pDO->PositionDateFlag = (PositionDateFlagType)(pData->PositionDate - THOST_FTDC_PSD_Today);
-	pDO->LastdayPosition = pData->YdPosition;
-	pDO->Position = pData->Position;
-	pDO->LongFrozen = pData->LongFrozen;
-	pDO->ShortFrozen = pData->ShortFrozen;
-	pDO->LongFrozenAmount = pData->LongFrozenAmount;
-	pDO->ShortFrozenAmount = pData->ShortFrozenAmount;
-	pDO->OpenVolume = pData->OpenVolume;
-	pDO->CloseVolume = pData->CloseVolume;
-	pDO->OpenAmount = pData->OpenAmount;
-	pDO->CloseAmount = pData->CloseAmount;
-	pDO->Cost = pData->PositionCost;
-	pDO->PreMargin = pData->PreMargin;
-	pDO->UseMargin = pData->UseMargin;
-	pDO->FrozenMargin = pData->FrozenMargin;
-	pDO->FrozenCash = pData->FrozenCash;
-	pDO->FrozenCommission = pData->FrozenCommission;
-	pDO->CashIn = pData->CashIn;
-	pDO->Commission = pData->Commission;
-	pDO->CloseProfit = pData->CloseProfit;
-	pDO->Profit = pData->PositionProfit;
-	pDO->PreSettlementPrice = pData->PreSettlementPrice;
-	pDO->SettlementPrice = pData->SettlementPrice;
-	pDO->TradingDay = pData->TradingDay;
-	pDO->SettlementID = pData->SettlementID;
-	pDO->OpenCost = pData->OpenCost;
-	pDO->ExchangeMargin = pData->ExchangeMargin;
-	pDO->CombPosition = pData->CombPosition;
-	pDO->CombLongFrozen = pData->CombLongFrozen;
-	pDO->CombShortFrozen = pData->CombShortFrozen;
-	pDO->CloseProfitByDate = pData->CloseProfitByDate;
-	pDO->CloseProfitByTrade = pData->CloseProfitByTrade;
-	//pDO->TodayPosition = pData->TodayPosition;
-	pDO->MarginRateByMoney = pData->MarginRateByMoney;
-	pDO->MarginRateByVolume = pData->MarginRateByVolume;
+	ret->HasMore = !*(bool*)rawRespParams[3];
 
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
 	{
-		if (pData->PositionDate == THOST_FTDC_PSD_Today)
+		if (pData->Position)
 		{
-			pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo()->getUserId(), ret);
+			if (pData->PositionDate == THOST_FTDC_PSD_Today)
+			{
+				pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo()->getUserId(), ret);
+			}
+			else
+			{
+				auto position_ptr = pWorkerProc->GetUserPositionContext().
+					GetPosition(session->getUserInfo()->getUserId(), ret->InstrumentID(), ret->Direction);
+				if (!position_ptr)
+				{
+					ret->PositionDateFlag = PositionDateFlagType::PSD_TODAY;
+					pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo()->getUserId(), ret);
+				}
+			}
 		}
 		else
 		{
-			auto position_ptr = pWorkerProc->GetUserPositionContext().GetPosition(session->getUserInfo()->getUserId(), pDO->InstrumentID(), pDO->Direction);
-			if (!position_ptr)
-			{
-				ret->PositionDateFlag = PositionDateFlagType::PSD_TODAY;
-				pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo()->getUserId(), ret);
-			}
+			pWorkerProc->GetUserPositionContext().RemovePosition(session->getUserInfo()->getUserId(), ret->InstrumentID(), ret->Direction);
 		}
 
 		ret.reset();

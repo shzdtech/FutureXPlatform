@@ -76,15 +76,15 @@ OrderDO_Ptr CTPOTCTradeProcessor::CreateOrder(const OrderRequestDO& orderInfo)
 	CThostFtdcInputOrderField req{};
 
 	//经纪公司代码
-	std::strncpy(req.BrokerID, _systemUser.getBrokerId().data(), sizeof(req.BrokerID) - 1);
+	std::strncpy(req.BrokerID, _systemUser.getBrokerId().data(), sizeof(req.BrokerID));
 	//投资者代码
-	std::strncpy(req.InvestorID, _systemUser.getInvestorId().data(), sizeof(req.InvestorID) - 1);
+	std::strncpy(req.InvestorID, _systemUser.getInvestorId().data(), sizeof(req.InvestorID));
 	// 合约代码
-	std::strncpy(req.InstrumentID, orderInfo.InstrumentID().data(), sizeof(req.InstrumentID) - 1);
+	std::strncpy(req.InstrumentID, orderInfo.InstrumentID().data(), sizeof(req.InstrumentID));
 	///报单引用
-	std::sprintf(req.OrderRef, FMT_PADDING_ORDERREF, orderInfo.OrderID);
+	std::snprintf(req.OrderRef, sizeof(req.OrderRef), FMT_ORDERREF, orderInfo.OrderID);
 	// 用户代码
-	std::strncpy(req.UserID, orderInfo.UserID().data(), sizeof(req.UserID) - 1);
+	std::strncpy(req.UserID, orderInfo.UserID().data(), sizeof(req.UserID));
 	// 报单价格条件
 	req.OrderPriceType = THOST_FTDC_OPT_LimitPrice;
 	// 买卖方向
@@ -112,7 +112,7 @@ OrderDO_Ptr CTPOTCTradeProcessor::CreateOrder(const OrderRequestDO& orderInfo)
 	// 自动挂起标志
 	req.IsAutoSuspend = false;
 
-	if(_rawAPI->TrdAPI->ReqOrderInsert(&req, 0) != 0)
+	if (_rawAPI->TrdAPI->ReqOrderInsert(&req, 0) != 0)
 		return nullptr;
 
 	return CTPUtility::ParseRawOrder(&req, nullptr, _systemUser.getSessionId());
@@ -125,26 +125,27 @@ OrderDO_Ptr CTPOTCTradeProcessor::CancelOrder(const OrderRequestDO& orderInfo)
 
 	req.ActionFlag = THOST_FTDC_AF_Delete;
 	//经纪公司代码
-	std::strncpy(req.BrokerID, _systemUser.getBrokerId().data(), sizeof(req.BrokerID) - 1);
-	std::strncpy(req.InvestorID, _systemUser.getUserId().data(), sizeof(req.InvestorID) - 1);
-	std::strncpy(req.UserID, orderInfo.UserID().data(), sizeof(req.UserID) - 1);
+	std::strncpy(req.BrokerID, _systemUser.getBrokerId().data(), sizeof(req.BrokerID));
+	std::strncpy(req.InvestorID, _systemUser.getUserId().data(), sizeof(req.InvestorID));
+	std::strncpy(req.UserID, orderInfo.UserID().data(), sizeof(req.UserID));
 	if (orderInfo.OrderSysID != 0)
 	{
-		std::strncpy(req.ExchangeID, orderInfo.ExchangeID().data(), sizeof(req.ExchangeID) - 1);
-		std::sprintf(req.OrderSysID, FMT_PADDING_ORDERSYSID, orderInfo.OrderSysID);
+		std::strncpy(req.ExchangeID, orderInfo.ExchangeID().data(), sizeof(req.ExchangeID));
+		std::snprintf(req.OrderSysID, sizeof(req.OrderSysID), FMT_ORDERSYSID, orderInfo.OrderSysID);
 	}
 	else
 	{
 		req.SessionID = _systemUser.getSessionId();
 		req.FrontID = _systemUser.getFrontId();
-		std::strncpy(req.InstrumentID, orderInfo.InstrumentID().data(), sizeof(req.InstrumentID) - 1);
-		std::sprintf(req.OrderRef, FMT_PADDING_ORDERREF, orderInfo.OrderID);
+		std::strncpy(req.InstrumentID, orderInfo.InstrumentID().data(), sizeof(req.InstrumentID));
+		std::snprintf(req.OrderRef, sizeof(req.OrderRef), FMT_ORDERREF, orderInfo.OrderID);
 	}
 
 	if (_rawAPI->TrdAPI->ReqOrderAction(&req, AppContext::GenNextSeq()) != 0)
 		return nullptr;
-	
+
 	req.SessionID = _systemUser.getSessionId();
+
 	return CTPUtility::ParseRawOrder(&req, nullptr);
 }
 
@@ -184,8 +185,8 @@ void CTPOTCTradeProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserL
 	}
 
 	CThostFtdcSettlementInfoConfirmField reqsettle{};
-	std::strncpy(reqsettle.BrokerID, _systemUser.getBrokerId().data(), sizeof(reqsettle.BrokerID) - 1);
-	std::strncpy(reqsettle.InvestorID, _systemUser.getInvestorId().data(), sizeof(reqsettle.InvestorID) - 1);
+	std::strncpy(reqsettle.BrokerID, _systemUser.getBrokerId().data(), sizeof(reqsettle.BrokerID));
+	std::strncpy(reqsettle.InvestorID, _systemUser.getInvestorId().data(), sizeof(reqsettle.InvestorID));
 	_rawAPI->TrdAPI->ReqSettlementInfoConfirm(&reqsettle, 0);
 
 	_isLogged = true;
@@ -253,7 +254,12 @@ void CTPOTCTradeProcessor::OnRtnOrder(CThostFtdcOrderField *pOrder)
 		int ret = _autoOrderMgr.OnOrderUpdated(*orderptr);
 		if (ret == 0)
 		{
-			DispatchUserMessage(CTPUtility::ParseMessageID(orderptr->OrderStatus), pOrder->RequestID, orderptr->UserID(), orderptr);
+			if (auto msgId = CTPUtility::ParseOrderMessageID(orderptr->OrderStatus))
+			{
+				auto sid = msgId == MSG_ID_ORDER_CANCEL ? orderptr->OrderSysID : pOrder->RequestID;
+				DispatchUserMessage(msgId, sid, orderptr->UserID(), orderptr);
+			}
+			DispatchUserMessage(MSG_ID_ORDER_UPDATE, pOrder->RequestID, orderptr->UserID(), orderptr);
 		}
 	}
 }

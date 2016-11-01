@@ -226,16 +226,16 @@ void CTSAPIWrapperImpl::OnOrderUpdated(Order^ pOrder)
 
 		switch (order_ptr->OrderStatus)
 		{
-		case ::OrderStatus::CANCELED:
-		case ::OrderStatus::CANCEL_REJECTED:
+		case ::OrderStatusType::CANCELED:
+		case ::OrderStatusType::CANCEL_REJECTED:
 			msgId = MSG_ID_ORDER_CANCEL;
 			break;
-		case ::OrderStatus::OPENED:
-		case ::OrderStatus::OPEN_REJECTED:
+		case ::OrderStatusType::OPENED:
+		case ::OrderStatusType::OPEN_REJECTED:
 			msgId = MSG_ID_ORDER_NEW;
 			break;
-		case ::OrderStatus::PARTIAL_TRADING:
-		case ::OrderStatus::ALL_TRADED:
+		case ::OrderStatusType::PARTIAL_TRADING:
+		case ::OrderStatusType::ALL_TRADED:
 			msgId = MSG_ID_ORDER_UPDATE;
 			break;
 		default:

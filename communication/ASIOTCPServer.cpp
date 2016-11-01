@@ -176,7 +176,7 @@ void ASIOTCPServer::work_thread(void) {
 		LOG_ERROR << __FUNCTION__ << ": " << ex.what();
 	}
 	catch (...) {
-		LOG_ERROR << __FUNCTION__ << ": " << ": Unknown error occured.";
+		LOG_ERROR << __FUNCTION__ << ": Unknown error occured.";
 	}
 }
 

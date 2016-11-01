@@ -1,7 +1,7 @@
 #ifndef _utility_lockfree_queue_h
 #define _utility_lockfree_queue_h
 
-#include <queue>
+#include <deque>
 #include <atomic>
 
 template <class T>
@@ -13,14 +13,14 @@ public:
 	void push(T&& value)
 	{
 		lock();
-		_queue.push(std::move(value));
+		_queue.push_back(std::move(value));
 		unlock();
 	}
 
 	void push(const T& value)
 	{
 		lock();
-		_queue.push(value);
+		_queue.push_back(value);
 		unlock();
 	}
 
@@ -31,7 +31,7 @@ public:
 		if (hasElement)
 		{
 			value = _queue.front();
-			_queue.pop();
+			_queue.pop_front();
 		}
 		unlock();
 
@@ -40,25 +40,33 @@ public:
 
 	std::size_t size()
 	{
-		lock();
-		std::size_t sz = _queue.size();
-		unlock();
+		return _queue.size();
+	}
 
-		return sz;
+	void clear()
+	{
+		lock();
+		_queue.clear();
+		unlock();
+	}
+
+	bool empty()
+	{
+		return _queue.empty();
 	}
 
 	inline void lock()
 	{
-		while (!_opState.test_and_set());
+		while (_opState.test_and_set(std::memory_order_acquire));
 	}
 
 	inline void unlock()
 	{
-		_opState.clear();
+		_opState.clear(std::memory_order_release);
 	}
 
 private:
-	std::queue<T> _queue;
+	std::deque<T> _queue;
 	std::atomic_flag _opState;
 };
 

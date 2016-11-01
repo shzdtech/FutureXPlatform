@@ -1,31 +1,31 @@
 #include "CTSUtility.h"
 #include "CTSConvertor.h"
 
-OrderStatus CTSUtility::CheckOrderStatus(T4::OrderStatus status, T4::OrderChange lastChange)
+OrderStatusType CTSUtility::CheckOrderStatus(T4::OrderStatus status, T4::OrderChange lastChange)
 {
-	OrderStatus ret = OrderStatus::UNDEFINED;
+	OrderStatusType ret = OrderStatusType::UNDEFINED;
 
 	switch (lastChange)
 	{
 	case T4::OrderChange::SubmissionRiskRejected:
 	case T4::OrderChange::SubmissionRejected:
-		ret = OrderStatus::OPEN_REJECTED;
+		ret = OrderStatusType::OPEN_REJECTED;
 		break;
 	case T4::OrderChange::TradeCompleted:
-		ret = OrderStatus::ALL_TRADED;
+		ret = OrderStatusType::ALL_TRADED;
 		break;
 	case T4::OrderChange::Trade:
-		ret = OrderStatus::PARTIAL_TRADED;
+		ret = OrderStatusType::PARTIAL_TRADED;
 		break;
 	case T4::OrderChange::PullRejected:
-		ret = OrderStatus::CANCEL_REJECTED;
+		ret = OrderStatusType::CANCEL_REJECTED;
 		break;
 	case T4::OrderChange::PullSuccess:
-		ret = OrderStatus::CANCELED;
+		ret = OrderStatusType::CANCELED;
 		break;
 	default:
 		if (status == T4::OrderStatus::Held)
-			ret = OrderStatus::OPENED;
+			ret = OrderStatusType::OPENED;
 	}
 
 	return ret;

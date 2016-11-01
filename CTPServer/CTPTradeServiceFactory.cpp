@@ -50,6 +50,8 @@ std::map<uint, IMessageHandler_Ptr> CTPTradeServiceFactory::CreateMessageHandler
 
 	msg_hdl_map[MSG_ID_QUERY_POSITION] = std::make_shared<CTPQueryPosition>();
 
+	msg_hdl_map[MSG_ID_POSITION_UPDATED] = std::make_shared<CTPPositionUpdated>();
+
 	msg_hdl_map[MSG_ID_QUERY_TRADE] = std::make_shared<CTPQueryTrade>();
 
 	msg_hdl_map[MSG_ID_TRADE_RTN] = std::make_shared<CTPTradeUpdated>();

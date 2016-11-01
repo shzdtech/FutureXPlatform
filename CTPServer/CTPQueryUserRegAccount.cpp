@@ -41,11 +41,11 @@ dataobj_ptr CTPQueryUserRegAccount::HandleRequest(const uint32_t serialId, const
 
 	auto pDO = (BankOpRequestDO*)reqDO.get();
 	CThostFtdcQryAccountregisterField req{};
-	std::strncpy(req.AccountID, pDO->AccountID.data(), sizeof(req.AccountID) - 1);
-	std::strncpy(req.BankBranchID, pDO->BankBranchID.data(), sizeof(req.BankBranchID) - 1);
-	std::strncpy(req.BankID, pDO->BankID.data(), sizeof(req.BankID) - 1);
-	std::strncpy(req.BrokerID, pDO->BrokerID.data(), sizeof(req.BrokerID) - 1);
-	std::strncpy(req.CurrencyID, pDO->CurrencyID.data(), sizeof(req.CurrencyID) - 1);
+	std::strncpy(req.AccountID, pDO->AccountID.data(), sizeof(req.AccountID));
+	std::strncpy(req.BankBranchID, pDO->BankBranchID.data(), sizeof(req.BankBranchID));
+	std::strncpy(req.BankID, pDO->BankID.data(), sizeof(req.BankID));
+	std::strncpy(req.BrokerID, pDO->BrokerID.data(), sizeof(req.BrokerID));
+	std::strncpy(req.CurrencyID, pDO->CurrencyID.data(), sizeof(req.CurrencyID));
 
 	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryAccountregister(&req, serialId);
 	CTPUtility::CheckReturnError(iRet);

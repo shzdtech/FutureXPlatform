@@ -170,6 +170,7 @@
     <ClInclude Include="entrywisemutex.h" />
     <ClInclude Include="epsdouble.h" />
     <ClInclude Include="lockfree_queue.h" />
+    <ClInclude Include="lockfree_set.h" />
     <ClInclude Include="pairhash.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="semaphore.h" />

@@ -116,7 +116,7 @@ std::shared_ptr<ApiException> CTPUtility::HasReturnError(const int rtnCode)
 // Return:     bool
 ////////////////////////////////////////////////////////////////////////
 
-bool CTPUtility::IsOrderActive(const int status)
+bool CTPUtility::IsOrderActive(TThostFtdcOrderStatusType status)
 {
 	bool ret = true;
 
@@ -136,47 +136,44 @@ bool CTPUtility::IsOrderActive(const int status)
 }
 
 
-OrderStatus CTPUtility::CheckOrderStatus(const int status, const int submitStatus)
+OrderStatusType CTPUtility::CheckOrderStatus(TThostFtdcOrderStatusType status, TThostFtdcOrderSubmitStatusType submitStatus)
 {
-	OrderStatus ret = OrderStatus::UNDEFINED;
+	OrderStatusType ret = OrderStatusType::UNDEFINED;
 
 	switch (status)
 	{
 	case THOST_FTDC_OST_Canceled:
-		ret = OrderStatus::CANCELED;
+		ret = OrderStatusType::CANCELED;
 		break;
 	case THOST_FTDC_OST_AllTraded:
-		ret = OrderStatus::ALL_TRADED;
+		ret = OrderStatusType::ALL_TRADED;
 		break;
 	case THOST_FTDC_OST_NoTradeQueueing:
-		ret = OrderStatus::OPENED;
+		ret = OrderStatusType::OPENED;
 		break;
 	case THOST_FTDC_OST_NoTradeNotQueueing:
-		ret = OrderStatus::OPEN_REJECTED;
+		ret = OrderStatusType::OPEN_REJECTED;
 		break;
 	case THOST_FTDC_OST_PartTradedQueueing:
-		ret = OrderStatus::PARTIAL_TRADING;
+		ret = OrderStatusType::PARTIAL_TRADING;
 		break;
 	case THOST_FTDC_OST_PartTradedNotQueueing:
-		ret = OrderStatus::PARTIAL_TRADED;
+		ret = OrderStatusType::PARTIAL_TRADED;
 		break;
 	default:
 		switch (submitStatus)
 		{
 		case THOST_FTDC_OSS_InsertSubmitted:
-			ret = OrderStatus::SUBMITTING;
-			break;
-		case THOST_FTDC_OSS_Accepted:
-			ret = OrderStatus::OPENED;
+			ret = OrderStatusType::OPENNING;
 			break;
 		case THOST_FTDC_OSS_InsertRejected:
-			ret = OrderStatus::OPEN_REJECTED;
+			ret = OrderStatusType::OPEN_REJECTED;
 			break;
 		case THOST_FTDC_OSS_CancelSubmitted:
-			ret = OrderStatus::CANCELING;
+			ret = OrderStatusType::CANCELING;
 			break;
 		case THOST_FTDC_OSS_CancelRejected:
-			ret = OrderStatus::CANCEL_REJECTED;
+			ret = OrderStatusType::CANCEL_REJECTED;
 			break;
 		default:
 			break;
@@ -232,7 +229,7 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(
 	pDO->OrderSysID = ToUInt64(pOrderAction->OrderSysID);
 	pDO->LimitPrice = pOrderAction->LimitPrice;
 	pDO->Active = pRsp == nullptr;
-	pDO->OrderStatus = pRsp ? OrderStatus::CANCEL_REJECTED : OrderStatus::CANCELING;
+	pDO->OrderStatus = pRsp ? OrderStatusType::CANCEL_REJECTED : OrderStatusType::CANCELING;
 	pDO->SessionID = pOrderAction->SessionID;
 
 	pDO->BrokerID = pOrderAction->BrokerID;
@@ -270,7 +267,7 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(
 	pDO->VolumeRemain = pOrderInput->VolumeTotalOriginal;
 	pDO->StopPrice = pOrderInput->StopPrice;
 	pDO->Active = pRsp == nullptr;
-	pDO->OrderStatus = pRsp ? OrderStatus::OPEN_REJECTED : OrderStatus::SUBMITTING;
+	pDO->OrderStatus = pRsp ? OrderStatusType::OPEN_REJECTED : OrderStatusType::OPENNING;
 
 	pDO->BrokerID = pOrderInput->BrokerID;
 	//auto now = std::time(nullptr);
@@ -300,7 +297,7 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(CThostFtdcOrderActionField * pOrderAction,
 	pDO->OrderSysID = ToUInt64(pOrderAction->OrderSysID);
 	pDO->LimitPrice = pOrderAction->LimitPrice;
 	pDO->Active = pRsp == nullptr;
-	pDO->OrderStatus = pRsp ? OrderStatus::CANCEL_REJECTED : OrderStatus::CANCELING;
+	pDO->OrderStatus = pRsp ? OrderStatusType::CANCEL_REJECTED : OrderStatusType::CANCELING;
 	pDO->SessionID = pOrderAction->SessionID;
 
 	if (pRsp)
@@ -459,6 +456,59 @@ BankOpResultDO_Ptr CTPUtility::ParseRawTransfer(CThostFtdcTransferSerialField * 
 	return ret;
 }
 
+UserPositionExDO_Ptr CTPUtility::ParseRawPostion(CThostFtdcInvestorPositionField * pRspPosition)
+{
+	std::string exchange;
+	if (auto pInstrumentDO = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(pRspPosition->InstrumentID))
+	{
+		exchange = pInstrumentDO->ExchangeID();
+	}
+
+	auto pDO = new UserPositionExDO(exchange, pRspPosition->InstrumentID);
+	UserPositionExDO_Ptr ret(pDO);
+
+	pDO->Direction = (PositionDirectionType)(pRspPosition->PosiDirection - THOST_FTDC_PD_Net);
+	pDO->HedgeFlag = (HedgeType)(pRspPosition->HedgeFlag - THOST_FTDC_HF_Speculation);
+	pDO->PositionDateFlag = (PositionDateFlagType)(pRspPosition->PositionDate - THOST_FTDC_PSD_Today);
+	pDO->LastdayPosition = pRspPosition->YdPosition;
+	pDO->Position = pRspPosition->Position;
+	pDO->LongFrozen = pRspPosition->LongFrozen;
+	pDO->ShortFrozen = pRspPosition->ShortFrozen;
+	pDO->LongFrozenAmount = pRspPosition->LongFrozenAmount;
+	pDO->ShortFrozenAmount = pRspPosition->ShortFrozenAmount;
+	pDO->OpenVolume = pRspPosition->OpenVolume;
+	pDO->CloseVolume = pRspPosition->CloseVolume;
+	pDO->OpenAmount = pRspPosition->OpenAmount;
+	pDO->CloseAmount = pRspPosition->CloseAmount;
+	pDO->Cost = pRspPosition->PositionCost;
+	pDO->PreMargin = pRspPosition->PreMargin;
+	pDO->UseMargin = pRspPosition->UseMargin;
+	pDO->FrozenMargin = pRspPosition->FrozenMargin;
+	pDO->FrozenCash = pRspPosition->FrozenCash;
+	pDO->FrozenCommission = pRspPosition->FrozenCommission;
+	pDO->CashIn = pRspPosition->CashIn;
+	pDO->Commission = pRspPosition->Commission;
+	pDO->CloseProfit = pRspPosition->CloseProfit;
+	pDO->Profit = pRspPosition->PositionProfit;
+	pDO->PreSettlementPrice = pRspPosition->PreSettlementPrice;
+	pDO->SettlementPrice = pRspPosition->SettlementPrice;
+	pDO->TradingDay = pRspPosition->TradingDay;
+	pDO->SettlementID = pRspPosition->SettlementID;
+	pDO->OpenCost = pRspPosition->OpenCost;
+	pDO->ExchangeMargin = pRspPosition->ExchangeMargin;
+	pDO->CombPosition = pRspPosition->CombPosition;
+	pDO->CombLongFrozen = pRspPosition->CombLongFrozen;
+	pDO->CombShortFrozen = pRspPosition->CombShortFrozen;
+	pDO->CloseProfitByDate = pRspPosition->CloseProfitByDate;
+	pDO->CloseProfitByTrade = pRspPosition->CloseProfitByTrade;
+	//pDO->TodayPosition = pRspPosition->TodayPosition;
+	pDO->MarginRateByMoney = pRspPosition->MarginRateByMoney;
+	pDO->MarginRateByVolume = pRspPosition->MarginRateByVolume;
+
+
+	return ret;
+}
+
 UserAccountRegisterDO_Ptr CTPUtility::ParseUserBankAccout(CThostFtdcAccountregisterField * pAccount, CThostFtdcRspInfoField * pRsp)
 {
 	UserAccountRegisterDO_Ptr ret;
@@ -536,18 +586,19 @@ UserAccountRegisterDO_Ptr CTPUtility::ParseUserBankAccout(CThostFtdcNotifyQueryA
 	return ret;
 }
 
-uint32_t CTPUtility::ParseMessageID(OrderStatus status)
+uint32_t CTPUtility::ParseOrderMessageID(OrderStatusType orderStatus)
 {
-	uint32_t msgId = MSG_ID_ORDER_UPDATE;
-	switch (status)
+	uint32_t msgId = MSG_ID_UNDEFINED;
+	switch (orderStatus)
 	{
-	case OrderStatus::CANCELING:
-	case OrderStatus::CANCEL_REJECTED:
-		msgId = MSG_ID_ORDER_CANCEL;
-		break;
-	case OrderStatus::SUBMITTING:
-	case OrderStatus::OPEN_REJECTED:
+	case OrderStatusType::OPENNING:
+	case OrderStatusType::OPEN_REJECTED:
 		msgId = MSG_ID_ORDER_NEW;
+		break;
+	case OrderStatusType::CANCELED:
+	case OrderStatusType::CANCELING:
+	case OrderStatusType::CANCEL_REJECTED:
+		msgId = MSG_ID_ORDER_CANCEL;
 		break;
 	default:
 		break;

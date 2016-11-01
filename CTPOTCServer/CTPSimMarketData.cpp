@@ -21,8 +21,8 @@ dataobj_ptr CTPSimMarketData::HandleRequest(const uint32_t serialId, const datao
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCWorkerProcessor>(session->getProcessor()))
 	{
 		CThostFtdcDepthMarketDataField md{};
-		std::strncpy(md.ExchangeID, pMdO->ExchangeID().data(), sizeof(md.ExchangeID) - 1);
-		std::strncpy(md.InstrumentID, pMdO->InstrumentID().data(), sizeof(md.InstrumentID) - 1);
+		std::strncpy(md.ExchangeID, pMdO->ExchangeID().data(), sizeof(md.ExchangeID));
+		std::strncpy(md.InstrumentID, pMdO->InstrumentID().data(), sizeof(md.InstrumentID));
 		md.BidPrice1 = pMdO->Bid().Price;
 		md.BidVolume1 = pMdO->Bid().Volume;
 		md.AskPrice1 = pMdO->Ask().Price;

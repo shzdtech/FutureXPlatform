@@ -42,27 +42,25 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const uint32_t serialId, const da
 	auto& investorid = session->getUserInfo()->getInvestorId();
 
 	CThostFtdcQryTradingAccountField req{};
-	std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID) - 1);
-	std::strncpy(req.InvestorID, investorid.data(), sizeof(req.InvestorID) - 1);
+	std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID));
+	std::strncpy(req.InvestorID, investorid.data(), sizeof(req.InvestorID));
 
 	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryTradingAccount(&req, serialId);
-
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
+	if (iRet != 0) // too frequent request
 	{
-		auto& accountInfoMap = pWorkerProc->GetAccountInfo(session->getUserInfo()->getInvestorId());
-		if (accountInfoMap.empty())
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
 		{
-			std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
-		}
+			auto& accountInfoMap = pWorkerProc->GetAccountInfo(session->getUserInfo()->getInvestorId());
 
-		ThrowNotFoundExceptionIfEmpty(&accountInfoMap);
+			ThrowNotFoundExceptionIfEmpty(&accountInfoMap);
 
-		auto endit = accountInfoMap.end();
-		for (auto it = accountInfoMap.begin(); it != endit; it++)
-		{
-			auto accountptr = std::make_shared<AccountInfoDO>(it->second);
-			accountptr->HasMore = std::next(it) != endit;
-			pWorkerProc->SendDataObject(session, MSG_ID_QUERY_ACCOUNT_INFO, serialId, accountptr);
+			auto endit = accountInfoMap.end();
+			for (auto it = accountInfoMap.begin(); it != endit; it++)
+			{
+				auto accountptr = std::make_shared<AccountInfoDO>(it->second);
+				accountptr->HasMore = std::next(it) != endit;
+				pWorkerProc->SendDataObject(session, MSG_ID_QUERY_ACCOUNT_INFO, serialId, accountptr);
+			}
 		}
 	}
 	else
@@ -132,8 +130,6 @@ dataobj_ptr CTPQueryAccountInfo::HandleResponse(const uint32_t serialId, const p
 		{
 			auto& accountInfo = pWorkerProc->GetAccountInfo(session->getUserInfo()->getUserId()).getorfill(pDO->AccountID);
 			accountInfo = *pDO;
-
-			ret.reset();
 		}
 	}
 

@@ -28,7 +28,7 @@ int CTPMDLoginHandler::LoginFunction(ISession* session, CThostFtdcReqUserLoginFi
 		{
 			brokerId = SysParam::Get(CTP_MD_BROKERID);
 		}
-		std::strncpy(loginInfo->BrokerID, brokerId.data(), sizeof(loginInfo->BrokerID) - 1);
+		std::strncpy(loginInfo->BrokerID, brokerId.data(), sizeof(loginInfo->BrokerID));
 	}
 
 	std::string userId(loginInfo->UserID);
@@ -38,7 +38,7 @@ int CTPMDLoginHandler::LoginFunction(ISession* session, CThostFtdcReqUserLoginFi
 		{
 			userId = SysParam::Get(CTP_MD_USERID);
 		}
-		std::strncpy(loginInfo->UserID, userId.data(), sizeof(loginInfo->UserID) - 1);
+		std::strncpy(loginInfo->UserID, userId.data(), sizeof(loginInfo->UserID));
 	}
 	
 	std::string pwd(loginInfo->Password);
@@ -48,7 +48,7 @@ int CTPMDLoginHandler::LoginFunction(ISession* session, CThostFtdcReqUserLoginFi
 		{
 			pwd = SysParam::Get(CTP_MD_PASSWORD);
 		}
-		std::strncpy(loginInfo->Password, pwd.data(), sizeof(loginInfo->Password) - 1);
+		std::strncpy(loginInfo->Password, pwd.data(), sizeof(loginInfo->Password));
 	}
 
 	std::string server = severName.empty() ? brokerId + ':' + ExchangeRouterTable::TARGET_MD : severName;

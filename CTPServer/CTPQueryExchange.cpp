@@ -49,12 +49,14 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const uint32_t serialId, const datao
 		{
 			CThostFtdcQryExchangeField req{};
 			int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryExchange(&req, serialId);
-			// CTPUtility::CheckReturnError(iRet);
+			CTPUtility::CheckReturnError(iRet);
 
-			std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
+			// std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
+
+			return nullptr;
 		}
 
-		ThrowNotFoundExceptionIfEmpty(&exchangeInfo);
+		// ThrowNotFoundExceptionIfEmpty(&exchangeInfo);
 
 		if (exchangeid.empty())
 		{
@@ -126,7 +128,6 @@ dataobj_ptr CTPQueryExchange::HandleResponse(const uint32_t serialId, const para
 			{
 				exchangeSet.insert(*pDO);
 			}
-			ret.reset();
 		}
 	}
 

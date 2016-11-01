@@ -45,17 +45,17 @@ dataobj_ptr CTPQueryTransferSerial::HandleRequest(const uint32_t serialId, const
 
 	if (pDO->AccountID.empty())
 		pDO->AccountID = session->getUserInfo()->getInvestorId();
-	std::strncpy(req.AccountID, pDO->AccountID.data(), sizeof(req.AccountID) - 1);
+	std::strncpy(req.AccountID, pDO->AccountID.data(), sizeof(req.AccountID));
 
 	if (pDO->BrokerID.empty())
 		pDO->BrokerID = session->getUserInfo()->getBrokerId();
-	std::strncpy(req.BrokerID, pDO->BrokerID.data(), sizeof(req.BrokerID) - 1);
+	std::strncpy(req.BrokerID, pDO->BrokerID.data(), sizeof(req.BrokerID));
 
-	std::strncpy(req.BankID, pDO->BankID.data(), sizeof(req.BankID) - 1);
+	std::strncpy(req.BankID, pDO->BankID.data(), sizeof(req.BankID));
 
 	if (pDO->CurrencyID.empty())
 		pDO->CurrencyID = "CNY";
-	std::strncpy(req.CurrencyID, pDO->CurrencyID.data(), sizeof(req.CurrencyID) - 1);
+	std::strncpy(req.CurrencyID, pDO->CurrencyID.data(), sizeof(req.CurrencyID));
 
 	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryTransferSerial(&req, serialId);
 	CTPUtility::CheckReturnError(iRet);

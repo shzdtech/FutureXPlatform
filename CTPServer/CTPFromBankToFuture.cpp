@@ -14,35 +14,35 @@ dataobj_ptr CTPFromBankToFuture::HandleRequest(const uint32_t serialId, const da
 	auto pDO = (BankOpRequestDO*)reqDO.get();
 
 	CThostFtdcReqTransferField req{};
-	std::strncpy(req.BankID, pDO->BankID.data(), sizeof(req.BankID) - 1);
+	std::strncpy(req.BankID, pDO->BankID.data(), sizeof(req.BankID));
 	if (pDO->BankBranchID.empty())
 		pDO->BankBranchID = "0000";
-	std::strncpy(req.BankBranchID, pDO->BankBranchID.data(), sizeof(req.BankBranchID) - 1);
+	std::strncpy(req.BankBranchID, pDO->BankBranchID.data(), sizeof(req.BankBranchID));
 
 	if (pDO->BrokerID.empty())
 		pDO->BrokerID = session->getUserInfo()->getBrokerId();
-	std::strncpy(req.BrokerID, pDO->BrokerID.data(), sizeof(req.BrokerID) - 1);
+	std::strncpy(req.BrokerID, pDO->BrokerID.data(), sizeof(req.BrokerID));
 
 	if (pDO->BrokerBranchID.empty())
 		pDO->BrokerBranchID = "0000";
-	std::strncpy(req.BrokerBranchID, pDO->BrokerBranchID.data(), sizeof(req.BrokerBranchID) - 1);
+	std::strncpy(req.BrokerBranchID, pDO->BrokerBranchID.data(), sizeof(req.BrokerBranchID));
 
-	std::strncpy(req.BankAccount, pDO->BankAccount.data(), sizeof(req.BankAccount) - 1);
-	std::strncpy(req.BankPassWord, pDO->BankPassword.data(), sizeof(req.BankPassWord) - 1);
+	std::strncpy(req.BankAccount, pDO->BankAccount.data(), sizeof(req.BankAccount));
+	std::strncpy(req.BankPassWord, pDO->BankPassword.data(), sizeof(req.BankPassWord));
 
 	if (pDO->AccountID.empty())
 		pDO->AccountID = session->getUserInfo()->getInvestorId();
-	std::strncpy(req.AccountID, pDO->AccountID.data(), sizeof(req.AccountID) - 1);
+	std::strncpy(req.AccountID, pDO->AccountID.data(), sizeof(req.AccountID));
 
 	if (pDO->Password.empty())
 		pDO->Password = session->getUserInfo()->getPassword();
-	std::strncpy(req.Password, pDO->Password.data(), sizeof(req.Password) - 1);
+	std::strncpy(req.Password, pDO->Password.data(), sizeof(req.Password));
 
 	if (pDO->CurrencyID.empty())
 		pDO->CurrencyID = "CNY";
-	std::strncpy(req.CurrencyID, pDO->CurrencyID.data(), sizeof(req.CurrencyID) - 1);
+	std::strncpy(req.CurrencyID, pDO->CurrencyID.data(), sizeof(req.CurrencyID));
 
-	std::strncpy(req.UserID, session->getUserInfo()->getUserId().data(), sizeof(req.UserID) - 1);
+	std::strncpy(req.UserID, session->getUserInfo()->getUserId().data(), sizeof(req.UserID));
 
 	req.TradeAmount = pDO->TradeAmount;
 

@@ -45,8 +45,8 @@ dataobj_ptr CTPQueryTransferBank::HandleRequest(const uint32_t serialId, const d
 	auto bankid = stdo->TryFind(STR_BANK_ID, EMPTY_STRING);
 	auto branchid = stdo->TryFind(STR_BRANCH_ID, EMPTY_STRING);
 
-	std::strncpy(req.BankID, bankid.data(), sizeof(req.BankID) - 1);
-	std::strncpy(req.BankBrchID, branchid.data(), sizeof(req.BankBrchID) - 1);
+	std::strncpy(req.BankID, bankid.data(), sizeof(req.BankID));
+	std::strncpy(req.BankBrchID, branchid.data(), sizeof(req.BankBrchID));
 
 	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryTransferBank(&req, serialId);
 	CTPUtility::CheckReturnError(iRet);

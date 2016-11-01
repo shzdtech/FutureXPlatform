@@ -17,7 +17,7 @@ OrderSeqGen::static_initializer::static_initializer()
 {
 	std::time_t timestamp = std::time(nullptr);
 	std::srand(timestamp);
-	_high32Id = std::rand() % 0x1000;
+	_high32Id = std::rand();
 }
 
 uint32_t OrderSeqGen::GetHigh32ID(uint64_t value)

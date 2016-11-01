@@ -36,10 +36,10 @@ dataobj_ptr CTPQuerySettlementInfoCfm::HandleRequest(const uint32_t serialId, co
 	auto& cfmtime = stdo->TryFind(STR_TIME, EMPTY_STRING);
 
 	CThostFtdcSettlementInfoConfirmField req{};
-	std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID) - 1);
-	std::strncpy(req.InvestorID, investorid.data(), sizeof(req.InvestorID) - 1);
-	std::strncpy(req.ConfirmDate, cfmdate.data(), sizeof(req.ConfirmDate) - 1);
-	std::strncpy(req.ConfirmTime, cfmtime.data(), sizeof(req.ConfirmTime) - 1);
+	std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID));
+	std::strncpy(req.InvestorID, investorid.data(), sizeof(req.InvestorID));
+	std::strncpy(req.ConfirmDate, cfmdate.data(), sizeof(req.ConfirmDate));
+	std::strncpy(req.ConfirmTime, cfmtime.data(), sizeof(req.ConfirmTime));
 
 	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqSettlementInfoConfirm(&req, serialId);
 	CTPUtility::CheckReturnError(iRet);

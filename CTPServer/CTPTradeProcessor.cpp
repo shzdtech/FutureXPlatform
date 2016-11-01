@@ -17,22 +17,28 @@
 #include <filesystem>
 
 namespace fs = std::experimental::filesystem;
- ////////////////////////////////////////////////////////////////////////
- // Name:       CTPTradeProcessor::CTPTradeProcessor(const std::map<std::string, std::string>& configMap)
- // Purpose:    Implementation of CTPTradeProcessor::CTPTradeProcessor()
- // Parameters:
- // - frontserver
- // Return:     
- ////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+// Name:       CTPTradeProcessor::CTPTradeProcessor(const std::map<std::string, std::string>& configMap)
+// Purpose:    Implementation of CTPTradeProcessor::CTPTradeProcessor()
+// Parameters:
+// - frontserver
+// Return:     
+////////////////////////////////////////////////////////////////////////
 
 CTPTradeProcessor::CTPTradeProcessor()
 	: CTPProcessor()
 {
+	DataLoadMask = NO_DATA_LOADED;
+	/*_exiting = false;
+	_updateFlag.clear();*/
 }
 
 CTPTradeProcessor::CTPTradeProcessor(const CTPRawAPI_Ptr& rawAPI)
 	: CTPProcessor(rawAPI)
 {
+	DataLoadMask = NO_DATA_LOADED;
+	/*_exiting = false;
+	_updateFlag.clear();*/
 }
 
 
@@ -44,6 +50,8 @@ CTPTradeProcessor::CTPTradeProcessor(const CTPRawAPI_Ptr& rawAPI)
 
 CTPTradeProcessor::~CTPTradeProcessor()
 {
+	/*_exiting = true;
+	if (_updateTask.valid()) _updateTask.wait();*/
 	LOG_DEBUG << __FUNCTION__;
 }
 
@@ -61,7 +69,7 @@ int CTPTradeProcessor::InitializeServer(const std::string& flowId, const std::st
 			fs::create_directories(localpath, ec);
 		}
 
-		localpath /= flowId + "_" + std::to_string(std::time(nullptr)) + "_";	
+		localpath /= flowId + "_" + std::to_string(std::time(nullptr)) + "_";
 
 		_rawAPI->TrdAPI = CThostFtdcTraderApi::CreateFtdcTraderApi(localpath.string().data());
 		_rawAPI->TrdAPI->RegisterSpi(this);
@@ -182,7 +190,9 @@ void CTPTradeProcessor::OnRspQryTrade(CThostFtdcTradeField *pTrade, CThostFtdcRs
 ///请求查询投资者持仓响应
 void CTPTradeProcessor::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	OnResponseMacro(MSG_ID_QUERY_POSITION, nRequestID, pInvestorPosition, pRspInfo, &nRequestID, &bIsLast)
+	auto msgId = nRequestID == 0 ? MSG_ID_POSITION_UPDATED : MSG_ID_QUERY_POSITION;
+
+	OnResponseMacro(msgId, nRequestID, pInvestorPosition, pRspInfo, &nRequestID, &bIsLast)
 }
 
 ///请求查询资金账户响应
@@ -273,14 +283,31 @@ void CTPTradeProcessor::OnRtnTrade(CThostFtdcTradeField *pTrade)
 	int nRequestID = 0;
 	OnResponseMacro(MSG_ID_TRADE_RTN, 0, pTrade, nullptr, &nRequestID, &bIsLast);
 
-	//CThostFtdcQryInvestorPositionField req{};
-	//std::strcpy(req.InstrumentID, pTrade->InstrumentID);
+	//_updatePositionSet.emplace(pTrade->InstrumentID);
 
-	//for (int i = 0; i < 5; i++) {
-	//	int iRet = _rawAPI->TrdAPI->ReqQryInvestorPosition(&req, 0);
-	//	if (iRet == 0) // Too many requests, wait for 1s
-	//		break;
-	//	std::this_thread::sleep_for(std::chrono::seconds(1));
+	//// Try update position
+	//if (!_updateFlag.test_and_set())
+	//{
+	//	_updateTask = std::async(std::launch::async, [this]()
+	//	{
+	//		while (!_updatePositionSet.empty())
+	//		{
+	//			std::vector<std::string> updateVec;
+	//			_updatePositionSet.to_vector(updateVec);
+	//			for (auto& instrument : updateVec)
+	//			{
+	//				if (_exiting)
+	//					return;
+
+	//				CThostFtdcQryInvestorPositionField req{};
+	//				std::strncpy(req.InstrumentID, instrument.data(), sizeof(req.InstrumentID));
+	//				int iRet = _rawAPI->TrdAPI->ReqQryInvestorPosition(&req, 0);
+	//				if (iRet == 0) _updatePositionSet.erase(instrument);
+	//				std::this_thread::sleep_for(std::chrono::seconds(1));
+	//			}
+	//		}
+	//		_updateFlag.clear();
+	//	});
 	//}
 }
 
@@ -293,7 +320,7 @@ void CTPTradeProcessor::OnErrRtnOrderInsert(CThostFtdcInputOrderField *pInputOrd
 ///报单操作错误回报
 void CTPTradeProcessor::OnErrRtnOrderAction(CThostFtdcOrderActionField *pOrderAction, CThostFtdcRspInfoField *pRspInfo)
 {
-	if (pOrderAction->ActionFlag == THOST_FTDC_AF_Delete)
+	if (pOrderAction && pOrderAction->ActionFlag == THOST_FTDC_AF_Delete)
 	{
 		OnResponseMacro(MSG_ID_ORDER_CANCEL, pOrderAction->RequestID, pOrderAction, pRspInfo)
 	}
@@ -385,7 +412,7 @@ void CTPTradeProcessor::OnRtnQueryBankBalanceByFuture(CThostFtdcNotifyQueryAccou
 }
 
 ///期货发起银行资金转期货错误回报
-void CTPTradeProcessor::OnErrRtnBankToFutureByFuture(CThostFtdcReqTransferField *pReqTransfer, CThostFtdcRspInfoField *pRspInfo) 
+void CTPTradeProcessor::OnErrRtnBankToFutureByFuture(CThostFtdcReqTransferField *pReqTransfer, CThostFtdcRspInfoField *pRspInfo)
 {
 	OnResponseMacro(MSG_ID_REQ_BANK_TO_FUTURE, pReqTransfer->RequestID, pReqTransfer, pRspInfo);
 }

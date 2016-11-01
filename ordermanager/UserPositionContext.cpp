@@ -58,3 +58,16 @@ UserPositionExDO_Ptr UserPositionContext::GetPosition(const std::string & userID
 
 	return ret;
 }
+
+
+bool UserPositionContext::RemovePosition(const std::string & userID, const std::string & instumentID, PositionDirectionType direction)
+{
+	bool ret = false;
+	cuckoohashmap_wrapper<std::pair<std::string, int>, UserPositionExDO_Ptr, pairhash<std::string, int>> positionMap;
+	if (_userPositionMap.find(userID, positionMap))
+	{
+		ret = positionMap.map()->erase(std::pair<std::string, int>(instumentID, direction));
+	}
+
+	return ret;
+}

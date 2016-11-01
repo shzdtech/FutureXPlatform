@@ -10,6 +10,8 @@
 
 #include "CTPProcessor.h"
 #include "ctpexport.h"
+#include "../utility/lockfree_set.h"
+#include <future>
 
 class CTP_CLASS_EXPORT CTPTradeProcessor : public CTPProcessor, public CThostFtdcTraderSpi
 {
@@ -19,8 +21,26 @@ public:
 	~CTPTradeProcessor();
 	int InitializeServer(const std::string& flowId, const std::string& serverAddr);
 
-protected:
+	enum DataLoadType
+	{
+		NO_DATA_LOADED = 0,
+		ORDER_DATA_LOADED = 0x1,
+		TRADE_DATA_LOADED = 0x2,
+		POSITION_DATA_LOADED = 0x4,
+		ACCOUNT_DATA_LOADED = 0x8,
+		EXCHANGE_DATA_LOADED = 0x10,
+		INSTRUMENT_DATA_LOADED = 0x20,
+		ALL_DATA_LOADED = 0xFFFFFFFF,
+	};
 
+	volatile int DataLoadMask;
+
+protected:
+	/*lockfree_set<std::string> _updatePositionSet;
+	std::future<void> _updateTask;
+	std::atomic_flag _updateFlag;
+	volatile bool _exiting;*/
+	
 private:
 
 

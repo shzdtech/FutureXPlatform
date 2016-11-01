@@ -50,13 +50,16 @@ IConfigReader_Ptr AbstractConfigReaderFactory::OpenConfigReader(const char* conf
 	IConfigReader_Ptr ret;
 	std::string configFile(configPath);
 	auto idx = configFile.rfind('.');
+	bool loaded = false;
+
 	if (idx != std::string::npos)
 	{
 		std::string type = configFile.substr(idx + 1);
-		ret = CreateConfigReader(type.data());
-		ret->LoadFromFile(configFile.data());
+		if(ret = CreateConfigReader(type.data()))
+			loaded = ret->LoadFromFile(configFile.data());
 	}
-	else
+
+	if (!loaded)
 	{
 		auto& types = SupportConfigFormats();
 		for (auto& type : types)

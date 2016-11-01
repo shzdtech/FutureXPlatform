@@ -30,12 +30,12 @@ dataobj_ptr TestingCreateOrderHandler::HandleRequest(const uint32_t serialId, co
 			{
 				std::this_thread::sleep_for(std::chrono::seconds(3));
 
-				orderptr->OrderStatus = OrderStatus::PARTIAL_TRADED;
+				orderptr->OrderStatus = OrderStatusType::PARTIAL_TRADED;
 				orderptr->VolumeRemain--;
 				orderptr->VolumeTraded = orderptr->Volume - orderptr->VolumeRemain;
 
 				if (orderptr->VolumeRemain < 1)
-					orderptr->OrderStatus = OrderStatus::ALL_TRADED;
+					orderptr->OrderStatus = OrderStatusType::ALL_TRADED;
 
 
 				pProc->SendDataObject(sessionptr.get(), MSG_ID_ORDER_UPDATE, serialId, orderptr);

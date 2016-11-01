@@ -49,9 +49,9 @@ dataobj_ptr CTPLoginHandler::HandleRequest(const uint32_t serialId, const dataob
 
 		CThostFtdcReqUserLoginField req{};
 
-		std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID) - 1);
-		std::strncpy(req.UserID, userid.data(), sizeof(req.UserID) - 1);
-		std::strncpy(req.Password, password.data(), sizeof(req.Password) - 1);
+		std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID));
+		std::strncpy(req.UserID, userid.data(), sizeof(req.UserID));
+		std::strncpy(req.Password, password.data(), sizeof(req.Password));
 		// std::strcpy(req.UserProductInfo, UUID_MICROFUTURE_CTP);
 
 		pProcessor->LoginSerialId = serialId;

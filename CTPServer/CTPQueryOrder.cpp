@@ -47,34 +47,26 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 		auto& tmend = stdo->TryFind(STR_TIME_END, EMPTY_STRING);
 
 		auto& userOrderCtx = pWorkerProc->GetUserOrderContext();
-		// auto& userErrOrderCtx = pWorkerProc->GetUserErrOrderContext();
-
 		auto vectorPtr = userOrderCtx.GetOrdersByUser(session->getUserInfo()->getUserId());
-		// auto vectorErrPtr = userErrOrderCtx.GetOrdersByUser(session->getUserInfo()->getUserId());
-		if (vectorPtr->empty())
+
+		auto pTradeProcessor = (CTPTradeProcessor*)session->getProcessor().get();
+		if (!(pTradeProcessor->DataLoadMask & CTPTradeProcessor::ORDER_DATA_LOADED))
 		{
 			CThostFtdcQryOrderField req{};
-			std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID) - 1);
-			std::strncpy(req.InvestorID, investorid.data(), sizeof(req.InvestorID) - 1);
-			std::strncpy(req.InstrumentID, instrumentid.data(), sizeof(req.InstrumentID) - 1);
-			std::strncpy(req.ExchangeID, exchangeid.data(), sizeof(req.ExchangeID) - 1);
-			std::strncpy(req.OrderSysID, orderid.data(), sizeof(req.OrderSysID) - 1);
-			std::strncpy(req.InsertTimeStart, tmstart.data(), sizeof(req.InsertTimeStart) - 1);
-			std::strncpy(req.InsertTimeEnd, tmend.data(), sizeof(req.InsertTimeEnd) - 1);
+			std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID));
+			std::strncpy(req.InvestorID, investorid.data(), sizeof(req.InvestorID));
 			int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryOrder(&req, serialId);
-			// CTPUtility::CheckReturnError(iRet);
+			CTPUtility::CheckReturnError(iRet);
+
 			std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
 			vectorPtr = userOrderCtx.GetOrdersByUser(session->getUserInfo()->getUserId());
-			// vectorErrPtr = userErrOrderCtx.GetOrdersByUser(session->getUserInfo()->getUserId());
+			pTradeProcessor->DataLoadMask |= CTPTradeProcessor::ORDER_DATA_LOADED;
 		}
 
 		ThrowNotFoundExceptionIfEmpty(vectorPtr);
 
 		if (orderid != EMPTY_STRING)
 		{
-			/*if (!orderptr)
-				orderptr = userErrOrderCtx.FindOrder(std::strtoull(orderid.data(), nullptr, 0));*/
-
 			if (auto orderptr = userOrderCtx.FindOrder(std::strtoull(orderid.data(), nullptr, 0)))
 			{
 				auto rspOrderPtr = std::make_shared<OrderDO>(*orderptr);
@@ -86,7 +78,6 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 		}
 		else
 		{
-			// bool hasMore = !vectorErrPtr->empty();
 			auto lastidx = vectorPtr->size() - 1;
 			for (int i = 0; i <= lastidx; i++)
 			{
@@ -94,17 +85,6 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 				rspOrderPtr->HasMore = i < lastidx;
 				pWorkerProc->SendDataObject(session, MSG_ID_QUERY_ORDER, serialId, rspOrderPtr);
 			}
-
-			/*if (hasMore)
-			{
-				lastit = std::prev(vectorErrPtr->end());
-				for (auto it = vectorErrPtr->begin(); it != vectorErrPtr->end(); it++)
-				{
-					auto rspOrderPtr = std::make_shared<OrderDO>(**it);
-					rspOrderPtr->HasMore = it != lastit;
-					pWorkerProc->SendDataObject(session, MSG_ID_QUERY_ORDER, serialId, rspOrderPtr);
-				}
-			}*/
 		}
 	}
 
@@ -133,16 +113,13 @@ dataobj_ptr CTPQueryOrder::HandleResponse(const uint32_t serialId, const param_v
 			if (auto orderid = CTPUtility::ToUInt64(pData->OrderSysID))
 			{
 				ret = pWorkerProc->GetUserOrderContext().FindOrder(orderid);
-				if (ret = CTPUtility::ParseRawOrder(pData, ret))
+				if (!ret)
+				{
+					ret = CTPUtility::ParseRawOrder(pData);
 					pWorkerProc->GetUserOrderContext().UpsertOrder(orderid, ret);
-
-				ret.reset();
+					ret.reset();
+				}
 			}
-			/*else
-			{
-			if (!ret->Active)
-			pWorkerProc->GetUserErrOrderContext().UpsertOrder(CTPUtility::ToUInt64(ret->OrderID, ret->SessionID), ret);
-			}*/
 		}
 		else
 		{

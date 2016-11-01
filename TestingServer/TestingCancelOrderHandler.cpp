@@ -7,12 +7,12 @@ dataobj_ptr TestingCancelOrderHandler::HandleRequest(const uint32_t serialId, co
 
 	if(std::rand() % 2)
 	{
-		orderDO_ptr->OrderStatus = OrderStatus::CANCELED;
+		orderDO_ptr->OrderStatus = OrderStatusType::CANCELED;
 		orderDO_ptr->Message = "Successfully cancel order";
 	}
 	else
 	{
-		orderDO_ptr->OrderStatus = OrderStatus::CANCEL_REJECTED;
+		orderDO_ptr->OrderStatus = OrderStatusType::CANCEL_REJECTED;
 		orderDO_ptr->Message = "Reject 'Cancel' by testing";
 	}
 

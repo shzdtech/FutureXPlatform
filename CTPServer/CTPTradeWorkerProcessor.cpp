@@ -29,7 +29,6 @@ CTPTradeWorkerProcessor::CTPTradeWorkerProcessor(IServerContext* pServerCtx)
 	: _userSessionCtn_Ptr(SessionContainer<std::string>::NewInstancePtr())
 {
 	_serverCtx = pServerCtx;
-	DataLoaded = false;
 
 	std::string brokerid;
 	if (!_serverCtx->getConfigVal(CTP_TRADER_BROKERID, brokerid))
@@ -62,7 +61,7 @@ CTPTradeWorkerProcessor::CTPTradeWorkerProcessor(IServerContext* pServerCtx)
 
 CTPTradeWorkerProcessor::~CTPTradeWorkerProcessor()
 {
-	DataLoaded = true;
+	DataLoadMask = ALL_DATA_LOADED;
 	_initializer.join();
 	LOG_DEBUG << __FUNCTION__;
 }
@@ -83,7 +82,7 @@ void CTPTradeWorkerProcessor::Initialize(IServerContext* pServerCtx)
 		std::vector<std::string> productVec;
 		stringutility::split(productTypes, productVec);
 
-		for(auto& strProductType : productVec)
+		for (auto& strProductType : productVec)
 			_productTypes.emplace((ProductType)std::stoi(strProductType));
 	}
 	else
@@ -95,16 +94,14 @@ void CTPTradeWorkerProcessor::Initialize(IServerContext* pServerCtx)
 	LoadDataAsync();
 }
 
-int CTPTradeWorkerProcessor::RequestExchangeData(void)
+int CTPTradeWorkerProcessor::RequestData(void)
 {
 	int ret = -1;
 
 	if (HasLogged())
 	{
-		// LOG_INFO << _serverCtx->getServerUri() << ": Try loading data...";
+		LOG_INFO << _serverCtx->getServerUri() << ": Try preloading data...";
 		auto trdAPI = _rawAPI->TrdAPI;
-
-		auto delay = std::chrono::seconds(3);
 
 		/*std::this_thread::sleep_for(delay);
 		CThostFtdcQryTradingAccountField reqaccount{};
@@ -114,21 +111,45 @@ int CTPTradeWorkerProcessor::RequestExchangeData(void)
 		CThostFtdcQryInvestorPositionField reqposition{};
 		ret = trdAPI->ReqQryInvestorPosition(&reqposition, 0);*/
 
-		std::this_thread::sleep_for(delay);
-		CThostFtdcQryExchangeField reqexchange{};
-		ret = trdAPI->ReqQryExchange(&reqexchange, 0);
+		if (!(DataLoadMask & EXCHANGE_DATA_LOADED))
+		{
+			std::this_thread::sleep_for(DefaultQueryTime);
+			CThostFtdcQryExchangeField reqexchange{};
+			ret = trdAPI->ReqQryExchange(&reqexchange, 0);
+			if (ret == 0)
+				DataLoadMask |= EXCHANGE_DATA_LOADED;
+			else
+				return ret;
+		}
 
-		std::this_thread::sleep_for(delay);
-		CThostFtdcQryOrderField reqorder{};
-		ret = trdAPI->ReqQryOrder(&reqorder, 0);
+		if (!(DataLoadMask & ORDER_DATA_LOADED))
+		{
+			std::this_thread::sleep_for(DefaultQueryTime);
+			CThostFtdcQryOrderField reqorder{};
+			ret = trdAPI->ReqQryOrder(&reqorder, 0);
+			if (ret == 0) 
+				DataLoadMask |= ORDER_DATA_LOADED;
+			else
+				return ret;
+		}
 
-		std::this_thread::sleep_for(delay);
-		CThostFtdcQryTradeField reqtrd{};
-		ret = trdAPI->ReqQryTrade(&reqtrd, 0);
+		if (!(DataLoadMask & TRADE_DATA_LOADED))
+		{
+			std::this_thread::sleep_for(DefaultQueryTime);
+			CThostFtdcQryTradeField reqtrd{};
+			ret = trdAPI->ReqQryTrade(&reqtrd, 0);
+			if (ret == 0)
+				DataLoadMask |= TRADE_DATA_LOADED;
+			else
+				return ret;
+		}
 
-		std::this_thread::sleep_for(delay);
-		CThostFtdcQryInstrumentField reqinstr{};
-		ret = trdAPI->ReqQryInstrument(&reqinstr, 0);
+		if (!(DataLoadMask & INSTRUMENT_DATA_LOADED))
+		{
+			std::this_thread::sleep_for(DefaultQueryTime);
+			CThostFtdcQryInstrumentField reqinstr{};
+			ret = trdAPI->ReqQryInstrument(&reqinstr, 0);
+		}
 	}
 
 	return ret;
@@ -137,9 +158,9 @@ int CTPTradeWorkerProcessor::RequestExchangeData(void)
 int CTPTradeWorkerProcessor::LoginSystemUser(void)
 {
 	CThostFtdcReqUserLoginField req{};
-	std::strncpy(req.BrokerID, _systemUser.getBrokerId().data(), sizeof(req.BrokerID) - 1);
-	std::strncpy(req.UserID, _systemUser.getUserId().data(), sizeof(req.UserID) - 1);
-	std::strncpy(req.Password, _systemUser.getPassword().data(), sizeof(req.Password) - 1);
+	std::strncpy(req.BrokerID, _systemUser.getBrokerId().data(), sizeof(req.BrokerID));
+	std::strncpy(req.UserID, _systemUser.getUserId().data(), sizeof(req.UserID));
+	std::strncpy(req.Password, _systemUser.getPassword().data(), sizeof(req.Password));
 	return _rawAPI->TrdAPI->ReqUserLogin(&req, AppContext::GenNextSeq());
 }
 
@@ -155,26 +176,26 @@ int CTPTradeWorkerProcessor::LoginSystemUserIfNeed(void)
 
 int CTPTradeWorkerProcessor::LoadDataAsync(void)
 {
-	if (!DataLoaded)
+	if (!(DataLoadMask & INSTRUMENT_DATA_LOADED))
 	{
 		auto trdAPI = _rawAPI->TrdAPI;
 		_initializer = std::move(std::thread([trdAPI, this]() {
 			auto millsec = std::chrono::milliseconds(500);
-			while (!DataLoaded)
+			while (!(DataLoadMask & INSTRUMENT_DATA_LOADED))
 			{
 				if (!HasLogged())
 				{
 					if (!CTPUtility::HasReturnError(LoginSystemUser()))
 					{
 						std::this_thread::sleep_for(std::chrono::seconds(3)); //wait 3 secs for login CTP server
-						if (!DataLoaded)
+						if (!(DataLoadMask & INSTRUMENT_DATA_LOADED))
 						{
-							RequestExchangeData();
+							RequestData();
 						}
 					}
 				}
 
-				for (int cum_ms = 0; cum_ms < RetryInterval && !DataLoaded; cum_ms += millsec.count())
+				for (int cum_ms = 0; cum_ms < RetryInterval && !(DataLoadMask & INSTRUMENT_DATA_LOADED); cum_ms += millsec.count())
 				{
 					std::this_thread::sleep_for(millsec);
 				}
@@ -194,8 +215,8 @@ void CTPTradeWorkerProcessor::OnDataLoaded(void)
 		stringutility::compare(logout_dataloaded.data(), "true") == 0)
 	{
 		CThostFtdcUserLogoutField logout{};
-		std::strncpy(logout.BrokerID, _systemUser.getBrokerId().data(), sizeof(logout.BrokerID) - 1);
-		std::strncpy(logout.UserID, _systemUser.getUserId().data(), sizeof(logout.UserID) - 1);
+		std::strncpy(logout.BrokerID, _systemUser.getBrokerId().data(), sizeof(logout.BrokerID));
+		std::strncpy(logout.UserID, _systemUser.getUserId().data(), sizeof(logout.UserID));
 		_rawAPI->TrdAPI->ReqUserLogout(&logout, 0);
 		_isLogged = false;
 
@@ -226,8 +247,8 @@ void CTPTradeWorkerProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUs
 		}
 
 		CThostFtdcSettlementInfoConfirmField reqsettle{};
-		std::strncpy(reqsettle.BrokerID, _systemUser.getBrokerId().data(), sizeof(reqsettle.BrokerID) - 1);
-		std::strncpy(reqsettle.InvestorID, _systemUser.getInvestorId().data(), sizeof(reqsettle.InvestorID) - 1);
+		std::strncpy(reqsettle.BrokerID, _systemUser.getBrokerId().data(), sizeof(reqsettle.BrokerID));
+		std::strncpy(reqsettle.InvestorID, _systemUser.getInvestorId().data(), sizeof(reqsettle.InvestorID));
 		_rawAPI->TrdAPI->ReqSettlementInfoConfirm(&reqsettle, 0);
 
 		_isLogged = true;
@@ -241,15 +262,13 @@ void CTPTradeWorkerProcessor::OnRspQryInstrument(CThostFtdcInstrumentField * pIn
 {
 	try
 	{
-		if (!DataLoaded)
-		{
-			if (DataLoaded = bIsLast)
-			{
-				OnDataLoaded();
-			}
-		}
-
 		ProcessResponseMacro(this, MSG_ID_QUERY_INSTRUMENT, nRequestID, pInstrument, pRspInfo, &nRequestID, &bIsLast);
+
+		if (bIsLast)
+		{
+			DataLoadMask |= INSTRUMENT_DATA_LOADED;
+			OnDataLoaded();
+		}
 	}
 	catch (...) {}
 }
@@ -325,7 +344,12 @@ void CTPTradeWorkerProcessor::OnRtnOrder(CThostFtdcOrderField *pOrder)
 			_userOrderCtx.UpsertOrder(orderid, orderptr);
 			orderptr->HasMore = false;
 		}
-		DispatchUserMessage(CTPUtility::ParseMessageID(orderptr->OrderStatus), pOrder->RequestID, orderptr->UserID(), orderptr);
+		if (auto msgId = CTPUtility::ParseOrderMessageID(orderptr->OrderStatus))
+		{
+			auto sid = msgId == MSG_ID_ORDER_CANCEL ? orderptr->OrderSysID : pOrder->RequestID;
+			DispatchUserMessage(msgId, sid, orderptr->UserID(), orderptr);
+		}
+		DispatchUserMessage(MSG_ID_ORDER_UPDATE, pOrder->RequestID, orderptr->UserID(), orderptr);
 	}
 }
 

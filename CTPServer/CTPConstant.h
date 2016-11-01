@@ -21,8 +21,8 @@ static const std::string CTP_TRADER_PASSWORD = "CTP.TRADER.LOGIN.PASSWORD";
 static const std::string CTP_TRADER_SERVER = "CTP.TRADER.SERVER";
 
 static const char* UUID_MICROFUTURE_CTP = "M.F.0.1";
-static const char* FMT_PADDING_ORDERREF = "%llu";
-static const char* FMT_PADDING_ORDERSYSID = "%12llu";
+static const char* FMT_ORDERREF = "%u";
+static const char* FMT_ORDERSYSID = "%12llu";
 
 #endif	/* __CTP_CONSTANT_H */
 

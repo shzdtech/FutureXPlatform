@@ -42,18 +42,18 @@ dataobj_ptr CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_pt
 	CThostFtdcInputOrderField req{};
 
 	//经纪公司代码
-	std::strncpy(req.BrokerID, userinfo->getBrokerId().data(), sizeof(req.BrokerID) - 1);
+	std::strncpy(req.BrokerID, userinfo->getBrokerId().data(), sizeof(req.BrokerID));
 	//投资者代码
-	std::strncpy(req.InvestorID, userinfo->getInvestorId().data(), sizeof(req.InvestorID) - 1);
+	std::strncpy(req.InvestorID, userinfo->getInvestorId().data(), sizeof(req.InvestorID));
 	// 合约代码
-	std::strncpy(req.InstrumentID, pDO->InstrumentID().data(), sizeof(req.InstrumentID) - 1);
+	std::strncpy(req.InstrumentID, pDO->InstrumentID().data(), sizeof(req.InstrumentID));
 	///报单引用
 	pDO->OrderID = OrderSeqGen::GenOrderID();
 
-	std::sprintf(req.OrderRef, FMT_PADDING_ORDERREF, pDO->OrderID);
+	std::snprintf(req.OrderRef, sizeof(req.OrderRef), FMT_ORDERREF, pDO->OrderID);
 	// 用户代码
 	pDO->SetUserID(userinfo->getUserId());
-	std::strncpy(req.UserID, pDO->UserID().data(), sizeof(req.UserID) - 1);
+	std::strncpy(req.UserID, pDO->UserID().data(), sizeof(req.UserID));
 	// 报单价格条件
 	auto it = CTPExecPriceMapping.find((OrderExecType)pDO->ExecType);
 	req.OrderPriceType = it != CTPExecPriceMapping.end() ? it->second : THOST_FTDC_OPT_LimitPrice;

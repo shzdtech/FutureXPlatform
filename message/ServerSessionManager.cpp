@@ -51,7 +51,7 @@ void ServerSessionManager::AssembleSession(const IMessageSession_Ptr& msgSession
 	msgSessionPtr->RegistProcessor(msgProcessor);
 	if (msgSessionPtr->Start())
 	{
-		_sessionMap.insert(msgSessionPtr.get(), msgSessionPtr);
+		_sessionSet.emplace(msgSessionPtr);
 		msgSessionPtr->WriteMessage(MSG_ID_SESSION_CREATED, ZERO_RETURN);
 	}
 }
@@ -66,15 +66,8 @@ void ServerSessionManager::AssembleSession(const IMessageSession_Ptr& msgSession
 
 void ServerSessionManager::OnServerClosing(void)
 {
-	std::vector<IMessageSession_Ptr> sessionvector;
-	{
-		auto lt = _sessionMap.lock_table();
-		for (auto& pair : lt)
-		{
-			sessionvector.push_back(pair.second);
-		}
-	}
-	for (auto& sessionPtr : sessionvector)
+	IMessageSession_Ptr sessionPtr;
+	while (_sessionSet.pop(sessionPtr))
 	{
 		try
 		{
@@ -82,6 +75,7 @@ void ServerSessionManager::OnServerClosing(void)
 		}
 		catch (...) {}
 	}
+
 	_server->getContext()->Reset();
 }
 
@@ -102,6 +96,6 @@ void ServerSessionManager::OnServerStarting(void)
 		msgSession_Ptr->RegistProcessor(workProcPtr);
 		workProcPtr->setSession(msgSession_Ptr);
 
-		_sessionMap.insert(msgSession_Ptr.get(), msgSession_Ptr);
+		_sessionSet.emplace(msgSession_Ptr);
 	}
 }

@@ -46,7 +46,7 @@ OrderDO_Ptr OTCOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 		if (reject)
 		{
 			ret = std::make_shared<OrderDO>(orderInfo);
-			ret->OrderStatus = OrderStatus::OPEN_REJECTED;
+			ret->OrderStatus = OrderStatusType::OPEN_REJECTED;
 		}
 		else
 		{
@@ -56,7 +56,7 @@ OrderDO_Ptr OTCOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 			{
 				if (ret = OTCOrderDAO::CreateOrder(orderInfo, *pricingDO_ptr))
 				{
-					if (ret->OrderStatus == OrderStatus::OPENED)
+					if (ret->OrderStatus == OrderStatusType::OPENED)
 					{
 						_userOrderCtx.UpsertOrder(ret->OrderID, *ret);
 					}
@@ -112,7 +112,7 @@ OrderDOVec_Ptr OTCOrderManager::UpdateOrderByStrategy(const StrategyContractDO& 
 
 				if (accept)
 				{
-					OrderStatus currStatus;
+					OrderStatusType currStatus;
 					if (OTCOrderDAO::AcceptOrder(orderDO, currStatus))
 					{
 						orderDO.OrderStatus = currStatus;
@@ -164,10 +164,10 @@ OrderDO_Ptr OTCOrderManager::CancelOrder(OrderRequestDO& orderInfo)
 {
 	if (!orderInfo.IsOTC()) orderInfo.ConvertToOTC();
 
-	OrderStatus currStatus;
+	OrderStatusType currStatus;
 	OTCOrderDAO::CancelOrder(orderInfo, currStatus);
 	OrderDO_Ptr ret = _userOrderCtx.RemoveOrder(orderInfo.OrderID);
-	if (ret) ret->OrderStatus = OrderStatus::CANCELED;
+	if (ret) ret->OrderStatus = OrderStatusType::CANCELED;
 
 	return ret;
 }
@@ -182,10 +182,10 @@ OrderDO_Ptr OTCOrderManager::CancelOrder(OrderRequestDO& orderInfo)
 
 OrderDO_Ptr OTCOrderManager::RejectOrder(OrderRequestDO& orderInfo)
 {
-	OrderStatus currStatus;
+	OrderStatusType currStatus;
 	OTCOrderDAO::RejectOrder(orderInfo, currStatus);
 	OrderDO_Ptr ret = _userOrderCtx.RemoveOrder(orderInfo.OrderID);
-	if (ret)	ret->OrderStatus = OrderStatus::REJECTED;
+	if (ret)	ret->OrderStatus = OrderStatusType::REJECTED;
 
 	return ret;
 }

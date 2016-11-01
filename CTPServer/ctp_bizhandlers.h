@@ -21,6 +21,7 @@
 #include "CTPOrderUpdated.h"
 #include "CTPTradeUpdated.h"
 #include "CTPAccountLogin.h"
+#include "CTPPositionUpdated.h"
 
 //Transfer
 #include "CTPFromBankToFuture.h"

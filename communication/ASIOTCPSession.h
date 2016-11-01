@@ -50,7 +50,7 @@ protected:
 	std::atomic_flag _sendingFlag;
 
 private:
-	void SendQueueAsync(void);
+	void asyn_send_queue();
 	static void asyn_read_header(const ASIOTCPSession_Ptr& this_ptr);
 	static void asyn_read_body(const ASIOTCPSession_Ptr& this_ptr, uint msgSize);
 	static void asyn_timeout(const ASIOTCPSession_WkPtr& this_wk_ptr);
