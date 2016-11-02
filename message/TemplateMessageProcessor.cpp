@@ -21,13 +21,13 @@ dataobj_ptr TemplateMessageProcessor::ProcessRequest(const uint32_t msgId, const
 		{
 			if (auto msgHandler = _svc_locator_ptr->FindMessageHandler(msgId))
 			{
-				if (auto pMsgSession = LockMessageSession().get())
+				if (auto session_ptr = LockMessageSession())
 				{
-					if (auto dataobj_ptr = msgHandler->HandleRequest(serialId, reqDO, getRawAPI(), pMsgSession))
+					if (auto dataobj_ptr = msgHandler->HandleRequest(serialId, reqDO, getRawAPI(), session_ptr.get()))
 					{
 						if (sendRsp)
 						{
-							SendDataObject(pMsgSession, msgId, serialId, dataobj_ptr);
+							SendDataObject(session_ptr.get(), msgId, serialId, dataobj_ptr);
 						}
 						return dataobj_ptr;
 					}
@@ -55,13 +55,13 @@ dataobj_ptr TemplateMessageProcessor::ProcessResponse(const uint32_t msgId, cons
 		{
 			if (auto msgHandler = _svc_locator_ptr->FindMessageHandler(msgId))
 			{
-				if (auto pMsgSession = LockMessageSession().get())
+				if (auto session_ptr = LockMessageSession())
 				{
-					if (auto dataobj_ptr = msgHandler->HandleResponse(serialId, rawRespParams, getRawAPI(), pMsgSession))
+					if (auto dataobj_ptr = msgHandler->HandleResponse(serialId, rawRespParams, getRawAPI(), session_ptr.get()))
 					{
 						if (sendRsp)
 						{
-							SendDataObject(pMsgSession, msgId, serialId, dataobj_ptr);
+							SendDataObject(session_ptr.get(), msgId, serialId, dataobj_ptr);
 						}
 						return dataobj_ptr;
 					}

@@ -192,9 +192,7 @@ void ASIOTCPServer::asyc_accept(void) {
 		{
 			LOG_DEBUG << "Creating session: " << _socket.remote_endpoint().address().to_string()
 				<< ':' << std::to_string(_socket.remote_endpoint().port());
-			auto newsessionptr = ((ASIOSessionManager*)_manager_ptr.get())->CreateSession(std::move(_socket));
-			newsessionptr->setMaxMessageSize(_max_msg_size);
-			newsessionptr->setTimeout(_sessiontimeout);
+			((ASIOSessionManager*)_manager_ptr.get())->CreateSession(std::move(_socket), _max_msg_size, _sessiontimeout);
 			asyc_accept();
 		}
 	});

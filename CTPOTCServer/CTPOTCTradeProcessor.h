@@ -34,7 +34,7 @@ public:
 
 	virtual OTCOrderManager* GetOTCOrderManager(void);
 	virtual AutoOrderManager* GetAutoOrderManager(void);
-	virtual void RegisterLoggedSession(IMessageSession * pMessageSession);
+	virtual void RegisterLoggedSession(const IMessageSession_Ptr& sessionPtr);
 
 protected:
 	OTCOrderManager _otcOrderMgr;

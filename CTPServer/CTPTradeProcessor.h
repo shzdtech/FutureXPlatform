@@ -36,10 +36,10 @@ public:
 	volatile int DataLoadMask;
 
 protected:
-	/*lockfree_set<std::string> _updatePositionSet;
+	// lockfree_set<std::string> _updatePositionSet;
 	std::future<void> _updateTask;
 	std::atomic_flag _updateFlag;
-	volatile bool _exiting;*/
+	volatile bool _exiting;
 	
 private:
 

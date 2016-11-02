@@ -2,7 +2,7 @@
 #define __message_macro_h
 
 #include "../common/typedefs.h"
-#include "../message/IProcessorBase.h"
+#include "../message/IMessageProcessor.h"
 
 #define OnResponseMacro(MSG_ID, SERIAL_ID, ...){\
 	OnResponse(MSG_ID, SERIAL_ID, param_vector{__VA_ARGS__}); \

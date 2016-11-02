@@ -49,7 +49,7 @@ dataobj_ptr OTCQueryStrategy::HandleRequest(const uint32_t serialId, const datao
 				for (auto& strategyKey : *strategyVec_Ptr)
 				{
 					auto& strategy = pStrategyMap->at(strategyKey);
-					pWorkerProc->RegisterTradingDeskListener(strategy, session->getProcessor()->LockMessageSession().get());
+					pWorkerProc->RegisterTradingDeskListener(strategy, session->getProcessor()->LockMessageSession());
 					pWorkerProc->SubscribeStrategy(strategy);
 					sDOVec_Ptr->push_back(strategy);
 				}

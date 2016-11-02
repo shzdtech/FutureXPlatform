@@ -77,7 +77,7 @@ void ServerContext::setWorkerProcessor(const IMessageProcessor_Ptr& proc_ptr)
 		_pSubWorkProc = proc_ptr.get();
 }
 
-IMessageProcessor_Ptr ServerContext::getWorkerProcessor(void)
+IMessageProcessor_Ptr& ServerContext::getWorkerProcessor(void)
 {
 	return _workerProcessor_Ptr;
 }

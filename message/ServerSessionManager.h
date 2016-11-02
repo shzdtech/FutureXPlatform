@@ -22,8 +22,9 @@ public:
 	void OnServerStarting(void);
 	void OnServerClosing(void);
 
-protected:
 	void AssembleSession(const IMessageSession_Ptr& msgSessionPtr);
+
+protected:
 	IMessageServiceLocator_Ptr _msgsvclocator;
 
 private:

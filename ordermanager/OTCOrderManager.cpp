@@ -32,7 +32,7 @@ OrderDO_Ptr OTCOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 	if (auto pStrategy = pStrategyMap->tryfind(orderInfo))
 	{
 		bool reject = false;
-		if (orderInfo.Direction == DirectionType::BUY)
+		if (orderInfo.Direction != DirectionType::SELL)
 		{
 			if (!pStrategy->BidEnabled)
 				reject = true;
@@ -91,7 +91,7 @@ OrderDOVec_Ptr OTCOrderManager::UpdateOrderByStrategy(const StrategyContractDO& 
 			{
 				auto& orderDO = *it.second;
 				bool accept = false;
-				if (orderDO.Direction == DirectionType::BUY)
+				if (orderDO.Direction != DirectionType::SELL)
 				{
 					if (strategyDO.BidEnabled)
 					{
@@ -119,10 +119,7 @@ OrderDOVec_Ptr OTCOrderManager::UpdateOrderByStrategy(const StrategyContractDO& 
 						orderDO.VolumeTraded = orderDO.Volume;
 						orderDO.VolumeRemain = 0;
 						ret->push_back(orderDO);
-						_positionCtx.UpdatePosition(strategyDO,
-							(DirectionType)orderDO.Direction,
-							(OrderOpenCloseType)orderDO.OpenClose,
-							orderDO.Volume);
+						_positionCtx.UpdatePosition(strategyDO, orderDO.Direction, orderDO.OpenClose, orderDO.Volume);
 						_userOrderCtx.RemoveOrder(orderDO.OrderID);
 					}
 				}

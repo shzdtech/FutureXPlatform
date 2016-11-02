@@ -24,7 +24,7 @@ public:
 	int getServerType(void);
 	void setServerType(int type);
 	void setWorkerProcessor(const IMessageProcessor_Ptr& proc_ptr);
-	IMessageProcessor_Ptr getWorkerProcessor(void);
+	IMessageProcessor_Ptr& getWorkerProcessor(void);
 	void setSubTypeWorkerPtr(void* pProcess);
 	void* getSubTypeWorkerPtr(void);
 	const std::string& getServerUri(void);

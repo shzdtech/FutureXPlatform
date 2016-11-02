@@ -121,9 +121,9 @@ int CTPOTCWorkerProcessor::SubscribeMarketData(const ContractKey& contractId)
 	return _rawAPI->MdAPI->SubscribeMarketData(contract, 1);
 }
 
-void CTPOTCWorkerProcessor::RegisterLoggedSession(IMessageSession * pMessageSession)
+void CTPOTCWorkerProcessor::RegisterLoggedSession(const IMessageSession_Ptr& sessionPtr)
 {
-	((CTPOTCTradeProcessor*)GetOTCTradeProcessor())->RegisterLoggedSession(pMessageSession);
+	((CTPOTCTradeProcessor*)GetOTCTradeProcessor())->RegisterLoggedSession(sessionPtr);
 }
 
 ProductType CTPOTCWorkerProcessor::GetContractProductType() const

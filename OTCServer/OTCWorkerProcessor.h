@@ -40,14 +40,14 @@ public:
 	virtual void TriggerOTCUpdating(const StrategyContractDO& strategyDO);
 
 	virtual void RegisterPricingListener(const ContractKey& contractId,
-		IMessageSession* pMsgSession);
+		const IMessageSession_Ptr& sessionPtr);
 	virtual void UnregisterPricingListener(const ContractKey& contractId,
-		IMessageSession* pMsgSession);
+		const IMessageSession_Ptr& sessionPtr);
 
 	virtual void RegisterTradingDeskListener(const ContractKey& contractId,
-		IMessageSession* pMsgSession);
+		const IMessageSession_Ptr& sessionPtr);
 	virtual void UnregisterTradingDeskListener(const ContractKey& contractId,
-		IMessageSession* pMsgSession);
+		const IMessageSession_Ptr& sessionPtr);
 
 	virtual InstrumentCache& GetInstrumentCache();
 

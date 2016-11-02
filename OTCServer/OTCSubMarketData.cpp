@@ -82,10 +82,10 @@ dataobj_ptr OTCSubMarketData::HandleRequest(const uint32_t serialId, const datao
 				}
 			}
 
-			auto pSession = session->getProcessor()->LockMessageSession().get();
+			auto sessionPtr = session->getProcessor()->LockMessageSession();
 			for (auto& pDO : *ret)
 			{
-				pWorkerProc->RegisterPricingListener(pDO, pSession);
+				pWorkerProc->RegisterPricingListener(pDO, sessionPtr);
 
 				UserContractParamDO ucp(pDO.ExchangeID(), pDO.InstrumentID());
 				userContractMap_Ptr->emplace(ucp, std::move(ucp));

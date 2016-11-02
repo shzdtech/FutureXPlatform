@@ -12,7 +12,6 @@
 #include "../dataobject/data_buffer.h"
 #include "ASIOTCPConsts.h"
 #include <boost/asio.hpp>
-#include <mutex>
 #include <array>
 #include <atomic>
 // #include <boost/lockfree/queue.hpp>
@@ -29,7 +28,7 @@ typedef std::weak_ptr<ASIOTCPSession> ASIOTCPSession_WkPtr;
 class ASIOTCPSession : public MessageSession
 {
 public:
-	ASIOTCPSession(tcp::socket&& socket);
+	ASIOTCPSession(const ISessionManager_Ptr& sessionMgr_Ptr, tcp::socket&& socket);
 	~ASIOTCPSession();
 	void setMaxMessageSize(uint maxMsgSize);
 	virtual int WriteMessage(const uint msgId, const data_buffer& msg);
@@ -41,11 +40,11 @@ protected:
 	tcp::socket _socket;
 	deadline_timer _heartbeat_timer;
 	byte _header[HEADER_SIZE];
-	bool _alive;
-	bool _started;
-	bool _closed;
+	volatile bool _alive;
+	volatile bool _started;
+	volatile bool _closed;
 	uint _max_msg_size;
-	std::mutex _clsmutex;
+	std::atomic_flag _clsclock;
 	lockfree_queue<data_buffer> _databufferQueue;
 	std::atomic_flag _sendingFlag;
 

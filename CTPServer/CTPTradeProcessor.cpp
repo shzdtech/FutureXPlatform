@@ -29,16 +29,16 @@ CTPTradeProcessor::CTPTradeProcessor()
 	: CTPProcessor()
 {
 	DataLoadMask = NO_DATA_LOADED;
-	/*_exiting = false;
-	_updateFlag.clear();*/
+	_exiting = false;
+	_updateFlag.clear();
 }
 
 CTPTradeProcessor::CTPTradeProcessor(const CTPRawAPI_Ptr& rawAPI)
 	: CTPProcessor(rawAPI)
 {
 	DataLoadMask = NO_DATA_LOADED;
-	/*_exiting = false;
-	_updateFlag.clear();*/
+	_exiting = false;
+	_updateFlag.clear();
 }
 
 
@@ -50,8 +50,8 @@ CTPTradeProcessor::CTPTradeProcessor(const CTPRawAPI_Ptr& rawAPI)
 
 CTPTradeProcessor::~CTPTradeProcessor()
 {
-	/*_exiting = true;
-	if (_updateTask.valid()) _updateTask.wait();*/
+	_exiting = true;
+	if (_updateTask.valid()) _updateTask.wait();
 	LOG_DEBUG << __FUNCTION__;
 }
 
@@ -285,30 +285,23 @@ void CTPTradeProcessor::OnRtnTrade(CThostFtdcTradeField *pTrade)
 
 	//_updatePositionSet.emplace(pTrade->InstrumentID);
 
-	//// Try update position
-	//if (!_updateFlag.test_and_set())
-	//{
-	//	_updateTask = std::async(std::launch::async, [this]()
-	//	{
-	//		while (!_updatePositionSet.empty())
-	//		{
-	//			std::vector<std::string> updateVec;
-	//			_updatePositionSet.to_vector(updateVec);
-	//			for (auto& instrument : updateVec)
-	//			{
-	//				if (_exiting)
-	//					return;
+	// Try update position
+	if (!_updateFlag.test_and_set())
+	{
+		_updateTask = std::async(std::launch::async, [this]()
+		{
+			std::this_thread::sleep_for(std::chrono::milliseconds(100));
+			CThostFtdcQryInvestorPositionField req{};
+			for (;;)
+			{
+				int iRet = _rawAPI->TrdAPI->ReqQryInvestorPosition(&req, 0);
+				if (_exiting || iRet == 0) break;
+				std::this_thread::sleep_for(std::chrono::seconds(1));
+			}
 
-	//				CThostFtdcQryInvestorPositionField req{};
-	//				std::strncpy(req.InstrumentID, instrument.data(), sizeof(req.InstrumentID));
-	//				int iRet = _rawAPI->TrdAPI->ReqQryInvestorPosition(&req, 0);
-	//				if (iRet == 0) _updatePositionSet.erase(instrument);
-	//				std::this_thread::sleep_for(std::chrono::seconds(1));
-	//			}
-	//		}
-	//		_updateFlag.clear();
-	//	});
-	//}
+			_updateFlag.clear();
+		});
+	}
 }
 
 ///报单录入错误回报

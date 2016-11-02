@@ -68,7 +68,7 @@ bool MessageProcessor::OnSessionClosing(void)
 // Return:     IMessageServiceLocator*
 ////////////////////////////////////////////////////////////////////////
 
-IMessageServiceLocator_Ptr MessageProcessor::getServiceLocator(void)
+IMessageServiceLocator_Ptr& MessageProcessor::getServiceLocator(void)
 {
 	return _svc_locator_ptr;
 }

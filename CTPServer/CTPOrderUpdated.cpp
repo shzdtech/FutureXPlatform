@@ -43,6 +43,9 @@ dataobj_ptr CTPOrderUpdated::HandleResponse(const uint32_t serialId, const param
 				auto sid = msgId == MSG_ID_ORDER_CANCEL ? orderPtr->OrderSysID : serialId;
 				pProcessor->SendDataObject(session, msgId, sid, orderPtr);
 			}
+
+			if (!orderPtr->OrderSysID)
+				orderPtr.reset();
 		}
 	}
 

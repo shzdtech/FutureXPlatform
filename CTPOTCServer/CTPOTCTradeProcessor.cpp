@@ -264,15 +264,15 @@ void CTPOTCTradeProcessor::OnRtnOrder(CThostFtdcOrderField *pOrder)
 	}
 }
 
-void CTPOTCTradeProcessor::RegisterLoggedSession(IMessageSession * pMessageSession)
+void CTPOTCTradeProcessor::RegisterLoggedSession(const IMessageSession_Ptr& sessionPtr)
 {
-	if (pMessageSession->getLoginTimeStamp() && _isLogged)
+	if (sessionPtr->getLoginTimeStamp() && _isLogged)
 	{
-		if (auto userInfoPtr = pMessageSession->getUserInfo())
+		if (auto userInfoPtr = sessionPtr->getUserInfo())
 		{
 			userInfoPtr->setFrontId(_systemUser.getFrontId());
 			userInfoPtr->setSessionId(_systemUser.getSessionId());
-			_userSessionCtn_Ptr->add(userInfoPtr->getUserId(), pMessageSession);
+			_userSessionCtn_Ptr->add(userInfoPtr->getUserId(), sessionPtr);
 		}
 	}
 }

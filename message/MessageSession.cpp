@@ -8,6 +8,7 @@
 #include "MessageSession.h"
 #include "MessageContext.h"
 #include "UserInfo.h"
+#include "../litelogger/LiteLogger.h"
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -16,15 +17,12 @@
 // Return:     
 ////////////////////////////////////////////////////////////////////////
 
-MessageSession::MessageSession()
+MessageSession::MessageSession(const ISessionManager_Ptr& sessionMgr_Ptr)
+	: _sessionManager_ptr(sessionMgr_Ptr), _userInfo_ptr(new UserInfo), _context_ptr(new MessageContext),
+	_timeout(0), _loginTimeStamp(0)
 {
 	static uint64_t idgen = 0;
 	_id = ++idgen;
-	_userInfo_ptr = std::make_shared<UserInfo>();
-	_context_ptr = std::make_shared<MessageContext>();
-	_timeout = 0;
-	_loginTimeStamp = 0;
-	_closed = false;
 }
 
 uint64_t MessageSession::Id()
@@ -40,10 +38,10 @@ uint64_t MessageSession::Id()
 
 MessageSession::~MessageSession()
 {
-	if (!_closed)
+	/*if (!_closed)
 	{
 		Close();
-	}
+	}*/
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -66,7 +64,7 @@ void MessageSession::RegistProcessor(const IMessageProcessor_Ptr& msgProcessor)
 // Return:     context_ptr
 ////////////////////////////////////////////////////////////////////////
 
-IMessageContext_Ptr MessageSession::getContext(void)
+IMessageContext_Ptr& MessageSession::getContext(void)
 {
 	return _context_ptr;
 }
@@ -92,21 +90,39 @@ void MessageSession::setTimeout(long seconds)
 
 bool MessageSession::Close(void)
 {
+	bool ret = true;
+	if (_sessionManager_ptr)
+	{
+		try
+		{
+			ret = _sessionManager_ptr->CloseSession(shared_from_this());
+		}
+		catch (...) {}
+	}
+
+	return ret;
+}
+
+bool MessageSession::NotifyClosing(void)
+{
+	bool ret = false;
 	if (_messageProcessor_ptr &&
 		_messageProcessor_ptr->OnSessionClosing())
 	{
 		auto this_ptr = shared_from_this();
-		for (auto& event_wkptr : _sessionEventList)
+		IMessageSessionEvent_WkPtr event_wkptr;
+		while (_sessionHub.pop(event_wkptr))
 		{
 			if (auto event_ptr = event_wkptr.lock())
 			{
 				event_ptr->OnSessionClosing(this_ptr);
 			}
 		}
-		_closed = true;
+
+		ret = true;
 	}
 
-	return _closed;
+	return ret;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -119,8 +135,7 @@ bool MessageSession::Close(void)
 
 void MessageSession::addListener(const IMessageSessionEvent_WkPtr& listener)
 {
-	removeListener(listener);
-	_sessionEventList.push_back(listener);
+	_sessionHub.emplace(listener);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -133,13 +148,7 @@ void MessageSession::addListener(const IMessageSessionEvent_WkPtr& listener)
 
 void MessageSession::removeListener(const IMessageSessionEvent_WkPtr& listener)
 {
-	if (auto lsnPtr = listener.lock())
-	{
-		_sessionEventList.remove_if
-			([lsnPtr](IMessageSessionEvent_WkPtr& proc){
-			return proc.expired() || lsnPtr == proc.lock();
-		});
-	}
+	_sessionHub.erase(listener);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -182,7 +191,7 @@ void MessageSession::setLogout(void)
 // Return:     userinfo_ptr
 ////////////////////////////////////////////////////////////////////////
 
-IUserInfo_Ptr MessageSession::getUserInfo(void)
+IUserInfo_Ptr& MessageSession::getUserInfo(void)
 {
 	return _userInfo_ptr;
 }
@@ -194,7 +203,18 @@ IUserInfo_Ptr MessageSession::getUserInfo(void)
 // Return:     IProcessorBase*
 ////////////////////////////////////////////////////////////////////////
 
-IProcessorBase_Ptr MessageSession::getProcessor(void)
+IMessageProcessor_Ptr& MessageSession::getProcessor(void)
 {
 	return _messageProcessor_ptr;
+}
+
+
+void MessageSession::setSessionManager(const ISessionManager_Ptr& sessionMgr_Ptr)
+{
+	_sessionManager_ptr = sessionMgr_Ptr;
+}
+
+ISessionManager_Ptr& MessageSession::getSessionManager(void)
+{
+	return _sessionManager_ptr;
 }

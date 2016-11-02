@@ -26,10 +26,11 @@ ASIOSessionManager::~ASIOSessionManager()
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-ASIOTCPSession_Ptr ASIOSessionManager::CreateSession(boost::asio::ip::tcp::socket&& socket)
+ASIOTCPSession_Ptr ASIOSessionManager::CreateSession(boost::asio::ip::tcp::socket&& socket,	uint max_msg_size, uint time_out)
 {
-	auto asioSession_Ptr = std::make_shared<ASIOTCPSession>(std::move(socket));
-	asioSession_Ptr->addListener(shared_from_this());
+	auto asioSession_Ptr = std::make_shared<ASIOTCPSession>(shared_from_this(), std::move(socket));
+	asioSession_Ptr->setMaxMessageSize(MAX_MSG_SIZE);
+	asioSession_Ptr->setTimeout(time_out);
 	AssembleSession(asioSession_Ptr);
 	
 	return asioSession_Ptr;

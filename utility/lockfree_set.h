@@ -4,10 +4,12 @@
 #include <set>
 #include <atomic>
 
-template <class T>
+template <class T, class Compare = std::less<T>, class Allocator = std::allocator<T>>
 class lockfree_set
 {
 public:
+	typedef std::set<T, Compare, Allocator> _MySet;
+
 	lockfree_set() { _opState.clear(); }
 
 	void emplace(T&& value)
@@ -108,13 +110,13 @@ public:
 		_opState.clear(std::memory_order_release);
 	}
 
-	std::set<T>& rawset()
+	_MySet& rawset()
 	{
 		return _set;
 	}
 
 private:
-	std::set<T> _set;
+	_MySet _set;
 	std::atomic_flag _opState;
 };
 

@@ -370,17 +370,17 @@ void CTPTradeWorkerProcessor::OnRtnTrade(CThostFtdcTradeField * pTrade)
 	}
 }
 
-void CTPTradeWorkerProcessor::RegisterLoggedSession(IMessageSession * pMessageSession)
+void CTPTradeWorkerProcessor::RegisterLoggedSession(const IMessageSession_Ptr& sessionPtr)
 {
-	if (pMessageSession->getLoginTimeStamp() && _isLogged)
+	if (sessionPtr->getLoginTimeStamp() && _isLogged)
 	{
-		if (auto userInfoPtr = pMessageSession->getUserInfo())
+		if (auto userInfoPtr = sessionPtr->getUserInfo())
 		{
 			userInfoPtr->setBrokerId(_systemUser.getBrokerId());
 			userInfoPtr->setInvestorId(_systemUser.getInvestorId());
 			userInfoPtr->setFrontId(_systemUser.getFrontId());
 			userInfoPtr->setSessionId(_systemUser.getSessionId());
-			_userSessionCtn_Ptr->add(userInfoPtr->getUserId(), pMessageSession);
+			_userSessionCtn_Ptr->add(userInfoPtr->getUserId(), sessionPtr);
 		}
 	}
 }
@@ -423,8 +423,8 @@ std::set<ProductType>& CTPTradeWorkerProcessor::GetProductTypeToLoad()
 void CTPTradeWorkerProcessor::DispatchUserMessage(int msgId, int serialId, const std::string& userId,
 	const dataobj_ptr& dataobj_ptr)
 {
-	_userSessionCtn_Ptr->foreach(userId, [msgId, serialId, dataobj_ptr, this](IMessageSession* pSession)
-	{this->SendDataObject(pSession, msgId, serialId, dataobj_ptr); });
+	_userSessionCtn_Ptr->foreach(userId, [msgId, serialId, dataobj_ptr, this](const IMessageSession_Ptr& session_ptr)
+	{this->SendDataObject(session_ptr.get(), msgId, serialId, dataobj_ptr); });
 }
 
 

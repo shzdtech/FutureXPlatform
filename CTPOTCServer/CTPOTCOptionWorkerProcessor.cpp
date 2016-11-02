@@ -41,8 +41,8 @@ void CTPOTCOptionWorkerProcessor::TriggerOTCPricing(const StrategyContractDO& st
 
 			if (auto pricingDO = PricingUtility::Pricing(&mdDO, strategyDO, *pricingCtx))
 			{
-				_pricingNotifers->foreach(strategyDO, [this, pricingDO](IMessageSession* pSession)
-				{ this->SendDataObject(pSession, MSG_ID_RTN_PRICING, 0, pricingDO); }
+				_pricingNotifers->foreach(strategyDO, [this, pricingDO](const IMessageSession_Ptr& session_ptr)
+				{ this->SendDataObject(session_ptr.get(), MSG_ID_RTN_PRICING, 0, pricingDO); }
 				);
 			}
 		}

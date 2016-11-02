@@ -32,12 +32,12 @@ void MessageServer::RegisterServiceFactory(const IMessageServiceFactory_Ptr& msg
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       MessageServer::GetServiceFactory()
-// Purpose:    Implementation of MessageServer::GetServiceFactory()
+// Name:       MessageServer::getServiceFactory()
+// Purpose:    Implementation of MessageServer::getServiceFactory()
 // Return:     IMessageServiceFactory_Ptr
 ////////////////////////////////////////////////////////////////////////
 
-IMessageServiceFactory_Ptr MessageServer::GetServiceFactory(void)
+IMessageServiceFactory_Ptr& MessageServer::getServiceFactory(void)
 {
 	return _svcfactory_ptr;
 }

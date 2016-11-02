@@ -23,12 +23,12 @@ public:
 
 	void OnServerStarting(void);
 	void OnServerClosing(void);
+	bool CloseSession(const IMessageSession_Ptr& sessionPtr);
 
 protected:
 	lockfree_set<IMessageSession_Ptr> _sessionSet;
 	IMessageServer* _server;
 
-	void OnSessionClosing(const IMessageSession_Ptr& msgSessionPtr);
 private:
 
 };

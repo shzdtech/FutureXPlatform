@@ -55,10 +55,10 @@ void TestingServerMessageProcessor::_mdGenerator()
 	while (!_exitWorker)
 	{
 		std::this_thread::sleep_for(_mdGenInterval);
-		if (auto pSession = LockMessageSession().get())
+		if (auto session_ptr =LockMessageSession())
 		{
 			if (auto mdMapPtr = std::static_pointer_cast<MarketDataDOMap>
-				(pSession->getContext()->getAttribute(STR_KEY_USER_CONTRACTS)))
+				(session_ptr->getContext()->getAttribute(STR_KEY_USER_CONTRACTS)))
 			{
 
 				for (auto it = mdMapPtr->begin(); it != mdMapPtr->end(); it++)

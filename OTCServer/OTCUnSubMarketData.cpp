@@ -45,7 +45,7 @@ dataobj_ptr OTCUnSubMarketData::HandleRequest(const uint32_t serialId, const dat
 					if (auto contract = pWorkerProc->GetInstrumentCache().QueryInstrumentById(inst))
 					{
 						pWorkerProc->UnregisterPricingListener(*contract,
-							session->getProcessor()->LockMessageSession().get());
+							session->getProcessor()->LockMessageSession());
 
 						ret->Data[STR_INSTRUMENT_ID].push_back(inst);
 					}

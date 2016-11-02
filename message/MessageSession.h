@@ -12,8 +12,9 @@
 #include "IMessageProcessor.h"
 #include "ISessionManager.h"
 #include "IUserInfo.h"
+#include "../utility/lockfree_set.h"
 
-#include <list>
+#include <set>
 #include "message_exp.h"
 
 
@@ -21,22 +22,26 @@ class MESSAGE_CLASS_EXPORT MessageSession : public IMessageSession,
 	public std::enable_shared_from_this<MessageSession>
 {
 public:
-	MessageSession();
+	MessageSession(const ISessionManager_Ptr& sessionMgr_Ptr);
 	~MessageSession();
 
 	uint64_t Id();
 	void RegistProcessor(const IMessageProcessor_Ptr& msgprocessor_ptr);
 	bool Start(void) { return false; }
 	bool Close(void);
+	bool NotifyClosing(void);
 	virtual int WriteMessage(const uint msgId, const data_buffer& msg) { return 0; }
 	virtual int WriteMessage(const data_buffer& msg) { return 0; }
 	void setTimeout(long seconds);
-	IMessageContext_Ptr getContext(void);
+	IMessageContext_Ptr& getContext(void);
 	time_t getLoginTimeStamp(void);
 	void setLoginTimeStamp(time_t tm);
 	void setLogout(void);
-	IUserInfo_Ptr getUserInfo(void);
-	IProcessorBase_Ptr getProcessor(void);
+	IUserInfo_Ptr& getUserInfo(void);
+	IMessageProcessor_Ptr& getProcessor(void);
+
+	void setSessionManager(const ISessionManager_Ptr& sessionMgr_Ptr);
+	ISessionManager_Ptr& getSessionManager(void);
 
 	void addListener(const IMessageSessionEvent_WkPtr& listener);
 	void removeListener(const IMessageSessionEvent_WkPtr& listener);
@@ -45,11 +50,11 @@ protected:
 	uint64_t _id;
 	IMessageContext_Ptr _context_ptr;
 	IMessageProcessor_Ptr _messageProcessor_ptr;
-	std::list<IMessageSessionEvent_WkPtr> _sessionEventList;
+	lockfree_set<IMessageSessionEvent_WkPtr, std::owner_less<IMessageSessionEvent_WkPtr>> _sessionHub;
 	IUserInfo_Ptr _userInfo_ptr;
+	ISessionManager_Ptr _sessionManager_ptr;
 	long _timeout;
 	time_t _loginTimeStamp;
-	bool _closed;
 
 private:
 

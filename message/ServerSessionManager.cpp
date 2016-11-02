@@ -45,7 +45,7 @@ ServerSessionManager::~ServerSessionManager()
 
 void ServerSessionManager::AssembleSession(const IMessageSession_Ptr& msgSessionPtr)
 {
-	auto msgProcessor = _server->GetServiceFactory()->CreateMessageProcessor(_server->getContext());
+	auto msgProcessor = _server->getServiceFactory()->CreateMessageProcessor(_server->getContext());
 	msgProcessor->setServerContext(_server->getContext());
 	msgProcessor->setServiceLocator(_msgsvclocator);
 	msgSessionPtr->RegistProcessor(msgProcessor);
@@ -87,11 +87,11 @@ void ServerSessionManager::OnServerClosing(void)
 
 void ServerSessionManager::OnServerStarting(void)
 {
-	_msgsvclocator = std::make_shared<MessageServiceLocator>(_server->GetServiceFactory(), _server->getContext());
+	_msgsvclocator = std::make_shared<MessageServiceLocator>(_server->getServiceFactory(), _server->getContext());
 
 	if (auto workProcPtr = _server->getContext()->getWorkerProcessor())
 	{
-		auto msgSession_Ptr = std::make_shared<MessageSession>();
+		auto msgSession_Ptr = std::make_shared<MessageSession>(shared_from_this());
 		workProcPtr->setServiceLocator(_msgsvclocator);
 		msgSession_Ptr->RegistProcessor(workProcPtr);
 		workProcPtr->setSession(msgSession_Ptr);

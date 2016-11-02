@@ -20,7 +20,7 @@ public:
    virtual bool Stopped(void)=0;
    virtual const std::string& getUri(void)=0;;
    virtual void RegisterServiceFactory(const IMessageServiceFactory_Ptr& msgSvcFactory) = 0;
-   virtual IMessageServiceFactory_Ptr GetServiceFactory(void) = 0;
+   virtual IMessageServiceFactory_Ptr& getServiceFactory(void) = 0;
    virtual IServerContext* getContext() = 0;
 
 protected:

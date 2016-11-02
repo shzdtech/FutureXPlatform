@@ -37,7 +37,7 @@ VectorDO_Ptr<TradeRecordDO> TradeDAO::QueryTrade(const std::string& userid, cons
 			tradeDO.Volume = rs->getInt(5);
 			tradeDO.TradeDate = rs->getString(6);
 			tradeDO.TradeTime = rs->getString(7);
-			tradeDO.Direction = rs->getInt(8) != 0 ? DirectionType::BUY : DirectionType::SELL;
+			tradeDO.Direction = rs->getBoolean(8) ? DirectionType::BUY : DirectionType::SELL;
 			tradeDO.OrderID = rs->getUInt64(9);
 			tradeDO.OrderSysID = rs->getUInt64(10);
 
@@ -95,5 +95,5 @@ int TradeDAO::SaveExchangeTrade(const TradeRecordDO & tradeDO)
 		tradeDO.ExchangeID(), tradeDO.InstrumentID(),
 		tradeDO.Volume, tradeDO.Price,
 		tradeDO.TradingDay, tradeDO.UserID(), tradeDO.PortfolioID(),
-		tradeDO.Direction == DirectionType::BUY, tradeDO.OpenClose);
+		tradeDO.Direction != DirectionType::SELL, tradeDO.OpenClose);
 }

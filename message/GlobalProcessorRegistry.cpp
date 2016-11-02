@@ -9,16 +9,16 @@
 #include <map>
 #include <mutex>
 
-static std::map<std::string, IProcessorBase_Ptr> registry;
+static std::map<std::string, IMessageProcessor_Ptr> registry;
 
-void GlobalProcessorRegistry::RegisterProcessor(const std::string& processName, IProcessorBase_Ptr proc_ptr)
+void GlobalProcessorRegistry::RegisterProcessor(const std::string& processName, const IMessageProcessor_Ptr& proc_ptr)
 {
 	registry[processName] = proc_ptr;
 }
 
-IProcessorBase_Ptr GlobalProcessorRegistry::FindProcessor(const std::string& processName)
+IMessageProcessor_Ptr GlobalProcessorRegistry::FindProcessor(const std::string& processName)
 {
-	IProcessorBase_Ptr ret;
+	IMessageProcessor_Ptr ret;
 
 	auto it = registry.find(processName);
 	if (it != registry.end())

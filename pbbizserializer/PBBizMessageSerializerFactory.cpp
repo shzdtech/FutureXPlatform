@@ -33,6 +33,7 @@ PBBizMessageSerializerFactory::PBBizMessageSerializerFactory()
 		(PBOrderSerializer::Instance(), PBStringMapSerializer::Instance());
 	_serializer_map[MSG_ID_ORDER_UPDATE] = PBOrderSerializer::Instance();
 	_serializer_map[MSG_ID_QUERY_POSITION] = PBUserPositionSerializer::Instance();
+	_serializer_map[MSG_ID_POSITION_UPDATED] = PBUserPositionSerializer::Instance();
 	_serializer_map[MSG_ID_QUERY_TRADE] = PBTradeRecordSerializer::Instance();
 	_serializer_map[MSG_ID_TRADE_RTN] = PBTradeRecordSerializer::Instance();
 	_serializer_map[MSG_ID_SETTLEMENT_INFO_CONFIRM] = PBStringMapSerializer::Instance();

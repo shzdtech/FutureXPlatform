@@ -52,19 +52,25 @@ void SessionManager::OnServerStarting(void)
 
 void SessionManager::OnServerClosing(void)
 {
-	_sessionSet.clear();
+	IMessageSession_Ptr sessionPtr;
+	while (_sessionSet.pop(sessionPtr))
+	{
+		sessionPtr->NotifyClosing();
+	}
 	_server->getContext()->Reset();
 }
 
-////////////////////////////////////////////////////////////////////////
-// Name:       SessionManager::OnSessionClosing(session_ptr sessionPtr)
-// Purpose:    Implementation of SessionManager::OnSessionClosing()
-// Parameters:
-// - sessionPtr
-// Return:     bool
-////////////////////////////////////////////////////////////////////////
-
-void SessionManager::OnSessionClosing(const IMessageSession_Ptr& sessionPtr)
+bool SessionManager::CloseSession(const IMessageSession_Ptr & sessionPtr)
 {
-	_sessionSet.erase(sessionPtr);
+	bool ret = false;
+	if(sessionPtr)
+		ret = _sessionSet.find(sessionPtr);
+
+	if (ret)
+	{
+		sessionPtr->NotifyClosing();
+		_sessionSet.erase(sessionPtr);
+	}
+
+	return ret;
 }

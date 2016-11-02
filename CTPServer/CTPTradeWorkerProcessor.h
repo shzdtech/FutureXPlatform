@@ -38,7 +38,7 @@ public:
    virtual int LoadDataAsync(void);
    virtual void OnDataLoaded(void);
 
-   virtual void RegisterLoggedSession(IMessageSession* pMessageSession);
+   virtual void RegisterLoggedSession(const IMessageSession_Ptr& sessionPtr);
    virtual void DispatchUserMessage(int msgId, int serialId, const std::string& userId, const dataobj_ptr& dataobj_ptr);
    virtual autofillmap<std::string, AccountInfoDO>& GetAccountInfo(const std::string userId);
    virtual std::set<ExchangeDO>& GetExchangeInfo();

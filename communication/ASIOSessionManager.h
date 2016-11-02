@@ -12,12 +12,15 @@
 #include "ASIOTCPSession.h"
 #include <boost/asio/ip/tcp.hpp>
 
+#include "ASIOTCPConsts.h"
+
 class ASIOSessionManager : public ServerSessionManager
 {
 public:
 	ASIOSessionManager(IMessageServer* server);
 	~ASIOSessionManager();
-	ASIOTCPSession_Ptr CreateSession(boost::asio::ip::tcp::socket&& socket);
+	ASIOTCPSession_Ptr CreateSession(boost::asio::ip::tcp::socket&& socket, 
+		uint max_msg_size = MAX_MSG_SIZE, uint time_out = SESSION_TIMEOUT);
 
 protected:
 private:

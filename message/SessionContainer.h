@@ -21,68 +21,75 @@ private:
 	SessionContainer() {}
 
 public:
+	~SessionContainer() 
+	{
+		std::lock_guard<std::shared_mutex> write_lock(_mutex);
+		_sessionMap.clear();
+		_reverseMap.clear();
+	}
+
 	static std::shared_ptr<SessionContainer<K>> NewInstancePtr()
 	{
 		return std::shared_ptr<SessionContainer<K>>(new SessionContainer<K>());
 	}
 
-	void foreach(const K& key, std::function<void(IMessageSession*)> func)
+	void foreach(const K& key, std::function<void(const IMessageSession_Ptr&)> func)
 	{
 		std::shared_lock<std::shared_mutex> read_lock(_mutex);
 		auto it = _sessionMap.find(key);
 		if (it != _sessionMap.end())
 		{
-			for (auto pSession : it->second)
+			for (auto& sessionPtr : it->second)
 			{
-				func(pSession);
+				func(sessionPtr);
 			}
 		}
 	}
 
-	void forall(std::function<void(IMessageSession*)> func)
+	void forall(std::function<void(const IMessageSession_Ptr&)> func)
 	{
 		std::shared_lock<std::shared_mutex> read_lock(_mutex);
 		for (auto& pair : _sessionMap)
 		{
-			for (auto pSession : pair.second)
+			for (auto& sessionPtr : pair.second)
 			{
-				func(pSession);
+				func(sessionPtr);
 			}
 		}
 	}
 
-	int add(const K& key, IMessageSession* pSession)
+	int add(const K& key, const IMessageSession_Ptr& sessionPtr)
 	{
 		int ret = -1;
-		if (pSession)
+		if (sessionPtr)
 		{
 			std::lock_guard<std::shared_mutex> write_lock(_mutex);
 			auto& sessionSet = _sessionMap.getorfill(key);
-			if (sessionSet.find(pSession) == sessionSet.end())
+			if (sessionSet.find(sessionPtr) == sessionSet.end())
 			{
-				_reverseMap.getorfill(pSession).insert(key);
-				sessionSet.insert(pSession);
-				pSession->addListener(shared_from_this());
+				_reverseMap.getorfill(sessionPtr).insert(key);
+				sessionSet.insert(sessionPtr);
+				sessionPtr->addListener(shared_from_this());
 			}
 			ret = 0;
 		}
 		return ret;
 	}
 
-	int remove(const K& key, IMessageSession* pSession)
+	int remove(const K& key, const IMessageSession_Ptr& sessionPtr)
 	{
 		int ret = -1;
-		if (pSession)
+		if (sessionPtr)
 		{
 			std::lock_guard<std::shared_mutex> write_lock(_mutex);
 			auto it = _sessionMap.find(key);
 			if (it != _sessionMap.end())
 			{
-				it->second.erase(pSession);
+				it->second.erase(sessionPtr);
 				if (it->second.empty())
 					_sessionMap.erase(it);
 
-				auto rit = _reverseMap.find(pSession);
+				auto rit = _reverseMap.find(sessionPtr);
 				if (rit != _reverseMap.end())
 				{
 					rit->second.erase(key);
@@ -104,9 +111,9 @@ public:
 		if (it != _sessionMap.end())
 		{
 			auto& sessionSet = it->second;
-			for (auto pSession : sessionSet)
+			for (auto sessionPtr : sessionSet)
 			{
-				auto rit = _reverseMap.find(pSession);
+				auto rit = _reverseMap.find(sessionPtr);
 				if (rit != _reverseMap.end())
 				{
 					rit->second.erase(key);
@@ -120,13 +127,13 @@ public:
 		return ret;
 	}
 
-	int removesession(IMessageSession* pSession)
+	int removesession(const IMessageSession_Ptr& sessionPtr)
 	{
 		int ret = -1;
-		if (pSession)
+		if (sessionPtr)
 		{
 			std::lock_guard<std::shared_mutex> write_lock(_mutex);
-			auto it = _reverseMap.find(pSession);
+			auto it = _reverseMap.find(sessionPtr);
 			if (it != _reverseMap.end())
 			{
 				for (auto& key : it->second)
@@ -134,7 +141,7 @@ public:
 					auto sit = _sessionMap.find(key);
 					if (sit != _sessionMap.end())
 					{
-						sit->second.erase(pSession);
+						sit->second.erase(sessionPtr);
 						if (sit->second.empty())
 							_sessionMap.erase(sit);
 					}
@@ -149,12 +156,12 @@ public:
 protected:
 	void OnSessionClosing(const IMessageSession_Ptr& msgSessionPtr)
 	{
-		removesession(msgSessionPtr.get());
+		removesession(msgSessionPtr);
 	}
 
 private:
-	autofillmap<K, std::set<IMessageSession*>> _sessionMap;
-	autofillmap<IMessageSession*, std::set<K>> _reverseMap;
+	autofillmap<K, std::set<IMessageSession_Ptr>> _sessionMap;
+	autofillmap<IMessageSession_Ptr, std::set<K>> _reverseMap;
 	std::shared_mutex _mutex;
 };
 

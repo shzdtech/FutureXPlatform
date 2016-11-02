@@ -45,7 +45,7 @@ dataobj_ptr CTPAccountLogin::HandleRequest(const uint32_t serialId, const dataob
 	auto ret = Login(reqDO, rawAPI, session);
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
 	{
-		pWorkerProc->RegisterLoggedSession(session->getProcessor()->LockMessageSession().get());
+		pWorkerProc->RegisterLoggedSession(session->getProcessor()->LockMessageSession());
 		if (pWorkerProc->ConnectedToServer() && pWorkerProc->HasLogged())
 		{
 			// throw SystemException(CONNECTION_ERROR, "Cannot connect to CTP Server!");

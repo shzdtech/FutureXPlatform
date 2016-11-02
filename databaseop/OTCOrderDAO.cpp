@@ -34,7 +34,7 @@ OrderDO_Ptr OTCOrderDAO::CreateOrder(const OrderRequestDO& orderDO, const IPrici
 		prestmt->setString(5, orderDO.InstrumentID());
 		prestmt->setDouble(6, orderDO.LimitPrice);
 		prestmt->setInt(7, orderDO.Volume);
-		prestmt->setInt(8, orderDO.Direction == DirectionType::BUY);
+		prestmt->setBoolean(8, orderDO.Direction != DirectionType::SELL);
 		prestmt->setInt(9, orderDO.ExecType);
 		prestmt->setInt(10, orderDO.TIF);
 
@@ -201,7 +201,7 @@ OrderDOVec_Ptr OTCOrderDAO::QueryTradingOrder(const ContractKey& contractKey)
 			obDO.Volume = rs->getInt(7);
 			obDO.VolumeTraded = rs->getInt(8);
 			obDO.VolumeRemain = obDO.Volume - obDO.VolumeTraded;
-			obDO.Direction = rs->getInt(9) != 0 ? DirectionType::BUY : DirectionType::SELL;
+			obDO.Direction = rs->getBoolean(9) ? DirectionType::BUY : DirectionType::SELL;
 			obDO.OrderStatus = (OrderStatusType)rs->getInt(10);
 			obDO.TIF = (OrderTIFType)rs->getInt(11);
 			obDO.TradingType = (TradingType)rs->getInt(12);
@@ -259,7 +259,7 @@ OrderDOVec_Ptr OTCOrderDAO::QueryTodayOrder(const std::string& userId, const Con
 			obDO.Volume = rs->getInt(7);
 			obDO.VolumeTraded = rs->getInt(8);
 			obDO.VolumeRemain = obDO.Volume - obDO.VolumeTraded;
-			obDO.Direction = rs->getInt(9) != 0 ? DirectionType::BUY : DirectionType::SELL;
+			obDO.Direction = rs->getBoolean(9) != 0 ? DirectionType::BUY : DirectionType::SELL;
 			obDO.OrderStatus = (OrderStatusType)rs->getInt(10);
 			obDO.TIF = (OrderTIFType)rs->getInt(11);
 			obDO.TradingType = (TradingType)rs->getInt(12);

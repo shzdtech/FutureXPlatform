@@ -71,7 +71,7 @@ dataobj_ptr PBOrderSerializer::Deserialize(const data_buffer& rawdata)
 	FillDOHeader(ret, PB);
 
 	ret->OrderSysID = PB.ordersysid();
-	ret->Direction = (DirectionType)PB.direction();
+	ret->Direction = PB.direction() == DirectionType::SELL ? DirectionType::SELL : DirectionType::BUY;
 	ret->LimitPrice = PB.limitprice();
 	ret->Volume = PB.volume();
 	ret->TIF = (OrderTIFType)PB.tif();
