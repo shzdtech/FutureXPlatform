@@ -45,7 +45,6 @@ dataobj_ptr CTPDepthMarketData::HandleResponse(const uint32_t serialId, const pa
 		mdo->OpenPrice = pData->OpenPrice;
 		mdo->SettlementPrice = pData->SettlementPrice;
 
-
 		mdo->HighestPrice = pData->HighestPrice;
 		mdo->LowestPrice = pData->LowestPrice;
 		mdo->Turnover = pData->Turnover;
@@ -62,6 +61,13 @@ dataobj_ptr CTPDepthMarketData::HandleResponse(const uint32_t serialId, const pa
 	{
 		mdo->Ask().Price = pData->AskPrice1;
 		mdo->Ask().Volume = pData->AskVolume1;
+	}
+
+	if (pData->UpdateTime[0])
+	{
+		int hour, min, sec;
+		std::sscanf(pData->UpdateTime, "%d:%d:%d", &hour, &min, &sec);
+		mdo->UpdateTime = hour * 3600000 + min * 60000 + sec * 1000 + pData->UpdateMillisec;
 	}
 
 	return ret;

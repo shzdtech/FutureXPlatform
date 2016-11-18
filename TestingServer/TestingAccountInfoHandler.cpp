@@ -8,7 +8,7 @@ dataobj_ptr TestingAccountInfoHandler::HandleRequest(const uint32_t serialId, co
 	accountInfo->AccountID = "Testing123";
 	accountInfo->Available = std::rand();
 	accountInfo->Balance = std::rand();
-	accountInfo->TradingDay = 20160728;
+	accountInfo->TradingDay = "20160728";
 	accountInfo->Credit = std::rand();
 	accountInfo->Commission = 0.15;
 

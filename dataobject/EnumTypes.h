@@ -40,12 +40,19 @@ enum PositionDateFlagType
 	PSD_HISTORY = 1
 };
 
-enum TradingType
+enum OrderTradingType
 {
 	TRADINGTYPE_MANUAL = 0,
 	TRADINGTYPE_QUOTE = 1,
 	TRADINGTYPE_AUTO = 2,
 	TRADINGTYPE_HEDGE = 3,
+	TRADINGTYPE_CLOUD = 9
+};
+
+enum OrderConditionFiled
+{
+	CON_FLD_UNSPECIFIED = 0,
+	CON_FLD_LASTPRICE = 1,
 };
 
 enum OrderCallPutType

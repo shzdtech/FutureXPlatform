@@ -36,7 +36,7 @@ dataobj_ptr CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_pt
 
 	auto pDO = (OrderRequestDO*)reqDO.get();
 
-	auto userinfo = session->getUserInfo();
+	auto& userinfo = session->getUserInfo();
 
 	// 端登成功,发出报单录入请求
 	CThostFtdcInputOrderField req{};
@@ -105,6 +105,8 @@ dataobj_ptr CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_pt
 
 dataobj_ptr CTPNewOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
 {
+	CTPUtility::CheckError(rawRespParams[1]);
+
 	OrderDO_Ptr ret;
 
 	if (auto pData = (CThostFtdcInputOrderField*)rawRespParams[0])

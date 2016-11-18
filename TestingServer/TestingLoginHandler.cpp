@@ -45,12 +45,13 @@ dataobj_ptr TestingLoginHandler::HandleRequest(const uint32_t serialId, const da
 	//
 	auto pDO = std::make_shared<UserInfoDO>();
 
-	pDO->BrokerId = pUserInfo->getBrokerId();;
+	pDO->BrokerId = pUserInfo->getBrokerId();
+	pDO->Company = pUserInfo->getBrokerId();
 	pDO->UserName = pUserInfo->getName();
 	pDO->Password = pUserInfo->getPassword();
 	pDO->Permission = pUserInfo->getPermission();
 	pDO->Role = pUserInfo->getRole();
-	pDO->UserId = pUserInfo->getUserId();
+	pDO->UserId = brokeid + userid;
 
 	return pDO;
 }

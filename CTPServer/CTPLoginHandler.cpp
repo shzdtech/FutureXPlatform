@@ -64,7 +64,8 @@ dataobj_ptr CTPLoginHandler::HandleRequest(const uint32_t serialId, const dataob
 		pUserInfo->setBrokerId(req.BrokerID);
 		pUserInfo->setName(userid);
 		pUserInfo->setPassword(password);
-		pUserInfo->setUserId(req.UserID);
+
+		pUserInfo->setUserId(CTPUtility::MakeUserID(req.BrokerID, req.UserID));
 		pUserInfo->setRole(ROLE_CLIENT);
 		pUserInfo->setPermission(ALLOW_TRADING);
 

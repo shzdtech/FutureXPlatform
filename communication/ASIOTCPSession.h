@@ -37,16 +37,17 @@ public:
 	bool Close(void);
 
 protected:
+	byte _header[HEADER_SIZE];
+
 	tcp::socket _socket;
 	deadline_timer _heartbeat_timer;
-	byte _header[HEADER_SIZE];
 	volatile bool _alive;
 	volatile bool _started;
 	volatile bool _closed;
 	uint _max_msg_size;
 	std::atomic_flag _clsclock;
-	lockfree_queue<data_buffer> _databufferQueue;
 	std::atomic_flag _sendingFlag;
+	lockfree_queue<data_buffer> _databufferQueue;
 
 private:
 	void asyn_send_queue();

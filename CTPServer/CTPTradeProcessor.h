@@ -18,8 +18,9 @@ class CTP_CLASS_EXPORT CTPTradeProcessor : public CTPProcessor, public CThostFtd
 public:
 	CTPTradeProcessor();
 	CTPTradeProcessor(const CTPRawAPI_Ptr& rawAPI);
-	~CTPTradeProcessor();
+	virtual ~CTPTradeProcessor();
 	int InitializeServer(const std::string& flowId, const std::string& serverAddr);
+	bool OnSessionClosing(void);
 
 	enum DataLoadType
 	{

@@ -18,7 +18,7 @@ class DBAutoClosePtr
 {
 public:
 	DBAutoClosePtr(P* p) : _ptr(p) {};
-	DBAutoClosePtr(std::shared_ptr<P> p) : _ptr(p) {};
+	DBAutoClosePtr(const std::shared_ptr<P>& p) : _ptr(p) {};
 	~DBAutoClosePtr() {}
 	P* operator->() { return _ptr.get(); }
 protected:

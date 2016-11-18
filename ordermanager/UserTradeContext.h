@@ -28,7 +28,7 @@ public:
 	TradeRecordDO_Ptr FindTrade(uint64_t tradeID);
 
 
-private:
+protected:
 	cuckoohash_map<uint64_t, TradeRecordDO_Ptr> _tradeIdMap;
 	cuckoohash_map<std::string, cuckoohashmap_wrapper<uint64_t, TradeRecordDO_Ptr>> _userTradeMap;
 };

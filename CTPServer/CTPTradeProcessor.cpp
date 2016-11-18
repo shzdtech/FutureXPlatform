@@ -50,8 +50,6 @@ CTPTradeProcessor::CTPTradeProcessor(const CTPRawAPI_Ptr& rawAPI)
 
 CTPTradeProcessor::~CTPTradeProcessor()
 {
-	_exiting = true;
-	if (_updateTask.valid()) _updateTask.wait();
 	LOG_DEBUG << __FUNCTION__;
 }
 
@@ -90,6 +88,24 @@ int CTPTradeProcessor::InitializeServer(const std::string& flowId, const std::st
 	}
 
 	return ret;
+}
+
+bool CTPTradeProcessor::OnSessionClosing(void)
+{
+	_exiting = true;
+	if (_updateTask.valid()) _updateTask.wait();
+	if (_isLogged)
+	{
+		if (auto sessionptr = LockMessageSession())
+		{
+			CThostFtdcUserLogoutField logout{};
+			std::strncpy(logout.BrokerID, sessionptr->getUserInfo()->getBrokerId().data(), sizeof(logout.BrokerID));
+			std::strncpy(logout.UserID, sessionptr->getUserInfo()->getUserId().data(), sizeof(logout.UserID));
+			_rawAPI->TrdAPI->ReqUserLogout(&logout, 0);
+		}
+	}
+
+	return true;
 }
 
 ///当客户端与交易后台建立起通信连接时（还未登录前），该方法被调用。

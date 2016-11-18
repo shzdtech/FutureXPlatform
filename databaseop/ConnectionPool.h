@@ -1,5 +1,5 @@
-#ifndef _DATABASEOP_CONNECTION__poolH_INCLUDED
-#define _DATABASEOP_CONNECTION__poolH_INCLUDED
+#ifndef _DATABASEOP_connection_pool_INCLUDED
+#define _DATABASEOP_connection_pool_INCLUDED
 
 #include <mutex>
 #include <atomic>
@@ -9,18 +9,20 @@
 //#include <glog/logging.h>
 #include "../utility/semaphore.h"
 
+static const std::chrono::milliseconds INFINITE_TIMEOUT(0);
+
 template<typename CONNTYPE>
 class managedsession
 {
 public:
 	managedsession() = default;
 
-	managedsession(std::shared_ptr<CONNTYPE> conn) : _conn(conn)
+	managedsession(const std::shared_ptr<CONNTYPE>& conn) : _conn(conn)
 	{}
 
 	managedsession(const managedsession&) = delete;
 
-	std::shared_ptr<CONNTYPE> getConnection()
+	std::shared_ptr<CONNTYPE>& getConnection()
 	{
 		return _conn;
 	}
@@ -35,10 +37,14 @@ class connection_pool
 {
 private:
 	int _poolsize;
-	std::mutex _opmutex;
-	Semaphore _semaphore;
-	std::deque <int> _activeconns;
-	std::vector<std::pair<volatile bool, std::shared_ptr<CONNTYPE>>> _statedconns;
+
+	struct state_connection
+	{
+		std::shared_ptr<CONNTYPE> connection_ptr;
+		std::atomic_flag lock;
+	};
+
+	std::vector<state_connection> _statedconns;
 
 public:
 	class managedsession4pool : public managedsession<CONNTYPE>
@@ -46,7 +52,7 @@ public:
 		friend class connection_pool;
 	private:
 		managedsession4pool(connection_pool* pool,
-			std::chrono::milliseconds millisec = std::chrono::milliseconds(0)
+			std::chrono::milliseconds millisec = INFINITE_TIMEOUT
 		) : _pool(pool)
 		{
 			if (pool)
@@ -79,21 +85,18 @@ public:
 
 public:
 
-	connection_pool(std::vector<std::shared_ptr<CONNTYPE>>& connections) :
-		_poolsize(connections.size()),
-		_semaphore(_poolsize)
+	connection_pool(const std::vector<std::shared_ptr<CONNTYPE>>& connections) :
+		_poolsize(connections.size()), _statedconns(_poolsize)
 	{
 		if (_poolsize <= 0)
 		{
 			throw std::runtime_error("Pool size must be greater than zero.");
 		}
 
-		_statedconns.resize(_poolsize);
 		for (int i = 0; i < _poolsize; ++i)
 		{
-			_statedconns[i].first = true;
-			_statedconns[i].second = connections[i];
-			_activeconns.push_back(i);
+			_statedconns[i].lock.clear(std::memory_order_release);
+			_statedconns[i].connection_ptr = connections[i];
 		}
 	}
 
@@ -101,18 +104,18 @@ public:
 	{
 	}
 
-	std::shared_ptr<CONNTYPE> at(int pos)
+	std::shared_ptr<CONNTYPE>& at(int pos)
 	{
 		if (pos < 0 || pos >= _poolsize)
 		{
 			throw std::runtime_error("Invalid pool position");
 		}
 
-		return _statedconns[pos].second;
+		return _statedconns[pos].connection_ptr;
 	}
 
 	managedsession_ptr lease(
-		std::chrono::milliseconds millisecs = std::chrono::milliseconds(0))
+		std::chrono::milliseconds millisecs = INFINITE_TIMEOUT)
 	{
 		return managedsession_ptr(new managedsession4pool(this, millisecs));
 	}
@@ -124,46 +127,62 @@ public:
 
 	std::shared_ptr<CONNTYPE> try_lease_at(int pos)
 	{
-		std::shared_ptr<CONNTYPE> ret;
-		std::lock_guard<std::mutex> oplock(_opmutex);
-		if (_statedconns[pos].first)
+		if (pos < 0 || pos >= _poolsize)
 		{
-			_semaphore.Wait();
-			for (auto it = _activeconns.cbegin(); it != _activeconns.cend(); it++)
-			{
-				if (*it == pos)
-				{
-					_activeconns.erase(it);
-					_statedconns[pos].first = false;
-					ret = _statedconns[pos].second;
-					break;
-				}
-			}
+			throw std::runtime_error("Invalid pool position");
 		}
+
+		std::shared_ptr<CONNTYPE> ret;
+		if (!_statedconns[pos].lock.test_and_set(std::memory_order_acquire))
+		{
+			ret = _statedconns[pos].connection_ptr;
+		}
+
 		return ret;
 	}
 
 	std::shared_ptr<CONNTYPE> try_lease(int& pos,
-		std::chrono::milliseconds millisecs = std::chrono::milliseconds(0))
+		std::chrono::milliseconds millisecs = INFINITE_TIMEOUT)
 	{
 		pos = -1;
-		bool waited = true;
+		int i = 0;
 		std::shared_ptr<CONNTYPE> conn;
-		if (millisecs == std::chrono::milliseconds(0))
-			_semaphore.Wait();
-		else
-			waited = _semaphore.Wait(millisecs);
-		if (waited)
+		if (millisecs == INFINITE_TIMEOUT)
 		{
-			std::lock_guard<std::mutex> oplock(_opmutex);
-			pos = _activeconns.front();
-			_activeconns.pop_front();
-			if (!_statedconns[pos].first)
+			for (;;)
 			{
-				throw std::runtime_error("sync check error.");
+				if (conn = try_lease_at(i))
+				{
+					pos = i;
+					return conn;
+				}
+
+				if (++i >= _poolsize)
+				{
+					i = 0;
+				}
 			}
-			_statedconns[pos].first = false;
-			conn = _statedconns[pos].second;
+		}
+		else
+		{
+			for (long long m = 0; m < millisecs.count(); m++)
+			{
+				for (;;)
+				{
+					if (conn = try_lease_at(i))
+					{
+						pos = i;
+						return conn;
+					}
+
+					if (++i >= _poolsize)
+					{
+						i = 0;
+					}
+				}
+
+				std::this_thread::sleep_for(std::chrono::milliseconds(1));
+			}
 		}
 
 		return conn;
@@ -171,18 +190,9 @@ public:
 
 	void release(int pos)
 	{
-		if (!_statedconns[pos].first)
+		if (_statedconns[pos].lock.test_and_set(std::memory_order_acquire))
 		{
-			std::lock_guard<std::mutex> oplock(_opmutex);
-			if (!_statedconns[pos].first)
-			{
-				//_statedconns[pos].second->reconnect();
-				_activeconns.push_back(pos);
-				_statedconns[pos].first = true;
-				//DLOG(INFO) << "released connection at: " << pos << ", pool size: " << _activeconns.size();
-				//Release semaphore
-				_semaphore.Signal();
-			}
+			_statedconns[pos].lock.clear(std::memory_order_release);
 		}
 	}
 };

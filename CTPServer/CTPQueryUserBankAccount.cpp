@@ -42,15 +42,17 @@ dataobj_ptr CTPQueryUserBankAccount::HandleRequest(const uint32_t serialId, cons
 	auto pDO = (BankOpRequestDO*)reqDO.get();
 	CThostFtdcReqQueryAccountField req{};
 
+	auto& investorId = session->getUserInfo()->getInvestorId();
+	auto& brokerId = session->getUserInfo()->getBrokerId();
 
 	std::strncpy(req.BankID, pDO->BankID.data(), sizeof(req.BankID));
 	if (pDO->BankBranchID.empty())
 		pDO->BankBranchID = "0000";
 	std::strncpy(req.BankBranchID, pDO->BankBranchID.data(), sizeof(req.BankBranchID));
 
-	if (pDO->BrokerID.empty())
-		pDO->BrokerID = session->getUserInfo()->getBrokerId();
-	std::strncpy(req.BrokerID, pDO->BrokerID.data(), sizeof(req.BrokerID));
+	/*if (pDO->BrokerID.empty())
+		pDO->BrokerID = session->getUserInfo()->getBrokerId();*/
+	std::strncpy(req.BrokerID, brokerId.data(), sizeof(req.BrokerID));
 
 	if (pDO->BrokerBranchID.empty())
 		pDO->BrokerBranchID = "0000";
@@ -60,7 +62,7 @@ dataobj_ptr CTPQueryUserBankAccount::HandleRequest(const uint32_t serialId, cons
 	std::strncpy(req.BankPassWord, pDO->BankPassword.data(), sizeof(req.BankPassWord));
 
 	if (pDO->AccountID.empty())
-		pDO->AccountID = session->getUserInfo()->getInvestorId();
+		pDO->AccountID = investorId;
 	std::strncpy(req.AccountID, pDO->AccountID.data(), sizeof(req.AccountID));
 
 	if (pDO->Password.empty())

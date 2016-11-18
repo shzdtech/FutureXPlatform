@@ -42,6 +42,9 @@ data_buffer PBMarketDataSerializer::Serialize(const dataobj_ptr& abstractDO)
 	PB.add_bidvolume(pDO->Bid().Volume);
 	PB.set_averageprice(pDO->AveragePrice);
 
+	if (pDO->UpdateTime)
+		PB.set_updatetime(pDO->UpdateTime);
+
 	// Doesn't change after openning
 	PB.set_preclosevalue(pDO->PreClosePrice);
 	PB.set_openvalue(pDO->OpenPrice);

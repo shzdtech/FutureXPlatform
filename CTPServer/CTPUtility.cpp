@@ -164,7 +164,7 @@ OrderStatusType CTPUtility::CheckOrderStatus(TThostFtdcOrderStatusType status, T
 		switch (submitStatus)
 		{
 		case THOST_FTDC_OSS_InsertSubmitted:
-			ret = OrderStatusType::OPENNING;
+			ret = OrderStatusType::OPENING;
 			break;
 		case THOST_FTDC_OSS_InsertRejected:
 			ret = OrderStatusType::OPEN_REJECTED;
@@ -186,8 +186,15 @@ OrderStatusType CTPUtility::CheckOrderStatus(TThostFtdcOrderStatusType status, T
 OrderDO_Ptr CTPUtility::ParseRawOrder(CThostFtdcOrderField *pOrder, OrderDO_Ptr baseOrder)
 {
 	if (!baseOrder)
+	{
+		std::string uid(pOrder->UserID);
+		std::string ivid(pOrder->InvestorID);
+		std::string brokerid(pOrder->BrokerID);
+
 		baseOrder.reset(new OrderDO(ToUInt64(pOrder->OrderRef),
-			pOrder->ExchangeID, pOrder->InstrumentID, pOrder->UserID[0] ? pOrder->UserID : pOrder->InvestorID));
+			pOrder->ExchangeID, pOrder->InstrumentID,
+			(uid.empty() || uid == ivid) ? MakeUserID(brokerid, ivid) : uid));
+	}
 
 	auto pDO = baseOrder.get();
 	pDO->Direction = (pOrder->Direction == THOST_FTDC_D_Buy) ?
@@ -221,9 +228,15 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(
 	OrderDO_Ptr baseOrder)
 {
 	if (!baseOrder)
+	{
+		std::string uid(pOrderAction->UserID);
+		std::string ivid(pOrderAction->InvestorID);
+		std::string brokerid(pOrderAction->BrokerID);
+
 		baseOrder.reset(new OrderDO(ToUInt64(pOrderAction->OrderRef),
 			pOrderAction->ExchangeID, pOrderAction->InstrumentID,
-			pOrderAction->UserID[0] ? pOrderAction->UserID : pOrderAction->InvestorID));
+			(uid.empty() || uid == ivid) ? MakeUserID(brokerid, ivid) : uid));
+	}
 
 	auto pDO = baseOrder.get();
 	pDO->OrderSysID = ToUInt64(pOrderAction->OrderSysID);
@@ -251,12 +264,17 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(
 {
 	if (!baseOrder)
 	{
+		std::string uid(pOrderInput->UserID);
+		std::string ivid(pOrderInput->InvestorID);
+		std::string brokerid(pOrderInput->BrokerID);
+
 		const char* pExchange = "";
 		if (auto pInstument = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(pOrderInput->InstrumentID))
 			pExchange = pInstument->ExchangeID().data();
 
 		baseOrder.reset(new OrderDO(ToUInt64(pOrderInput->OrderRef),
-			pExchange, pOrderInput->InstrumentID, pOrderInput->UserID[0] ? pOrderInput->UserID : pOrderInput->InvestorID));
+			pExchange, pOrderInput->InstrumentID,
+			(uid.empty() || uid == ivid) ? MakeUserID(brokerid, ivid) : uid));
 	}
 
 	auto pDO = baseOrder.get();
@@ -267,7 +285,7 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(
 	pDO->VolumeRemain = pOrderInput->VolumeTotalOriginal;
 	pDO->StopPrice = pOrderInput->StopPrice;
 	pDO->Active = pRsp == nullptr;
-	pDO->OrderStatus = pRsp ? OrderStatusType::OPEN_REJECTED : OrderStatusType::OPENNING;
+	pDO->OrderStatus = pRsp ? OrderStatusType::OPEN_REJECTED : OrderStatusType::OPENING;
 
 	pDO->BrokerID = pOrderInput->BrokerID;
 	//auto now = std::time(nullptr);
@@ -287,9 +305,15 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(
 OrderDO_Ptr CTPUtility::ParseRawOrder(CThostFtdcOrderActionField * pOrderAction, CThostFtdcRspInfoField * pRsp, OrderDO_Ptr baseOrder)
 {
 	if (!baseOrder)
+	{
+		std::string uid(pOrderAction->UserID);
+		std::string ivid(pOrderAction->InvestorID);
+		std::string brokerid(pOrderAction->BrokerID);
+
 		baseOrder.reset(new OrderDO(ToUInt64(pOrderAction->OrderRef),
 			pOrderAction->ExchangeID, pOrderAction->InstrumentID,
-			pOrderAction->UserID[0] ? pOrderAction->UserID : pOrderAction->InvestorID));
+			(uid.empty() || uid == ivid) ? MakeUserID(brokerid, ivid) : uid));
+	}
 
 	auto pDO = baseOrder.get();
 
@@ -318,8 +342,13 @@ TradeRecordDO_Ptr CTPUtility::ParseRawTrade(CThostFtdcTradeField * pTrade)
 	TradeRecordDO_Ptr ret;
 	if (pTrade)
 	{
+		std::string uid(pTrade->UserID);
+		std::string ivid(pTrade->InvestorID);
+		std::string brokerid(pTrade->BrokerID);
+
 		auto pDO = new TradeRecordDO(pTrade->ExchangeID, pTrade->InstrumentID,
-			pTrade->UserID[0] ? pTrade->UserID : pTrade->InvestorID, "");
+			(uid.empty() || uid == ivid) ? MakeUserID(brokerid, ivid) : uid, "");
+
 		ret.reset(pDO);
 		pDO->OrderID = ToUInt64(pTrade->OrderRef);
 		pDO->OrderSysID = ToUInt64(pTrade->OrderSysID);
@@ -331,10 +360,10 @@ TradeRecordDO_Ptr CTPUtility::ParseRawTrade(CThostFtdcTradeField * pTrade)
 		pDO->TradeDate = pTrade->TradeDate;
 		pDO->TradeTime = pTrade->TradeTime;
 		pDO->TradingDay = pTrade->TradingDay;
-		pDO->TradeType = (TradingType)pTrade->TradeType;
+		pDO->TradeType = (OrderTradingType)pTrade->TradeType;
 		pDO->HedgeFlag = (HedgeType)(pTrade->HedgeFlag - THOST_FTDC_HF_Speculation);
 
-		pDO->BrokerID = pTrade->BrokerID;
+		pDO->BrokerID = std::move(brokerid);
 	}
 
 	return ret;
@@ -470,8 +499,9 @@ UserPositionExDO_Ptr CTPUtility::ParseRawPostion(CThostFtdcInvestorPositionField
 	pDO->Direction = (PositionDirectionType)(pRspPosition->PosiDirection - THOST_FTDC_PD_Net);
 	pDO->HedgeFlag = (HedgeType)(pRspPosition->HedgeFlag - THOST_FTDC_HF_Speculation);
 	pDO->PositionDateFlag = (PositionDateFlagType)(pRspPosition->PositionDate - THOST_FTDC_PSD_Today);
-	pDO->LastdayPosition = pRspPosition->YdPosition;
+	pDO->YdPosition = pRspPosition->YdPosition;
 	pDO->Position = pRspPosition->Position;
+	pDO->TdPosition = pRspPosition->TodayPosition;
 	pDO->LongFrozen = pRspPosition->LongFrozen;
 	pDO->ShortFrozen = pRspPosition->ShortFrozen;
 	pDO->LongFrozenAmount = pRspPosition->LongFrozenAmount;
@@ -591,7 +621,7 @@ uint32_t CTPUtility::ParseOrderMessageID(OrderStatusType orderStatus)
 	uint32_t msgId = MSG_ID_UNDEFINED;
 	switch (orderStatus)
 	{
-	case OrderStatusType::OPENNING:
+	case OrderStatusType::OPENING:
 	case OrderStatusType::OPEN_REJECTED:
 		msgId = MSG_ID_ORDER_NEW;
 		break;
@@ -605,4 +635,9 @@ uint32_t CTPUtility::ParseOrderMessageID(OrderStatusType orderStatus)
 	}
 
 	return msgId;
+}
+
+std::string CTPUtility::MakeUserID(const std::string& brokerID, const std::string& investorID)
+{
+	return brokerID + investorID;
 }

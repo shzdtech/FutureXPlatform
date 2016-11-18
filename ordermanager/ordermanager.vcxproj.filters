@@ -45,6 +45,9 @@
     <ClCompile Include="UserPositionContext.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="UserPosTradeContext.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ordermgr_export.h">
@@ -87,6 +90,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="UserTradeContext.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="UserPosTradeContext.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

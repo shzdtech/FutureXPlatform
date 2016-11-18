@@ -42,7 +42,14 @@ TestingServerMessageProcessor::TestingServerMessageProcessor(const std::map<std:
 TestingServerMessageProcessor::~TestingServerMessageProcessor()
 {
 	_exitWorker = true;
-	_mdThread.join();
+	try
+	{
+		_mdThread.join();
+	}
+	catch (...)
+	{
+
+	}
 }
 
 IRawAPI * TestingServerMessageProcessor::getRawAPI(void)

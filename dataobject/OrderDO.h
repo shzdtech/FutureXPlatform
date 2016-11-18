@@ -26,7 +26,7 @@ enum OrderStatusType
 	PARTIAL_TRADING = 11,
 	CANCELING = 12,
 	CANCEL_REJECTED = 13,
-	OPENNING = 14
+	OPENING = 14
 };
 
 enum OrderExecType
@@ -66,6 +66,9 @@ public:
 	OrderOpenCloseType OpenClose = OrderOpenCloseType::OPEN;
 	OrderTIFType TIF = OrderTIFType::GFD;
 	OrderExecType ExecType = OrderExecType::LIMIT;
+	OrderTradingType TradingType = OrderTradingType::TRADINGTYPE_MANUAL;
+	OrderConditionFiled ConditionField = OrderConditionFiled::CON_FLD_UNSPECIFIED;
+	double ConValue = 0;
 };
 
 
@@ -88,7 +91,6 @@ public:
 
 	OrderDO(const uint64_t orderID) : OrderDO(orderID, "", "", "", ""){}
 
-	TradingType TradingType = TradingType::TRADINGTYPE_MANUAL;
 	OrderStatusType OrderStatus = OrderStatusType::UNDEFINED;
 	int VolumeTraded = 0;
 	int VolumeRemain = 0;

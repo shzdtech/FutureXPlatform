@@ -48,6 +48,8 @@ public:
 
 	static uint32_t ParseOrderMessageID(OrderStatusType orderStatus);
 
+	static std::string MakeUserID(const std::string& brokerID, const std::string& investorID);
+
 	static inline uint64_t ToUInt64(char* str) { return std::strtoull(str, nullptr, 10); }
 	static inline uint64_t ToUInt64(uint32_t low32, uint32_t high32) 
 	{ 

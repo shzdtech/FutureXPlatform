@@ -204,7 +204,7 @@ OrderDOVec_Ptr OTCOrderDAO::QueryTradingOrder(const ContractKey& contractKey)
 			obDO.Direction = rs->getBoolean(9) ? DirectionType::BUY : DirectionType::SELL;
 			obDO.OrderStatus = (OrderStatusType)rs->getInt(10);
 			obDO.TIF = (OrderTIFType)rs->getInt(11);
-			obDO.TradingType = (TradingType)rs->getInt(12);
+			obDO.TradingType = (OrderTradingType)rs->getInt(12);
 			obDO.InsertTime = rs->getString(14);
 			ret->push_back(std::move(obDO));
 		}
@@ -262,7 +262,7 @@ OrderDOVec_Ptr OTCOrderDAO::QueryTodayOrder(const std::string& userId, const Con
 			obDO.Direction = rs->getBoolean(9) != 0 ? DirectionType::BUY : DirectionType::SELL;
 			obDO.OrderStatus = (OrderStatusType)rs->getInt(10);
 			obDO.TIF = (OrderTIFType)rs->getInt(11);
-			obDO.TradingType = (TradingType)rs->getInt(12);
+			obDO.TradingType = (OrderTradingType)rs->getInt(12);
 			obDO.InsertTime = rs->getString(14);
 			ret->push_back(std::move(obDO));
 		}

@@ -1,8 +1,8 @@
 /***********************************************************************
- * Module:  UserOrderContext.cpp
+ * Module:  UserPosTradeContext.cpp
  * Author:  milk
  * Modified: 2015年11月22日 23:43:26
- * Purpose: Implementation of the class UserOrderContext
+ * Purpose: Implementation of the class UserPosTradeContext
  ***********************************************************************/
 
 #include "UserTradeContext.h"

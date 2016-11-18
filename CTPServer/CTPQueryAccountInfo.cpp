@@ -50,7 +50,7 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const uint32_t serialId, const da
 	{
 		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
 		{
-			auto& accountInfoMap = pWorkerProc->GetAccountInfo(session->getUserInfo()->getInvestorId());
+			auto& accountInfoMap = pWorkerProc->GetAccountInfo(session->getUserInfo()->getUserId());
 
 			ThrowNotFoundExceptionIfEmpty(&accountInfoMap);
 

@@ -287,10 +287,16 @@ class PBMarketData : public ::google::protobuf::Message {
   double averageprice() const;
   void set_averageprice(double value);
 
-  // optional .Micro.Future.Message.DataHeader header = 22;
+  // optional int32 updateTime = 22;
+  void clear_updatetime();
+  static const int kUpdateTimeFieldNumber = 22;
+  ::google::protobuf::int32 updatetime() const;
+  void set_updatetime(::google::protobuf::int32 value);
+
+  // optional .Micro.Future.Message.DataHeader header = 23;
   bool has_header() const;
   void clear_header();
-  static const int kHeaderFieldNumber = 22;
+  static const int kHeaderFieldNumber = 23;
   const ::Micro::Future::Message::DataHeader& header() const;
   ::Micro::Future::Message::DataHeader* mutable_header();
   ::Micro::Future::Message::DataHeader* release_header();
@@ -324,9 +330,10 @@ class PBMarketData : public ::google::protobuf::Message {
   double settleprice_;
   double preopeninterest_;
   double openinterest_;
+  ::google::protobuf::int32 lowlimit_;
+  ::google::protobuf::int32 updatetime_;
   double averageprice_;
   ::Micro::Future::Message::DataHeader* header_;
-  ::google::protobuf::int32 lowlimit_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
@@ -2896,10 +2903,16 @@ class PBPosition : public ::google::protobuf::Message {
   ::google::protobuf::int32 hedgeflag() const;
   void set_hedgeflag(::google::protobuf::int32 value);
 
-  // optional .Micro.Future.Message.DataHeader header = 17;
+  // optional int32 tdPosition = 17;
+  void clear_tdposition();
+  static const int kTdPositionFieldNumber = 17;
+  ::google::protobuf::int32 tdposition() const;
+  void set_tdposition(::google::protobuf::int32 value);
+
+  // optional .Micro.Future.Message.DataHeader header = 18;
   bool has_header() const;
   void clear_header();
-  static const int kHeaderFieldNumber = 17;
+  static const int kHeaderFieldNumber = 18;
   const ::Micro::Future::Message::DataHeader& header() const;
   ::Micro::Future::Message::DataHeader* mutable_header();
   ::Micro::Future::Message::DataHeader* release_header();
@@ -2925,8 +2938,9 @@ class PBPosition : public ::google::protobuf::Message {
   double profit_;
   double closeprofit_;
   double usemargin_;
-  ::Micro::Future::Message::DataHeader* header_;
   ::google::protobuf::int32 hedgeflag_;
+  ::google::protobuf::int32 tdposition_;
+  ::Micro::Future::Message::DataHeader* header_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
@@ -5064,7 +5078,21 @@ inline void PBMarketData::set_averageprice(double value) {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.averagePrice)
 }
 
-// optional .Micro.Future.Message.DataHeader header = 22;
+// optional int32 updateTime = 22;
+inline void PBMarketData::clear_updatetime() {
+  updatetime_ = 0;
+}
+inline ::google::protobuf::int32 PBMarketData::updatetime() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketData.updateTime)
+  return updatetime_;
+}
+inline void PBMarketData::set_updatetime(::google::protobuf::int32 value) {
+  
+  updatetime_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.updateTime)
+}
+
+// optional .Micro.Future.Message.DataHeader header = 23;
 inline bool PBMarketData::has_header() const {
   return !_is_default_instance_ && header_ != NULL;
 }
@@ -8958,7 +8986,21 @@ inline void PBPosition::set_hedgeflag(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.hedgeFlag)
 }
 
-// optional .Micro.Future.Message.DataHeader header = 17;
+// optional int32 tdPosition = 17;
+inline void PBPosition::clear_tdposition() {
+  tdposition_ = 0;
+}
+inline ::google::protobuf::int32 PBPosition::tdposition() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.tdPosition)
+  return tdposition_;
+}
+inline void PBPosition::set_tdposition(::google::protobuf::int32 value) {
+  
+  tdposition_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.tdPosition)
+}
+
+// optional .Micro.Future.Message.DataHeader header = 18;
 inline bool PBPosition::has_header() const {
   return !_is_default_instance_ && header_ != NULL;
 }

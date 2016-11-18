@@ -31,7 +31,8 @@ data_buffer PBUserPositionSerializer::Serialize(const dataobj_ptr& abstractDO)
 	PB.set_direction(pDO->Direction);
 	PB.set_hedgeflag(pDO->HedgeFlag);
 	PB.set_positiondateflag(pDO->PositionDateFlag);
-	PB.set_ydposition(pDO->LastdayPosition);
+	PB.set_ydposition(pDO->YdPosition);
+	PB.set_tdposition(pDO->TdPosition);
 	PB.set_position(pDO->Position);
 	PB.set_openvolume(pDO->OpenVolume);
 	PB.set_closevolume(pDO->CloseVolume);

@@ -21,7 +21,8 @@ public:
 
 	PositionDirectionType Direction = PositionDirectionType::PD_NET;
 	int Position = 0;
-	int LastdayPosition = 0;
+	int YdPosition = 0;
+	int TdPosition = 0;
 	int OpenVolume = 0;
 	int CloseVolume = 0;
 	HedgeType HedgeFlag = HedgeType::HEDGETYPE_SPECULATION;

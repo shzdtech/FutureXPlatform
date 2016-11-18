@@ -31,7 +31,7 @@ public:
 	int Volume = 0;
 
 	DirectionType Direction = DirectionType::SELL;
-	TradingType TradeType = TradingType::TRADINGTYPE_MANUAL;
+	OrderTradingType TradeType = OrderTradingType::TRADINGTYPE_MANUAL;
 	OrderOpenCloseType OpenClose = OrderOpenCloseType::OPEN;
 	HedgeType HedgeFlag = HedgeType::HEDGETYPE_SPECULATION;
 

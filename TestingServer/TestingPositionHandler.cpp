@@ -1,17 +1,57 @@
 #include "TestingPositionHandler.h"
 #include "../dataobject/UserPositionDO.h"
-
+#include "../bizutility/ContractCache.h"
+#include "../message/message_macro.h"
+#include "../message/DefMessageID.h"
 
 dataobj_ptr TestingPositionHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr & reqDO, IRawAPI * rawAPI, ISession * session)
 {
-	UserPositionExDO position("TSEX", "TS1610");
+	static VectorDO_Ptr<InstrumentDO> contracts;
 
-	position.CloseAmount = std::rand();
-	position.CloseProfit = std::rand();
-	position.OpenVolume = std::rand();
-	position.OpenAmount = std::rand();
-	position.OpenCost = std::rand();
-	position.Direction = PositionDirectionType::PD_LONG;
+	if (!contracts)
+		contracts = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).AllInstruments();
 
-	return std::make_shared<UserPositionDO>(position);
+	int lastidx = std::min((int)contracts->size(), 15);
+	for (int i = 0; i <= lastidx; i++)
+	{
+		UserPositionExDO position(contracts->at(i).ExchangeID(), contracts->at(i).InstrumentID());
+		position.HasMore = i < lastidx;
+		position.YdPosition = std::rand();
+		position.Position = position.YdPosition + 10;
+		position.Profit = std::rand();
+		position.PositionDateFlag = PositionDateFlagType::PSD_TODAY;
+		position.Cost = std::rand();
+		position.CloseAmount = std::rand();
+		position.CloseProfit = std::rand();
+		position.OpenVolume = std::rand();
+		position.OpenAmount = std::rand();
+		position.OpenCost = std::rand();
+		position.Direction = std::rand() % 2 ? PositionDirectionType::PD_LONG : PositionDirectionType::PD_SHORT;
+
+		OnResponseProcMacro(session->getProcessor(), MSG_ID_QUERY_POSITION, serialId, &position);
+	}
+
+	return nullptr;
+}
+
+dataobj_ptr TestingPositionHandler::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
+{
+	auto pDO = std::make_shared<UserPositionExDO>(*(UserPositionExDO*)rawParams[0]);
+
+	std::thread t([pDO, serialId, session]()
+	{
+		if (auto sessionptr = session->getProcessor()->LockMessageSession())
+		{
+			for (int i = 0; i < 15; i++)
+			{
+				pDO->Position++;
+				std::this_thread::sleep_for(std::chrono::seconds(2));
+				((TemplateMessageProcessor*)sessionptr->getProcessor().get())
+					->SendDataObject(sessionptr.get(), MSG_ID_POSITION_UPDATED, serialId, pDO);
+			}
+		}
+	});
+	t.detach();
+
+	return pDO;
 }

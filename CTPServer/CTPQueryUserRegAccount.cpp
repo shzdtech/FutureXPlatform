@@ -41,6 +41,7 @@ dataobj_ptr CTPQueryUserRegAccount::HandleRequest(const uint32_t serialId, const
 
 	auto pDO = (BankOpRequestDO*)reqDO.get();
 	CThostFtdcQryAccountregisterField req{};
+
 	std::strncpy(req.AccountID, pDO->AccountID.data(), sizeof(req.AccountID));
 	std::strncpy(req.BankBranchID, pDO->BankBranchID.data(), sizeof(req.BankBranchID));
 	std::strncpy(req.BankID, pDO->BankID.data(), sizeof(req.BankID));

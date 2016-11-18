@@ -195,5 +195,9 @@ void ASIOTCPServer::asyc_accept(void) {
 			((ASIOSessionManager*)_manager_ptr.get())->CreateSession(std::move(_socket), _max_msg_size, _sessiontimeout);
 			asyc_accept();
 		}
+		else
+		{
+			LOG_ERROR << __FUNCTION__ << ec.message();
+		}
 	});
 }

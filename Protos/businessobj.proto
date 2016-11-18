@@ -35,7 +35,9 @@ message PBMarketData
 	double openInterest = 20;
 	double averagePrice = 21;
 
-	DataHeader header = 22;
+	int32 updateTime = 22;
+
+	DataHeader header = 23;
 }
 
 message PBMarketDataList
@@ -330,8 +332,10 @@ message PBPosition {
 	double	useMargin = 15;
 	///投机套保标志
 	int32 hedgeFlag = 16;
+	///今日持仓
+	int32 tdPosition = 17;
 
-	DataHeader header = 17;
+	DataHeader header = 18;
 }
 
 message PBAccountInfo {

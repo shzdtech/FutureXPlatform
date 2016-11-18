@@ -237,7 +237,7 @@ void CTPTradeWorkerProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUs
 			auto userinfo_ptr = session->getUserInfo();
 			userinfo_ptr->setBrokerId(pRspUserLogin->BrokerID);
 			userinfo_ptr->setInvestorId(pRspUserLogin->UserID);
-			userinfo_ptr->setUserId(pRspUserLogin->UserID);
+			userinfo_ptr->setUserId(CTPUtility::MakeUserID(pRspUserLogin->BrokerID, pRspUserLogin->UserID));
 			userinfo_ptr->setPermission(ALLOW_TRADING);
 			userinfo_ptr->setFrontId(pRspUserLogin->FrontID);
 			userinfo_ptr->setSessionId(pRspUserLogin->SessionID);
