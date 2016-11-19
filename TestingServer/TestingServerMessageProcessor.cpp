@@ -81,6 +81,7 @@ void TestingServerMessageProcessor::_mdGenerator()
 						marketDataDO.Volume = 1 + std::rand() % 100;
 						marketDataDO.UpperLimitPrice = marketDataDO.Ask().Price * 1.1;
 						marketDataDO.LowerLimitPrice = marketDataDO.Bid().Volume * 0.9;
+						marketDataDO.PreSettlementPrice = std::rand();
 
 						OnResponseMacro(MSG_ID_RET_MARKETDATA, 0, &marketDataDO);
 						OnResponseMacro(MSG_ID_RTN_PRICING, 0, &marketDataDO);

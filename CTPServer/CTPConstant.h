@@ -9,6 +9,7 @@
 #define	__CTP_CONSTANT_H
 #include <string>
 
+static const std::string EXCHANGE_SHFE = "SHFE";
 static const std::string EXCHANGE_CTP = "ctp";
 static const std::string EXCHANGE_EMPTY = "";
 static const std::string CTP_MD_BROKERID = "CTP.MD.LOGIN.BROKERID";

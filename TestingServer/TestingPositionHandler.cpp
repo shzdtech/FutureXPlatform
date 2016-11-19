@@ -16,11 +16,13 @@ dataobj_ptr TestingPositionHandler::HandleRequest(const uint32_t serialId, const
 	{
 		UserPositionExDO position(contracts->at(i).ExchangeID(), contracts->at(i).InstrumentID());
 		position.HasMore = i < lastidx;
-		position.YdPosition = std::rand();
-		position.Position = position.YdPosition + 10;
-		position.Profit = std::rand();
+		position.YdPosition = std::rand() % 10;
+		position.TdPosition = std::rand() % 10;
+		position.YdProfit = std::rand();
+		position.TdProfit = std::rand();
 		position.PositionDateFlag = PositionDateFlagType::PSD_TODAY;
-		position.Cost = std::rand();
+		position.YdCost = std::rand();
+		position.TdCost = std::rand();
 		position.CloseAmount = std::rand();
 		position.CloseProfit = std::rand();
 		position.OpenVolume = std::rand();
@@ -44,7 +46,7 @@ dataobj_ptr TestingPositionHandler::HandleResponse(const uint32_t serialId, cons
 		{
 			for (int i = 0; i < 15; i++)
 			{
-				pDO->Position++;
+				pDO->TdPosition++;
 				std::this_thread::sleep_for(std::chrono::seconds(2));
 				((TemplateMessageProcessor*)sessionptr->getProcessor().get())
 					->SendDataObject(sessionptr.get(), MSG_ID_POSITION_UPDATED, serialId, pDO);

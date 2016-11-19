@@ -20,7 +20,6 @@ public:
 		: ContractKey(exchangeID, instrumentID)	{}
 
 	PositionDirectionType Direction = PositionDirectionType::PD_NET;
-	int Position = 0;
 	int YdPosition = 0;
 	int TdPosition = 0;
 	int OpenVolume = 0;
@@ -29,13 +28,19 @@ public:
 
 	double OpenAmount = 0;
 	double CloseAmount = 0;
-	double Cost = 0;
+	double TdCost = 0;
+	double YdCost = 0;
+	double TdProfit = 0;
+	double YdProfit = 0;
 	double OpenCost = 0;
-	double Profit = 0;
 	double CloseProfit = 0;
 	double UseMargin = 0;
 	
 	PositionDateFlagType PositionDateFlag;
+
+	int Position() { return YdPosition + TdPosition; }
+	double Cost() { return YdCost + TdCost; }
+	double Profit() { return YdProfit + TdProfit; }
 
 protected:
 

@@ -197,7 +197,7 @@ void ASIOTCPServer::asyc_accept(void) {
 		}
 		else
 		{
-			LOG_ERROR << __FUNCTION__ << ec.message();
+			LOG_INFO << __FUNCTION__ << ec.message();
 		}
 	});
 }

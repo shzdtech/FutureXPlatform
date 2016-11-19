@@ -256,3 +256,4 @@ nbproject/
 .dep.inc
 Makefile
 /lib/google/protobuf/lib/libprotobuf-vc140-x64-mt.lib
+/lib/google/protobuf/lib/libprotobuf-vc140-x64-mt-gd.lib

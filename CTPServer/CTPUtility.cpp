@@ -6,6 +6,7 @@
  ***********************************************************************/
 
 #include "CTPUtility.h"
+#include "CTPConstant.h"
 #include "tradeapi/ThostFtdcUserApiStruct.h"
 #include "../message/BizError.h"
 #include <boost/locale/encoding.hpp>
@@ -485,7 +486,7 @@ BankOpResultDO_Ptr CTPUtility::ParseRawTransfer(CThostFtdcTransferSerialField * 
 	return ret;
 }
 
-UserPositionExDO_Ptr CTPUtility::ParseRawPostion(CThostFtdcInvestorPositionField * pRspPosition)
+UserPositionExDO_Ptr CTPUtility::ParseRawPosition(CThostFtdcInvestorPositionField * pRspPosition)
 {
 	std::string exchange;
 	if (auto pInstrumentDO = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(pRspPosition->InstrumentID))
@@ -499,9 +500,30 @@ UserPositionExDO_Ptr CTPUtility::ParseRawPostion(CThostFtdcInvestorPositionField
 	pDO->Direction = (PositionDirectionType)(pRspPosition->PosiDirection - THOST_FTDC_PD_Net);
 	pDO->HedgeFlag = (HedgeType)(pRspPosition->HedgeFlag - THOST_FTDC_HF_Speculation);
 	pDO->PositionDateFlag = (PositionDateFlagType)(pRspPosition->PositionDate - THOST_FTDC_PSD_Today);
-	pDO->YdPosition = pRspPosition->YdPosition;
-	pDO->Position = pRspPosition->Position;
-	pDO->TdPosition = pRspPosition->TodayPosition;
+	
+	if (exchange == EXCHANGE_SHFE)
+	{
+		if (pRspPosition->PositionDate == THOST_FTDC_PSD_Today)
+		{
+			pDO->TdPosition = pRspPosition->Position;
+			pDO->TdCost = pRspPosition->PositionCost;
+			pDO->TdProfit = pRspPosition->PositionProfit;
+		}
+		else
+		{
+			pDO->YdPosition = pRspPosition->Position;
+			pDO->YdCost = pRspPosition->PositionCost;
+			pDO->YdProfit = pRspPosition->PositionProfit;
+		}
+	}
+	else
+	{
+		pDO->TdPosition = pRspPosition->TodayPosition;
+		pDO->YdPosition = pRspPosition->Position - pDO->TdPosition;
+		pDO->TdCost = pRspPosition->PositionCost;
+		pDO->TdProfit = pRspPosition->PositionProfit;
+	}
+
 	pDO->LongFrozen = pRspPosition->LongFrozen;
 	pDO->ShortFrozen = pRspPosition->ShortFrozen;
 	pDO->LongFrozenAmount = pRspPosition->LongFrozenAmount;
@@ -510,7 +532,6 @@ UserPositionExDO_Ptr CTPUtility::ParseRawPostion(CThostFtdcInvestorPositionField
 	pDO->CloseVolume = pRspPosition->CloseVolume;
 	pDO->OpenAmount = pRspPosition->OpenAmount;
 	pDO->CloseAmount = pRspPosition->CloseAmount;
-	pDO->Cost = pRspPosition->PositionCost;
 	pDO->PreMargin = pRspPosition->PreMargin;
 	pDO->UseMargin = pRspPosition->UseMargin;
 	pDO->FrozenMargin = pRspPosition->FrozenMargin;
@@ -519,7 +540,6 @@ UserPositionExDO_Ptr CTPUtility::ParseRawPostion(CThostFtdcInvestorPositionField
 	pDO->CashIn = pRspPosition->CashIn;
 	pDO->Commission = pRspPosition->Commission;
 	pDO->CloseProfit = pRspPosition->CloseProfit;
-	pDO->Profit = pRspPosition->PositionProfit;
 	pDO->PreSettlementPrice = pRspPosition->PreSettlementPrice;
 	pDO->SettlementPrice = pRspPosition->SettlementPrice;
 	pDO->TradingDay = pRspPosition->TradingDay;

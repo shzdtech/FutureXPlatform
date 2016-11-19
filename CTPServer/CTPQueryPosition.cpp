@@ -12,6 +12,7 @@
 #include "CTPTradeWorkerProcessor.h"
 #include "CTPWorkerProcessorID.h"
 
+#include "../litelogger/LiteLogger.h"
 #include "../message/DefMessageID.h"
 #include "../message/MessageUtility.h"
 #include "../common/BizErrorIDs.h"
@@ -127,28 +128,42 @@ dataobj_ptr CTPQueryPosition::HandleResponse(const uint32_t serialId, const para
 
 	auto pData = (CThostFtdcInvestorPositionField*)rawRespParams[0];
 
-	UserPositionExDO_Ptr ret = CTPUtility::ParseRawPostion(pData);
+	auto ret = CTPUtility::ParseRawPosition(pData);
 
 	ret->HasMore = !*(bool*)rawRespParams[3];
 
+	LOG_DEBUG << pData->InstrumentID << ',' << pData->PositionDate << ',' << pData->PosiDirection;
+
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
 	{
-		if (pData->Position)
+		if (ret->ExchangeID() == EXCHANGE_SHFE)
 		{
-			if (pData->PositionDate == THOST_FTDC_PSD_Today)
+			auto position_ptr = pWorkerProc->GetUserPositionContext().GetPosition(session->getUserInfo()->getUserId(), ret->InstrumentID(), ret->Direction);
+			if (position_ptr)
 			{
-				pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo()->getUserId(), ret);
+				if (pData->PositionDate == THOST_FTDC_PSD_Today)
+				{
+					ret->YdPosition = position_ptr->YdPosition;
+					ret->YdCost = position_ptr->YdCost;
+					ret->YdProfit = position_ptr->YdProfit;
+				}
+				else
+				{
+					position_ptr->YdPosition = ret->YdPosition;
+					position_ptr->YdCost = ret->YdCost;
+					position_ptr->YdProfit = ret->YdProfit;
+					ret = position_ptr;
+				}
 			}
 			else
 			{
-				auto position_ptr = pWorkerProc->GetUserPositionContext().
-					GetPosition(session->getUserInfo()->getUserId(), ret->InstrumentID(), ret->Direction);
-				if (!position_ptr)
-				{
-					ret->PositionDateFlag = PositionDateFlagType::PSD_TODAY;
-					pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo()->getUserId(), ret);
-				}
+				ret->PositionDateFlag = PositionDateFlagType::PSD_TODAY;
 			}
+		}
+
+		if (ret->Position())
+		{
+			pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo()->getUserId(), ret);
 		}
 		else
 		{

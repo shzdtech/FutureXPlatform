@@ -33,15 +33,15 @@ data_buffer PBUserPositionSerializer::Serialize(const dataobj_ptr& abstractDO)
 	PB.set_positiondateflag(pDO->PositionDateFlag);
 	PB.set_ydposition(pDO->YdPosition);
 	PB.set_tdposition(pDO->TdPosition);
-	PB.set_position(pDO->Position);
+	PB.set_position(pDO->Position());
 	PB.set_openvolume(pDO->OpenVolume);
 	PB.set_closevolume(pDO->CloseVolume);
 	PB.set_openamount(pDO->OpenAmount);
 	PB.set_closeamount(pDO->CloseAmount);
-	PB.set_cost(pDO->Cost);
+	PB.set_cost(pDO->Cost());
 	PB.set_usemargin(pDO->UseMargin);
 	PB.set_closeprofit(pDO->CloseProfit);
-	PB.set_profit(pDO->Profit);
+	PB.set_profit(pDO->Profit());
 	PB.set_opencost(pDO->OpenCost);
 	/*PB.set_longfrozen(pDO->LongFrozen);
 	PB.set_shortfrozen(pDO->ShortFrozen);
