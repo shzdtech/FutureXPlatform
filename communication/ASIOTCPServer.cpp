@@ -24,6 +24,7 @@ ASIOTCPServer::ASIOTCPServer() :
 	_acceptor(_iosrv)
 {
 	_manager_ptr = std::make_shared<ASIOSessionManager>(this);
+	_startcloseLock.clear(std::memory_order_release); // unlock
 
 #if !(defined(_WIN32) || defined(_WINDOWS))
 	std::signal(SIGPIPE, SIG_IGN);
@@ -82,19 +83,21 @@ bool ASIOTCPServer::Initialize(const std::string& uri, const std::string& config
 ////////////////////////////////////////////////////////////////////////
 
 bool ASIOTCPServer::Stop(void) {
-	std::lock_guard<std::mutex> lock(_startcloseLock);
+	while (_startcloseLock.test_and_set(std::memory_order_acquire)); // lock
 
 	_manager_ptr->OnServerClosing();
 
-	_iosrv.stop();
+	_running = false;
+
 	_acceptor.close();
+	_iosrv.stop();
 
 	for (auto& th : _workers) {
 		th.join();
 	}
 	_workers.clear();
 
-	_running = false;
+	_startcloseLock.clear(std::memory_order_release); // unlock
 	return !_running;
 }
 
@@ -107,43 +110,42 @@ bool ASIOTCPServer::Stop(void) {
 ////////////////////////////////////////////////////////////////////////
 
 bool ASIOTCPServer::Start(void) {
-	std::lock_guard<std::mutex> lock(_startcloseLock);
+	while (_startcloseLock.test_and_set(std::memory_order_acquire)); // lock
 
-	if (!_running)
+	if (!_acceptor.is_open())
 	{
-		if (!_acceptor.is_open())
+		boost::system::error_code ec;
+		tcp::endpoint endpoint(tcp::v4(), _port);
+		if (!_acceptor.open(endpoint.protocol(), ec))
 		{
-			boost::system::error_code ec;
-			tcp::endpoint endpoint(tcp::v4(), _port);
-			if (!_acceptor.open(endpoint.protocol(), ec))
+			if (!_acceptor.bind(endpoint, ec))
 			{
-				if (!_acceptor.bind(endpoint, ec))
+				if (!_acceptor.listen(socket_base::max_connections, ec))
 				{
-					if (!_acceptor.listen(socket_base::max_connections, ec))
+					// Start #pool_sz threads for handling io services
+					_iosrv.reset();
+
+					_manager_ptr->OnServerStarting();
+
+					asyc_accept();
+
+					for (int i = 0; i < _nthread; i++)
 					{
-						// Start #pool_sz threads for handling io services
-						_iosrv.reset();
-
-						_manager_ptr->OnServerStarting();
-
-						asyc_accept();
-
-						for (int i = 0; i < _nthread; i++)
-						{
-							_workers.push_back(std::move(std::thread(&ASIOTCPServer::work_thread, this)));
-						}
-
-						_running = true;
+						_workers.push_back(std::move(std::thread(&ASIOTCPServer::work_thread, this)));
 					}
+
+					_running = true;
 				}
 			}
+		}
 
-			if (ec)
-			{
-				LOG_ERROR << "Failed to start " << getUri() << ": " << ec.message();
-			}
+		if (ec)
+		{
+			LOG_ERROR << "Failed to start " << getUri() << ": " << ec.message();
 		}
 	}
+
+	_startcloseLock.clear(std::memory_order_release); // unlock
 	return _running;
 }
 
@@ -197,7 +199,8 @@ void ASIOTCPServer::asyc_accept(void) {
 		}
 		else
 		{
-			LOG_INFO << __FUNCTION__ << ec.message();
+			if (_running)
+				LOG_ERROR << __FUNCTION__ << ec.message();
 		}
 	});
 }
