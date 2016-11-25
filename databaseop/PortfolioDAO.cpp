@@ -42,7 +42,7 @@ VectorDO_Ptr<PortfolioDO> PortfolioDAO::FindPortfolioByUser(const std::string& u
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
 		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
 	}
 
@@ -72,7 +72,7 @@ int PortfolioDAO::CreatePortofolio(const PortfolioDO & portfolio)
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
 		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
 	}
 

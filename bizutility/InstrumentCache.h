@@ -14,6 +14,8 @@ public:
 	VectorDO_Ptr<InstrumentDO> QueryInstrument(const std::string& instrumentId,
 		const std::string& exchangeId = EMPTY_STRING, const std::string& productId = EMPTY_STRING);
 
+	VectorDO_Ptr<InstrumentDO> QueryInstrumentByProductType(ProductType productType);
+
 	InstrumentDO* QueryInstrumentById(const std::string& instrumentId);
 
 	VectorDO_Ptr<InstrumentDO> AllInstruments(void);

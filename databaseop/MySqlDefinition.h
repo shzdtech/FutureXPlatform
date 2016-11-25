@@ -7,6 +7,7 @@
 #include <cppconn/resultset.h>
 #include <cppconn/statement.h>
 #include <cppconn/prepared_statement.h>
+#include <cppconn/datatype.h>
 #include "ConnectionPool.h"
 
 typedef std::shared_ptr<sql::Connection> Connection_Ptr;

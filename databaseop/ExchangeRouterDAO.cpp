@@ -18,7 +18,7 @@ void ExchangeRouterDAO::FindAllExchangeRouters(std::map<std::string, std::string
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
 		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
 	}
 }

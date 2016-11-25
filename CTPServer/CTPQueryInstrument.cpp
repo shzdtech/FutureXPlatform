@@ -101,6 +101,7 @@ dataobj_ptr CTPQueryInstrument::HandleResponse(const uint32_t serialId, const pa
 		insDO.Name = boost::locale::conv::to_utf<char>(pData->InstrumentName, CHARSET_GB2312);
 		UnderlyingMap::TryFind(pData->ProductID, insDO.ProductID);
 		insDO.ProductType = (ProductType)(pData->ProductClass - THOST_FTDC_PC_Futures);
+		insDO.ContractType = ContractType::CONTRACTTYPE_FUTURE;
 		insDO.DeliveryYear = pData->DeliveryYear;
 		insDO.DeliveryMonth = pData->DeliveryMonth;
 		insDO.MaxMarketOrderVolume = pData->MaxMarketOrderVolume;
@@ -120,6 +121,7 @@ dataobj_ptr CTPQueryInstrument::HandleResponse(const uint32_t serialId, const pa
 		insDO.PositionDateType = (PositionDateType)(pData->PositionDateType - THOST_FTDC_PDT_UseHistory);
 		insDO.LongMarginRatio = pData->LongMarginRatio;
 		insDO.ShortMarginRatio = pData->ShortMarginRatio;
+		insDO.StrikePrice = 0;
 
 		if (pData->StrikePrice > 0 && pData->StrikePrice < 1e32)
 		{
@@ -136,7 +138,7 @@ dataobj_ptr CTPQueryInstrument::HandleResponse(const uint32_t serialId, const pa
 				insDO.ContractType = ContractType::CONTRACTTYPE_PUT_OPTION;
 				break;
 			default:
-				insDO.ContractType = ContractType::CONTRACTTYPE_FUTURE;
+				break;
 			}
 		}
 

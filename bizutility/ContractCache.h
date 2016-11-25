@@ -26,5 +26,6 @@ public:
 	static InstrumentCache& Get(ProductCacheType productCacheType);
 	static void SetSyncFlag(const std::string& datasource, InstrumentSyncFlag flag);
 	static InstrumentSyncFlag GetSyncFlag(const std::string& datasource);
+	static bool PersistCache(ProductCacheType productCacheType, const std::string & datasource, const std::string & version);
 };
 

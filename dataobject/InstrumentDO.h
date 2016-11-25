@@ -22,30 +22,30 @@ public:
 
 	std::string Name;
 	std::string ProductID;
-	ProductType ProductType;
-	ContractType ContractType;
+	ProductType ProductType = ProductType::PRODUCT_FUTURE;
+	ContractType ContractType = ContractType::CONTRACTTYPE_UNSPECIFIED;
 	std::string CreateDate;
 	std::string OpenDate;
 	std::string ExpireDate;
 	std::string StartDelivDate;
 	std::string EndDelivDate;
-	LifePhaseType LifePhase;
-	PositionType PositionType;
-	PositionDateType PositionDateType;
+	LifePhaseType LifePhase = LifePhaseType::PHASE_NOTSTART;
+	PositionType PositionType = PositionType::PT_NET;
+	PositionDateType PositionDateType = PositionDateType::PDT_USEHISTORY;
 
-	int DeliveryYear;
-	int DeliveryMonth;
-	int MaxMarketOrderVolume;
-	int MinMarketOrderVolume;
-	int MaxLimitOrderVolume;
-	int MinLimitOrderVolume ;
-	int VolumeMultiple;
-	bool IsTrading;
+	int DeliveryYear = 0;
+	int DeliveryMonth = 0;
+	int MaxMarketOrderVolume = 0;
+	int MinMarketOrderVolume = 0;
+	int MaxLimitOrderVolume = 0;
+	int MinLimitOrderVolume = 0;
+	int VolumeMultiple = 1;
+	bool IsTrading = true;
 
-	double PriceTick;
-	double LongMarginRatio;
-	double ShortMarginRatio;
-	double StrikePrice;
+	double PriceTick = 0;
+	double LongMarginRatio = 0;
+	double ShortMarginRatio = 0;
+	double StrikePrice = 0;
 	
 	ContractKey UnderlyingContract;
 protected:

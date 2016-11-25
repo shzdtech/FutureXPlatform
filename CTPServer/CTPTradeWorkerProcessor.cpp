@@ -14,9 +14,11 @@
 #include "../message/DefMessageID.h"
 #include "../message/message_macro.h"
 #include "../bizutility/ExchangeRouterTable.h"
-
+#include "../databaseop/VersionDAO.h"
+#include "../databaseop/ContractDAO.h"
 #include "../databaseop/TradeDAO.h"
 
+#include "../bizutility/ContractCache.h"
 #include "../litelogger/LiteLogger.h"
 
  ////////////////////////////////////////////////////////////////////////
@@ -268,6 +270,13 @@ void CTPTradeWorkerProcessor::OnRspQryInstrument(CThostFtdcInstrumentField * pIn
 		{
 			DataLoadMask |= INSTRUMENT_DATA_LOADED;
 			OnDataLoaded();
+
+			std::string item = "contract:" + _serverCtx->getServerUri();
+			auto time = std::time(nullptr);
+			char version[20];
+			std::strftime(version, sizeof(version), "%F", std::localtime(&time));
+
+			ContractCache::PersistCache(PRODUCT_CACHE_EXCHANGE, item, version);
 		}
 	}
 	catch (...) {}

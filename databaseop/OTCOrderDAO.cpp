@@ -51,7 +51,7 @@ OrderDO_Ptr OTCOrderDAO::CreateOrder(const OrderRequestDO& orderDO, const IPrici
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
 		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
 	}
 
@@ -89,7 +89,7 @@ bool OTCOrderDAO::CancelOrder(const OrderRequestDO& orderDO, OrderStatusType& st
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
 		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
 	}
 
@@ -125,7 +125,7 @@ bool OTCOrderDAO::AcceptOrder(const OrderRequestDO& orderDO, OrderStatusType& st
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
 		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
 	}
 
@@ -161,7 +161,7 @@ bool OTCOrderDAO::RejectOrder(const OrderRequestDO& orderDO, OrderStatusType& st
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
 		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
 	}
 
@@ -211,7 +211,7 @@ OrderDOVec_Ptr OTCOrderDAO::QueryTradingOrder(const ContractKey& contractKey)
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
 		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
 	}
 
@@ -269,7 +269,7 @@ OrderDOVec_Ptr OTCOrderDAO::QueryTodayOrder(const std::string& userId, const Con
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
 		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
 	}
 

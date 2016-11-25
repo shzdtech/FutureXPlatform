@@ -32,7 +32,7 @@
         "class.uuid": "factory.ctp.marketdata.service",
         "params": {
           "load_workprocessor": "true",
-          "product_type": "1",
+          "product_type": "1;5",
           "logout_dataloaded": "true",
           "CTP.MD.SERVER": "tcp://ctpfz1-front3.citicsf.com:51213",
           "CTP.MD.LOGIN.BROKERID": "66666",

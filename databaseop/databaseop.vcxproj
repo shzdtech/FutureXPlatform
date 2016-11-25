@@ -184,6 +184,7 @@
     <ClInclude Include="SysParamsDAO.h" />
     <ClInclude Include="TradeDAO.h" />
     <ClInclude Include="UserInfoDAO.h" />
+    <ClInclude Include="VersionDAO.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AbstractConnectionManager.cpp" />
@@ -198,6 +199,7 @@
     <ClCompile Include="SysParamsDAO.cpp" />
     <ClCompile Include="TradeDAO.cpp" />
     <ClCompile Include="UserInfoDAO.cpp" />
+    <ClCompile Include="VersionDAO.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="databaseop.rc" />

@@ -68,7 +68,8 @@ public:
 	OrderExecType ExecType = OrderExecType::LIMIT;
 	OrderTradingType TradingType = OrderTradingType::TRADINGTYPE_MANUAL;
 	OrderConditionFiled ConditionField = OrderConditionFiled::CON_FLD_UNSPECIFIED;
-	double ConValue = 0;
+	double ConValueUpper = DBL_MAX;
+	double ConValueLower = 0;
 };
 
 

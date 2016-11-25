@@ -46,7 +46,7 @@ VectorDO_Ptr<TradeRecordDO> TradeDAO::QueryTrade(const std::string& userid, cons
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
 		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
 	}
 
@@ -82,7 +82,7 @@ int TradeDAO::SaveExchangeTrade(int64_t tradeId, int64_t orderSysId,
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
 		ret = sqlEx.getErrorCode();
 	}
 

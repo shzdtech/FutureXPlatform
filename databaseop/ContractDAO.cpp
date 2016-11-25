@@ -61,7 +61,52 @@ VectorDO_Ptr<InstrumentDO> ContractDAO::FindContractByProductType(int productTyp
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
+		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
+	}
+
+	return ret;
+}
+
+bool ContractDAO::UpsertContracts(const std::vector<InstrumentDO>& instuments)
+{
+	bool ret = false;
+	static const std::string sql_updatecontract(
+		"INSERT INTO contractinfo (exchange_symbol,contract_symbol,name,contract_type,underlying_symbol,expiration,"
+			"strikeprice,underlying_exchange,underlying_contract,product_type,lifephase) "
+			"VALUES(?,?,?,?,?,?,?,?,?,?,?) "
+			"ON DUPLICATE KEY UPDATE name=?, lifephase=?");
+
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
+	try
+	{
+		AutoClosePreparedStmt_Ptr prestmt(
+			session->getConnection()->prepareStatement(sql_updatecontract));
+
+		for (auto& contract : instuments)
+		{
+			prestmt->setString(1, contract.ExchangeID());
+			prestmt->setString(2, contract.InstrumentID());
+			prestmt->setString(3, contract.Name);
+			prestmt->setInt(4, contract.ContractType);
+			prestmt->setString(5, contract.ProductID);
+			contract.ExpireDate.empty() ? prestmt->setNull(6, sql::DataType::DATE) : prestmt->setString(6, contract.ExpireDate);
+			prestmt->setDouble(7, contract.StrikePrice);
+			contract.UnderlyingContract.ExchangeID().empty() ? prestmt->setNull(8, sql::DataType::VARCHAR) : prestmt->setString(8, contract.UnderlyingContract.ExchangeID());
+			contract.UnderlyingContract.InstrumentID().empty() ? prestmt->setNull(9, sql::DataType::VARCHAR) : prestmt->setString(9, contract.UnderlyingContract.InstrumentID());
+			prestmt->setInt(10, contract.ProductType);
+			prestmt->setInt(11, contract.LifePhase);
+			prestmt->setString(12, contract.Name);
+			prestmt->setInt(13, contract.LifePhase);
+
+			prestmt->executeUpdate();
+		}
+
+		ret = true;
+	}
+	catch (sql::SQLException& sqlEx)
+	{
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
 		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
 	}
 

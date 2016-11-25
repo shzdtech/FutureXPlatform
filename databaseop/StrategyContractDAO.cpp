@@ -91,7 +91,7 @@ VectorDO_Ptr<StrategyContractDO> StrategyContractDAO::LoadStrategyContractByProd
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
 		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
 	}
 
@@ -125,7 +125,7 @@ void StrategyContractDAO::RetrievePricingContracts(const std::string& strategyEx
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
 		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
 	}
 }
@@ -155,7 +155,7 @@ void StrategyContractDAO::RetrievePricingContractsByProductType(int productType,
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
 		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
 	}
 }
@@ -180,7 +180,7 @@ void StrategyContractDAO::RetrieveStrategyModels(autofillmap<UserStrategyName, a
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
 		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
 	}
 }
@@ -214,7 +214,7 @@ bool StrategyContractDAO::FindStrategyModelByAim(const std::string & strategySym
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
 		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
 	}
 
@@ -239,15 +239,15 @@ void StrategyContractDAO::UpdateStrategy(const StrategyContractDO & strategyDO)
 		prestmt->setBoolean(5, strategyDO.BidEnabled);
 		prestmt->setBoolean(6, strategyDO.AskEnabled);
 		prestmt->setString(7, strategyDO.StrategyName);
-		strategyDO.PricingModel ? prestmt->setString(8, strategyDO.PricingModel->InstanceName) : prestmt->setNull(8, 0);
-		strategyDO.IVModel ? prestmt->setString(9, strategyDO.IVModel->InstanceName) : prestmt->setNull(9, 0);
-		strategyDO.VolModel ? prestmt->setString(10, strategyDO.VolModel->InstanceName) : prestmt->setNull(10, 0);
+		strategyDO.PricingModel ? prestmt->setString(8, strategyDO.PricingModel->InstanceName) : prestmt->setNull(8, sql::DataType::VARCHAR);
+		strategyDO.IVModel ? prestmt->setString(9, strategyDO.IVModel->InstanceName) : prestmt->setNull(9, sql::DataType::VARCHAR);
+		strategyDO.VolModel ? prestmt->setString(10, strategyDO.VolModel->InstanceName) : prestmt->setNull(10, sql::DataType::VARCHAR);
 
 		prestmt->executeUpdate();
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
 		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
 	}
 }
@@ -293,7 +293,7 @@ void StrategyContractDAO::UpdatePricingContract(const StrategyContractDO& sto)
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
 		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
 	}
 }
@@ -327,7 +327,7 @@ VectorDO_Ptr<ContractParamDO> StrategyContractDAO::RetrieveContractParamByUser(c
 	}
 	catch (sql::SQLException& sqlEx)
 	{
-		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.getSQLStateCStr();
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
 		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
 	}
 
