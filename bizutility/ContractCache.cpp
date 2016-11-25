@@ -27,6 +27,7 @@ InstrumentSyncFlag ContractCache::GetSyncFlag(const std::string & datasource)
 
 bool ContractCache::PersistCache(ProductCacheType productCacheType, const std::string & datasource, const std::string & version)
 {
+	bool ret = false;
 	std::string ver;
 	VersionDAO::GetVersion(datasource, ver);
 	if (ver != version)
@@ -34,5 +35,7 @@ bool ContractCache::PersistCache(ProductCacheType productCacheType, const std::s
 		auto vector_ptr = ContractCache::Get(productCacheType).AllInstruments();
 		ContractDAO::UpsertContracts(*vector_ptr);
 		VersionDAO::UpsertVersion(datasource, version);
+		ret = true;
 	}
+	return ret;
 }
