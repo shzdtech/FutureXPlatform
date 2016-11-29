@@ -1,9 +1,9 @@
 /***********************************************************************
- * Module:  CTSServiceFactory.cpp
- * Author:  milk
- * Modified: 2015年11月8日 15:47:20
- * Purpose: Implementation of the class CTSServiceFactory
- ***********************************************************************/
+* Module:  CTSServiceFactory.cpp
+* Author:  milk
+* Modified: 2015年11月8日 15:47:20
+* Purpose: Implementation of the class CTSServiceFactory
+***********************************************************************/
 
 #include "CTSServiceFactory.h"
 #include "CTSProcessor.h"
@@ -33,7 +33,15 @@ std::map<uint, IMessageHandler_Ptr> CTSServiceFactory::CreateMessageHandlers(ISe
 
 	msg_hdl_map[MSG_ID_ORDER_CANCEL] = std::make_shared<CTSCancelOrder>();
 
-	msg_hdl_map[MSG_ID_ORDER_UPDATE] = std::make_shared<CTSQueryOrder>();
+	msg_hdl_map[MSG_ID_QUERY_ORDER] = std::make_shared<CTSQueryOrder>();
+
+	msg_hdl_map[MSG_ID_QUERY_TRADE] = std::make_shared<CTSQueryTrade>();
+
+	msg_hdl_map[MSG_ID_QUERY_TRADE] = std::make_shared<CTSQueryPosition>();
+
+	msg_hdl_map[MSG_ID_POSITION_UPDATED] = std::make_shared<CTSReturnPosition>();
+
+	msg_hdl_map[MSG_ID_TRADE_RTN] = std::make_shared<CTSReturnTrade>();
 
 	return msg_hdl_map;
 }

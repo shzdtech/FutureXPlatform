@@ -46,10 +46,14 @@ public:
 	double ExchangeDeliveryMargin = 0;
 	double ReserveBalance = 0;
 
+
 protected:
 
 private:
 
 };
+
+typedef std::shared_ptr<AccountInfoDO> AccountInfoDO_Ptr;
+
 
 #endif

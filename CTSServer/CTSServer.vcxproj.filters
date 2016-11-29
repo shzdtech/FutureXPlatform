@@ -72,6 +72,24 @@
     <ClInclude Include="CTSQueryOrder.h">
       <Filter>头文件\Trader</Filter>
     </ClInclude>
+    <ClInclude Include="CTSQueryPosition.h">
+      <Filter>头文件\Trader</Filter>
+    </ClInclude>
+    <ClInclude Include="CTSQueryTrade.h">
+      <Filter>头文件\Trader</Filter>
+    </ClInclude>
+    <ClInclude Include="CTSReturnPosition.h">
+      <Filter>头文件\Trader</Filter>
+    </ClInclude>
+    <ClInclude Include="CTSReturnTrade.h">
+      <Filter>头文件\Trader</Filter>
+    </ClInclude>
+    <ClInclude Include="CTSQueryAccountInfo.h">
+      <Filter>头文件\Trader</Filter>
+    </ClInclude>
+    <ClInclude Include="CTSReturnAccountInfo.h">
+      <Filter>头文件\Trader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
@@ -111,6 +129,24 @@
       <Filter>源文件\Trader</Filter>
     </ClCompile>
     <ClCompile Include="CTSQueryOrder.cpp">
+      <Filter>源文件\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTSQueryPosition.cpp">
+      <Filter>源文件\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTSQueryTrade.cpp">
+      <Filter>源文件\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTSReturnPosition.cpp">
+      <Filter>源文件\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTSReturnTrade.cpp">
+      <Filter>源文件\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTSQueryAccountInfo.cpp">
+      <Filter>源文件\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTSReturnAccountInfo.cpp">
       <Filter>源文件\Trader</Filter>
     </ClCompile>
   </ItemGroup>

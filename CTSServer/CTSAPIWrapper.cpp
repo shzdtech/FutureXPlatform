@@ -2,6 +2,8 @@
 #include "CTSConstant.h"
 #include "CTSUtility.h"
 #include "../dataobject/MarketDataDO.h"
+#include "../dataobject/UserPositionDO.h"
+
 #include "../ordermanager/OrderSeqGen.h"
 #include "../message/BizError.h"
 #include "../common/BizErrorIDs.h"
@@ -154,13 +156,13 @@ int CTSAPIWrapperImpl::CancelOrder(OrderRequestDO& orderDO)
 
 	if (_orderMap->TryGetValue(orderUUID, order))
 	{
-	if (order->Pull())
-		ret = 0;
-	else if (!order->IsWorking)
-	{
-		throw BizException(OBJECT_IS_CLOSED);
-	}
-	orderDO = *CTSUtility::ParseRawOrder(order);
+		if (order->Pull())
+			ret = 0;
+		else if (!order->IsWorking)
+		{
+			throw BizException(OBJECT_IS_CLOSED);
+		}
+		orderDO = *CTSUtility::ParseRawOrder(order);
 	}
 
 	OnResponseProcMacro(_pMsgProcessor, MSG_ID_ORDER_CANCEL, orderDO.SerialId, &orderDO);
@@ -242,6 +244,90 @@ void CTSAPIWrapperImpl::OnOrderUpdated(Order^ pOrder)
 			return;
 		}
 
-		OnResponseProcMacro(_pMsgProcessor, msgId, 0, &(*order_ptr));
+		OnResponseProcMacro(_pMsgProcessor, msgId, 0, order_ptr.get());
 	}
 }
+
+void CTSAPIWrapperImpl::OnPositionUpdated(Position^ poPosition)
+{
+	UserPositionExDO_Ptr position_ptr = CTSUtility::ParseRawPosition(poPosition);
+	OnResponseProcMacro(_pMsgProcessor, MSG_ID_POSITION_UPDATED, 0, position_ptr.get());
+
+}
+
+void CTSAPIWrapperImpl::OnTradeUpdated(T4::API::Order::Trade^ poTrade)
+{
+	TradeRecordDO_Ptr trade_ptr = CTSUtility::ParseRawTrade(poTrade);
+	OnResponseProcMacro(_pMsgProcessor, MSG_ID_TRADE_RTN, 0, trade_ptr.get());
+
+}
+
+void CTSAPIWrapperImpl::OnAccountInfoUpdated(Account^ poAccount)
+{
+	AccountInfoDO_Ptr account_ptr = CTSUtility::ParseRawAccountInfo(poAccount);
+	// OnResponseProcMacro(_pMsgProcessor, MSG_ID_TRADE_RTN, 0, &(*account_ptr));
+
+}
+
+
+VectorDO_Ptr<OrderDO> CTSAPIWrapperImpl::QueryOrder()
+{
+
+	auto vectorPtr = std::make_shared<VectorDO<OrderDO>>();
+
+	for each (T4::API::Position ^position in _account->Positions)
+	{
+		for each (T4::API::Order ^order in position->Orders)
+		{
+			OrderDO_Ptr order_ptr = CTSUtility::ParseRawOrder(order);
+			vectorPtr->push_back(*order_ptr);
+		}
+	}
+	return vectorPtr;
+}
+
+VectorDO_Ptr<TradeRecordDO> CTSAPIWrapperImpl::QueryTrade()
+{
+
+	auto vectorPtr = std::make_shared<VectorDO<TradeRecordDO>>();
+
+	for each (T4::API::Position ^position in _account->Positions)
+	{
+		for each (T4::API::Order ^order in position->Orders)
+		{
+			for each (T4::API::Order::Trade ^trade in order->Trades->Trades)
+			{
+				TradeRecordDO_Ptr trade_ptr = CTSUtility::ParseRawTrade(trade);
+				vectorPtr->push_back(*trade_ptr);
+			}
+		}
+	}
+	return vectorPtr;
+}
+
+VectorDO_Ptr<UserPositionExDO> CTSAPIWrapperImpl::QueryPosition()
+{
+
+	auto vectorPtr = std::make_shared<VectorDO<UserPositionExDO>>();
+	for each (T4::API::Position ^position in _account->Positions)
+	{
+		UserPositionExDO_Ptr position_ptr = CTSUtility::ParseRawPosition(position);
+		vectorPtr->push_back(*position_ptr);
+	}
+
+	return vectorPtr;
+}
+
+VectorDO_Ptr<AccountInfoDO> CTSAPIWrapperImpl::QueryAccount()
+{
+
+	auto vectorPtr = std::make_shared<VectorDO<AccountInfoDO>>();
+
+	{
+		AccountInfoDO_Ptr account_ptr = CTSUtility::ParseRawAccountInfo(_account);
+		vectorPtr->push_back(*account_ptr);
+	}
+
+	return vectorPtr;
+}
+

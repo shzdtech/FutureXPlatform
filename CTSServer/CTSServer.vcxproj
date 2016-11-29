@@ -167,6 +167,10 @@
     <ClInclude Include="ctsexport.h" />
     <ClInclude Include="CTSLoginHandler.h" />
     <ClInclude Include="CTSQueryOrder.h" />
+    <ClInclude Include="CTSQueryPosition.h" />
+    <ClInclude Include="CTSQueryTrade.h" />
+    <ClInclude Include="CTSReturnPosition.h" />
+    <ClInclude Include="CTSReturnTrade.h" />
     <ClInclude Include="CTSServiceFactory.h" />
     <ClInclude Include="CTSAPIWrapper.h" />
     <ClInclude Include="CTSNewOrder.h" />
@@ -176,6 +180,8 @@
     <ClInclude Include="CTSUtility.h" />
     <ClInclude Include="cts_handlers.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="CTSQueryAccountInfo.h" />
+    <ClInclude Include="CTSReturnAccountInfo.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
@@ -184,6 +190,10 @@
     <ClCompile Include="ctsexport.cpp" />
     <ClCompile Include="CTSLoginHandler.cpp" />
     <ClCompile Include="CTSQueryOrder.cpp" />
+    <ClCompile Include="CTSQueryPosition.cpp" />
+    <ClCompile Include="CTSQueryTrade.cpp" />
+    <ClCompile Include="CTSReturnPosition.cpp" />
+    <ClCompile Include="CTSReturnTrade.cpp" />
     <ClCompile Include="CTSServiceFactory.cpp" />
     <ClCompile Include="CTSAPIWrapper.cpp" />
     <ClCompile Include="CTSNewOrder.cpp" />
@@ -191,6 +201,8 @@
     <ClCompile Include="CTSReturnMarketData.cpp" />
     <ClCompile Include="CTSSubscribeMarketData.cpp" />
     <ClCompile Include="CTSUtility.cpp" />
+    <ClCompile Include="CTSQueryAccountInfo.cpp" />
+    <ClCompile Include="CTSReturnAccountInfo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
