@@ -15,7 +15,7 @@ class AccountInfoDO : public dataobjectbase
 public:
 	std::string AccountID;
 	std::string BrokerID;
-	std::string TradingDay;
+	int TradingDay;
 
 	int SettlementID = 0;
 	double PreMortgage = 0;

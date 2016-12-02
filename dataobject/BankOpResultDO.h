@@ -13,7 +13,7 @@ public:
 	///平台流水号
 	std::string SerialNum;
 	///交易日期
-	std::string	TradingDay;
+	int	TradingDay;
 	///交易发起方日期
 	std::string	TradeDate;
 	///交易时间

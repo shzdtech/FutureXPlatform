@@ -10,7 +10,7 @@
 #include "../utility/epsdouble.h"
 
 OTCUserPositionContext::OTCUserPositionContext(const IPricingDataContext_Ptr & pricingCtx)
-	: _pricingCtx(pricingCtx)
+	: _pricingCtx(pricingCtx), _position(16)
 {
 }
 

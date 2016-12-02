@@ -68,6 +68,8 @@ dataobj_ptr CTPDepthMarketData::HandleResponse(const uint32_t serialId, const pa
 		int hour, min, sec;
 		std::sscanf(pData->UpdateTime, "%d:%d:%d", &hour, &min, &sec);
 		mdo->UpdateTime = hour * 3600 + min * 60 + sec;
+
+		mdo->TradingDay = std::atoi(pData->TradingDay);
 	}
 
 	return ret;

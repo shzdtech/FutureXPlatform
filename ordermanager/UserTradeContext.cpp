@@ -7,7 +7,12 @@
 
 #include "UserTradeContext.h"
 
-void UserTradeContext::UpsertTrade(const TradeRecordDO_Ptr & tradeDO_Ptr)
+UserTradeContext::UserTradeContext()
+	: _tradeIdMap(2048), _userTradeMap(1024)
+ {
+ }
+
+ void UserTradeContext::UpsertTrade(const TradeRecordDO_Ptr & tradeDO_Ptr)
 {
 	_tradeIdMap.upsert(tradeDO_Ptr->TradeID, [&tradeDO_Ptr](TradeRecordDO_Ptr& tradeptr)
 	{

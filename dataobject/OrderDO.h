@@ -96,10 +96,10 @@ public:
 	int VolumeTraded = 0;
 	int VolumeRemain = 0;
 	int SessionID = 0;
+	int TradingDay;
 	bool Active = false;
 	double StopPrice = 0;
 	std::string BrokerID;
-	std::string TradingDay;
 	std::string InsertDate;
 	std::string InsertTime;
 	std::string UpdateTime;

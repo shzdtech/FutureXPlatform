@@ -87,7 +87,8 @@ void TestingServerMessageProcessor::_mdGenerator()
 						marketDataDO.OpenPrice = marketDataDO.LastPrice;
 						auto tm = std::time(nullptr);
 						auto ptm = std::localtime(&tm);
-						marketDataDO.UpdateTime = ptm->tm_hour * 10000 + ptm->tm_min * 100 + ptm->tm_sec;
+						marketDataDO.UpdateTime = ptm->tm_hour * 3600 + ptm->tm_min * 60 + ptm->tm_sec;
+						marketDataDO.TradingDay = (ptm->tm_year + 1900) * 10000 + (ptm->tm_mon + 1) * 100 + ptm->tm_mday;
 
 						OnResponseMacro(MSG_ID_RET_MARKETDATA, 0, &marketDataDO);
 						OnResponseMacro(MSG_ID_RTN_PRICING, 0, &marketDataDO);

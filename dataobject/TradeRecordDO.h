@@ -29,6 +29,7 @@ public:
 	double Commission = 0;
 
 	int Volume = 0;
+	int TradingDay;
 
 	DirectionType Direction = DirectionType::SELL;
 	OrderTradingType TradeType = OrderTradingType::TRADINGTYPE_MANUAL;
@@ -36,7 +37,6 @@ public:
 	HedgeType HedgeFlag = HedgeType::HEDGETYPE_SPECULATION;
 
 	std::string BrokerID;
-	std::string TradingDay;
 	std::string TradeDate;
 	std::string TradeTime;
 

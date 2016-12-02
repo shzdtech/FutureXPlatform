@@ -78,7 +78,7 @@ public:
 	double MarginRateByVolume = 0;
 	double PreMargin = 0;
 
-	std::string TradingDay;
+	int TradingDay;
 };
 
 typedef std::shared_ptr<UserPositionDO> UserPositionDO_Ptr;

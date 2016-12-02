@@ -216,7 +216,7 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(CThostFtdcOrderField *pOrder, OrderDO_Ptr 
 	pDO->InsertTime = pOrder->InsertTime;
 	pDO->UpdateTime = pOrder->UpdateTime;
 	pDO->CancelTime = pOrder->CancelTime;
-	pDO->TradingDay = pOrder->TradingDay;
+	pDO->TradingDay = std::atoi(pOrder->TradingDay);
 	pDO->Message = std::move(boost::locale::conv::to_utf<char>(pOrder->StatusMsg, CHARSET_GB2312));
 	pDO->SessionID = pOrder->SessionID;
 
@@ -360,7 +360,7 @@ TradeRecordDO_Ptr CTPUtility::ParseRawTrade(CThostFtdcTradeField * pTrade)
 		pDO->TradeID = ToUInt64(pTrade->TradeID);
 		pDO->TradeDate = pTrade->TradeDate;
 		pDO->TradeTime = pTrade->TradeTime;
-		pDO->TradingDay = pTrade->TradingDay;
+		pDO->TradingDay = std::atoi(pTrade->TradingDay);
 		pDO->TradeType = (OrderTradingType)pTrade->TradeType;
 		pDO->HedgeFlag = (HedgeType)(pTrade->HedgeFlag - THOST_FTDC_HF_Speculation);
 
@@ -395,7 +395,7 @@ BankOpResultDO_Ptr CTPUtility::ParseRawTransfer(CThostFtdcReqTransferField * pRe
 		pDO->FutureSerial = std::to_string(pReqTransfer->FutureSerial);
 		pDO->SerialNum = std::to_string(pReqTransfer->PlateSerial);
 		pDO->TradeAmount = pReqTransfer->TradeAmount;
-		pDO->TradingDay = pReqTransfer->TradingDay;
+		pDO->TradingDay = std::atoi(pReqTransfer->TradingDay);
 		pDO->TradeDate = pReqTransfer->TradeDate;
 		pDO->TradeTime = pReqTransfer->TradeTime;
 		pDO->TradeCode = pReqTransfer->TradeCode;
@@ -436,7 +436,7 @@ BankOpResultDO_Ptr CTPUtility::ParseRawTransfer(CThostFtdcRspTransferField * pRs
 		pDO->FutureSerial = std::to_string(pRspTransfer->FutureSerial);
 		pDO->SerialNum = std::to_string(pRspTransfer->PlateSerial);
 		pDO->TradeAmount = pRspTransfer->TradeAmount;
-		pDO->TradingDay = pRspTransfer->TradingDay;
+		pDO->TradingDay = std::atoi(pRspTransfer->TradingDay);
 		pDO->TradeDate = pRspTransfer->TradeDate;
 		pDO->TradeTime = pRspTransfer->TradeTime;
 		pDO->TradeCode = pRspTransfer->TradeCode;
@@ -473,7 +473,7 @@ BankOpResultDO_Ptr CTPUtility::ParseRawTransfer(CThostFtdcTransferSerialField * 
 		pDO->FutureSerial = std::to_string(pRspTransfer->FutureSerial);
 		pDO->SerialNum = std::to_string(pRspTransfer->PlateSerial);
 		pDO->TradeAmount = pRspTransfer->TradeAmount;
-		pDO->TradingDay = pRspTransfer->TradingDay;
+		pDO->TradingDay = std::atoi(pRspTransfer->TradingDay);
 		pDO->TradeDate = pRspTransfer->TradeDate;
 		pDO->TradeTime = pRspTransfer->TradeTime;
 		pDO->TradeCode = pRspTransfer->TradeCode;
@@ -542,7 +542,7 @@ UserPositionExDO_Ptr CTPUtility::ParseRawPosition(CThostFtdcInvestorPositionFiel
 	pDO->CloseProfit = pRspPosition->CloseProfit;
 	pDO->PreSettlementPrice = pRspPosition->PreSettlementPrice;
 	pDO->SettlementPrice = pRspPosition->SettlementPrice;
-	pDO->TradingDay = pRspPosition->TradingDay;
+	pDO->TradingDay = std::atoi(pRspPosition->TradingDay);
 	pDO->SettlementID = pRspPosition->SettlementID;
 	pDO->OpenCost = pRspPosition->OpenCost;
 	pDO->ExchangeMargin = pRspPosition->ExchangeMargin;

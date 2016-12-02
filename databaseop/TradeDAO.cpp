@@ -55,7 +55,7 @@ VectorDO_Ptr<TradeRecordDO> TradeDAO::QueryTrade(const std::string& userid, cons
 
 int TradeDAO::SaveExchangeTrade(int64_t tradeId, int64_t orderSysId, 
 	const std::string& exchange, const std::string& contract, int quantity, double price,
-	const std::string & tradingDay, const std::string & userid, const std::string & portfolio, bool isBuy, int openclose)
+	int tradingDay, const std::string & userid, const std::string & portfolio, bool isBuy, int openclose)
 {
 	int ret = 0;
 
@@ -72,7 +72,7 @@ int TradeDAO::SaveExchangeTrade(int64_t tradeId, int64_t orderSysId,
 		prestmt->setString(4, contract);
 		prestmt->setUInt(5, quantity);
 		prestmt->setDouble(6, price);
-		prestmt->setDateTime(7, tradingDay);
+		prestmt->setDateTime(7, std::to_string(tradingDay));
 		prestmt->setString(8, userid);
 		prestmt->setString(9, portfolio);
 		prestmt->setBoolean(10, isBuy);

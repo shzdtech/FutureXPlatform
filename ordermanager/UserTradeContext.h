@@ -18,6 +18,8 @@
 class ORDERMGR_CLASS_EXPORT UserTradeContext
 {
 public:
+	UserTradeContext();
+
 	void UpsertTrade(const TradeRecordDO_Ptr& tradeDO_Ptr);
 	void UpsertTrade(const TradeRecordDO& tradeDO);
 	void Clear(void);

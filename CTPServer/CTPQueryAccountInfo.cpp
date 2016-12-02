@@ -117,7 +117,7 @@ dataobj_ptr CTPQueryAccountInfo::HandleResponse(const uint32_t serialId, const p
 		pDO->Available = pData->Available;
 		pDO->WithdrawQuota = pData->WithdrawQuota;
 		pDO->Reserve = pData->Reserve;
-		pDO->TradingDay = pData->TradingDay;
+		pDO->TradingDay = std::atoi(pData->TradingDay);
 		pDO->SettlementID = pData->SettlementID;
 		pDO->Credit = pData->Credit;
 		pDO->Mortgage = pData->Mortgage;

@@ -18,6 +18,8 @@
 class ORDERMGR_CLASS_EXPORT UserOrderContext
 {
 public:
+	UserOrderContext();
+
 	void UpsertOrder(uint64_t orderID, const OrderDO_Ptr& orderDO_Ptr);
 	void UpsertOrder(uint64_t orderID, const OrderDO& orderDO);
 	void Clear(void);

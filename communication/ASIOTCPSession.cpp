@@ -207,7 +207,7 @@ void ASIOTCPSession::asyn_read_header(const ASIOTCPSession_Ptr& this_ptr)
 		else
 		{
 			LOG_DEBUG << "asyn_read_header: " << ec.message();
-			// this_ins->Close();
+			this_ins->Close();
 		}
 	});
 }
@@ -247,7 +247,7 @@ void ASIOTCPSession::asyn_read_body(const ASIOTCPSession_Ptr& this_ptr, uint msg
 		else
 		{
 			LOG_DEBUG << "asyn_read_body: " << ec.message();
-			// this_ins->Close();
+			this_ins->Close();
 		}
 	});
 }

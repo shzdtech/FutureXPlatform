@@ -8,8 +8,8 @@
 #include "AppContext.h"
 #include <libcuckoo/cuckoohash_map.hh>
 
-static cuckoohash_map<std::string, std::shared_ptr<void>> _data;
-static cuckoohash_map<std::string, std::weak_ptr<void>> _weakref;
+static cuckoohash_map<std::string, std::shared_ptr<void>> _data(128);
+static cuckoohash_map<std::string, std::weak_ptr<void>> _weakref(128);
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       AppContext::GetData(const std::string& key)

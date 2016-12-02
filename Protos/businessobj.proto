@@ -7,37 +7,38 @@ package Micro.Future.Message.Business;
 
 message PBMarketData 
 {
+	DataHeader header = 1;
+
 	//MD Common Data
-	string exchange = 1;
-	string contract = 2;
-	double preCloseValue = 3;
-	double openValue = 4;
-	double turnover = 5;
-	int32  volume = 6;
-	double highValue = 7;
-	double lowValue = 8;
+	string exchange = 2;
+	string contract = 3;
+	double preCloseValue = 4;
+	double openValue = 5;
+	double turnover = 6;
+	int32  volume = 7;
+	double highValue = 8;
+	double lowValue = 9;
 
 	//Equity Data
-	double matchPrice = 9;
-	repeated double askPrice = 10;
-	repeated int32 askVolume = 11;
-	repeated double bidPrice = 12;
-	repeated int32 bidVolume = 13;
+	double matchPrice = 10;
+	repeated double askPrice = 11;
+	repeated int32 askVolume = 12;
+	repeated double bidPrice = 13;
+	repeated int32 bidVolume = 14;
 	
 	//Index Data
-	double preSettlePrice = 14;
-	double priceChange = 15;
-	double settlePrice = 16;
-	int32 highLimit = 17;
-	int32 lowLimit = 18;
+	double preSettlePrice = 15;
+	double priceChange = 16;
+	double settlePrice = 17;
+	int32 highLimit = 18;
+	int32 lowLimit = 19;
 
-	double preOpenInterest = 19;
-	double openInterest = 20;
-	double averagePrice = 21;
+	double preOpenInterest = 20;
+	double openInterest = 21;
+	double averagePrice = 22;
 
-	int32 updateTime = 22;
-
-	DataHeader header = 23;
+	int32 updateTime = 23;
+	int32 tradingDay = 24;
 }
 
 message PBMarketDataList
@@ -243,7 +244,7 @@ message PBOrderInfo {
 	///成交量类型
 	int32 volumeCondition = 22;
 	///交易日
-	string tradingDay = 23;
+	int32 tradingDay = 23;
 	///活动状态
 	bool active = 24;
 	///开平标志
@@ -386,7 +387,7 @@ message PBAccountInfo {
 	///基本准备金
 	double	reserve = 24;
 	///交易日
-	string	tradingDay = 25;
+	int32 tradingDay = 25;
 	///结算编号
 	int32	settlementID = 26;
 	///信用额度
@@ -406,14 +407,13 @@ message PBAccountInfo {
 }
 
 message PBMarketInfo {
+	DataHeader header = 1;	
 	//交易所代码
-	string exchange = 1;
+	string exchange = 2;
 	//交易所名称
-	bytes name = 2;
+	bytes name = 3;
 	//交易所属性
-	bytes property = 3;
-
-	DataHeader header = 4;
+	bytes property = 4;
 }
 
 message PBContractInfo {
@@ -530,31 +530,31 @@ message PBBankOpResult {
 	double tradeAmount = 11; 
 
 	///平台流水号
-	string SerialNum = 12; 
+	string serialNum = 12; 
 	///交易日
-	string TradingDay = 13; 
+	int32 tradingDay = 13; 
 	///交易日期
-	string TradeDate = 14; 
+	string tradeDate = 14; 
 	///交易时间
-	string TradeTime = 15; 
+	string tradeTime = 15; 
 	///交易代码
-	string TradeCode = 16; 
+	string tradeCode = 16; 
 	///银行流水号
-	string BankSerial = 17;
+	string bankSerial = 17;
 	///期货公司帐号类型
-	int32 FutureAccType = 18; 
+	int32 futureAccType = 18; 
 	///期货公司帐号类型
-	int32 BankAccType = 19; 
+	int32 bankAccType = 19; 
 	///期货公司流水号
-	string FutureSerial = 20; 
+	string futureSerial = 20; 
 	///应收客户费用
-	double CustFee = 21; 
+	double custFee = 21; 
 	///应收期货公司费用
-	double BrokerFee = 22; 
+	double brokerFee = 22; 
 	///错误代码
-	int32 ErrorID = 23; 
+	int32 errorID = 23; 
 	///错误信息
-	bytes ErrorMsg = 24; 
+	bytes errorMsg = 24; 
 }
 
 message PBBankInfo {

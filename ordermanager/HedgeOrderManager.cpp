@@ -11,7 +11,8 @@
 
 HedgeOrderManager::HedgeOrderManager(const PortfolioKey& portfolio,
 	IOrderAPI* pOrderAPI, const IPricingDataContext_Ptr& pricingCtx)
-	: _portfolio(portfolio), AutoOrderManager(pOrderAPI, pricingCtx)
+	: _portfolio(portfolio), AutoOrderManager(pOrderAPI, pricingCtx),
+	_contractFlag(1024), _contractPosition(1024)
 {
 
 }

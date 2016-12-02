@@ -46,6 +46,8 @@ data_buffer PBMarketDataSerializer::Serialize(const dataobj_ptr& abstractDO)
 		PB.set_updatetime(pDO->UpdateTime);
 
 	// Doesn't change after openning
+	if(pDO->TradingDay > 0)
+		PB.set_tradingday(pDO->TradingDay);
 	PB.set_preclosevalue(pDO->PreClosePrice);
 	PB.set_openvalue(pDO->OpenPrice);
 	PB.set_highlimit(pDO->UpperLimitPrice);

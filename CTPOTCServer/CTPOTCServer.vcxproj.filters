@@ -25,6 +25,12 @@
     <Filter Include="源文件\Option">
       <UniqueIdentifier>{0e2c38dd-6e68-441b-a821-1f4be3d831ab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Cloud">
+      <UniqueIdentifier>{c3f5c2b3-eade-4e8a-9358-365a5ae90a9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Cloud">
+      <UniqueIdentifier>{9b03e32b-7371-46e9-beea-3fb9ea9ee265}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ctpotc_export.cpp">
@@ -53,6 +59,9 @@
     </ClCompile>
     <ClCompile Include="CTPSimMarketData.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPCloudWorkerProcessor.cpp">
+      <Filter>源文件\Cloud</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -88,6 +97,9 @@
     </ClInclude>
     <ClInclude Include="CTPSimMarketData.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPCloudWorkerProcessor.h">
+      <Filter>头文件\Cloud</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

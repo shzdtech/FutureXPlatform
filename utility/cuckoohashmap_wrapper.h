@@ -18,10 +18,12 @@ class cuckoohashmap_wrapper
 public:
 	cuckoohashmap_wrapper() = default;
 
-	cuckoohashmap_wrapper(bool initilizeMap)
+	cuckoohashmap_wrapper(
+		bool initilizeMap, 
+		size_t initialsize = 1024)
 	{
 		if (initilizeMap)
-			_innerMap.reset(new cuckoohash_map<K, V, Hash, Pred>());
+			_innerMap.reset(new cuckoohash_map<K, V, Hash, Pred>(initialsize));
 	}
 
 	std::shared_ptr<cuckoohash_map<K, V, Hash, Pred>>& map()

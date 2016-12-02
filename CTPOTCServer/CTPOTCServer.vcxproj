@@ -169,6 +169,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CTPCloudWorkerProcessor.cpp" />
     <ClCompile Include="CTPOTCLogin.cpp" />
     <ClCompile Include="CTPOTCOptionServiceFactory.cpp" />
     <ClCompile Include="CTPOTCOptionWorkerProcessor.cpp" />
@@ -180,6 +181,7 @@
     <ClCompile Include="CTPSimMarketData.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CTPCloudWorkerProcessor.h" />
     <ClInclude Include="CTPOTCLogin.h" />
     <ClInclude Include="CTPOTCOptionServiceFactory.h" />
     <ClInclude Include="CTPOTCOptionWorkerProcessor.h" />

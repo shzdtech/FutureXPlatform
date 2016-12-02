@@ -13,7 +13,7 @@ public:
 
 	static int SaveExchangeTrade(int64_t tradeId, int64_t orderSysId,
 		const std::string& exchange, const std::string& contract, int quantity, double price,
-		const std::string& tradingDay, const std::string& userid, const std::string& portfolio, bool isBuy, int openclose = 0);
+		int tradingDay, const std::string& userid, const std::string& portfolio, bool isBuy, int openclose = 0);
 
 	static int SaveExchangeTrade(const TradeRecordDO& tradeDO);
 };

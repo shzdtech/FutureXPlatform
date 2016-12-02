@@ -15,6 +15,8 @@
 class MarketPositionContext
 {
 public:
+	MarketPositionContext();
+
 	int UpdatePosition(const ContractKey& contractId, DirectionType direction, int deltaPos);
 
 	int GetPosition(const ContractKey& contractId);

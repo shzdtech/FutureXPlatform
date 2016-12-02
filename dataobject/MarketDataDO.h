@@ -17,6 +17,7 @@ public:
 		: PricingDO(exchangeID, instrumentID)	{}
 
 	int Volume = 0;
+	int TradingDay = 0;
 	int UpdateTime = 0;
 	double LastPrice = 0;
 	double AveragePrice = 0;

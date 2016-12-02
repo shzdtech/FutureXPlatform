@@ -195,12 +195,9 @@ void ASIOTCPServer::asyc_accept(void) {
 			LOG_DEBUG << "Creating session: " << _socket.remote_endpoint().address().to_string()
 				<< ':' << std::to_string(_socket.remote_endpoint().port());
 			((ASIOSessionManager*)_manager_ptr.get())->CreateSession(std::move(_socket), _max_msg_size, _sessiontimeout);
+		}
+
+		if (_running)
 			asyc_accept();
-		}
-		else
-		{
-			if (_running)
-				LOG_ERROR << __FUNCTION__ << ec.message();
-		}
 	});
 }

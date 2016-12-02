@@ -7,6 +7,11 @@
 
 #include "UserOrderContext.h"
 
+UserOrderContext::UserOrderContext()
+	: _orderIdMap(2048), _userContractOrderMap(1024)
+{
+}
+
 void UserOrderContext::UpsertOrder(uint64_t orderID, const OrderDO_Ptr & orderDO_Ptr)
 {
 	_orderIdMap.upsert(orderID, [&orderDO_Ptr](OrderDO_Ptr& orderptr)

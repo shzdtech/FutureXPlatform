@@ -13,7 +13,12 @@
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-int MarketPositionContext::UpdatePosition(
+MarketPositionContext::MarketPositionContext()
+	: _contractPosition(128)
+ {
+ }
+
+ int MarketPositionContext::UpdatePosition(
 	const ContractKey& contractId,
 	DirectionType direction, int deltaPos)
 {
