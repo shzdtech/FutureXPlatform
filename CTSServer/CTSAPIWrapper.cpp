@@ -83,7 +83,7 @@ int CTSAPIWrapperImpl::Subscribe(const ContractKey& contractKey, uint32_t serail
 		//	gcnew MarketList::MarketTradeVolumeEventHandler(_callback, &CTSMDCallback::OnMarketDataUpdated);
 	}
 
-	return NO_ERROR;
+	return NO_ERROR_ID;
 }
 
 bool CTSAPIWrapperImpl::IsSubscribed(const ContractKey& contractKey)
@@ -134,7 +134,7 @@ int CTSAPIWrapperImpl::CreateOrder(OrderRequestDO& orderDO)
 
 			OnResponseProcMacro(_pMsgProcessor, MSG_ID_ORDER_NEW, orderDO.SerialId, &order_ptr);
 
-			ret = NO_ERROR;
+			ret = NO_ERROR_ID;
 		}
 	}
 

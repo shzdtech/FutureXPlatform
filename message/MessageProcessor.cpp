@@ -19,27 +19,27 @@ MessageProcessor::~MessageProcessor()
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       MessageProcessor::LockMessageSession()
-// Purpose:    Implementation of MessageProcessor::LockMessageSession()
+// Name:       MessageProcessor::getMessageSession()
+// Purpose:    Implementation of MessageProcessor::getMessageSession()
 // Return:     session_ptr
 ////////////////////////////////////////////////////////////////////////
 
-IMessageSession_Ptr MessageProcessor::LockMessageSession(void)
+IMessageSession_Ptr& MessageProcessor::getMessageSession(void)
 {
-	return _msgsession_wk_ptr.lock();
+	return _msgsession_ptr;
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       MessageProcessor::setSession(IMessageSession* msgSession)
-// Purpose:    Implementation of MessageProcessor::setSession()
+// Name:       MessageProcessor::setMessageSession(const IMessageSession_Ptr& msgSession_ptr)
+// Purpose:    Implementation of MessageProcessor::setMessageSession()
 // Parameters:
 // - msgSession
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void MessageProcessor::setSession(const IMessageSession_WkPtr& msgSession_wk_ptr)
+void MessageProcessor::setMessageSession(const IMessageSession_Ptr& msgSession_ptr)
 {
-	_msgsession_wk_ptr = msgSession_wk_ptr;
+	_msgsession_ptr = msgSession_ptr;
 }
 
 void MessageProcessor::setServiceLocator(const IMessageServiceLocator_Ptr& svcLct_Ptr)

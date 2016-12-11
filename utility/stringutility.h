@@ -18,7 +18,7 @@ public:
 			ret = str1 - str2;
 		else
 		{
-			for (size_t i = 0;; i++)
+			for (size_t i = 0; ; i++)
 			{
 				TChar c1 = str1[i];
 				TChar c2 = str2[i];
@@ -42,7 +42,7 @@ public:
 		if (!str || !head)
 			return false;
 
-		for (size_t i = 0;; i++)
+		for (size_t i = 0; ; i++)
 		{
 			TChar c1 = str[i];
 			TChar c2 = head[i];

@@ -15,7 +15,7 @@
 #include "../bizutility/ContractCache.h"
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       CTPOCTUnSubMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       CTPOCTUnSubMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, IMessageProcessor* msgProcessor
  // Purpose:    Implementation of CTPOCTUnSubMarketData::HandleRequest()
  // Parameters:
  // - reqDO
@@ -24,7 +24,7 @@
  // Return:     dataobj_ptr
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr OTCUnSubMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr OTCUnSubMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
 
@@ -38,14 +38,14 @@ dataobj_ptr OTCUnSubMarketData::HandleRequest(const uint32_t serialId, const dat
 		auto nInstrument = instList.size();
 
 		if (nInstrument > 0)
-			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
+			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 			{
 				for (auto& inst : instList)
 				{
 					if (auto contract = pWorkerProc->GetInstrumentCache().QueryInstrumentById(inst))
 					{
 						pWorkerProc->UnregisterPricingListener(*contract,
-							session->getProcessor()->LockMessageSession());
+							msgProcessor->getMessageSession());
 
 						ret->Data[STR_INSTRUMENT_ID].push_back(inst);
 					}

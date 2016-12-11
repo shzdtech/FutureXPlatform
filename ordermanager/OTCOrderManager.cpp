@@ -208,18 +208,20 @@ int OTCOrderManager::Reset()
 
 void OTCOrderManager::Hedge(const PortfolioKey& portfolioKey)
 {
-	auto& portfolio = _pricingCtx->GetPortfolioMap()->at(portfolioKey);
-	auto now = std::chrono::steady_clock::now();
-	auto int_ms = std::chrono::duration_cast<std::chrono::milliseconds>(now - portfolio.LastHedge);
-
-	if (int_ms.count() > portfolio.HedgeDelay)
+	if (auto pPortfolio = _pricingCtx->GetPortfolioMap()->tryfind(portfolioKey))
 	{
-		auto addedHedgePos = _positionCtx.GenSpreadPoints(portfolio);
-		auto hedgeMgr_ptr = FindHedgeManager(portfolio);
-		hedgeMgr_ptr->FillPosition(addedHedgePos);
-		hedgeMgr_ptr->Hedge();
+		auto now = std::chrono::steady_clock::now();
+		auto int_ms = std::chrono::duration_cast<std::chrono::milliseconds>(now - pPortfolio->LastHedge);
 
-		portfolio.LastHedge = now;
+		if (int_ms.count() > pPortfolio->HedgeDelay)
+		{
+			auto addedHedgePos = _positionCtx.GenSpreadPoints(*pPortfolio);
+			auto hedgeMgr_ptr = FindHedgeManager(*pPortfolio);
+			hedgeMgr_ptr->FillPosition(addedHedgePos);
+			hedgeMgr_ptr->Hedge();
+
+			pPortfolio->LastHedge = now;
+		}
 	}
 }
 

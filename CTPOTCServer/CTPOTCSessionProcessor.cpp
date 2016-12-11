@@ -13,6 +13,8 @@
 
 #include "../message/message_macro.h"
 
+#include "../litelogger/LiteLogger.h"
+
  ////////////////////////////////////////////////////////////////////////
  // Name:       CTPOTCSessionProcessor::CTPOTCSessionProcessor()
  // Purpose:    Implementation of CTPOTCSessionProcessor::CTPOTCSessionProcessor()
@@ -31,7 +33,7 @@ CTPOTCSessionProcessor::CTPOTCSessionProcessor()
 
 CTPOTCSessionProcessor::~CTPOTCSessionProcessor()
 {
-	// TODO : implement
+	LOG_DEBUG << __FUNCTION__;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -40,7 +42,7 @@ CTPOTCSessionProcessor::~CTPOTCSessionProcessor()
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void CTPOTCSessionProcessor::Initialize(void)
+void CTPOTCSessionProcessor::Initialize(IServerContext* serverCtx)
 {
 	// TODO : implement
 }
@@ -48,7 +50,7 @@ void CTPOTCSessionProcessor::Initialize(void)
 
 bool CTPOTCSessionProcessor::OnSessionClosing(void)
 {
-	if (auto sessionPtr = LockMessageSession())
+	if (auto sessionPtr = getMessageSession())
 		if (sessionPtr->getUserInfo()->getRole() == ROLE_TRADINGDESK)
 			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(shared_from_this()))
 			{
@@ -59,13 +61,15 @@ bool CTPOTCSessionProcessor::OnSessionClosing(void)
 				{
 					for (auto& contract : *strategyVec_Ptr)
 					{
-						auto& strategy = pStrategyMap->at(contract);
-						strategy.AskEnabled = strategy.BidEnabled = false;
-						if (strategy.Hedging)
+						if (auto pStrategy = pStrategyMap->tryfind(contract))
 						{
-							strategy.Hedging = false;
-							OrderRequestDO orderDO(strategy);
-							pWorkerProc->GetOTCTradeProcessor()->CancelHedgeOrder(orderDO);
+							pStrategy->AskEnabled = pStrategy->BidEnabled = false;
+							if (pStrategy->Hedging)
+							{
+								pStrategy->Hedging = false;
+								OrderRequestDO orderDO(*pStrategy);
+								pWorkerProc->GetOTCTradeProcessor()->CancelHedgeOrder(orderDO);
+							}
 						}
 					}
 				}

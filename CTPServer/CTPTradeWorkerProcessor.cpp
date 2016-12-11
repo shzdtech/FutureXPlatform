@@ -34,24 +34,24 @@ CTPTradeWorkerProcessor::CTPTradeWorkerProcessor(IServerContext* pServerCtx)
 
 	std::string brokerid;
 	if (!_serverCtx->getConfigVal(CTP_TRADER_BROKERID, brokerid))
-		brokerid = SysParam::Get(CTP_TRADER_BROKERID);
+		SysParam::TryGet(CTP_TRADER_BROKERID, brokerid);
 	_systemUser.setBrokerId(brokerid);
 
 	std::string userid;
 	if (!_serverCtx->getConfigVal(CTP_TRADER_USERID, userid))
-		userid = SysParam::Get(CTP_TRADER_USERID);
+		SysParam::TryGet(CTP_TRADER_USERID, userid);
 	_systemUser.setInvestorId(userid);
 	_systemUser.setUserId(userid);
 
 	std::string pwd;
 	if (!_serverCtx->getConfigVal(CTP_TRADER_PASSWORD, pwd))
-		pwd = SysParam::Get(CTP_TRADER_PASSWORD);
+		SysParam::TryGet(CTP_TRADER_PASSWORD, pwd);
 	_systemUser.setPassword(pwd);
 
 	std::string address;
 	ExchangeRouterTable::TryFind(_systemUser.getBrokerId() + ':' + ExchangeRouterTable::TARGET_TD, address);
 	if (address.empty() && !_serverCtx->getConfigVal(CTP_TRADER_SERVER, address))
-		address = SysParam::Get(CTP_TRADER_SERVER);
+		SysParam::TryGet(CTP_TRADER_SERVER, address);
 	_systemUser.setServer(address);
 }
 
@@ -233,7 +233,7 @@ void CTPTradeWorkerProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUs
 {
 	if (!CTPUtility::HasError(pRspInfo))
 	{
-		if (auto session = LockMessageSession())
+		if (auto session = getMessageSession())
 		{
 			session->setLoginTimeStamp();
 			auto userinfo_ptr = session->getUserInfo();
@@ -271,12 +271,19 @@ void CTPTradeWorkerProcessor::OnRspQryInstrument(CThostFtdcInstrumentField * pIn
 			DataLoadMask |= INSTRUMENT_DATA_LOADED;
 			OnDataLoaded();
 
-			std::string item = "contract:" + _serverCtx->getServerUri();
-			auto time = std::time(nullptr);
-			char version[20];
-			std::strftime(version, sizeof(version), "%F", std::localtime(&time));
+			std::string save_contract;
 
-			ContractCache::PersistCache(PRODUCT_CACHE_EXCHANGE, item, version);
+			getServerContext()->getConfigVal("save_contract", save_contract);
+			
+			if (!save_contract.empty())
+			{
+				std::string item = "contract:" + _serverCtx->getServerUri();
+				auto time = std::time(nullptr);
+				char version[20];
+				std::strftime(version, sizeof(version), "%F", std::localtime(&time));
+
+				ContractCache::PersistCache(PRODUCT_CACHE_EXCHANGE, item, version);
+			}
 		}
 	}
 	catch (...) {}
@@ -433,7 +440,7 @@ void CTPTradeWorkerProcessor::DispatchUserMessage(int msgId, int serialId, const
 	const dataobj_ptr& dataobj_ptr)
 {
 	_userSessionCtn_Ptr->foreach(userId, [msgId, serialId, dataobj_ptr, this](const IMessageSession_Ptr& session_ptr)
-	{this->SendDataObject(session_ptr.get(), msgId, serialId, dataobj_ptr); });
+	{this->SendDataObject(session_ptr, msgId, serialId, dataobj_ptr); });
 }
 
 

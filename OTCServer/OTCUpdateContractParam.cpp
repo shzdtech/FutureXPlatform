@@ -22,23 +22,23 @@
 #include "../databaseop/ContractDAO.h"
 #include "../databaseop/StrategyContractDAO.h"
 
-////////////////////////////////////////////////////////////////////////
-// Name:       OTCUpdateContractParam::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
-// Purpose:    Implementation of OTCUpdateContractParam::HandleRequest()
-// Parameters:
-// - reqDO
-// - rawAPI
-// - session
-// Return:     dataobj_ptr
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       OTCUpdateContractParam::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
+ // Purpose:    Implementation of OTCUpdateContractParam::HandleRequest()
+ // Parameters:
+ // - reqDO
+ // - rawAPI
+ // - session
+ // Return:     dataobj_ptr
+ ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr OTCUpdateContractParam::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr OTCUpdateContractParam::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
 
 	auto vecConDO_Ptr = (VectorDO<ContractParamDO>*)reqDO.get();
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 
 		auto mdMap = pWorkerProc->PricingDataContext()->GetMarketDataMap();
@@ -46,12 +46,14 @@ dataobj_ptr OTCUpdateContractParam::HandleRequest(const uint32_t serialId, const
 
 		for (auto& conDO : *vecConDO_Ptr)
 		{
-			auto& contractDO = contractMap->at(conDO);
-			contractDO.DepthVol = conDO.DepthVol;
-			contractDO.Gamma = conDO.Gamma;
+			if (auto pContractDO = contractMap->tryfind(conDO))
+			{
+				pContractDO->DepthVol = conDO.DepthVol;
+				pContractDO->Gamma = conDO.Gamma;
+			}
 
-			auto& mdDO = mdMap->at(conDO.InstrumentID());
-			pWorkerProc->TriggerUpdating(mdDO);
+			if (auto pMdDO = mdMap->tryfind(conDO.InstrumentID()))
+				pWorkerProc->TriggerUpdating(*pMdDO);
 		}
 	}
 

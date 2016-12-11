@@ -25,7 +25,6 @@ public:
 	virtual void setLoginTimeStamp(time_t tm = 0) = 0;
 	virtual void setLogout(void) = 0;
 	virtual IUserInfo_Ptr& getUserInfo(void) = 0;
-	virtual IMessageProcessor_Ptr& getProcessor(void) = 0;
 
 	std::shared_ptr<void> Tag;
 protected:

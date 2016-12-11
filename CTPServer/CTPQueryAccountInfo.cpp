@@ -24,7 +24,7 @@
 
 #include "CTPUtility.h"
  ////////////////////////////////////////////////////////////////////////
- // Name:       CTPQueryAccountInfo::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       CTPQueryAccountInfo::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
  // Purpose:    Implementation of CTPQueryAccountInfo::HandleRequest()
  // Parameters:
  // - reqDO
@@ -33,7 +33,7 @@
  // Return:     void
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryAccountInfo::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryAccountInfo::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
 
@@ -48,7 +48,7 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const uint32_t serialId, const da
 	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryTradingAccount(&req, serialId);
 	if (iRet != 0) // too frequent request
 	{
-		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 		{
 			auto& accountInfoMap = pWorkerProc->GetAccountInfo(session->getUserInfo()->getUserId());
 
@@ -72,7 +72,7 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const uint32_t serialId, const da
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPQueryAccountInfo::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPQueryAccountInfo::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 // Purpose:    Implementation of CTPQueryAccountInfo::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
@@ -81,7 +81,7 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const uint32_t serialId, const da
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryAccountInfo::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryAccountInfo::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CTPUtility::CheckNotFound(rawRespParams[0]);
 	CTPUtility::CheckError(rawRespParams[1]);
@@ -126,7 +126,7 @@ dataobj_ptr CTPQueryAccountInfo::HandleResponse(const uint32_t serialId, const p
 		pDO->ExchangeDeliveryMargin = pData->ExchangeDeliveryMargin;
 		pDO->ReserveBalance = pData->Reserve;
 
-		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 		{
 			auto& accountInfo = pWorkerProc->GetAccountInfo(session->getUserInfo()->getUserId()).getorfill(pDO->AccountID);
 			accountInfo = *pDO;

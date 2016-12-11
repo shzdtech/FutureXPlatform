@@ -37,13 +37,14 @@ void CTPOTCOptionWorkerProcessor::TriggerOTCPricing(const StrategyContractDO& st
 	{
 		if (auto pricingCtx = PricingDataContext())
 		{
-			auto& mdDO = pricingCtx->GetMarketDataMap()->at(strategyDO.PricingContracts[0].InstrumentID());
-
-			if (auto pricingDO = PricingUtility::Pricing(&mdDO, strategyDO, *pricingCtx))
+			if (auto pMdDO = pricingCtx->GetMarketDataMap()->tryfind(strategyDO.PricingContracts[0].InstrumentID()))
 			{
-				_pricingNotifers->foreach(strategyDO, [this, pricingDO](const IMessageSession_Ptr& session_ptr)
-				{ this->SendDataObject(session_ptr.get(), MSG_ID_RTN_PRICING, 0, pricingDO); }
-				);
+				if (auto pricingDO = PricingUtility::Pricing(pMdDO, strategyDO, *pricingCtx))
+				{
+					_pricingNotifers->foreach(strategyDO, [this, pricingDO](const IMessageSession_Ptr& session_ptr)
+					{ SendDataObject(session_ptr, MSG_ID_RTN_PRICING, 0, pricingDO); }
+					);
+				}
 			}
 		}
 	}
@@ -87,7 +88,7 @@ void CTPOTCOptionWorkerProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketData
 			pMDO->Bid().Volume = pDepthMarketData->BidVolume1;
 			pMDO->Ask().Volume = pDepthMarketData->AskVolume1;
 
-			if (_exchangeStrategySet.find(*pMDO) != _exchangeStrategySet.end())
+			if (_exchangeStrategySet.contains<ContractKey>(*pMDO))
 			{
 				if (auto pStrategyDO = PricingDataContext()->GetStrategyMap()->tryfind(*pMDO))
 				{

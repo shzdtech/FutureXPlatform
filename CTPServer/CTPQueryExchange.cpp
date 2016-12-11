@@ -26,7 +26,7 @@
 
 #include "CTPUtility.h"
  ////////////////////////////////////////////////////////////////////////
- // Name:       CTPQueryExchange::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       CTPQueryExchange::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
  // Purpose:    Implementation of CTPQueryExchange::HandleRequest()
  // Parameters:
  // - reqDO
@@ -35,11 +35,11 @@
  // Return:     void
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryExchange::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryExchange::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 	{
 		auto stdo = (MapDO<std::string>*)reqDO.get();
 		auto& exchangeid = stdo->TryFind(STR_EXCHANGE_ID, EMPTY_STRING);
@@ -96,7 +96,7 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const uint32_t serialId, const datao
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPQueryExchange::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPQueryExchange::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 // Purpose:    Implementation of CTPQueryExchange::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
@@ -105,7 +105,7 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const uint32_t serialId, const datao
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryExchange::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryExchange::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CTPUtility::CheckNotFound(rawRespParams[0]);
 	CTPUtility::CheckError(rawRespParams[1]);
@@ -121,7 +121,7 @@ dataobj_ptr CTPQueryExchange::HandleResponse(const uint32_t serialId, const para
 		pDO->Name = boost::locale::conv::to_utf<char>(pData->ExchangeName, CHARSET_GB2312);
 		pDO->Property = pData->ExchangeProperty;
 
-		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 		{
 			auto& exchangeSet = pWorkerProc->GetExchangeInfo();
 			if (exchangeSet.find(*pDO) == exchangeSet.end())

@@ -171,39 +171,40 @@ void HedgeOrderManager::FillPosition(const ContractMap<double>& positionMap)
 void HedgeOrderManager::SplitOrders(const OrderRequestDO & orderInfo, std::shared_ptr<OrderRequestDO>& req1, std::shared_ptr<OrderRequestDO>& req2)
 {
 	auto pMdMap = _pricingCtx->GetMarketDataMap();
-	auto& mdo = pMdMap->at(orderInfo.InstrumentID());
+	if (auto pMdo = pMdMap->tryfind(orderInfo.InstrumentID()))
+	{
+		req1.reset(new OrderRequestDO(orderInfo));
+		req1->TIF = OrderTIFType::IOC;
 
-	req1.reset(new OrderRequestDO(orderInfo));
-	req1->TIF = OrderTIFType::IOC;
-
-	int pos = _mktPosCtx.GetPosition(orderInfo);
-	if (orderInfo.Direction == DirectionType::SELL && pos > 0)
-	{
-		req1->LimitPrice = mdo.Ask().Price;
-		req1->OpenClose = OrderOpenCloseType::CLOSE;
-		if (pos < orderInfo.Volume)
+		int pos = _mktPosCtx.GetPosition(orderInfo);
+		if (orderInfo.Direction == DirectionType::SELL && pos > 0)
 		{
-			req1->Volume = pos;
-			req2.reset(new OrderRequestDO(*req1));
-			req2->OpenClose = OrderOpenCloseType::OPEN;
-			req2->Volume = orderInfo.Volume - pos;
+			req1->LimitPrice = pMdo->Ask().Price;
+			req1->OpenClose = OrderOpenCloseType::CLOSE;
+			if (pos < orderInfo.Volume)
+			{
+				req1->Volume = pos;
+				req2.reset(new OrderRequestDO(*req1));
+				req2->OpenClose = OrderOpenCloseType::OPEN;
+				req2->Volume = orderInfo.Volume - pos;
+			}
 		}
-	}
-	else if (orderInfo.Direction != DirectionType::SELL && pos < 0)
-	{
-		req1->LimitPrice = mdo.Bid().Price;
-		pos = -pos;
-		req1->OpenClose = OrderOpenCloseType::CLOSE;
-		if (pos < orderInfo.Volume)
+		else if (orderInfo.Direction != DirectionType::SELL && pos < 0)
 		{
-			req1->Volume = pos;
-			req2.reset(new OrderRequestDO(*req1));
-			req2->OpenClose = OrderOpenCloseType::OPEN;
-			req2->Volume = orderInfo.Volume - pos;
+			req1->LimitPrice = pMdo->Bid().Price;
+			pos = -pos;
+			req1->OpenClose = OrderOpenCloseType::CLOSE;
+			if (pos < orderInfo.Volume)
+			{
+				req1->Volume = pos;
+				req2.reset(new OrderRequestDO(*req1));
+				req2->OpenClose = OrderOpenCloseType::OPEN;
+				req2->Volume = orderInfo.Volume - pos;
+			}
 		}
-	}
-	else
-	{
-		req2.reset();
+		else
+		{
+			req2.reset();
+		}
 	}
 }

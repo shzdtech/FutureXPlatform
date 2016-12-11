@@ -11,7 +11,7 @@
 #include "../message/BizError.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTSReturnMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       CTSReturnMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 // Purpose:    Implementation of CTSReturnMarketData::HandleRequest()
 // Parameters:
 // - reqDO
@@ -20,13 +20,13 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTSReturnMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTSReturnMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	return nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTSReturnMarketData::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTSReturnMarketData::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 // Purpose:    Implementation of CTSReturnMarketData::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawParams
@@ -35,7 +35,7 @@ dataobj_ptr CTSReturnMarketData::HandleRequest(const uint32_t serialId, const da
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTSReturnMarketData::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTSReturnMarketData::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	auto pMdDO = (MarketDataDO*)rawParams[0];
 	return std::make_shared<MarketDataDO>(*pMdDO);

@@ -9,7 +9,7 @@
 #include "../message/DefMessageID.h"
 #include "../message/MessageUtility.h"
 
-dataobj_ptr CTPFromBankToFuture::HandleRequest(const uint32_t serialId, const dataobj_ptr & reqDO, IRawAPI * rawAPI, ISession * session)
+dataobj_ptr CTPFromBankToFuture::HandleRequest(const uint32_t serialId, const dataobj_ptr & reqDO, IRawAPI * rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	auto pDO = (BankOpRequestDO*)reqDO.get();
 
@@ -60,7 +60,7 @@ dataobj_ptr CTPFromBankToFuture::HandleRequest(const uint32_t serialId, const da
 	return nullptr;
 }
 
-dataobj_ptr CTPFromBankToFuture::HandleResponse(const uint32_t serialId, const param_vector & rawRespParams, IRawAPI * rawAPI, ISession * session)
+dataobj_ptr CTPFromBankToFuture::HandleResponse(const uint32_t serialId, const param_vector & rawRespParams, IRawAPI * rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CTPUtility::CheckNotFound(rawRespParams[0]);
 

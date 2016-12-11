@@ -10,6 +10,7 @@
 
 #include "../message/TemplateMessageProcessor.h"
 #include <thread>
+#include "../dataobject/MarketDataDO.h"
 
 class TestingServerMessageProcessor : public TemplateMessageProcessor
 {
@@ -18,6 +19,8 @@ public:
 	~TestingServerMessageProcessor();
 
 	virtual IRawAPI* getRawAPI(void);
+
+	void GenRandomMD(MarketDataDO & marketDataDO);
 
 protected:
 	volatile bool _exitWorker = false;

@@ -14,6 +14,7 @@
 #include <boost/asio.hpp>
 #include <array>
 #include <atomic>
+#include <mutex>
 // #include <boost/lockfree/queue.hpp>
 // #include <readerwriterqueue/readerwriterqueue.h>
 #include "../utility/lockfree_queue.h"
@@ -45,12 +46,12 @@ protected:
 	volatile bool _started;
 	volatile bool _closed;
 	uint _max_msg_size;
-	std::atomic_flag _clsclock;
+	std::mutex _oplock;
 	std::atomic_flag _sendingFlag;
 	lockfree_queue<data_buffer> _databufferQueue;
 
 private:
-	void asyn_send_queue();
+	static void asyn_send_queue(const ASIOTCPSession_Ptr& this_ptr);
 	static void asyn_read_header(const ASIOTCPSession_Ptr& this_ptr);
 	static void asyn_read_body(const ASIOTCPSession_Ptr& this_ptr, uint msgSize);
 	static void asyn_timeout(const ASIOTCPSession_WkPtr& this_wk_ptr);

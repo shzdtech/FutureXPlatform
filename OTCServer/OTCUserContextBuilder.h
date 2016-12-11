@@ -19,7 +19,7 @@ public:
 	OTCUserContextBuilder();
 	~OTCUserContextBuilder();
 
-	void BuildContext(ISession* pSession);
+	void BuildContext(const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session);
 
 protected:
 	std::map<int, IUserContextBuilder_Ptr> _userContextMap;

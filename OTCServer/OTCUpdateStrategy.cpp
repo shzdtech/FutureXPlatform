@@ -22,7 +22,7 @@
 #include "../bizutility/StrategyModelCache.h"
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       OTCUpdateStrategy::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       OTCUpdateStrategy::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, IMessageProcessor* msgProcessor
  // Purpose:    Implementation of OTCUpdateStrategy::HandleRequest()
  // Parameters:
  // - reqDO
@@ -31,13 +31,13 @@
  // Return:     dataobj_ptr
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr OTCUpdateStrategy::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr OTCUpdateStrategy::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
 
 	auto ret = std::make_shared<VectorDO<StrategyContractDO>>();
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		auto strategyMap = pWorkerProc->PricingDataContext()->GetStrategyMap();
 

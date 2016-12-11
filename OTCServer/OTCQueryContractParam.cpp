@@ -22,7 +22,7 @@
 #include "../pricingengine/IPricingDataContext.h"
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       OTCQueryContractParam::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       OTCQueryContractParam::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
  // Purpose:    Implementation of OTCQueryContractParam::HandleRequest()
  // Parameters:
  // - reqDO
@@ -31,7 +31,7 @@
  // Return:     dataobj_ptr
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr OTCQueryContractParam::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr OTCQueryContractParam::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
 
@@ -42,14 +42,14 @@ dataobj_ptr OTCQueryContractParam::HandleRequest(const uint32_t serialId, const 
 
 	auto contractVec_Ptr = std::make_shared<VectorDO<ContractParamDO>>();
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		auto contractMap = pWorkerProc->PricingDataContext()->GetContractParamMap();
 
 		for (auto& con : *cpVec_Ptr)
 		{
-			auto& contractDO = contractMap->at(con);
-			contractVec_Ptr->push_back(contractDO);
+			if (auto pContractDO = contractMap->tryfind(con))
+				contractVec_Ptr->push_back(*pContractDO);
 		}
 
 		ThrowNotFoundExceptionIfEmpty(contractVec_Ptr);

@@ -6,6 +6,8 @@
  ***********************************************************************/
 
 #include "CTPOTCWorkerProcessor.h"
+
+#include "../CTPServer/CTPUtility.h"
 #include "../litelogger/LiteLogger.h"
 
 #include "../CTPServer/CTPConstant.h"
@@ -44,6 +46,26 @@ CTPOTCWorkerProcessor::CTPOTCWorkerProcessor(IServerContext* pServerCtx,
 	_ctpOtcTradeProcessorPtr(otcTradeProcessorPtr)
 {
 	setServerContext(pServerCtx);
+
+	std::string brokerid;
+	if (!_serverCtx->getConfigVal(CTP_MD_BROKERID, brokerid))
+		brokerid = SysParam::Get(CTP_MD_BROKERID);
+	_systemUser.setBrokerId(brokerid);
+
+	std::string userid;
+	if (!_serverCtx->getConfigVal(CTP_MD_USERID, userid))
+		userid = SysParam::Get(CTP_MD_USERID);
+	_systemUser.setInvestorId(userid);
+	_systemUser.setUserId(userid);
+
+	std::string pwd;
+	if (!_serverCtx->getConfigVal(CTP_MD_PASSWORD, pwd))
+		pwd = SysParam::Get(CTP_MD_PASSWORD);
+	_systemUser.setPassword(pwd);
+
+	std::string address;
+	ExchangeRouterTable::TryFind(_systemUser.getBrokerId() + ':' + ExchangeRouterTable::TARGET_MD, address);
+	_systemUser.setServer(address);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -54,13 +76,15 @@ CTPOTCWorkerProcessor::CTPOTCWorkerProcessor(IServerContext* pServerCtx,
 
 CTPOTCWorkerProcessor::~CTPOTCWorkerProcessor()
 {
+	_closing = true;
+	_initializer.join();
 	LOG_DEBUG << __FUNCTION__;
 }
 
-void CTPOTCWorkerProcessor::setSession(const IMessageSession_WkPtr& msgSession_wk_ptr)
+void CTPOTCWorkerProcessor::setMessageSession(const IMessageSession_Ptr& msgSession_ptr)
 {
-	CTPMarketDataProcessor::setSession(msgSession_wk_ptr);
-	((CTPOTCTradeProcessor*)GetOTCTradeProcessor())->setSession(msgSession_wk_ptr);
+	CTPMarketDataProcessor::setMessageSession(msgSession_ptr);
+	((CTPOTCTradeProcessor*)GetOTCTradeProcessor())->setMessageSession(msgSession_ptr);
 }
 
 bool CTPOTCWorkerProcessor::OnSessionClosing(void)
@@ -70,11 +94,22 @@ bool CTPOTCWorkerProcessor::OnSessionClosing(void)
 
 void CTPOTCWorkerProcessor::Initialize(IServerContext* serverCtx)
 {
+	InitializeServer(_systemUser.getUserId(), _systemUser.getServer());
+
 	OTCWorkerProcessor::Initialize();
 
 	CTPMarketDataProcessor::Initialize(serverCtx);
 
-	LoginSystemUserIfNeed();
+	LoadDataAsync();
+}
+
+int CTPOTCWorkerProcessor::LoginSystemUser(void)
+{
+	CThostFtdcReqUserLoginField req{};
+	std::strncpy(req.BrokerID, _systemUser.getBrokerId().data(), sizeof(req.BrokerID));
+	std::strncpy(req.UserID, _systemUser.getUserId().data(), sizeof(req.UserID));
+	std::strncpy(req.Password, _systemUser.getPassword().data(), sizeof(req.Password));
+	return ((CTPRawAPI*)getRawAPI())->MdAPI->ReqUserLogin(&req, AppContext::GenNextSeq());
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -88,32 +123,34 @@ int CTPOTCWorkerProcessor::LoginSystemUserIfNeed(void)
 	int ret = 0;
 
 	if (!_isLogged)
-	{
-		std::string brokerid;
-		CThostFtdcReqUserLoginField req{};
-		if (!_serverCtx->getConfigVal(CTP_MD_BROKERID, brokerid))
-			brokerid = SysParam::Get(CTP_MD_BROKERID);
-		std::strncpy(req.BrokerID, brokerid.data(), sizeof(req.BrokerID));
-
-		std::string usrid;
-		if (!_serverCtx->getConfigVal(CTP_MD_USERID, usrid))
-			usrid = SysParam::Get(CTP_MD_USERID);
-		std::strncpy(req.UserID, usrid.data(), sizeof(req.UserID));
-
-		std::string pwd;
-		if (!_serverCtx->getConfigVal(CTP_MD_PASSWORD, pwd))
-			pwd = SysParam::Get(CTP_MD_PASSWORD);
-		std::strncpy(req.Password, pwd.data(), sizeof(req.Password));
-
-		std::string address;
-		ExchangeRouterTable::TryFind(brokerid + ':' + ExchangeRouterTable::TARGET_MD, address);
-		InitializeServer(usrid, address);
-
-		ret = ((CTPRawAPI*)getRawAPI())->MdAPI->ReqUserLogin(&req, AppContext::GenNextSeq());
-	}
+		ret = LoginSystemUser();
 
 	return ret;
 }
+
+int CTPOTCWorkerProcessor::LoadDataAsync(void)
+{
+	_initializer = std::move(std::thread([this]() {
+		auto millsec = std::chrono::milliseconds(500);
+		while (!_closing)
+		{
+			if (!HasLogged())
+			{
+				if (!CTPUtility::HasReturnError(LoginSystemUser()))
+					break;
+			}
+
+			for (int cum_ms = 0; cum_ms < RetryInterval && !_closing; cum_ms += millsec.count())
+			{
+				std::this_thread::sleep_for(millsec);
+			}
+		}
+	}));
+
+	return 0;
+}
+
+
 
 int CTPOTCWorkerProcessor::SubscribeMarketData(const ContractKey& contractId)
 {

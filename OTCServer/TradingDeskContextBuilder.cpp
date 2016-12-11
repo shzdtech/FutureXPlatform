@@ -53,19 +53,19 @@ TradingDeskContextBuilder::~TradingDeskContextBuilder()
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void TradingDeskContextBuilder::BuildContext(ISession* pSession)
+void TradingDeskContextBuilder::BuildContext(const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	LoadPortfolio(pSession);
-	LoadStrategy(pSession);
-	LoadContractParam(pSession);
+	LoadPortfolio(msgProcessor, session);
+	LoadStrategy(msgProcessor, session);
+	LoadContractParam(msgProcessor, session);
 }
 
 
-void TradingDeskContextBuilder::LoadPortfolio(ISession* pSession)
+void TradingDeskContextBuilder::LoadPortfolio(const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	if (auto portfolioDOVec_Ptr = PortfolioDAO::FindPortfolioByUser(pSession->getUserInfo()->getUserId()))
+	if (auto portfolioDOVec_Ptr = PortfolioDAO::FindPortfolioByUser(session->getUserInfo()->getUserId()))
 	{
-		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(pSession->getProcessor()))
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 		{
 			auto pPortfoliorMap = pWorkerProc->PricingDataContext()->GetPortfolioMap();
 
@@ -82,21 +82,21 @@ void TradingDeskContextBuilder::LoadPortfolio(ISession* pSession)
 				}
 			}
 
-			if (auto userInfoPtr = std::static_pointer_cast<UserInfoDO>(pSession->getUserInfo()->getExtInfo()))
+			if (auto userInfoPtr = std::static_pointer_cast<UserInfoDO>(session->getUserInfo()->getExtInfo()))
 				userInfoPtr->Portfolios = portfolioDOVec_Ptr;
 		}
 	}
 }
 
-void TradingDeskContextBuilder::LoadContractParam(ISession* pSession)
+void TradingDeskContextBuilder::LoadContractParam(const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	auto conParamVec_Ptr = std::make_shared<std::vector<ContractKey>>();
-	pSession->getContext()->setAttribute(STR_KEY_USER_CONTRACT_PARAM, conParamVec_Ptr);
+	session->getContext()->setAttribute(STR_KEY_USER_CONTRACT_PARAM, conParamVec_Ptr);
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(pSession->getProcessor()))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		auto productType = pWorkerProc->GetContractProductType();
-		if (auto contractVec_Ptr = StrategyContractDAO::RetrieveContractParamByUser(pSession->getUserInfo()->getUserId(), productType))
+		if (auto contractVec_Ptr = StrategyContractDAO::RetrieveContractParamByUser(session->getUserInfo()->getUserId(), productType))
 		{
 			auto contractMap = pWorkerProc->PricingDataContext()->GetContractParamMap();
 
@@ -113,21 +113,21 @@ void TradingDeskContextBuilder::LoadContractParam(ISession* pSession)
 	}
 }
 
-void TradingDeskContextBuilder::LoadStrategy(ISession* pSession)
+void TradingDeskContextBuilder::LoadStrategy(const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	auto strategyVec_Ptr = std::make_shared<std::vector<ContractKey>>();
-	pSession->getContext()->setAttribute(STR_KEY_USER_STRATEGY, strategyVec_Ptr);
+	session->getContext()->setAttribute(STR_KEY_USER_STRATEGY, strategyVec_Ptr);
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(pSession->getProcessor()))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		for (auto productType : pWorkerProc->GetStrategyProductTypes())
 		{
 			auto& models = StrategyModelCache::ModelCache();
-			auto& userid = pSession->getUserInfo()->getUserId();
+			auto& userid = session->getUserInfo()->getUserId();
 
 			auto strategyMap = pWorkerProc->PricingDataContext()->GetStrategyMap();
 
-			for (auto it = strategyMap->begin();; it++)
+			for (auto it = strategyMap->begin(); ; it++)
 			{
 				it = std::find_if(it, strategyMap->end(),
 					[&userid, productType](const std::pair<ContractKey, StrategyContractDO>& pair) { return  pair.second.UserID() == userid && pair.second.ProductType == productType; });

@@ -11,7 +11,7 @@
 #include "DefMessageID.h"
 #include "../dataobject/ResultDO.h"
 
-const data_buffer ZERO_RETURN(new byte[1]{ 0 }, 1);
+static const data_buffer ZERO_RETURN(new byte[1]{ 0 }, 1);
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       ServerSessionManager::ServerSessionManager()
@@ -48,11 +48,16 @@ void ServerSessionManager::AssembleSession(const IMessageSession_Ptr& msgSession
 	auto msgProcessor = _server->getServiceFactory()->CreateMessageProcessor(_server->getContext());
 	msgProcessor->setServerContext(_server->getContext());
 	msgProcessor->setServiceLocator(_msgsvclocator);
-	msgSessionPtr->RegistProcessor(msgProcessor);
+	msgSessionPtr->RegisterProcessor(msgProcessor);
+	AddSession(msgSessionPtr);
+
 	if (msgSessionPtr->Start())
 	{
-		_sessionSet.emplace(msgSessionPtr);
 		msgSessionPtr->WriteMessage(MSG_ID_SESSION_CREATED, ZERO_RETURN);
+	}
+	else
+	{
+		CloseSession(msgSessionPtr);
 	}
 }
 
@@ -64,20 +69,21 @@ void ServerSessionManager::AssembleSession(const IMessageSession_Ptr& msgSession
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void ServerSessionManager::OnServerClosing(void)
-{
-	IMessageSession_Ptr sessionPtr;
-	while (_sessionSet.pop(sessionPtr))
-	{
-		try
-		{
-			sessionPtr->Close();
-		}
-		catch (...) {}
-	}
-
-	_server->getContext()->Reset();
-}
+//void ServerSessionManager::OnServerClosing(void)
+//{
+//	auto processors = _sessionSet.lock_table();
+//	for (auto pair : processors)
+//	{
+//		try
+//		{
+//			pair.first->getMessageSession()->Close();
+//		}
+//		catch (...) {}
+//	}
+//	processors.release();
+//	_sessionSet.clear();
+//	_server->getContext()->Reset();
+//}
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       ServerSessionManager::OnServerStarting()
@@ -93,9 +99,9 @@ void ServerSessionManager::OnServerStarting(void)
 	{
 		auto msgSession_Ptr = std::make_shared<MessageSession>(shared_from_this());
 		workProcPtr->setServiceLocator(_msgsvclocator);
-		msgSession_Ptr->RegistProcessor(workProcPtr);
-		workProcPtr->setSession(msgSession_Ptr);
+		msgSession_Ptr->RegisterProcessor(workProcPtr);
+		workProcPtr->setMessageSession(msgSession_Ptr);
 
-		_sessionSet.emplace(msgSession_Ptr);
+		AddSession(msgSession_Ptr);
 	}
 }

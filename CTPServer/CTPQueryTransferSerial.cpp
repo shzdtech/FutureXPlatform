@@ -26,7 +26,7 @@
 
 #include "CTPUtility.h"
  ////////////////////////////////////////////////////////////////////////
- // Name:       CTPQueryTransferSerial::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       CTPQueryTransferSerial::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
  // Purpose:    Implementation of CTPQueryTransferSerial::HandleRequest()
  // Parameters:
  // - reqDO
@@ -35,7 +35,7 @@
  // Return:     void
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryTransferSerial::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryTransferSerial::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
 	
@@ -67,7 +67,7 @@ dataobj_ptr CTPQueryTransferSerial::HandleRequest(const uint32_t serialId, const
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPQueryTransferSerial::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPQueryTransferSerial::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 // Purpose:    Implementation of CTPQueryTransferSerial::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
@@ -76,7 +76,7 @@ dataobj_ptr CTPQueryTransferSerial::HandleRequest(const uint32_t serialId, const
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryTransferSerial::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryTransferSerial::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CTPUtility::CheckNotFound(rawRespParams[0]);
 	CTPUtility::CheckError(rawRespParams[1]);

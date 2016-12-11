@@ -16,12 +16,12 @@ class OTCSERVER_CLASS_EXPORT TradingDeskContextBuilder : public IUserContextBuil
 public:
    TradingDeskContextBuilder();
    ~TradingDeskContextBuilder();
-   void BuildContext(ISession* pSession);
+   void BuildContext(const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session);
 
 protected:
-	void LoadPortfolio(ISession* pSession);
-	void LoadStrategy(ISession* pSession);
-	void LoadContractParam(ISession* pSession);
+	void LoadPortfolio(const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session);
+	void LoadStrategy(const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session);
+	void LoadContractParam(const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session);
 
 private:
 

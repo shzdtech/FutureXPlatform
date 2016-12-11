@@ -9,7 +9,7 @@
 #define __message_MessageContext_h
 
 #include "IMessageContext.h"
-#include <map>
+#include <unordered_map>
 #include "message_exp.h"
 
 class MESSAGE_CLASS_EXPORT MessageContext : public IMessageContext
@@ -21,7 +21,7 @@ public:
 protected:
 
 private:
-   std::map<std::string, attribute_ptr> _attrib_map;
+   std::unordered_map<std::string, attribute_ptr> _attrib_map;
 };
 
 #endif

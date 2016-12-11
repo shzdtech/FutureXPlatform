@@ -20,7 +20,7 @@ enum UserErrorID
 
 enum CommonErrorID
 {
-	NO_ERROR = 0,
+	NO_ERROR_ID = 0,
 	OBJECT_NOT_FOUND = 1,
 	OBJECT_HAS_EXISTED = 2,
 	OBJECT_IS_CLOSED = 3,

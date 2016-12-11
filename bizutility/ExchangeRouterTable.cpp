@@ -1,23 +1,21 @@
 #include "ExchangeRouterTable.h"
+#include "libcuckoo/cuckoohash_map.hh"
 #include "../databaseop/ExchangeRouterDAO.h"
 
-static autofillmap<std::string, std::string> routerTable;
+static cuckoohash_map<std::string, std::string> routerTable(128);
 const std::string ExchangeRouterTable::TARGET_MD("md");
 const std::string ExchangeRouterTable::TARGET_TD("td");
 ExchangeRouterTable::static_initializer ExchangeRouterTable::_static_init;
 
 ExchangeRouterTable::static_initializer::static_initializer()
 {
-	ExchangeRouterDAO::FindAllExchangeRouters(routerTable);
+	std::map<std::string, std::string> exchangeTable;
+	ExchangeRouterDAO::FindAllExchangeRouters(exchangeTable);
+	for (auto& pair : exchangeTable)
+		routerTable.insert(pair.first, pair.second);
 }
 
 bool ExchangeRouterTable::TryFind(const std::string& name, std::string& address)
 {
-	if (auto pAddr = routerTable.tryfind(name))
-	{
-		address = *pAddr;
-		return true;
-	}
-
-	return false;
+	return routerTable.find(name, address);
 }

@@ -14,7 +14,7 @@
 
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       OTCNewOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       OTCNewOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
  // Purpose:    Implementation of OTCNewOrder::HandleRequest()
  // Parameters:
  // - reqDO
@@ -23,7 +23,7 @@
  // Return:     dataobj_ptr
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr OTCNewOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr OTCNewOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
 
@@ -32,7 +32,7 @@ dataobj_ptr OTCNewOrder::HandleRequest(const uint32_t serialId, const dataobj_pt
 	auto& orderDO = *((OrderRequestDO*)reqDO.get());
 	orderDO.SetUserID(session->getUserInfo()->getUserId());
 	if (auto pWorkerProc =
-		MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
+		MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		if (!(ret = pWorkerProc->GetOTCTradeProcessor()->OTCNewOrder(orderDO)))
 		{
@@ -44,7 +44,7 @@ dataobj_ptr OTCNewOrder::HandleRequest(const uint32_t serialId, const dataobj_pt
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       OTCNewOrder::HandleResponse(const uint32_t serialId, param_vector rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       OTCNewOrder::HandleResponse(const uint32_t serialId, param_vector rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 // Purpose:    Implementation of OTCNewOrder::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
@@ -53,7 +53,7 @@ dataobj_ptr OTCNewOrder::HandleRequest(const uint32_t serialId, const dataobj_pt
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr OTCNewOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr OTCNewOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	auto& orderDO = *((OrderDO*)rawRespParams[0]);
 	orderDO.SerialId = serialId;

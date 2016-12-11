@@ -17,7 +17,7 @@
 #include "../message/DefMessageID.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPCancleOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPCancleOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 // Purpose:    Implementation of CTPCancelOrder::HandleRequest()
 // Parameters:
 // - reqDO
@@ -26,7 +26,7 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPCancelOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPCancelOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
 
@@ -44,7 +44,7 @@ dataobj_ptr CTPCancelOrder::HandleRequest(const uint32_t serialId, const dataobj
 	
 	if (pDO->OrderSysID != 0)
 	{
-		std::strncpy(req.ExchangeID, pDO->ExchangeID().data(), sizeof(req.ExchangeID));;
+		std::strncpy(req.ExchangeID, pDO->ExchangeID().data(), sizeof(req.ExchangeID));
 		std::snprintf(req.OrderSysID, sizeof(req.OrderSysID), FMT_ORDERSYSID, pDO->OrderSysID);
 	}
 	else
@@ -62,7 +62,7 @@ dataobj_ptr CTPCancelOrder::HandleRequest(const uint32_t serialId, const dataobj
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPCancelOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPCancelOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 // Purpose:    Implementation of CTPCancleOrder::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
@@ -71,7 +71,7 @@ dataobj_ptr CTPCancelOrder::HandleRequest(const uint32_t serialId, const dataobj
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPCancelOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPCancelOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	dataobj_ptr ret;
 	auto pRsp = (CThostFtdcRspInfoField*)rawRespParams[1];

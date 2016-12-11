@@ -16,7 +16,7 @@ class CTP_OTC_CLASS_EXPORT CTPOTCSessionProcessor : public CTPProcessor
 public:
 	CTPOTCSessionProcessor();
    ~CTPOTCSessionProcessor();
-   void Initialize(void);
+   void Initialize(IServerContext* serverCtx);
 
 protected:
    bool OnSessionClosing(void);

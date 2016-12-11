@@ -4,7 +4,7 @@
 #include "../message/message_macro.h"
 #include "../message/DefMessageID.h"
 
-dataobj_ptr TestingPositionHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr & reqDO, IRawAPI * rawAPI, ISession * session)
+dataobj_ptr TestingPositionHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr & reqDO, IRawAPI * rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	static VectorDO_Ptr<InstrumentDO> contracts;
 
@@ -30,26 +30,26 @@ dataobj_ptr TestingPositionHandler::HandleRequest(const uint32_t serialId, const
 		position.OpenCost = std::rand();
 		position.Direction = std::rand() % 2 ? PositionDirectionType::PD_LONG : PositionDirectionType::PD_SHORT;
 
-		OnResponseProcMacro(session->getProcessor(), MSG_ID_QUERY_POSITION, serialId, &position);
+		OnResponseProcMacro(msgProcessor, MSG_ID_QUERY_POSITION, serialId, &position);
 	}
 
 	return nullptr;
 }
 
-dataobj_ptr TestingPositionHandler::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr TestingPositionHandler::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	auto pDO = std::make_shared<UserPositionExDO>(*(UserPositionExDO*)rawParams[0]);
 
-	std::thread t([pDO, serialId, session]()
+	std::thread t([pDO, serialId, msgProcessor]()
 	{
-		if (auto sessionptr = session->getProcessor()->LockMessageSession())
+		if (auto sessionptr = msgProcessor->getMessageSession())
 		{
 			for (int i = 0; i < 15; i++)
 			{
 				pDO->TdPosition++;
 				std::this_thread::sleep_for(std::chrono::seconds(2));
-				((TemplateMessageProcessor*)sessionptr->getProcessor().get())
-					->SendDataObject(sessionptr.get(), MSG_ID_POSITION_UPDATED, serialId, pDO);
+				((TemplateMessageProcessor*)sessionptr->LockMessageProcessor().get())
+					->SendDataObject(sessionptr, MSG_ID_POSITION_UPDATED, serialId, pDO);
 			}
 		}
 	});

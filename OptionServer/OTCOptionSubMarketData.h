@@ -14,7 +14,7 @@
 class OPTION_SERVER_CLASS_EXPORT OTCOptionSubMarketData : public NopHandler
 {
 public:
-	dataobj_ptr HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session);
+	dataobj_ptr HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session);
 
 protected:
 private:

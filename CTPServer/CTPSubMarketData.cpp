@@ -17,7 +17,7 @@
 #include <algorithm>
 #include "CTPUtility.h"
  ////////////////////////////////////////////////////////////////////////
- // Name:       CTPSubMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       CTPSubMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
  // Purpose:    Implementation of CTPSubMarketData::HandleRequest()
  // Parameters:
  // - reqDO
@@ -26,7 +26,7 @@
  // Return:     void
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPSubMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPSubMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
 
@@ -68,7 +68,7 @@ dataobj_ptr CTPSubMarketData::HandleRequest(const uint32_t serialId, const datao
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPSubMarketData::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPSubMarketData::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 // Purpose:    Implementation of CTPSubMarketData::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
@@ -77,7 +77,7 @@ dataobj_ptr CTPSubMarketData::HandleRequest(const uint32_t serialId, const datao
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPSubMarketData::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPSubMarketData::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CTPUtility::CheckError(rawRespParams[1]);
 

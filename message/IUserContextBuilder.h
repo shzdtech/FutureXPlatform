@@ -8,13 +8,13 @@
 #if !defined(__message_IUserContextBuilder_h)
 #define __message_IUserContextBuilder_h
 
-#include "ISession.h"
+#include "IMessageSession.h"
 #include <memory>
 
 class IUserContextBuilder
 {
 public:
-	virtual void BuildContext(ISession* pSession) = 0;
+	virtual void BuildContext(const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session) = 0;
 
 protected:
 private:

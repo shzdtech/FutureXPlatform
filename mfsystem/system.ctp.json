@@ -1,6 +1,6 @@
 {
   "system": {
-    "version": "0.8-2016.10.19-00.00",
+    "version": "0.8-2016.12.08-00.00",
     "service": {
       "config": "service.ctp.json"
     },
@@ -13,7 +13,7 @@
         "user": "zhuyi",
         "password": "Zhuyi@2701",
         "autocommit": "1",
-        "poolsize": "2",
+        "poolsize": "5",
         "heartbeat": "60000",
         "checksql": "select 1"
       }

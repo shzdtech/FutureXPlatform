@@ -15,7 +15,7 @@
 #include <algorithm>
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPUnsubMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPUnsubMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, IMessageProcessor* msgProcessor
 // Purpose:    Implementation of CTPUnsubMarketData::HandleRequest()
 // Parameters:
 // - reqDO
@@ -24,7 +24,7 @@
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPUnsubMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPUnsubMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
 
@@ -51,7 +51,7 @@ dataobj_ptr CTPUnsubMarketData::HandleRequest(const uint32_t serialId, const dat
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPUnsubMarketData::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPUnsubMarketData::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, IMessageProcessor* msgProcessor
 // Purpose:    Implementation of CTPUnsubMarketData::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
@@ -60,7 +60,7 @@ dataobj_ptr CTPUnsubMarketData::HandleRequest(const uint32_t serialId, const dat
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPUnsubMarketData::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPUnsubMarketData::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CTPUtility::CheckError(rawRespParams[1]);
 

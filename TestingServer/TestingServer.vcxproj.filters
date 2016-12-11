@@ -51,6 +51,15 @@
     <ClCompile Include="TestingQueryInstruments.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="TestingWorkProcessor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TestingQueryOrder.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TestingQueryTrade.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TestingLoginHandler.h">
@@ -87,6 +96,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="TestingQueryInstruments.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TestingWorkProcessor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TestingQueryOrder.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TestingQueryTrade.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

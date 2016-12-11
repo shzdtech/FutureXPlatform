@@ -11,7 +11,7 @@
 
 static const std::string EXCHANGE_SHFE = "SHFE";
 static const std::string EXCHANGE_CTP = "ctp";
-static const std::string EXCHANGE_EMPTY = "";
+static const std::string EXCHANGE_EMPTY;
 static const std::string CTP_MD_BROKERID = "CTP.MD.LOGIN.BROKERID";
 static const std::string CTP_MD_USERID = "CTP.MD.LOGIN.USERID";
 static const std::string CTP_MD_PASSWORD = "CTP.MD.LOGIN.PASSWORD";

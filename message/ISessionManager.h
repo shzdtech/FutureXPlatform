@@ -16,6 +16,7 @@ class ISessionManager
 public:
 	virtual void OnServerStarting(void) = 0;
 	virtual void OnServerClosing(void) = 0;
+	virtual void AddSession(const IMessageSession_Ptr& sessionPtr) = 0;
 	virtual bool CloseSession(const IMessageSession_Ptr& sessionPtr) = 0;
 
 protected:

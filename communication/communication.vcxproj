@@ -52,6 +52,7 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -105,6 +106,7 @@
       <AdditionalIncludeDirectories>$(BOOST_ROOT);$(SolutionDir)include;</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLOG_NO_ABBREVIATED_SEVERITIES;COMMUNICATION_LIBRARY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions> -D_SCL_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
+      <OmitFramePointers>false</OmitFramePointers>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -141,6 +143,7 @@
       <AdditionalIncludeDirectories>$(BOOST_ROOT);$(SolutionDir)include;</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;GLOG_NO_ABBREVIATED_SEVERITIES;COMMUNICATION_LIBRARY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions> -D_SCL_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
+      <OmitFramePointers>false</OmitFramePointers>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

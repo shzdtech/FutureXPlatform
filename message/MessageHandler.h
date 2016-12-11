@@ -17,7 +17,7 @@
 class MESSAGE_CLASS_EXPORT MessageHandler : public IMessageHandler
 {
 public:
-	virtual bool CheckLogin(ISession* session, bool throwBizErr = true);
+	virtual bool CheckLogin(const IMessageSession_Ptr& session, bool throwBizErr = true);
 
 protected:
 	static std::atomic_uint _requestIdGen;

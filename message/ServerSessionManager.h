@@ -20,7 +20,7 @@ public:
 	~ServerSessionManager();
 
 	void OnServerStarting(void);
-	void OnServerClosing(void);
+	// void OnServerClosing(void);
 
 	void AssembleSession(const IMessageSession_Ptr& msgSessionPtr);
 

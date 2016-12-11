@@ -149,7 +149,7 @@ public:
 		std::shared_ptr<CONNTYPE> conn;
 		if (millisecs == INFINITE_TIMEOUT)
 		{
-			for (;;)
+			for (; ;)
 			{
 				if (conn = try_lease_at(i))
 				{

@@ -40,25 +40,25 @@
  // Return:     dataobj_ptr
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPOTCLogin::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPOTCLogin::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	auto ret = Login(reqDO, rawAPI, session);
+	auto ret = Login(reqDO, rawAPI, msgProcessor, session);
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCWorkerProcessor>(session->getProcessor()))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCWorkerProcessor>(msgProcessor))
 	{
-		pWorkerProc->RegisterLoggedSession(session->getProcessor()->LockMessageSession());
+		pWorkerProc->RegisterLoggedSession(msgProcessor->getMessageSession());
 
-		if (session->getUserInfo()->getRole() == ROLE_TRADINGDESK)
-		{
-			pWorkerProc->LoginSystemUserIfNeed();
-		}
+		//if (session->getUserInfo()->getRole() == ROLE_TRADINGDESK)
+		//{
+		//	pWorkerProc->LoginSystemUserIfNeed();
+		//}
 
 		if (!(pWorkerProc->ConnectedToServer() && pWorkerProc->HasLogged()))
 		{
-			// throw SystemException(CONNECTION_ERROR, "Cannot connect to CTP Trading Server!");
+			throw SystemException(CONNECTION_ERROR, "CTP Market Data Server not connected!");
 		}
 	}
-	
-	OTCUserContextBuilder::Instance()->BuildContext(session);
+
+	OTCUserContextBuilder::Instance()->BuildContext(msgProcessor, session);
 	return ret;
 }

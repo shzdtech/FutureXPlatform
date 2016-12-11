@@ -7,6 +7,7 @@
 
 #if !defined(__message_IRawAPI_h)
 #define __message_IRawAPI_h
+#include <memory>
 
 class IRawAPI
 {
@@ -15,5 +16,7 @@ protected:
 private:
 
 };
+
+typedef std::shared_ptr<IRawAPI> IRawAPI_Ptr;
 
 #endif

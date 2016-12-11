@@ -4,13 +4,13 @@
 
 #include "../message/MessageUtility.h"
 
-dataobj_ptr CTPTradeUpdated::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPTradeUpdated::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	if (auto pTrade = (CThostFtdcTradeField*)rawRespParams[0])
 	{
 		auto ret = CTPUtility::ParseRawTrade(pTrade);
 
-		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 		{
 			pWorkerProc->GetUserTradeContext().UpsertTrade(ret);
 		}

@@ -12,7 +12,7 @@
 #include "IMessageServer.h"
 #include <set>
 #include <mutex>
-#include "../utility/lockfree_set.h"
+#include "libcuckoo/cuckoohash_map.hh"
 #include "message_exp.h"
 
 class MESSAGE_CLASS_EXPORT SessionManager : public ISessionManager, public std::enable_shared_from_this<SessionManager>
@@ -23,10 +23,11 @@ public:
 
 	void OnServerStarting(void);
 	void OnServerClosing(void);
+	void AddSession(const IMessageSession_Ptr& sessionPtr);
 	bool CloseSession(const IMessageSession_Ptr& sessionPtr);
 
 protected:
-	lockfree_set<IMessageSession_Ptr> _sessionSet;
+	cuckoohash_map<IMessageProcessor_Ptr, bool> _sessionSet;
 	IMessageServer* _server;
 
 private:

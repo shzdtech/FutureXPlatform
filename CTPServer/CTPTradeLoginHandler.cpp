@@ -19,16 +19,16 @@
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-int CTPTradeLoginHandler::LoginFunction(ISession* session, CThostFtdcReqUserLoginField* loginInfo, uint requestId, const std::string& severName)
+int CTPTradeLoginHandler::LoginFunction(const IMessageProcessor_Ptr& msgProcessor, CThostFtdcReqUserLoginField* loginInfo, uint requestId, const std::string& severName)
 {
-	auto pProcessor = (CTPProcessor*)session->getProcessor().get();
+	auto pProcessor = (CTPProcessor*)msgProcessor.get();
 
 	std::string brokerId(loginInfo->BrokerID);
 	if (brokerId.empty())
 	{
-		if (!session->getProcessor()->getServerContext()->getConfigVal(CTP_TRADER_BROKERID, brokerId))
+		if (!msgProcessor->getServerContext()->getConfigVal(CTP_TRADER_BROKERID, brokerId))
 		{
-			brokerId = SysParam::Get(CTP_TRADER_BROKERID);
+			SysParam::TryGet(CTP_TRADER_BROKERID, brokerId);
 		}
 		std::strncpy(loginInfo->BrokerID, brokerId.data(), sizeof(loginInfo->BrokerID));
 	}
@@ -36,9 +36,9 @@ int CTPTradeLoginHandler::LoginFunction(ISession* session, CThostFtdcReqUserLogi
 	std::string userId(loginInfo->UserID);
 	if (userId.empty())
 	{
-		if (!session->getProcessor()->getServerContext()->getConfigVal(CTP_TRADER_USERID, userId))
+		if (!msgProcessor->getServerContext()->getConfigVal(CTP_TRADER_USERID, userId))
 		{
-			userId = SysParam::Get(CTP_TRADER_USERID);
+			SysParam::TryGet(CTP_TRADER_USERID, userId);
 		}
 		std::strncpy(loginInfo->UserID, userId.data(), sizeof(loginInfo->UserID));
 	}
@@ -46,9 +46,9 @@ int CTPTradeLoginHandler::LoginFunction(ISession* session, CThostFtdcReqUserLogi
 	std::string pwd(loginInfo->Password);
 	if (pwd.empty())
 	{
-		if (!session->getProcessor()->getServerContext()->getConfigVal(CTP_TRADER_PASSWORD, pwd))
+		if (!msgProcessor->getServerContext()->getConfigVal(CTP_TRADER_PASSWORD, pwd))
 		{
-			pwd = SysParam::Get(CTP_TRADER_PASSWORD);
+			SysParam::TryGet(CTP_TRADER_PASSWORD, pwd);
 		}
 		std::strncpy(loginInfo->Password, pwd.data(), sizeof(loginInfo->Password));
 	}
@@ -62,9 +62,9 @@ int CTPTradeLoginHandler::LoginFunction(ISession* session, CThostFtdcReqUserLogi
 	return ((CTPRawAPI*)pProcessor->getRawAPI())->TrdAPI->ReqUserLogin(loginInfo, requestId);
 }
 
-dataobj_ptr CTPTradeLoginHandler::HandleResponse(const uint32_t serialId, const param_vector & rawRespParams, IRawAPI * rawAPI, ISession * session)
+dataobj_ptr CTPTradeLoginHandler::HandleResponse(const uint32_t serialId, const param_vector & rawRespParams, IRawAPI * rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	dataobj_ptr ret = CTPLoginHandler::HandleResponse(serialId, rawRespParams, rawAPI, session);
+	dataobj_ptr ret = CTPLoginHandler::HandleResponse(serialId, rawRespParams, rawAPI, msgProcessor, session);
 
 	CThostFtdcSettlementInfoConfirmField reqsettle{};
 	std::strncpy(reqsettle.BrokerID, session->getUserInfo()->getBrokerId().data(), sizeof(reqsettle.BrokerID));

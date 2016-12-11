@@ -32,7 +32,7 @@ std::map<uint, IMessageHandler_Ptr> CTPTradeServiceFactory::CreateMessageHandler
 
 	msg_hdl_map[MSG_ID_ECHO] = std::make_shared<EchoMessageHandler>();
 
-	msg_hdl_map[MSG_ID_LOGIN] = std::make_shared<CTPTradeLoginHandler>();;
+	msg_hdl_map[MSG_ID_LOGIN] = std::make_shared<CTPTradeLoginHandler>();
 
 	msg_hdl_map[MSG_ID_QUERY_ACCOUNT_INFO] = std::make_shared<CTPQueryAccountInfo>();
 

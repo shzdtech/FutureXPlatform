@@ -26,12 +26,16 @@ public:
 
 	~CTPOTCWorkerProcessor();
 
-	void setSession(const IMessageSession_WkPtr& msgSession_wk_ptr);
+	void setMessageSession(const IMessageSession_Ptr& msgSession_ptr);
 	bool OnSessionClosing(void);
 
 	void Initialize(IServerContext* pServerCtx);
 
+	int LoginSystemUser(void);
+
 	int LoginSystemUserIfNeed(void);
+
+	int LoadDataAsync(void);
 
 	int SubscribeMarketData(const ContractKey & contractId);
 
@@ -45,6 +49,10 @@ public:
 
 protected:
 	std::shared_ptr<CTPOTCTradeProcessor> _ctpOtcTradeProcessorPtr;
+	std::thread _initializer;
+	UserInfo _systemUser;
+	int RetryInterval = 60000;
+	volatile bool _closing = false;
 
 private:
 

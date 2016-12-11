@@ -11,6 +11,7 @@
 #include <memory>
 #include <functional>
 #include "libcuckoo/cuckoohash_map.hh"
+#include "../utility/cuckoohashmap_wrapper.h"
 
 template <class K, class V, class Hash = DefaultHasher<K>, class Pred = std::equal_to<K>>
 class cuckoohashmap_wrapper

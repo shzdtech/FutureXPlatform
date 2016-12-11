@@ -17,20 +17,18 @@ dataobj_ptr TemplateMessageProcessor::ProcessRequest(const uint32_t msgId, const
 {
 	try
 	{
+		auto thisptr = shared_from_this();
 		if (_svc_locator_ptr)
 		{
 			if (auto msgHandler = _svc_locator_ptr->FindMessageHandler(msgId))
 			{
-				if (auto session_ptr = LockMessageSession())
+				if (auto dataobj_ptr = msgHandler->HandleRequest(serialId, reqDO, getRawAPI(), thisptr, getMessageSession()))
 				{
-					if (auto dataobj_ptr = msgHandler->HandleRequest(serialId, reqDO, getRawAPI(), session_ptr.get()))
+					if (sendRsp)
 					{
-						if (sendRsp)
-						{
-							SendDataObject(session_ptr.get(), msgId, serialId, dataobj_ptr);
-						}
-						return dataobj_ptr;
+						SendDataObject(getMessageSession(), msgId, serialId, dataobj_ptr);
 					}
+					return dataobj_ptr;
 				}
 			}
 		}
@@ -51,20 +49,18 @@ dataobj_ptr TemplateMessageProcessor::ProcessResponse(const uint32_t msgId, cons
 {
 	try
 	{
+		auto thisptr = shared_from_this();
 		if (_svc_locator_ptr)
 		{
 			if (auto msgHandler = _svc_locator_ptr->FindMessageHandler(msgId))
 			{
-				if (auto session_ptr = LockMessageSession())
+				if (auto dataobj_ptr = msgHandler->HandleResponse(serialId, rawRespParams, getRawAPI(), thisptr, getMessageSession()))
 				{
-					if (auto dataobj_ptr = msgHandler->HandleResponse(serialId, rawRespParams, getRawAPI(), session_ptr.get()))
+					if (sendRsp)
 					{
-						if (sendRsp)
-						{
-							SendDataObject(session_ptr.get(), msgId, serialId, dataobj_ptr);
-						}
-						return dataobj_ptr;
+						SendDataObject(getMessageSession(), msgId, serialId, dataobj_ptr);
 					}
+					return dataobj_ptr;
 				}
 			}
 		}
@@ -81,7 +77,7 @@ dataobj_ptr TemplateMessageProcessor::ProcessResponse(const uint32_t msgId, cons
 	return nullptr;
 }
 
-int TemplateMessageProcessor::SendDataObject(ISession* session,
+int TemplateMessageProcessor::SendDataObject(const ISession_Ptr& session,
 	const uint32_t msgId, const uint32_t serialId, const dataobj_ptr& dataobj)
 {
 	int ret = 0;
@@ -145,6 +141,6 @@ void TemplateMessageProcessor::SendExceptionMessage(uint32_t msgId, MessageExcep
 	dataobj_ptr dataobj(new MessageExceptionDO(msgId, serialId, msgException.ErrorType(), msgException.ErrorCode(),
 		msgException.what()));
 	if (auto exMsg = ExceptionSerializer::Instance()->Serialize(dataobj))
-		if (auto session_ptr = LockMessageSession())
+		if (auto session_ptr = getMessageSession())
 			session_ptr->WriteMessage(MSG_ID_ERROR, exMsg);
 }

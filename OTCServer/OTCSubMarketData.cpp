@@ -26,7 +26,7 @@
 #include "../bizutility/ContractCache.h"
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       OTCSubMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       OTCSubMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
  // Purpose:    Implementation of OTCSubMarketData::HandleRequest()
  // Parameters:
  // - reqDO
@@ -35,7 +35,7 @@
  // Return:     dataobj_ptr
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr OTCSubMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr OTCSubMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
 
@@ -44,7 +44,7 @@ dataobj_ptr OTCSubMarketData::HandleRequest(const uint32_t serialId, const datao
 	auto stdo = (StringTableDO*)reqDO.get();
 
 	if (auto pWorkerProc =
-		MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
+		MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		if (!stdo->Data.empty())
 		{
@@ -82,7 +82,7 @@ dataobj_ptr OTCSubMarketData::HandleRequest(const uint32_t serialId, const datao
 				}
 			}
 
-			auto sessionPtr = session->getProcessor()->LockMessageSession();
+			auto sessionPtr = msgProcessor->getMessageSession();
 			for (auto& pDO : *ret)
 			{
 				pWorkerProc->RegisterPricingListener(pDO, sessionPtr);

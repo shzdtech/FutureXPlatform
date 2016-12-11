@@ -12,7 +12,7 @@
 
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTSQueryAccountInfo::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       CTSQueryAccountInfo::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 // Purpose:    Implementation of CTSQueryAccountInfo::HandleRequest()
 // Parameters:
 // - reqDO
@@ -21,7 +21,7 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTSQueryAccountInfo::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTSQueryAccountInfo::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	auto api = (CTSAPIWrapper*)rawAPI;
 	auto vectorPtr = api->Impl()->QueryTrade();
@@ -33,13 +33,13 @@ dataobj_ptr CTSQueryAccountInfo::HandleRequest(const uint32_t serialId, const da
 	{
 		auto rspTradePtr = std::make_shared<TradeRecordDO>(vectorPtr->at(i));
 		rspTradePtr->HasMore = i < lastidx;
-		OnResponseProcMacro(session->getProcessor(), MSG_ID_QUERY_TRADE, serialId, &rspTradePtr);
+		OnResponseProcMacro(msgProcessor, MSG_ID_QUERY_TRADE, serialId, &rspTradePtr);
 	}
 	return nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTSQueryTrade::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTSQueryTrade::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 // Purpose:    Implementation of CTSQueryTrade::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawParams
@@ -48,7 +48,7 @@ dataobj_ptr CTSQueryAccountInfo::HandleRequest(const uint32_t serialId, const da
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTSQueryAccountInfo::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTSQueryAccountInfo::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	TradeRecordDO_Ptr trade_ptr = *((TradeRecordDO_Ptr*)rawParams[0]);
 

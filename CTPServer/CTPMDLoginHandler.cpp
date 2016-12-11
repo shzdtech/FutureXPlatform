@@ -17,16 +17,16 @@
  // Return:     int
  ////////////////////////////////////////////////////////////////////////
 
-int CTPMDLoginHandler::LoginFunction(ISession* session, CThostFtdcReqUserLoginField* loginInfo, uint requestId, const std::string& severName)
+int CTPMDLoginHandler::LoginFunction(const IMessageProcessor_Ptr& msgProcessor, CThostFtdcReqUserLoginField* loginInfo, uint requestId, const std::string& severName)
 {
-	auto pProcessor = (CTPProcessor*)session->getProcessor().get();
+	auto pProcessor = (CTPProcessor*)msgProcessor.get();
 
 	std::string brokerId(loginInfo->BrokerID);
 	if (brokerId.empty())
 	{
-		if (!session->getProcessor()->getServerContext()->getConfigVal(CTP_MD_BROKERID, brokerId))
+		if (!msgProcessor->getServerContext()->getConfigVal(CTP_MD_BROKERID, brokerId))
 		{
-			brokerId = SysParam::Get(CTP_MD_BROKERID);
+			SysParam::TryGet(CTP_MD_BROKERID, brokerId);
 		}
 		std::strncpy(loginInfo->BrokerID, brokerId.data(), sizeof(loginInfo->BrokerID));
 	}
@@ -34,9 +34,9 @@ int CTPMDLoginHandler::LoginFunction(ISession* session, CThostFtdcReqUserLoginFi
 	std::string userId(loginInfo->UserID);
 	if (userId.empty())
 	{
-		if (!session->getProcessor()->getServerContext()->getConfigVal(CTP_MD_USERID, userId))
+		if (!msgProcessor->getServerContext()->getConfigVal(CTP_MD_USERID, userId))
 		{
-			userId = SysParam::Get(CTP_MD_USERID);
+			SysParam::TryGet(CTP_MD_USERID, userId);
 		}
 		std::strncpy(loginInfo->UserID, userId.data(), sizeof(loginInfo->UserID));
 	}
@@ -44,9 +44,9 @@ int CTPMDLoginHandler::LoginFunction(ISession* session, CThostFtdcReqUserLoginFi
 	std::string pwd(loginInfo->Password);
 	if (pwd.empty())
 	{
-		if (!session->getProcessor()->getServerContext()->getConfigVal(CTP_MD_PASSWORD, pwd))
+		if (!msgProcessor->getServerContext()->getConfigVal(CTP_MD_PASSWORD, pwd))
 		{
-			pwd = SysParam::Get(CTP_MD_PASSWORD);
+			SysParam::TryGet(CTP_MD_PASSWORD, pwd);
 		}
 		std::strncpy(loginInfo->Password, pwd.data(), sizeof(loginInfo->Password));
 	}

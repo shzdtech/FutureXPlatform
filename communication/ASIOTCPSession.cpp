@@ -10,6 +10,7 @@
 #include "../litelogger/LiteLogger.h"
 #include <mutex>
 #include "ASIOTCPSession.h"
+#include "ASIOSessionManager.h"
 #include "../configuration/AbstractConfigReaderFactory.h"
 
 
@@ -22,11 +23,10 @@
  ////////////////////////////////////////////////////////////////////////
 
 ASIOTCPSession::ASIOTCPSession(const ISessionManager_Ptr& sessionMgr_Ptr, tcp::socket&& socket) : MessageSession(sessionMgr_Ptr),
-	_alive(true), _started(false), _closed(false),
-	_socket(std::move(socket)), _max_msg_size(MAX_MSG_SIZE),
-	_heartbeat_timer(_socket.get_io_service())
+_alive(true), _started(false), _closed(false),
+_socket(std::move(socket)), _max_msg_size(MAX_MSG_SIZE),
+_heartbeat_timer(_socket.get_io_service())
 {
-	_clsclock.clear();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -77,34 +77,34 @@ int ASIOTCPSession::WriteMessage(const uint msgId, const data_buffer& msg)
 
 	if (!_sendingFlag.test_and_set(std::memory_order_acquire)) // try lock
 	{
-		asyn_send_queue();
+		asyn_send_queue(std::static_pointer_cast<ASIOTCPSession>(shared_from_this()));
 	}
 
 	return package_sz;
 }
 
 
-void ASIOTCPSession::asyn_send_queue()
+void ASIOTCPSession::asyn_send_queue(const ASIOTCPSession_Ptr& this_ptr)
 {
 	data_buffer package;
-	if (_databufferQueue.pop(package))
+	if (this_ptr->_databufferQueue.pop(package))
 	{
-		async_write(_socket, boost::asio::buffer(package.get(), package.size()),
-			[this, package](boost::system::error_code ec, std::size_t /*length*/)
+		async_write(this_ptr->_socket, boost::asio::buffer(package.get(), package.size()),
+			[this_ptr, package](boost::system::error_code ec, std::size_t /*length*/)
 		{
 			if (ec)
 			{
-				Close();
+				this_ptr->Close();
 			}
 			else
 			{
-				asyn_send_queue();
+				asyn_send_queue(this_ptr);
 			}
 		});
 	}
 	else
 	{
-		_sendingFlag.clear(std::memory_order_release);
+		this_ptr->_sendingFlag.clear(std::memory_order_release);
 	}
 }
 
@@ -128,8 +128,9 @@ bool ASIOTCPSession::Start(void)
 	{
 		_started = true;
 		_sendingFlag.clear(std::memory_order_release);
-		asyn_read_header(std::static_pointer_cast<ASIOTCPSession>(shared_from_this()));
-		asyn_timeout(std::static_pointer_cast<ASIOTCPSession>(shared_from_this()));
+		auto this_ptr = std::static_pointer_cast<ASIOTCPSession>(shared_from_this());
+		asyn_read_header(this_ptr);
+		asyn_timeout(this_ptr);
 	}
 
 	return _started;
@@ -143,16 +144,18 @@ bool ASIOTCPSession::Start(void)
 
 bool ASIOTCPSession::Close(void)
 {
-	while (_clsclock.test_and_set(std::memory_order_acquire)); // lock
+	std::lock_guard<std::mutex> lock(_oplock);
 
 	if (!_closed)
 	{
 		try
 		{
 			MessageSession::Close();
+			LOG_DEBUG << "Session " << Id() << " is closing...";
+			// lock sending queue
+			// while(_sendingFlag.test_and_set(std::memory_order_acquire));
 			if (_socket.is_open())
 			{
-				LOG_DEBUG << "Session " << Id() << " is closing...";
 				_socket.shutdown(tcp::socket::shutdown_both);
 				_socket.close();
 			}
@@ -160,17 +163,13 @@ bool ASIOTCPSession::Close(void)
 		catch (std::exception& ex)
 		{
 			LOG_ERROR << __FUNCTION__ << ex.what();
+			return false;
 		}
 
 		_closed = true;
-		// lock sending queue
-		_sendingFlag.test_and_set(std::memory_order_acquire);
-		_databufferQueue.clear();
 	}
 
-	_clsclock.clear(std::memory_order_release); // unlock
-
-	return _closed;
+	return true;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -241,7 +240,10 @@ void ASIOTCPSession::asyn_read_body(const ASIOTCPSession_Ptr& this_ptr, uint msg
 				uint msgId = (exinfo[1] | exinfo[2] << 8 | exinfo[3] << 16 | exinfo[4] << 24);
 				LOG_DEBUG << "Receiving message: Id: " << msgId << " Size:" << bufSz;
 				msgbuf.resize(bufSz);
-				this_ins->_messageProcessor_ptr->OnRequest(msgId, msgbuf);
+				if (auto processor_ptr = this_ins->LockMessageProcessor())
+				{
+					processor_ptr->OnRequest(msgId, msgbuf);
+				}
 			}
 		}
 		else

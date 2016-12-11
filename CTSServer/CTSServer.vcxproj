@@ -139,6 +139,7 @@
       </AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;CTS_LIBRARY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level3</WarningLevel>
+      <OmitFramePointers>false</OmitFramePointers>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>

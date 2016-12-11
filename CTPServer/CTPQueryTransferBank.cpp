@@ -26,7 +26,7 @@
 
 #include "CTPUtility.h"
  ////////////////////////////////////////////////////////////////////////
- // Name:       CTPQueryTransferBank::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       CTPQueryTransferBank::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
  // Purpose:    Implementation of CTPQueryTransferBank::HandleRequest()
  // Parameters:
  // - reqDO
@@ -35,7 +35,7 @@
  // Return:     void
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryTransferBank::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryTransferBank::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
 	auto stdo = (MapDO<std::string>*)reqDO.get();
@@ -55,7 +55,7 @@ dataobj_ptr CTPQueryTransferBank::HandleRequest(const uint32_t serialId, const d
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPQueryTransferBank::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPQueryTransferBank::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 // Purpose:    Implementation of CTPQueryTransferBank::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
@@ -64,7 +64,7 @@ dataobj_ptr CTPQueryTransferBank::HandleRequest(const uint32_t serialId, const d
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryTransferBank::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryTransferBank::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CTPUtility::CheckNotFound(rawRespParams[0]);
 	CTPUtility::CheckError(rawRespParams[1]);
@@ -80,7 +80,7 @@ dataobj_ptr CTPQueryTransferBank::HandleResponse(const uint32_t serialId, const 
 		pDO->BranchID = pData->BankBrchID;
 		pDO->BankName = boost::locale::conv::to_utf<char>(pData->BankName, CHARSET_GB2312);
 
-		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 		{
 			
 		}

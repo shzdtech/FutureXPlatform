@@ -18,6 +18,25 @@
 #include "../databaseop/AbstractConnectionManager.h"
 #include "../dataserializer/AbstractDataSerializerFactory.h"
 
+#if defined(USE_CRASHRPT)  
+#include "crashrpt/CrashRpt.h"
+
+ // Define the callback function that will be called on crash
+int CALLBACK CrashCallback(CR_CRASH_CALLBACK_INFO* pInfo)
+{
+	// The application has crashed!
+
+	// Close the log file here
+	// to ensure CrashRpt is able to include it into error report
+	auto pExpInfo = pInfo->pExceptionInfo;
+	LOG_ERROR << "Code: " << pExpInfo->code << ", Line: " << pExpInfo->line
+		<< ", Fun: " << pExpInfo->function << ", Express: " << pExpInfo->expression;
+
+	// Return CR_CB_DODEFAULT to generate error report
+	return CR_CB_DODEFAULT;
+}
+#endif  
+
 void MicroFurtureSystem::InitLogger(const char* logPath, bool showInStdErr)
 {
 	InitLogger(std::string(logPath), showInStdErr);
@@ -261,6 +280,24 @@ bool MicroFurtureSystem::Stop(void)
 MicroFurtureSystem::MicroFurtureSystem()
 {
 	_running = false;
+#if defined(USE_CRASHRPT)  
+	CR_INSTALL_INFO info {};
+	info.cb = sizeof(CR_INSTALL_INFO);
+	info.pszAppName = TEXT("MFSystem");
+	info.pszAppVersion = TEXT("1.0");
+	info.dwFlags |= (CR_INST_ALL_POSSIBLE_HANDLERS & ~CR_INST_SIGINT_HANDLER) | CR_INST_DONT_SEND_REPORT;
+	info.pszErrorReportSaveDir = TEXT("./CrashRpt");
+	if (EXIT_SUCCESS != crInstall(&info))
+	{
+		TCHAR errorMsg[512];
+		crGetLastErrorMsg(errorMsg, sizeof(errorMsg));
+		LOG_FATAL << errorMsg;
+	}
+
+	crSetCrashCallback(CrashCallback, nullptr);
+
+	LOG_INFO << "CrashRpt Loaded ...";
+#endif  
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -274,6 +311,10 @@ MicroFurtureSystem::~MicroFurtureSystem()
 	if (_running)
 	{
 		Stop();
+#if defined(USE_CRASHRPT)  
+		crUninstall();
+		LOG_INFO << "CrashRpt Unloaded ...";
+#endif
 	}
 }
 

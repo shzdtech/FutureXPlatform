@@ -15,10 +15,10 @@
 
 #include "CTPOTCWorkerProcessor.h"
 
-dataobj_ptr CTPSimMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr & reqDO, IRawAPI * rawAPI, ISession * session)
+dataobj_ptr CTPSimMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr & reqDO, IRawAPI * rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	MarketDataDO* pMdO = (MarketDataDO*)reqDO.get();
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCWorkerProcessor>(session->getProcessor()))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCWorkerProcessor>(msgProcessor))
 	{
 		CThostFtdcDepthMarketDataField md{};
 		std::strncpy(md.ExchangeID, pMdO->ExchangeID().data(), sizeof(md.ExchangeID));

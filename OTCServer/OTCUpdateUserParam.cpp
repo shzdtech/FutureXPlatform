@@ -20,7 +20,7 @@
 #include "../dataobject/ResultDO.h"
 #include "../pricingengine/IPricingDataContext.h"
 ////////////////////////////////////////////////////////////////////////
-// Name:       OTCUpdateUserParam::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       OTCUpdateUserParam::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 // Purpose:    Implementation of OTCUpdateUserParam::HandleRequest()
 // Parameters:
 // - reqDO
@@ -29,7 +29,7 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr OTCUpdateUserParam::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr OTCUpdateUserParam::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
 
@@ -39,23 +39,25 @@ dataobj_ptr OTCUpdateUserParam::HandleRequest(const uint32_t serialId, const dat
 	auto vecUserConDO_Ptr = (VectorDO<UserContractParamDO>*)reqDO.get();
 
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		auto strategyMap = pWorkerProc->PricingDataContext()->GetStrategyMap();
 
 		for (auto& userConDO : *vecUserConDO_Ptr)
 		{
-			auto& userContract = userContractMap_Ptr->at(userConDO);
-			userContract.Quantity = userConDO.Quantity;
-
-			auto it = strategyMap->find(userConDO);
-			if (it != strategyMap->end())
+			if (auto pUserContract = userContractMap_Ptr->tryfind(userConDO))
 			{
-				OnResponseProcMacro(
-					session->getProcessor(),
-					MSG_ID_RTN_PRICING,
-					serialId,
-					&it->second);
+				pUserContract->Quantity = userConDO.Quantity;
+
+				auto it = strategyMap->find(userConDO);
+				if (it != strategyMap->end())
+				{
+					OnResponseProcMacro(
+						msgProcessor,
+						MSG_ID_RTN_PRICING,
+						serialId,
+						&it->second);
+				}
 			}
 		}
 	}

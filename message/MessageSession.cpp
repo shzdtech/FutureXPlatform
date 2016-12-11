@@ -11,6 +11,13 @@
 #include "../litelogger/LiteLogger.h"
 
 
+
+uint64_t MessageSession::Id()
+{
+	return _id;
+}
+
+
 ////////////////////////////////////////////////////////////////////////
 // Name:       MessageSession::MessageSession()
 // Purpose:    Implementation of MessageSession::MessageSession()
@@ -18,16 +25,10 @@
 ////////////////////////////////////////////////////////////////////////
 
 MessageSession::MessageSession(const ISessionManager_Ptr& sessionMgr_Ptr)
-	: _sessionManager_ptr(sessionMgr_Ptr), _userInfo_ptr(new UserInfo), _context_ptr(new MessageContext),
-	_timeout(0), _loginTimeStamp(0)
+	: _sessionManager_ptr(sessionMgr_Ptr), _timeout(0), _loginTimeStamp(0), _sessionHub(2)
 {
 	static uint64_t idgen = 0;
 	_id = ++idgen;
-}
-
-uint64_t MessageSession::Id()
-{
-	return _id;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -35,28 +36,26 @@ uint64_t MessageSession::Id()
 // Purpose:    Implementation of MessageSession::~MessageSession()
 // Return:     
 ////////////////////////////////////////////////////////////////////////
-
 MessageSession::~MessageSession()
 {
-	/*if (!_closed)
-	{
-		Close();
-	}*/
+	LOG_DEBUG << __FUNCTION__;
 }
 
+
 ////////////////////////////////////////////////////////////////////////
-// Name:       MessageSession::RegistProcessor(session_ptr session)
-// Purpose:    Implementation of MessageSession::RegistProcessor()
+// Name:       MessageSession::RegisterProcessor(session_ptr session)
+// Purpose:    Implementation of MessageSession::RegisterProcessor()
 // Parameters:
 // - session
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void MessageSession::RegistProcessor(const IMessageProcessor_Ptr& msgProcessor)
+void MessageSession::RegisterProcessor(const IMessageProcessor_Ptr& msgprocessor_ptr)
 {
-	_messageProcessor_ptr = msgProcessor;
-	_messageProcessor_ptr->setSession(shared_from_this());
+	_messageProcessor_wkptr = msgprocessor_ptr;
+	msgprocessor_ptr->setMessageSession(shared_from_this());
 }
+
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       MessageSession::getContext()
@@ -66,6 +65,9 @@ void MessageSession::RegistProcessor(const IMessageProcessor_Ptr& msgProcessor)
 
 IMessageContext_Ptr& MessageSession::getContext(void)
 {
+	if (!_context_ptr)
+		_context_ptr.reset(new MessageContext);
+
 	return _context_ptr;
 }
 
@@ -95,9 +97,19 @@ bool MessageSession::Close(void)
 	{
 		try
 		{
-			ret = _sessionManager_ptr->CloseSession(shared_from_this());
+			if (NotifyClosing())
+			{
+				ret = _sessionManager_ptr->CloseSession(shared_from_this());
+			}
 		}
-		catch (...) {}
+		catch (std::exception& ex)
+		{
+			LOG_ERROR << __FUNCTION__ << ex.what();
+		}
+		catch (...)
+		{
+			LOG_ERROR << __FUNCTION__ << ": Unknown error";
+		}
 	}
 
 	return ret;
@@ -105,21 +117,24 @@ bool MessageSession::Close(void)
 
 bool MessageSession::NotifyClosing(void)
 {
-	bool ret = false;
-	if (_messageProcessor_ptr &&
-		_messageProcessor_ptr->OnSessionClosing())
+	bool ret = true;
+
+	if (auto msgProcessor_Ptr = LockMessageProcessor())
+	{
+		ret = msgProcessor_Ptr->OnSessionClosing();
+	}
+
+	if (ret)
 	{
 		auto this_ptr = shared_from_this();
-		IMessageSessionEvent_WkPtr event_wkptr;
-		while (_sessionHub.pop(event_wkptr))
+		auto wkptrs = _sessionHub.lock_table();
+		for (auto pair : wkptrs)
 		{
-			if (auto event_ptr = event_wkptr.lock())
+			if (auto event_ptr = pair.first.lock())
 			{
 				event_ptr->OnSessionClosing(this_ptr);
 			}
 		}
-
-		ret = true;
 	}
 
 	return ret;
@@ -135,7 +150,7 @@ bool MessageSession::NotifyClosing(void)
 
 void MessageSession::addListener(const IMessageSessionEvent_WkPtr& listener)
 {
-	_sessionHub.emplace(listener);
+	_sessionHub.insert(listener);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -193,19 +208,22 @@ void MessageSession::setLogout(void)
 
 IUserInfo_Ptr& MessageSession::getUserInfo(void)
 {
+	if (!_userInfo_ptr)
+		_userInfo_ptr.reset(new UserInfo);
+
 	return _userInfo_ptr;
 }
 
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       MessageSession::getProcessor()
-// Purpose:    Implementation of MessageSession::getProcessor()
+// Name:       MessageSession::LockMessageProcessor()
+// Purpose:    Implementation of MessageSession::LockMessageProcessor()
 // Return:     IProcessorBase*
 ////////////////////////////////////////////////////////////////////////
 
-IMessageProcessor_Ptr& MessageSession::getProcessor(void)
+IMessageProcessor_Ptr MessageSession::LockMessageProcessor(void)
 {
-	return _messageProcessor_ptr;
+	return _messageProcessor_wkptr.lock();
 }
 
 

@@ -75,7 +75,7 @@ int CTPTradeProcessor::InitializeServer(const std::string& flowId, const std::st
 		std::string server_addr(serverAddr);
 		if (server_addr.empty() && !_serverCtx->getConfigVal(CTP_TRADER_SERVER, server_addr))
 		{
-			server_addr = SysParam::Get(CTP_TRADER_SERVER);
+			SysParam::TryGet(CTP_TRADER_SERVER, server_addr);
 		}
 
 		_rawAPI->TrdAPI->RegisterFront(const_cast<char*> (server_addr.data()));
@@ -96,7 +96,7 @@ bool CTPTradeProcessor::OnSessionClosing(void)
 	if (_updateTask.valid()) _updateTask.wait();
 	if (_isLogged)
 	{
-		if (auto sessionptr = LockMessageSession())
+		if (auto sessionptr = getMessageSession())
 		{
 			CThostFtdcUserLogoutField logout{};
 			std::strncpy(logout.BrokerID, sessionptr->getUserInfo()->getBrokerId().data(), sizeof(logout.BrokerID));
@@ -146,7 +146,8 @@ void CTPTradeProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogi
 void CTPTradeProcessor::OnRspUserLogout(CThostFtdcUserLogoutField *pUserLogout, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
 	_isLogged = false;
-	OnResponseMacro(MSG_ID_LOGOUT, nRequestID, pUserLogout, pRspInfo, &nRequestID, &bIsLast)
+	if (!_exiting)
+		OnResponseMacro(MSG_ID_LOGOUT, nRequestID, pUserLogout, pRspInfo, &nRequestID, &bIsLast)
 }
 
 ///用户口令更新请求响应
@@ -383,7 +384,7 @@ void CTPTradeProcessor::OnRtnRepealFromFutureToBankByBank(CThostFtdcRspRepealFie
 ///期货发起银行资金转期货通知
 void CTPTradeProcessor::OnRtnFromBankToFutureByFuture(CThostFtdcRspTransferField *pRspTransfer)
 {
-	if (auto session = LockMessageSession())
+	if (auto session = getMessageSession())
 	{
 		if (pRspTransfer->SessionID == session->getUserInfo()->getSessionId())
 		{
@@ -397,7 +398,7 @@ void CTPTradeProcessor::OnRtnFromBankToFutureByFuture(CThostFtdcRspTransferField
 ///期货发起期货资金转银行通知
 void CTPTradeProcessor::OnRtnFromFutureToBankByFuture(CThostFtdcRspTransferField *pRspTransfer)
 {
-	if (auto session = LockMessageSession())
+	if (auto session = getMessageSession())
 	{
 		if (pRspTransfer->SessionID == session->getUserInfo()->getSessionId())
 		{

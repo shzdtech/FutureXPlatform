@@ -26,7 +26,7 @@ public:
 
 	~CTPCloudWorkerProcessor();
 
-	void setSession(const IMessageSession_WkPtr& msgSession_wk_ptr);
+	void setMessageSession(const IMessageSession_Ptr& msgSession_ptr);
 	bool OnSessionClosing(void);
 
 	void Initialize(IServerContext* pServerCtx);

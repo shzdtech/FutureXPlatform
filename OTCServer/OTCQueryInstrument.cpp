@@ -25,7 +25,7 @@
 
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       CTPQueryInstrument::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       CTPQueryInstrument::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
  // Purpose:    Implementation of CTPQueryInstrument::HandleRequest()
  // Parameters:
  // - reqDO
@@ -34,7 +34,7 @@
  // Return:     void
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr OTCQueryInstrument::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr OTCQueryInstrument::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
 
@@ -46,7 +46,7 @@ dataobj_ptr OTCQueryInstrument::HandleRequest(const uint32_t serialId, const dat
 
 	VectorDO_Ptr<InstrumentDO> ret;
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		if (instrumentid == EMPTY_STRING && exchangeid == EMPTY_STRING && productid == EMPTY_STRING)
 			ret = pWorkerProc->GetInstrumentCache().AllInstruments();

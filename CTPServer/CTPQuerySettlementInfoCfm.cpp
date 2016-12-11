@@ -15,7 +15,7 @@
 #include "CTPUtility.h"
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       CTPQuerySettlementInfoCfm::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       CTPQuerySettlementInfoCfm::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
  // Purpose:    Implementation of CTPQuerySettlementInfoCfm::HandleRequest()
  // Parameters:
  // - reqDO
@@ -24,7 +24,7 @@
  // Return:     void
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQuerySettlementInfoCfm::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQuerySettlementInfoCfm::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
 
@@ -48,7 +48,7 @@ dataobj_ptr CTPQuerySettlementInfoCfm::HandleRequest(const uint32_t serialId, co
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPQuerySettlementInfoCfm::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPQuerySettlementInfoCfm::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 // Purpose:    Implementation of CTPQuerySettlementInfoCfm::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
@@ -57,7 +57,7 @@ dataobj_ptr CTPQuerySettlementInfoCfm::HandleRequest(const uint32_t serialId, co
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQuerySettlementInfoCfm::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQuerySettlementInfoCfm::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CTPUtility::CheckNotFound(rawRespParams[0]);
 	CTPUtility::CheckError(rawRespParams[1]);

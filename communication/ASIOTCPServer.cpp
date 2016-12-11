@@ -24,7 +24,6 @@ ASIOTCPServer::ASIOTCPServer() :
 	_acceptor(_iosrv)
 {
 	_manager_ptr = std::make_shared<ASIOSessionManager>(this);
-	_startcloseLock.clear(std::memory_order_release); // unlock
 
 #if !(defined(_WIN32) || defined(_WINDOWS))
 	std::signal(SIGPIPE, SIG_IGN);
@@ -83,21 +82,27 @@ bool ASIOTCPServer::Initialize(const std::string& uri, const std::string& config
 ////////////////////////////////////////////////////////////////////////
 
 bool ASIOTCPServer::Stop(void) {
-	while (_startcloseLock.test_and_set(std::memory_order_acquire)); // lock
-
-	_manager_ptr->OnServerClosing();
+	std::lock_guard<std::mutex> lock(_startcloseLock); // lock
 
 	_running = false;
 
-	_acceptor.close();
-	_iosrv.stop();
+	try
+	{
+		_acceptor.close();
+		_manager_ptr->OnServerClosing();
 
-	for (auto& th : _workers) {
-		th.join();
+		_iosrv.stop();
+
+		for (auto& th : _workers) {
+			th.join();
+		}
+		_workers.clear();
 	}
-	_workers.clear();
+	catch (...)
+	{
 
-	_startcloseLock.clear(std::memory_order_release); // unlock
+	}
+
 	return !_running;
 }
 
@@ -110,7 +115,7 @@ bool ASIOTCPServer::Stop(void) {
 ////////////////////////////////////////////////////////////////////////
 
 bool ASIOTCPServer::Start(void) {
-	while (_startcloseLock.test_and_set(std::memory_order_acquire)); // lock
+	std::lock_guard<std::mutex> lock(_startcloseLock); // lock
 
 	if (!_acceptor.is_open())
 	{
@@ -145,7 +150,6 @@ bool ASIOTCPServer::Start(void) {
 		}
 	}
 
-	_startcloseLock.clear(std::memory_order_release); // unlock
 	return _running;
 }
 
@@ -192,12 +196,15 @@ void ASIOTCPServer::asyc_accept(void) {
 	_acceptor.async_accept(_socket, [this](boost::system::error_code ec) {
 		if (!ec)
 		{
-			LOG_DEBUG << "Creating session: " << _socket.remote_endpoint().address().to_string()
+			LOG_DEBUG << getUri() << " is creating a session: " << _socket.remote_endpoint().address().to_string()
 				<< ':' << std::to_string(_socket.remote_endpoint().port());
 			((ASIOSessionManager*)_manager_ptr.get())->CreateSession(std::move(_socket), _max_msg_size, _sessiontimeout);
-		}
 
-		if (_running)
 			asyc_accept();
+		}
+		else
+		{
+			LOG_INFO << getUri() << ": acceptor has exited: " << ec.message();
+		}			
 	});
 }

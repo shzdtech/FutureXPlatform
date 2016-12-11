@@ -17,6 +17,10 @@
 #include "TestingPositionHandler.h"
 #include "TestingAccountInfoHandler.h"
 #include "TestingQueryInstruments.h"
+#include "TestingQueryOrder.h"
+#include "TestingQueryTrade.h"
+
+#include "TestingWorkProcessor.h"
 
 #include "../utility/stringutility.h"
 #include "../message/EchoMessageHandler.h"
@@ -62,6 +66,10 @@ std::map<uint, IMessageHandler_Ptr> TestingMessageServiceFactory::CreateMessageH
 
 	msg_hdl_map[MSG_ID_QUERY_INSTRUMENT] = std::make_shared<TestingQueryInstruments>();
 
+	msg_hdl_map[MSG_ID_QUERY_ORDER] = std::make_shared<TestingQueryOrder>();
+
+	msg_hdl_map[MSG_ID_QUERY_TRADE] = std::make_shared<TestingQueryTrade>();
+
 	return msg_hdl_map;
 }
 
@@ -86,7 +94,14 @@ std::map<uint, IDataSerializer_Ptr> TestingMessageServiceFactory::CreateDataSeri
 
 IMessageProcessor_Ptr TestingMessageServiceFactory::CreateWorkerProcessor(IServerContext* serverCtx)
 {
-	return nullptr;
+	if (!serverCtx->getWorkerProcessor())
+	{
+		auto worker_ptr = std::make_shared<TestingWorkProcessor>();
+		worker_ptr->Initialize(serverCtx);
+		serverCtx->setWorkerProcessor(worker_ptr);
+	}
+
+	return serverCtx->getWorkerProcessor();
 }
 
 ////////////////////////////////////////////////////////////////////////

@@ -40,15 +40,15 @@
  // Return:     dataobj_ptr
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPAccountLogin::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPAccountLogin::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	auto ret = Login(reqDO, rawAPI, session);
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
+	auto ret = Login(reqDO, rawAPI, msgProcessor, session);
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 	{
-		pWorkerProc->RegisterLoggedSession(session->getProcessor()->LockMessageSession());
-		if (pWorkerProc->ConnectedToServer() && pWorkerProc->HasLogged())
+		pWorkerProc->RegisterLoggedSession(msgProcessor->getMessageSession());
+		if (!pWorkerProc->HasLogged())
 		{
-			// throw SystemException(CONNECTION_ERROR, "Cannot connect to CTP Server!");
+			throw SystemException(CONNECTION_ERROR, "Cannot connect to CTP Server!");
 		}
 	}
 
@@ -65,12 +65,12 @@ dataobj_ptr CTPAccountLogin::HandleRequest(const uint32_t serialId, const dataob
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPAccountLogin::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPAccountLogin::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	return nullptr;
 }
 
-std::shared_ptr<UserInfoDO> CTPAccountLogin::Login(const dataobj_ptr reqDO, IRawAPI * rawAPI, ISession * session)
+std::shared_ptr<UserInfoDO> CTPAccountLogin::Login(const dataobj_ptr reqDO, IRawAPI * rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	if (!session->getLoginTimeStamp())
 	{

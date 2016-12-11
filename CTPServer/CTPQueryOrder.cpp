@@ -21,7 +21,7 @@
 #include "../dataobject/OrderDO.h"
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, IMessageProcessor* msgProcessor
  // Purpose:    Implementation of CTPQueryOrder::HandleRequest()
  // Parameters:
  // - reqDO
@@ -30,11 +30,11 @@
  // Return:     void
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 	{
 		auto stdo = (MapDO<std::string>*)reqDO.get();
 
@@ -49,7 +49,7 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 		auto& userOrderCtx = pWorkerProc->GetUserOrderContext();
 		auto vectorPtr = userOrderCtx.GetOrdersByUser(session->getUserInfo()->getUserId());
 
-		auto pTradeProcessor = (CTPTradeProcessor*)session->getProcessor().get();
+		auto pTradeProcessor = (CTPTradeProcessor*)msgProcessor.get();
 		if (!(pTradeProcessor->DataLoadMask & CTPTradeProcessor::ORDER_DATA_LOADED))
 		{
 			CThostFtdcQryOrderField req{};
@@ -92,7 +92,7 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPQueryOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPQueryOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, IMessageProcessor* msgProcessor
 // Purpose:    Implementation of CTPQueryOrder::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
@@ -101,14 +101,14 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CTPUtility::CheckNotFound(rawRespParams[0]);
 
 	OrderDO_Ptr ret;
 	if (auto pData = (CThostFtdcOrderField*)rawRespParams[0])
 	{
-		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 		{
 			if (auto orderid = CTPUtility::ToUInt64(pData->OrderSysID))
 			{

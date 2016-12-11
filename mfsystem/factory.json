@@ -22,7 +22,8 @@
         "module.path": "CTPServer.dll",
         "class.uuid": "factory.singleaccount.ctp.trade.service",
         "params": {
-          "product_type": "0;2"
+          "product_type": "0;2",
+          "save_contract": "true"
         }
       },
       "option": {
@@ -33,6 +34,7 @@
           "load_workprocessor": "true",
           "product_type": "1",
           "logout_dataloaded": "true",
+          "save_contract": "true",
           "CTP.MD.SERVER": "tcp://ctpfz1-front3.citicsf.com:51213",
           "CTP.MD.LOGIN.BROKERID": "66666",
           "CTP.MD.LOGIN.USERID": "895816",

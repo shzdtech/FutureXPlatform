@@ -8,7 +8,7 @@
 #include "OTCQueryTradingDesks.h"
 #include "../databaseop/UserInfoDAO.h"
 ////////////////////////////////////////////////////////////////////////
-// Name:       OTCQueryTradingDesks::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       OTCQueryTradingDesks::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, IMessageProcessor* msgProcessor
 // Purpose:    Implementation of OTCQueryTradingDesks::HandleRequest()
 // Parameters:
 // - reqDO
@@ -17,7 +17,7 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr OTCQueryTradingDesks::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr OTCQueryTradingDesks::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
 

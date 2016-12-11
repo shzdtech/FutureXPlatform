@@ -104,8 +104,8 @@ std::map<uint, IDataSerializer_Ptr> CTPOTCServiceFactory::CreateDataSerializers(
 
 IMessageProcessor_Ptr CTPOTCServiceFactory::CreateMessageProcessor(IServerContext* serverCtx)
 {
-	auto ret = std::make_shared<CTPOTCSessionProcessor>();
-	ret->Initialize();
+	std::shared_ptr<CTPOTCSessionProcessor> ret(new CTPOTCSessionProcessor);
+	ret->Initialize(serverCtx);
 	return ret;
 }
 
@@ -120,9 +120,9 @@ IMessageProcessor_Ptr CTPOTCServiceFactory::CreateWorkerProcessor(IServerContext
 	if (!serverCtx->getWorkerProcessor())
 	{
 		auto pricingCtx = std::static_pointer_cast<IPricingDataContext>(serverCtx->getAttribute(STR_KEY_SERVER_PRICING_DATACONTEXT));
-		auto tradeProcessor = std::make_shared<CTPOTCTradeProcessor>(serverCtx, pricingCtx);
+		std::shared_ptr<CTPOTCTradeProcessor> tradeProcessor(new CTPOTCTradeProcessor(serverCtx, pricingCtx));
 		tradeProcessor->Initialize(serverCtx);
-		auto worker_ptr = std::make_shared<CTPOTCWorkerProcessor>(serverCtx, tradeProcessor);
+		std::shared_ptr<CTPOTCWorkerProcessor> worker_ptr(new CTPOTCWorkerProcessor(serverCtx, tradeProcessor));
 		worker_ptr->Initialize(serverCtx);
 		serverCtx->setWorkerProcessor(worker_ptr);
 		serverCtx->setSubTypeWorkerPtr(static_cast<OTCWorkerProcessor*>(worker_ptr.get()));

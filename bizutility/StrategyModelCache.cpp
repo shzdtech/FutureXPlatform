@@ -37,7 +37,7 @@ vector_ptr<ModelParamsDO_Ptr> StrategyModelCache::FindModelsByUser(const std::st
 {
 	vector_ptr<ModelParamsDO_Ptr> ret = std::make_shared<std::vector<ModelParamsDO_Ptr>>();
 
-	for (auto it = _modelCache.begin();;it++)
+	for (auto it = _modelCache.begin(); ; it++)
 	{
 		it = std::find_if(it, _modelCache.end(),
 			[&userId](std::pair<const ModelKey, ModelParamsDO_Ptr>& pair) { return pair.first.UserID() == userId; });

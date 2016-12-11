@@ -10,7 +10,6 @@
 
 #include "CTPProcessor.h"
 #include "ctpexport.h"
-#include "../utility/lockfree_set.h"
 #include <future>
 
 class CTP_CLASS_EXPORT CTPTradeProcessor : public CTPProcessor, public CThostFtdcTraderSpi

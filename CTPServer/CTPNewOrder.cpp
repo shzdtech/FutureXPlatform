@@ -21,7 +21,7 @@
 
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, IMessageProcessor* msgProcessor
  // Purpose:    Implementation of CTPNewOrder::HandleRequest()
  // Parameters:
  // - reqDO
@@ -30,7 +30,7 @@
  // Return:     dataobj_ptr
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
 
@@ -94,7 +94,7 @@ dataobj_ptr CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_pt
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPNewOrder::HandleResponse(const uint32_t serialId, param_vector rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPNewOrder::HandleResponse(const uint32_t serialId, param_vector rawRespParams, IRawAPI* rawAPI, IMessageProcessor* msgProcessor
 // Purpose:    Implementation of CTPNewOrder::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
@@ -103,7 +103,7 @@ dataobj_ptr CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_pt
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPNewOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPNewOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CTPUtility::CheckError(rawRespParams[1]);
 

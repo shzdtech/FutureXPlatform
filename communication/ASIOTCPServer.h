@@ -12,7 +12,7 @@
 #include "communication_exp.h"
 #include <boost/asio.hpp>
 #include <thread>
-#include <atomic>
+#include <mutex>
 
 using namespace boost::asio;
 using boost::asio::ip::tcp;
@@ -32,7 +32,7 @@ protected:
 	tcp::socket _socket;
 	tcp::acceptor _acceptor;
 	std::vector<std::thread> _workers;
-	std::atomic_flag _startcloseLock;
+	std::mutex _startcloseLock;
 	bool _running;
 	int _nthread;
 	int _sessiontimeout;

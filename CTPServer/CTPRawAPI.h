@@ -16,10 +16,20 @@
 class CTPRawAPI : public IRawAPI
 {
 public:
+	CTPRawAPI() = default;
+
 	~CTPRawAPI()
 	{
-		if (MdAPI) MdAPI->Release();
-		if (TrdAPI) TrdAPI->Release();
+		if (MdAPI)
+		{
+			MdAPI->Release();
+			MdAPI = nullptr;
+		}
+		if (TrdAPI)
+		{
+			TrdAPI->Release();
+			TrdAPI = nullptr;
+		}
 	}
 
 	CThostFtdcMdApi* MdAPI = nullptr;

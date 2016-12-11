@@ -14,7 +14,7 @@
 class CTP_CLASS_EXPORT CTPMDLoginHandler : public CTPLoginHandler
 {
 public:
-	int LoginFunction(ISession* session, CThostFtdcReqUserLoginField* loginInfo, uint requestId, const std::string& severName);
+	int LoginFunction(const IMessageProcessor_Ptr& msgProcessor, CThostFtdcReqUserLoginField* loginInfo, uint requestId, const std::string& severName);
 
 protected:
 private:

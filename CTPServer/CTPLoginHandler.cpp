@@ -34,11 +34,11 @@
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPLoginHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPLoginHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	if (!session->getLoginTimeStamp())
 	{
-		auto pProcessor = (CTPProcessor*)session->getProcessor().get();
+		auto pProcessor = (CTPProcessor*)msgProcessor.get();;
 
 		auto stdo = (MapDO<std::string>*)reqDO.get();
 
@@ -55,7 +55,7 @@ dataobj_ptr CTPLoginHandler::HandleRequest(const uint32_t serialId, const dataob
 		// std::strcpy(req.UserProductInfo, UUID_MICROFUTURE_CTP);
 
 		pProcessor->LoginSerialId = serialId;
-		int ret = LoginFunction(session, &req, pProcessor->LoginSerialId, routername);
+		int ret = LoginFunction(msgProcessor, &req, pProcessor->LoginSerialId, routername);
 		CTPUtility::CheckReturnError(ret);
 		//int ret = ((CThostFtdcMdApi*)rawAPI)->ReqUserLogin(&req, 1);
 
@@ -87,7 +87,7 @@ dataobj_ptr CTPLoginHandler::HandleRequest(const uint32_t serialId, const dataob
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPLoginHandler::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPLoginHandler::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CTPUtility::CheckError(rawRespParams[1]);
 

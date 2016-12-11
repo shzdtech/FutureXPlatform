@@ -79,7 +79,7 @@ bool OTCOrderDAO::CancelOrder(const OrderRequestDO& orderDO, OrderStatusType& st
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
 			session->getConnection()->prepareStatement(sql_proc_cancelorder));
-		prestmt->setUInt64(1, orderDO.OrderID);;
+		prestmt->setUInt64(1, orderDO.OrderID);
 		prestmt->setInt(2, orderDO.ErrorCode);
 
 		if (prestmt->executeUpdate() > 0)

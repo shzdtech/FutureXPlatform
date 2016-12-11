@@ -7,13 +7,13 @@
 #include "../message/MessageUtility.h"
 #include "../OTCServer/OTCWorkerProcessor.h"
 
-dataobj_ptr OTCOptionPricingParams::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr OTCOptionPricingParams::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	auto pStrategy = (StrategyContractDO*)rawRespParams[0];
 
 	std::shared_ptr<TradingDeskOptionParams> ret;
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		auto& pricingCtx = *pWorkerProc->PricingDataContext();
 

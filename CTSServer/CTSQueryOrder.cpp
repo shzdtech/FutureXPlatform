@@ -9,7 +9,7 @@
 #include "CTSAPIWrapper.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTSQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       CTSQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 // Purpose:    Implementation of CTSQueryOrder::HandleRequest()
 // Parameters:
 // - reqDO
@@ -18,13 +18,13 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTSQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTSQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	return nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTSQueryOrder::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTSQueryOrder::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 // Purpose:    Implementation of CTSQueryOrder::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawParams
@@ -33,7 +33,7 @@ dataobj_ptr CTSQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTSQueryOrder::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTSQueryOrder::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	OrderDO_Ptr order_ptr = *((OrderDO_Ptr*)rawParams[0]);
 

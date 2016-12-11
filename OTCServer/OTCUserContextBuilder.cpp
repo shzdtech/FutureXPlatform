@@ -16,13 +16,13 @@
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void OTCUserContextBuilder::BuildContext(ISession* pSession)
+void OTCUserContextBuilder::BuildContext(const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	auto it = _userContextMap.find(pSession->getUserInfo()->getRole());
+	auto it = _userContextMap.find(session->getUserInfo()->getRole());
 
 	if (it != _userContextMap.end())
 	{
-		it->second->BuildContext(pSession);
+		it->second->BuildContext(msgProcessor, session);
 	}
 }
 

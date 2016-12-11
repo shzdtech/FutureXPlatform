@@ -60,7 +60,7 @@ int CTPMarketDataProcessor::InitializeServer(const std::string& flowId, const st
 		std::string server_addr(serverAddr);
 		if (server_addr.empty() && !_serverCtx->getConfigVal(CTP_MD_SERVER, server_addr))
 		{
-			server_addr = SysParam::Get(CTP_MD_SERVER);
+			SysParam::TryGet(CTP_MD_SERVER, server_addr);
 		}
 
 		_rawAPI->MdAPI->RegisterFront(const_cast<char*> (server_addr.data()));

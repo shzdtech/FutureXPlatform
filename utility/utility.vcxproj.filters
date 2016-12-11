@@ -63,6 +63,9 @@
     <ClInclude Include="lockfree_set.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="weak_ptr_hash.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="utility.rc">

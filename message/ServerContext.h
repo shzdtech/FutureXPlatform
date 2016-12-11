@@ -9,7 +9,7 @@
 #define __message_ServerContext_h
 
 #include "IServerContext.h"
-#include <map>
+#include <unordered_map>
 #include "message_exp.h"
 
 class MESSAGE_CLASS_EXPORT ServerContext : public IServerContext
@@ -35,8 +35,8 @@ protected:
 
 private:
 	std::string _serverUri;
-	std::map<std::string, attribute_ptr> _attrib_map;
-	std::map<std::string, std::string> _configs;
+	std::unordered_map<std::string, attribute_ptr> _attrib_map;
+	std::unordered_map<std::string, std::string> _configs;
 	IMessageProcessor_Ptr _workerProcessor_Ptr;
 	void* _pSubWorkProc;
 	int _serverType = 0;

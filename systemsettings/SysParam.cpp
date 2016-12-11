@@ -16,15 +16,18 @@ static std::map<std::string, std::string> sysparamdata;
 // Return:     std::string
 ////////////////////////////////////////////////////////////////////////
 
-const std::string& SysParam::Get(const std::string& key)
+const char* SysParam::Get(const std::string& key)
 {
-	return sysparamdata[key];
+	auto it = sysparamdata.find(key);
+	if (it != sysparamdata.end())
+		return it->second.data();
+
+	return nullptr;
 }
 
 
 bool SysParam::Contains(const std::string& key)
 {
-	bool ret;
 	auto it = sysparamdata.find(key);
 	return it != sysparamdata.end();
 }
@@ -58,13 +61,13 @@ bool SysParam::TryGet(const std::string& key, std::string& value)
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-void SysParam::Update(std::map<std::string,std::string>& paramMap)
+void SysParam::Update(const std::map<std::string,std::string>& paramMap)
 {
 	for(auto it : paramMap)
 		sysparamdata[it.first] = it.second;
 }
 
-void SysParam::Merge(std::map<std::string, std::string>& paramMap)
+void SysParam::Merge(const std::map<std::string, std::string>& paramMap)
 {
 	sysparamdata.insert(paramMap.begin(), paramMap.end());
 }

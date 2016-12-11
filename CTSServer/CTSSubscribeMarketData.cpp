@@ -14,7 +14,7 @@
 
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTSSubscribeMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       CTSSubscribeMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, IMessageProcessor* msgProcessor
 // Purpose:    Implementation of CTSSubscribeMarketData::HandleRequest()
 // Parameters:
 // - reqDO
@@ -23,7 +23,7 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTSSubscribeMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTSSubscribeMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	auto stdo = (StringTableDO*)reqDO.get();
 	auto mdVec = std::make_shared<VectorDO<MarketDataDO>>();
@@ -45,7 +45,7 @@ dataobj_ptr CTSSubscribeMarketData::HandleRequest(const uint32_t serialId, const
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTSSubscribeMarketData::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTSSubscribeMarketData::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, IMessageProcessor* msgProcessor
 // Purpose:    Implementation of CTSSubscribeMarketData::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawParams
@@ -54,7 +54,7 @@ dataobj_ptr CTSSubscribeMarketData::HandleRequest(const uint32_t serialId, const
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTSSubscribeMarketData::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTSSubscribeMarketData::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	return nullptr;
 }

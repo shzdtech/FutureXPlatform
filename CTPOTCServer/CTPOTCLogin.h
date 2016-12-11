@@ -15,7 +15,7 @@
 class CTP_OTC_CLASS_EXPORT CTPOTCLogin : public CTPAccountLogin
 {
 public:
-	dataobj_ptr HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session);
+	dataobj_ptr HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session);
 
 protected:
 

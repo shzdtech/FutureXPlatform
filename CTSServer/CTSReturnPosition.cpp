@@ -11,7 +11,7 @@
 #include "../message/BizError.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTSReturnPosition::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       CTSReturnPosition::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, IMessageProcessor* msgProcessor
 // Purpose:    Implementation of CTSReturnPosition::HandleRequest()
 // Parameters:
 // - reqDO
@@ -20,13 +20,13 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTSReturnPosition::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTSReturnPosition::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	return nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTSReturnPosition::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTSReturnPosition::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, IMessageProcessor* msgProcessor
 // Purpose:    Implementation of CTSReturnPosition::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawParams
@@ -35,7 +35,7 @@ dataobj_ptr CTSReturnPosition::HandleRequest(const uint32_t serialId, const data
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTSReturnPosition::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTSReturnPosition::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	auto pPositionDO = (UserPositionExDO*)rawParams[0];
 	return std::make_shared<UserPositionExDO>(*pPositionDO);

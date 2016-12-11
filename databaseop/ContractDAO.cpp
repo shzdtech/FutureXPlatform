@@ -78,6 +78,7 @@ bool ContractDAO::UpsertContracts(const std::vector<InstrumentDO>& instuments)
 			"ON DUPLICATE KEY UPDATE name=?, lifephase=?");
 
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
+	//const InstrumentDO* lastContract;
 	try
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
@@ -85,21 +86,25 @@ bool ContractDAO::UpsertContracts(const std::vector<InstrumentDO>& instuments)
 
 		for (auto& contract : instuments)
 		{
-			prestmt->setString(1, contract.ExchangeID());
-			prestmt->setString(2, contract.InstrumentID());
-			prestmt->setString(3, contract.Name);
-			prestmt->setInt(4, contract.ContractType);
-			prestmt->setString(5, contract.ProductID);
-			contract.ExpireDate.empty() ? prestmt->setNull(6, sql::DataType::DATE) : prestmt->setString(6, contract.ExpireDate);
-			prestmt->setDouble(7, contract.StrikePrice);
-			contract.UnderlyingContract.ExchangeID().empty() ? prestmt->setNull(8, sql::DataType::VARCHAR) : prestmt->setString(8, contract.UnderlyingContract.ExchangeID());
-			contract.UnderlyingContract.InstrumentID().empty() ? prestmt->setNull(9, sql::DataType::VARCHAR) : prestmt->setString(9, contract.UnderlyingContract.InstrumentID());
-			prestmt->setInt(10, contract.ProductType);
-			prestmt->setInt(11, contract.LifePhase);
-			prestmt->setString(12, contract.Name);
-			prestmt->setInt(13, contract.LifePhase);
+			//lastContract = &contract;
+			if(!contract.InstrumentID().empty() && !contract.ProductID.empty());
+			{
+				prestmt->setString(1, contract.ExchangeID());
+				prestmt->setString(2, contract.InstrumentID());
+				prestmt->setString(3, contract.Name);
+				prestmt->setInt(4, contract.ContractType);
+				prestmt->setString(5, contract.ProductID);
+				contract.ExpireDate.empty() ? prestmt->setNull(6, sql::DataType::DATE) : prestmt->setString(6, contract.ExpireDate);
+				prestmt->setDouble(7, contract.StrikePrice);
+				contract.UnderlyingContract.ExchangeID().empty() ? prestmt->setNull(8, sql::DataType::VARCHAR) : prestmt->setString(8, contract.UnderlyingContract.ExchangeID());
+				contract.UnderlyingContract.InstrumentID().empty() ? prestmt->setNull(9, sql::DataType::VARCHAR) : prestmt->setString(9, contract.UnderlyingContract.InstrumentID());
+				prestmt->setInt(10, contract.ProductType);
+				prestmt->setInt(11, contract.LifePhase);
+				prestmt->setString(12, contract.Name);
+				prestmt->setInt(13, contract.LifePhase);
 
-			prestmt->executeUpdate();
+				prestmt->executeUpdate();
+			}
 		}
 
 		ret = true;

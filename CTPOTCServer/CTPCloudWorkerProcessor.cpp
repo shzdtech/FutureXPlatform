@@ -57,10 +57,10 @@ CTPCloudWorkerProcessor::~CTPCloudWorkerProcessor()
 	LOG_DEBUG << __FUNCTION__;
 }
 
-void CTPCloudWorkerProcessor::setSession(const IMessageSession_WkPtr& msgSession_wk_ptr)
+void CTPCloudWorkerProcessor::setMessageSession(const IMessageSession_Ptr& msgSession_ptr)
 {
-	CTPMarketDataProcessor::setSession(msgSession_wk_ptr);
-	((CTPOTCTradeProcessor*)GetOTCTradeProcessor())->setSession(msgSession_wk_ptr);
+	CTPMarketDataProcessor::setMessageSession(msgSession_ptr);
+	((CTPOTCTradeProcessor*)GetOTCTradeProcessor())->setMessageSession(msgSession_ptr);
 }
 
 bool CTPCloudWorkerProcessor::OnSessionClosing(void)

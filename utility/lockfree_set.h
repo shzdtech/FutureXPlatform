@@ -1,32 +1,38 @@
 #ifndef _utility_lockfree_set_h
 #define _utility_lockfree_set_h
 
-#include <set>
+#include <unordered_set>
+#include <vector>
 #include <atomic>
 
-template <class T, class Compare = std::less<T>, class Allocator = std::allocator<T>>
+template 
+<	class Key,                        // unordered_set::key_type/value_type
+	class Hash = std::hash<Key>,           // unordered_set::hasher
+	class Pred = std::equal_to<Key>,       // unordered_set::key_equal
+	class Alloc = std::allocator<Key>      // unordered_set::allocator_type
+>
 class lockfree_set
 {
 public:
-	typedef std::set<T, Compare, Allocator> _MySet;
+	typedef std::unordered_set<Key, Hash, Pred, Alloc> _MySet;
 
 	lockfree_set() { _opState.clear(); }
 
-	void emplace(T&& value)
+	void emplace(Key&& value)
 	{
 		lock();
 		_set.emplace(std::move(value));
 		unlock();
 	}
 
-	void emplace(const T& value)
+	void emplace(const Key& value)
 	{
 		lock();
 		_set.emplace(value);
 		unlock();
 	}
 
-	bool pop(T& value)
+	bool pop(Key& value)
 	{
 		lock();
 		auto it = _set.begin();
@@ -41,7 +47,7 @@ public:
 		return hasElement;
 	}
 
-	bool pop(T&& value)
+	bool pop(Key&& value)
 	{
 		lock();
 		auto it = _set.begin();
@@ -56,7 +62,7 @@ public:
 		return hasElement;
 	}
 
-	void to_vector(std::vector<T>& vec)
+	void to_vector(std::vector<Key>& vec)
 	{
 		lock();
 		for (auto& val : _set)
@@ -65,7 +71,7 @@ public:
 	}
 
 
-	bool find(const T& value)
+	bool find(const Key& value)
 	{
 		lock();
 		bool hasElement = _set.find(value) != _set.end();
@@ -74,7 +80,7 @@ public:
 		return hasElement;
 	}
 
-	size_t erase(const T& value)
+	size_t erase(const Key& value)
 	{
 		lock();
 		size_t nErased = _set.erase(value);

@@ -10,7 +10,7 @@
 #include "../dataobject/TemplateDO.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       TestingReturnMarketDataHandler::HandleResponse(const uint32_t serialId, const uint32_t serialId, param_vector rawParams, IRawAPI* rawAPI, ISession* session)
+// Name:       TestingReturnMarketDataHandler::HandleResponse(const uint32_t serialId, const uint32_t serialId, param_vector rawParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 // Purpose:    Implementation of TestingReturnMarketDataHandler::HandleResponse(const uint32_t serialId, const uint32_t serialId, )
 // Parameters:
 // - rawParams
@@ -19,12 +19,12 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr TestingReturnMarketDataHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr & reqDO, IRawAPI * rawAPI, ISession * session)
+dataobj_ptr TestingReturnMarketDataHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr & reqDO, IRawAPI * rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	return reqDO;
 }
 
-dataobj_ptr TestingReturnMarketDataHandler::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr TestingReturnMarketDataHandler::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	return std::make_shared<MarketDataDO>(*((MarketDataDO*)rawParams[0]));
 }

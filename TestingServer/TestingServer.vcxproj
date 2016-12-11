@@ -28,7 +28,7 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -41,7 +41,7 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -86,7 +86,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>TESTING_LIBRARY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)include\sqlite;$(BOOST_ROOT);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include\sqlite;$(BOOST_ROOT);$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-D_CRT_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -101,8 +101,9 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>TESTING_LIBRARY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)include\sqlite;$(BOOST_ROOT);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include\sqlite;$(BOOST_ROOT);$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-D_CRT_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
+      <OmitFramePointers>false</OmitFramePointers>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -118,7 +119,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>TESTING_LIBRARY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)include\sqlite;$(BOOST_ROOT);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include\sqlite;$(BOOST_ROOT);$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-D_CRT_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -137,8 +138,9 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>TESTING_LIBRARY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)include\sqlite;$(BOOST_ROOT);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include\sqlite;$(BOOST_ROOT);$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-D_CRT_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
+      <OmitFramePointers>false</OmitFramePointers>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -164,6 +166,9 @@
     <ProjectReference Include="..\message\message.vcxproj">
       <Project>{e9adaa2b-1ccb-4111-9ac3-bddb3dc114f2}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\ordermanager\ordermanager.vcxproj">
+      <Project>{be84a8c2-79ea-49a5-ab37-23250e0631b6}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\systemsettings\systemsettings.vcxproj">
       <Project>{b2408e62-da0a-4f39-8257-b9c33d09bd03}</Project>
     </ProjectReference>
@@ -176,11 +181,14 @@
     <ClCompile Include="TestingMessageServiceFactory.cpp" />
     <ClCompile Include="TestingPositionHandler.cpp" />
     <ClCompile Include="TestingQueryInstruments.cpp" />
+    <ClCompile Include="TestingQueryOrder.cpp" />
+    <ClCompile Include="TestingQueryTrade.cpp" />
     <ClCompile Include="TestingReturnMarketDataHandler.cpp" />
     <ClCompile Include="TestingServerExport.cpp" />
     <ClCompile Include="TestingServerMessageProcessor.cpp" />
     <ClCompile Include="TestingSubMarketDataHandler.cpp" />
     <ClCompile Include="TestingUnsubMarketDataHandler.cpp" />
+    <ClCompile Include="TestingWorkProcessor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TestingAccountInfoHandler.h" />
@@ -190,11 +198,14 @@
     <ClInclude Include="TestingMessageServiceFactory.h" />
     <ClInclude Include="TestingPositionHandler.h" />
     <ClInclude Include="TestingQueryInstruments.h" />
+    <ClInclude Include="TestingQueryOrder.h" />
+    <ClInclude Include="TestingQueryTrade.h" />
     <ClInclude Include="TestingReturnMarketDataHandler.h" />
     <ClInclude Include="TestingServerExport.h" />
     <ClInclude Include="TestingServerMessageProcessor.h" />
     <ClInclude Include="TestingSubMarketDataHandler.h" />
     <ClInclude Include="TestingUnsubMarketDataHandler.h" />
+    <ClInclude Include="TestingWorkProcessor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

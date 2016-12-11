@@ -24,7 +24,7 @@
 
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       OTCQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       OTCQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
  // Purpose:    Implementation of OTCQueryOrder::HandleRequest()
  // Parameters:
  // - reqDO
@@ -33,7 +33,7 @@
  // Return:     dataobj_ptr
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr OTCQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr OTCQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
 
@@ -45,7 +45,7 @@ dataobj_ptr OTCQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 		ContractKey(EMPTY_STRING, instrumentid));
 	ThrowNotFoundExceptionIfEmpty(ordervec_ptr);
 
-	if (auto pWorkerProc = std::static_pointer_cast<TemplateMessageProcessor>(session->getProcessor()))
+	if (auto pWorkerProc = (TemplateMessageProcessor*)msgProcessor.get())
 	{
 		auto lastidx = ordervec_ptr->size() - 1;
 		for (int i = 0; i <= lastidx; i++)
@@ -60,7 +60,7 @@ dataobj_ptr OTCQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       OTCQueryOrder::HandleResponse(const uint32_t serialId, param_vector rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       OTCQueryOrder::HandleResponse(const uint32_t serialId, param_vector rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 // Purpose:    Implementation of OTCQueryOrder::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
@@ -69,7 +69,7 @@ dataobj_ptr OTCQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr OTCQueryOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr OTCQueryOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	auto& orderDO = *((OrderDO*)rawRespParams[0]);
 

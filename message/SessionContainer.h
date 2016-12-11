@@ -8,6 +8,7 @@
 #if !defined(__message_SessionContainer_h)
 #define __message_SessionContainer_h
 #include <set>
+#include <unordered_set>
 #include <memory>
 #include "../utility/autofillmap.h"
 #include "../utility/entrywisemutex.h"
@@ -21,13 +22,6 @@ private:
 	SessionContainer() {}
 
 public:
-	~SessionContainer() 
-	{
-		std::lock_guard<std::shared_mutex> write_lock(_mutex);
-		_sessionMap.clear();
-		_reverseMap.clear();
-	}
-
 	static std::shared_ptr<SessionContainer<K>> NewInstancePtr()
 	{
 		return std::shared_ptr<SessionContainer<K>>(new SessionContainer<K>());
@@ -63,11 +57,11 @@ public:
 		int ret = -1;
 		if (sessionPtr)
 		{
-			std::lock_guard<std::shared_mutex> write_lock(_mutex);
+			std::unique_lock<std::shared_mutex> write_lock(_mutex);
 			auto& sessionSet = _sessionMap.getorfill(key);
 			if (sessionSet.find(sessionPtr) == sessionSet.end())
 			{
-				_reverseMap.getorfill(sessionPtr).insert(key);
+				// _reverseMap.getorfill(sessionPtr).insert(key);
 				sessionSet.insert(sessionPtr);
 				sessionPtr->addListener(shared_from_this());
 			}
@@ -81,7 +75,7 @@ public:
 		int ret = -1;
 		if (sessionPtr)
 		{
-			std::lock_guard<std::shared_mutex> write_lock(_mutex);
+			std::unique_lock<std::shared_mutex> write_lock(_mutex);
 			auto it = _sessionMap.find(key);
 			if (it != _sessionMap.end())
 			{
@@ -89,13 +83,13 @@ public:
 				if (it->second.empty())
 					_sessionMap.erase(it);
 
-				auto rit = _reverseMap.find(sessionPtr);
+				/*auto rit = _reverseMap.find(sessionPtr);
 				if (rit != _reverseMap.end())
 				{
 					rit->second.erase(key);
 					if (rit->second.empty())
 						_reverseMap.erase(rit);
-				}
+				}*/
 
 				ret = 0;
 			}
@@ -103,11 +97,12 @@ public:
 		return ret;
 	}
 
-	int removekey(K& key)
+	int removekey(const K& key)
 	{
 		int ret = -1;
-		std::lock_guard<std::shared_mutex> write_lock(_mutex);
-		auto it = _sessionMap.find(key);
+		std::unique_lock<std::shared_mutex> write_lock(_mutex);
+		_sessionMap.erase(key);
+		/*auto it = _sessionMap.find(key);
 		if (it != _sessionMap.end())
 		{
 			auto& sessionSet = it->second;
@@ -121,24 +116,25 @@ public:
 						_reverseMap.erase(rit);
 				}
 			}
-			_sessionMap.erase(it);
+			_sessionMap.erase(it);*/
 			ret = 0;
-		}
+		//}
 		return ret;
 	}
 
-	int removesession(const IMessageSession_Ptr& sessionPtr)
+	/*int removesession(const IMessageSession_Ptr& sessionPtr)
 	{
 		int ret = -1;
 		if (sessionPtr)
 		{
-			std::lock_guard<std::shared_mutex> write_lock(_mutex);
+			std::unique_lock<std::shared_mutex> write_lock(_mutex);
 			auto it = _reverseMap.find(sessionPtr);
 			if (it != _reverseMap.end())
 			{
-				for (auto& key : it->second)
+				auto& set = it->second;
+				for (auto key = set.begin(); key != set.end(); key++)
 				{
-					auto sit = _sessionMap.find(key);
+					auto sit = _sessionMap.find(*key);
 					if (sit != _sessionMap.end())
 					{
 						sit->second.erase(sessionPtr);
@@ -146,7 +142,22 @@ public:
 							_sessionMap.erase(sit);
 					}
 				}
-				_reverseMap.erase(it);
+				_reverseMap.erase(sessionPtr);
+			}
+			ret = 0;
+		}
+		return ret;
+	}*/
+
+	int removesession(const IMessageSession_Ptr& sessionPtr)
+	{
+		int ret = -1;
+		if (sessionPtr)
+		{
+			std::unique_lock<std::shared_mutex> write_lock(_mutex);
+			for (auto& pair : _sessionMap)
+			{
+				pair.second.erase(sessionPtr);
 			}
 			ret = 0;
 		}
@@ -161,7 +172,7 @@ protected:
 
 private:
 	autofillmap<K, std::set<IMessageSession_Ptr>> _sessionMap;
-	autofillmap<IMessageSession_Ptr, std::set<K>> _reverseMap;
+	// autofillmap<IMessageSession_Ptr, std::set<K>> _reverseMap;
 	std::shared_mutex _mutex;
 };
 

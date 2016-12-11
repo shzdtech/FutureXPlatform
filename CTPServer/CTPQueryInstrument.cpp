@@ -31,7 +31,7 @@
 
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       CTPQueryInstrument::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       CTPQueryInstrument::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
  // Purpose:    Implementation of CTPQueryInstrument::HandleRequest()
  // Parameters:
  // - reqDO
@@ -40,7 +40,7 @@
  // Return:     void
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryInstrument::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryInstrument::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	// CheckLogin(session);
 
@@ -76,7 +76,7 @@ dataobj_ptr CTPQueryInstrument::HandleRequest(const uint32_t serialId, const dat
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPQueryInstrument::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTPQueryInstrument::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 // Purpose:    Implementation of CTPQueryInstrument::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
@@ -85,7 +85,7 @@ dataobj_ptr CTPQueryInstrument::HandleRequest(const uint32_t serialId, const dat
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryInstrument::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPQueryInstrument::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CTPUtility::CheckNotFound(rawRespParams[0]);
 	CTPUtility::CheckError(rawRespParams[1]);
@@ -145,7 +145,7 @@ dataobj_ptr CTPQueryInstrument::HandleResponse(const uint32_t serialId, const pa
 		if (!ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(pData->InstrumentID))
 		{
 			bool cache = true;
-			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
+			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 			{
 				auto& productSet = pWorkerProc->GetProductTypeToLoad();
 				cache = productSet.find(insDO.ProductType) != productSet.end();

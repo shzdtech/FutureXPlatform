@@ -12,13 +12,13 @@
 #include "../message/DefMessageID.h"
 #include "tradeapi/ThostFtdcTraderApi.h"
 
-dataobj_ptr CTPPositionUpdated::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTPPositionUpdated::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	UserPositionExDO_Ptr ret;
 
 	if (auto pData = (CThostFtdcInvestorPositionField*)rawRespParams[0])
 	{
-		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(session->getProcessor()))
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 		{
 			ret = CTPUtility::ParseRawPosition(pData);
 

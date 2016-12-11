@@ -172,7 +172,7 @@ void CTPOTCTradeProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserL
 {
 	if (pRspUserLogin && !CTPUtility::HasError(pRspInfo))
 	{
-		if (auto sessionptr = LockMessageSession())
+		if (auto sessionptr = getMessageSession())
 		{
 			auto pUser = sessionptr->getUserInfo();
 			pUser->setSessionId(pRspUserLogin->SessionID);

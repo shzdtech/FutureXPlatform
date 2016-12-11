@@ -12,7 +12,8 @@
 #include "IMessageProcessor.h"
 #include "ISessionManager.h"
 #include "IUserInfo.h"
-#include "../utility/lockfree_set.h"
+#include "libcuckoo/cuckoohash_map.hh"
+#include "../utility/weak_ptr_hash.h"
 
 #include <set>
 #include "message_exp.h"
@@ -26,7 +27,7 @@ public:
 	~MessageSession();
 
 	uint64_t Id();
-	void RegistProcessor(const IMessageProcessor_Ptr& msgprocessor_ptr);
+	void RegisterProcessor(const IMessageProcessor_Ptr& msgprocessor_ptr);
 	bool Start(void) { return false; }
 	bool Close(void);
 	bool NotifyClosing(void);
@@ -38,7 +39,7 @@ public:
 	void setLoginTimeStamp(time_t tm);
 	void setLogout(void);
 	IUserInfo_Ptr& getUserInfo(void);
-	IMessageProcessor_Ptr& getProcessor(void);
+	IMessageProcessor_Ptr LockMessageProcessor(void);
 
 	void setSessionManager(const ISessionManager_Ptr& sessionMgr_Ptr);
 	ISessionManager_Ptr& getSessionManager(void);
@@ -49,8 +50,8 @@ public:
 protected:
 	uint64_t _id;
 	IMessageContext_Ptr _context_ptr;
-	IMessageProcessor_Ptr _messageProcessor_ptr;
-	lockfree_set<IMessageSessionEvent_WkPtr, std::owner_less<IMessageSessionEvent_WkPtr>> _sessionHub;
+	IMessageProcessor_WkPtr _messageProcessor_wkptr;
+	cuckoohash_map<IMessageSessionEvent_WkPtr, bool, WeakPtrHash<IMessageSessionEvent>, WeakPtrEqual<IMessageSessionEvent>> _sessionHub;
 	IUserInfo_Ptr _userInfo_ptr;
 	ISessionManager_Ptr _sessionManager_ptr;
 	long _timeout;

@@ -20,8 +20,8 @@ class MESSAGE_CLASS_EXPORT MessageProcessor :
 public:
 	MessageProcessor();
 	~MessageProcessor();
-	IMessageSession_Ptr LockMessageSession(void);
-	void setSession(const IMessageSession_WkPtr& msgSession_wk_ptr);
+	IMessageSession_Ptr& getMessageSession(void);
+	void setMessageSession(const IMessageSession_Ptr& msgSession_ptr);
 	IMessageServiceLocator_Ptr& getServiceLocator(void);
 	void setServiceLocator(const IMessageServiceLocator_Ptr& svc_locator_ptr);
 
@@ -29,7 +29,7 @@ public:
 	virtual IServerContext* getServerContext(void);
 
 protected:
-	IMessageSession_WkPtr _msgsession_wk_ptr;
+	IMessageSession_Ptr _msgsession_ptr;
 	IMessageServiceLocator_Ptr _svc_locator_ptr;
 	IServerContext* _serverCtx;
 

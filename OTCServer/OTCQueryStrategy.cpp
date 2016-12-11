@@ -24,7 +24,7 @@
 
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       OTCQueryStrategy::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       OTCQueryStrategy::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
  // Purpose:    Implementation of OTCQueryStrategy::HandleRequest()
  // Parameters:
  // - reqDO
@@ -33,7 +33,7 @@
  // Return:     dataobj_ptr
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr OTCQueryStrategy::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr OTCQueryStrategy::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
 	auto sDOVec_Ptr = std::make_shared<VectorDO<StrategyContractDO>>();
@@ -43,15 +43,19 @@ dataobj_ptr OTCQueryStrategy::HandleRequest(const uint32_t serialId, const datao
 	{
 		if (auto strategyVec_Ptr = std::static_pointer_cast<std::vector<ContractKey>>(
 			session->getContext()->getAttribute(STR_KEY_USER_STRATEGY)))
-			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(session->getProcessor()))
+			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 			{
 				auto pStrategyMap = pWorkerProc->PricingDataContext()->GetStrategyMap();
+				auto sessionPtr = msgProcessor->getMessageSession();
+
 				for (auto& strategyKey : *strategyVec_Ptr)
 				{
-					auto& strategy = pStrategyMap->at(strategyKey);
-					pWorkerProc->RegisterTradingDeskListener(strategy, session->getProcessor()->LockMessageSession());
-					pWorkerProc->SubscribeStrategy(strategy);
-					sDOVec_Ptr->push_back(strategy);
+					if (auto pStrategy = pStrategyMap->tryfind(strategyKey))
+					{
+						pWorkerProc->RegisterTradingDeskListener(*pStrategy, sessionPtr);
+						pWorkerProc->SubscribeStrategy(*pStrategy);
+						sDOVec_Ptr->push_back(*pStrategy);
+					}
 				}
 				ThrowNotFoundExceptionIfEmpty(sDOVec_Ptr);
 			}

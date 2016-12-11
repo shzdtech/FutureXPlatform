@@ -39,7 +39,8 @@ OTCWorkerProcessor::OTCWorkerProcessor(const IPricingDataContext_Ptr& pricingCtx
 	_pricingNotifers(SessionContainer<ContractKey>::NewInstancePtr()),
 	_tradingDeskNotifers(SessionContainer<ContractKey>::NewInstancePtr()),
 	_otcOrderNotifers(SessionContainer<uint64_t>::NewInstancePtr()),
-	_pricingCtx(pricingCtx)
+	_pricingCtx(pricingCtx), _baseContractStrategyMap(1024),
+	_exchangeStrategySet(1024), _otcStrategySet(1024)
 {
 	_runingTradingDeskFlag = true;
 }
@@ -152,25 +153,34 @@ void OTCWorkerProcessor::AddContractToMonitor(const ContractKey& contractId)
 int OTCWorkerProcessor::SubscribeStrategy(const StrategyContractDO& strategyDO)
 {
 	//subscribe market data from CTP
-
+	ContractKey ck(strategyDO);
 	if (strategyDO.IsOTC())
 	{
-		_otcStrategySet.emplace(strategyDO);
+		_otcStrategySet.insert(ck);
 		for (auto& bsContract : strategyDO.PricingContracts)
 		{
 			if (!bsContract.IsOTC())
 			{
 				AddContractToMonitor(bsContract);
-				_baseContractStrategyMap.getorfill(bsContract).insert(strategyDO);
+				if (!_baseContractStrategyMap.contains(bsContract))
+				{
+					_baseContractStrategyMap.insert(bsContract, std::make_shared<std::set<ContractKey>>());
+				}
+
+				if (auto setptr = _baseContractStrategyMap.find(bsContract))
+				{
+					setptr->emplace(ck);
+				}
+
 				SubscribeMarketData(bsContract);
 			}
 		}
 	}
 	else
 	{
-		AddContractToMonitor(strategyDO);
-		_exchangeStrategySet.emplace(strategyDO);
-		SubscribeMarketData(strategyDO);
+		AddContractToMonitor(ck);
+		_exchangeStrategySet.insert(ck);
+		SubscribeMarketData(ck);
 		for (auto& bsContract : strategyDO.PricingContracts)
 		{
 			if (!bsContract.IsOTC())
@@ -222,8 +232,8 @@ void OTCWorkerProcessor::TriggerOTCPricing(const StrategyContractDO& strategyDO)
 	{
 		auto pricingCtx = PricingDataContext();
 		_pricingNotifers->foreach(strategyDO, [&strategyDO, &pricingCtx](const IMessageSession_Ptr& session_ptr)
-		{OnResponseProcMacro(session_ptr->getProcessor(),
-			MSG_ID_RTN_PRICING, strategyDO.SerialId, &strategyDO, pricingCtx.get()); });
+		{if (auto process_ptr = session_ptr->LockMessageProcessor())
+			OnResponseProcMacro(process_ptr, MSG_ID_RTN_PRICING, strategyDO.SerialId, &strategyDO, pricingCtx.get()); });
 	}
 }
 
@@ -231,18 +241,18 @@ void OTCWorkerProcessor::TriggerTadingDeskParams(const StrategyContractDO & stra
 {
 	auto pricingCtx = PricingDataContext();
 	_tradingDeskNotifers->foreach(strategyDO, [&strategyDO, &pricingCtx](const IMessageSession_Ptr& session_ptr)
-	{OnResponseProcMacro(session_ptr->getProcessor(),
-		MSG_ID_RTN_TRADINGDESK_PRICING, strategyDO.SerialId, &strategyDO, pricingCtx.get()); });
+	{if (auto process_ptr = session_ptr->LockMessageProcessor())
+		OnResponseProcMacro(process_ptr, MSG_ID_RTN_TRADINGDESK_PRICING, strategyDO.SerialId, &strategyDO, pricingCtx.get()); });
 }
 
 void OTCWorkerProcessor::TriggerUpdating(const MarketDataDO& mdDO)
 {
-	auto strategyMap = PricingDataContext()->GetStrategyMap();
-	if (auto pStrategy = _baseContractStrategyMap.tryfind(mdDO))
+	auto pStrategyMap = PricingDataContext()->GetStrategyMap();
+	if (auto strategySetPtr = _baseContractStrategyMap.find(mdDO))
 	{
-		for (auto contractID : *pStrategy)
+		for (auto& contractID : *strategySetPtr)
 		{
-			if (auto pStrategyDO = strategyMap->tryfind(contractID))
+			if (auto pStrategyDO = pStrategyMap->tryfind(contractID))
 			{
 				TriggerOTCUpdating(*pStrategyDO);
 			}

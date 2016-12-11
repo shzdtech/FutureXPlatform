@@ -11,7 +11,7 @@
 #include "../common/BizErrorIDs.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTSCancelOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+// Name:       CTSCancelOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, IMessageProcessor* msgProcessor
 // Purpose:    Implementation of CTSCancelOrder::HandleRequest()
 // Parameters:
 // - reqDO
@@ -20,7 +20,7 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTSCancelOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTSCancelOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	auto pOrder = (OrderRequestDO*)reqDO.get();
 	auto api = (CTSAPIWrapper*)rawAPI;
@@ -30,7 +30,7 @@ dataobj_ptr CTSCancelOrder::HandleRequest(const uint32_t serialId, const dataobj
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTSCancelOrder::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
+// Name:       CTSCancelOrder::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, IMessageProcessor* msgProcessor
 // Purpose:    Implementation of CTSCancelOrder::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawParams
@@ -39,7 +39,7 @@ dataobj_ptr CTSCancelOrder::HandleRequest(const uint32_t serialId, const dataobj
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTSCancelOrder::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr CTSCancelOrder::HandleResponse(const uint32_t serialId, const param_vector& rawParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	OrderDO_Ptr order_ptr = *((OrderDO_Ptr*)rawParams[0]);
 

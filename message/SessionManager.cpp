@@ -6,19 +6,24 @@
  ***********************************************************************/
 
 #include "SessionManager.h"
+#include "../litelogger/LiteLogger.h"
+#ifdef _WIN32
+#include <Windows.h>
+#endif
 
-////////////////////////////////////////////////////////////////////////
-// Name:       SessionManager::SessionManager(messagerouter_ptr msgrouter, msgsvc_factory_ptr msgsvcfactory)
-// Purpose:    Implementation of SessionManager::SessionManager()
-// Parameters:
-// - msgrouter
-// - msgsvcfactory
-// Return:     
-////////////////////////////////////////////////////////////////////////
+
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       SessionManager::SessionManager(messagerouter_ptr msgrouter, msgsvc_factory_ptr msgsvcfactory)
+ // Purpose:    Implementation of SessionManager::SessionManager()
+ // Parameters:
+ // - msgrouter
+ // - msgsvcfactory
+ // Return:     
+ ////////////////////////////////////////////////////////////////////////
 
 SessionManager::SessionManager(IMessageServer* server)
+	: _sessionSet(2048), _server(server)
 {
-	_server = server;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -52,25 +57,37 @@ void SessionManager::OnServerStarting(void)
 
 void SessionManager::OnServerClosing(void)
 {
-	IMessageSession_Ptr sessionPtr;
-	while (_sessionSet.pop(sessionPtr))
+	auto processors = _sessionSet.lock_table();
+	for (auto pair : processors)
 	{
-		sessionPtr->NotifyClosing();
+		pair.first->getMessageSession()->NotifyClosing();
 	}
+	processors.release();
+	_sessionSet.clear();
 	_server->getContext()->Reset();
 }
 
 bool SessionManager::CloseSession(const IMessageSession_Ptr & sessionPtr)
 {
-	bool ret = false;
-	if(sessionPtr)
-		ret = _sessionSet.find(sessionPtr);
-
-	if (ret)
+	try
 	{
-		sessionPtr->NotifyClosing();
-		_sessionSet.erase(sessionPtr);
+		_sessionSet.erase(sessionPtr->LockMessageProcessor());
 	}
+	catch (std::exception& ex)
+	{
+		LOG_ERROR << ex.what();
+	}
+	catch (...)
+	{
+		LOG_ERROR << __FUNCTION__ << ": Access violation!";
+		return false;
+	}
+}
 
-	return ret;
+void SessionManager::AddSession(const IMessageSession_Ptr& sessionPtr)
+{
+	if (auto processor_ptr = sessionPtr->LockMessageProcessor())
+	{
+		_sessionSet.insert(processor_ptr);
+	}
 }

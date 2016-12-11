@@ -19,7 +19,7 @@
 // Return:     void
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr EchoMessageHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr EchoMessageHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
    auto kaDO = std::static_pointer_cast<EchoMessageDO>(reqDO);
    session->WriteMessage(MSG_ID_ECHO, kaDO->getDataBuffer());

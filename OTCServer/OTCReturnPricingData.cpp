@@ -27,7 +27,7 @@
 #include "../pricingengine/IPricingDataContext.h"
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       OTCReturnPricingData::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+ // Name:       OTCReturnPricingData::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
  // Purpose:    Implementation of OTCReturnPricingData::HandleResponse(const uint32_t serialId, )
  // Parameters:
  // - rawRespParams
@@ -36,7 +36,7 @@
  // Return:     dataobj_ptr
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr OTCReturnPricingData::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr OTCReturnPricingData::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	auto pStrategyDO = (StrategyContractDO*)rawRespParams[0];
 	auto pPricingCtx = (IPricingDataContext*)rawRespParams[1];
@@ -46,17 +46,20 @@ dataobj_ptr OTCReturnPricingData::HandleResponse(const uint32_t serialId, const 
 	auto userContractMap = std::static_pointer_cast<UserContractParamDOMap>
 		(session->getContext()->getAttribute(STR_KEY_USER_CONTRACTS));
 
-	int quantity = userContractMap->at(*pStrategyDO).Quantity;
-
-	ret = PricingUtility::Pricing(&quantity, *pStrategyDO, *pPricingCtx);
-	if (!pStrategyDO->BidEnabled)
+	if (auto pContractParam = userContractMap->tryfind(*pStrategyDO))
 	{
-		ret->Bid().Clear();
-	}
+		int quantity = pContractParam->Quantity;
 
-	if (!pStrategyDO->AskEnabled)
-	{
-		ret->Ask().Clear();
+		ret = PricingUtility::Pricing(&quantity, *pStrategyDO, *pPricingCtx);
+		if (!pStrategyDO->BidEnabled)
+		{
+			ret->Bid().Clear();
+		}
+
+		if (!pStrategyDO->AskEnabled)
+		{
+			ret->Ask().Clear();
+		}
 	}
 
 	return ret;

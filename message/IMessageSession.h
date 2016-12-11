@@ -17,10 +17,11 @@ public:
 	virtual bool Start(void) = 0;
 	virtual bool Close(void) = 0;
 	virtual bool NotifyClosing(void) = 0;
-	virtual void RegistProcessor(const IMessageProcessor_Ptr& msgprocessor) = 0;
+	virtual void RegisterProcessor(const IMessageProcessor_Ptr& msgprocessor_ptr) = 0;
 	virtual void setTimeout(long seconds) = 0;
 	virtual void addListener(const IMessageSessionEvent_WkPtr& listener) = 0;
 	virtual void removeListener(const IMessageSessionEvent_WkPtr& listener) = 0;
+	virtual IMessageProcessor_Ptr LockMessageProcessor(void) = 0;
 
 	virtual ISessionManager_Ptr& getSessionManager(void) = 0;
 

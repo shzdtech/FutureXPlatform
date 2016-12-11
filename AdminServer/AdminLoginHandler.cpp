@@ -24,7 +24,7 @@
 #include "../common/Attribute_Key.h"
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       AdminLoginHandler::HandleRequest(dataobj_ptr reqDO, IRawAPI* rawAPI, ISession* session)
+ // Name:       AdminLoginHandler::HandleRequest(dataobj_ptr reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
  // Purpose:    Implementation of AdminLoginHandler::HandleRequest()
  // Parameters:
  // - reqDO
@@ -33,7 +33,7 @@
  // Return:     dataobj_ptr
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr AdminLoginHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, ISession* session)
+dataobj_ptr AdminLoginHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	dataobj_ptr ret;
 
