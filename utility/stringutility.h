@@ -102,4 +102,19 @@ public:
 	}
 };
 
+struct ci_less : std::binary_function<std::string, std::string, bool>
+{
+	// case-independent (ci) compare_less binary function
+	struct nocase_compare : public std::binary_function<char, char, bool>
+	{
+		bool operator() (const char& c1, const char& c2) const {
+			return tolower(c1) < tolower(c2);
+		}
+	};
+
+	bool operator() (const std::string & s1, const std::string & s2) const {
+		return stringutility::compare(s1, s2) < 0;
+	}
+};
+
 #endif

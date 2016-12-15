@@ -27,6 +27,7 @@ public:
 	cuckoohash_map<uint64_t, TradeRecordDO_Ptr>& GetAllTrade();
 	cuckoohash_map<std::string, cuckoohashmap_wrapper<uint64_t, TradeRecordDO_Ptr>>& UserTradeMap();
 	cuckoohashmap_wrapper<uint64_t, TradeRecordDO_Ptr> GetTradesByUser(const std::string& userID);
+	bool Contains(uint64_t tradeID);
 	TradeRecordDO_Ptr FindTrade(uint64_t tradeID);
 
 

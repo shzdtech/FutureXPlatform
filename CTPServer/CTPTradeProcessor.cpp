@@ -299,26 +299,6 @@ void CTPTradeProcessor::OnRtnTrade(CThostFtdcTradeField *pTrade)
 	bool bIsLast = true;
 	int nRequestID = 0;
 	OnResponseMacro(MSG_ID_TRADE_RTN, 0, pTrade, nullptr, &nRequestID, &bIsLast);
-
-	//_updatePositionSet.emplace(pTrade->InstrumentID);
-
-	// Try update position
-	if (!_updateFlag.test_and_set())
-	{
-		_updateTask = std::async(std::launch::async, [this]()
-		{
-			std::this_thread::sleep_for(std::chrono::milliseconds(100));
-			CThostFtdcQryInvestorPositionField req{};
-			for (;;)
-			{
-				int iRet = _rawAPI->TrdAPI->ReqQryInvestorPosition(&req, 0);
-				if (_exiting || iRet == 0) break;
-				std::this_thread::sleep_for(std::chrono::seconds(1));
-			}
-
-			_updateFlag.clear();
-		});
-	}
 }
 
 ///报单录入错误回报

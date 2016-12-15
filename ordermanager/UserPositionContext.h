@@ -12,6 +12,7 @@
 #include "../common/typedefs.h"
 #include "../dataobject/TypedefDO.h"
 #include "../dataobject/UserPositionDO.h"
+#include "../dataobject/TradeRecordDO.h"
 #include <libcuckoo/cuckoohash_map.hh>
 #include "../utility/cuckoohashmap_wrapper.h"
 #include "../utility/pairhash.h"
@@ -32,6 +33,8 @@ public:
 	UserPositionExDO_Ptr GetPosition(const std::string& userID, const std::string& instumentID, PositionDirectionType direction);
 
 	bool RemovePosition(const std::string & userID, const std::string & instumentID, PositionDirectionType direction);
+
+	UserPositionExDO_Ptr UpsertPosition(const TradeRecordDO_Ptr & tradeDO, PositionDirectionType pd, double cost);
 
 private:
 	cuckoohash_map<std::string, cuckoohashmap_wrapper<std::pair<std::string, int>, UserPositionExDO_Ptr, pairhash<std::string, int>>> _userPositionMap;

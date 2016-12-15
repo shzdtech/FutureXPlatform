@@ -62,6 +62,9 @@ public:
 	virtual const std::string& getServer(void) const;
 	virtual void setServer(const std::string& newServer);
 
+	virtual int getTradingDay(void) const;
+	virtual void setTradingDay(const int tradingDay);
+
 protected:
 private:
 	std::map<std::string, attribute_ptr> _attributes;
@@ -77,6 +80,7 @@ private:
 	int _permission;
 	int _sessionId;
 	int _frontId;
+	int _tradingDay = 0;
 	std::shared_ptr<void> _extInfo;
 	std::atomic_ulong _seqGen;
 };

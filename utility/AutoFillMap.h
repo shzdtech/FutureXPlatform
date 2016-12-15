@@ -10,12 +10,12 @@
 #include <map>
 #include <functional>
 
-template <class K, class V>
-class autofillmap : public std::map<K, V>
+template <class K, class V, class Compare = std::less<K>, class Allocator = std::allocator<std::pair<const K, V>>>
+class autofillmap : public std::map<K, V, Compare, Allocator>
 {
 public:
 	autofillmap() = default;
-	autofillmap(const std::map<K, V>& others) : std::map<K, V>(others) {}
+	autofillmap(const std::map<K, V, Compare, Allocator>& others) : std::map<K, V, Compare, Allocator>(others) {}
 
 	bool tryfind(const K& key, V& value)
 	{

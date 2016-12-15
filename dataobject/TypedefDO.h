@@ -1,8 +1,8 @@
 #if !defined(__dataobject_TypedefDO_h)
 #define __dataobject_TypedefDO_h
 
-
 #include "../utility/autofillmap.h"
+#include "../utility/stringutility.h"
 #include "ContractKey.h"
 #include "ContractParamDO.h"
 #include "PortfolioDO.h"
@@ -27,16 +27,15 @@ using UserContractMap = typename autofillmap<UserContractKey, V>;
 
 typedef ContractMap<StrategyContractDO> StrategyContractDOMap;
 
-typedef autofillmap<std::string, MarketDataDO> MarketDataDOMap;
+typedef autofillmap<std::string, MarketDataDO, ci_less> MarketDataDOMap;
 
 typedef ContractMap<UserContractParamDO> UserContractParamDOMap;
 
 typedef ContractMap<ContractParamDO> ContractParamDOMap;
 
-typedef autofillmap<std::string, InstrumentDO> InstrumentDOMap;
+typedef autofillmap<std::string, InstrumentDO, ci_less> InstrumentDOMap;
 
-typedef autofillmap<std::string, autofillmap<std::pair<PositionDateFlagType, PositionDirectionType>, UserPositionExDO>>
-UserPositionExDOMap;
+typedef autofillmap<std::string, autofillmap<std::pair<PositionDateFlagType, PositionDirectionType>, UserPositionExDO>, ci_less> UserPositionExDOMap;
 
 template <typename V>
 using PortfolioMap = typename autofillmap<PortfolioKey, V>;

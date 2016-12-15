@@ -24,7 +24,7 @@ VectorDO_Ptr<InstrumentDO> InstrumentCache::QueryInstrument(const std::string & 
 	{
 		using namespace boolinq;
 		ret = std::make_shared<VectorDO<InstrumentDO>>();
-		auto& instrumentMap = static_cast<std::map<std::string, InstrumentDO>>(_instrumentDOMap);
+		auto& instrumentMap = static_cast<std::map<std::string, InstrumentDO, ci_less>>(_instrumentDOMap);
 
 		if (!instrumentId.empty())
 		{
@@ -64,7 +64,7 @@ VectorDO_Ptr<InstrumentDO> InstrumentCache::QueryInstrumentByProductType(Product
 
 	using namespace boolinq;
 	ret = std::make_shared<VectorDO<InstrumentDO>>();
-	auto& instrumentMap = static_cast<std::map<std::string, InstrumentDO>>(_instrumentDOMap);
+	auto& instrumentMap = static_cast<std::map<std::string, InstrumentDO, ci_less>>(_instrumentDOMap);
 
 	auto enumerator = from(instrumentMap)
 		.where([&productType](const std::pair<const std::string, InstrumentDO>& pair)

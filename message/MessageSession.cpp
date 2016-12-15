@@ -10,7 +10,7 @@
 #include "UserInfo.h"
 #include "../litelogger/LiteLogger.h"
 
-
+#include <atomic>
 
 uint64_t MessageSession::Id()
 {
@@ -27,7 +27,7 @@ uint64_t MessageSession::Id()
 MessageSession::MessageSession(const ISessionManager_Ptr& sessionMgr_Ptr)
 	: _sessionManager_ptr(sessionMgr_Ptr), _timeout(0), _loginTimeStamp(0), _sessionHub(2)
 {
-	static uint64_t idgen = 0;
+	static std::atomic_uint64_t idgen {};
 	_id = ++idgen;
 }
 

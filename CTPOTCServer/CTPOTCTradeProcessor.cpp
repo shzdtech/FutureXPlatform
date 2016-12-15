@@ -177,6 +177,7 @@ void CTPOTCTradeProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserL
 			auto pUser = sessionptr->getUserInfo();
 			pUser->setSessionId(pRspUserLogin->SessionID);
 			pUser->setFrontId(pRspUserLogin->FrontID);
+			pUser->setTradingDay(std::atoi(pRspUserLogin->TradingDay));
 			_systemUser.setSessionId(pRspUserLogin->SessionID);
 			_systemUser.setFrontId(pRspUserLogin->FrontID);
 

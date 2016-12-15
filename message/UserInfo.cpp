@@ -294,6 +294,16 @@ void UserInfo::setServer(const std::string& newServer)
 	_server = newServer;
 }
 
+int UserInfo::getTradingDay(void) const
+{
+	return _tradingDay;
+}
+
+void UserInfo::setTradingDay(const int tradingDay)
+{
+	_tradingDay = tradingDay;
+}
+
 const std::string& UserInfo::getServer(void) const
 {
 	return _server;

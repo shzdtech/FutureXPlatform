@@ -102,6 +102,7 @@ dataobj_ptr CTPLoginHandler::HandleResponse(const uint32_t serialId, const param
 	pUserInfo->setInitSeq(initVal);
 	pUserInfo->setFrontId(pData->FrontID);
 	pUserInfo->setSessionId(pData->SessionID);
+	pUserInfo->setTradingDay(std::atoi(pData->TradingDay));
 
 	pDO->BrokerId = pUserInfo->getBrokerId();
 	pDO->Company = pUserInfo->getBrokerId();

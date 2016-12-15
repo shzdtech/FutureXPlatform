@@ -9,9 +9,14 @@
 #include "CTPProcessor.h"
 #include "CTPRawAPI.h"
 #include "CTPConstant.h"
+#include "CTPTradeWorkerProcessor.h"
+
+#include "../message/DefMessageID.h"
+#include "../message/MessageUtility.h"
 #include "../utility/TUtil.h"
 #include "../common/Attribute_Key.h"
 #include "../dataobject/TypedefDO.h"
+#include "../litelogger/LiteLogger.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPTradeLoginHandler::LoginFunction()
@@ -70,6 +75,19 @@ dataobj_ptr CTPTradeLoginHandler::HandleResponse(const uint32_t serialId, const 
 	std::strncpy(reqsettle.BrokerID, session->getUserInfo()->getBrokerId().data(), sizeof(reqsettle.BrokerID));
 	std::strncpy(reqsettle.InvestorID, session->getUserInfo()->getInvestorId().data(), sizeof(reqsettle.InvestorID));
 	((CTPRawAPI*)rawAPI)->TrdAPI->ReqSettlementInfoConfirm(&reqsettle, 0);
+
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+	{
+		auto& userInfo = session->getUserInfo();
+		auto positionMap = pWorkerProc->GetUserPositionContext().GetPositionsByUser(userInfo->getUserId());
+		if (positionMap.empty())
+		{
+			CThostFtdcQryInvestorPositionField req{};
+			std::strncpy(req.BrokerID, userInfo->getBrokerId().data(), sizeof(req.BrokerID));
+			std::strncpy(req.InvestorID, userInfo->getInvestorId().data(), sizeof(req.InvestorID));
+			((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryInvestorPosition(&req, serialId);
+		}
+	}
 
 	return ret;
 }

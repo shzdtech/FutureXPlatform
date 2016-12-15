@@ -31,40 +31,35 @@ dataobj_ptr CTPSubMarketData::HandleRequest(const uint32_t serialId, const datao
 	CheckLogin(session);
 
 	auto stdo = (StringTableDO*)reqDO.get();
-	int ret = 0;
+	VectorDO_Ptr<MarketDataDO> ret;
+
 	if (!stdo->Data.empty())
 	{
 		auto& instList = stdo->Data.begin()->second;
 		auto nInstrument = instList.size();
 		if (nInstrument > 0)
 		{
+			ret = std::make_shared<VectorDO<MarketDataDO>>();
 			std::unique_ptr<char*[]> ppInstrments(new char*[nInstrument]);
 			int i = 0;
 			for (auto& inst : instList)
 			{
 				ppInstrments[i] = const_cast<char*>(inst.data());
-				std::string instrument(inst);
-				std::transform(inst.begin(), inst.end(), instrument.begin(), ::tolower);
-				if (auto pInstumentDO = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(instrument))
+				if (auto pInstumentDO = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(inst))
 				{
 					ppInstrments[i] = const_cast<char*>(pInstumentDO->InstrumentID().data());
+					MarketDataDO mdo(pInstumentDO->ExchangeID(), pInstumentDO->InstrumentID());
+					ret->push_back(std::move(mdo));
+
+					i++;
 				}
-				else
-				{
-					std::transform(inst.begin(), inst.end(), instrument.begin(), ::toupper);
-					if (auto pInstumentDO = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(instrument))
-					{
-						ppInstrments[i] = const_cast<char*>(pInstumentDO->InstrumentID().data());
-					}
-				}
-				i++;
 			}
-			ret = ((CTPRawAPI*)rawAPI)->MdAPI->SubscribeMarketData(ppInstrments.get(), i);
-			CTPUtility::CheckReturnError(ret);
+			int iRet = ((CTPRawAPI*)rawAPI)->MdAPI->SubscribeMarketData(ppInstrments.get(), i);
+			CTPUtility::CheckReturnError(iRet);
 		}
 	}
 
-	return nullptr;
+	return ret;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -79,7 +74,7 @@ dataobj_ptr CTPSubMarketData::HandleRequest(const uint32_t serialId, const datao
 
 dataobj_ptr CTPSubMarketData::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	CTPUtility::CheckError(rawRespParams[1]);
+	/*CTPUtility::CheckError(rawRespParams[1]);
 
 	VectorDO_Ptr<MarketDataDO> ret = std::make_shared<VectorDO<MarketDataDO>>();
 
@@ -99,7 +94,7 @@ dataobj_ptr CTPSubMarketData::HandleResponse(const uint32_t serialId, const para
 		}
 
 		ret->push_back(MarketDataDO(exchange, pRspInstr->InstrumentID));
-	}
+	}*/
 
-	return ret;
+	return nullptr;
 }

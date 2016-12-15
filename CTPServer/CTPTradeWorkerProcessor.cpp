@@ -243,6 +243,7 @@ void CTPTradeWorkerProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUs
 			userinfo_ptr->setPermission(ALLOW_TRADING);
 			userinfo_ptr->setFrontId(pRspUserLogin->FrontID);
 			userinfo_ptr->setSessionId(pRspUserLogin->SessionID);
+			userinfo_ptr->setTradingDay(std::atoi(pRspUserLogin->TradingDay));
 
 			_systemUser.setFrontId(pRspUserLogin->FrontID);
 			_systemUser.setSessionId(pRspUserLogin->SessionID);
@@ -278,11 +279,7 @@ void CTPTradeWorkerProcessor::OnRspQryInstrument(CThostFtdcInstrumentField * pIn
 			if (!save_contract.empty())
 			{
 				std::string item = "contract:" + _serverCtx->getServerUri();
-				auto time = std::time(nullptr);
-				char version[20];
-				std::strftime(version, sizeof(version), "%F", std::localtime(&time));
-
-				ContractCache::PersistCache(PRODUCT_CACHE_EXCHANGE, item, version);
+				ContractCache::PersistCache(PRODUCT_CACHE_EXCHANGE, item, std::to_string(getMessageSession()->getUserInfo()->getTradingDay()));
 			}
 		}
 	}

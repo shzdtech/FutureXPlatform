@@ -79,6 +79,12 @@ cuckoohashmap_wrapper<uint64_t, TradeRecordDO_Ptr> UserTradeContext::GetTradesBy
 	return ret;
 }
 
+bool UserTradeContext::Contains(uint64_t tradeID)
+{
+	return _tradeIdMap.contains(tradeID);
+}
+
+
 
 TradeRecordDO_Ptr UserTradeContext::FindTrade(uint64_t tradeID)
 {
