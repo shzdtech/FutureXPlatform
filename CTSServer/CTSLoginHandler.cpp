@@ -41,14 +41,14 @@ dataobj_ptr CTSLoginHandler::HandleRequest(const uint32_t serialId, const dataob
 
 	LOG_DEBUG << "Start login: " << brokeid << ":" << userid << ":" << password;
 
-	auto pUserInfo = session->getUserInfo();
-	pUserInfo->setInvestorId(userid);
-	pUserInfo->setBrokerId(brokeid);
-	pUserInfo->setName(userid);
-	pUserInfo->setPassword(password);
-	pUserInfo->setUserId(userid);
-	pUserInfo->setRole(ROLE_CLIENT);
-	pUserInfo->setPermission(ALLOW_TRADING);
+	auto& userInfo = session->getUserInfo();
+	userInfo.setInvestorId(userid);
+	userInfo.setBrokerId(brokeid);
+	userInfo.setName(userid);
+	userInfo.setPassword(password);
+	userInfo.setUserId(userid);
+	userInfo.setRole(ROLE_CLIENT);
+	userInfo.setPermission(ALLOW_TRADING);
 
 	return nullptr;
 }
@@ -74,14 +74,14 @@ dataobj_ptr CTSLoginHandler::HandleResponse(const uint32_t serialId, const param
 	auto pDO = new UserInfoDO;
 	dataobj_ptr ret(pDO);
 
-	auto pUserInfo = session->getUserInfo();
+	auto& userInfo = session->getUserInfo();
 
-	pDO->UserId = pUserInfo->getUserId();
-	pDO->BrokerId = pUserInfo->getBrokerId();
-	//pDO->Password = pUserInfo->getPassword();
-	pDO->UserName = pUserInfo->getName();
-	pDO->Role = pUserInfo->getRole();
-	pDO->Permission = pUserInfo->getPermission();
+	pDO->UserId = userInfo.getUserId();
+	pDO->BrokerId = userInfo.getBrokerId();
+	//pDO->Password = userInfo.getPassword();
+	pDO->UserName = userInfo.getName();
+	pDO->Role = userInfo.getRole();
+	pDO->Permission = userInfo.getPermission();
 
 	session->setLoginTimeStamp();
 

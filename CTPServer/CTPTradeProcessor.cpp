@@ -30,7 +30,8 @@ CTPTradeProcessor::CTPTradeProcessor()
 {
 	DataLoadMask = NO_DATA_LOADED;
 	_exiting = false;
-	_updateFlag.clear();
+	_tradeCnt = 0;
+	_updateFlag.clear(std::memory_order_release);
 }
 
 CTPTradeProcessor::CTPTradeProcessor(const CTPRawAPI_Ptr& rawAPI)
@@ -38,7 +39,8 @@ CTPTradeProcessor::CTPTradeProcessor(const CTPRawAPI_Ptr& rawAPI)
 {
 	DataLoadMask = NO_DATA_LOADED;
 	_exiting = false;
-	_updateFlag.clear();
+	_tradeCnt = 0;
+	_updateFlag.clear(std::memory_order_release);
 }
 
 
@@ -80,8 +82,8 @@ int CTPTradeProcessor::InitializeServer(const std::string& flowId, const std::st
 
 		_rawAPI->TrdAPI->RegisterFront(const_cast<char*> (server_addr.data()));
 
-		_rawAPI->TrdAPI->SubscribePrivateTopic(THOST_TERT_QUICK);
-		_rawAPI->TrdAPI->SubscribePublicTopic(THOST_TERT_QUICK);
+		_rawAPI->TrdAPI->SubscribePrivateTopic(THOST_TERT_RESTART);
+		_rawAPI->TrdAPI->SubscribePublicTopic(THOST_TERT_RESTART);
 		_rawAPI->TrdAPI->Init();
 
 		std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -93,14 +95,15 @@ int CTPTradeProcessor::InitializeServer(const std::string& flowId, const std::st
 bool CTPTradeProcessor::OnSessionClosing(void)
 {
 	_exiting = true;
-	if (_updateTask.valid()) _updateTask.wait();
+	if (_updateTask.valid())
+		_updateTask.wait_for(std::chrono::seconds(10));
 	if (_isLogged)
 	{
 		if (auto sessionptr = getMessageSession())
 		{
 			CThostFtdcUserLogoutField logout{};
-			std::strncpy(logout.BrokerID, sessionptr->getUserInfo()->getBrokerId().data(), sizeof(logout.BrokerID));
-			std::strncpy(logout.UserID, sessionptr->getUserInfo()->getUserId().data(), sizeof(logout.UserID));
+			std::strncpy(logout.BrokerID, sessionptr->getUserInfo().getBrokerId().data(), sizeof(logout.BrokerID));
+			std::strncpy(logout.UserID, sessionptr->getUserInfo().getUserId().data(), sizeof(logout.UserID));
 			_rawAPI->TrdAPI->ReqUserLogout(&logout, 0);
 		}
 	}
@@ -296,9 +299,37 @@ void CTPTradeProcessor::OnRtnOrder(CThostFtdcOrderField *pOrder)
 ///成交通知
 void CTPTradeProcessor::OnRtnTrade(CThostFtdcTradeField *pTrade)
 {
-	bool bIsLast = true;
-	int nRequestID = 0;
-	OnResponseMacro(MSG_ID_TRADE_RTN, 0, pTrade, nullptr, &nRequestID, &bIsLast);
+	_tradeCnt++;
+
+	OnResponseMacro(MSG_ID_TRADE_RTN, 0, pTrade);
+
+	// Try update position
+	if (!_exiting && (DataLoadMask & POSITION_DATA_LOADED) && !_updateFlag.test_and_set(std::memory_order::memory_order_acquire))
+	{
+		_updateTask = std::async(std::launch::async, &CTPTradeProcessor::QueryPositionAsync, this, _tradeCnt);
+	}
+}
+
+void CTPTradeProcessor::QueryPositionAsync(uint currentCnt)
+{
+	std::this_thread::sleep_for(std::chrono::seconds(5));
+	if (!_exiting)
+	{
+		if (currentCnt != _tradeCnt)
+		{
+			_updateTask = std::async(std::launch::async, &CTPTradeProcessor::QueryPositionAsync, this, _tradeCnt);
+		}
+		else
+		{
+			_updateFlag.clear(std::memory_order::memory_order_release);
+			CThostFtdcQryInvestorPositionField req{};
+			int iRet = _rawAPI->TrdAPI->ReqQryInvestorPosition(&req, 0);
+			if (iRet != 0)
+			{
+				_updateTask = std::async(std::launch::async, &CTPTradeProcessor::QueryPositionAsync, this, _tradeCnt);
+			}
+		}
+	}
 }
 
 ///报单录入错误回报
@@ -366,7 +397,7 @@ void CTPTradeProcessor::OnRtnFromBankToFutureByFuture(CThostFtdcRspTransferField
 {
 	if (auto session = getMessageSession())
 	{
-		if (pRspTransfer->SessionID == session->getUserInfo()->getSessionId())
+		if (pRspTransfer->SessionID == session->getUserInfo().getSessionId())
 		{
 			OnResponseMacro(MSG_ID_REQ_BANK_TO_FUTURE, pRspTransfer->RequestID, pRspTransfer);
 		}
@@ -380,7 +411,7 @@ void CTPTradeProcessor::OnRtnFromFutureToBankByFuture(CThostFtdcRspTransferField
 {
 	if (auto session = getMessageSession())
 	{
-		if (pRspTransfer->SessionID == session->getUserInfo()->getSessionId())
+		if (pRspTransfer->SessionID == session->getUserInfo().getSessionId())
 		{
 			OnResponseMacro(MSG_ID_REQ_FUTURE_TO_BANK, pRspTransfer->RequestID, pRspTransfer);
 		}

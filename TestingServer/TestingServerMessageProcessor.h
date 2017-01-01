@@ -9,7 +9,7 @@
 #define __TestingServer_TestingServerMessageProcessor_h
 
 #include "../message/TemplateMessageProcessor.h"
-#include <thread>
+#include <future>
 #include "../dataobject/MarketDataDO.h"
 
 class TestingServerMessageProcessor : public TemplateMessageProcessor
@@ -17,7 +17,7 @@ class TestingServerMessageProcessor : public TemplateMessageProcessor
 public:
 	TestingServerMessageProcessor(const std::map<std::string, std::string>& configMap);
 	~TestingServerMessageProcessor();
-
+	virtual bool OnSessionClosing(void);
 	virtual IRawAPI* getRawAPI(void);
 
 	void GenRandomMD(MarketDataDO & marketDataDO);
@@ -27,7 +27,7 @@ protected:
 
 	std::chrono::milliseconds _mdGenInterval = std::chrono::milliseconds(2000);
 
-	std::thread _mdThread;
+	std::future<void> _mdThread;
 
 	void _mdGenerator();
 

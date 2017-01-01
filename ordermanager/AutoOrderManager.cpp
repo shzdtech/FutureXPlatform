@@ -34,11 +34,11 @@ OrderDO_Ptr AutoOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 	if (orderId == 0 || !FindOrder(ParseOrderID(orderId)))
 	{
 		orderInfo.OrderID = OrderSeqGen::GenOrderID(_pOrderAPI->GetSessionId());
-		_userOrderCtx.UpsertOrder(orderInfo.OrderID, orderInfo);
+		_contractOrderCtx.UpsertOrder(orderInfo.OrderID, orderInfo);
 		ret = _pOrderAPI->CreateOrder(orderInfo);
 		if (!ret)
 		{
-			_userOrderCtx.RemoveOrder(orderInfo.OrderID);
+			_contractOrderCtx.RemoveOrder(orderInfo.OrderID);
 		}
 	}
 
@@ -53,13 +53,12 @@ OrderDO_Ptr AutoOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-OrderDOVec_Ptr AutoOrderManager::UpdateOrderByStrategy(
-	const StrategyContractDO& strategyDO)
+void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 {
 	OrderDOVec_Ptr ret;
 	std::vector<uint64_t> orderCancelList;
 
-	_userOrderCtx.UserOrderMap().update_fn(strategyDO.UserID(), [&](cuckoohashmap_wrapper<std::string, cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>>& orderMap)
+	_contractOrderCtx.ContractOrderMap().update_fn(strategyDO.InstrumentID(), [&](cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>& orders)
 	{
 		if (auto pricingDO_ptr = PricingUtility::Pricing(nullptr, strategyDO, *_pricingCtx))
 		{
@@ -74,89 +73,84 @@ OrderDOVec_Ptr AutoOrderManager::UpdateOrderByStrategy(
 			std::vector<double> tlBuyPrices;
 			std::vector<double> tlSellPrices;
 
-			orderMap.map()->update_fn(strategyDO.InstrumentID(), [&](cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>& orders)
-			{
-				auto tradingOrders = orders.map()->lock_table();
+			auto tradingOrders = orders.map()->lock_table();
 
-				for (auto& pair : tradingOrders)
+			for (auto& pair : tradingOrders)
+			{
+				auto& order = *pair.second;
+				bool canceled = false;
+				if (order.Direction == DirectionType::SELL)
 				{
-					auto& order = *pair.second;
-					bool canceled = false;
-					if (order.Direction == DirectionType::SELL)
+					if (order.LimitPrice < pricingsellMin || order.LimitPrice > pricingsellMax)
 					{
-						if (order.LimitPrice < pricingsellMin || order.LimitPrice > pricingsellMax)
-						{
-							canceled = true;
-						}
-						else
-						{
-							tlSellPrices.push_back(order.LimitPrice);
-						}
+						canceled = true;
 					}
 					else
 					{
-						if (order.LimitPrice > pricingbuyMax || order.LimitPrice < pricingbuyMin)
-						{
-							canceled = true;
-						}
-						else
-						{
-							tlBuyPrices.push_back(order.LimitPrice);
-						}
-					}
-
-					if (canceled)
-					{
-						if (auto order_ptr = _pOrderAPI->CancelOrder(order))
-						{
-							order.OrderStatus = OrderStatusType::CANCELED;
-							orderCancelList.push_back(order.OrderID);
-							ret->push_back(order);
-						}
+						tlSellPrices.push_back(order.LimitPrice);
 					}
 				}
-
-				// Make new orders
-				OrderRequestDO newOrder(strategyDO);
-				newOrder.Volume = strategyDO.BidQT;
-
-				double sellPrice = pricingsellMin;
-				double buyPrice = pricingbuyMax;
-				double tickSize = strategyDO.TickSize;
-
-				for (int i = 0; i < strategyDO.Depth; i++)
+				else
 				{
-					if (std::find(tlSellPrices.begin(), tlSellPrices.end(), sellPrice) == tlSellPrices.end())
+					if (order.LimitPrice > pricingbuyMax || order.LimitPrice < pricingbuyMin)
 					{
-						newOrder.OrderID = 0;
-						newOrder.Direction = DirectionType::SELL;
-						newOrder.LimitPrice = sellPrice;
-						CreateOrder(newOrder);
-						ret->push_back(newOrder);
+						canceled = true;
 					}
-
-					if (std::find(tlBuyPrices.begin(), tlBuyPrices.end(), buyPrice) == tlBuyPrices.end())
+					else
 					{
-						newOrder.OrderID = 0;
-						newOrder.Direction = DirectionType::BUY;
-						newOrder.LimitPrice = buyPrice;
-						CreateOrder(newOrder);
-						ret->push_back(newOrder);
+						tlBuyPrices.push_back(order.LimitPrice);
 					}
-
-					sellPrice += tickSize;
-					buyPrice -= tickSize;
 				}
-			});
+
+				if (canceled)
+				{
+					if (auto order_ptr = _pOrderAPI->CancelOrder(order))
+					{
+						order.OrderStatus = OrderStatusType::CANCELED;
+						orderCancelList.push_back(order.OrderID);
+						ret->push_back(order);
+					}
+				}
+			}
+
+			// Make new orders
+			OrderRequestDO newOrder(strategyDO);
+			newOrder.Volume = strategyDO.BidQT;
+
+			double sellPrice = pricingsellMin;
+			double buyPrice = pricingbuyMax;
+			double tickSize = strategyDO.TickSize;
+
+			for (int i = 0; i < strategyDO.Depth; i++)
+			{
+				if (std::find(tlSellPrices.begin(), tlSellPrices.end(), sellPrice) == tlSellPrices.end())
+				{
+					newOrder.OrderID = 0;
+					newOrder.Direction = DirectionType::SELL;
+					newOrder.LimitPrice = sellPrice;
+					CreateOrder(newOrder);
+					ret->push_back(newOrder);
+				}
+
+				if (std::find(tlBuyPrices.begin(), tlBuyPrices.end(), buyPrice) == tlBuyPrices.end())
+				{
+					newOrder.OrderID = 0;
+					newOrder.Direction = DirectionType::BUY;
+					newOrder.LimitPrice = buyPrice;
+					CreateOrder(newOrder);
+					ret->push_back(newOrder);
+				}
+
+				sellPrice += tickSize;
+				buyPrice -= tickSize;
+			}
 		}
 	});
 
 	for (auto orderId : orderCancelList)
 	{
-		_userOrderCtx.RemoveOrder(ParseOrderID(orderId));
+		_contractOrderCtx.RemoveOrder(ParseOrderID(orderId));
 	}
-
-	return ret;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -167,7 +161,7 @@ OrderDOVec_Ptr AutoOrderManager::UpdateOrderByStrategy(
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-int AutoOrderManager::OnOrderUpdated(OrderDO& orderInfo)
+int AutoOrderManager::OnMarketOrderUpdated(OrderDO& orderInfo)
 {
 	int ret = -1;
 
@@ -193,7 +187,7 @@ int AutoOrderManager::OnOrderUpdated(OrderDO& orderInfo)
 
 		if (!orderInfo.Active)
 		{
-			_userOrderCtx.RemoveOrder(orderId);
+			_contractOrderCtx.RemoveOrder(orderId);
 		}
 
 		if (addnew)
@@ -201,7 +195,7 @@ int AutoOrderManager::OnOrderUpdated(OrderDO& orderInfo)
 			auto pMap = _pricingCtx->GetStrategyMap();
 			auto it = pMap->find(orderInfo);
 			if (it != pMap->end())
-				UpdateOrderByStrategy(it->second);
+				TradeByStrategy(it->second);
 		}
 
 		ret = 0;
@@ -231,7 +225,7 @@ OrderDO_Ptr AutoOrderManager::CancelOrder(OrderRequestDO& orderInfo)
 		if (ret = FindOrder(ParseOrderID(orderInfo.OrderID)))
 		{
 			ret = _pOrderAPI->CancelOrder(orderInfo);
-			_userOrderCtx.RemoveOrder(orderInfo.OrderID);
+			_contractOrderCtx.RemoveOrder(orderInfo.OrderID);
 		}
 	}
 
@@ -253,7 +247,7 @@ OrderDO_Ptr AutoOrderManager::RejectOrder(OrderRequestDO& orderInfo)
 
 int AutoOrderManager::Reset()
 {
-	auto& orderMap = _userOrderCtx.GetAllOrder();
+	auto& orderMap = _contractOrderCtx.GetAllOrder();
 	{
 		auto lt = orderMap.lock_table();
 		for (auto& it : lt)
@@ -261,6 +255,6 @@ int AutoOrderManager::Reset()
 			RejectOrder(*(it.second));
 		}
 	}
-	_userOrderCtx.Clear();
+	_contractOrderCtx.Clear();
 	return 0;
 }

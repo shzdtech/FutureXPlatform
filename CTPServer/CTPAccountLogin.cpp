@@ -104,22 +104,21 @@ std::shared_ptr<UserInfoDO> CTPAccountLogin::Login(const dataobj_ptr reqDO, IRaw
 			throw UserException(WRONG_PASSWORD, "Wrong password.");
 		}
 
-		auto pUserInfo = session->getUserInfo();
-		pUserInfo->setBrokerId(userInfo_Ptr->Company);
-		pUserInfo->setName(userInfo_Ptr->UserName);
-		pUserInfo->setPassword(userInfo_Ptr->Password);
-		pUserInfo->setInvestorId(userInfo_Ptr->UserId);
-		pUserInfo->setUserId(userInfo_Ptr->UserId);
-		pUserInfo->setRole(userInfo_Ptr->Role);
-		pUserInfo->setPermission(userInfo_Ptr->Permission);
-
-		session->getUserInfo()->setExtInfo(userInfo_Ptr);
+		auto& userInfo = session->getUserInfo();
+		userInfo.setBrokerId(userInfo_Ptr->Company);
+		userInfo.setName(userInfo_Ptr->UserName);
+		userInfo.setPassword(userInfo_Ptr->Password);
+		userInfo.setInvestorId(userInfo_Ptr->UserId);
+		userInfo.setUserId(userInfo_Ptr->UserId);
+		userInfo.setRole(userInfo_Ptr->Role);
+		userInfo.setPermission(userInfo_Ptr->Permission);
+		userInfo.setExtInfo(userInfo_Ptr);
+		userInfo.setSharedAccount(true);
 
 		session->setLoginTimeStamp();
 	}
 
-	auto userInfoDO_Ptr = std::static_pointer_cast<UserInfoDO>
-		(session->getUserInfo()->getExtInfo());
+	auto userInfoDO_Ptr = std::static_pointer_cast<UserInfoDO>(session->getUserInfo().getExtInfo());
 
 	return userInfoDO_Ptr;
 }

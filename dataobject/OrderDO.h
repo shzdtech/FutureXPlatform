@@ -112,6 +112,7 @@ private:
 
 };
 
+typedef std::shared_ptr<OrderRequestDO> OrderRequestDO_Ptr;
 typedef std::shared_ptr<OrderDO> OrderDO_Ptr;
 typedef std::shared_ptr<VectorDO<OrderDO>> OrderDOVec_Ptr;
 

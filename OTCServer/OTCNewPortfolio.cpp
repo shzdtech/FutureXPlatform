@@ -23,8 +23,8 @@ dataobj_ptr OTCNewPortfolio::HandleRequest(const uint32_t serialId, const dataob
 
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
-		auto& userid = session->getUserInfo()->getUserId();
-		auto pUserInfo = (UserInfoDO*)session->getUserInfo()->getExtInfo().get();
+		auto& userid = session->getUserInfo().getUserId();
+		auto pUserInfo = (UserInfoDO*)session->getUserInfo().getExtInfo().get();
 		for (auto& portfolioDO : *vecDO_Ptr)
 		{
 			portfolioDO.SetUserID(userid);

@@ -15,10 +15,9 @@
 // Return:     
 ////////////////////////////////////////////////////////////////////////
 
-OrderManager::OrderManager(IOrderAPI* pOrderAPI, const IPricingDataContext_Ptr& pricingCtx)
+OrderManager::OrderManager(IOrderAPI* pOrderAPI, const IPricingDataContext_Ptr& pricingCtx, IOrderUpdatedEvent* listener)
+	: IOrderManager(listener), _pOrderAPI(pOrderAPI), _pricingCtx(pricingCtx)
 {
-	_pOrderAPI = pOrderAPI;
-	_pricingCtx = pricingCtx;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -34,5 +33,5 @@ OrderManager::~OrderManager()
 
 OrderDO_Ptr OrderManager::FindOrder(uint64_t orderID)
 {
-	return _userOrderCtx.FindOrder(orderID);
+	return _contractOrderCtx.FindOrder(orderID);
 }

@@ -10,8 +10,8 @@
 #include "../databaseop/OTCOrderDAO.h"
 
 
-OTCOrderManager::OTCOrderManager(IOrderAPI* pOrderAPI, const IPricingDataContext_Ptr& pricingCtx)
-	: OrderManager(pOrderAPI, pricingCtx),
+OTCOrderManager::OTCOrderManager(IOrderAPI* pOrderAPI, const IPricingDataContext_Ptr& pricingCtx, IOrderUpdatedEvent* listener)
+	: OrderManager(pOrderAPI, pricingCtx, listener),
 	_positionCtx(pricingCtx)
 { }
 
@@ -58,7 +58,7 @@ OrderDO_Ptr OTCOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 				{
 					if (ret->OrderStatus == OrderStatusType::OPENED)
 					{
-						_userOrderCtx.UpsertOrder(ret->OrderID, *ret);
+						_contractOrderCtx.UpsertOrder(ret->OrderID, *ret);
 					}
 				}
 			}
@@ -76,63 +76,57 @@ OrderDO_Ptr OTCOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-OrderDOVec_Ptr OTCOrderManager::UpdateOrderByStrategy(const StrategyContractDO& strategyDO)
+void OTCOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 {
 	OrderDOVec_Ptr ret;
 
-	_userOrderCtx.UserOrderMap().update_fn(strategyDO.UserID(),
-		[&](cuckoohashmap_wrapper<std::string, cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>>& orderMap)
+	_contractOrderCtx.ContractOrderMap().update_fn(strategyDO.InstrumentID(), [&](cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>& orders)
 	{
-		orderMap.map()->update_fn(strategyDO.InstrumentID(), [&](cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>& orders)
+		ret = std::make_shared<VectorDO<OrderDO>>();
+		auto lt = orders.map()->lock_table();
+		for (auto& it : lt)
 		{
-			ret = std::make_shared<VectorDO<OrderDO>>();
-			auto lt = orders.map()->lock_table();
-			for (auto& it : lt)
+			auto& orderDO = *it.second;
+			bool accept = false;
+			if (orderDO.Direction != DirectionType::SELL)
 			{
-				auto& orderDO = *it.second;
-				bool accept = false;
-				if (orderDO.Direction != DirectionType::SELL)
+				if (strategyDO.BidEnabled)
 				{
-					if (strategyDO.BidEnabled)
-					{
-						auto pricingDO_ptr = PricingUtility::Pricing(&orderDO.Volume, strategyDO, *_pricingCtx);
-						if (pricingDO_ptr && orderDO.LimitPrice >= pricingDO_ptr->Ask().Price)
-							accept = true;
-					}
-				}
-				else
-				{
-					if (strategyDO.AskEnabled)
-					{
-						auto pricingDO_ptr = PricingUtility::Pricing(&orderDO.Volume, strategyDO, *_pricingCtx);
-						if (pricingDO_ptr && orderDO.LimitPrice <= pricingDO_ptr->Bid().Price)
-							accept = true;
-					}
-				}
-
-				if (accept)
-				{
-					OrderStatusType currStatus;
-					if (OTCOrderDAO::AcceptOrder(orderDO, currStatus))
-					{
-						orderDO.OrderStatus = currStatus;
-						orderDO.VolumeTraded = orderDO.Volume;
-						orderDO.VolumeRemain = 0;
-						ret->push_back(orderDO);
-						_positionCtx.UpdatePosition(strategyDO, orderDO.Direction, orderDO.OpenClose, orderDO.Volume);
-						_userOrderCtx.RemoveOrder(orderDO.OrderID);
-					}
+					auto pricingDO_ptr = PricingUtility::Pricing(&orderDO.Volume, strategyDO, *_pricingCtx);
+					if (pricingDO_ptr && orderDO.LimitPrice >= pricingDO_ptr->Ask().Price)
+						accept = true;
 				}
 			}
-		});
+			else
+			{
+				if (strategyDO.AskEnabled)
+				{
+					auto pricingDO_ptr = PricingUtility::Pricing(&orderDO.Volume, strategyDO, *_pricingCtx);
+					if (pricingDO_ptr && orderDO.LimitPrice <= pricingDO_ptr->Bid().Price)
+						accept = true;
+				}
+			}
+
+			if (accept)
+			{
+				OrderStatusType currStatus;
+				if (OTCOrderDAO::AcceptOrder(orderDO, currStatus))
+				{
+					orderDO.OrderStatus = currStatus;
+					orderDO.VolumeTraded = orderDO.Volume;
+					orderDO.VolumeRemain = 0;
+					ret->push_back(orderDO);
+					_positionCtx.UpdatePosition(strategyDO, orderDO.Direction, orderDO.OpenClose, orderDO.Volume);
+					_contractOrderCtx.RemoveOrder(orderDO.OrderID);
+				}
+			}
+		}
 	});
 
 	if (ret && ret->size() > 0)
 	{
 		Hedge(strategyDO);
 	}
-
-	return ret;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -143,7 +137,7 @@ OrderDOVec_Ptr OTCOrderManager::UpdateOrderByStrategy(const StrategyContractDO& 
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-int OTCOrderManager::OnOrderUpdated(OrderDO& orderInfo)
+int OTCOrderManager::OnMarketOrderUpdated(OrderDO& orderInfo)
 {
 	return -1;
 }
@@ -163,7 +157,7 @@ OrderDO_Ptr OTCOrderManager::CancelOrder(OrderRequestDO& orderInfo)
 
 	OrderStatusType currStatus;
 	OTCOrderDAO::CancelOrder(orderInfo, currStatus);
-	OrderDO_Ptr ret = _userOrderCtx.RemoveOrder(orderInfo.OrderID);
+	OrderDO_Ptr ret = _contractOrderCtx.RemoveOrder(orderInfo.OrderID);
 	if (ret) ret->OrderStatus = OrderStatusType::CANCELED;
 
 	return ret;
@@ -181,7 +175,7 @@ OrderDO_Ptr OTCOrderManager::RejectOrder(OrderRequestDO& orderInfo)
 {
 	OrderStatusType currStatus;
 	OTCOrderDAO::RejectOrder(orderInfo, currStatus);
-	OrderDO_Ptr ret = _userOrderCtx.RemoveOrder(orderInfo.OrderID);
+	OrderDO_Ptr ret = _contractOrderCtx.RemoveOrder(orderInfo.OrderID);
 	if (ret)	ret->OrderStatus = OrderStatusType::REJECTED;
 
 	return ret;
@@ -192,7 +186,7 @@ int OTCOrderManager::Reset()
 {
 	std::lock_guard<std::mutex> scopelock(_mutex);
 
-	auto lt = _userOrderCtx.GetAllOrder().lock_table();
+	auto lt = _contractOrderCtx.GetAllOrder().lock_table();
 	for (auto& it : lt)
 	{
 		RejectOrder(*(it.second));

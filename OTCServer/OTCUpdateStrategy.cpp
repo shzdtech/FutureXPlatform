@@ -42,7 +42,7 @@ dataobj_ptr OTCUpdateStrategy::HandleRequest(const uint32_t serialId, const data
 		auto strategyMap = pWorkerProc->PricingDataContext()->GetStrategyMap();
 
 		auto strategyDO = *(StrategyContractDO*)reqDO.get();
-		strategyDO.SetUserID(session->getUserInfo()->getUserId());
+		strategyDO.SetUserID(session->getUserInfo().getUserId());
 
 		auto it = strategyMap->find(strategyDO);
 		if (it != strategyMap->end())

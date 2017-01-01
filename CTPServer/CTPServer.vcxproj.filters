@@ -34,6 +34,12 @@
     <Filter Include="头文件\apiheader">
       <UniqueIdentifier>{cf7c6af4-cae9-4a60-b20a-de7632bda395}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\CTPHandler\SharedAccount">
+      <UniqueIdentifier>{b09ce0fc-6c00-4797-9580-ab835af1cc48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\CTPHandler\SharedAccount">
+      <UniqueIdentifier>{47281324-4e49-45ab-afa5-352cd2437642}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ctpexport.h">
@@ -129,12 +135,6 @@
     <ClInclude Include="CTPOrderUpdated.h">
       <Filter>头文件\CTPHandler\Trader</Filter>
     </ClInclude>
-    <ClInclude Include="CTPAccountLogin.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="CTPAccountTradeServiceFactory.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="CTPTradeUpdated.h">
       <Filter>头文件\CTPHandler\Trader</Filter>
     </ClInclude>
@@ -173,6 +173,12 @@
     </ClInclude>
     <ClInclude Include="CTPPositionUpdated.h">
       <Filter>头文件\CTPHandler\Trader</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPAccountTradeServiceFactory.h">
+      <Filter>头文件\CTPHandler\SharedAccount</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPAccountLogin.h">
+      <Filter>头文件\CTPHandler\SharedAccount</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -251,12 +257,6 @@
     <ClCompile Include="CTPTradeUpdated.cpp">
       <Filter>源文件\CTPHandler\Trader</Filter>
     </ClCompile>
-    <ClCompile Include="CTPAccountLogin.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="CTPAccountTradeServiceFactory.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="CTPFromFutureToBank.cpp">
       <Filter>源文件\CTPHandler\Trader</Filter>
     </ClCompile>
@@ -280,6 +280,12 @@
     </ClCompile>
     <ClCompile Include="CTPPositionUpdated.cpp">
       <Filter>源文件\CTPHandler\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPAccountLogin.cpp">
+      <Filter>源文件\CTPHandler\SharedAccount</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPAccountTradeServiceFactory.cpp">
+      <Filter>源文件\CTPHandler\SharedAccount</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

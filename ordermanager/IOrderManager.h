@@ -18,33 +18,30 @@
 class IOrderUpdatedEvent
 {
 public:
-	virtual int OnOrderUpdated(OrderDO& orderInfo) = 0;
+	virtual void OnTraded(const TradeRecordDO_Ptr& tradeDO) = 0;
 };
 
-class IOrderListener
+class IOrderManager
 {
 public:
-	std::function<void(OrderDO& orderDO)> OrderStatusUpdated = nullptr;
-};
-
-class IOrderManager : public IOrderUpdatedEvent
-{
-public:
+	IOrderManager(IOrderUpdatedEvent* listener = nullptr) : _listener(listener){}
 	virtual int Reset() = 0;
 	virtual OrderDO_Ptr FindOrder(uint64_t orderID) = 0;
 	virtual OrderDO_Ptr CreateOrder(OrderRequestDO& orderInfo) = 0;
 	virtual OrderDO_Ptr CancelOrder(OrderRequestDO& orderInfo) = 0;
 	virtual OrderDO_Ptr RejectOrder(OrderRequestDO& orderInfo) = 0;
-	virtual OrderDOVec_Ptr UpdateOrderByStrategy(
-		const StrategyContractDO& strategyDO) = 0;
+	virtual void TradeByStrategy(const StrategyContractDO& strategyDO) = 0;
+
+public:
+	virtual int OnMarketOrderUpdated(OrderDO& orderInfo) = 0;
 
 protected:
+	IOrderUpdatedEvent* _listener;
+
 private:
 
 };
 
 typedef std::shared_ptr<IOrderManager> IOrderManager_Ptr;
-
-typedef std::shared_ptr<IOrderListener> IOrderListener_Ptr;
 
 #endif

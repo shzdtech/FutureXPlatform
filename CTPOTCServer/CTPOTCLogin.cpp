@@ -48,7 +48,7 @@ dataobj_ptr CTPOTCLogin::HandleRequest(const uint32_t serialId, const dataobj_pt
 	{
 		pWorkerProc->RegisterLoggedSession(msgProcessor->getMessageSession());
 
-		//if (session->getUserInfo()->getRole() == ROLE_TRADINGDESK)
+		//if (session->getUserInfo().getRole() == ROLE_TRADINGDESK)
 		//{
 		//	pWorkerProc->LoginSystemUserIfNeed();
 		//}

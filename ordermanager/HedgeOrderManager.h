@@ -24,13 +24,13 @@ public:
 
 	OrderDO_Ptr CreateOrder(OrderRequestDO& orderInfo);
 
-	int OnOrderUpdated(OrderDO& orderInfo);
+	int OnMarketOrderUpdated(OrderDO& orderInfo);
 
 	int Hedge(void);
 
 	int Reset(void);
 
-	OrderDOVec_Ptr UpdateOrderByStrategy(const StrategyContractDO& strategyDO);
+	void TradeByStrategy(const StrategyContractDO& strategyDO);
 
 	void FillPosition(const ContractMap<double>& positionMap);
 
@@ -40,7 +40,7 @@ protected:
 	cuckoohash_map<ContractKey, double, ContractKeyHash> _contractPosition;
 	MarketPositionContext _mktPosCtx;
 
-	void SplitOrders(const OrderRequestDO& orderInfo, std::shared_ptr<OrderRequestDO>& req1, std::shared_ptr<OrderRequestDO>& req2);
+	void SplitOrders(const OrderRequestDO& orderInfo, OrderRequestDO_Ptr& req1, OrderRequestDO_Ptr& req2);
 private:
 
 };

@@ -11,7 +11,7 @@
 #include "IMessageSession.h"
 #include "IMessageProcessor.h"
 #include "ISessionManager.h"
-#include "IUserInfo.h"
+#include "UserInfo.h"
 #include "libcuckoo/cuckoohash_map.hh"
 #include "../utility/weak_ptr_hash.h"
 
@@ -38,7 +38,7 @@ public:
 	time_t getLoginTimeStamp(void);
 	void setLoginTimeStamp(time_t tm);
 	void setLogout(void);
-	IUserInfo_Ptr& getUserInfo(void);
+	IUserInfo& getUserInfo(void);
 	IMessageProcessor_Ptr LockMessageProcessor(void);
 
 	void setSessionManager(const ISessionManager_Ptr& sessionMgr_Ptr);
@@ -52,7 +52,7 @@ protected:
 	IMessageContext_Ptr _context_ptr;
 	IMessageProcessor_WkPtr _messageProcessor_wkptr;
 	cuckoohash_map<IMessageSessionEvent_WkPtr, bool, WeakPtrHash<IMessageSessionEvent>, WeakPtrEqual<IMessageSessionEvent>> _sessionHub;
-	IUserInfo_Ptr _userInfo_ptr;
+	UserInfo _userInfo;
 	ISessionManager_Ptr _sessionManager_ptr;
 	long _timeout;
 	time_t _loginTimeStamp;

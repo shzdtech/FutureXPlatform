@@ -36,14 +36,14 @@ OTCTradeProcessor::OTCTradeProcessor(const IPricingDataContext_Ptr& pricingCtx) 
 {
 }
 
-OrderDOVec_Ptr OTCTradeProcessor::TriggerHedgeOrderUpdating(const StrategyContractDO& strategyDO)
+void OTCTradeProcessor::TriggerHedgeOrderUpdating(const StrategyContractDO& strategyDO)
 {
-	return GetAutoOrderManager()->UpdateOrderByStrategy(strategyDO);
+	GetAutoOrderManager()->TradeByStrategy(strategyDO);
 }
 
-OrderDOVec_Ptr OTCTradeProcessor::TriggerOTCOrderUpdating(const StrategyContractDO& strategyDO)
+void OTCTradeProcessor::TriggerOTCOrderUpdating(const StrategyContractDO& strategyDO)
 {
-	return GetOTCOrderManager()->UpdateOrderByStrategy(strategyDO);
+	GetOTCOrderManager()->TradeByStrategy(strategyDO);
 }
 
 OrderDO_Ptr OTCTradeProcessor::OTCNewOrder(OrderRequestDO& orderReq)

@@ -30,8 +30,8 @@ message PBMarketData
 	double preSettlePrice = 15;
 	double priceChange = 16;
 	double settlePrice = 17;
-	int32 highLimit = 18;
-	int32 lowLimit = 19;
+	double highLimit = 18;
+	double lowLimit = 19;
 
 	double preOpenInterest = 20;
 	double openInterest = 21;

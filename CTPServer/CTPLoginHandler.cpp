@@ -59,20 +59,20 @@ dataobj_ptr CTPLoginHandler::HandleRequest(const uint32_t serialId, const dataob
 		CTPUtility::CheckReturnError(ret);
 		//int ret = ((CThostFtdcMdApi*)rawAPI)->ReqUserLogin(&req, 1);
 
-		auto pUserInfo = session->getUserInfo();
-		pUserInfo->setInvestorId(req.UserID);
-		pUserInfo->setBrokerId(req.BrokerID);
-		pUserInfo->setName(userid);
-		pUserInfo->setPassword(password);
+		auto& userInfo = session->getUserInfo();
+		userInfo.setInvestorId(req.UserID);
+		userInfo.setBrokerId(req.BrokerID);
+		userInfo.setName(userid);
+		userInfo.setPassword(password);
 
-		pUserInfo->setUserId(CTPUtility::MakeUserID(req.BrokerID, req.UserID));
-		pUserInfo->setRole(ROLE_CLIENT);
-		pUserInfo->setPermission(ALLOW_TRADING);
+		userInfo.setUserId(CTPUtility::MakeUserID(req.BrokerID, req.UserID));
+		userInfo.setRole(ROLE_CLIENT);
+		userInfo.setPermission(ALLOW_TRADING);
 
 		LOG_DEBUG << "Login: " << req.BrokerID << ":" << userid << ":" << password;
 	}
 
-	auto userInfoDO_Ptr = std::static_pointer_cast<UserInfoDO>(session->getUserInfo()->getExtInfo());
+	auto userInfoDO_Ptr = std::static_pointer_cast<UserInfoDO>(session->getUserInfo().getExtInfo());
 
 	return userInfoDO_Ptr;
 }
@@ -96,23 +96,23 @@ dataobj_ptr CTPLoginHandler::HandleResponse(const uint32_t serialId, const param
 	auto pDO = new UserInfoDO;
 	dataobj_ptr ret(pDO);
 
-	auto pUserInfo = session->getUserInfo();
+	auto& userInfo = session->getUserInfo();
 
 	unsigned long initVal = std::strtoul(pData->MaxOrderRef, nullptr, 0) + 1;
-	pUserInfo->setInitSeq(initVal);
-	pUserInfo->setFrontId(pData->FrontID);
-	pUserInfo->setSessionId(pData->SessionID);
-	pUserInfo->setTradingDay(std::atoi(pData->TradingDay));
+	userInfo.setInitSeq(initVal);
+	userInfo.setFrontId(pData->FrontID);
+	userInfo.setSessionId(pData->SessionID);
+	userInfo.setTradingDay(std::atoi(pData->TradingDay));
 
-	pDO->BrokerId = pUserInfo->getBrokerId();
-	pDO->Company = pUserInfo->getBrokerId();
-	pDO->UserName = pUserInfo->getName();
-	//pDO->Password = pUserInfo->getPassword();
-	pDO->Permission = pUserInfo->getPermission();
-	pDO->Role = pUserInfo->getRole();
-	pDO->UserId = pUserInfo->getUserId();
+	pDO->BrokerId = userInfo.getBrokerId();
+	pDO->Company = userInfo.getBrokerId();
+	pDO->UserName = userInfo.getName();
+	//pDO->Password = userInfo.getPassword();
+	pDO->Permission = userInfo.getPermission();
+	pDO->Role = userInfo.getRole();
+	pDO->UserId = userInfo.getUserId();
 
-	session->getUserInfo()->setExtInfo(ret);
+	session->getUserInfo().setExtInfo(ret);
 	session->setLoginTimeStamp();
 
 	LOG_DEBUG << pDO->UserId << " login successful.";

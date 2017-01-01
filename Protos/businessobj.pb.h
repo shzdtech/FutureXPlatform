@@ -266,17 +266,17 @@ class PBMarketData : public ::google::protobuf::Message {
   double settleprice() const;
   void set_settleprice(double value);
 
-  // optional int32 highLimit = 18;
+  // optional double highLimit = 18;
   void clear_highlimit();
   static const int kHighLimitFieldNumber = 18;
-  ::google::protobuf::int32 highlimit() const;
-  void set_highlimit(::google::protobuf::int32 value);
+  double highlimit() const;
+  void set_highlimit(double value);
 
-  // optional int32 lowLimit = 19;
+  // optional double lowLimit = 19;
   void clear_lowlimit();
   static const int kLowLimitFieldNumber = 19;
-  ::google::protobuf::int32 lowlimit() const;
-  void set_lowlimit(::google::protobuf::int32 value);
+  double lowlimit() const;
+  void set_lowlimit(double value);
 
   // optional double preOpenInterest = 20;
   void clear_preopeninterest();
@@ -326,19 +326,19 @@ class PBMarketData : public ::google::protobuf::Message {
   mutable int _askprice_cached_byte_size_;
   ::google::protobuf::RepeatedField< ::google::protobuf::int32 > askvolume_;
   mutable int _askvolume_cached_byte_size_;
-  ::google::protobuf::int32 volume_;
-  ::google::protobuf::int32 highlimit_;
   ::google::protobuf::RepeatedField< double > bidprice_;
   mutable int _bidprice_cached_byte_size_;
   ::google::protobuf::RepeatedField< ::google::protobuf::int32 > bidvolume_;
   mutable int _bidvolume_cached_byte_size_;
   double presettleprice_;
+  ::google::protobuf::int32 volume_;
+  ::google::protobuf::int32 updatetime_;
   double pricechange_;
   double settleprice_;
+  double highlimit_;
+  double lowlimit_;
   double preopeninterest_;
   double openinterest_;
-  ::google::protobuf::int32 lowlimit_;
-  ::google::protobuf::int32 updatetime_;
   double averageprice_;
   ::google::protobuf::int32 tradingday_;
   mutable int _cached_size_;
@@ -5038,29 +5038,29 @@ inline void PBMarketData::set_settleprice(double value) {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.settlePrice)
 }
 
-// optional int32 highLimit = 18;
+// optional double highLimit = 18;
 inline void PBMarketData::clear_highlimit() {
   highlimit_ = 0;
 }
-inline ::google::protobuf::int32 PBMarketData::highlimit() const {
+inline double PBMarketData::highlimit() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketData.highLimit)
   return highlimit_;
 }
-inline void PBMarketData::set_highlimit(::google::protobuf::int32 value) {
+inline void PBMarketData::set_highlimit(double value) {
   
   highlimit_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.highLimit)
 }
 
-// optional int32 lowLimit = 19;
+// optional double lowLimit = 19;
 inline void PBMarketData::clear_lowlimit() {
   lowlimit_ = 0;
 }
-inline ::google::protobuf::int32 PBMarketData::lowlimit() const {
+inline double PBMarketData::lowlimit() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketData.lowLimit)
   return lowlimit_;
 }
-inline void PBMarketData::set_lowlimit(::google::protobuf::int32 value) {
+inline void PBMarketData::set_lowlimit(double value) {
   
   lowlimit_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.lowLimit)

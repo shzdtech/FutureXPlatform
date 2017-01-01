@@ -17,6 +17,10 @@
 class MESSAGE_CLASS_EXPORT UserInfo : public IUserInfo
 {
 public:
+	UserInfo() = default;
+
+	UserInfo(const IUserInfo& userInfo);
+
 	virtual attribute_ptr getAttribute(const std::string& key) const;
 	virtual void setAttribute(const std::string& key, const attribute_ptr& value);
 
@@ -62,6 +66,9 @@ public:
 	virtual const std::string& getServer(void) const;
 	virtual void setServer(const std::string& newServer);
 
+	virtual bool sharedAccount(void) const;
+	virtual void setSharedAccount(bool sharedAccount);
+
 	virtual int getTradingDay(void) const;
 	virtual void setTradingDay(const int tradingDay);
 
@@ -81,6 +88,7 @@ private:
 	int _sessionId;
 	int _frontId;
 	int _tradingDay = 0;
+	bool _sharedAccount;
 	std::shared_ptr<void> _extInfo;
 	std::atomic_ulong _seqGen;
 };

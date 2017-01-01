@@ -21,7 +21,7 @@
 dataobj_ptr CTSNewOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	auto pOrder = (OrderRequestDO*)reqDO.get();
-	pOrder->SetUserID(session->getUserInfo()->getUserId());
+	pOrder->SetUserID(session->getUserInfo().getUserId());
 
 	auto api = (CTSAPIWrapper*)rawAPI;
 	api->Impl()->CreateOrder(*pOrder);

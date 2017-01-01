@@ -25,8 +25,7 @@ public:
 	CTPOTCTradeProcessor(IServerContext* pServerCtx, const IPricingDataContext_Ptr& pricingDataCtx);
 	~CTPOTCTradeProcessor();
 
-	virtual OrderDOVec_Ptr TriggerHedgeOrderUpdating(const StrategyContractDO& strategyDO);
-	virtual OrderDOVec_Ptr TriggerOTCOrderUpdating(const StrategyContractDO& strategyDO);
+	virtual void OnTraded(const TradeRecordDO_Ptr& tradeDO);
 
 	virtual OrderDO_Ptr CreateOrder(const OrderRequestDO& orderInfo);
 	virtual OrderDO_Ptr CancelOrder(const OrderRequestDO& orderInfo);

@@ -28,14 +28,16 @@ public:
 	virtual bool HasLogged(void);
 	virtual bool ConnectedToServer(void);
 	CTPRawAPI_Ptr& RawAPI_Ptr(void);
-	uint32_t LoginSerialId;
 
+public:
+	uint32_t LoginSerialId;
 	static std::chrono::seconds DefaultQueryTime;
 	static std::string FlowPath;
 
 protected:
 	bool _isLogged;
 	bool _isConnected;
+	uint32_t _tradingDay;
 
 	CTPRawAPI_Ptr _rawAPI;	
 

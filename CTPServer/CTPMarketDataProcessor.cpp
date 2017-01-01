@@ -92,7 +92,10 @@ void CTPMarketDataProcessor::OnHeartBeatWarning(int nTimeLapse) {
 
 void CTPMarketDataProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin,
 	CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
-	_isLogged = !CTPUtility::HasError(pRspInfo);
+	if (_isLogged = !CTPUtility::HasError(pRspInfo))
+	{
+		_tradingDay = std::atoi(pRspUserLogin->TradingDay);
+	}
 	if (!nRequestID) nRequestID = LoginSerialId;
 	OnResponseMacro(MSG_ID_LOGIN, nRequestID, pRspUserLogin, pRspInfo, &nRequestID, &bIsLast)
 }

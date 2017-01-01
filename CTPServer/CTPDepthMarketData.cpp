@@ -69,7 +69,7 @@ dataobj_ptr CTPDepthMarketData::HandleResponse(const uint32_t serialId, const pa
 		std::sscanf(pData->UpdateTime, "%d:%d:%d", &hour, &min, &sec);
 		mdo->UpdateTime = hour * 3600 + min * 60 + sec;
 
-		mdo->TradingDay = std::atoi(pData->TradingDay);
+		mdo->TradingDay = session->getUserInfo().getTradingDay();
 	}
 
 	return ret;

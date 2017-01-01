@@ -19,7 +19,7 @@ dataobj_ptr OTCQueryPortfolio::HandleRequest(const uint32_t serialId, const data
 {
 	CheckLogin(session);
 
-	if (auto userInfoPtr = std::static_pointer_cast<UserInfoDO>(session->getUserInfo()->getExtInfo()))
+	if (auto userInfoPtr = std::static_pointer_cast<UserInfoDO>(session->getUserInfo().getExtInfo()))
 	{
 		ThrowNotFoundExceptionIfEmpty(userInfoPtr->Portfolios);
 

@@ -21,10 +21,10 @@ public:
 	OrderDO_Ptr CreateOrder(OrderRequestDO& orderInfo);
 	OrderDO_Ptr CancelOrder(OrderRequestDO& orderInfo);
 	OrderDO_Ptr RejectOrder(OrderRequestDO& orderInfo);
-	int OnOrderUpdated(OrderDO& orderInfo);
+	int OnMarketOrderUpdated(OrderDO& orderInfo);
 	uint64_t ParseOrderID(uint64_t rawOrderId);
 
-	OrderDOVec_Ptr UpdateOrderByStrategy(const StrategyContractDO& strategyDO);
+	void TradeByStrategy(const StrategyContractDO& strategyDO);
 
 protected:
 

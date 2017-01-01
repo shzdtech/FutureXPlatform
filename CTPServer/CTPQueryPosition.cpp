@@ -42,9 +42,9 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const uint32_t serialId, const datao
 
 	auto stdo = (MapDO<std::string>*)reqDO.get();
 
-	auto& brokeid = session->getUserInfo()->getBrokerId();
-	auto& investorid = session->getUserInfo()->getInvestorId();
-	auto& userid = session->getUserInfo()->getUserId();
+	auto& brokeid = session->getUserInfo().getBrokerId();
+	auto& investorid = session->getUserInfo().getInvestorId();
+	auto& userid = session->getUserInfo().getUserId();
 	auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
 
 	CThostFtdcQryInvestorPositionField req{};
@@ -64,7 +64,6 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const uint32_t serialId, const datao
 
 			std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
 			positionMap = pWorkerProc->GetUserPositionContext().GetPositionsByUser(userid);
-			pTradeProcessor->DataLoadMask |= CTPTradeProcessor::POSITION_DATA_LOADED;
 		}
 
 		ThrowNotFoundExceptionIfEmpty(&positionMap);
@@ -132,46 +131,40 @@ dataobj_ptr CTPQueryPosition::HandleResponse(const uint32_t serialId, const para
 
 	ret->HasMore = !*(bool*)rawRespParams[3];
 
+	if (!ret->HasMore)
+	{
+		auto pTradeProcessor = (CTPTradeProcessor*)msgProcessor.get();
+		pTradeProcessor->DataLoadMask |= CTPTradeProcessor::POSITION_DATA_LOADED;
+	}
+
 	LOG_DEBUG << pData->InstrumentID << ',' << pData->PositionDate << ',' << pData->PosiDirection;
 
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 	{
 		if (ret->ExchangeID() == EXCHANGE_SHFE)
 		{
-			auto position_ptr = pWorkerProc->GetUserPositionContext().GetPosition(session->getUserInfo()->getUserId(), ret->InstrumentID(), ret->Direction);
+			auto position_ptr = pWorkerProc->GetUserPositionContext().GetPosition(session->getUserInfo().getUserId(), ret->InstrumentID(), ret->Direction);
 			if (position_ptr)
 			{
 				if (pData->PositionDate == THOST_FTDC_PSD_Today)
 				{
-					ret->YdPosition = position_ptr->YdPosition;
+					// ret->YdPosition = position_ptr->YdPosition;
 					ret->YdCost = position_ptr->YdCost;
 					ret->YdProfit = position_ptr->YdProfit;
 				}
 				else
 				{
-					position_ptr->YdPosition = ret->YdPosition;
+					position_ptr->YdInitPosition = ret->YdInitPosition;
+					// position_ptr->YdPosition = ret->YdPosition;
 					position_ptr->YdCost = ret->YdCost;
 					position_ptr->YdProfit = ret->YdProfit;
 					ret = position_ptr;
 				}
 			}
-			else
-			{
-				ret->PositionDateFlag = PositionDateFlagType::PSD_TODAY;
-			}
 		}
 
-		if (ret->Position())
-		{
-			pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo()->getUserId(), ret);
-		}
-		else
-		{
-			pWorkerProc->GetUserPositionContext().RemovePosition(session->getUserInfo()->getUserId(), ret->InstrumentID(), ret->Direction);
-		}
-
-		ret.reset();
+		pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo().getUserId(), *ret);
 	}
 
-	return ret;
+	return nullptr;
 }

@@ -20,7 +20,7 @@ dataobj_ptr TestingCreateOrderHandler::HandleRequest(const uint32_t serialId, co
 			auto pProc = MessageUtility::WorkerProcessorPtr<TestingWorkProcessor>(msgProcessor);
 			auto pDO = (OrderRequestDO*)reqDO.get();
 			auto orderptr = std::make_shared<OrderDO>(*pDO);
-			orderptr->SetUserID(sessionptr->getUserInfo()->getUserId());
+			orderptr->SetUserID(sessionptr->getUserInfo().getUserId());
 			orderptr->OrderID = orderptr->OrderSysID = OrderSeqGen::GenOrderID();
 			pProc->GetUserOrderContext().UpsertOrder(orderptr->OrderSysID, *orderptr);
 			pProc->SendDataObject(sessionptr, MSG_ID_ORDER_NEW, serialId, orderptr);
@@ -28,7 +28,7 @@ dataobj_ptr TestingCreateOrderHandler::HandleRequest(const uint32_t serialId, co
 
 			auto tradeptr = std::make_shared<TradeRecordDO>
 				(orderptr->ExchangeID(), orderptr->InstrumentID(),
-					sessionptr->getUserInfo()->getName(), "TestPortfolio");
+					sessionptr->getUserInfo().getName(), "TestPortfolio");
 			tradeptr->Direction = orderptr->Direction;
 			tradeptr->OpenClose = orderptr->OpenClose;
 
@@ -48,7 +48,7 @@ dataobj_ptr TestingCreateOrderHandler::HandleRequest(const uint32_t serialId, co
 
 
 				pProc->SendDataObject(sessionptr, MSG_ID_ORDER_UPDATE, serialId, orderptr);
-				tradeptr->SetUserID(sessionptr->getUserInfo()->getUserId());
+				tradeptr->SetUserID(sessionptr->getUserInfo().getUserId());
 				tradeptr->Volume = 1;
 				tradeptr->TradeID = AppContext::GenNextSeq();
 				tradeptr->OrderID = orderptr->OrderID;

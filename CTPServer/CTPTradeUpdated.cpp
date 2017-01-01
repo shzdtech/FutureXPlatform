@@ -27,9 +27,15 @@ dataobj_ptr CTPTradeUpdated::HandleResponse(const uint32_t serialId, const param
 				if (auto pContractInfo = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(ret->InstrumentID()))
 					cost *= pContractInfo->VolumeMultiple;
 
-				if (auto position_ptr = pWorkerProc->GetUserPositionContext().UpsertPosition(ret, pd, cost))
+				pWorkerProc->GetUserPositionContext().UpsertPosition(ret, pd, cost);
+
+				auto pTradeProcessor = (CTPTradeProcessor*)msgProcessor.get();
+				if (pTradeProcessor->DataLoadMask & CTPTradeProcessor::POSITION_DATA_LOADED)
 				{
-					pWorkerProc->SendDataObject(session, MSG_ID_POSITION_UPDATED, 0, position_ptr);
+					if (auto position_ptr = pWorkerProc->GetUserPositionContext().GetPosition(ret->UserID(), ret->InstrumentID(), pd))
+					{
+						pWorkerProc->SendDataObject(session, MSG_ID_POSITION_UPDATED, 0, position_ptr);
+					}
 				}
 			}
 		}

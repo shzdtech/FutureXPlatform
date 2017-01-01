@@ -43,15 +43,15 @@ dataobj_ptr CTPQueryTransferSerial::HandleRequest(const uint32_t serialId, const
 
 	CThostFtdcQryTransferSerialField req{};
 
-	auto& investorId = session->getUserInfo()->getInvestorId();
-	auto& brokerId = session->getUserInfo()->getBrokerId();
+	auto& investorId = session->getUserInfo().getInvestorId();
+	auto& brokerId = session->getUserInfo().getBrokerId();
 
 	if (pDO->AccountID.empty())
 		pDO->AccountID = investorId;
 	std::strncpy(req.AccountID, pDO->AccountID.data(), sizeof(req.AccountID));
 
 	/*if (pDO->BrokerID.empty())
-		pDO->BrokerID = session->getUserInfo()->getBrokerId();*/
+		pDO->BrokerID = session->getUserInfo().getBrokerId();*/
 	std::strncpy(req.BrokerID, brokerId.data(), sizeof(req.BrokerID));
 
 	std::strncpy(req.BankID, pDO->BankID.data(), sizeof(req.BankID));

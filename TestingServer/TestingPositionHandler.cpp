@@ -20,7 +20,6 @@ dataobj_ptr TestingPositionHandler::HandleRequest(const uint32_t serialId, const
 		position.TdPosition = std::rand() % 10;
 		position.YdProfit = std::rand();
 		position.TdProfit = std::rand();
-		position.PositionDateFlag = PositionDateFlagType::PSD_TODAY;
 		position.YdCost = std::rand();
 		position.TdCost = std::rand();
 		position.CloseAmount = std::rand();
@@ -29,6 +28,9 @@ dataobj_ptr TestingPositionHandler::HandleRequest(const uint32_t serialId, const
 		position.OpenAmount = std::rand();
 		position.OpenCost = std::rand();
 		position.Direction = std::rand() % 2 ? PositionDirectionType::PD_LONG : PositionDirectionType::PD_SHORT;
+		auto tm = std::time(nullptr);
+		auto ptm = std::localtime(&tm);
+		position.TradingDay = (ptm->tm_year + 1900) * 10000 + (ptm->tm_mon + 1) * 100 + ptm->tm_mday;
 
 		OnResponseProcMacro(msgProcessor, MSG_ID_QUERY_POSITION, serialId, &position);
 	}

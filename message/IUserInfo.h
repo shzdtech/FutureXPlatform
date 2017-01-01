@@ -59,6 +59,9 @@ public:
 	virtual const std::string& getServer(void) const = 0;
 	virtual void setServer(const std::string& newServer) = 0;
 
+	virtual bool sharedAccount(void) const = 0;
+	virtual void setSharedAccount(bool sharedAccount) = 0;
+
 	virtual int getTradingDay(void) const = 0;
 	virtual void setTradingDay(const int tradingDay) = 0;
 

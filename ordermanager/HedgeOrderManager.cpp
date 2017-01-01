@@ -39,21 +39,20 @@ OrderDO_Ptr HedgeOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 // Return:     OrderDOVec_Ptr
 ////////////////////////////////////////////////////////////////////////
 
-OrderDOVec_Ptr HedgeOrderManager::UpdateOrderByStrategy(
+void HedgeOrderManager::TradeByStrategy(
 	const StrategyContractDO& strategyDO)
 {
-	return nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       HedgeOrderManager::OnOrderUpdated(OrderDO& orderInfo)
-// Purpose:    Implementation of HedgeOrderManager::OnOrderUpdated()
+// Purpose:    Implementation of OnMarketOrderUpdated::OnMarketOrderUpdated()
 // Parameters:
 // - orderInfo
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-int HedgeOrderManager::OnOrderUpdated(OrderDO& orderInfo)
+int HedgeOrderManager::OnMarketOrderUpdated(OrderDO& orderInfo)
 {
 	int ret = -1;
 
@@ -82,8 +81,8 @@ int HedgeOrderManager::OnOrderUpdated(OrderDO& orderInfo)
 				{
 					OrderRequestDO newOrder(orderInfo);
 					newOrder.Volume = std::labs(remain);
-					std::shared_ptr<OrderRequestDO> req1;
-					std::shared_ptr<OrderRequestDO> req2;
+					OrderRequestDO_Ptr req1;
+					OrderRequestDO_Ptr req2;
 					SplitOrders(newOrder, req1, req2);
 					if (req1) CreateOrder(*req1);
 					if (req2) CreateOrder(*req2);
@@ -101,7 +100,7 @@ int HedgeOrderManager::OnOrderUpdated(OrderDO& orderInfo)
 
 		if (!orderInfo.Active)
 		{
-			_userOrderCtx.RemoveOrder(orderInfo.OrderID);
+			_contractOrderCtx.RemoveOrder(orderInfo.OrderID);
 		}
 
 		ret = 0;
@@ -133,8 +132,8 @@ int HedgeOrderManager::Hedge(void)
 					_portfolio.UserID(), _portfolio.PortfolioID());
 				newOrder.Volume = std::labs(position);
 				newOrder.Direction = position < 0 ? DirectionType::SELL : DirectionType::BUY;
-				std::shared_ptr<OrderRequestDO> req1;
-				std::shared_ptr<OrderRequestDO> req2;
+				OrderRequestDO_Ptr req1;
+				OrderRequestDO_Ptr req2;
 				SplitOrders(newOrder, req1, req2);
 				if (req1) CreateOrder(*req1);
 				if (req2) CreateOrder(*req2);
@@ -168,7 +167,7 @@ void HedgeOrderManager::FillPosition(const ContractMap<double>& positionMap)
 	}
 }
 
-void HedgeOrderManager::SplitOrders(const OrderRequestDO & orderInfo, std::shared_ptr<OrderRequestDO>& req1, std::shared_ptr<OrderRequestDO>& req2)
+void HedgeOrderManager::SplitOrders(const OrderRequestDO & orderInfo, OrderRequestDO_Ptr& req1, OrderRequestDO_Ptr& req2)
 {
 	auto pMdMap = _pricingCtx->GetMarketDataMap();
 	if (auto pMdo = pMdMap->tryfind(orderInfo.InstrumentID()))

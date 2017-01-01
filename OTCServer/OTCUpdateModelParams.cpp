@@ -24,7 +24,7 @@ dataobj_ptr OTCUpdateModelParams::HandleRequest(const uint32_t serialId, const d
 	CheckLogin(session);
 
 	auto pModelParam = (ModelParamsDO*)reqDO.get();
-	pModelParam->SetUserID(session->getUserInfo()->getUserId());
+	pModelParam->SetUserID(session->getUserInfo().getUserId());
 
 	if (pModelParam->Params.empty())
 	{

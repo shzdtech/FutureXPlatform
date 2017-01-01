@@ -58,7 +58,7 @@ dataobj_ptr OTCSubMarketData::HandleRequest(const uint32_t serialId, const datao
 				session->getContext()->setAttribute(STR_KEY_USER_CONTRACTS, userContractMap_Ptr);
 			}
 
-			if (session->getUserInfo()->getRole() == ROLE_TRADINGDESK)
+			if (session->getUserInfo().getRole() == ROLE_TRADINGDESK)
 			{
 				if (auto strategyVec_Ptr = std::static_pointer_cast<std::vector<ContractKey>>(
 					session->getContext()->getAttribute(STR_KEY_USER_STRATEGY)))

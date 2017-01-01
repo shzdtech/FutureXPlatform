@@ -37,7 +37,7 @@ dataobj_ptr OTCQueryStrategy::HandleRequest(const uint32_t serialId, const datao
 {
 	CheckLogin(session);
 	auto sDOVec_Ptr = std::make_shared<VectorDO<StrategyContractDO>>();
-	auto role = session->getUserInfo()->getRole();
+	auto role = session->getUserInfo().getRole();
 
 	if (role == ROLE_TRADINGDESK)
 	{

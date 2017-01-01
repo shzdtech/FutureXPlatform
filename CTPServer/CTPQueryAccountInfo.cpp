@@ -38,8 +38,8 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const uint32_t serialId, const da
 	CheckLogin(session);
 
 	auto stdo = (MapDO<std::string>*)reqDO.get();
-	auto& brokeid = session->getUserInfo()->getBrokerId();
-	auto& investorid = session->getUserInfo()->getInvestorId();
+	auto& brokeid = session->getUserInfo().getBrokerId();
+	auto& investorid = session->getUserInfo().getInvestorId();
 
 	CThostFtdcQryTradingAccountField req{};
 	std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID));
@@ -50,7 +50,7 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const uint32_t serialId, const da
 	{
 		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 		{
-			auto& accountInfoMap = pWorkerProc->GetAccountInfo(session->getUserInfo()->getUserId());
+			auto& accountInfoMap = pWorkerProc->GetAccountInfo(session->getUserInfo().getUserId());
 
 			ThrowNotFoundExceptionIfEmpty(&accountInfoMap);
 
@@ -128,7 +128,7 @@ dataobj_ptr CTPQueryAccountInfo::HandleResponse(const uint32_t serialId, const p
 
 		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 		{
-			auto& accountInfo = pWorkerProc->GetAccountInfo(session->getUserInfo()->getUserId()).getorfill(pDO->AccountID);
+			auto& accountInfo = pWorkerProc->GetAccountInfo(session->getUserInfo().getUserId()).getorfill(pDO->AccountID);
 			accountInfo = *pDO;
 		}
 	}

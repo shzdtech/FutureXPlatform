@@ -28,14 +28,14 @@ void UserOrderContext::UpsertOrder(uint64_t orderID, const OrderDO_Ptr & orderDO
 			orderMap.map()->insert(orderDO_Ptr->InstrumentID(), std::move(cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>(true)));
 
 		cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr> wrapper;
-		orderMap.map()->find(orderDO_Ptr->InstrumentID(), wrapper);
-
-		if (!wrapper.map()->contains(orderID))
+		if (orderMap.map()->find(orderDO_Ptr->InstrumentID(), wrapper))
 		{
-			if (auto instoreptr = FindOrder(orderID))
+			wrapper.map()->upsert(orderID,
+				[&orderDO_Ptr](OrderDO_Ptr& orderptr)
 			{
-				wrapper.map()->insert(orderID, instoreptr);
-			}
+				*orderptr = *orderDO_Ptr;
+			},
+				orderDO_Ptr);
 		}
 	});
 }
@@ -59,10 +59,10 @@ OrderDO_Ptr UserOrderContext::RemoveOrder(uint64_t orderID)
 		_orderIdMap.erase(orderID);
 
 		cuckoohashmap_wrapper<std::string, cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>> orderMap;
-		if(_userContractOrderMap.find(ret->UserID(), orderMap))
+		if (_userContractOrderMap.find(ret->UserID(), orderMap))
 		{
 			cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr> orders;
-			if(orderMap.map()->find(ret->InstrumentID(), orders))
+			if (orderMap.map()->find(ret->InstrumentID(), orders))
 			{
 				orders.map()->erase(orderID);
 			}

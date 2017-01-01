@@ -13,6 +13,7 @@
 #include "../dataobject/TypedefDO.h"
 #include "../dataobject/UserPositionDO.h"
 #include "../dataobject/TradeRecordDO.h"
+#include "../dataobject/OrderDO.h"
 #include <libcuckoo/cuckoohash_map.hh>
 #include "../utility/cuckoohashmap_wrapper.h"
 #include "../utility/pairhash.h"
@@ -23,7 +24,6 @@
 class ORDERMGR_CLASS_EXPORT UserPositionContext
 {
 public:
-	void UpsertPosition(const std::string& userId, const UserPositionExDO_Ptr& positionDO_Ptr);
 	void UpsertPosition(const std::string& userId, const UserPositionExDO& positionDO);
 	void Clear(void);
 	cuckoohash_map<std::string, cuckoohashmap_wrapper<std::pair<std::string, int>, UserPositionExDO_Ptr, pairhash<std::string, int>>>&
@@ -34,7 +34,9 @@ public:
 
 	bool RemovePosition(const std::string & userID, const std::string & instumentID, PositionDirectionType direction);
 
-	UserPositionExDO_Ptr UpsertPosition(const TradeRecordDO_Ptr & tradeDO, PositionDirectionType pd, double cost);
+	void UpsertPosition(const TradeRecordDO_Ptr & tradeDO, PositionDirectionType pd, double cost);
+
+	bool FreezePosition(const OrderRequestDO & orderRequestDO, int& todayVol, int& ydVol);
 
 private:
 	cuckoohash_map<std::string, cuckoohashmap_wrapper<std::pair<std::string, int>, UserPositionExDO_Ptr, pairhash<std::string, int>>> _userPositionMap;

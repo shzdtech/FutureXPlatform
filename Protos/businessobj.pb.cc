@@ -930,7 +930,7 @@ void protobuf_AddDesc_businessobj_2eproto() {
     "\014 \003(\005\022\020\n\010bidPrice\030\r \003(\001\022\021\n\tbidVolume\030\016 \003"
     "(\005\022\026\n\016preSettlePrice\030\017 \001(\001\022\023\n\013priceChang"
     "e\030\020 \001(\001\022\023\n\013settlePrice\030\021 \001(\001\022\021\n\thighLimi"
-    "t\030\022 \001(\005\022\020\n\010lowLimit\030\023 \001(\005\022\027\n\017preOpenInte"
+    "t\030\022 \001(\001\022\020\n\010lowLimit\030\023 \001(\001\022\027\n\017preOpenInte"
     "rest\030\024 \001(\001\022\024\n\014openInterest\030\025 \001(\001\022\024\n\014aver"
     "agePrice\030\026 \001(\001\022\022\n\nupdateTime\030\027 \001(\005\022\022\n\ntr"
     "adingDay\030\030 \001(\005\"\205\001\n\020PBMarketDataList\0220\n\006h"
@@ -1315,9 +1315,10 @@ void PBMarketData::Clear() {
   contract_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   volume_ = 0;
   ZR_(lowvalue_, matchprice_);
-  ZR_(presettleprice_, pricechange_);
+  presettleprice_ = 0;
+  pricechange_ = 0;
   ZR_(settleprice_, tradingday_);
-  highlimit_ = 0;
+  updatetime_ = 0;
 
 #undef ZR_HELPER_
 #undef ZR_
@@ -1602,31 +1603,31 @@ bool PBMarketData::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(144)) goto parse_highLimit;
+        if (input->ExpectTag(145)) goto parse_highLimit;
         break;
       }
 
-      // optional int32 highLimit = 18;
+      // optional double highLimit = 18;
       case 18: {
-        if (tag == 144) {
+        if (tag == 145) {
          parse_highLimit:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
                  input, &highlimit_)));
 
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(152)) goto parse_lowLimit;
+        if (input->ExpectTag(153)) goto parse_lowLimit;
         break;
       }
 
-      // optional int32 lowLimit = 19;
+      // optional double lowLimit = 19;
       case 19: {
-        if (tag == 152) {
+        if (tag == 153) {
          parse_lowLimit:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
                  input, &lowlimit_)));
 
         } else {
@@ -1851,14 +1852,14 @@ void PBMarketData::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteDouble(17, this->settleprice(), output);
   }
 
-  // optional int32 highLimit = 18;
+  // optional double highLimit = 18;
   if (this->highlimit() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(18, this->highlimit(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(18, this->highlimit(), output);
   }
 
-  // optional int32 lowLimit = 19;
+  // optional double lowLimit = 19;
   if (this->lowlimit() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(19, this->lowlimit(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(19, this->lowlimit(), output);
   }
 
   // optional double preOpenInterest = 20;
@@ -2027,14 +2028,14 @@ void PBMarketData::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(17, this->settleprice(), target);
   }
 
-  // optional int32 highLimit = 18;
+  // optional double highLimit = 18;
   if (this->highlimit() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(18, this->highlimit(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(18, this->highlimit(), target);
   }
 
-  // optional int32 lowLimit = 19;
+  // optional double lowLimit = 19;
   if (this->lowlimit() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(19, this->lowlimit(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(19, this->lowlimit(), target);
   }
 
   // optional double preOpenInterest = 20;
@@ -2143,18 +2144,14 @@ int PBMarketData::ByteSize() const {
     total_size += 2 + 8;
   }
 
-  // optional int32 highLimit = 18;
+  // optional double highLimit = 18;
   if (this->highlimit() != 0) {
-    total_size += 2 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->highlimit());
+    total_size += 2 + 8;
   }
 
-  // optional int32 lowLimit = 19;
+  // optional double lowLimit = 19;
   if (this->lowlimit() != 0) {
-    total_size += 2 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->lowlimit());
+    total_size += 2 + 8;
   }
 
   // optional double preOpenInterest = 20;
@@ -2789,29 +2786,29 @@ void PBMarketData::clear_settleprice() {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.settlePrice)
 }
 
-// optional int32 highLimit = 18;
+// optional double highLimit = 18;
 void PBMarketData::clear_highlimit() {
   highlimit_ = 0;
 }
- ::google::protobuf::int32 PBMarketData::highlimit() const {
+ double PBMarketData::highlimit() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketData.highLimit)
   return highlimit_;
 }
- void PBMarketData::set_highlimit(::google::protobuf::int32 value) {
+ void PBMarketData::set_highlimit(double value) {
   
   highlimit_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.highLimit)
 }
 
-// optional int32 lowLimit = 19;
+// optional double lowLimit = 19;
 void PBMarketData::clear_lowlimit() {
   lowlimit_ = 0;
 }
- ::google::protobuf::int32 PBMarketData::lowlimit() const {
+ double PBMarketData::lowlimit() const {
   // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketData.lowLimit)
   return lowlimit_;
 }
- void PBMarketData::set_lowlimit(::google::protobuf::int32 value) {
+ void PBMarketData::set_lowlimit(double value) {
   
   lowlimit_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.lowLimit)

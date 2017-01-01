@@ -31,7 +31,7 @@ dataobj_ptr RegisterUserHandler::HandleRequest(const uint32_t serialId, const da
 
 	dataobj_ptr ret;
 
-	if (session->getUserInfo()->getRole() < ROLE_ADMIN)
+	if (session->getUserInfo().getRole() < ROLE_ADMIN)
 		throw ApiException(APIErrorID::NO_PERMISSION, "No permission to create a new user.");
 
 	if (auto* pUserInfoDO = (UserInfoDO*)reqDO.get())

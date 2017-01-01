@@ -22,7 +22,7 @@ CTPOTCTradeProcessor::CTPOTCTradeProcessor(
 	IServerContext* pServerCtx,
 	const IPricingDataContext_Ptr& pricingDataCtx)
 	: OTCTradeProcessor(pricingDataCtx), CTPTradeWorkerProcessor(pServerCtx),
-	_otcOrderMgr(this, pricingDataCtx),
+	_otcOrderMgr(this, pricingDataCtx, this),
 	_autoOrderMgr(this, pricingDataCtx)
 {
 }
@@ -39,35 +39,10 @@ CTPOTCTradeProcessor::~CTPOTCTradeProcessor()
 	LOG_DEBUG << __FUNCTION__;
 }
 
-OrderDOVec_Ptr CTPOTCTradeProcessor::TriggerHedgeOrderUpdating(const StrategyContractDO& strategyDO)
+void CTPOTCTradeProcessor::OnTraded(const TradeRecordDO_Ptr& tradeDO)
 {
-	if (auto updatedOrders = OTCTradeProcessor::TriggerHedgeOrderUpdating(strategyDO))
-	{
-		for (auto& order : *updatedOrders)
-		{
-			auto orderptr = std::make_shared<OrderDO>(order);
-			DispatchUserMessage(MSG_ID_ORDER_UPDATE, 0, orderptr->UserID(), orderptr);
-		}
-		return updatedOrders;
-	}
-
-	return nullptr;
+	DispatchUserMessage(MSG_ID_TRADE_RTN, 0, tradeDO->UserID(), tradeDO);
 }
-
-OrderDOVec_Ptr CTPOTCTradeProcessor::TriggerOTCOrderUpdating(const StrategyContractDO& strategyDO)
-{
-	if (auto updatedOrders = OTCTradeProcessor::TriggerOTCOrderUpdating(strategyDO))
-	{
-		for (auto& order : *updatedOrders)
-		{
-			auto orderptr = std::make_shared<OrderDO>(order);
-			DispatchUserMessage(MSG_ID_ORDER_UPDATE, 0, orderptr->UserID(), orderptr);
-		}
-		return updatedOrders;
-	}
-	return nullptr;
-}
-
 
 
 OrderDO_Ptr CTPOTCTradeProcessor::CreateOrder(const OrderRequestDO& orderInfo)
@@ -174,10 +149,10 @@ void CTPOTCTradeProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserL
 	{
 		if (auto sessionptr = getMessageSession())
 		{
-			auto pUser = sessionptr->getUserInfo();
-			pUser->setSessionId(pRspUserLogin->SessionID);
-			pUser->setFrontId(pRspUserLogin->FrontID);
-			pUser->setTradingDay(std::atoi(pRspUserLogin->TradingDay));
+			auto& userInfo = sessionptr->getUserInfo();
+			userInfo.setSessionId(pRspUserLogin->SessionID);
+			userInfo.setFrontId(pRspUserLogin->FrontID);
+			userInfo.setTradingDay(std::atoi(pRspUserLogin->TradingDay));
 			_systemUser.setSessionId(pRspUserLogin->SessionID);
 			_systemUser.setFrontId(pRspUserLogin->FrontID);
 
@@ -200,7 +175,7 @@ void CTPOTCTradeProcessor::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrd
 	if (pInputOrder)
 	{
 		auto orderptr = CTPUtility::ParseRawOrder(pInputOrder, pRspInfo, _systemUser.getSessionId());
-		int ret = _autoOrderMgr.OnOrderUpdated(*orderptr);
+		int ret = _autoOrderMgr.OnMarketOrderUpdated(*orderptr);
 		DispatchUserMessage(MSG_ID_ORDER_NEW, nRequestID, orderptr->UserID(), orderptr);
 	}
 }
@@ -212,7 +187,7 @@ void CTPOTCTradeProcessor::OnRspOrderAction(CThostFtdcInputOrderActionField *pIn
 		if (pInputOrderAction->ActionFlag == THOST_FTDC_AF_Delete)
 		{
 			auto orderptr = CTPUtility::ParseRawOrder(pInputOrderAction, pRspInfo);
-			int ret = _autoOrderMgr.OnOrderUpdated(*orderptr);
+			int ret = _autoOrderMgr.OnMarketOrderUpdated(*orderptr);
 			DispatchUserMessage(MSG_ID_ORDER_CANCEL, nRequestID, orderptr->UserID(), orderptr);
 		}
 	}
@@ -225,7 +200,7 @@ void CTPOTCTradeProcessor::OnErrRtnOrderInsert(CThostFtdcInputOrderField *pInput
 	{
 		if (auto orderptr = CTPUtility::ParseRawOrder(pInputOrder, pRspInfo, _systemUser.getSessionId()))
 		{
-			int ret = _autoOrderMgr.OnOrderUpdated(*orderptr);
+			int ret = _autoOrderMgr.OnMarketOrderUpdated(*orderptr);
 			DispatchUserMessage(MSG_ID_ORDER_NEW, pInputOrder->RequestID, orderptr->UserID(), orderptr);
 		}
 	}
@@ -240,7 +215,7 @@ void CTPOTCTradeProcessor::OnErrRtnOrderAction(CThostFtdcOrderActionField *pOrde
 		{
 			if (auto orderptr = CTPUtility::ParseRawOrder(pOrderAction, pRspInfo))
 			{
-				int ret = _autoOrderMgr.OnOrderUpdated(*orderptr);
+				int ret = _autoOrderMgr.OnMarketOrderUpdated(*orderptr);
 				DispatchUserMessage(MSG_ID_ORDER_CANCEL, pOrderAction->RequestID, orderptr->UserID(), orderptr);
 			}
 		}
@@ -252,7 +227,7 @@ void CTPOTCTradeProcessor::OnRtnOrder(CThostFtdcOrderField *pOrder)
 	if (pOrder)
 	{
 		auto orderptr = CTPUtility::ParseRawOrder(pOrder);
-		int ret = _autoOrderMgr.OnOrderUpdated(*orderptr);
+		int ret = _autoOrderMgr.OnMarketOrderUpdated(*orderptr);
 		if (ret == 0)
 		{
 			if (auto msgId = CTPUtility::ParseOrderMessageID(orderptr->OrderStatus))
@@ -269,12 +244,10 @@ void CTPOTCTradeProcessor::RegisterLoggedSession(const IMessageSession_Ptr& sess
 {
 	if (sessionPtr->getLoginTimeStamp() && _isLogged)
 	{
-		if (auto userInfoPtr = sessionPtr->getUserInfo())
-		{
-			userInfoPtr->setFrontId(_systemUser.getFrontId());
-			userInfoPtr->setSessionId(_systemUser.getSessionId());
-			_userSessionCtn_Ptr->add(userInfoPtr->getUserId(), sessionPtr);
-		}
+		auto& userInfo = sessionPtr->getUserInfo();
+		userInfo.setFrontId(_systemUser.getFrontId());
+		userInfo.setSessionId(_systemUser.getSessionId());
+		_userSessionCtn_Ptr->add(userInfo.getUserId(), sessionPtr);
 	}
 }
 

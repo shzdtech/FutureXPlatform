@@ -11,6 +11,7 @@
 #include <atomic>
 #include "../dataobject/TypedefDO.h"
 #include "../dataobject/TradeRecordDO.h"
+#include "../dataobject/UserPositionDO.h"
 #include <libcuckoo/cuckoohash_map.hh>
 #include "../utility/cuckoohashmap_wrapper.h"
 #include "ordermgr_export.h"

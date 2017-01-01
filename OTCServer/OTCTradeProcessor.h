@@ -15,13 +15,13 @@
 #include "../dataobject/StrategyContractDO.h"
 #include "otcserver_export.h"
 
-class OTCSERVER_CLASS_EXPORT OTCTradeProcessor : public IOrderAPI
+class OTCSERVER_CLASS_EXPORT OTCTradeProcessor : public IOrderAPI, public IOrderUpdatedEvent
 {
 public:
 	OTCTradeProcessor(const IPricingDataContext_Ptr& pricingCtx);
 
-	virtual OrderDOVec_Ptr TriggerHedgeOrderUpdating(const StrategyContractDO& strategyDO);
-	virtual OrderDOVec_Ptr TriggerOTCOrderUpdating(const StrategyContractDO& strategyDO);
+	virtual void TriggerHedgeOrderUpdating(const StrategyContractDO& strategyDO);
+	virtual void TriggerOTCOrderUpdating(const StrategyContractDO& strategyDO);
 
 	virtual OrderDO_Ptr OTCNewOrder(OrderRequestDO& orderReq);
 	virtual OrderDO_Ptr OTCCancelOrder(OrderRequestDO& orderReq);

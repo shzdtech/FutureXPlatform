@@ -129,7 +129,7 @@ int CTPTradeWorkerProcessor::RequestData(void)
 			std::this_thread::sleep_for(DefaultQueryTime);
 			CThostFtdcQryOrderField reqorder{};
 			ret = trdAPI->ReqQryOrder(&reqorder, 0);
-			if (ret == 0) 
+			if (ret == 0)
 				DataLoadMask |= ORDER_DATA_LOADED;
 			else
 				return ret;
@@ -236,14 +236,14 @@ void CTPTradeWorkerProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUs
 		if (auto session = getMessageSession())
 		{
 			session->setLoginTimeStamp();
-			auto userinfo_ptr = session->getUserInfo();
-			userinfo_ptr->setBrokerId(pRspUserLogin->BrokerID);
-			userinfo_ptr->setInvestorId(pRspUserLogin->UserID);
-			userinfo_ptr->setUserId(CTPUtility::MakeUserID(pRspUserLogin->BrokerID, pRspUserLogin->UserID));
-			userinfo_ptr->setPermission(ALLOW_TRADING);
-			userinfo_ptr->setFrontId(pRspUserLogin->FrontID);
-			userinfo_ptr->setSessionId(pRspUserLogin->SessionID);
-			userinfo_ptr->setTradingDay(std::atoi(pRspUserLogin->TradingDay));
+			auto& userInfo = session->getUserInfo();
+			userInfo.setBrokerId(pRspUserLogin->BrokerID);
+			userInfo.setInvestorId(pRspUserLogin->UserID);
+			userInfo.setUserId(CTPUtility::MakeUserID(pRspUserLogin->BrokerID, pRspUserLogin->UserID));
+			userInfo.setPermission(ALLOW_TRADING);
+			userInfo.setFrontId(pRspUserLogin->FrontID);
+			userInfo.setSessionId(pRspUserLogin->SessionID);
+			userInfo.setTradingDay(std::atoi(pRspUserLogin->TradingDay));
 
 			_systemUser.setFrontId(pRspUserLogin->FrontID);
 			_systemUser.setSessionId(pRspUserLogin->SessionID);
@@ -275,11 +275,11 @@ void CTPTradeWorkerProcessor::OnRspQryInstrument(CThostFtdcInstrumentField * pIn
 			std::string save_contract;
 
 			getServerContext()->getConfigVal("save_contract", save_contract);
-			
+
 			if (!save_contract.empty())
 			{
 				std::string item = "contract:" + _serverCtx->getServerUri();
-				ContractCache::PersistCache(PRODUCT_CACHE_EXCHANGE, item, std::to_string(getMessageSession()->getUserInfo()->getTradingDay()));
+				ContractCache::PersistCache(PRODUCT_CACHE_EXCHANGE, item, std::to_string(getMessageSession()->getUserInfo().getTradingDay()));
 			}
 		}
 	}
@@ -387,14 +387,12 @@ void CTPTradeWorkerProcessor::RegisterLoggedSession(const IMessageSession_Ptr& s
 {
 	if (sessionPtr->getLoginTimeStamp() && _isLogged)
 	{
-		if (auto userInfoPtr = sessionPtr->getUserInfo())
-		{
-			userInfoPtr->setBrokerId(_systemUser.getBrokerId());
-			userInfoPtr->setInvestorId(_systemUser.getInvestorId());
-			userInfoPtr->setFrontId(_systemUser.getFrontId());
-			userInfoPtr->setSessionId(_systemUser.getSessionId());
-			_userSessionCtn_Ptr->add(userInfoPtr->getUserId(), sessionPtr);
-		}
+		auto& userInfo = sessionPtr->getUserInfo();
+		userInfo.setBrokerId(_systemUser.getBrokerId());
+		userInfo.setInvestorId(_systemUser.getInvestorId());
+		userInfo.setFrontId(_systemUser.getFrontId());
+		userInfo.setSessionId(_systemUser.getSessionId());
+		_userSessionCtn_Ptr->add(userInfo.getUserId(), sessionPtr);
 	}
 }
 
@@ -437,7 +435,7 @@ void CTPTradeWorkerProcessor::DispatchUserMessage(int msgId, int serialId, const
 	const dataobj_ptr& dataobj_ptr)
 {
 	_userSessionCtn_Ptr->foreach(userId, [msgId, serialId, dataobj_ptr, this](const IMessageSession_Ptr& session_ptr)
-	{this->SendDataObject(session_ptr, msgId, serialId, dataobj_ptr); });
+	{ SendDataObject(session_ptr, msgId, serialId, dataobj_ptr); });
 }
 
 

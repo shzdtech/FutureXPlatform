@@ -36,15 +36,15 @@ dataobj_ptr CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_pt
 
 	auto pDO = (OrderRequestDO*)reqDO.get();
 
-	auto& userinfo = session->getUserInfo();
+	auto& userInfo = session->getUserInfo();
 
 	// 端登成功,发出报单录入请求
 	CThostFtdcInputOrderField req{};
 
 	//经纪公司代码
-	std::strncpy(req.BrokerID, userinfo->getBrokerId().data(), sizeof(req.BrokerID));
+	std::strncpy(req.BrokerID, userInfo.getBrokerId().data(), sizeof(req.BrokerID));
 	//投资者代码
-	std::strncpy(req.InvestorID, userinfo->getInvestorId().data(), sizeof(req.InvestorID));
+	std::strncpy(req.InvestorID, userInfo.getInvestorId().data(), sizeof(req.InvestorID));
 	// 合约代码
 	std::strncpy(req.InstrumentID, pDO->InstrumentID().data(), sizeof(req.InstrumentID));
 	///报单引用
@@ -52,7 +52,7 @@ dataobj_ptr CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_pt
 
 	std::snprintf(req.OrderRef, sizeof(req.OrderRef), FMT_ORDERREF, pDO->OrderID);
 	// 用户代码
-	pDO->SetUserID(userinfo->getUserId());
+	pDO->SetUserID(userInfo.getUserId());
 	std::strncpy(req.UserID, pDO->UserID().data(), sizeof(req.UserID));
 	// 报单价格条件
 	auto it = CTPExecPriceMapping.find((OrderExecType)pDO->ExecType);
@@ -113,7 +113,7 @@ dataobj_ptr CTPNewOrder::HandleResponse(const uint32_t serialId, const param_vec
 	{
 		auto pRsp = (CThostFtdcRspInfoField*)rawRespParams[1];
 		CTPUtility::CheckError(pRsp);
-		ret = CTPUtility::ParseRawOrder(pData, pRsp, session->getUserInfo()->getSessionId());
+		ret = CTPUtility::ParseRawOrder(pData, pRsp, session->getUserInfo().getSessionId());
 		ret->HasMore = false;
 	}
 

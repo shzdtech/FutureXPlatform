@@ -31,26 +31,26 @@ dataobj_ptr TestingLoginHandler::HandleRequest(const uint32_t serialId, const da
 	auto& userid = stdo->TryFind(STR_USER_NAME, EMPTY_STRING);
 	auto& password = stdo->TryFind(STR_PASSWORD, EMPTY_STRING);
 	
-	auto pUserInfo = session->getUserInfo();
-	pUserInfo->setInvestorId(userid);
-	pUserInfo->setBrokerId(brokeid);
-	pUserInfo->setName(userid);
-	pUserInfo->setPassword(password);
-	pUserInfo->setUserId(userid);
-	pUserInfo->setRole(ROLE_CLIENT);
-	pUserInfo->setPermission(ALLOW_TRADING);
+	auto& userInfo = session->getUserInfo();
+	userInfo.setInvestorId(userid);
+	userInfo.setBrokerId(brokeid);
+	userInfo.setName(userid);
+	userInfo.setPassword(password);
+	userInfo.setUserId(userid);
+	userInfo.setRole(ROLE_CLIENT);
+	userInfo.setPermission(ALLOW_TRADING);
 
 	session->setLoginTimeStamp();
 
 	//
 	auto pDO = std::make_shared<UserInfoDO>();
 
-	pDO->BrokerId = pUserInfo->getBrokerId();
-	pDO->Company = pUserInfo->getBrokerId();
-	pDO->UserName = pUserInfo->getName();
-	pDO->Password = pUserInfo->getPassword();
-	pDO->Permission = pUserInfo->getPermission();
-	pDO->Role = pUserInfo->getRole();
+	pDO->BrokerId = userInfo.getBrokerId();
+	pDO->Company = userInfo.getBrokerId();
+	pDO->UserName = userInfo.getName();
+	pDO->Password = userInfo.getPassword();
+	pDO->Permission = userInfo.getPermission();
+	pDO->Role = userInfo.getRole();
 	pDO->UserId = brokeid + userid;
 
 	return pDO;

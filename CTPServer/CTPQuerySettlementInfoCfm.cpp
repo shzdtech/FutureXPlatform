@@ -30,8 +30,8 @@ dataobj_ptr CTPQuerySettlementInfoCfm::HandleRequest(const uint32_t serialId, co
 
 	auto stdo = (MapDO<std::string>*)reqDO.get();
 
-	auto& brokeid = session->getUserInfo()->getBrokerId();
-	auto& investorid = session->getUserInfo()->getInvestorId();
+	auto& brokeid = session->getUserInfo().getBrokerId();
+	auto& investorid = session->getUserInfo().getInvestorId();
 	auto& cfmdate = stdo->TryFind(STR_DATE, EMPTY_STRING);
 	auto& cfmtime = stdo->TryFind(STR_TIME, EMPTY_STRING);
 

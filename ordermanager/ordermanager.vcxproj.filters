@@ -45,7 +45,7 @@
     <ClCompile Include="UserPositionContext.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="UserPosTradeContext.cpp">
+    <ClCompile Include="ContractOrderContext.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -92,7 +92,7 @@
     <ClInclude Include="UserTradeContext.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="UserPosTradeContext.h">
+    <ClInclude Include="ContractOrderContext.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

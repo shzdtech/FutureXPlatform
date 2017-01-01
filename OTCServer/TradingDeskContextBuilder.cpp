@@ -63,7 +63,7 @@ void TradingDeskContextBuilder::BuildContext(const IMessageProcessor_Ptr& msgPro
 
 void TradingDeskContextBuilder::LoadPortfolio(const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	if (auto portfolioDOVec_Ptr = PortfolioDAO::FindPortfolioByUser(session->getUserInfo()->getUserId()))
+	if (auto portfolioDOVec_Ptr = PortfolioDAO::FindPortfolioByUser(session->getUserInfo().getUserId()))
 	{
 		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 		{
@@ -82,7 +82,7 @@ void TradingDeskContextBuilder::LoadPortfolio(const IMessageProcessor_Ptr& msgPr
 				}
 			}
 
-			if (auto userInfoPtr = std::static_pointer_cast<UserInfoDO>(session->getUserInfo()->getExtInfo()))
+			if (auto userInfoPtr = std::static_pointer_cast<UserInfoDO>(session->getUserInfo().getExtInfo()))
 				userInfoPtr->Portfolios = portfolioDOVec_Ptr;
 		}
 	}
@@ -96,7 +96,7 @@ void TradingDeskContextBuilder::LoadContractParam(const IMessageProcessor_Ptr& m
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		auto productType = pWorkerProc->GetContractProductType();
-		if (auto contractVec_Ptr = StrategyContractDAO::RetrieveContractParamByUser(session->getUserInfo()->getUserId(), productType))
+		if (auto contractVec_Ptr = StrategyContractDAO::RetrieveContractParamByUser(session->getUserInfo().getUserId(), productType))
 		{
 			auto contractMap = pWorkerProc->PricingDataContext()->GetContractParamMap();
 
@@ -123,7 +123,7 @@ void TradingDeskContextBuilder::LoadStrategy(const IMessageProcessor_Ptr& msgPro
 		for (auto productType : pWorkerProc->GetStrategyProductTypes())
 		{
 			auto& models = StrategyModelCache::ModelCache();
-			auto& userid = session->getUserInfo()->getUserId();
+			auto& userid = session->getUserInfo().getUserId();
 
 			auto strategyMap = pWorkerProc->PricingDataContext()->GetStrategyMap();
 

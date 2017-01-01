@@ -20,6 +20,7 @@ public:
 	virtual ~CTPTradeProcessor();
 	int InitializeServer(const std::string& flowId, const std::string& serverAddr);
 	bool OnSessionClosing(void);
+	void QueryPositionAsync(uint currentCnt);
 
 	enum DataLoadType
 	{
@@ -39,6 +40,7 @@ protected:
 	// lockfree_set<std::string> _updatePositionSet;
 	std::future<void> _updateTask;
 	std::atomic_flag _updateFlag;
+	volatile uint _tradeCnt;
 	volatile bool _exiting;
 	
 private:

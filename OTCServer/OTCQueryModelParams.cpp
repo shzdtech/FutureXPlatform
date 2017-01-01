@@ -24,7 +24,7 @@ dataobj_ptr OTCQueryModelParams::HandleRequest(const uint32_t serialId, const da
 	CheckLogin(session);
 
 	dataobj_ptr ret;
-	auto& userId = session->getUserInfo()->getUserId();
+	auto& userId = session->getUserInfo().getUserId();
 
 	auto pModelParam = (ModelParamsDO*)reqDO.get();
 	if (pModelParam->InstanceName.empty())

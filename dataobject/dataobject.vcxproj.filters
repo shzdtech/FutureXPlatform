@@ -129,6 +129,9 @@
     <ClInclude Include="BankOpRequestDO.h">
       <Filter>头文件\common</Filter>
     </ClInclude>
+    <ClInclude Include="PositionTradeDO.h">
+      <Filter>头文件\common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

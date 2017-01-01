@@ -20,8 +20,11 @@ public:
 		: ContractKey(exchangeID, instrumentID)	{}
 
 	PositionDirectionType Direction = PositionDirectionType::PD_NET;
+	int TradingDay;
+
 	int YdPosition = 0;
 	int TdPosition = 0;
+	int YdInitPosition = 0;
 	int OpenVolume = 0;
 	int CloseVolume = 0;
 	HedgeType HedgeFlag = HedgeType::HEDGETYPE_SPECULATION;
@@ -38,7 +41,8 @@ public:
 	
 	PositionDateFlagType PositionDateFlag;
 
-	int Position() { return YdPosition + TdPosition; }
+	int Position() { return YdInitPosition + YdPosition + TdPosition; }
+	int LastPosition() { return YdInitPosition + YdPosition; }
 	double Cost() { return YdCost + TdCost; }
 	double Profit() { return YdProfit + TdProfit; }
 
@@ -56,11 +60,8 @@ public:
 		: UserPositionDO(exchangeID, instrumentID)	{}
 
 	int SettlementID = 0;
-	int LongFrozen = 0;
-	int ShortFrozen = 0;
-
-	double LongFrozenAmount = 0;
-	double ShortFrozenAmount = 0;
+	int FrozenVolume = 0;
+	double FrozenAmount = 0;
 	double SettlementPrice = 0;
 	double PreSettlementPrice = 0;
 	double ExchangeMargin = 0;
@@ -69,16 +70,14 @@ public:
 	double CombLongFrozen = 0;
 	double CombShortFrozen = 0;
 	double Commission = 0;
-	double CloseProfitByDate = 0;
-	double CloseProfitByTrade = 0;
+	//double CloseProfitByDate = 0;
+	//double CloseProfitByTrade = 0;
 	double FrozenMargin = 0;
 	double FrozenCash = 0;
 	double FrozenCommission = 0;
-	double MarginRateByMoney = 0;
-	double MarginRateByVolume = 0;
+	//double MarginRateByMoney = 0;
+	//double MarginRateByVolume = 0;
 	double PreMargin = 0;
-
-	int TradingDay;
 };
 
 typedef std::shared_ptr<UserPositionDO> UserPositionDO_Ptr;

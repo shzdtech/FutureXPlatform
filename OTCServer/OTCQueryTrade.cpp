@@ -43,12 +43,12 @@ dataobj_ptr OTCQueryTrade::HandleRequest(const uint32_t serialId, const dataobj_
 	auto& exchangeid = stdo->TryFind(STR_EXCHANGE_ID, EMPTY_STRING);
 
 	char today[20];
-	auto time = session->getUserInfo()->getLoginTime();
+	auto time = session->getUserInfo().getLoginTime();
 	std::strftime(today, 20, "%Y-%m-%d", std::localtime(&time));
 	auto& tmstart = stdo->TryFind(STR_TIME_START, today);
 	auto& tmend = stdo->TryFind(STR_TIME_END, today);
 
-	auto tradeVec_Ptr = TradeDAO::QueryTrade(session->getUserInfo()->getUserId(),
+	auto tradeVec_Ptr = TradeDAO::QueryTrade(session->getUserInfo().getUserId(),
 		ContractKey(exchangeid, instrumentid), tmstart, tmend);
 	ThrowNotFoundExceptionIfEmpty(tradeVec_Ptr);
 

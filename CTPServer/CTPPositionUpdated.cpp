@@ -26,40 +26,29 @@ dataobj_ptr CTPPositionUpdated::HandleResponse(const uint32_t serialId, const pa
 
 			if (ret->ExchangeID() == EXCHANGE_SHFE)
 			{
-				auto position_ptr = pWorkerProc->GetUserPositionContext().GetPosition(session->getUserInfo()->getUserId(), ret->InstrumentID(), ret->Direction);
+				auto position_ptr = pWorkerProc->GetUserPositionContext().GetPosition(session->getUserInfo().getUserId(), ret->InstrumentID(), ret->Direction);
 				if (position_ptr)
 				{
 					if (pData->PositionDate == THOST_FTDC_PSD_Today)
 					{
-						ret->YdPosition = position_ptr->YdPosition;
+						//ret->YdPosition = position_ptr->YdPosition;
 						ret->YdCost = position_ptr->YdCost;
 						ret->YdProfit = position_ptr->YdProfit;
 					}
 					else
 					{
-						position_ptr->YdPosition = ret->YdPosition;
+						position_ptr->YdInitPosition = ret->YdInitPosition;
+						//position_ptr->YdPosition = ret->YdPosition;
 						position_ptr->YdCost = ret->YdCost;
 						position_ptr->YdProfit = ret->YdProfit;
 						ret = position_ptr;
 					}
 				}
-				else
-				{
-					ret->PositionDateFlag = PositionDateFlagType::PSD_TODAY;
-				}
 			}
 
-			if (ret->Position())
-			{
-				pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo()->getUserId(), ret);
-			}
-			else
-			{
-				if (!pWorkerProc->GetUserPositionContext().RemovePosition(session->getUserInfo()->getUserId(), ret->InstrumentID(), ret->Direction))
-				{
-					ret.reset();
-				}
-			}
+			pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo().getUserId(), *ret);
+
+			ret = pWorkerProc->GetUserPositionContext().GetPosition(session->getUserInfo().getUserId(), ret->InstrumentID(), ret->Direction);
 		}
 	}
 

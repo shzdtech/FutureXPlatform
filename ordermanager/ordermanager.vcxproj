@@ -159,6 +159,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AutoOrderManager.cpp" />
+    <ClCompile Include="ContractOrderContext.cpp" />
     <ClCompile Include="HedgeOrderManager.cpp" />
     <ClCompile Include="MarketPositionContext.cpp" />
     <ClCompile Include="OTCUserPositionContext.cpp" />
@@ -167,11 +168,11 @@
     <ClCompile Include="OrderSeqGen.cpp" />
     <ClCompile Include="OTCOrderManager.cpp" />
     <ClCompile Include="UserPositionContext.cpp" />
-    <ClCompile Include="UserPosTradeContext.cpp" />
     <ClCompile Include="UserTradeContext.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AutoOrderManager.h" />
+    <ClInclude Include="ContractOrderContext.h" />
     <ClInclude Include="HedgeOrderManager.h" />
     <ClInclude Include="IOrderAPI.h" />
     <ClInclude Include="MarketPositionContext.h" />
@@ -184,7 +185,6 @@
     <ClInclude Include="ordermgr_export.h" />
     <ClInclude Include="OTCOrderManager.h" />
     <ClInclude Include="UserPositionContext.h" />
-    <ClInclude Include="UserPosTradeContext.h" />
     <ClInclude Include="UserTradeContext.h" />
   </ItemGroup>
   <ItemGroup>

@@ -15,6 +15,20 @@
 // Return:     attribute_ptr
 ////////////////////////////////////////////////////////////////////////
 
+UserInfo::UserInfo(const IUserInfo & userInfo)
+{
+	setAuthorizedKey(userInfo.getAuthorizedKey());
+	setBrokerId(userInfo.getBrokerId());
+	setExtInfo(userInfo.getExtInfo());
+	setInvestorId(userInfo.getInvestorId());
+	setName(userInfo.getName());
+	setPassword(userInfo.getPassword());
+	setPermission(userInfo.getPermission());
+	setRole(userInfo.getRole());
+	setUserId(userInfo.getUserId());
+	setSharedAccount(userInfo.sharedAccount());
+}
+
 attribute_ptr UserInfo::getAttribute(const std::string& key) const
 {
 	attribute_ptr ret;
@@ -292,6 +306,16 @@ int UserInfo::getFrontId(void) const
 void UserInfo::setServer(const std::string& newServer)
 {
 	_server = newServer;
+}
+
+bool UserInfo::sharedAccount(void) const
+{
+	return _sharedAccount;
+}
+
+void UserInfo::setSharedAccount(bool sharedAccount)
+{
+	_sharedAccount = sharedAccount;
 }
 
 int UserInfo::getTradingDay(void) const

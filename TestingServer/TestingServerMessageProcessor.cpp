@@ -29,7 +29,7 @@ TestingServerMessageProcessor::TestingServerMessageProcessor(const std::map<std:
 		_mdGenInterval = std::chrono::milliseconds(std::stoi(it->second, nullptr, 0));
 	}
 
-	_mdThread = std::move(std::thread(&TestingServerMessageProcessor::_mdGenerator, this));
+	_mdThread = std::async(std::launch::async, &TestingServerMessageProcessor::_mdGenerator, this);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -40,15 +40,21 @@ TestingServerMessageProcessor::TestingServerMessageProcessor(const std::map<std:
 
 TestingServerMessageProcessor::~TestingServerMessageProcessor()
 {
+}
+
+bool TestingServerMessageProcessor::OnSessionClosing(void)
+{
 	_exitWorker = true;
 	try
 	{
-		_mdThread.join();
+		if (_mdThread.valid())
+			_mdThread.wait_for(std::chrono::seconds(10));
 	}
 	catch (...)
 	{
-
 	}
+	
+	return true;
 }
 
 IRawAPI * TestingServerMessageProcessor::getRawAPI(void)

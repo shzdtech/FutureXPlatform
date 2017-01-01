@@ -39,6 +39,7 @@ dataobj_ptr CTPSubMarketData::HandleRequest(const uint32_t serialId, const datao
 		auto nInstrument = instList.size();
 		if (nInstrument > 0)
 		{
+			int tradingDay = session->getUserInfo().getTradingDay();
 			ret = std::make_shared<VectorDO<MarketDataDO>>();
 			std::unique_ptr<char*[]> ppInstrments(new char*[nInstrument]);
 			int i = 0;
@@ -49,6 +50,7 @@ dataobj_ptr CTPSubMarketData::HandleRequest(const uint32_t serialId, const datao
 				{
 					ppInstrments[i] = const_cast<char*>(pInstumentDO->InstrumentID().data());
 					MarketDataDO mdo(pInstumentDO->ExchangeID(), pInstumentDO->InstrumentID());
+					mdo.TradingDay = tradingDay;
 					ret->push_back(std::move(mdo));
 
 					i++;

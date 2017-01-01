@@ -206,12 +206,9 @@ void MessageSession::setLogout(void)
 // Return:     userinfo_ptr
 ////////////////////////////////////////////////////////////////////////
 
-IUserInfo_Ptr& MessageSession::getUserInfo(void)
+IUserInfo& MessageSession::getUserInfo(void)
 {
-	if (!_userInfo_ptr)
-		_userInfo_ptr.reset(new UserInfo);
-
-	return _userInfo_ptr;
+	return _userInfo;
 }
 
 

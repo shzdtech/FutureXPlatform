@@ -365,6 +365,11 @@ TradeRecordDO_Ptr CTPUtility::ParseRawTrade(CThostFtdcTradeField * pTrade)
 		pDO->HedgeFlag = (HedgeType)(pTrade->HedgeFlag - THOST_FTDC_HF_Speculation);
 
 		pDO->BrokerID = std::move(brokerid);
+
+		if (pDO->OpenClose == OrderOpenCloseType::CLOSETODAY && pDO->ExchangeID() != EXCHANGE_SHFE)
+		{
+			pDO->OpenClose = OrderOpenCloseType::CLOSE;
+		}
 	}
 
 	return ret;
@@ -500,34 +505,33 @@ UserPositionExDO_Ptr CTPUtility::ParseRawPosition(CThostFtdcInvestorPositionFiel
 	pDO->Direction = (PositionDirectionType)(pRspPosition->PosiDirection - THOST_FTDC_PD_Net);
 	pDO->HedgeFlag = (HedgeType)(pRspPosition->HedgeFlag - THOST_FTDC_HF_Speculation);
 	pDO->PositionDateFlag = (PositionDateFlagType)(pRspPosition->PositionDate - THOST_FTDC_PSD_Today);
-	
-	if (exchange == EXCHANGE_SHFE)
+
+	pDO->YdInitPosition = pRspPosition->YdPosition;
+
+	if (pRspPosition->PositionDate == THOST_FTDC_PSD_Today)
 	{
-		if (pRspPosition->PositionDate == THOST_FTDC_PSD_Today)
-		{
-			pDO->TdPosition = pRspPosition->Position;
-			pDO->TdCost = pRspPosition->PositionCost;
-			pDO->TdProfit = pRspPosition->PositionProfit;
-		}
-		else
-		{
-			pDO->YdPosition = pRspPosition->Position;
-			pDO->YdCost = pRspPosition->PositionCost;
-			pDO->YdProfit = pRspPosition->PositionProfit;
-		}
-	}
-	else
-	{
-		pDO->TdPosition = pRspPosition->TodayPosition;
-		pDO->YdPosition = pRspPosition->Position - pDO->TdPosition;
+		// pDO->TdPosition = pRspPosition->Position;
 		pDO->TdCost = pRspPosition->PositionCost;
 		pDO->TdProfit = pRspPosition->PositionProfit;
 	}
+	else
+	{
+		// pDO->YdPosition = pRspPosition->Position - pRspPosition->YdPosition;
+		pDO->YdCost = pRspPosition->PositionCost;
+		pDO->YdProfit = pRspPosition->PositionProfit;
+	}
 
-	pDO->LongFrozen = pRspPosition->LongFrozen;
-	pDO->ShortFrozen = pRspPosition->ShortFrozen;
-	pDO->LongFrozenAmount = pRspPosition->LongFrozenAmount;
-	pDO->ShortFrozenAmount = pRspPosition->ShortFrozenAmount;
+	if (pRspPosition->PosiDirection == THOST_FTDC_PD_Long)
+	{
+		pDO->FrozenVolume = pRspPosition->LongFrozen;
+		pDO->FrozenAmount = pRspPosition->LongFrozenAmount;
+	}
+	else
+	{
+		pDO->FrozenVolume = pRspPosition->ShortFrozen;
+		pDO->FrozenAmount = pRspPosition->ShortFrozenAmount;
+	}
+
 	pDO->OpenVolume = pRspPosition->OpenVolume;
 	pDO->CloseVolume = pRspPosition->CloseVolume;
 	pDO->OpenAmount = pRspPosition->OpenAmount;
@@ -549,11 +553,10 @@ UserPositionExDO_Ptr CTPUtility::ParseRawPosition(CThostFtdcInvestorPositionFiel
 	pDO->CombPosition = pRspPosition->CombPosition;
 	pDO->CombLongFrozen = pRspPosition->CombLongFrozen;
 	pDO->CombShortFrozen = pRspPosition->CombShortFrozen;
-	pDO->CloseProfitByDate = pRspPosition->CloseProfitByDate;
+	/*pDO->CloseProfitByDate = pRspPosition->CloseProfitByDate;
 	pDO->CloseProfitByTrade = pRspPosition->CloseProfitByTrade;
-	//pDO->TodayPosition = pRspPosition->TodayPosition;
 	pDO->MarginRateByMoney = pRspPosition->MarginRateByMoney;
-	pDO->MarginRateByVolume = pRspPosition->MarginRateByVolume;
+	pDO->MarginRateByVolume = pRspPosition->MarginRateByVolume;*/
 
 
 	return ret;

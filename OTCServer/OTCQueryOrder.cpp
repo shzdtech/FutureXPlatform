@@ -41,7 +41,7 @@ dataobj_ptr OTCQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 
 	auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
 
-	auto ordervec_ptr = OTCOrderDAO::QueryTodayOrder(session->getUserInfo()->getUserId(),
+	auto ordervec_ptr = OTCOrderDAO::QueryTodayOrder(session->getUserInfo().getUserId(),
 		ContractKey(EMPTY_STRING, instrumentid));
 	ThrowNotFoundExceptionIfEmpty(ordervec_ptr);
 

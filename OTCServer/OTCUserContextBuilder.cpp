@@ -18,7 +18,7 @@
 
 void OTCUserContextBuilder::BuildContext(const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	auto it = _userContextMap.find(session->getUserInfo()->getRole());
+	auto it = _userContextMap.find(session->getUserInfo().getRole());
 
 	if (it != _userContextMap.end())
 	{

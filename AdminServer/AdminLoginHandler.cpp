@@ -37,7 +37,7 @@ dataobj_ptr AdminLoginHandler::HandleRequest(const uint32_t serialId, const data
 {
 	dataobj_ptr ret;
 
-	auto pUserInfo = session->getUserInfo();
+	auto& userInfo = session->getUserInfo();
 
 	if (!session->getLoginTimeStamp())
 	{
@@ -58,17 +58,17 @@ dataobj_ptr AdminLoginHandler::HandleRequest(const uint32_t serialId, const data
 
 		auto now = std::time(nullptr);
 
-		pUserInfo->setLoginTime(now);
-		pUserInfo->setAuthorizedKey(std::to_string(std::rand()));
+		userInfo.setLoginTime(now);
+		userInfo.setAuthorizedKey(std::to_string(std::rand()));
 
-		pUserInfo->setBrokerId(userInfo_Ptr->Company);
-		pUserInfo->setName(userInfo_Ptr->FirstName);
-		pUserInfo->setPassword(userInfo_Ptr->Password);
-		pUserInfo->setUserId(userInfo_Ptr->UserId);
-		pUserInfo->setRole(userInfo_Ptr->Role);
-		pUserInfo->setPermission(userInfo_Ptr->Permission);
+		userInfo.setBrokerId(userInfo_Ptr->Company);
+		userInfo.setName(userInfo_Ptr->FirstName);
+		userInfo.setPassword(userInfo_Ptr->Password);
+		userInfo.setUserId(userInfo_Ptr->UserId);
+		userInfo.setRole(userInfo_Ptr->Role);
+		userInfo.setPermission(userInfo_Ptr->Permission);
 
-		pUserInfo->setExtInfo(userInfo_Ptr);
+		userInfo.setExtInfo(userInfo_Ptr);
 
 		session->setLoginTimeStamp();
 
@@ -79,10 +79,10 @@ dataobj_ptr AdminLoginHandler::HandleRequest(const uint32_t serialId, const data
 			AppContext::SetData(STR_KEY_APP_USER_DETAIL, userInfoCache);
 		}
 
-		userInfoCache->emplace(pUserInfo->getUserId(), pUserInfo);
+		userInfoCache->emplace(userInfo.getUserId(), IUserInfo_Ptr(new UserInfo(userInfo)));
 	}
 
-	ret = std::static_pointer_cast<UserInfoDO>(pUserInfo->getExtInfo());
+	ret = std::static_pointer_cast<UserInfoDO>(userInfo.getExtInfo());
 
 	return ret;
 }

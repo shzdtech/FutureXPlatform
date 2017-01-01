@@ -33,14 +33,14 @@ dataobj_ptr TestingQueryTrade::HandleRequest(const uint32_t serialId, const data
 {
 	CheckLogin(session);
 	auto stdo = (MapDO<std::string>*)reqDO.get();
-	auto& brokeid = session->getUserInfo()->getBrokerId();
-	auto& investorid = session->getUserInfo()->getInvestorId();
+	auto& brokeid = session->getUserInfo().getBrokerId();
+	auto& investorid = session->getUserInfo().getInvestorId();
 	auto& instrid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
 	auto& exchangeid = stdo->TryFind(STR_EXCHANGE_ID, EMPTY_STRING);
 	auto& tradeid = stdo->TryFind(STR_TRADE_ID, EMPTY_STRING);
 	auto& tmstart = stdo->TryFind(STR_TIME_START, EMPTY_STRING);
 	auto& tmend = stdo->TryFind(STR_TIME_END, EMPTY_STRING);
-	auto& userid = session->getUserInfo()->getUserId();
+	auto& userid = session->getUserInfo().getUserId();
 
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<TestingWorkProcessor>(msgProcessor))
 	{

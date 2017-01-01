@@ -38,8 +38,8 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 	{
 		auto stdo = (MapDO<std::string>*)reqDO.get();
 
-		auto& brokeid = session->getUserInfo()->getBrokerId();
-		auto& investorid = session->getUserInfo()->getInvestorId();
+		auto& brokeid = session->getUserInfo().getBrokerId();
+		auto& investorid = session->getUserInfo().getInvestorId();
 		auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
 		auto& exchangeid = stdo->TryFind(STR_EXCHANGE_ID, EMPTY_STRING);
 		auto& orderid = stdo->TryFind(STR_ORDER_ID, EMPTY_STRING);
@@ -47,7 +47,7 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 		auto& tmend = stdo->TryFind(STR_TIME_END, EMPTY_STRING);
 
 		auto& userOrderCtx = pWorkerProc->GetUserOrderContext();
-		auto vectorPtr = userOrderCtx.GetOrdersByUser(session->getUserInfo()->getUserId());
+		auto vectorPtr = userOrderCtx.GetOrdersByUser(session->getUserInfo().getUserId());
 
 		auto pTradeProcessor = (CTPTradeProcessor*)msgProcessor.get();
 		if (!(pTradeProcessor->DataLoadMask & CTPTradeProcessor::ORDER_DATA_LOADED))
@@ -59,7 +59,7 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 			CTPUtility::CheckReturnError(iRet);
 
 			std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
-			vectorPtr = userOrderCtx.GetOrdersByUser(session->getUserInfo()->getUserId());
+			vectorPtr = userOrderCtx.GetOrdersByUser(session->getUserInfo().getUserId());
 			pTradeProcessor->DataLoadMask |= CTPTradeProcessor::ORDER_DATA_LOADED;
 		}
 

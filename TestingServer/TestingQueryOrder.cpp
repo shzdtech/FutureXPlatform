@@ -33,8 +33,8 @@ dataobj_ptr TestingQueryOrder::HandleRequest(const uint32_t serialId, const data
 	{
 		auto stdo = (MapDO<std::string>*)reqDO.get();
 
-		auto& brokeid = session->getUserInfo()->getBrokerId();
-		auto& investorid = session->getUserInfo()->getInvestorId();
+		auto& brokeid = session->getUserInfo().getBrokerId();
+		auto& investorid = session->getUserInfo().getInvestorId();
 		auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
 		auto& exchangeid = stdo->TryFind(STR_EXCHANGE_ID, EMPTY_STRING);
 		auto& orderid = stdo->TryFind(STR_ORDER_ID, EMPTY_STRING);
@@ -42,7 +42,7 @@ dataobj_ptr TestingQueryOrder::HandleRequest(const uint32_t serialId, const data
 		auto& tmend = stdo->TryFind(STR_TIME_END, EMPTY_STRING);
 
 		auto& userOrderCtx = pWorkerProc->GetUserOrderContext();
-		auto vectorPtr = userOrderCtx.GetOrdersByUser(session->getUserInfo()->getUserId());
+		auto vectorPtr = userOrderCtx.GetOrdersByUser(session->getUserInfo().getUserId());
 		ThrowNotFoundExceptionIfEmpty(vectorPtr);
 
 		if (orderid != EMPTY_STRING)

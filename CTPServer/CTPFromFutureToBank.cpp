@@ -13,8 +13,8 @@ dataobj_ptr CTPFromFutureToBank::HandleRequest(const uint32_t serialId, const da
 {
 	auto pDO = (BankOpRequestDO*)reqDO.get();
 
-	auto& investorId = session->getUserInfo()->getInvestorId();
-	auto& brokerId = session->getUserInfo()->getBrokerId();
+	auto& investorId = session->getUserInfo().getInvestorId();
+	auto& brokerId = session->getUserInfo().getBrokerId();
 
 	CThostFtdcReqTransferField req{};
 	std::strncpy(req.BankID, pDO->BankID.data(), sizeof(req.BankID));
@@ -23,7 +23,7 @@ dataobj_ptr CTPFromFutureToBank::HandleRequest(const uint32_t serialId, const da
 	std::strncpy(req.BankBranchID, pDO->BankBranchID.data(), sizeof(req.BankBranchID));
 
 	/*if (pDO->BrokerID.empty())
-		pDO->BrokerID = session->getUserInfo()->getBrokerId();*/
+		pDO->BrokerID = session->getUserInfo().getBrokerId();*/
 	std::strncpy(req.BrokerID, brokerId.data(), sizeof(req.BrokerID));
 
 	if (pDO->BrokerBranchID.empty())
@@ -38,20 +38,20 @@ dataobj_ptr CTPFromFutureToBank::HandleRequest(const uint32_t serialId, const da
 	std::strncpy(req.AccountID, pDO->AccountID.data(), sizeof(req.AccountID));
 
 	if (pDO->Password.empty())
-		pDO->Password = session->getUserInfo()->getPassword();
+		pDO->Password = session->getUserInfo().getPassword();
 	std::strncpy(req.Password, pDO->Password.data(), sizeof(req.Password));
 
 	if (pDO->CurrencyID.empty())
 		pDO->CurrencyID = "CNY";
 	std::strncpy(req.CurrencyID, pDO->CurrencyID.data(), sizeof(req.CurrencyID));
 
-	std::strncpy(req.UserID, session->getUserInfo()->getUserId().data(), sizeof(req.UserID));
+	std::strncpy(req.UserID, session->getUserInfo().getUserId().data(), sizeof(req.UserID));
 
 	req.TradeAmount = pDO->TradeAmount;
 
 	req.SecuPwdFlag = THOST_FTDC_BPWDF_BlankCheck;
 
-	req.SessionID = session->getUserInfo()->getSessionId();
+	req.SessionID = session->getUserInfo().getSessionId();
 	req.RequestID = serialId;
 
 	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqFromFutureToBankByFuture(&req, serialId);
