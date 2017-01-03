@@ -13,6 +13,8 @@
 class MarketDataDO : public PricingDO
 {
 public:
+	MarketDataDO() = default;
+
 	MarketDataDO(const std::string& exchangeID, const std::string& instrumentID)
 		: PricingDO(exchangeID, instrumentID)	{}
 

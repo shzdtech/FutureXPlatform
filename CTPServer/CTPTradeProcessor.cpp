@@ -212,6 +212,9 @@ void CTPTradeProcessor::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField
 {
 	auto msgId = nRequestID == 0 ? MSG_ID_POSITION_UPDATED : MSG_ID_QUERY_POSITION;
 
+	if(bIsLast)
+		DataLoadMask |= CTPTradeProcessor::POSITION_DATA_LOADED;
+
 	OnResponseMacro(msgId, nRequestID, pInvestorPosition, pRspInfo, &nRequestID, &bIsLast)
 }
 
@@ -304,7 +307,7 @@ void CTPTradeProcessor::OnRtnTrade(CThostFtdcTradeField *pTrade)
 	OnResponseMacro(MSG_ID_TRADE_RTN, 0, pTrade);
 
 	// Try update position
-	if (!_exiting && (DataLoadMask & POSITION_DATA_LOADED) && !_updateFlag.test_and_set(std::memory_order::memory_order_acquire))
+	if (!_exiting && !_updateFlag.test_and_set(std::memory_order::memory_order_acquire))
 	{
 		_updateTask = std::async(std::launch::async, &CTPTradeProcessor::QueryPositionAsync, this, _tradeCnt);
 	}
@@ -312,7 +315,7 @@ void CTPTradeProcessor::OnRtnTrade(CThostFtdcTradeField *pTrade)
 
 void CTPTradeProcessor::QueryPositionAsync(uint currentCnt)
 {
-	std::this_thread::sleep_for(std::chrono::seconds(5));
+	std::this_thread::sleep_for(std::chrono::seconds(2));
 	if (!_exiting)
 	{
 		if (currentCnt != _tradeCnt)

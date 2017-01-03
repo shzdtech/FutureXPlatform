@@ -41,10 +41,10 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 		auto& brokeid = session->getUserInfo().getBrokerId();
 		auto& investorid = session->getUserInfo().getInvestorId();
 		auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
-		auto& exchangeid = stdo->TryFind(STR_EXCHANGE_ID, EMPTY_STRING);
+		//auto& exchangeid = stdo->TryFind(STR_EXCHANGE_ID, EMPTY_STRING);
 		auto& orderid = stdo->TryFind(STR_ORDER_ID, EMPTY_STRING);
-		auto& tmstart = stdo->TryFind(STR_TIME_START, EMPTY_STRING);
-		auto& tmend = stdo->TryFind(STR_TIME_END, EMPTY_STRING);
+		//auto& tmstart = stdo->TryFind(STR_TIME_START, EMPTY_STRING);
+		//auto& tmend = stdo->TryFind(STR_TIME_END, EMPTY_STRING);
 
 		auto& userOrderCtx = pWorkerProc->GetUserOrderContext();
 		auto vectorPtr = userOrderCtx.GetOrdersByUser(session->getUserInfo().getUserId());
@@ -52,11 +52,11 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 		auto pTradeProcessor = (CTPTradeProcessor*)msgProcessor.get();
 		if (!(pTradeProcessor->DataLoadMask & CTPTradeProcessor::ORDER_DATA_LOADED))
 		{
-			CThostFtdcQryOrderField req{};
+			/*CThostFtdcQryOrderField req{};
 			std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID));
 			std::strncpy(req.InvestorID, investorid.data(), sizeof(req.InvestorID));
 			int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryOrder(&req, serialId);
-			CTPUtility::CheckReturnError(iRet);
+			CTPUtility::CheckReturnError(iRet);*/
 
 			std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
 			vectorPtr = userOrderCtx.GetOrdersByUser(session->getUserInfo().getUserId());

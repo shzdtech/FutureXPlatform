@@ -32,7 +32,7 @@ PortfolioDOMap* PricingDataContext::GetPortfolioMap()
 	return &_portfolioDOMap;
 }
 
-InstrumentDOMap * PricingDataContext::GetInstrumentDOMap()
+PricingDataDOMap * PricingDataContext::GetPricingDataDOMap()
 {
-	return &_instrumentDOMap;
+	return &_pricingDataDOMap;
 }

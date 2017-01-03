@@ -170,7 +170,8 @@ void HedgeOrderManager::FillPosition(const ContractMap<double>& positionMap)
 void HedgeOrderManager::SplitOrders(const OrderRequestDO & orderInfo, OrderRequestDO_Ptr& req1, OrderRequestDO_Ptr& req2)
 {
 	auto pMdMap = _pricingCtx->GetMarketDataMap();
-	if (auto pMdo = pMdMap->tryfind(orderInfo.InstrumentID()))
+	MarketDataDO mDO;
+	if (pMdMap->find(orderInfo.InstrumentID(), mDO))
 	{
 		req1.reset(new OrderRequestDO(orderInfo));
 		req1->TIF = OrderTIFType::IOC;
@@ -178,7 +179,7 @@ void HedgeOrderManager::SplitOrders(const OrderRequestDO & orderInfo, OrderReque
 		int pos = _mktPosCtx.GetPosition(orderInfo);
 		if (orderInfo.Direction == DirectionType::SELL && pos > 0)
 		{
-			req1->LimitPrice = pMdo->Ask().Price;
+			req1->LimitPrice = mDO.Ask().Price;
 			req1->OpenClose = OrderOpenCloseType::CLOSE;
 			if (pos < orderInfo.Volume)
 			{
@@ -190,7 +191,7 @@ void HedgeOrderManager::SplitOrders(const OrderRequestDO & orderInfo, OrderReque
 		}
 		else if (orderInfo.Direction != DirectionType::SELL && pos < 0)
 		{
-			req1->LimitPrice = pMdo->Bid().Price;
+			req1->LimitPrice = mDO.Bid().Price;
 			pos = -pos;
 			req1->OpenClose = OrderOpenCloseType::CLOSE;
 			if (pos < orderInfo.Volume)

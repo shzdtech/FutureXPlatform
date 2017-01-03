@@ -143,10 +143,10 @@ void OTCWorkerProcessor::Initialize()
 void OTCWorkerProcessor::AddContractToMonitor(const ContractKey& contractId)
 {
 	auto pMdMap = PricingDataContext()->GetMarketDataMap();
-	if (!pMdMap->tryfind(contractId.InstrumentID()))
+	if (!pMdMap->contains(contractId.InstrumentID()))
 	{
 		MarketDataDO mdo(contractId.ExchangeID(), contractId.InstrumentID());
-		pMdMap->emplace(contractId.InstrumentID(), std::move(mdo));
+		pMdMap->insert(contractId.InstrumentID(), std::move(mdo));
 	}
 }
 
@@ -230,10 +230,26 @@ void OTCWorkerProcessor::TriggerOTCPricing(const StrategyContractDO& strategyDO)
 {
 	if (strategyDO.BidEnabled || strategyDO.AskEnabled)
 	{
+		static const int quantity = 1;
 		auto pricingCtx = PricingDataContext();
-		_pricingNotifers->foreach(strategyDO, [&strategyDO, &pricingCtx](const IMessageSession_Ptr& session_ptr)
-		{if (auto process_ptr = session_ptr->LockMessageProcessor())
-			OnResponseProcMacro(process_ptr, MSG_ID_RTN_PRICING, strategyDO.SerialId, &strategyDO, pricingCtx.get()); });
+		if (auto pricingDO = PricingUtility::Pricing(&quantity, strategyDO, *pricingCtx))
+		{
+			pricingCtx->GetPricingDataDOMap()->upsert(strategyDO, [&pricingDO](IPricingDO_Ptr& pricing_ptr) { pricing_ptr = pricingDO; }, pricingDO);
+
+			if (!strategyDO.BidEnabled)
+			{
+				pricingDO->Bid().Clear();
+			}
+
+			if (!strategyDO.AskEnabled)
+			{
+				pricingDO->Ask().Clear();
+			}
+			
+			_pricingNotifers->foreach(strategyDO, [&pricingDO, &strategyDO, &pricingCtx](const IMessageSession_Ptr& session_ptr)
+			{if (auto process_ptr = session_ptr->LockMessageProcessor())
+				OnResponseProcMacro(process_ptr, MSG_ID_RTN_PRICING, strategyDO.SerialId, &pricingDO, &strategyDO, pricingCtx.get()); });
+		}
 	}
 }
 
@@ -262,8 +278,10 @@ void OTCWorkerProcessor::TriggerUpdating(const MarketDataDO& mdDO)
 
 void OTCWorkerProcessor::TriggerOTCUpdating(const StrategyContractDO & strategyDO)
 {
-	GetOTCTradeProcessor()->TriggerHedgeOrderUpdating(strategyDO);
-	GetOTCTradeProcessor()->TriggerOTCOrderUpdating(strategyDO);
 	TriggerOTCPricing(strategyDO);
+
+	GetOTCTradeProcessor()->TriggerHedgeOrderUpdating(strategyDO);
+
+	GetOTCTradeProcessor()->TriggerOTCOrderUpdating(strategyDO);
 }
 

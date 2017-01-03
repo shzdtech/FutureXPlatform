@@ -37,14 +37,6 @@
 dataobj_ptr CTPQueryTrade::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
-	auto stdo = (MapDO<std::string>*)reqDO.get();
-	auto& brokeid = session->getUserInfo().getBrokerId();
-	auto& investorid = session->getUserInfo().getInvestorId();
-	auto& instrid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
-	auto& exchangeid = stdo->TryFind(STR_EXCHANGE_ID, EMPTY_STRING);
-	auto& tradeid = stdo->TryFind(STR_TRADE_ID, EMPTY_STRING);
-	auto& tmstart = stdo->TryFind(STR_TIME_START, EMPTY_STRING);
-	auto& tmend = stdo->TryFind(STR_TIME_END, EMPTY_STRING);
 	auto& userid = session->getUserInfo().getUserId();
 
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
@@ -54,15 +46,16 @@ dataobj_ptr CTPQueryTrade::HandleRequest(const uint32_t serialId, const dataobj_
 		auto pTradeProcessor = (CTPTradeProcessor*)msgProcessor.get();
 		if (!(pTradeProcessor->DataLoadMask & CTPTradeProcessor::TRADE_DATA_LOADED))
 		{
-			CThostFtdcQryTradeField req{};
+			/*CThostFtdcQryTradeField req{};
 			std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID));
 			std::strncpy(req.InvestorID, investorid.data(), sizeof(req.InvestorID));
 
 			int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryTrade(&req, serialId);
-			CTPUtility::CheckReturnError(iRet);
+			CTPUtility::CheckReturnError(iRet);*/
 
+			std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
+			userTrades = pWorkerProc->GetUserTradeContext().GetTradesByUser(userid);
 			pTradeProcessor->DataLoadMask |= CTPTradeProcessor::TRADE_DATA_LOADED;
-			return nullptr;
 		}
 
 		if (userTrades.empty())
@@ -79,6 +72,15 @@ dataobj_ptr CTPQueryTrade::HandleRequest(const uint32_t serialId, const dataobj_
 	}
 	else
 	{
+		auto stdo = (MapDO<std::string>*)reqDO.get();
+		auto& brokeid = session->getUserInfo().getBrokerId();
+		auto& investorid = session->getUserInfo().getInvestorId();
+		auto& instrid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
+		auto& exchangeid = stdo->TryFind(STR_EXCHANGE_ID, EMPTY_STRING);
+		auto& tradeid = stdo->TryFind(STR_TRADE_ID, EMPTY_STRING);
+		auto& tmstart = stdo->TryFind(STR_TIME_START, EMPTY_STRING);
+		auto& tmend = stdo->TryFind(STR_TIME_END, EMPTY_STRING);
+
 		CThostFtdcQryTradeField req{};
 		std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID));
 		std::strncpy(req.InvestorID, investorid.data(), sizeof(req.InvestorID));
@@ -123,7 +125,7 @@ dataobj_ptr CTPQueryTrade::HandleResponse(const uint32_t serialId, const param_v
 				ret->SetPortfolioID(order_ptr->PortfolioID());
 			}
 
-			pWorkerProc->GetUserTradeContext().UpsertTrade(ret);
+			pWorkerProc->GetUserTradeContext().InsertTrade(ret);
 		}
 	}
 

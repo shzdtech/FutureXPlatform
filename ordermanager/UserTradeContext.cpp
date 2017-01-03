@@ -9,34 +9,35 @@
 
 UserTradeContext::UserTradeContext()
 	: _tradeIdMap(2048), _userTradeMap(1024)
- {
- }
-
- void UserTradeContext::UpsertTrade(const TradeRecordDO_Ptr & tradeDO_Ptr)
 {
-	_tradeIdMap.upsert(tradeDO_Ptr->TradeID, [&tradeDO_Ptr](TradeRecordDO_Ptr& tradeptr)
-	{
-		*tradeptr = *tradeDO_Ptr;
-	}, tradeDO_Ptr);
-
-	if (!_userTradeMap.contains(tradeDO_Ptr->UserID()))
-		_userTradeMap.insert(tradeDO_Ptr->UserID(), std::move(cuckoohashmap_wrapper<uint64_t, TradeRecordDO_Ptr>(true)));
-
-	_userTradeMap.update_fn(tradeDO_Ptr->UserID(), [this, &tradeDO_Ptr](cuckoohashmap_wrapper<uint64_t, TradeRecordDO_Ptr>& tradeMap)
-	{
-		if (!tradeMap.map()->contains(tradeDO_Ptr->TradeID))
-		{
-			if (auto instoreptr = FindTrade(tradeDO_Ptr->TradeID))
-			{
-				tradeMap.map()->insert(tradeDO_Ptr->TradeID, instoreptr);
-			}
-		}
-	});
 }
 
-void UserTradeContext::UpsertTrade(const TradeRecordDO& tradeDO)
+bool UserTradeContext::InsertTrade(const TradeRecordDO_Ptr & tradeDO_Ptr)
 {
-	UpsertTrade(std::make_shared<TradeRecordDO>(tradeDO));
+	bool ret = _tradeIdMap.insert(tradeDO_Ptr->TradeID, tradeDO_Ptr);
+	if (ret)
+	{
+		if (!_userTradeMap.contains(tradeDO_Ptr->UserID()))
+			_userTradeMap.insert(tradeDO_Ptr->UserID(), std::move(cuckoohashmap_wrapper<uint64_t, TradeRecordDO_Ptr>(true)));
+
+		_userTradeMap.update_fn(tradeDO_Ptr->UserID(), [this, &tradeDO_Ptr](cuckoohashmap_wrapper<uint64_t, TradeRecordDO_Ptr>& tradeMap)
+		{
+			if (!tradeMap.map()->contains(tradeDO_Ptr->TradeID))
+			{
+				if (auto instoreptr = FindTrade(tradeDO_Ptr->TradeID))
+				{
+					tradeMap.map()->insert(tradeDO_Ptr->TradeID, instoreptr);
+				}
+			}
+		});
+	}
+
+	return ret;
+}
+
+bool UserTradeContext::InsertTrade(const TradeRecordDO& tradeDO)
+{
+	return InsertTrade(std::make_shared<TradeRecordDO>(tradeDO));
 }
 
 void UserTradeContext::Clear(void)
@@ -53,7 +54,7 @@ TradeRecordDO_Ptr UserTradeContext::RemoveTrade(uint64_t tradeID)
 		_tradeIdMap.erase(tradeID);
 
 		cuckoohashmap_wrapper<uint64_t, TradeRecordDO_Ptr> tradeMap;
-		if(_userTradeMap.find(ret->UserID(), tradeMap))
+		if (_userTradeMap.find(ret->UserID(), tradeMap))
 		{
 			tradeMap.map()->erase(tradeID);
 		}

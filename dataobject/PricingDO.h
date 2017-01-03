@@ -16,6 +16,8 @@
 class IPricingDO : public ContractKey, public dataobjectbase
 {
 public:
+	IPricingDO() = default;
+
 	IPricingDO(const char* exchangeID, const char* instrumentID)
 		: ContractKey(exchangeID, instrumentID) {}
 
@@ -32,6 +34,8 @@ template <class T>
 class TPricingDO : public IPricingDO
 {
 public:
+	TPricingDO() = default;
+
 	TPricingDO(const char* exchangeID, const char* instrumentID)
 		: IPricingDO(exchangeID, instrumentID) {}
 

@@ -14,10 +14,11 @@
 class IPricingDataContext
 {
 public:
-   virtual StrategyContractDOMap* GetStrategyMap(void)=0;
-   virtual ContractParamDOMap* GetContractParamMap(void)=0;
-   virtual MarketDataDOMap* GetMarketDataMap(void)=0;
-   virtual PortfolioDOMap* GetPortfolioMap(void)=0;
+	virtual StrategyContractDOMap* GetStrategyMap(void) = 0;
+	virtual ContractParamDOMap* GetContractParamMap(void) = 0;
+	virtual MarketDataDOMap* GetMarketDataMap(void) = 0;
+	virtual PortfolioDOMap* GetPortfolioMap(void) = 0;
+	virtual PricingDataDOMap* GetPricingDataDOMap(void) = 0;
 
 protected:
 private:

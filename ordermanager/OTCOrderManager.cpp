@@ -52,7 +52,14 @@ OrderDO_Ptr OTCOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 		{
 			if (!orderInfo.IsOTC()) orderInfo.ConvertToOTC();
 
-			if (auto pricingDO_ptr = PricingUtility::Pricing(&orderInfo.Volume, orderInfo, *_pricingCtx))
+			IPricingDO_Ptr pricingDO_ptr;
+			if (!_pricingCtx->GetPricingDataDOMap()->find(orderInfo, pricingDO_ptr))
+			{
+				static const int quantity = 1;
+				pricingDO_ptr = PricingUtility::Pricing(&quantity, orderInfo, *_pricingCtx);
+			}
+
+			if (pricingDO_ptr)
 			{
 				if (ret = OTCOrderDAO::CreateOrder(orderInfo, *pricingDO_ptr))
 				{
@@ -84,6 +91,14 @@ void OTCOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 	{
 		ret = std::make_shared<VectorDO<OrderDO>>();
 		auto lt = orders.map()->lock_table();
+
+		IPricingDO_Ptr pricingDO_ptr;
+		if (!_pricingCtx->GetPricingDataDOMap()->find(strategyDO, pricingDO_ptr))
+		{
+			static const int quantity = 1;
+			pricingDO_ptr = PricingUtility::Pricing(&quantity, strategyDO, *_pricingCtx);
+		}
+
 		for (auto& it : lt)
 		{
 			auto& orderDO = *it.second;
@@ -92,7 +107,7 @@ void OTCOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 			{
 				if (strategyDO.BidEnabled)
 				{
-					auto pricingDO_ptr = PricingUtility::Pricing(&orderDO.Volume, strategyDO, *_pricingCtx);
+					//auto pricingDO_ptr = PricingUtility::Pricing(&orderDO.Volume, strategyDO, *_pricingCtx);
 					if (pricingDO_ptr && orderDO.LimitPrice >= pricingDO_ptr->Ask().Price)
 						accept = true;
 				}
@@ -101,7 +116,7 @@ void OTCOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 			{
 				if (strategyDO.AskEnabled)
 				{
-					auto pricingDO_ptr = PricingUtility::Pricing(&orderDO.Volume, strategyDO, *_pricingCtx);
+					// auto pricingDO_ptr = PricingUtility::Pricing(&orderDO.Volume, strategyDO, *_pricingCtx);
 					if (pricingDO_ptr && orderDO.LimitPrice <= pricingDO_ptr->Bid().Price)
 						accept = true;
 				}

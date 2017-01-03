@@ -24,7 +24,7 @@
 class ORDERMGR_CLASS_EXPORT UserPositionContext
 {
 public:
-	void UpsertPosition(const std::string& userId, const UserPositionExDO& positionDO);
+	void UpsertPosition(const std::string& userId, const UserPositionExDO& positionDO, bool adjustPosition = true);
 	void Clear(void);
 	cuckoohash_map<std::string, cuckoohashmap_wrapper<std::pair<std::string, int>, UserPositionExDO_Ptr, pairhash<std::string, int>>>&
 		UserPositionMap();

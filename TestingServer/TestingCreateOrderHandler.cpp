@@ -54,7 +54,7 @@ dataobj_ptr TestingCreateOrderHandler::HandleRequest(const uint32_t serialId, co
 				tradeptr->OrderID = orderptr->OrderID;
 				tradeptr->OrderSysID = orderptr->OrderSysID;
 
-				pProc->GetUserTradeContext().UpsertTrade(tradeptr);
+				pProc->GetUserTradeContext().InsertTrade(tradeptr);
 
 				pProc->SendDataObject(sessionptr, MSG_ID_TRADE_RTN, serialId, tradeptr);
 			}

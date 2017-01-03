@@ -60,10 +60,10 @@ dataobj_ptr WingsVolatilityModel::Compute(
 	}
 	else
 	{
-		auto pMdo = priceCtx.GetMarketDataMap()->tryfind(sdo.InstrumentID());
-		if (!pMdo)
+		MarketDataDO mDO;
+		if (!priceCtx.GetMarketDataMap()->find(sdo.InstrumentID(), mDO))
 			return nullptr;
-		f_atm = (pMdo->Ask().Price + pMdo->Bid().Price) / 2;
+		f_atm = (mDO.Ask().Price + mDO.Bid().Price) / 2;
 	}
 
 	auto strikeprice = sdo.StrikePrice;

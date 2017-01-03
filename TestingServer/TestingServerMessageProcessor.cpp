@@ -73,8 +73,8 @@ void TestingServerMessageProcessor::_mdGenerator()
 				if (auto mdMapPtr = std::static_pointer_cast<MarketDataDOMap>
 					(session_ptr->getContext()->getAttribute(STR_KEY_USER_CONTRACTS)))
 				{
-
-					for (auto it = mdMapPtr->begin(); it != mdMapPtr->end(); it++)
+					auto table = mdMapPtr->lock_table();
+					for (auto it = table.begin(); it != table.end(); it++)
 					{
 						if (std::rand() > std::rand())
 						{

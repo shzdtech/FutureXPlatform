@@ -20,7 +20,7 @@ public:
 	ContractParamDOMap* GetContractParamMap();
 	MarketDataDOMap* GetMarketDataMap();
 	PortfolioDOMap* GetPortfolioMap();
-	InstrumentDOMap* GetInstrumentDOMap();
+	PricingDataDOMap* GetPricingDataDOMap();
 
 protected:
 
@@ -29,8 +29,7 @@ private:
 	ContractParamDOMap _contractDOMap;
 	MarketDataDOMap _marketDataDOMap;
 	PortfolioDOMap _portfolioDOMap;
-	InstrumentDOMap _instrumentDOMap;
-
+	PricingDataDOMap _pricingDataDOMap;
 };
 
 #endif

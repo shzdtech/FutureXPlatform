@@ -47,7 +47,7 @@ dataobj_ptr TestingSubMarketDataHandler::HandleRequest(const uint32_t serialId, 
 			((TestingServerMessageProcessor*)msgProcessor.get())->GenRandomMD(mdDO);
 
 			ret->push_back(mdDO);
-			mdDOMap_Ptr->emplace(inst, std::move(mdDO));
+			mdDOMap_Ptr->insert(inst, std::move(mdDO));
 		}
 
 		ret->HasMore = false;

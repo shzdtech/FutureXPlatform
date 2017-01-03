@@ -14,10 +14,8 @@ dataobj_ptr CTPTradeUpdated::HandleResponse(const uint32_t serialId, const param
 
 		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 		{
-			if (!pWorkerProc->GetUserTradeContext().Contains(ret->TradeID))
+			if (pWorkerProc->GetUserTradeContext().InsertTrade(ret))
 			{
-				pWorkerProc->GetUserTradeContext().UpsertTrade(ret);
-
 				PositionDirectionType pd =
 					(ret->Direction == DirectionType::SELL && ret->OpenClose == OrderOpenCloseType::OPEN) ||
 					(ret->Direction != DirectionType::SELL && ret->OpenClose != OrderOpenCloseType::OPEN) ?

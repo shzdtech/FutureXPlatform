@@ -7,7 +7,7 @@
 
 #include "UserPositionContext.h"
 
-void UserPositionContext::UpsertPosition(const std::string& userid, const UserPositionExDO& positionDO)
+void UserPositionContext::UpsertPosition(const std::string& userid, const UserPositionExDO& positionDO, bool adjustPosition)
 {
 	if (!_userPositionMap.contains(userid))
 		_userPositionMap.insert(userid, std::move(cuckoohashmap_wrapper<std::pair<std::string, int>,
@@ -21,29 +21,38 @@ void UserPositionContext::UpsertPosition(const std::string& userid, const UserPo
 	clonePosition_Ptr->CloseAmount = 0;
 	clonePosition_Ptr->CloseVolume = 0;
 
-	_userPositionMap.update_fn(userid, [&clonePosition_Ptr](cuckoohashmap_wrapper<std::pair<std::string, int>,
+	_userPositionMap.update_fn(userid, [&clonePosition_Ptr, adjustPosition](cuckoohashmap_wrapper<std::pair<std::string, int>,
 		UserPositionExDO_Ptr, pairhash<std::string, int>>&positionMap)
 	{
 		positionMap.map()->upsert(std::pair<std::string, int>(clonePosition_Ptr->InstrumentID(), clonePosition_Ptr->Direction),
-			[&clonePosition_Ptr](UserPositionExDO_Ptr& position_ptr)
+			[&clonePosition_Ptr, adjustPosition](UserPositionExDO_Ptr& position_ptr)
 		{
 			position_ptr->TradingDay = clonePosition_Ptr->TradingDay;
 			position_ptr->PreSettlementPrice = clonePosition_Ptr->PreSettlementPrice;
 			position_ptr->SettlementPrice = clonePosition_Ptr->SettlementPrice;
 			position_ptr->CloseProfit = clonePosition_Ptr->CloseProfit;
-			position_ptr->YdInitPosition = clonePosition_Ptr->YdInitPosition;
 			position_ptr->CashIn = clonePosition_Ptr->CashIn;
 			position_ptr->UseMargin = clonePosition_Ptr->UseMargin;
 			position_ptr->TdCost = clonePosition_Ptr->TdCost;
 			position_ptr->TdProfit = clonePosition_Ptr->TdProfit;
 			position_ptr->YdCost = clonePosition_Ptr->YdCost;
 			position_ptr->YdProfit = clonePosition_Ptr->YdProfit;
+			position_ptr->YdInitPosition = clonePosition_Ptr->YdInitPosition;
 
-			if (position_ptr->LastPosition() < 0)
+			if (adjustPosition)
 			{
-				auto deltaPos = -position_ptr->LastPosition();
-				position_ptr->YdPosition += deltaPos;
-				position_ptr->TdPosition -= deltaPos;
+				if (position_ptr->TdPosition < 0)
+				{
+					position_ptr->YdPosition += position_ptr->TdPosition;
+					position_ptr->TdPosition = 0;
+				}
+
+				if (position_ptr->LastPosition() < 0)
+				{
+					auto deltaPos = -position_ptr->LastPosition();
+					position_ptr->YdPosition += deltaPos;
+					position_ptr->TdPosition -= deltaPos;
+				}
 			}
 
 		}, clonePosition_Ptr);
@@ -150,7 +159,7 @@ void UserPositionContext::UpsertPosition(const TradeRecordDO_Ptr& tradeDO, Posit
 				}
 				else
 				{
-					if (position_ptr->LastPosition() >= 0 && positionDO_Ptr->CloseVolume > position_ptr->LastPosition())
+					if (position_ptr->LastPosition() > 0 && positionDO_Ptr->CloseVolume > position_ptr->LastPosition())
 					{
 						auto deltaPos = positionDO_Ptr->CloseVolume - position_ptr->LastPosition();
 						position_ptr->TdPosition -= deltaPos;

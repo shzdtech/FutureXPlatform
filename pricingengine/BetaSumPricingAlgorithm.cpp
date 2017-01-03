@@ -61,11 +61,12 @@ IPricingDO_Ptr BetaSumPricingAlgorithm::Compute(
 
 	if (!sdo.PricingContracts.empty())
 	{
-
+		MarketDataDO md;
 		for (auto& conparam : sdo.PricingContracts)
 		{
 			auto& baseCon = conDOMap.at(conparam);
-			auto& md = mdDOMap.at(conparam.InstrumentID());
+			
+			mdDOMap.find(conparam.InstrumentID(), md);
 
 			double K = std::fabs(conparam.Weight) *	quantity * sdo.Multiplier /
 				baseCon.Multiplier;
@@ -98,7 +99,7 @@ IPricingDO_Ptr BetaSumPricingAlgorithm::Compute(
 
 		if (!sdo.IsOTC())
 		{
-			auto& md = mdDOMap.at(sdo.InstrumentID());
+			mdDOMap.find(sdo.InstrumentID(), md);
 			BidPrice = std::fmin(BidPrice, md.Bid().Price);
 			AskPrice = std::fmax(AskPrice, md.Ask().Price);
 		}

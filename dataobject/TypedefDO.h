@@ -2,6 +2,7 @@
 #define __dataobject_TypedefDO_h
 
 #include "../utility/autofillmap.h"
+#include "../include/libcuckoo/cuckoohash_map.hh"
 #include "../utility/stringutility.h"
 #include "ContractKey.h"
 #include "ContractParamDO.h"
@@ -27,7 +28,9 @@ using UserContractMap = typename autofillmap<UserContractKey, V>;
 
 typedef ContractMap<StrategyContractDO> StrategyContractDOMap;
 
-typedef autofillmap<std::string, MarketDataDO, ci_less> MarketDataDOMap;
+typedef cuckoohash_map<std::string, MarketDataDO> MarketDataDOMap;
+
+typedef cuckoohash_map<ContractKey, IPricingDO_Ptr, ContractKeyHash> PricingDataDOMap;
 
 typedef ContractMap<UserContractParamDO> UserContractParamDOMap;
 

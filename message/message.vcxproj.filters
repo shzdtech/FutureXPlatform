@@ -141,6 +141,9 @@
     <ClInclude Include="MessageContext.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="ReturnHandler.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MessageProcessor.cpp">

@@ -185,6 +185,7 @@
     <ClInclude Include="NopHandler.h" />
     <ClInclude Include="GlobalProcessorRegistry.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="ReturnHandler.h" />
     <ClInclude Include="ServerSessionManager.h" />
     <ClInclude Include="SessionContainer.h" />
     <ClInclude Include="ServerContext.h" />

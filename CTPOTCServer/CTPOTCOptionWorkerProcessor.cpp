@@ -37,9 +37,10 @@ void CTPOTCOptionWorkerProcessor::TriggerOTCPricing(const StrategyContractDO& st
 	{
 		if (auto pricingCtx = PricingDataContext())
 		{
-			if (auto pMdDO = pricingCtx->GetMarketDataMap()->tryfind(strategyDO.PricingContracts[0].InstrumentID()))
+			MarketDataDO mDO;
+			if (pricingCtx->GetMarketDataMap()->find(strategyDO.PricingContracts[0].InstrumentID(), mDO))
 			{
-				if (auto pricingDO = PricingUtility::Pricing(pMdDO, strategyDO, *pricingCtx))
+				if (auto pricingDO = PricingUtility::Pricing(&mDO, strategyDO, *pricingCtx))
 				{
 					_pricingNotifers->foreach(strategyDO, [this, pricingDO](const IMessageSession_Ptr& session_ptr)
 					{ SendDataObject(session_ptr, MSG_ID_RTN_PRICING, 0, pricingDO); }
@@ -73,7 +74,9 @@ InstrumentCache & CTPOTCOptionWorkerProcessor::GetInstrumentCache()
 //CTP APIs
 void CTPOTCOptionWorkerProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
 {
-	if (auto pMDO = PricingDataContext()->GetMarketDataMap()->tryfind(pDepthMarketData->InstrumentID))
+	auto pMarketDataMap = PricingDataContext()->GetMarketDataMap();
+	MarketDataDO mDO;
+	if(pMarketDataMap->find(pDepthMarketData->InstrumentID, mDO))
 	{
 		double bidPrice = pDepthMarketData->BidPrice1;
 		double askPrice = pDepthMarketData->AskPrice1;
@@ -81,16 +84,18 @@ void CTPOTCOptionWorkerProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketData
 		{
 			return;
 		}
-		if (pMDO->Bid().Price != bidPrice || pMDO->Ask().Price != askPrice)
+		if (mDO.Bid().Price != bidPrice || mDO.Ask().Price != askPrice)
 		{
-			pMDO->Bid().Price = bidPrice;
-			pMDO->Ask().Price = askPrice;
-			pMDO->Bid().Volume = pDepthMarketData->BidVolume1;
-			pMDO->Ask().Volume = pDepthMarketData->AskVolume1;
+			mDO.Bid().Price = bidPrice;
+			mDO.Ask().Price = askPrice;
+			mDO.Bid().Volume = pDepthMarketData->BidVolume1;
+			mDO.Ask().Volume = pDepthMarketData->AskVolume1;
 
-			if (_exchangeStrategySet.contains<ContractKey>(*pMDO))
+			pMarketDataMap->update(pDepthMarketData->InstrumentID, mDO);
+
+			if (_exchangeStrategySet.contains<ContractKey>(mDO))
 			{
-				if (auto pStrategyDO = PricingDataContext()->GetStrategyMap()->tryfind(*pMDO))
+				if (auto pStrategyDO = PricingDataContext()->GetStrategyMap()->tryfind(mDO))
 				{
 					TriggerTadingDeskParams(*pStrategyDO);
 					TriggerOTCUpdating(*pStrategyDO);

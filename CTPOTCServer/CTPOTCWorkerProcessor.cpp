@@ -186,10 +186,9 @@ OTCTradeProcessor * CTPOTCWorkerProcessor::GetOTCTradeProcessor()
 void CTPOTCWorkerProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
 {
 	auto mdMap = PricingDataContext()->GetMarketDataMap();
-	auto it = mdMap->find(pDepthMarketData->InstrumentID);
-	if (it != mdMap->end())
+	MarketDataDO mdo;
+	if (mdMap->find(pDepthMarketData->InstrumentID, mdo))
 	{
-		auto& mdo = it->second;
 		if (mdo.Bid().Price != pDepthMarketData->BidPrice1 ||
 			mdo.Ask().Price != pDepthMarketData->AskPrice1 ||
 			mdo.Bid().Volume != pDepthMarketData->BidVolume1 ||
@@ -210,6 +209,8 @@ void CTPOTCWorkerProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField 
 			//mdo.LowerLimitPrice = pDepthMarketData->LowerLimitPrice;
 			//mdo.PreSettlementPrice = pDepthMarketData->PreSettlementPrice;
 			//mdo.SettlementPrice = pDepthMarketData->SettlementPrice;
+
+			mdMap->update(pDepthMarketData->InstrumentID, mdo);
 
 			// Start to trigger pricing
 			TriggerUpdating(mdo);

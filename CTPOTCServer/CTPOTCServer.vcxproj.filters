@@ -60,9 +60,6 @@
     <ClCompile Include="CTPSimMarketData.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CTPCloudWorkerProcessor.cpp">
-      <Filter>源文件\Cloud</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ctpotc_bizhandlers.h">
@@ -97,9 +94,6 @@
     </ClInclude>
     <ClInclude Include="CTPSimMarketData.h">
       <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="CTPCloudWorkerProcessor.h">
-      <Filter>头文件\Cloud</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -7,7 +7,7 @@
 
 #include "CTPProcessor.h"
 
-std::chrono::seconds CTPProcessor::DefaultQueryTime(2);
+std::chrono::seconds CTPProcessor::DefaultQueryTime(3);
 std::string CTPProcessor::FlowPath("ctpflow");
 
 ////////////////////////////////////////////////////////////////////////

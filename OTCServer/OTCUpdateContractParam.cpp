@@ -52,8 +52,9 @@ dataobj_ptr OTCUpdateContractParam::HandleRequest(const uint32_t serialId, const
 				pContractDO->Gamma = conDO.Gamma;
 			}
 
-			if (auto pMdDO = mdMap->tryfind(conDO.InstrumentID()))
-				pWorkerProc->TriggerUpdating(*pMdDO);
+			MarketDataDO mdo;
+			if (mdMap->find(conDO.InstrumentID(), mdo))
+				pWorkerProc->TriggerUpdating(mdo);
 		}
 	}
 

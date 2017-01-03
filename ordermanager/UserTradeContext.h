@@ -21,8 +21,8 @@ class ORDERMGR_CLASS_EXPORT UserTradeContext
 public:
 	UserTradeContext();
 
-	void UpsertTrade(const TradeRecordDO_Ptr& tradeDO_Ptr);
-	void UpsertTrade(const TradeRecordDO& tradeDO);
+	bool InsertTrade(const TradeRecordDO_Ptr& tradeDO_Ptr);
+	bool InsertTrade(const TradeRecordDO& tradeDO);
 	void Clear(void);
 	TradeRecordDO_Ptr RemoveTrade(uint64_t tradeID);
 	cuckoohash_map<uint64_t, TradeRecordDO_Ptr>& GetAllTrade();

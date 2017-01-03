@@ -41,18 +41,9 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const uint32_t serialId, const datao
 	CheckLogin(session);
 
 	auto stdo = (MapDO<std::string>*)reqDO.get();
-
-	auto& brokeid = session->getUserInfo().getBrokerId();
-	auto& investorid = session->getUserInfo().getInvestorId();
 	auto& userid = session->getUserInfo().getUserId();
 	auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
 
-	CThostFtdcQryInvestorPositionField req{};
-	std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID));
-	std::strncpy(req.InvestorID, investorid.data(), sizeof(req.InvestorID));
-	std::strncpy(req.InstrumentID, instrumentid.data(), sizeof(req.InstrumentID));
-
-	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryInvestorPosition(&req, serialId);
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 	{
 		auto positionMap = pWorkerProc->GetUserPositionContext().GetPositionsByUser(userid);
@@ -60,6 +51,8 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const uint32_t serialId, const datao
 		auto pTradeProcessor = (CTPTradeProcessor*)msgProcessor.get();
 		if (!(pTradeProcessor->DataLoadMask & CTPTradeProcessor::POSITION_DATA_LOADED))
 		{
+			CThostFtdcQryInvestorPositionField req{};
+			int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryInvestorPosition(&req, serialId);
 			CTPUtility::CheckReturnError(iRet);
 
 			std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
@@ -104,6 +97,15 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const uint32_t serialId, const datao
 	}
 	else
 	{
+		auto& brokeid = session->getUserInfo().getBrokerId();
+		auto& investorid = session->getUserInfo().getInvestorId();
+
+		CThostFtdcQryInvestorPositionField req{};
+		std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID));
+		std::strncpy(req.InvestorID, investorid.data(), sizeof(req.InvestorID));
+		std::strncpy(req.InstrumentID, instrumentid.data(), sizeof(req.InstrumentID));
+
+		int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryInvestorPosition(&req, serialId);
 		CTPUtility::CheckReturnError(iRet);
 	}
 
@@ -131,12 +133,6 @@ dataobj_ptr CTPQueryPosition::HandleResponse(const uint32_t serialId, const para
 
 	ret->HasMore = !*(bool*)rawRespParams[3];
 
-	if (!ret->HasMore)
-	{
-		auto pTradeProcessor = (CTPTradeProcessor*)msgProcessor.get();
-		pTradeProcessor->DataLoadMask |= CTPTradeProcessor::POSITION_DATA_LOADED;
-	}
-
 	LOG_DEBUG << pData->InstrumentID << ',' << pData->PositionDate << ',' << pData->PosiDirection;
 
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
@@ -144,26 +140,35 @@ dataobj_ptr CTPQueryPosition::HandleResponse(const uint32_t serialId, const para
 		if (ret->ExchangeID() == EXCHANGE_SHFE)
 		{
 			auto position_ptr = pWorkerProc->GetUserPositionContext().GetPosition(session->getUserInfo().getUserId(), ret->InstrumentID(), ret->Direction);
-			if (position_ptr)
+			if (pData->PositionDate == THOST_FTDC_PSD_Today)
 			{
-				if (pData->PositionDate == THOST_FTDC_PSD_Today)
+				if (position_ptr)
 				{
-					// ret->YdPosition = position_ptr->YdPosition;
+					//ret->YdPosition = position_ptr->YdPosition;
+					ret->YdInitPosition = position_ptr->YdInitPosition;
 					ret->YdCost = position_ptr->YdCost;
 					ret->YdProfit = position_ptr->YdProfit;
 				}
-				else
+				pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo().getUserId(), *ret, false);
+			}
+			else
+			{
+				if (position_ptr)
 				{
+					//position_ptr->YdPosition = ret->YdPosition;
 					position_ptr->YdInitPosition = ret->YdInitPosition;
-					// position_ptr->YdPosition = ret->YdPosition;
 					position_ptr->YdCost = ret->YdCost;
 					position_ptr->YdProfit = ret->YdProfit;
-					ret = position_ptr;
 				}
+				else
+				{
+					position_ptr = ret;
+				}
+				pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo().getUserId(), *position_ptr);
 			}
 		}
-
-		pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo().getUserId(), *ret);
+		else
+			pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo().getUserId(), *ret);
 	}
 
 	return nullptr;
