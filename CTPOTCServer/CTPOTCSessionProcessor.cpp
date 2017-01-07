@@ -50,7 +50,7 @@ void CTPOTCSessionProcessor::Initialize(IServerContext* serverCtx)
 
 bool CTPOTCSessionProcessor::OnSessionClosing(void)
 {
-	if (auto sessionPtr = getMessageSession())
+	/*if (auto sessionPtr = getMessageSession())
 		if (sessionPtr->getUserInfo().getRole() == ROLE_TRADINGDESK)
 			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(shared_from_this()))
 			{
@@ -73,6 +73,6 @@ bool CTPOTCSessionProcessor::OnSessionClosing(void)
 						}
 					}
 				}
-			}
+			}*/
 	return true;
 }

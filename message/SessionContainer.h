@@ -10,45 +10,42 @@
 #include <set>
 #include <unordered_set>
 #include <memory>
-#include "../utility/autofillmap.h"
+#include "../include/libcuckoo/cuckoohash_map.hh"
 #include "../utility/entrywisemutex.h"
 #include "IMessageSession.h"
 
 
-template <typename K>
-class SessionContainer : public IMessageSessionEvent, public std::enable_shared_from_this<SessionContainer<K>>
+template <typename K, class Hash = DefaultHasher<K>, class Pred = std::equal_to<K>>
+class SessionContainer : public IMessageSessionEvent, public std::enable_shared_from_this<SessionContainer<K, Hash, Pred>>
 {
 private:
-	SessionContainer() {}
+	SessionContainer() : _sessionMap(16) {}
 
 public:
-	static std::shared_ptr<SessionContainer<K>> NewInstancePtr()
+	static std::shared_ptr<SessionContainer<K, Hash, Pred>> NewInstancePtr()
 	{
-		return std::shared_ptr<SessionContainer<K>>(new SessionContainer<K>());
+		return std::shared_ptr<SessionContainer<K, Hash, Pred>>(new SessionContainer<K, Hash, Pred>());
 	}
 
 	void foreach(const K& key, std::function<void(const IMessageSession_Ptr&)> func)
 	{
-		std::shared_lock<std::shared_mutex> read_lock(_mutex);
-		auto it = _sessionMap.find(key);
-		if (it != _sessionMap.end())
+		//std::shared_lock<std::shared_mutex> read_lock(_mutex);
+		_sessionMap.update_fn(key, [&func](std::unordered_set<IMessageSession_Ptr>& sessionSet)
 		{
-			for (auto& sessionPtr : it->second)
+			for (auto& sessionPtr : sessionSet)
 			{
 				func(sessionPtr);
 			}
-		}
+		});
 	}
 
 	void forall(std::function<void(const IMessageSession_Ptr&)> func)
 	{
-		std::shared_lock<std::shared_mutex> read_lock(_mutex);
-		for (auto& pair : _sessionMap)
+		// std::shared_lock<std::shared_mutex> read_lock(_mutex);
+		auto table = _sessionMap.lock_table();
+		for (auto& pair : table)
 		{
-			for (auto& sessionPtr : pair.second)
-			{
-				func(sessionPtr);
-			}
+			foreach(pair.first, func);
 		}
 	}
 
@@ -57,14 +54,15 @@ public:
 		int ret = -1;
 		if (sessionPtr)
 		{
-			std::unique_lock<std::shared_mutex> write_lock(_mutex);
-			auto& sessionSet = _sessionMap.getorfill(key);
-			if (sessionSet.find(sessionPtr) == sessionSet.end())
+			//std::unique_lock<std::shared_mutex> write_lock(_mutex);
+			sessionPtr->addListener(shared_from_this());
+			std::unordered_set<IMessageSession_Ptr> singleton{ sessionPtr };
+			_sessionMap.upsert(key, [&sessionPtr](std::unordered_set<IMessageSession_Ptr>& sessionSet)
 			{
-				// _reverseMap.getorfill(sessionPtr).insert(key);
 				sessionSet.insert(sessionPtr);
-				sessionPtr->addListener(shared_from_this());
-			}
+			},
+				singleton);
+
 			ret = 0;
 		}
 		return ret;
@@ -75,24 +73,29 @@ public:
 		int ret = -1;
 		if (sessionPtr)
 		{
-			std::unique_lock<std::shared_mutex> write_lock(_mutex);
-			auto it = _sessionMap.find(key);
-			if (it != _sessionMap.end())
+			// std::unique_lock<std::shared_mutex> write_lock(_mutex);
+			//auto it = _sessionMap.find(key);
+			//if (it != _sessionMap.end())
+			//{
+			//	it->second.erase(sessionPtr);
+			//	if (it->second.empty())
+			//		_sessionMap.erase(it);
+
+			//	/*auto rit = _reverseMap.find(sessionPtr);
+			//	if (rit != _reverseMap.end())
+			//	{
+			//		rit->second.erase(key);
+			//		if (rit->second.empty())
+			//			_reverseMap.erase(rit);
+			//	}*/
+
+			//	ret = 0;
+			//}
+
+			_sessionMap.update_fn(key, [&sessionPtr](std::unordered_set<IMessageSession_Ptr>& sessionSet)
 			{
-				it->second.erase(sessionPtr);
-				if (it->second.empty())
-					_sessionMap.erase(it);
-
-				/*auto rit = _reverseMap.find(sessionPtr);
-				if (rit != _reverseMap.end())
-				{
-					rit->second.erase(key);
-					if (rit->second.empty())
-						_reverseMap.erase(rit);
-				}*/
-
-				ret = 0;
-			}
+				sessionSet.erase(sessionPtr);
+			});
 		}
 		return ret;
 	}
@@ -100,7 +103,7 @@ public:
 	int removekey(const K& key)
 	{
 		int ret = -1;
-		std::unique_lock<std::shared_mutex> write_lock(_mutex);
+		// std::unique_lock<std::shared_mutex> write_lock(_mutex);
 		_sessionMap.erase(key);
 		/*auto it = _sessionMap.find(key);
 		if (it != _sessionMap.end())
@@ -117,7 +120,7 @@ public:
 				}
 			}
 			_sessionMap.erase(it);*/
-			ret = 0;
+		ret = 0;
 		//}
 		return ret;
 	}
@@ -154,8 +157,9 @@ public:
 		int ret = -1;
 		if (sessionPtr)
 		{
-			std::unique_lock<std::shared_mutex> write_lock(_mutex);
-			for (auto& pair : _sessionMap)
+			//std::unique_lock<std::shared_mutex> write_lock(_mutex);
+			auto table = _sessionMap.lock_table();
+			for (auto& pair : table)
 			{
 				pair.second.erase(sessionPtr);
 			}
@@ -171,12 +175,12 @@ protected:
 	}
 
 private:
-	autofillmap<K, std::set<IMessageSession_Ptr>> _sessionMap;
-	// autofillmap<IMessageSession_Ptr, std::set<K>> _reverseMap;
-	std::shared_mutex _mutex;
+	cuckoohash_map<K, std::unordered_set<IMessageSession_Ptr>, Hash, Pred> _sessionMap;
+	// autofillmap<IMessageSession_Ptr, std::unordered_set<K>> _reverseMap;
+	// std::shared_mutex _mutex;
 };
 
-template <typename T>
-using SessionContainer_Ptr = typename std::shared_ptr<SessionContainer<T>>;
+template <typename K, class Hash = DefaultHasher<K>, class Pred = std::equal_to<K>>
+using SessionContainer_Ptr = typename std::shared_ptr<SessionContainer<K, Hash, Pred>>;
 
 #endif

@@ -65,8 +65,8 @@ protected:
 	cuckoohash_map<ContractKey, std::shared_ptr<std::set<ContractKey>>, ContractKeyHash> _baseContractStrategyMap;
 	cuckoohash_map<ContractKey, bool, ContractKeyHash> _exchangeStrategySet;
 	cuckoohash_map<ContractKey, bool, ContractKeyHash> _otcStrategySet;
-	SessionContainer_Ptr<ContractKey> _pricingNotifers;
-	SessionContainer_Ptr<ContractKey> _tradingDeskNotifers;
+	SessionContainer_Ptr<ContractKey, ContractKeyHash> _pricingNotifers;
+	SessionContainer_Ptr<ContractKey, ContractKeyHash> _tradingDeskNotifers;
 	SessionContainer_Ptr<uint64_t> _otcOrderNotifers;
 	IPricingDataContext_Ptr _pricingCtx;
 

@@ -43,7 +43,7 @@ std::map<uint, IMessageHandler_Ptr> CTPOTCServiceFactory::CreateMessageHandlers(
 
 	msg_hdl_map[MSG_ID_UNSUB_PRICING] = std::make_shared<OTCUnSubMarketData>();
 
-	msg_hdl_map[MSG_ID_RTN_PRICING] = std::make_shared<ReturnHandler>();
+	msg_hdl_map[MSG_ID_RTN_PRICING] = std::make_shared<ReturnHandler<IPricingDO_Ptr>>();
 
 	msg_hdl_map[MSG_ID_MODIFY_USER_PARAM] = std::make_shared<OTCUpdateUserParam>();
 

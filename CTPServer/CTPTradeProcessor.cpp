@@ -71,7 +71,7 @@ int CTPTradeProcessor::InitializeServer(const std::string& flowId, const std::st
 
 		localpath /= flowId + "_" + std::to_string(std::time(nullptr)) + "_";
 
-		_rawAPI->TrdAPI = CThostFtdcTraderApi::CreateFtdcTraderApi(localpath.string().data());
+		_rawAPI->CreateTdApi(localpath.string().data());
 		_rawAPI->TrdAPI->RegisterSpi(this);
 
 		std::string server_addr(serverAddr);
@@ -212,7 +212,7 @@ void CTPTradeProcessor::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField
 {
 	auto msgId = nRequestID == 0 ? MSG_ID_POSITION_UPDATED : MSG_ID_QUERY_POSITION;
 
-	if(bIsLast)
+	if (bIsLast)
 		DataLoadMask |= CTPTradeProcessor::POSITION_DATA_LOADED;
 
 	OnResponseMacro(msgId, nRequestID, pInvestorPosition, pRspInfo, &nRequestID, &bIsLast)
@@ -315,24 +315,21 @@ void CTPTradeProcessor::OnRtnTrade(CThostFtdcTradeField *pTrade)
 
 void CTPTradeProcessor::QueryPositionAsync(uint currentCnt)
 {
-	std::this_thread::sleep_for(std::chrono::seconds(2));
-	if (!_exiting)
+	while (!_exiting)
 	{
-		if (currentCnt != _tradeCnt)
+		std::this_thread::sleep_for(std::chrono::seconds(2));
+		if (!_exiting)
 		{
-			_updateTask = std::async(std::launch::async, &CTPTradeProcessor::QueryPositionAsync, this, _tradeCnt);
-		}
-		else
-		{
-			_updateFlag.clear(std::memory_order::memory_order_release);
-			CThostFtdcQryInvestorPositionField req{};
-			int iRet = _rawAPI->TrdAPI->ReqQryInvestorPosition(&req, 0);
-			if (iRet != 0)
+			if (currentCnt == _tradeCnt)
 			{
-				_updateTask = std::async(std::launch::async, &CTPTradeProcessor::QueryPositionAsync, this, _tradeCnt);
+				CThostFtdcQryInvestorPositionField req{};
+				int iRet = _rawAPI->TrdAPI->ReqQryInvestorPosition(&req, 0);
+				if (iRet == 0)
+					break;
 			}
 		}
 	}
+	_updateFlag.clear(std::memory_order::memory_order_release);
 }
 
 ///报单录入错误回报

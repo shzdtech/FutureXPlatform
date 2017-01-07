@@ -48,8 +48,8 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const uint32_t serialId, const datao
 	{
 		auto positionMap = pWorkerProc->GetUserPositionContext().GetPositionsByUser(userid);
 
-		auto pTradeProcessor = (CTPTradeProcessor*)msgProcessor.get();
-		if (!(pTradeProcessor->DataLoadMask & CTPTradeProcessor::POSITION_DATA_LOADED))
+		auto pProcessor = (CTPProcessor*)msgProcessor.get();
+		if (!(pProcessor->DataLoadMask & CTPTradeProcessor::POSITION_DATA_LOADED))
 		{
 			CThostFtdcQryInvestorPositionField req{};
 			int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryInvestorPosition(&req, serialId);
@@ -149,7 +149,7 @@ dataobj_ptr CTPQueryPosition::HandleResponse(const uint32_t serialId, const para
 					ret->YdCost = position_ptr->YdCost;
 					ret->YdProfit = position_ptr->YdProfit;
 				}
-				pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo().getUserId(), *ret, false);
+				pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo().getUserId(), *ret);
 			}
 			else
 			{
@@ -168,7 +168,7 @@ dataobj_ptr CTPQueryPosition::HandleResponse(const uint32_t serialId, const para
 			}
 		}
 		else
-			pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo().getUserId(), *ret);
+			pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo().getUserId(), *ret, UserPositionContext::ADJUST_HISTORY);
 	}
 
 	return nullptr;

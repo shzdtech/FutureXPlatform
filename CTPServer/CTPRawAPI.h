@@ -12,30 +12,24 @@
 #include "../message/IRawAPI.h"
 #include "tradeapi/ThostFtdcMdApi.h"
 #include "tradeapi/ThostFtdcTraderApi.h"
+#include "ctpexport.h"
 
-class CTPRawAPI : public IRawAPI
+class CTP_CLASS_EXPORT CTPRawAPI : public IRawAPI
 {
 public:
 	CTPRawAPI() = default;
 
-	~CTPRawAPI()
-	{
-		if (MdAPI)
-		{
-			MdAPI->Release();
-			MdAPI = nullptr;
-		}
-		if (TrdAPI)
-		{
-			TrdAPI->Release();
-			TrdAPI = nullptr;
-		}
-	}
+	void CreateMdApi(const char* path);
+	void CreateTdApi(const char * path);
+	void ReleaseMdApi();
+	void ReleaseTdApi();
+
+	~CTPRawAPI();
 
 	CThostFtdcMdApi* MdAPI = nullptr;
 	CThostFtdcTraderApi* TrdAPI = nullptr;
 
-protected:
+
 private:
 
 };

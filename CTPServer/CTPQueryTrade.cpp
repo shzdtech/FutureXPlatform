@@ -43,8 +43,8 @@ dataobj_ptr CTPQueryTrade::HandleRequest(const uint32_t serialId, const dataobj_
 	{
 		auto userTrades = pWorkerProc->GetUserTradeContext().GetTradesByUser(userid);
 
-		auto pTradeProcessor = (CTPTradeProcessor*)msgProcessor.get();
-		if (!(pTradeProcessor->DataLoadMask & CTPTradeProcessor::TRADE_DATA_LOADED))
+		auto pProcessor = (CTPProcessor*)msgProcessor.get();
+		if (!(pProcessor->DataLoadMask & CTPTradeProcessor::TRADE_DATA_LOADED))
 		{
 			/*CThostFtdcQryTradeField req{};
 			std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID));
@@ -55,7 +55,7 @@ dataobj_ptr CTPQueryTrade::HandleRequest(const uint32_t serialId, const dataobj_
 
 			std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
 			userTrades = pWorkerProc->GetUserTradeContext().GetTradesByUser(userid);
-			pTradeProcessor->DataLoadMask |= CTPTradeProcessor::TRADE_DATA_LOADED;
+			pProcessor->DataLoadMask |= CTPTradeProcessor::TRADE_DATA_LOADED;
 		}
 
 		if (userTrades.empty())

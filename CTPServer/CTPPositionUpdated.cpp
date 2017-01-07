@@ -35,8 +35,8 @@ dataobj_ptr CTPPositionUpdated::HandleResponse(const uint32_t serialId, const pa
 						ret->YdInitPosition = position_ptr->YdInitPosition;
 						ret->YdCost = position_ptr->YdCost;
 						ret->YdProfit = position_ptr->YdProfit;
+						pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo().getUserId(), *ret);
 					}
-					pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo().getUserId(), *ret, false);
 				}
 				else
 				{
@@ -55,9 +55,11 @@ dataobj_ptr CTPPositionUpdated::HandleResponse(const uint32_t serialId, const pa
 				}
 			}
 			else
-				pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo().getUserId(), *ret);
+				pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo().getUserId(), *ret, UserPositionContext::ADJUST_HISTORY);
 
-			ret = pWorkerProc->GetUserPositionContext().GetPosition(session->getUserInfo().getUserId(), ret->InstrumentID(), ret->Direction);
+			if(ret = pWorkerProc->GetUserPositionContext().GetPosition(session->getUserInfo().getUserId(), ret->InstrumentID(), ret->Direction))
+				if(ret->Position() == 0)
+					ret.reset();
 		}
 	}
 

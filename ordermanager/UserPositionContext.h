@@ -24,17 +24,30 @@
 class ORDERMGR_CLASS_EXPORT UserPositionContext
 {
 public:
-	void UpsertPosition(const std::string& userId, const UserPositionExDO& positionDO, bool adjustPosition = true);
+public:
+	enum AdjustDirectionType
+	{
+		ADJUST_HISTORY = -1,
+		NO_ADJUSTMENT = 0,
+		ADJUST_TODAY = 1
+	};
+
+public:
+	void UpsertPosition(const std::string& userId, const UserPositionExDO& positionDO, AdjustDirectionType adjustPosition = NO_ADJUSTMENT);
+
 	void Clear(void);
+
 	cuckoohash_map<std::string, cuckoohashmap_wrapper<std::pair<std::string, int>, UserPositionExDO_Ptr, pairhash<std::string, int>>>&
 		UserPositionMap();
+
 	cuckoohashmap_wrapper<std::pair<std::string, int>, UserPositionExDO_Ptr, pairhash<std::string, int>>
 		GetPositionsByUser(const std::string& userID);
+
 	UserPositionExDO_Ptr GetPosition(const std::string& userID, const std::string& instumentID, PositionDirectionType direction);
 
 	bool RemovePosition(const std::string & userID, const std::string & instumentID, PositionDirectionType direction);
 
-	void UpsertPosition(const TradeRecordDO_Ptr & tradeDO, PositionDirectionType pd, double cost);
+	void UpsertPosition(const TradeRecordDO_Ptr & tradeDO, PositionDirectionType pd, InstrumentDO* pContractInfo, bool hasCloseToday = false);
 
 	bool FreezePosition(const OrderRequestDO & orderRequestDO, int& todayVol, int& ydVol);
 

@@ -150,7 +150,6 @@ bool ASIOTCPSession::Close(void)
 	{
 		try
 		{
-			MessageSession::Close();
 			LOG_DEBUG << "Session " << Id() << " is closing...";
 			// lock sending queue
 			// while(_sendingFlag.test_and_set(std::memory_order_acquire));
@@ -159,6 +158,7 @@ bool ASIOTCPSession::Close(void)
 				_socket.shutdown(tcp::socket::shutdown_both);
 				_socket.close();
 			}
+			MessageSession::Close();
 		}
 		catch (std::exception& ex)
 		{

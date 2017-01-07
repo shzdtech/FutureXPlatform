@@ -49,8 +49,8 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 		auto& userOrderCtx = pWorkerProc->GetUserOrderContext();
 		auto vectorPtr = userOrderCtx.GetOrdersByUser(session->getUserInfo().getUserId());
 
-		auto pTradeProcessor = (CTPTradeProcessor*)msgProcessor.get();
-		if (!(pTradeProcessor->DataLoadMask & CTPTradeProcessor::ORDER_DATA_LOADED))
+		auto pProcessor = (CTPProcessor*)msgProcessor.get();
+		if (!(pProcessor->DataLoadMask & CTPTradeProcessor::ORDER_DATA_LOADED))
 		{
 			/*CThostFtdcQryOrderField req{};
 			std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID));
@@ -60,7 +60,7 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 
 			std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
 			vectorPtr = userOrderCtx.GetOrdersByUser(session->getUserInfo().getUserId());
-			pTradeProcessor->DataLoadMask |= CTPTradeProcessor::ORDER_DATA_LOADED;
+			pProcessor->DataLoadMask |= CTPTradeProcessor::ORDER_DATA_LOADED;
 		}
 
 		ThrowNotFoundExceptionIfEmpty(vectorPtr);

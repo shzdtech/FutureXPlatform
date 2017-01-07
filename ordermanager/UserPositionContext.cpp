@@ -7,44 +7,51 @@
 
 #include "UserPositionContext.h"
 
-void UserPositionContext::UpsertPosition(const std::string& userid, const UserPositionExDO& positionDO, bool adjustPosition)
+void UserPositionContext::UpsertPosition(const std::string& userid, const UserPositionExDO& positionDO, AdjustDirectionType adjustPosition)
 {
 	if (!_userPositionMap.contains(userid))
 		_userPositionMap.insert(userid, std::move(cuckoohashmap_wrapper<std::pair<std::string, int>,
 			UserPositionExDO_Ptr, pairhash<std::string, int>>(true, 2)));
 
-	auto clonePosition_Ptr = std::make_shared<UserPositionExDO>(positionDO);
-	clonePosition_Ptr->TdPosition = 0;
-	clonePosition_Ptr->YdPosition = 0;
-	clonePosition_Ptr->OpenAmount = 0;
-	clonePosition_Ptr->OpenVolume = 0;
-	clonePosition_Ptr->CloseAmount = 0;
-	clonePosition_Ptr->CloseVolume = 0;
+	auto newPosition_Ptr = std::make_shared<UserPositionExDO>(positionDO);
+	newPosition_Ptr->TdPosition = 0;
+	newPosition_Ptr->YdPosition = 0;
+	newPosition_Ptr->OpenAmount = 0;
+	newPosition_Ptr->OpenVolume = 0;
+	newPosition_Ptr->CloseAmount = 0;
+	newPosition_Ptr->CloseVolume = 0;
 
-	_userPositionMap.update_fn(userid, [&clonePosition_Ptr, adjustPosition](cuckoohashmap_wrapper<std::pair<std::string, int>,
+	_userPositionMap.update_fn(userid, [&newPosition_Ptr, adjustPosition](cuckoohashmap_wrapper<std::pair<std::string, int>,
 		UserPositionExDO_Ptr, pairhash<std::string, int>>&positionMap)
 	{
-		positionMap.map()->upsert(std::pair<std::string, int>(clonePosition_Ptr->InstrumentID(), clonePosition_Ptr->Direction),
-			[&clonePosition_Ptr, adjustPosition](UserPositionExDO_Ptr& position_ptr)
+		positionMap.map()->upsert(std::pair<std::string, int>(newPosition_Ptr->InstrumentID(), newPosition_Ptr->Direction),
+			[&newPosition_Ptr, adjustPosition](UserPositionExDO_Ptr& position_ptr)
 		{
-			position_ptr->TradingDay = clonePosition_Ptr->TradingDay;
-			position_ptr->PreSettlementPrice = clonePosition_Ptr->PreSettlementPrice;
-			position_ptr->SettlementPrice = clonePosition_Ptr->SettlementPrice;
-			position_ptr->CloseProfit = clonePosition_Ptr->CloseProfit;
-			position_ptr->CashIn = clonePosition_Ptr->CashIn;
-			position_ptr->UseMargin = clonePosition_Ptr->UseMargin;
-			position_ptr->TdCost = clonePosition_Ptr->TdCost;
-			position_ptr->TdProfit = clonePosition_Ptr->TdProfit;
-			position_ptr->YdCost = clonePosition_Ptr->YdCost;
-			position_ptr->YdProfit = clonePosition_Ptr->YdProfit;
-			position_ptr->YdInitPosition = clonePosition_Ptr->YdInitPosition;
+			position_ptr->PreSettlementPrice = newPosition_Ptr->PreSettlementPrice;
+			position_ptr->SettlementPrice = newPosition_Ptr->SettlementPrice;
+			position_ptr->CloseProfit = newPosition_Ptr->CloseProfit;
+			position_ptr->CashIn = newPosition_Ptr->CashIn;
+			position_ptr->UseMargin = newPosition_Ptr->UseMargin;
+			position_ptr->TdCost = newPosition_Ptr->TdCost;
+			position_ptr->TdProfit = newPosition_Ptr->TdProfit;
+			position_ptr->YdCost = newPosition_Ptr->YdCost;
+			position_ptr->YdProfit = newPosition_Ptr->YdProfit;
 
-			if (adjustPosition)
+			if (adjustPosition < 0 &&
+				position_ptr->TradingDay == newPosition_Ptr->TradingDay &&
+				position_ptr->YdInitPosition != newPosition_Ptr->YdInitPosition &&
+				position_ptr->YdInitPosition > 0)
 			{
-				if (position_ptr->TdPosition < 0)
+				int delta = position_ptr->CloseVolume - newPosition_Ptr->YdInitPosition;
+				if (delta > 0)
 				{
-					position_ptr->YdPosition += position_ptr->TdPosition;
-					position_ptr->TdPosition = 0;
+					position_ptr->YdPosition = -newPosition_Ptr->YdInitPosition;
+					position_ptr->TdPosition = position_ptr->OpenVolume - delta;
+				}
+				else
+				{
+					position_ptr->YdPosition = -position_ptr->CloseVolume;
+					position_ptr->TdPosition = position_ptr->OpenVolume;
 				}
 
 				if (position_ptr->LastPosition() < 0)
@@ -55,7 +62,9 @@ void UserPositionContext::UpsertPosition(const std::string& userid, const UserPo
 				}
 			}
 
-		}, clonePosition_Ptr);
+			position_ptr->YdInitPosition = newPosition_Ptr->YdInitPosition;
+
+		}, newPosition_Ptr);
 	});
 }
 
@@ -103,13 +112,18 @@ bool UserPositionContext::RemovePosition(const std::string & userID, const std::
 	return ret;
 }
 
-void UserPositionContext::UpsertPosition(const TradeRecordDO_Ptr& tradeDO, PositionDirectionType pd, double cost)
+void UserPositionContext::UpsertPosition(const TradeRecordDO_Ptr& tradeDO, PositionDirectionType pd, InstrumentDO* pContractInfo, bool hasCloseToday)
 {
 	if (!_userPositionMap.contains(tradeDO->UserID()))
 		_userPositionMap.insert(tradeDO->UserID(), std::move(cuckoohashmap_wrapper<std::pair<std::string, int>,
 			UserPositionExDO_Ptr, pairhash<std::string, int>>(true, 2)));
 
-	//construct position
+	// cost
+	double cost = tradeDO->Price * tradeDO->Volume;
+	if (pContractInfo)
+		cost *= pContractInfo->VolumeMultiple;
+
+	// construct position
 	UserPositionExDO_Ptr positionDO_Ptr(new UserPositionExDO(tradeDO->ExchangeID(), tradeDO->InstrumentID()));
 	positionDO_Ptr->TradingDay = tradeDO->TradingDay;
 	positionDO_Ptr->Direction = pd;
@@ -130,15 +144,16 @@ void UserPositionContext::UpsertPosition(const TradeRecordDO_Ptr& tradeDO, Posit
 		{
 			positionDO_Ptr->YdPosition = -tradeDO->Volume;
 		}
+
 		positionDO_Ptr->CloseVolume = tradeDO->Volume;
 		positionDO_Ptr->CloseAmount = cost;
 	}
 
-	_userPositionMap.update_fn(tradeDO->UserID(), [&tradeDO, &positionDO_Ptr](cuckoohashmap_wrapper<std::pair<std::string, int>,
+	_userPositionMap.update_fn(tradeDO->UserID(), [&tradeDO, &positionDO_Ptr, hasCloseToday](cuckoohashmap_wrapper<std::pair<std::string, int>,
 		UserPositionExDO_Ptr, pairhash<std::string, int>>&positionMap)
 	{
 		positionMap.map()->upsert(std::pair<std::string, int>(tradeDO->InstrumentID(), positionDO_Ptr->Direction),
-			[&tradeDO, &positionDO_Ptr](UserPositionExDO_Ptr& position_ptr)
+			[&tradeDO, &positionDO_Ptr, hasCloseToday](UserPositionExDO_Ptr& position_ptr)
 		{
 			if (tradeDO->OpenClose == OrderOpenCloseType::OPEN)
 			{
@@ -152,25 +167,41 @@ void UserPositionContext::UpsertPosition(const TradeRecordDO_Ptr& tradeDO, Posit
 			{
 				double tdMean = position_ptr->OpenVolume ? position_ptr->OpenAmount / position_ptr->OpenVolume : 0;
 
-				if (tradeDO->OpenClose == OrderOpenCloseType::CLOSETODAY)
+				if (hasCloseToday)
 				{
-					position_ptr->TdPosition -= positionDO_Ptr->CloseVolume;
-					position_ptr->TdCost = tdMean * position_ptr->TdPosition;
-				}
-				else
-				{
-					if (position_ptr->LastPosition() > 0 && positionDO_Ptr->CloseVolume > position_ptr->LastPosition())
+					if (tradeDO->OpenClose == OrderOpenCloseType::CLOSETODAY)
 					{
-						auto deltaPos = positionDO_Ptr->CloseVolume - position_ptr->LastPosition();
-						position_ptr->TdPosition -= deltaPos;
+						position_ptr->TdPosition -= positionDO_Ptr->CloseVolume;
 						position_ptr->TdCost = tdMean * position_ptr->TdPosition;
-						position_ptr->YdPosition -= position_ptr->LastPosition();
-						position_ptr->YdCost = 0;
 					}
 					else
 					{
 						position_ptr->YdPosition -= positionDO_Ptr->CloseVolume;
 						position_ptr->YdCost = position_ptr->PreSettlementPrice * position_ptr->LastPosition();
+					}
+				}
+				else
+				{
+					if (position_ptr->LastPosition() > 0)
+					{
+						auto deltaPos = positionDO_Ptr->CloseVolume - position_ptr->LastPosition();
+						if (deltaPos > 0)
+						{
+							position_ptr->TdPosition -= deltaPos;
+							position_ptr->TdCost = tdMean * position_ptr->TdPosition;
+							position_ptr->YdPosition -= position_ptr->LastPosition();
+							position_ptr->YdCost = 0;
+						}
+						else
+						{
+							position_ptr->YdPosition -= positionDO_Ptr->CloseVolume;
+							position_ptr->YdCost = position_ptr->PreSettlementPrice * position_ptr->LastPosition();
+						}
+					}
+					else
+					{
+						position_ptr->TdPosition -= positionDO_Ptr->CloseVolume;
+						position_ptr->TdCost = tdMean * position_ptr->TdPosition;
 					}
 				}
 
@@ -190,7 +221,7 @@ bool UserPositionContext::FreezePosition(const OrderRequestDO& orderRequestDO, i
 	{
 		ret = ret && _userPositionMap.update_fn(orderRequestDO.UserID(),
 			[&orderRequestDO, &ret, &todayVol, &ydVol](cuckoohashmap_wrapper<std::pair<std::string, int>,
-			UserPositionExDO_Ptr, pairhash<std::string, int>>&positionMap)
+				UserPositionExDO_Ptr, pairhash<std::string, int>>&positionMap)
 		{
 			PositionDirectionType pd = orderRequestDO.Direction == DirectionType::SELL ? PositionDirectionType::PD_LONG : PositionDirectionType::PD_SHORT;
 			ret = ret &&  positionMap.map()->update_fn(std::pair<std::string, int>(orderRequestDO.InstrumentID(), pd),
@@ -212,7 +243,7 @@ bool UserPositionContext::FreezePosition(const OrderRequestDO& orderRequestDO, i
 					{
 						ydVol = orderRequestDO.Volume;
 					}
-					
+
 					position_ptr->FrozenVolume += orderRequestDO.Volume;
 				}
 				else

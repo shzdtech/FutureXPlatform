@@ -1,5 +1,6 @@
 #include "CTPTradeUpdated.h"
 #include "CTPUtility.h"
+#include "CTPConstant.h"
 #include "CTPTradeWorkerProcessor.h"
 #include "../bizutility/ContractCache.h"
 
@@ -21,14 +22,12 @@ dataobj_ptr CTPTradeUpdated::HandleResponse(const uint32_t serialId, const param
 					(ret->Direction != DirectionType::SELL && ret->OpenClose != OrderOpenCloseType::OPEN) ?
 					PositionDirectionType::PD_SHORT : PositionDirectionType::PD_LONG;
 
-				double cost = pTrade->Price * pTrade->Volume;
-				if (auto pContractInfo = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(ret->InstrumentID()))
-					cost *= pContractInfo->VolumeMultiple;
+				auto pContractInfo = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(ret->InstrumentID());
 
-				pWorkerProc->GetUserPositionContext().UpsertPosition(ret, pd, cost);
+				pWorkerProc->GetUserPositionContext().UpsertPosition(ret, pd, pContractInfo, ret->ExchangeID() == EXCHANGE_SHFE);
 
-				auto pTradeProcessor = (CTPTradeProcessor*)msgProcessor.get();
-				if (pTradeProcessor->DataLoadMask & CTPTradeProcessor::POSITION_DATA_LOADED)
+				auto pProcessor = (CTPProcessor*)msgProcessor.get();
+				if (pProcessor->DataLoadMask & CTPTradeProcessor::POSITION_DATA_LOADED)
 				{
 					if (auto position_ptr = pWorkerProc->GetUserPositionContext().GetPosition(ret->UserID(), ret->InstrumentID(), pd))
 					{

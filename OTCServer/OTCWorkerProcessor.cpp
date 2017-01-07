@@ -36,8 +36,8 @@
  ////////////////////////////////////////////////////////////////////////
 
 OTCWorkerProcessor::OTCWorkerProcessor(const IPricingDataContext_Ptr& pricingCtx) :
-	_pricingNotifers(SessionContainer<ContractKey>::NewInstancePtr()),
-	_tradingDeskNotifers(SessionContainer<ContractKey>::NewInstancePtr()),
+	_pricingNotifers(SessionContainer<ContractKey, ContractKeyHash>::NewInstancePtr()),
+	_tradingDeskNotifers(SessionContainer<ContractKey, ContractKeyHash>::NewInstancePtr()),
 	_otcOrderNotifers(SessionContainer<uint64_t>::NewInstancePtr()),
 	_pricingCtx(pricingCtx), _baseContractStrategyMap(1024),
 	_exchangeStrategySet(1024), _otcStrategySet(1024)
@@ -230,9 +230,8 @@ void OTCWorkerProcessor::TriggerOTCPricing(const StrategyContractDO& strategyDO)
 {
 	if (strategyDO.BidEnabled || strategyDO.AskEnabled)
 	{
-		static const int quantity = 1;
 		auto pricingCtx = PricingDataContext();
-		if (auto pricingDO = PricingUtility::Pricing(&quantity, strategyDO, *pricingCtx))
+		if (auto pricingDO = PricingUtility::Pricing(&strategyDO.BidQT, strategyDO, *pricingCtx))
 		{
 			pricingCtx->GetPricingDataDOMap()->upsert(strategyDO, [&pricingDO](IPricingDO_Ptr& pricing_ptr) { pricing_ptr = pricingDO; }, pricingDO);
 

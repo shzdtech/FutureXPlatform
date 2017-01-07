@@ -22,20 +22,6 @@ public:
 	bool OnSessionClosing(void);
 	void QueryPositionAsync(uint currentCnt);
 
-	enum DataLoadType
-	{
-		NO_DATA_LOADED = 0,
-		ORDER_DATA_LOADED = 0x1,
-		TRADE_DATA_LOADED = 0x2,
-		POSITION_DATA_LOADED = 0x4,
-		ACCOUNT_DATA_LOADED = 0x8,
-		EXCHANGE_DATA_LOADED = 0x10,
-		INSTRUMENT_DATA_LOADED = 0x20,
-		ALL_DATA_LOADED = 0xFFFFFFFF,
-	};
-
-	volatile int DataLoadMask;
-
 protected:
 	// lockfree_set<std::string> _updatePositionSet;
 	std::future<void> _updateTask;

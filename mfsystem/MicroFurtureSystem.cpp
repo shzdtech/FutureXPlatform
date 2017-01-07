@@ -285,7 +285,7 @@ MicroFurtureSystem::MicroFurtureSystem()
 	info.cb = sizeof(CR_INSTALL_INFO);
 	info.pszAppName = TEXT("MFSystem");
 	info.pszAppVersion = TEXT("1.0");
-	info.dwFlags |= (CR_INST_ALL_POSSIBLE_HANDLERS & ~CR_INST_SIGINT_HANDLER) | CR_INST_DONT_SEND_REPORT;
+	info.dwFlags |= CR_INST_SEH_EXCEPTION_HANDLER | CR_INST_UNEXPECTED_HANDLER | CR_INST_INVALID_PARAMETER_HANDLER | CR_INST_DONT_SEND_REPORT;
 	info.pszErrorReportSaveDir = TEXT("./CrashRpt");
 	if (EXIT_SUCCESS != crInstall(&info))
 	{

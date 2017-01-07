@@ -29,6 +29,20 @@ public:
 	virtual bool ConnectedToServer(void);
 	CTPRawAPI_Ptr& RawAPI_Ptr(void);
 
+	enum DataLoadType
+	{
+		NO_DATA_LOADED = 0,
+		ORDER_DATA_LOADED = 0x1,
+		TRADE_DATA_LOADED = 0x2,
+		POSITION_DATA_LOADED = 0x4,
+		ACCOUNT_DATA_LOADED = 0x8,
+		EXCHANGE_DATA_LOADED = 0x10,
+		INSTRUMENT_DATA_LOADED = 0x20,
+		ALL_DATA_LOADED = 0xFFFFFFFF,
+	};
+
+	volatile int DataLoadMask;
+
 public:
 	uint32_t LoginSerialId;
 	static std::chrono::seconds DefaultQueryTime;

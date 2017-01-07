@@ -25,7 +25,7 @@ data_buffer PBPricingDataSerializer::Serialize(const dataobj_ptr& abstractDO)
 	using namespace Micro::Future::Message::Business;
 
 	PBPricingData PB;
-	auto pDO = (PricingDO*)abstractDO.get();
+	auto pDO = (IPricingDO*)abstractDO.get();
 	FillPBHeader(PB, pDO);
 
 	PB.set_exchange(pDO->ExchangeID());

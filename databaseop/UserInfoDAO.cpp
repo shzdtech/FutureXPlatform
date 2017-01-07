@@ -74,24 +74,23 @@ std::shared_ptr<UserInfoDO> UserInfoDAO::FindUser(const std::string& userName)
 
 		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
 
-		while (rs->next())
+		if (rs->next())
 		{
-			auto userDO = new UserInfoDO;
-			ret.reset(userDO);
-			userDO->UserId = rs->getString(1);
-			userDO->UserName = userName;
-			userDO->Password = rs->getString(2);
-			userDO->FirstName = rs->getString(3);
-			userDO->LastName = rs->getString(4);
-			//userDO->Company = rs->getString(5);
+			ret = std::make_shared<UserInfoDO>();
+			ret->UserId = rs->getString(1);
+			ret->UserName = userName;
+			ret->Password = rs->getString(2);
+			ret->FirstName = rs->getString(3);
+			ret->LastName = rs->getString(4);
+			//ret->Company = rs->getString(5);
 			bool allowTrading = rs->getBoolean(5);
-			userDO->Permission = allowTrading ? ALLOW_TRADING : 0;
-			userDO->Email = rs->getString(6);
-			userDO->Gender = (GenderType)rs->getInt(7);
-			userDO->ContactNum = rs->getString(8);
-			userDO->Address = rs->getString(9);
-			userDO->ZipCode = rs->getString(10);
-			userDO->Role = rs->getInt(11);
+			ret->Permission = allowTrading ? ALLOW_TRADING : 0;
+			ret->Email = rs->getString(6);
+			ret->Gender = (GenderType)rs->getInt(7);
+			ret->ContactNum = rs->getString(8);
+			ret->Address = rs->getString(9);
+			ret->ZipCode = rs->getString(10);
+			ret->Role = rs->getInt(11);
 		}
 	}
 	catch (sql::SQLException& sqlEx)

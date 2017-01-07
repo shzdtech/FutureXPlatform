@@ -287,6 +287,9 @@
     <ClCompile Include="CTPAccountTradeServiceFactory.cpp">
       <Filter>源文件\CTPHandler\SharedAccount</Filter>
     </ClCompile>
+    <ClCompile Include="CTPRawAPI.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="CTPServer.rc">

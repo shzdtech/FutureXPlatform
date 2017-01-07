@@ -55,8 +55,7 @@ OrderDO_Ptr OTCOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 			IPricingDO_Ptr pricingDO_ptr;
 			if (!_pricingCtx->GetPricingDataDOMap()->find(orderInfo, pricingDO_ptr))
 			{
-				static const int quantity = 1;
-				pricingDO_ptr = PricingUtility::Pricing(&quantity, orderInfo, *_pricingCtx);
+				pricingDO_ptr = PricingUtility::Pricing(&pStrategy->BidQT, orderInfo, *_pricingCtx);
 			}
 
 			if (pricingDO_ptr)
@@ -95,8 +94,7 @@ void OTCOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 		IPricingDO_Ptr pricingDO_ptr;
 		if (!_pricingCtx->GetPricingDataDOMap()->find(strategyDO, pricingDO_ptr))
 		{
-			static const int quantity = 1;
-			pricingDO_ptr = PricingUtility::Pricing(&quantity, strategyDO, *_pricingCtx);
+			pricingDO_ptr = PricingUtility::Pricing(&strategyDO.BidQT, strategyDO, *_pricingCtx);
 		}
 
 		for (auto& it : lt)
