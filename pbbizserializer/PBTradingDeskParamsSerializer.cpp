@@ -57,6 +57,12 @@ data_buffer PBTradingDeskParamsSerializer::Serialize(const dataobj_ptr& abstract
 	pTheoData->set_asktheta(pDO->TheoData.TAsk().Theta);
 	pTheoData->set_askvega(pDO->TheoData.TAsk().Vega);
 
+	if (pDO->TheoDataTemp)
+	{
+		auto pTempTheoData = PB.mutable_theodatatemp();
+		pTempTheoData->set_askvolatility(pDO->TheoDataTemp->TAsk().Volatility);
+		pTempTheoData->set_bidvolatility(pDO->TheoDataTemp->TBid().Volatility);
+	}
 
 	SerializeWithReturn(PB);
 }

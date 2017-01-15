@@ -120,7 +120,7 @@ dataobj_ptr PBStrategySerializer::Deserialize(const data_buffer& rawdata)
 
 	if (!pbstrtg.volmodel().empty())
 	{
-		sdo->IVModel = std::make_shared<ModelParamsDO>(pbstrtg.volmodel(), "", "");
+		sdo->VolModel = std::make_shared<ModelParamsDO>(pbstrtg.volmodel(), "", "");
 	}
 
 	return sdo;

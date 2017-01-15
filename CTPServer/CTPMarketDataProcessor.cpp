@@ -52,7 +52,7 @@ int CTPMarketDataProcessor::InitializeServer(const std::string& flowId, const st
 			fs::create_directories(localpath, ec);
 		}
 
-		localpath /= flowId + "_" + std::to_string(std::time(nullptr)) + "_";
+		localpath /= flowId + "_" + std::to_string(std::time(nullptr)) + "_" + std::to_string(std::rand()) + "_";
 
 		_rawAPI->CreateMdApi(localpath.string().data());
 		_rawAPI->MdAPI->RegisterSpi(this);

@@ -58,5 +58,5 @@ dataobj_ptr OTCUpdateContractParam::HandleRequest(const uint32_t serialId, const
 		}
 	}
 
-	return std::make_shared<ResultDO>(serialId);
+	return std::make_shared<ResultDO>();
 }

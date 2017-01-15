@@ -54,7 +54,6 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const uint32_t serialId, const datao
 			CThostFtdcQryInvestorPositionField req{};
 			int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryInvestorPosition(&req, serialId);
 			CTPUtility::CheckReturnError(iRet);
-
 			std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
 			positionMap = pWorkerProc->GetUserPositionContext().GetPositionsByUser(userid);
 		}
@@ -139,36 +138,17 @@ dataobj_ptr CTPQueryPosition::HandleResponse(const uint32_t serialId, const para
 	{
 		if (ret->ExchangeID() == EXCHANGE_SHFE)
 		{
-			auto position_ptr = pWorkerProc->GetUserPositionContext().GetPosition(session->getUserInfo().getUserId(), ret->InstrumentID(), ret->Direction);
 			if (pData->PositionDate == THOST_FTDC_PSD_Today)
 			{
-				if (position_ptr)
-				{
-					//ret->YdPosition = position_ptr->YdPosition;
-					ret->YdInitPosition = position_ptr->YdInitPosition;
-					ret->YdCost = position_ptr->YdCost;
-					ret->YdProfit = position_ptr->YdProfit;
-				}
-				pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo().getUserId(), *ret);
+				ret = pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo().getUserId(), *ret, false, false);
 			}
 			else
 			{
-				if (position_ptr)
-				{
-					//position_ptr->YdPosition = ret->YdPosition;
-					position_ptr->YdInitPosition = ret->YdInitPosition;
-					position_ptr->YdCost = ret->YdCost;
-					position_ptr->YdProfit = ret->YdProfit;
-				}
-				else
-				{
-					position_ptr = ret;
-				}
-				pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo().getUserId(), *position_ptr);
+				ret = pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo().getUserId(), *ret, true, false);
 			}
 		}
 		else
-			pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo().getUserId(), *ret, UserPositionContext::ADJUST_HISTORY);
+			ret = pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo().getUserId(), *ret, false, true);
 	}
 
 	return nullptr;

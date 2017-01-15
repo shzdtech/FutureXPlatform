@@ -1124,7 +1124,7 @@ class PBTradingDeskOptionParams : public ::google::protobuf::Message {
   ::std::string* release_contract();
   void set_allocated_contract(::std::string* contract);
 
-  // optional .Micro.Future.Message.Business.PBOptionData MarketData = 4;
+  // optional .Micro.Future.Message.Business.PBOptionData marketData = 4;
   bool has_marketdata() const;
   void clear_marketdata();
   static const int kMarketDataFieldNumber = 4;
@@ -1133,7 +1133,7 @@ class PBTradingDeskOptionParams : public ::google::protobuf::Message {
   ::Micro::Future::Message::Business::PBOptionData* release_marketdata();
   void set_allocated_marketdata(::Micro::Future::Message::Business::PBOptionData* marketdata);
 
-  // optional .Micro.Future.Message.Business.PBOptionData TheoData = 5;
+  // optional .Micro.Future.Message.Business.PBOptionData theoData = 5;
   bool has_theodata() const;
   void clear_theodata();
   static const int kTheoDataFieldNumber = 5;
@@ -1141,6 +1141,15 @@ class PBTradingDeskOptionParams : public ::google::protobuf::Message {
   ::Micro::Future::Message::Business::PBOptionData* mutable_theodata();
   ::Micro::Future::Message::Business::PBOptionData* release_theodata();
   void set_allocated_theodata(::Micro::Future::Message::Business::PBOptionData* theodata);
+
+  // optional .Micro.Future.Message.Business.PBOptionData theoDataTemp = 6;
+  bool has_theodatatemp() const;
+  void clear_theodatatemp();
+  static const int kTheoDataTempFieldNumber = 6;
+  const ::Micro::Future::Message::Business::PBOptionData& theodatatemp() const;
+  ::Micro::Future::Message::Business::PBOptionData* mutable_theodatatemp();
+  ::Micro::Future::Message::Business::PBOptionData* release_theodatatemp();
+  void set_allocated_theodatatemp(::Micro::Future::Message::Business::PBOptionData* theodatatemp);
 
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.PBTradingDeskOptionParams)
  private:
@@ -1152,6 +1161,7 @@ class PBTradingDeskOptionParams : public ::google::protobuf::Message {
   ::google::protobuf::internal::ArenaStringPtr contract_;
   ::Micro::Future::Message::Business::PBOptionData* marketdata_;
   ::Micro::Future::Message::Business::PBOptionData* theodata_;
+  ::Micro::Future::Message::Business::PBOptionData* theodatatemp_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
@@ -5974,7 +5984,7 @@ inline void PBTradingDeskOptionParams::set_allocated_contract(::std::string* con
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBTradingDeskOptionParams.contract)
 }
 
-// optional .Micro.Future.Message.Business.PBOptionData MarketData = 4;
+// optional .Micro.Future.Message.Business.PBOptionData marketData = 4;
 inline bool PBTradingDeskOptionParams::has_marketdata() const {
   return !_is_default_instance_ && marketdata_ != NULL;
 }
@@ -5983,7 +5993,7 @@ inline void PBTradingDeskOptionParams::clear_marketdata() {
   marketdata_ = NULL;
 }
 inline const ::Micro::Future::Message::Business::PBOptionData& PBTradingDeskOptionParams::marketdata() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBTradingDeskOptionParams.MarketData)
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBTradingDeskOptionParams.marketData)
   return marketdata_ != NULL ? *marketdata_ : *default_instance_->marketdata_;
 }
 inline ::Micro::Future::Message::Business::PBOptionData* PBTradingDeskOptionParams::mutable_marketdata() {
@@ -5991,11 +6001,11 @@ inline ::Micro::Future::Message::Business::PBOptionData* PBTradingDeskOptionPara
   if (marketdata_ == NULL) {
     marketdata_ = new ::Micro::Future::Message::Business::PBOptionData;
   }
-  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBTradingDeskOptionParams.MarketData)
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBTradingDeskOptionParams.marketData)
   return marketdata_;
 }
 inline ::Micro::Future::Message::Business::PBOptionData* PBTradingDeskOptionParams::release_marketdata() {
-  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBTradingDeskOptionParams.MarketData)
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBTradingDeskOptionParams.marketData)
   
   ::Micro::Future::Message::Business::PBOptionData* temp = marketdata_;
   marketdata_ = NULL;
@@ -6009,10 +6019,10 @@ inline void PBTradingDeskOptionParams::set_allocated_marketdata(::Micro::Future:
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBTradingDeskOptionParams.MarketData)
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBTradingDeskOptionParams.marketData)
 }
 
-// optional .Micro.Future.Message.Business.PBOptionData TheoData = 5;
+// optional .Micro.Future.Message.Business.PBOptionData theoData = 5;
 inline bool PBTradingDeskOptionParams::has_theodata() const {
   return !_is_default_instance_ && theodata_ != NULL;
 }
@@ -6021,7 +6031,7 @@ inline void PBTradingDeskOptionParams::clear_theodata() {
   theodata_ = NULL;
 }
 inline const ::Micro::Future::Message::Business::PBOptionData& PBTradingDeskOptionParams::theodata() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBTradingDeskOptionParams.TheoData)
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBTradingDeskOptionParams.theoData)
   return theodata_ != NULL ? *theodata_ : *default_instance_->theodata_;
 }
 inline ::Micro::Future::Message::Business::PBOptionData* PBTradingDeskOptionParams::mutable_theodata() {
@@ -6029,11 +6039,11 @@ inline ::Micro::Future::Message::Business::PBOptionData* PBTradingDeskOptionPara
   if (theodata_ == NULL) {
     theodata_ = new ::Micro::Future::Message::Business::PBOptionData;
   }
-  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBTradingDeskOptionParams.TheoData)
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBTradingDeskOptionParams.theoData)
   return theodata_;
 }
 inline ::Micro::Future::Message::Business::PBOptionData* PBTradingDeskOptionParams::release_theodata() {
-  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBTradingDeskOptionParams.TheoData)
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBTradingDeskOptionParams.theoData)
   
   ::Micro::Future::Message::Business::PBOptionData* temp = theodata_;
   theodata_ = NULL;
@@ -6047,7 +6057,45 @@ inline void PBTradingDeskOptionParams::set_allocated_theodata(::Micro::Future::M
   } else {
     
   }
-  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBTradingDeskOptionParams.TheoData)
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBTradingDeskOptionParams.theoData)
+}
+
+// optional .Micro.Future.Message.Business.PBOptionData theoDataTemp = 6;
+inline bool PBTradingDeskOptionParams::has_theodatatemp() const {
+  return !_is_default_instance_ && theodatatemp_ != NULL;
+}
+inline void PBTradingDeskOptionParams::clear_theodatatemp() {
+  if (GetArenaNoVirtual() == NULL && theodatatemp_ != NULL) delete theodatatemp_;
+  theodatatemp_ = NULL;
+}
+inline const ::Micro::Future::Message::Business::PBOptionData& PBTradingDeskOptionParams::theodatatemp() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBTradingDeskOptionParams.theoDataTemp)
+  return theodatatemp_ != NULL ? *theodatatemp_ : *default_instance_->theodatatemp_;
+}
+inline ::Micro::Future::Message::Business::PBOptionData* PBTradingDeskOptionParams::mutable_theodatatemp() {
+  
+  if (theodatatemp_ == NULL) {
+    theodatatemp_ = new ::Micro::Future::Message::Business::PBOptionData;
+  }
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBTradingDeskOptionParams.theoDataTemp)
+  return theodatatemp_;
+}
+inline ::Micro::Future::Message::Business::PBOptionData* PBTradingDeskOptionParams::release_theodatatemp() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBTradingDeskOptionParams.theoDataTemp)
+  
+  ::Micro::Future::Message::Business::PBOptionData* temp = theodatatemp_;
+  theodatatemp_ = NULL;
+  return temp;
+}
+inline void PBTradingDeskOptionParams::set_allocated_theodatatemp(::Micro::Future::Message::Business::PBOptionData* theodatatemp) {
+  delete theodatatemp_;
+  theodatatemp_ = theodatatemp;
+  if (theodatatemp) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBTradingDeskOptionParams.theoDataTemp)
 }
 
 // -------------------------------------------------------------------

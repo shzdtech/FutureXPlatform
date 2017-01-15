@@ -9,12 +9,15 @@
 #include <map>
 #include <atomic>
 #include <iostream>
+#include <future>
 #include "../message/SessionContainer.h"
 #include "../utility/autofillmap.h"
 #include "../utility/epsdouble.h"
 #include "../utility/stringutility.h"
 #include "../litelogger/LiteLogger.h"
 #include "../dataobject/PricingContract.h"
+
+std::future<void> testTask;
 
 void testCollection()
 {
@@ -111,10 +114,22 @@ void test_stringutility()
 	stringutility::split("035467:123", first, second);
 }
 
+void sleepTask()
+{
+	std::this_thread::sleep_for(std::chrono::seconds(10));
+}
+
+void testTasks()
+{
+	testTask = std::async(std::launch::async, sleepTask);
+	testTask = std::async(std::launch::async, sleepTask);
+}
+
 int _tmain(int argc, _TCHAR* argv[])
 {
 	try
 	{
+		testTasks();
 		test_stringutility();
 		testCollection();
 		testAutoFillMap();

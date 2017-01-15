@@ -22,8 +22,6 @@ public:
 
 	~CTPOTCOptionWorkerProcessor();
 
-	virtual void TriggerOTCPricing(const StrategyContractDO& strategyDO);
-
 	virtual ProductType GetContractProductType() const;
 
 	virtual const std::vector<ProductType>& GetStrategyProductTypes() const;

@@ -62,5 +62,5 @@ dataobj_ptr OTCUpdateModelParams::HandleRequest(const uint32_t serialId, const d
 		}
 	}
 
-	return std::make_shared<ResultDO>(serialId);
+	return std::make_shared<ResultDO>();
 }

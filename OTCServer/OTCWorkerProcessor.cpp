@@ -153,10 +153,9 @@ void OTCWorkerProcessor::AddContractToMonitor(const ContractKey& contractId)
 int OTCWorkerProcessor::SubscribeStrategy(const StrategyContractDO& strategyDO)
 {
 	//subscribe market data from CTP
-	ContractKey ck(strategyDO);
 	if (strategyDO.IsOTC())
 	{
-		_otcStrategySet.insert(ck);
+		_otcStrategySet.insert(strategyDO);
 		for (auto& bsContract : strategyDO.PricingContracts)
 		{
 			if (!bsContract.IsOTC())
@@ -169,7 +168,7 @@ int OTCWorkerProcessor::SubscribeStrategy(const StrategyContractDO& strategyDO)
 
 				if (auto setptr = _baseContractStrategyMap.find(bsContract))
 				{
-					setptr->emplace(ck);
+					setptr->emplace(strategyDO);
 				}
 
 				SubscribeMarketData(bsContract);
@@ -178,9 +177,9 @@ int OTCWorkerProcessor::SubscribeStrategy(const StrategyContractDO& strategyDO)
 	}
 	else
 	{
-		AddContractToMonitor(ck);
-		_exchangeStrategySet.insert(ck);
-		SubscribeMarketData(ck);
+		AddContractToMonitor(strategyDO);
+		_exchangeStrategySet.insert(strategyDO);
+		SubscribeMarketData(strategyDO);
 		for (auto& bsContract : strategyDO.PricingContracts)
 		{
 			if (!bsContract.IsOTC())
@@ -262,9 +261,10 @@ void OTCWorkerProcessor::TriggerTadingDeskParams(const StrategyContractDO & stra
 
 void OTCWorkerProcessor::TriggerUpdating(const MarketDataDO& mdDO)
 {
-	auto pStrategyMap = PricingDataContext()->GetStrategyMap();
-	if (auto strategySetPtr = _baseContractStrategyMap.find(mdDO))
+	std::shared_ptr<std::set<ContractKey>> strategySetPtr;
+	if (_baseContractStrategyMap.find(mdDO, strategySetPtr))
 	{
+		auto pStrategyMap = PricingDataContext()->GetStrategyMap();
 		for (auto& contractID : *strategySetPtr)
 		{
 			if (auto pStrategyDO = pStrategyMap->tryfind(contractID))

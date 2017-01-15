@@ -76,17 +76,9 @@ dataobj_ptr CTPTradeLoginHandler::HandleResponse(const uint32_t serialId, const 
 	std::strncpy(reqsettle.InvestorID, session->getUserInfo().getInvestorId().data(), sizeof(reqsettle.InvestorID));
 	((CTPRawAPI*)rawAPI)->TrdAPI->ReqSettlementInfoConfirm(&reqsettle, 0);
 
-	//if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
-	//{
-	//	auto& userInfo = session->getUserInfo();
-	//	auto positionMap = pWorkerProc->GetUserPositionContext().GetPositionsByUser(userInfo.getUserId());
-	//	if (positionMap.empty())
-	//	{
-	//		CThostFtdcQryInvestorPositionField req{};
-	//		((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryInvestorPosition(&req, serialId);
-	//		std::this_thread::sleep_for(std::chrono::seconds(1));
-	//	}
-	//}
+	CThostFtdcQryInvestorPositionField req{};
+	((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryInvestorPosition(&req, -1);
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 
 	return ret;
 }

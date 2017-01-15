@@ -19,15 +19,17 @@
 #include "../dataobject/TypedefDO.h"
 #include "../dataobject/ResultDO.h"
 #include "../pricingengine/IPricingDataContext.h"
-////////////////////////////////////////////////////////////////////////
-// Name:       OTCUpdateUserParam::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
-// Purpose:    Implementation of OTCUpdateUserParam::HandleRequest()
-// Parameters:
-// - reqDO
-// - rawAPI
-// - session
-// Return:     dataobj_ptr
-////////////////////////////////////////////////////////////////////////
+
+
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       OTCUpdateUserParam::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
+ // Purpose:    Implementation of OTCUpdateUserParam::HandleRequest()
+ // Parameters:
+ // - reqDO
+ // - rawAPI
+ // - session
+ // Return:     dataobj_ptr
+ ////////////////////////////////////////////////////////////////////////
 
 dataobj_ptr OTCUpdateUserParam::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
@@ -52,15 +54,11 @@ dataobj_ptr OTCUpdateUserParam::HandleRequest(const uint32_t serialId, const dat
 				auto it = strategyMap->find(userConDO);
 				if (it != strategyMap->end())
 				{
-					OnResponseProcMacro(
-						msgProcessor,
-						MSG_ID_RTN_PRICING,
-						serialId,
-						&it->second);
+					OnResponseProcMacro(msgProcessor, MSG_ID_RTN_PRICING, serialId, &it->second);
 				}
 			}
 		}
 	}
 
-	return std::make_shared<ResultDO>(serialId);
+	return std::make_shared<ResultDO>();
 }

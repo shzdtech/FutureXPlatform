@@ -7,7 +7,7 @@
 
 #include "UserPositionContext.h"
 
-void UserPositionContext::UpsertPosition(const std::string& userid, const UserPositionExDO& positionDO, AdjustDirectionType adjustPosition)
+UserPositionExDO_Ptr UserPositionContext::UpsertPosition(const std::string& userid, const UserPositionExDO& positionDO, bool updateYdPosition, bool closeYdFirst)
 {
 	if (!_userPositionMap.contains(userid))
 		_userPositionMap.insert(userid, std::move(cuckoohashmap_wrapper<std::pair<std::string, int>,
@@ -21,51 +21,54 @@ void UserPositionContext::UpsertPosition(const std::string& userid, const UserPo
 	newPosition_Ptr->CloseAmount = 0;
 	newPosition_Ptr->CloseVolume = 0;
 
-	_userPositionMap.update_fn(userid, [&newPosition_Ptr, adjustPosition](cuckoohashmap_wrapper<std::pair<std::string, int>,
+	_userPositionMap.update_fn(userid, [&newPosition_Ptr, closeYdFirst, updateYdPosition](cuckoohashmap_wrapper<std::pair<std::string, int>,
 		UserPositionExDO_Ptr, pairhash<std::string, int>>&positionMap)
 	{
 		positionMap.map()->upsert(std::pair<std::string, int>(newPosition_Ptr->InstrumentID(), newPosition_Ptr->Direction),
-			[&newPosition_Ptr, adjustPosition](UserPositionExDO_Ptr& position_ptr)
+			[&newPosition_Ptr, closeYdFirst, updateYdPosition](UserPositionExDO_Ptr& position_ptr)
 		{
-			position_ptr->PreSettlementPrice = newPosition_Ptr->PreSettlementPrice;
-			position_ptr->SettlementPrice = newPosition_Ptr->SettlementPrice;
-			position_ptr->CloseProfit = newPosition_Ptr->CloseProfit;
-			position_ptr->CashIn = newPosition_Ptr->CashIn;
-			position_ptr->UseMargin = newPosition_Ptr->UseMargin;
-			position_ptr->TdCost = newPosition_Ptr->TdCost;
-			position_ptr->TdProfit = newPosition_Ptr->TdProfit;
-			position_ptr->YdCost = newPosition_Ptr->YdCost;
-			position_ptr->YdProfit = newPosition_Ptr->YdProfit;
-
-			if (adjustPosition < 0 &&
-				position_ptr->TradingDay == newPosition_Ptr->TradingDay &&
-				position_ptr->YdInitPosition != newPosition_Ptr->YdInitPosition &&
-				position_ptr->YdInitPosition > 0)
+			if (updateYdPosition)
 			{
-				int delta = position_ptr->CloseVolume - newPosition_Ptr->YdInitPosition;
-				if (delta > 0)
-				{
-					position_ptr->YdPosition = -newPosition_Ptr->YdInitPosition;
-					position_ptr->TdPosition = position_ptr->OpenVolume - delta;
-				}
-				else
-				{
-					position_ptr->YdPosition = -position_ptr->CloseVolume;
-					position_ptr->TdPosition = position_ptr->OpenVolume;
-				}
+				position_ptr->YdCost = newPosition_Ptr->YdCost;
+				position_ptr->YdProfit = newPosition_Ptr->YdProfit;
+			}
+			else
+			{
+				position_ptr->PreSettlementPrice = newPosition_Ptr->PreSettlementPrice;
+				position_ptr->SettlementPrice = newPosition_Ptr->SettlementPrice;
+				position_ptr->CloseProfit = newPosition_Ptr->CloseProfit;
+				position_ptr->CashIn = newPosition_Ptr->CashIn;
+				position_ptr->UseMargin = newPosition_Ptr->UseMargin;
+				position_ptr->TdCost = newPosition_Ptr->TdCost;
+				position_ptr->TdProfit = newPosition_Ptr->TdProfit;
+			}
 
-				if (position_ptr->LastPosition() < 0)
+			if (position_ptr->TradingDay == newPosition_Ptr->TradingDay &&
+				position_ptr->YdInitPosition != newPosition_Ptr->YdInitPosition &&
+				newPosition_Ptr->YdInitPosition > 0)
+			{
+				position_ptr->YdInitPosition = newPosition_Ptr->YdInitPosition;
+
+				if (closeYdFirst)
 				{
-					auto deltaPos = -position_ptr->LastPosition();
-					position_ptr->YdPosition += deltaPos;
-					position_ptr->TdPosition -= deltaPos;
+					if (position_ptr->CloseVolume > position_ptr->YdInitPosition)
+					{
+						position_ptr->YdPosition = -position_ptr->YdInitPosition;
+						position_ptr->TdPosition = position_ptr->OpenVolume - (position_ptr->CloseVolume - position_ptr->YdInitPosition);
+					}
+					else
+					{
+						position_ptr->YdPosition = -position_ptr->CloseVolume;
+						position_ptr->TdPosition = position_ptr->OpenVolume;
+					}
 				}
 			}
 
-			position_ptr->YdInitPosition = newPosition_Ptr->YdInitPosition;
-
+			*newPosition_Ptr = *position_ptr;
 		}, newPosition_Ptr);
 	});
+
+	return newPosition_Ptr;
 }
 
 void UserPositionContext::Clear(void)
@@ -112,7 +115,7 @@ bool UserPositionContext::RemovePosition(const std::string & userID, const std::
 	return ret;
 }
 
-void UserPositionContext::UpsertPosition(const TradeRecordDO_Ptr& tradeDO, PositionDirectionType pd, InstrumentDO* pContractInfo, bool hasCloseToday)
+UserPositionExDO_Ptr UserPositionContext::UpsertPosition(const TradeRecordDO_Ptr& tradeDO, PositionDirectionType pd, InstrumentDO* pContractInfo, bool closeYdFirst)
 {
 	if (!_userPositionMap.contains(tradeDO->UserID()))
 		_userPositionMap.insert(tradeDO->UserID(), std::move(cuckoohashmap_wrapper<std::pair<std::string, int>,
@@ -136,6 +139,9 @@ void UserPositionContext::UpsertPosition(const TradeRecordDO_Ptr& tradeDO, Posit
 	}
 	else
 	{
+		positionDO_Ptr->CloseVolume = tradeDO->Volume;
+		positionDO_Ptr->CloseAmount = cost;
+
 		if (tradeDO->OpenClose == OrderOpenCloseType::CLOSETODAY)
 		{
 			positionDO_Ptr->TdPosition = -tradeDO->Volume;
@@ -144,16 +150,13 @@ void UserPositionContext::UpsertPosition(const TradeRecordDO_Ptr& tradeDO, Posit
 		{
 			positionDO_Ptr->YdPosition = -tradeDO->Volume;
 		}
-
-		positionDO_Ptr->CloseVolume = tradeDO->Volume;
-		positionDO_Ptr->CloseAmount = cost;
 	}
 
-	_userPositionMap.update_fn(tradeDO->UserID(), [&tradeDO, &positionDO_Ptr, hasCloseToday](cuckoohashmap_wrapper<std::pair<std::string, int>,
+	_userPositionMap.update_fn(tradeDO->UserID(), [&tradeDO, &positionDO_Ptr, pContractInfo, closeYdFirst](cuckoohashmap_wrapper<std::pair<std::string, int>,
 		UserPositionExDO_Ptr, pairhash<std::string, int>>&positionMap)
 	{
 		positionMap.map()->upsert(std::pair<std::string, int>(tradeDO->InstrumentID(), positionDO_Ptr->Direction),
-			[&tradeDO, &positionDO_Ptr, hasCloseToday](UserPositionExDO_Ptr& position_ptr)
+			[&tradeDO, &positionDO_Ptr, pContractInfo, closeYdFirst](UserPositionExDO_Ptr& position_ptr)
 		{
 			if (tradeDO->OpenClose == OrderOpenCloseType::OPEN)
 			{
@@ -165,51 +168,47 @@ void UserPositionContext::UpsertPosition(const TradeRecordDO_Ptr& tradeDO, Posit
 			}
 			else
 			{
-				double tdMean = position_ptr->OpenVolume ? position_ptr->OpenAmount / position_ptr->OpenVolume : 0;
+				position_ptr->CloseVolume += positionDO_Ptr->CloseVolume;
+				position_ptr->CloseAmount += positionDO_Ptr->CloseAmount;
 
-				if (hasCloseToday)
+				if (closeYdFirst)
 				{
-					if (tradeDO->OpenClose == OrderOpenCloseType::CLOSETODAY)
+					if (position_ptr->CloseVolume > position_ptr->YdInitPosition)
 					{
-						position_ptr->TdPosition -= positionDO_Ptr->CloseVolume;
-						position_ptr->TdCost = tdMean * position_ptr->TdPosition;
+						position_ptr->YdPosition = -position_ptr->YdInitPosition;
+						position_ptr->TdPosition = position_ptr->OpenVolume - (position_ptr->CloseVolume - position_ptr->YdInitPosition);
 					}
 					else
 					{
-						position_ptr->YdPosition -= positionDO_Ptr->CloseVolume;
-						position_ptr->YdCost = position_ptr->PreSettlementPrice * position_ptr->LastPosition();
+						position_ptr->YdPosition = -position_ptr->CloseVolume;
+						position_ptr->TdPosition = position_ptr->OpenVolume;
 					}
 				}
 				else
 				{
-					if (position_ptr->LastPosition() > 0)
+					if (tradeDO->OpenClose == OrderOpenCloseType::CLOSETODAY)
 					{
-						auto deltaPos = positionDO_Ptr->CloseVolume - position_ptr->LastPosition();
-						if (deltaPos > 0)
-						{
-							position_ptr->TdPosition -= deltaPos;
-							position_ptr->TdCost = tdMean * position_ptr->TdPosition;
-							position_ptr->YdPosition -= position_ptr->LastPosition();
-							position_ptr->YdCost = 0;
-						}
-						else
-						{
-							position_ptr->YdPosition -= positionDO_Ptr->CloseVolume;
-							position_ptr->YdCost = position_ptr->PreSettlementPrice * position_ptr->LastPosition();
-						}
+						position_ptr->TdPosition -= positionDO_Ptr->CloseVolume;
 					}
 					else
 					{
-						position_ptr->TdPosition -= positionDO_Ptr->CloseVolume;
-						position_ptr->TdCost = tdMean * position_ptr->TdPosition;
+						position_ptr->YdPosition -= positionDO_Ptr->CloseVolume;
 					}
 				}
 
-				position_ptr->CloseVolume += positionDO_Ptr->CloseVolume;
-				position_ptr->CloseAmount += positionDO_Ptr->CloseAmount;
+				double tdmean = position_ptr->OpenVolume ? position_ptr->OpenAmount / position_ptr->OpenVolume : 0;
+				position_ptr->TdCost = tdmean * position_ptr->TdPosition;
+				position_ptr->YdCost = position_ptr->PreSettlementPrice * position_ptr->LastPosition();
+				if (pContractInfo)
+					position_ptr->YdCost *= pContractInfo->VolumeMultiple;
 			}
+
+			*positionDO_Ptr = *position_ptr;
+
 		}, positionDO_Ptr);
 	});
+
+	return positionDO_Ptr;
 }
 
 bool UserPositionContext::FreezePosition(const OrderRequestDO& orderRequestDO, int& todayVol, int& ydVol)

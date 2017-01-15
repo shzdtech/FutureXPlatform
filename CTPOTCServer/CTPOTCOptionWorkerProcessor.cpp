@@ -31,27 +31,6 @@ CTPOTCOptionWorkerProcessor::~CTPOTCOptionWorkerProcessor()
 	LOG_DEBUG << __FUNCTION__;
 }
 
-void CTPOTCOptionWorkerProcessor::TriggerOTCPricing(const StrategyContractDO& strategyDO)
-{
-	if (strategyDO.BidEnabled || strategyDO.AskEnabled)
-	{
-		if (auto pricingCtx = PricingDataContext())
-		{
-			MarketDataDO mDO;
-			if (pricingCtx->GetMarketDataMap()->find(strategyDO.PricingContracts[0].InstrumentID(), mDO))
-			{
-				if (auto pricingDO = PricingUtility::Pricing(&mDO, strategyDO, *pricingCtx))
-				{
-					_pricingNotifers->foreach(strategyDO, [this, pricingDO](const IMessageSession_Ptr& session_ptr)
-					{ SendDataObject(session_ptr, MSG_ID_RTN_PRICING, 0, pricingDO); }
-					);
-				}
-			}
-		}
-	}
-}
-
-
 ProductType CTPOTCOptionWorkerProcessor::GetContractProductType() const
 {
 	return ProductType::PRODUCT_OTC_OPTION;
@@ -98,9 +77,10 @@ void CTPOTCOptionWorkerProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketData
 				if (auto pStrategyDO = PricingDataContext()->GetStrategyMap()->tryfind(mDO))
 				{
 					TriggerTadingDeskParams(*pStrategyDO);
-					TriggerOTCUpdating(*pStrategyDO);
 				}
 			}
+
+			TriggerUpdating(mDO);
 		}
 	}
 }

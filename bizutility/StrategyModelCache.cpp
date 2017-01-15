@@ -1,8 +1,10 @@
 #include "StrategyModelCache.h"
 #include "../utility/autofillmap.h"
+#include "../include/libcuckoo/cuckoohash_map.hh"
 #include "../databaseop/ModelParamsDAO.h"
 
 static autofillmap<ModelKey, ModelParamsDO_Ptr> _modelCache;
+static cuckoohash_map<ModelKey, ModelParamsDO_Ptr, ModelKeyHash> _modelCacheTemp(4);
 StrategyModelCache::static_initializer StrategyModelCache::_static_init;
 
 ModelParamsDO_Ptr StrategyModelCache::FindModel(const ModelKey & key)
@@ -10,6 +12,18 @@ ModelParamsDO_Ptr StrategyModelCache::FindModel(const ModelKey & key)
 	ModelParamsDO_Ptr ret;
 	_modelCache.tryfind(key, ret);
 	return ret;
+}
+
+ModelParamsDO_Ptr StrategyModelCache::FindTempModel(const ModelKey & key)
+{
+	ModelParamsDO_Ptr ret;
+	_modelCacheTemp.find(key, ret);
+	return ret;
+}
+
+bool StrategyModelCache::InsertTempModel(const ModelParamsDO_Ptr& model)
+{
+	return _modelCacheTemp.insert(*model, model);
 }
 
 ModelParamsDO_Ptr StrategyModelCache::FindOrRetrieveModel(const ModelKey & key)
@@ -55,9 +69,15 @@ void StrategyModelCache::Remove(const ModelKey & key)
 	_modelCache.erase(key);
 }
 
+bool StrategyModelCache::RemoveTempModel(const ModelKey & key)
+{
+	return _modelCacheTemp.erase(key);
+}
+
 void StrategyModelCache::Clear(void)
 {
 	_modelCache.clear();
+	_modelCacheTemp.clear();
 }
 
 StrategyModelCache::static_initializer::static_initializer()

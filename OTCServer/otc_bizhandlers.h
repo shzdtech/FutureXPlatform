@@ -20,5 +20,6 @@
 #include "OTCNewPortfolio.h"
 #include "OTCUpdateModelParams.h"
 #include "OTCQueryModelParams.h"
+#include "OTCUpdateTempModelParam.h"
 
 #endif

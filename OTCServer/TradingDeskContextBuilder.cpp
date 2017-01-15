@@ -122,7 +122,6 @@ void TradingDeskContextBuilder::LoadStrategy(const IMessageProcessor_Ptr& msgPro
 	{
 		for (auto productType : pWorkerProc->GetStrategyProductTypes())
 		{
-			auto& models = StrategyModelCache::ModelCache();
 			auto& userid = session->getUserInfo().getUserId();
 
 			auto strategyMap = pWorkerProc->PricingDataContext()->GetStrategyMap();

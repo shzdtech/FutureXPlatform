@@ -24,16 +24,9 @@
 class ORDERMGR_CLASS_EXPORT UserPositionContext
 {
 public:
-public:
-	enum AdjustDirectionType
-	{
-		ADJUST_HISTORY = -1,
-		NO_ADJUSTMENT = 0,
-		ADJUST_TODAY = 1
-	};
+	UserPositionExDO_Ptr UpsertPosition(const std::string& userId, const UserPositionExDO& positionDO, bool updateYdPosition = false, bool closeYdFirst = false);
 
-public:
-	void UpsertPosition(const std::string& userId, const UserPositionExDO& positionDO, AdjustDirectionType adjustPosition = NO_ADJUSTMENT);
+	UserPositionExDO_Ptr UpsertPosition(const TradeRecordDO_Ptr & tradeDO, PositionDirectionType pd, InstrumentDO* pContractInfo, bool closeYdFirst = false);
 
 	void Clear(void);
 
@@ -46,8 +39,6 @@ public:
 	UserPositionExDO_Ptr GetPosition(const std::string& userID, const std::string& instumentID, PositionDirectionType direction);
 
 	bool RemovePosition(const std::string & userID, const std::string & instumentID, PositionDirectionType direction);
-
-	void UpsertPosition(const TradeRecordDO_Ptr & tradeDO, PositionDirectionType pd, InstrumentDO* pContractInfo, bool hasCloseToday = false);
 
 	bool FreezePosition(const OrderRequestDO & orderRequestDO, int& todayVol, int& ydVol);
 

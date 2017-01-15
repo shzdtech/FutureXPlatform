@@ -41,7 +41,14 @@ class ModelParamsDO : public ModelKey, public dataobjectbase
 public:
 	ModelParamsDO() = default;
 
-	ModelParamsDO(const ModelKey& modelKey) : ModelKey(modelKey) {}
+	ModelParamsDO(const ModelParamsDO& modelParams)
+	{
+		this->InstanceName = modelParams.InstanceName;
+		this->_userID = modelParams._userID;
+		this->Model = modelParams.Model;
+		this->ModelAim = modelParams.ModelAim;
+		this->Params = modelParams.Params;
+	}
 
 	ModelParamsDO(const std::string& instanceName, const std::string& modelType, const std::string& userID)
 		: ModelKey(instanceName, userID), Model(modelType) {}
@@ -53,6 +60,15 @@ public:
 	std::map<std::string, double> Params;
 
 	std::unique_ptr<ParamsBase> ParsedParams;
+};
+
+class ModelKeyHash
+{
+public:
+	std::size_t operator()(const ModelKey& k) const {
+		static std::hash<std::string> hasher;
+		return hasher(k.InstanceName) ^ hasher(k.UserID());
+	}
 };
 
 typedef std::shared_ptr<ModelParamsDO> ModelParamsDO_Ptr;

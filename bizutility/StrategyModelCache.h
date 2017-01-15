@@ -9,6 +9,10 @@ class BIZUTILITY_CLASS_EXPORT StrategyModelCache
 public:
 	static ModelParamsDO_Ptr FindModel(const ModelKey& key);
 
+	static ModelParamsDO_Ptr FindTempModel(const ModelKey & key);
+
+	static bool InsertTempModel(const ModelParamsDO_Ptr& model);
+
 	static ModelParamsDO_Ptr FindOrRetrieveModel(const ModelKey & key);
 
 	static const std::map<ModelKey, ModelParamsDO_Ptr>& ModelCache();
@@ -16,6 +20,8 @@ public:
 	static vector_ptr<ModelParamsDO_Ptr> FindModelsByUser(const std::string& userId);
 
 	static void Remove(const ModelKey& key);
+
+	static bool RemoveTempModel(const ModelKey& key);
 
 	static void Clear(void);
 

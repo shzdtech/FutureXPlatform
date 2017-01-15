@@ -1,4 +1,5 @@
 #include "OTCOptionPricingParams.h"
+#include "../bizutility/StrategyModelCache.h"
 #include "../dataobject/StrategyContractDO.h"
 #include "../dataobject/TradingDeskOptionParams.h"
 #include "../pricingengine/ComplexAlgoirthmManager.h"
@@ -48,6 +49,20 @@ dataobj_ptr OTCOptionPricingParams::HandleResponse(const uint32_t serialId, cons
 				auto& volBidAsk = ((TDataObject<std::pair<double, double>>*)result.get())->Data;
 				ret->TheoData.TBid().Volatility = volBidAsk.first;
 				ret->TheoData.TAsk().Volatility = volBidAsk.second;
+
+				// Temp Volatility Model
+				if (auto tempModel_Ptr = StrategyModelCache::FindTempModel(*pStrategy->VolModel))
+				{
+					StrategyContractDO tempSto(*pStrategy);
+					tempSto.VolModel = tempModel_Ptr;
+					if (auto tempVol = volmodel_ptr->Compute(&f_atm, tempSto, pricingCtx, nullptr))
+					{
+						auto& volBidAsk = ((TDataObject<std::pair<double, double>>*)result.get())->Data;
+						ret->TheoDataTemp = std::make_shared<OptionPricingDO>();
+						ret->TheoDataTemp->TBid().Volatility = volBidAsk.first;
+						ret->TheoDataTemp->TAsk().Volatility = volBidAsk.second;
+					}
+				}
 
 				auto pOptionParams = (OptionParams*)pStrategy->PricingModel->ParsedParams.get();
 				pOptionParams->bidVolatility = volBidAsk.first;

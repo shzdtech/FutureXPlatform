@@ -183,6 +183,7 @@
     <ClCompile Include="OTCUpdateContractParam.cpp" />
     <ClCompile Include="OTCUpdateModelParams.cpp" />
     <ClCompile Include="OTCUpdateStrategy.cpp" />
+    <ClCompile Include="OTCUpdateTempModelParam.cpp" />
     <ClCompile Include="OTCUpdateUserParam.cpp" />
     <ClCompile Include="OTCUserContextBuilder.cpp" />
     <ClCompile Include="OTCWorkerProcessor.cpp" />
@@ -208,6 +209,7 @@
     <ClInclude Include="OTCUpdateContractParam.h" />
     <ClInclude Include="OTCUpdateModelParams.h" />
     <ClInclude Include="OTCUpdateStrategy.h" />
+    <ClInclude Include="OTCUpdateTempModelParam.h" />
     <ClInclude Include="OTCUpdateUserParam.h" />
     <ClInclude Include="OTCUserContextBuilder.h" />
     <ClInclude Include="OTCWorkerProcessor.h" />

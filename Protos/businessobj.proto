@@ -105,8 +105,9 @@ message PBTradingDeskOptionParams
 	DataHeader header = 1;
 	string exchange = 2;
 	string contract = 3;
-	PBOptionData MarketData = 4;
-	PBOptionData TheoData = 5;
+	PBOptionData marketData = 4;
+	PBOptionData theoData = 5;
+	PBOptionData theoDataTemp = 6;
 }
 
 message PBPricingContract

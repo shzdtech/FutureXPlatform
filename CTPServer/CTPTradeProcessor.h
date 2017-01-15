@@ -20,7 +20,7 @@ public:
 	virtual ~CTPTradeProcessor();
 	int InitializeServer(const std::string& flowId, const std::string& serverAddr);
 	bool OnSessionClosing(void);
-	void QueryPositionAsync(uint currentCnt);
+	void QueryPositionAsync(void);
 
 protected:
 	// lockfree_set<std::string> _updatePositionSet;

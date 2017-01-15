@@ -13,8 +13,8 @@
 class ResultDO : public dataobjectbase
 {
 public:
-	ResultDO(const int code, const int serailId) : Code(code) { SerialId = serailId; }
-	ResultDO(const int serailId) : Code(0){ SerialId = serailId; }
+	ResultDO(const int code) : Code(code){}
+	ResultDO() : Code(0){}
 
    int Code;
 

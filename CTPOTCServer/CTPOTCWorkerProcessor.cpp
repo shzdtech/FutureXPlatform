@@ -96,9 +96,9 @@ void CTPOTCWorkerProcessor::Initialize(IServerContext* serverCtx)
 {
 	InitializeServer(_systemUser.getUserId(), _systemUser.getServer());
 
-	OTCWorkerProcessor::Initialize();
-
 	CTPMarketDataProcessor::Initialize(serverCtx);
+
+	OTCWorkerProcessor::Initialize();
 
 	LoadDataAsync();
 }
@@ -151,11 +151,11 @@ int CTPOTCWorkerProcessor::LoadDataAsync(void)
 }
 
 
-
 int CTPOTCWorkerProcessor::SubscribeMarketData(const ContractKey& contractId)
 {
 	char* contract[] = { const_cast<char*>(contractId.InstrumentID().data()) };
-	return _rawAPI->MdAPI->SubscribeMarketData(contract, 1);
+	int ret = _rawAPI->MdAPI->SubscribeMarketData(contract, 1);
+	return ret;
 }
 
 void CTPOTCWorkerProcessor::RegisterLoggedSession(const IMessageSession_Ptr& sessionPtr)

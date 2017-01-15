@@ -43,7 +43,10 @@ data_buffer PBResultSerializer::Serialize(const dataobj_ptr& abstractDO)
 dataobj_ptr PBResultSerializer::Deserialize(const data_buffer& rawdata)
 {
 	Micro::Future::Message::Result PB;
-	ParseWithReturn(PB, rawdata)
+	ParseWithReturn(PB, rawdata);
 
-	return std::make_shared<ResultDO>(PB.code(), PB.serialid());
+	auto result_ptr = std::make_shared<ResultDO>(PB.code());
+	result_ptr->SerialId = PB.serialid();
+
+	return result_ptr;
 }

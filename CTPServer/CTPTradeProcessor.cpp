@@ -69,7 +69,7 @@ int CTPTradeProcessor::InitializeServer(const std::string& flowId, const std::st
 			fs::create_directories(localpath, ec);
 		}
 
-		localpath /= flowId + "_" + std::to_string(std::time(nullptr)) + "_";
+		localpath /= flowId + "_" + std::to_string(std::time(nullptr)) + "_" + std::to_string(std::rand()) + "_";
 
 		_rawAPI->CreateTdApi(localpath.string().data());
 		_rawAPI->TrdAPI->RegisterSpi(this);
@@ -210,12 +210,12 @@ void CTPTradeProcessor::OnRspQryTrade(CThostFtdcTradeField *pTrade, CThostFtdcRs
 ///请求查询投资者持仓响应
 void CTPTradeProcessor::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	auto msgId = nRequestID == 0 ? MSG_ID_POSITION_UPDATED : MSG_ID_QUERY_POSITION;
+	auto msgId = nRequestID == -1 ? MSG_ID_POSITION_UPDATED : MSG_ID_QUERY_POSITION;
+
+	OnResponseMacro(msgId, nRequestID, pInvestorPosition, pRspInfo, &nRequestID, &bIsLast);
 
 	if (bIsLast)
 		DataLoadMask |= CTPTradeProcessor::POSITION_DATA_LOADED;
-
-	OnResponseMacro(msgId, nRequestID, pInvestorPosition, pRspInfo, &nRequestID, &bIsLast)
 }
 
 ///请求查询资金账户响应
@@ -309,27 +309,25 @@ void CTPTradeProcessor::OnRtnTrade(CThostFtdcTradeField *pTrade)
 	// Try update position
 	if (!_exiting && !_updateFlag.test_and_set(std::memory_order::memory_order_acquire))
 	{
-		_updateTask = std::async(std::launch::async, &CTPTradeProcessor::QueryPositionAsync, this, _tradeCnt);
+		_updateTask = std::async(std::launch::async, &CTPTradeProcessor::QueryPositionAsync, this);
 	}
 }
 
-void CTPTradeProcessor::QueryPositionAsync(uint currentCnt)
+void CTPTradeProcessor::QueryPositionAsync(void)
 {
 	while (!_exiting)
 	{
+		uint currentCnt = _tradeCnt;
 		std::this_thread::sleep_for(std::chrono::seconds(2));
-		if (!_exiting)
+		if (!_exiting && currentCnt == _tradeCnt)
 		{
-			if (currentCnt == _tradeCnt)
-			{
-				CThostFtdcQryInvestorPositionField req{};
-				int iRet = _rawAPI->TrdAPI->ReqQryInvestorPosition(&req, 0);
-				if (iRet == 0)
-					break;
-			}
+			CThostFtdcQryInvestorPositionField req{};
+			_updateFlag.clear(std::memory_order::memory_order_release);
+			int iRet = _rawAPI->TrdAPI->ReqQryInvestorPosition(&req, -1);
+			if (iRet == 0 || _updateFlag.test_and_set(std::memory_order::memory_order_acquire)) // check if lock
+				break;
 		}
 	}
-	_updateFlag.clear(std::memory_order::memory_order_release);
 }
 
 ///报单录入错误回报

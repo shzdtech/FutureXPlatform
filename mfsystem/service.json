@@ -4,8 +4,8 @@
       "service.ctp_md",
       "service.ctp_trade",
       "service.ctp_option",
-      "service.otc",
       "service.otc_option",
+      "service.otc",
       "service.cts",
       "service.testing",
       "service.admin"

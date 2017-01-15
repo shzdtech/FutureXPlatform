@@ -36,5 +36,5 @@ dataobj_ptr OTCNewPortfolio::HandleRequest(const uint32_t serialId, const dataob
 		}
 	}
 
-	return std::make_shared<ResultDO>(serialId);
+	return std::make_shared<ResultDO>();
 }
