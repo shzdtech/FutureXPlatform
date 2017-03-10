@@ -16,11 +16,11 @@ public:
 class OptionPricing : public Pricing
 {
 public:
-	double Delta;
-	double Vega;
-	double Gamma;
-	double Theta;
-	double Volatility;
+	double Delta = 0;
+	double Vega = 0;
+	double Gamma = 0;
+	double Theta = 0;
+	double Volatility = 0;
 	virtual void Clear()
 	{
 	}

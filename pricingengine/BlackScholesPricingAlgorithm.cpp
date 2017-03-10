@@ -51,14 +51,14 @@ IPricingDO_Ptr BlackScholesPricingAlgorithm::Compute(
 
 	auto paramObj = (OptionParams*)sdo.PricingModel->ParsedParams.get();
 
+	if (!sdo.PricingContracts)
+		return nullptr;
+
 	MarketDataDO mDO;
-	if (!priceCtx.GetMarketDataMap()->find(sdo.PricingContracts[0].InstrumentID(), mDO))
+	if (!priceCtx.GetMarketDataMap()->find(sdo.PricingContracts->PricingContracts[0].InstrumentID(), mDO))
 		return nullptr;
 
-	if (sdo.PricingContracts.empty())
-		return nullptr;
-
-	double adjust = sdo.PricingContracts[0].Adjust;
+	double adjust = sdo.PricingContracts->PricingContracts[0].Adjust;
 
 	double bidPrice = mDO.Bid().Price + adjust;
 	double askdPrice = mDO.Ask().Price + adjust;
@@ -66,12 +66,16 @@ IPricingDO_Ptr BlackScholesPricingAlgorithm::Compute(
 	if (bidPrice <= 0 || askdPrice <= 0)
 		return nullptr;
 
+	if (sdo.ContractType == ContractType::CONTRACTTYPE_PUT_OPTION) std::swap(bidPrice, askdPrice);
+
 	auto pricingDO = std::make_shared<OptionPricingDO>(sdo.ExchangeID(), sdo.InstrumentID());
 
 	ComputeOptionPrice(bidPrice, sdo.StrikePrice, paramObj->bidVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration, pricingDO->TBid());
-
+	pricingDO->TBid().Price = std::floor( std::max(0.0, pricingDO->TBid().Price) / sdo.TickSize) * sdo.TickSize;
+	
 	ComputeOptionPrice(askdPrice, sdo.StrikePrice, paramObj->askVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration, pricingDO->TAsk());
-
+	pricingDO->TAsk().Price = std::ceil(pricingDO->TAsk().Price / sdo.TickSize) * sdo.TickSize;
+	
 	return pricingDO;
 }
 

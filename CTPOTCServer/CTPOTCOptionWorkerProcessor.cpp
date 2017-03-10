@@ -72,14 +72,6 @@ void CTPOTCOptionWorkerProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketData
 
 			pMarketDataMap->update(pDepthMarketData->InstrumentID, mDO);
 
-			if (_exchangeStrategySet.contains<ContractKey>(mDO))
-			{
-				if (auto pStrategyDO = PricingDataContext()->GetStrategyMap()->tryfind(mDO))
-				{
-					TriggerTadingDeskParams(*pStrategyDO);
-				}
-			}
-
 			TriggerUpdating(mDO);
 		}
 	}

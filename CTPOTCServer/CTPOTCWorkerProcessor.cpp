@@ -226,4 +226,19 @@ void CTPOTCWorkerProcessor::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentFie
 	CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
 }
 
-
+void CTPOTCWorkerProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin,
+	CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
+	if (_isLogged = !CTPUtility::HasError(pRspInfo))
+	{
+		_tradingDay = std::atoi(pRspUserLogin->TradingDay);
+	}
+	
+	if (auto mdMap = PricingDataContext()->GetMarketDataMap())
+	{
+		auto table = mdMap->lock_table();
+		for (auto it : table)
+		{
+			SubscribeMarketData(it.first);
+		}
+	}
+}

@@ -1,6 +1,7 @@
 #include "WingsVolatilityModel.h"
 #include <boost/date_time/gregorian/greg_date.hpp>
 #include "../dataobject/TemplateDO.h"
+#include "../dataobject/WingsModelReturnDO.h"
 
 const std::string WingsParams::PARAM_ALPHA("alpha");
 const std::string WingsParams::PARAM_SSR("ssr");
@@ -61,40 +62,58 @@ dataobj_ptr WingsVolatilityModel::Compute(
 	else
 	{
 		MarketDataDO mDO;
-		if (!priceCtx.GetMarketDataMap()->find(sdo.InstrumentID(), mDO))
+		if (!sdo.VolContracts || 
+			!priceCtx.GetMarketDataMap()->find(sdo.VolContracts->PricingContracts[0].InstrumentID(), mDO))
 			return nullptr;
 		f_atm = (mDO.Ask().Price + mDO.Bid().Price) / 2;
+		if (f_atm == 0)
+			return nullptr;
 	}
 
 	auto strikeprice = sdo.StrikePrice;
 
 	boost::gregorian::date settleDate(sdo.TradingDay.Year, sdo.TradingDay.Month, sdo.TradingDay.Day);
 	boost::gregorian::date mutureDate(sdo.Expiration.Year, sdo.Expiration.Month, sdo.Expiration.Day);
-	int days = (settleDate - mutureDate).days();
+	int days = (mutureDate - settleDate).days();
+
+	if (days < 0)
+		return nullptr;
 
 	// synthetic forward price
-	double alpha = paramObj->alpha;
-	double ssr = paramObj->ssr;
 	double f_ref = paramObj->f_ref;
-	if (f_ref <= 0.01) f_ref = f_atm;
+	double ssr = paramObj->ssr;
+	double alpha = paramObj->alpha;
+	if (f_ref < 0.001) f_ref = f_atm;
 
-	double midVol = ComputeVolatility(f_atm, strikeprice, days, f_ref, alpha,ssr, paramObj->scr,
-		paramObj->vcr, paramObj->vol_ref, paramObj->slope_ref, paramObj->dn_cf, paramObj->up_cf, paramObj->dn_sm, paramObj->up_sm, paramObj->dn_slope, paramObj->up_slope, paramObj->put_curv, paramObj->call_curv);
+	auto ret = std::make_shared<WingsModelReturnDO>();
 
-	double offsetVol = ComputeVolatility(f_atm, strikeprice, days, f_ref, alpha,ssr, paramObj->scr,
-		paramObj->vcr_offset, paramObj->vol_ref_offset, paramObj->slope_ref_offset, paramObj->dn_cf_offset, paramObj->up_cf_offset, paramObj->dn_sm_offset, paramObj->up_sm_offset, paramObj->dn_slope_offset, paramObj->up_slope_offset, paramObj->put_curv_offset, paramObj->call_curv_offset);
+	////synthetic forward price
+	//  f_syn = f_atm ^ (SSR / 100) * f_ref ^ (1 - SSR / 100)	
+	ret->f_syn = std::pow(f_atm, (paramObj->ssr / 100)) * std::pow(f_ref, (1 - ssr / 100));
 
-	auto ret = std::make_shared<TDataObject<std::pair<double, double>>>();
-	ret->Data.first = midVol - offsetVol;
-	ret->Data.second = midVol + offsetVol;
+	// log - moneyness, i.e., transformed strike price
+	ret->x = (1 / std::pow((days / 365), alpha)) * std::log(strikeprice / ret->f_syn);
+
+	double midVol;
+	std::tie(midVol, ret->vol_curr, ret->slope_curr, ret->x0, ret->x1, ret->x2, ret->x3)
+		= ComputeVolatility(ret->f_syn, ret->x, f_ref, alpha, ssr,
+		paramObj->scr, paramObj->vcr, paramObj->vol_ref, paramObj->slope_ref, paramObj->dn_cf, paramObj->up_cf, paramObj->dn_sm, paramObj->up_sm, paramObj->dn_slope, paramObj->up_slope, paramObj->put_curv, paramObj->call_curv);
+
+	double offsetVol;
+	std::tie(offsetVol, ret->vol_curr_offset, ret->slope_curr_offset, ret->x0_offset, ret->x1_offset, ret->x2_offset, ret->x3_offset)
+		= ComputeVolatility(ret->f_syn, ret->x, f_ref, alpha, ssr,
+		paramObj->scr_offset, paramObj->vcr_offset, paramObj->vol_ref_offset, paramObj->slope_ref_offset, paramObj->dn_cf_offset, paramObj->up_cf_offset, paramObj->dn_sm_offset, paramObj->up_sm_offset, paramObj->dn_slope_offset, paramObj->up_slope_offset, paramObj->put_curv_offset, paramObj->call_curv_offset);
+
+	ret->TBid().Volatility = midVol - offsetVol;
+	ret->TAsk().Volatility = midVol + offsetVol;
 
 	return ret;
 }
 
-double WingsVolatilityModel::ComputeVolatility(
-	double f_atm,
-	double strikeprice,
-	int days,
+std::tuple<double, double, double, double, double, double, double>
+	WingsVolatilityModel::ComputeVolatility(
+	double f_syn,
+	double x,
 	double f_ref,
 	double alpha,
 	double ssr,
@@ -112,9 +131,6 @@ double WingsVolatilityModel::ComputeVolatility(
 	double call_curv
 )
 {
-	////synthetic forward price
-	//  f_syn = f_atm ^ (SSR / 100) * f_ref ^ (1 - SSR / 100)	
-	double f_syn = std::pow(f_atm, (ssr / 100)) * std::pow(f_ref, (1 - ssr / 100));
 	////current volatility and current slope, i.e., when log - moneyness x = 0
 	//  vol_curr = vol_ref - VCR * SSR * (f_syn - f_ref) / f_ref
 	// slope_curr = slope_ref - SCR * SSR * (f_syn - f_ref) / f_ref
@@ -159,9 +175,6 @@ double WingsVolatilityModel::ComputeVolatility(
 	double up_sm_a = sigma_x2 - up_sm_b * x2 - up_sm_c * x2 * x2;
 	double sigma_x3 = up_sm_a + up_sm_b * x3 + up_sm_c * x3 * x3;
 
-	// log - moneyness, i.e., transformed strike price
-	double x = (1 / std::pow((days / 365), alpha)) * std::log(strikeprice / f_syn);
-
 	double theo = 0;
 	// regions of the wing model
 	if ((x1 <= x) & (x < 0)) {
@@ -189,7 +202,7 @@ double WingsVolatilityModel::ComputeVolatility(
 		theo = up_slope * (x - x3) + sigma_x3;
 	}
 
-	return theo;
+	return std::make_tuple(theo, vol_curr, slope_curr,  x0, x1, x2, x3);
 }
 
 const std::map<std::string, double>& WingsVolatilityModel::DefaultParams(void) const

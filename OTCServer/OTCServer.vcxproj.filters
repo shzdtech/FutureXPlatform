@@ -146,9 +146,6 @@
     <ClInclude Include="OTCQueryInstrument.h">
       <Filter>头文件\TradeHandler</Filter>
     </ClInclude>
-    <ClInclude Include="OTCQueryStrategy.h">
-      <Filter>头文件\TradeHandler</Filter>
-    </ClInclude>
     <ClInclude Include="OTCUpdateUserParam.h">
       <Filter>头文件\TradingDesk</Filter>
     </ClInclude>
@@ -183,6 +180,9 @@
       <Filter>头文件\TradingDesk</Filter>
     </ClInclude>
     <ClInclude Include="OTCUpdateTempModelParam.h">
+      <Filter>头文件\TradingDesk</Filter>
+    </ClInclude>
+    <ClInclude Include="OTCQueryStrategy.h">
       <Filter>头文件\TradingDesk</Filter>
     </ClInclude>
   </ItemGroup>

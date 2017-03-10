@@ -59,10 +59,10 @@ IPricingDO_Ptr BetaSumPricingAlgorithm::Compute(
 
 	int quantity = pInputObject ? *(int*)pInputObject : sdo.BidQT;
 
-	if (!sdo.PricingContracts.empty())
+	if (sdo.PricingContracts)
 	{
 		MarketDataDO md;
-		for (auto& conparam : sdo.PricingContracts)
+		for (auto& conparam : sdo.PricingContracts->PricingContracts)
 		{
 			auto& baseCon = conDOMap.at(conparam);
 			

@@ -39,8 +39,8 @@ OTCWorkerProcessor::OTCWorkerProcessor(const IPricingDataContext_Ptr& pricingCtx
 	_pricingNotifers(SessionContainer<ContractKey, ContractKeyHash>::NewInstancePtr()),
 	_tradingDeskNotifers(SessionContainer<ContractKey, ContractKeyHash>::NewInstancePtr()),
 	_otcOrderNotifers(SessionContainer<uint64_t>::NewInstancePtr()),
-	_pricingCtx(pricingCtx), _baseContractStrategyMap(1024),
-	_exchangeStrategySet(1024), _otcStrategySet(1024)
+	_pricingCtx(pricingCtx), _baseContractStrategyMap(1024)
+	// _exchangeStrategyMap(1024), _otcStrategySet(1024)
 {
 	_runingTradingDeskFlag = true;
 }
@@ -150,47 +150,53 @@ void OTCWorkerProcessor::AddContractToMonitor(const ContractKey& contractId)
 	}
 }
 
+int OTCWorkerProcessor::SubscribePricingContracts(const ContractKey& strategyKey, const StrategyPricingContract& strategyContract)
+{
+	if (!strategyKey.IsOTC())
+	{
+		AddContractToMonitor(strategyKey);
+		if (!_baseContractStrategyMap.contains(strategyKey))
+			_baseContractStrategyMap.insert(strategyKey, std::make_shared<std::set<ContractKey>>());
+
+		if (auto setptr = _baseContractStrategyMap.find(strategyKey))
+			setptr->emplace(strategyKey);
+
+		// _exchangeStrategyMap.insert(bsContract, strategyKey);
+		SubscribeMarketData(strategyKey);
+	}
+
+	for (auto& bsContract : strategyContract.PricingContracts)
+	{
+		if (!bsContract.IsOTC())
+		{
+			AddContractToMonitor(bsContract);
+			if (!_baseContractStrategyMap.contains(bsContract))
+				_baseContractStrategyMap.insert(bsContract, std::make_shared<std::set<ContractKey>>());
+
+			if (auto setptr = _baseContractStrategyMap.find(bsContract))
+				setptr->emplace(strategyKey);
+
+			// _exchangeStrategyMap.insert(bsContract, strategyKey);
+			SubscribeMarketData(bsContract);
+		}
+	}
+
+	return 0;
+}
+
 int OTCWorkerProcessor::SubscribeStrategy(const StrategyContractDO& strategyDO)
 {
 	//subscribe market data from CTP
-	if (strategyDO.IsOTC())
-	{
-		_otcStrategySet.insert(strategyDO);
-		for (auto& bsContract : strategyDO.PricingContracts)
-		{
-			if (!bsContract.IsOTC())
-			{
-				AddContractToMonitor(bsContract);
-				if (!_baseContractStrategyMap.contains(bsContract))
-				{
-					_baseContractStrategyMap.insert(bsContract, std::make_shared<std::set<ContractKey>>());
-				}
+	if (strategyDO.PricingContracts)
+		SubscribePricingContracts(strategyDO, *strategyDO.PricingContracts);
 
-				if (auto setptr = _baseContractStrategyMap.find(bsContract))
-				{
-					setptr->emplace(strategyDO);
-				}
+	if (strategyDO.IVMContracts)
+		SubscribePricingContracts(strategyDO, *strategyDO.IVMContracts);
 
-				SubscribeMarketData(bsContract);
-			}
-		}
-	}
-	else
-	{
-		AddContractToMonitor(strategyDO);
-		_exchangeStrategySet.insert(strategyDO);
-		SubscribeMarketData(strategyDO);
-		for (auto& bsContract : strategyDO.PricingContracts)
-		{
-			if (!bsContract.IsOTC())
-			{
-				AddContractToMonitor(bsContract);
-				SubscribeMarketData(bsContract);
-			}
-		}
-	}
+	if (strategyDO.VolContracts)
+		SubscribePricingContracts(strategyDO, *strategyDO.VolContracts);
 
-	return strategyDO.PricingContracts.size();
+	return 0;
 }
 
 void OTCWorkerProcessor::RegisterPricingListener(const ContractKey& contractId,
@@ -277,10 +283,14 @@ void OTCWorkerProcessor::TriggerUpdating(const MarketDataDO& mdDO)
 
 void OTCWorkerProcessor::TriggerOTCUpdating(const StrategyContractDO & strategyDO)
 {
-	TriggerOTCPricing(strategyDO);
+	if (strategyDO.IVModel)
+		TriggerTadingDeskParams(strategyDO);
+	
+	if (strategyDO.PricingContracts && strategyDO.IsOTC())
+		TriggerOTCPricing(strategyDO);
 
-	GetOTCTradeProcessor()->TriggerHedgeOrderUpdating(strategyDO);
+	// GetOTCTradeProcessor()->TriggerHedgeOrderUpdating(strategyDO);
 
-	GetOTCTradeProcessor()->TriggerOTCOrderUpdating(strategyDO);
+	// GetOTCTradeProcessor()->TriggerOTCOrderUpdating(strategyDO);
 }
 

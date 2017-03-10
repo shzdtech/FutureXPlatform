@@ -27,6 +27,7 @@ public:
 	~CTPOTCWorkerProcessor();
 
 	void setMessageSession(const IMessageSession_Ptr& msgSession_ptr);
+
 	bool OnSessionClosing(void);
 
 	void Initialize(IServerContext* pServerCtx);
@@ -66,6 +67,8 @@ public:
 
 	///取消订阅行情应答
 	virtual void OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+
+	virtual void OnRspUserLogin(CThostFtdcRspUserLoginField * pRspUserLogin, CThostFtdcRspInfoField * pRspInfo, int nRequestID, bool bIsLast);
 
 	///深度行情通知
 	virtual void OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData);

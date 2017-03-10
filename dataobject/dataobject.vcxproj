@@ -188,6 +188,7 @@
     <ClInclude Include="UserContractParamDO.h" />
     <ClInclude Include="UserInfoDO.h" />
     <ClInclude Include="UserPositionDO.h" />
+    <ClInclude Include="WingsModelReturnDO.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

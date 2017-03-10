@@ -40,9 +40,9 @@ data_buffer PBStrategySerializer::Serialize(const dataobj_ptr& abstractDO)
 		pStrategy->set_bidqt(sdo.BidQT);
 		pStrategy->set_askqt(sdo.AskQT);
 
-		if (!sdo.PricingContracts.empty())
+		if (sdo.PricingContracts)
 		{
-			for (auto& pricingContract : sdo.PricingContracts)
+			for (auto& pricingContract : sdo.PricingContracts->PricingContracts)
 			{
 				auto pContract = pStrategy->add_pricingcontracts();
 				pContract->set_exchange(pricingContract.ExchangeID());
@@ -96,16 +96,16 @@ dataobj_ptr PBStrategySerializer::Deserialize(const data_buffer& rawdata)
 	sdo->BidQT = pbstrtg.bidqt();
 	sdo->AskQT = pbstrtg.askqt();
 
-	if (!pbstrtg.pricingcontracts().empty())
-	{
-		for (auto& bc : pbstrtg.pricingcontracts())
-		{
-			PricingContract cp(bc.exchange(), bc.contract());
-			cp.Weight = bc.weight();
-			cp.Adjust = bc.adjust();
-			sdo->PricingContracts.push_back(std::move(cp));
-		}
-	}
+	//if (!pbstrtg.pricingcontracts().empty())
+	//{
+	//	for (auto& bc : pbstrtg.pricingcontracts())
+	//	{
+	//		PricingContract cp(bc.exchange(), bc.contract());
+	//		cp.Weight = bc.weight();
+	//		cp.Adjust = bc.adjust();
+	//		sdo->PricingContracts.push_back(std::move(cp));
+	//	}
+	//}
 
 	// Fill Models
 	if (!pbstrtg.pricingmodel().empty())

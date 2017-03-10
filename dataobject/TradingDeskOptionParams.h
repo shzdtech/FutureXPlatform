@@ -1,5 +1,5 @@
 #pragma once
-#include "PricingDO.h"
+#include "WingsModelReturnDO.h"
 
 class TradingDeskOptionParams : public ContractKey, public dataobjectbase
 {
@@ -11,7 +11,6 @@ public:
 		ContractKey(exchangeID, instrumentID) {}
 
 	OptionPricingDO MarketData;
-	OptionPricingDO TheoData;
-	OptionPricingDO_Ptr TheoDataTemp;
-
+	WingsModelReturnDO TheoData;
+	WingsModelReturnDO_Ptr TheoDataTemp;
 };

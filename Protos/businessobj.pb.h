@@ -68,6 +68,7 @@ class PBStrategyList;
 class PBTradeInfo;
 class PBTradingDeskOptionParams;
 class PBUserAccountInfo;
+class PBWingsModelReturn;
 
 // ===================================================================
 
@@ -1037,6 +1038,175 @@ class PBOptionData : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
+class PBWingsModelReturn : public ::google::protobuf::Message {
+ public:
+  PBWingsModelReturn();
+  virtual ~PBWingsModelReturn();
+
+  PBWingsModelReturn(const PBWingsModelReturn& from);
+
+  inline PBWingsModelReturn& operator=(const PBWingsModelReturn& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const PBWingsModelReturn& default_instance();
+
+  void Swap(PBWingsModelReturn* other);
+
+  // implements Message ----------------------------------------------
+
+  inline PBWingsModelReturn* New() const { return New(NULL); }
+
+  PBWingsModelReturn* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const PBWingsModelReturn& from);
+  void MergeFrom(const PBWingsModelReturn& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(PBWingsModelReturn* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional double f_syn = 1;
+  void clear_f_syn();
+  static const int kFSynFieldNumber = 1;
+  double f_syn() const;
+  void set_f_syn(double value);
+
+  // optional double x = 2;
+  void clear_x();
+  static const int kXFieldNumber = 2;
+  double x() const;
+  void set_x(double value);
+
+  // optional double vol_curr = 3;
+  void clear_vol_curr();
+  static const int kVolCurrFieldNumber = 3;
+  double vol_curr() const;
+  void set_vol_curr(double value);
+
+  // optional double vol_curr_offset = 4;
+  void clear_vol_curr_offset();
+  static const int kVolCurrOffsetFieldNumber = 4;
+  double vol_curr_offset() const;
+  void set_vol_curr_offset(double value);
+
+  // optional double slope_curr = 6;
+  void clear_slope_curr();
+  static const int kSlopeCurrFieldNumber = 6;
+  double slope_curr() const;
+  void set_slope_curr(double value);
+
+  // optional double slope_curr_offset = 7;
+  void clear_slope_curr_offset();
+  static const int kSlopeCurrOffsetFieldNumber = 7;
+  double slope_curr_offset() const;
+  void set_slope_curr_offset(double value);
+
+  // optional double x0 = 8;
+  void clear_x0();
+  static const int kX0FieldNumber = 8;
+  double x0() const;
+  void set_x0(double value);
+
+  // optional double x0_offset = 9;
+  void clear_x0_offset();
+  static const int kX0OffsetFieldNumber = 9;
+  double x0_offset() const;
+  void set_x0_offset(double value);
+
+  // optional double x1 = 10;
+  void clear_x1();
+  static const int kX1FieldNumber = 10;
+  double x1() const;
+  void set_x1(double value);
+
+  // optional double x1_offset = 11;
+  void clear_x1_offset();
+  static const int kX1OffsetFieldNumber = 11;
+  double x1_offset() const;
+  void set_x1_offset(double value);
+
+  // optional double x2 = 12;
+  void clear_x2();
+  static const int kX2FieldNumber = 12;
+  double x2() const;
+  void set_x2(double value);
+
+  // optional double x2_offset = 13;
+  void clear_x2_offset();
+  static const int kX2OffsetFieldNumber = 13;
+  double x2_offset() const;
+  void set_x2_offset(double value);
+
+  // optional double x3 = 14;
+  void clear_x3();
+  static const int kX3FieldNumber = 14;
+  double x3() const;
+  void set_x3(double value);
+
+  // optional double x3_offset = 15;
+  void clear_x3_offset();
+  static const int kX3OffsetFieldNumber = 15;
+  double x3_offset() const;
+  void set_x3_offset(double value);
+
+  // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.PBWingsModelReturn)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  bool _is_default_instance_;
+  double f_syn_;
+  double x_;
+  double vol_curr_;
+  double vol_curr_offset_;
+  double slope_curr_;
+  double slope_curr_offset_;
+  double x0_;
+  double x0_offset_;
+  double x1_;
+  double x1_offset_;
+  double x2_;
+  double x2_offset_;
+  double x3_;
+  double x3_offset_;
+  mutable int _cached_size_;
+  friend void  protobuf_AddDesc_businessobj_2eproto();
+  friend void protobuf_AssignDesc_businessobj_2eproto();
+  friend void protobuf_ShutdownFile_businessobj_2eproto();
+
+  void InitAsDefaultInstance();
+  static PBWingsModelReturn* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class PBTradingDeskOptionParams : public ::google::protobuf::Message {
  public:
   PBTradingDeskOptionParams();
@@ -1142,10 +1312,19 @@ class PBTradingDeskOptionParams : public ::google::protobuf::Message {
   ::Micro::Future::Message::Business::PBOptionData* release_theodata();
   void set_allocated_theodata(::Micro::Future::Message::Business::PBOptionData* theodata);
 
-  // optional .Micro.Future.Message.Business.PBOptionData theoDataTemp = 6;
+  // optional .Micro.Future.Message.Business.PBWingsModelReturn wingsReturn = 6;
+  bool has_wingsreturn() const;
+  void clear_wingsreturn();
+  static const int kWingsReturnFieldNumber = 6;
+  const ::Micro::Future::Message::Business::PBWingsModelReturn& wingsreturn() const;
+  ::Micro::Future::Message::Business::PBWingsModelReturn* mutable_wingsreturn();
+  ::Micro::Future::Message::Business::PBWingsModelReturn* release_wingsreturn();
+  void set_allocated_wingsreturn(::Micro::Future::Message::Business::PBWingsModelReturn* wingsreturn);
+
+  // optional .Micro.Future.Message.Business.PBOptionData theoDataTemp = 7;
   bool has_theodatatemp() const;
   void clear_theodatatemp();
-  static const int kTheoDataTempFieldNumber = 6;
+  static const int kTheoDataTempFieldNumber = 7;
   const ::Micro::Future::Message::Business::PBOptionData& theodatatemp() const;
   ::Micro::Future::Message::Business::PBOptionData* mutable_theodatatemp();
   ::Micro::Future::Message::Business::PBOptionData* release_theodatatemp();
@@ -1161,6 +1340,7 @@ class PBTradingDeskOptionParams : public ::google::protobuf::Message {
   ::google::protobuf::internal::ArenaStringPtr contract_;
   ::Micro::Future::Message::Business::PBOptionData* marketdata_;
   ::Micro::Future::Message::Business::PBOptionData* theodata_;
+  ::Micro::Future::Message::Business::PBWingsModelReturn* wingsreturn_;
   ::Micro::Future::Message::Business::PBOptionData* theodatatemp_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
@@ -5856,6 +6036,206 @@ inline void PBOptionData::set_bidvega(double value) {
 
 // -------------------------------------------------------------------
 
+// PBWingsModelReturn
+
+// optional double f_syn = 1;
+inline void PBWingsModelReturn::clear_f_syn() {
+  f_syn_ = 0;
+}
+inline double PBWingsModelReturn::f_syn() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBWingsModelReturn.f_syn)
+  return f_syn_;
+}
+inline void PBWingsModelReturn::set_f_syn(double value) {
+  
+  f_syn_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBWingsModelReturn.f_syn)
+}
+
+// optional double x = 2;
+inline void PBWingsModelReturn::clear_x() {
+  x_ = 0;
+}
+inline double PBWingsModelReturn::x() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBWingsModelReturn.x)
+  return x_;
+}
+inline void PBWingsModelReturn::set_x(double value) {
+  
+  x_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBWingsModelReturn.x)
+}
+
+// optional double vol_curr = 3;
+inline void PBWingsModelReturn::clear_vol_curr() {
+  vol_curr_ = 0;
+}
+inline double PBWingsModelReturn::vol_curr() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBWingsModelReturn.vol_curr)
+  return vol_curr_;
+}
+inline void PBWingsModelReturn::set_vol_curr(double value) {
+  
+  vol_curr_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBWingsModelReturn.vol_curr)
+}
+
+// optional double vol_curr_offset = 4;
+inline void PBWingsModelReturn::clear_vol_curr_offset() {
+  vol_curr_offset_ = 0;
+}
+inline double PBWingsModelReturn::vol_curr_offset() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBWingsModelReturn.vol_curr_offset)
+  return vol_curr_offset_;
+}
+inline void PBWingsModelReturn::set_vol_curr_offset(double value) {
+  
+  vol_curr_offset_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBWingsModelReturn.vol_curr_offset)
+}
+
+// optional double slope_curr = 6;
+inline void PBWingsModelReturn::clear_slope_curr() {
+  slope_curr_ = 0;
+}
+inline double PBWingsModelReturn::slope_curr() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBWingsModelReturn.slope_curr)
+  return slope_curr_;
+}
+inline void PBWingsModelReturn::set_slope_curr(double value) {
+  
+  slope_curr_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBWingsModelReturn.slope_curr)
+}
+
+// optional double slope_curr_offset = 7;
+inline void PBWingsModelReturn::clear_slope_curr_offset() {
+  slope_curr_offset_ = 0;
+}
+inline double PBWingsModelReturn::slope_curr_offset() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBWingsModelReturn.slope_curr_offset)
+  return slope_curr_offset_;
+}
+inline void PBWingsModelReturn::set_slope_curr_offset(double value) {
+  
+  slope_curr_offset_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBWingsModelReturn.slope_curr_offset)
+}
+
+// optional double x0 = 8;
+inline void PBWingsModelReturn::clear_x0() {
+  x0_ = 0;
+}
+inline double PBWingsModelReturn::x0() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBWingsModelReturn.x0)
+  return x0_;
+}
+inline void PBWingsModelReturn::set_x0(double value) {
+  
+  x0_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBWingsModelReturn.x0)
+}
+
+// optional double x0_offset = 9;
+inline void PBWingsModelReturn::clear_x0_offset() {
+  x0_offset_ = 0;
+}
+inline double PBWingsModelReturn::x0_offset() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBWingsModelReturn.x0_offset)
+  return x0_offset_;
+}
+inline void PBWingsModelReturn::set_x0_offset(double value) {
+  
+  x0_offset_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBWingsModelReturn.x0_offset)
+}
+
+// optional double x1 = 10;
+inline void PBWingsModelReturn::clear_x1() {
+  x1_ = 0;
+}
+inline double PBWingsModelReturn::x1() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBWingsModelReturn.x1)
+  return x1_;
+}
+inline void PBWingsModelReturn::set_x1(double value) {
+  
+  x1_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBWingsModelReturn.x1)
+}
+
+// optional double x1_offset = 11;
+inline void PBWingsModelReturn::clear_x1_offset() {
+  x1_offset_ = 0;
+}
+inline double PBWingsModelReturn::x1_offset() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBWingsModelReturn.x1_offset)
+  return x1_offset_;
+}
+inline void PBWingsModelReturn::set_x1_offset(double value) {
+  
+  x1_offset_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBWingsModelReturn.x1_offset)
+}
+
+// optional double x2 = 12;
+inline void PBWingsModelReturn::clear_x2() {
+  x2_ = 0;
+}
+inline double PBWingsModelReturn::x2() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBWingsModelReturn.x2)
+  return x2_;
+}
+inline void PBWingsModelReturn::set_x2(double value) {
+  
+  x2_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBWingsModelReturn.x2)
+}
+
+// optional double x2_offset = 13;
+inline void PBWingsModelReturn::clear_x2_offset() {
+  x2_offset_ = 0;
+}
+inline double PBWingsModelReturn::x2_offset() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBWingsModelReturn.x2_offset)
+  return x2_offset_;
+}
+inline void PBWingsModelReturn::set_x2_offset(double value) {
+  
+  x2_offset_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBWingsModelReturn.x2_offset)
+}
+
+// optional double x3 = 14;
+inline void PBWingsModelReturn::clear_x3() {
+  x3_ = 0;
+}
+inline double PBWingsModelReturn::x3() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBWingsModelReturn.x3)
+  return x3_;
+}
+inline void PBWingsModelReturn::set_x3(double value) {
+  
+  x3_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBWingsModelReturn.x3)
+}
+
+// optional double x3_offset = 15;
+inline void PBWingsModelReturn::clear_x3_offset() {
+  x3_offset_ = 0;
+}
+inline double PBWingsModelReturn::x3_offset() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBWingsModelReturn.x3_offset)
+  return x3_offset_;
+}
+inline void PBWingsModelReturn::set_x3_offset(double value) {
+  
+  x3_offset_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBWingsModelReturn.x3_offset)
+}
+
+// -------------------------------------------------------------------
+
 // PBTradingDeskOptionParams
 
 // optional .Micro.Future.Message.DataHeader header = 1;
@@ -6060,7 +6440,45 @@ inline void PBTradingDeskOptionParams::set_allocated_theodata(::Micro::Future::M
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBTradingDeskOptionParams.theoData)
 }
 
-// optional .Micro.Future.Message.Business.PBOptionData theoDataTemp = 6;
+// optional .Micro.Future.Message.Business.PBWingsModelReturn wingsReturn = 6;
+inline bool PBTradingDeskOptionParams::has_wingsreturn() const {
+  return !_is_default_instance_ && wingsreturn_ != NULL;
+}
+inline void PBTradingDeskOptionParams::clear_wingsreturn() {
+  if (GetArenaNoVirtual() == NULL && wingsreturn_ != NULL) delete wingsreturn_;
+  wingsreturn_ = NULL;
+}
+inline const ::Micro::Future::Message::Business::PBWingsModelReturn& PBTradingDeskOptionParams::wingsreturn() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBTradingDeskOptionParams.wingsReturn)
+  return wingsreturn_ != NULL ? *wingsreturn_ : *default_instance_->wingsreturn_;
+}
+inline ::Micro::Future::Message::Business::PBWingsModelReturn* PBTradingDeskOptionParams::mutable_wingsreturn() {
+  
+  if (wingsreturn_ == NULL) {
+    wingsreturn_ = new ::Micro::Future::Message::Business::PBWingsModelReturn;
+  }
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBTradingDeskOptionParams.wingsReturn)
+  return wingsreturn_;
+}
+inline ::Micro::Future::Message::Business::PBWingsModelReturn* PBTradingDeskOptionParams::release_wingsreturn() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBTradingDeskOptionParams.wingsReturn)
+  
+  ::Micro::Future::Message::Business::PBWingsModelReturn* temp = wingsreturn_;
+  wingsreturn_ = NULL;
+  return temp;
+}
+inline void PBTradingDeskOptionParams::set_allocated_wingsreturn(::Micro::Future::Message::Business::PBWingsModelReturn* wingsreturn) {
+  delete wingsreturn_;
+  wingsreturn_ = wingsreturn;
+  if (wingsreturn) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBTradingDeskOptionParams.wingsReturn)
+}
+
+// optional .Micro.Future.Message.Business.PBOptionData theoDataTemp = 7;
 inline bool PBTradingDeskOptionParams::has_theodatatemp() const {
   return !_is_default_instance_ && theodatatemp_ != NULL;
 }
@@ -12535,6 +12953,8 @@ inline void PBUserAccountInfo::set_bankfetchamount(double value) {
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

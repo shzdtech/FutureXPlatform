@@ -38,8 +38,8 @@
 
 dataobj_ptr OTCReturnPricingData::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	auto pStrategyDO = (StrategyContractDO*)rawRespParams[0];
-	auto pPricingCtx = (IPricingDataContext*)rawRespParams[1];
+	auto pStrategyDO = (StrategyContractDO*)rawRespParams[1];
+	auto pPricingCtx = (IPricingDataContext*)rawRespParams[2];
 
 	IPricingDO_Ptr ret;
 

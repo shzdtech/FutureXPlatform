@@ -54,18 +54,18 @@ dataobj_ptr BlackScholesIVM::Compute(
 
 	auto paramObj = (OptionParams*)sdo.IVModel->ParsedParams.get();
 
+	if (!sdo.IVMContracts)
+		return nullptr;
+
 	MarketDataDO mDO;
 	if (!priceCtx.GetMarketDataMap()->find(sdo.InstrumentID(), mDO))
 		return nullptr;
 
 	MarketDataDO mBaseDO;
-	if (!priceCtx.GetMarketDataMap()->find(sdo.PricingContracts[0].InstrumentID(), mBaseDO))
+	if (!priceCtx.GetMarketDataMap()->find(sdo.IVMContracts->PricingContracts[0].InstrumentID(), mBaseDO))
 		return nullptr;
 
-	if(sdo.PricingContracts.empty())
-		return nullptr;
-
-	double adjust = sdo.PricingContracts[0].Adjust;
+	double adjust = sdo.IVMContracts->PricingContracts[0].Adjust;
 
 	double price = (mDO.Bid().Price + mDO.Ask().Price) / 2;
 

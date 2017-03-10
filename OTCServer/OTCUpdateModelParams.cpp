@@ -55,6 +55,26 @@ dataobj_ptr OTCUpdateModelParams::HandleRequest(const uint32_t serialId, const d
 				modelAlg->ParseParams(modelptr->Params, modelptr->ParsedParams);
 			}
 			ModelParamsDAO::SaveModelParams(*pModelParam);
+
+			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+			{
+				auto pStrategyMap = pWorkerProc->PricingDataContext()->GetStrategyMap();
+
+				for (auto& pair : *pStrategyMap)
+				{
+					auto& strategyDO = pair.second;
+					auto ivmModel_Ptr = strategyDO.IVModel;
+					auto volModel_Ptr = strategyDO.VolModel;
+					if ((ivmModel_Ptr && ivmModel_Ptr->operator==(*pModelParam)) ||
+						(volModel_Ptr && volModel_Ptr->operator==(*pModelParam)))
+					{
+						pWorkerProc->TriggerTadingDeskParams(strategyDO);
+
+						if (strategyDO.PricingContracts && strategyDO.IsOTC())
+							pWorkerProc->TriggerOTCPricing(strategyDO);
+					}
+				}
+			}
 		}
 		else
 		{

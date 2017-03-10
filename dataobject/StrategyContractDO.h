@@ -17,12 +17,23 @@
 #include "DateType.h"
 #include <ctime>
 
+class StrategyPricingContract
+{
+public:
+	std::vector<PricingContract> PricingContracts;
+};
+
+typedef std::shared_ptr<StrategyPricingContract> StrategyPricingContract_Ptr;
+
 class StrategyContractDO : public UserContractKey, public PortfolioKey, public dataobjectbase
 {
 public:
 	StrategyContractDO(const std::string& exchangeID, const std::string& instrumentID,
 		const std::string& userID, const std::string& portfolioID)
 		: UserKey(userID), UserContractKey(exchangeID, instrumentID, userID), PortfolioKey(portfolioID, userID){}
+
+	StrategyContractDO(const std::string& exchangeID, const std::string& instrumentID, const std::string& userID)
+		: StrategyContractDO(exchangeID, instrumentID, userID, "") {}
 
 	StrategyContractDO(const std::string& exchangeID, const std::string& instrumentID)
 		: StrategyContractDO(exchangeID, instrumentID, "", "") {}
@@ -46,10 +57,13 @@ public:
 	double StrikePrice;
 
 	ModelParamsDO_Ptr PricingModel;
-	ModelParamsDO_Ptr IVModel;
-	ModelParamsDO_Ptr VolModel;
+	StrategyPricingContract_Ptr PricingContracts;
 
-	std::vector<PricingContract> PricingContracts;
+	ModelParamsDO_Ptr IVModel;
+	StrategyPricingContract_Ptr IVMContracts;
+
+	ModelParamsDO_Ptr VolModel;
+	StrategyPricingContract_Ptr VolContracts;
 
 protected:
 

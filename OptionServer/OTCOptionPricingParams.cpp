@@ -17,17 +17,31 @@ dataobj_ptr OTCOptionPricingParams::HandleResponse(const uint32_t serialId, cons
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		auto& pricingCtx = *pWorkerProc->PricingDataContext();
-
-		MarketDataDO mDO;
-		if (!pricingCtx.GetMarketDataMap()->find(pStrategy->PricingContracts[0].InstrumentID(), mDO) ||
-			!pricingCtx.GetMarketDataMap()->contains(pStrategy->InstrumentID()))
-			return ret;
-
 		ret = std::make_shared<TradingDeskOptionParams>(pStrategy->ExchangeID(), pStrategy->InstrumentID());
-		ret->MarketData.TBid().Price = mDO.Bid().Price;
-		ret->MarketData.TBid().Volume = mDO.Bid().Volume;
-		ret->MarketData.TAsk().Price = mDO.Ask().Price;
-		ret->MarketData.TAsk().Volume = mDO.Ask().Volume;
+
+		
+		if (pStrategy->IsOTC())
+		{
+			IPricingDO_Ptr pricingCO_Ptr;
+			if (pricingCtx.GetPricingDataDOMap()->find(*pStrategy, pricingCO_Ptr))
+			{
+				ret->MarketData.TBid().Price = pricingCO_Ptr->Bid().Price;
+				ret->MarketData.TBid().Volume = pricingCO_Ptr->Bid().Volume;
+				ret->MarketData.TAsk().Price = pricingCO_Ptr->Ask().Price;
+				ret->MarketData.TAsk().Volume = pricingCO_Ptr->Ask().Volume;
+			}
+		}
+		else
+		{
+			MarketDataDO mDO;
+			if (pricingCtx.GetMarketDataMap()->find(pStrategy->InstrumentID(), mDO))
+			{
+				ret->MarketData.TBid().Price = mDO.Bid().Price;
+				ret->MarketData.TBid().Volume = mDO.Bid().Volume;
+				ret->MarketData.TAsk().Price = mDO.Ask().Price;
+				ret->MarketData.TAsk().Volume = mDO.Ask().Volume;
+			}
+		}
 
 		// Implied Volatility Model
 		if (auto ivmodel_ptr = ModelAlgorithmManager::Instance()->FindModel(pStrategy->IVModel->Model))
@@ -43,33 +57,37 @@ dataobj_ptr OTCOptionPricingParams::HandleResponse(const uint32_t serialId, cons
 		// Volatility Model
 		if (auto volmodel_ptr = ModelAlgorithmManager::Instance()->FindModel(pStrategy->VolModel->Model))
 		{
-			auto f_atm = (mDO.Ask().Price + mDO.Bid().Price) / 2;
-			if (auto result = volmodel_ptr->Compute(&f_atm, *pStrategy, pricingCtx, nullptr))
+			if (auto result = volmodel_ptr->Compute(nullptr, *pStrategy, pricingCtx, nullptr))
 			{
-				auto& volBidAsk = ((TDataObject<std::pair<double, double>>*)result.get())->Data;
-				ret->TheoData.TBid().Volatility = volBidAsk.first;
-				ret->TheoData.TAsk().Volatility = volBidAsk.second;
+				ret->TheoData = *(WingsModelReturnDO*)result.get();
+				auto pOptionParams = (OptionParams*)pStrategy->PricingModel->ParsedParams.get();
+				pOptionParams->bidVolatility = ret->TheoData.TBid().Volatility;
+				pOptionParams->askVolatility = ret->TheoData.TAsk().Volatility;
 
+				IPricingAlgorithm_Ptr prcingmodel_ptr;
 				// Temp Volatility Model
 				if (auto tempModel_Ptr = StrategyModelCache::FindTempModel(*pStrategy->VolModel))
 				{
 					StrategyContractDO tempSto(*pStrategy);
 					tempSto.VolModel = tempModel_Ptr;
-					if (auto tempVol = volmodel_ptr->Compute(&f_atm, tempSto, pricingCtx, nullptr))
+					if (auto tempVol = volmodel_ptr->Compute(nullptr, tempSto, pricingCtx, nullptr))
 					{
-						auto& volBidAsk = ((TDataObject<std::pair<double, double>>*)result.get())->Data;
-						ret->TheoDataTemp = std::make_shared<OptionPricingDO>();
-						ret->TheoDataTemp->TBid().Volatility = volBidAsk.first;
-						ret->TheoDataTemp->TAsk().Volatility = volBidAsk.second;
+						ret->TheoDataTemp = std::static_pointer_cast<WingsModelReturnDO>(tempVol);
+
+						auto pOptionParams = (OptionParams*)tempSto.PricingModel->ParsedParams.get();
+						pOptionParams->bidVolatility = ret->TheoDataTemp->TBid().Volatility;
+						pOptionParams->askVolatility = ret->TheoDataTemp->TAsk().Volatility;
+
+						prcingmodel_ptr = PricingAlgorithmManager::Instance()->FindModel(tempSto.PricingModel->Model);
 					}
 				}
-
-				auto pOptionParams = (OptionParams*)pStrategy->PricingModel->ParsedParams.get();
-				pOptionParams->bidVolatility = volBidAsk.first;
-				pOptionParams->askVolatility = volBidAsk.second;
+				else
+				{
+					prcingmodel_ptr = PricingAlgorithmManager::Instance()->FindModel(pStrategy->PricingModel->Model);
+				}
 
 				// Pricing Model				
-				if (auto prcingmodel_ptr = PricingAlgorithmManager::Instance()->FindModel(pStrategy->PricingModel->Model))
+				if (prcingmodel_ptr)
 				{
 					if (auto result = prcingmodel_ptr->Compute(nullptr, *pStrategy, pricingCtx, nullptr))
 					{

@@ -100,6 +100,24 @@ message PBOptionData
 	double bidVega = 14;
 }
 
+message PBWingsModelReturn
+{
+	double f_syn = 1;
+	double x = 2;
+	double vol_curr = 3;
+	double vol_curr_offset = 4;
+	double slope_curr = 6;
+	double slope_curr_offset = 7;
+	double x0 = 8;
+	double x0_offset = 9;
+	double x1 = 10;
+	double x1_offset = 11;
+	double x2 = 12;
+	double x2_offset = 13;
+	double x3 = 14;
+	double x3_offset = 15;
+}
+
 message PBTradingDeskOptionParams
 {
 	DataHeader header = 1;
@@ -107,7 +125,8 @@ message PBTradingDeskOptionParams
 	string contract = 3;
 	PBOptionData marketData = 4;
 	PBOptionData theoData = 5;
-	PBOptionData theoDataTemp = 6;
+	PBWingsModelReturn wingsReturn = 6;
+	PBOptionData theoDataTemp = 7;
 }
 
 message PBPricingContract

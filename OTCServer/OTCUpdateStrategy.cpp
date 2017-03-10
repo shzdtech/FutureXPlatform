@@ -65,20 +65,20 @@ dataobj_ptr OTCUpdateStrategy::HandleRequest(const uint32_t serialId, const data
 			scDO.BidEnabled = strategyDO.BidEnabled;
 			scDO.AskEnabled = strategyDO.AskEnabled;
 
-			if (auto cnt = strategyDO.PricingContracts.size())
-			{
-				if(scDO.PricingContracts.size() != cnt)
-				{
-					scDO.PricingContracts.resize(cnt);
-				}
+			//if (auto cnt = strategyDO.PricingContracts->PricingContracts.size())
+			//{
+			//	if(scDO.PricingContracts->PricingContracts.size() != cnt)
+			//	{
+			//		scDO.PricingContracts->PricingContracts.resize(cnt);
+			//	}
 
-				for (int i = 0; i < cnt; i++)
-				{
-					scDO.PricingContracts[i] = strategyDO.PricingContracts[i];
-				}
+			//	for (int i = 0; i < cnt; i++)
+			//	{
+			//		scDO.PricingContracts->PricingContracts[i] = strategyDO.PricingContracts->PricingContracts[i];
+			//	}
 
-				StrategyContractDAO::UpdatePricingContract(scDO);
-			}
+			//	StrategyContractDAO::UpdatePricingContract(scDO.UserID(), *scDO.PricingContracts);
+			//}
 
 			if (strategyDO.PricingModel && scDO.PricingModel->InstanceName != strategyDO.PricingModel->InstanceName)
 			{

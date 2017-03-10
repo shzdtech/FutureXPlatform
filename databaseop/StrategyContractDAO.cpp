@@ -21,8 +21,8 @@ VectorDO_Ptr<StrategyContractDO> StrategyContractDAO::LoadStrategyContractByProd
 {
 	static const std::string sql_findstrategy(
 		"SELECT exchange_symbol, contract_symbol, underlying_symbol, tick_size, multiplier, "
-		"strategy_symbol, descript, portfolio_symbol, contract_type, "
-		"strikeprice, expiration, accountid, product_type, bid_allowed, ask_allowed "
+		"strategy_symbol, contract_type, strikeprice, expiration, accountid, "
+		"product_type, bid_allowed, ask_allowed, portfolio_symbol "
 		"FROM vw_strategy_contract_info "
 		"WHERE product_type = ?");
 
@@ -31,8 +31,18 @@ VectorDO_Ptr<StrategyContractDO> StrategyContractDAO::LoadStrategyContractByProd
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
 	{
-		autofillmap<UserContractKey, std::vector<PricingContract>> pricingContractMap;
-		RetrievePricingContractsByProductType(productType, pricingContractMap);
+		static const std::string PM("pm");
+		static const std::string IVM("ivm");
+		static const std::string VM("vm");
+
+		autofillmap<UserStrategyName, autofillmap<ContractKey, StrategyPricingContract_Ptr>> pmPricingContractMap;
+		RetrievePricingContractsByProductType(productType, PM, pmPricingContractMap);
+
+		autofillmap<UserStrategyName, autofillmap<ContractKey, StrategyPricingContract_Ptr>> ivmPricingContractMap;
+		RetrievePricingContractsByProductType(productType, IVM, ivmPricingContractMap);
+
+		autofillmap<UserStrategyName, autofillmap<ContractKey, StrategyPricingContract_Ptr>> vmPricingContractMap;
+		RetrievePricingContractsByProductType(productType, VM, vmPricingContractMap);
 
 		autofillmap<UserStrategyName, autofillmap<std::string, std::string>> strategyDOMap;
 		RetrieveStrategyModels(strategyDOMap);
@@ -48,8 +58,9 @@ VectorDO_Ptr<StrategyContractDO> StrategyContractDAO::LoadStrategyContractByProd
 
 		while (rs->next())
 		{
-			auto accountid = rs->getString(12);
-			StrategyContractDO stcdo(rs->getString(1), rs->getString(2), accountid, rs->getString(8));
+			std::string portfolio;
+			if (!rs->isNull(14)) portfolio = rs->getString(14);
+			StrategyContractDO stcdo(rs->getString(1), rs->getString(2), rs->getString(10), portfolio);
 			stcdo.TradingDay.Year = pTM->tm_year + 1900;
 			stcdo.TradingDay.Month = pTM->tm_mon + 1;
 			stcdo.TradingDay.Day = pTM->tm_mday;
@@ -57,34 +68,41 @@ VectorDO_Ptr<StrategyContractDO> StrategyContractDAO::LoadStrategyContractByProd
 			stcdo.TickSize = rs->getDouble(4);
 			stcdo.Multiplier = rs->getDouble(5);
 			stcdo.StrategyName = rs->getString(6);
-			stcdo.Description = rs->getString(7);
-			stcdo.ContractType = (ContractType)rs->getInt(9);
-			stcdo.StrikePrice = rs->getDouble(10);
-			if (!rs->isNull(11))
+			stcdo.ContractType = (ContractType)rs->getInt(7);
+			stcdo.StrikePrice = rs->getDouble(8);
+			if (!rs->isNull(9))
 			{
-				std::string strDate = rs->getString(11);
+				std::string strDate = rs->getString(9);
 				stcdo.Expiration = DateType(strDate);
 			}
 			
-			stcdo.ProductType = (ProductType)rs->getInt(13);
-			stcdo.BidEnabled = rs->getBoolean(14);
-			stcdo.AskEnabled = rs->getBoolean(15);
+			stcdo.ProductType = (ProductType)rs->getInt(11);
+			stcdo.BidEnabled = rs->getBoolean(12);
+			stcdo.AskEnabled = rs->getBoolean(13);
 
-			stcdo.PricingContracts = pricingContractMap.getorfill(stcdo);
-			auto& modelMap = strategyDOMap.getorfill(UserStrategyName(stcdo.UserID(), stcdo.StrategyName));
+			auto userStrategySymb = UserStrategyName(stcdo.UserID(), stcdo.StrategyName);
+			auto& modelMap = strategyDOMap.getorfill(userStrategySymb);
 
 			std::string modelInstance;
-			static const std::string PM("pm");
+			
 			if (modelMap.tryfind(PM, modelInstance))
 				stcdo.PricingModel = std::make_shared<ModelParamsDO>(modelInstance, "", stcdo.UserID());
+			if (auto pMap = pmPricingContractMap.tryfind(userStrategySymb))
+				if(auto pContractsPtr = pMap->tryfind(stcdo))
+					stcdo.PricingContracts = *pContractsPtr;
 
-			static const std::string IVM("ivm");
+
 			if (modelMap.tryfind(IVM, modelInstance))
 				stcdo.IVModel = std::make_shared<ModelParamsDO>(modelInstance, "", stcdo.UserID());
+			if (auto pMap = ivmPricingContractMap.tryfind(userStrategySymb))
+				if (auto pContractsPtr = pMap->tryfind(stcdo))
+					stcdo.IVMContracts = *pContractsPtr;
 
-			static const std::string VM("vm");
 			if (modelMap.tryfind(VM, modelInstance))
 				stcdo.VolModel = std::make_shared<ModelParamsDO>(modelInstance, "", stcdo.UserID());
+			if (auto pMap = vmPricingContractMap.tryfind(userStrategySymb))
+				if (auto pContractsPtr = pMap->tryfind(stcdo))
+					stcdo.VolContracts = *pContractsPtr;
 
 			ret->push_back(std::move(stcdo));
 		}
@@ -131,11 +149,12 @@ void StrategyContractDAO::RetrievePricingContracts(const std::string& strategyEx
 }
 
 
-void StrategyContractDAO::RetrievePricingContractsByProductType(int productType, autofillmap<UserContractKey, std::vector<PricingContract>>& pricingContractMap)
+void StrategyContractDAO::RetrievePricingContractsByProductType(int productType, const std::string& modelaim,
+	autofillmap<UserStrategyName, autofillmap<ContractKey, StrategyPricingContract_Ptr>>& pricingContractMap)
 {
 	static const std::string sql_findcontractparam(
-		"SELECT accountid, strategy_exchange, strategy_contract, pricing_exchange, pricing_contract, weight, adjust from vw_pricing_contract_property "
-		"WHERE strategy_product_type = ?");
+		"SELECT accountid, strategy_symbol, strategy_exchange, strategy_contract, pricing_exchange, pricing_contract, weight, adjust from vw_pricing_contract_property "
+		"WHERE strategy_product_type = ? and modelaim = ?");
 
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
@@ -143,14 +162,23 @@ void StrategyContractDAO::RetrievePricingContractsByProductType(int productType,
 		AutoClosePreparedStmt_Ptr prestmt(
 			session->getConnection()->prepareStatement(sql_findcontractparam));
 		prestmt->setInt(1, productType);
+		prestmt->setString(2, modelaim);
 
 		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
 
 		while (rs->next())
 		{
-			auto& pricingVector = pricingContractMap.getorfill(UserContractKey(rs->getString(2), rs->getString(3), rs->getString(1)));
-			PricingContract cp(rs->getString(4), rs->getString(5), rs->getDouble(6), rs->getDouble(7));
-			pricingVector.push_back(std::move(cp));
+			auto& userStrategyName = UserStrategyName(rs->getString(1), rs->getString(2));
+			auto& pricingContracts = pricingContractMap.getorfill(userStrategyName);
+			auto& contractKey = ContractKey(rs->getString(3), rs->getString(4));
+			auto pStrategyPricingContractPtr = pricingContracts.tryfind(contractKey);
+			if (!pStrategyPricingContractPtr)
+			{
+				auto pair = pricingContracts.emplace(contractKey, std::make_shared<StrategyPricingContract>());
+				pStrategyPricingContractPtr = &pair.first->second;
+			}
+			PricingContract cp(rs->getString(5), rs->getString(6), rs->getDouble(7), rs->getDouble(8));
+			(*pStrategyPricingContractPtr)->PricingContracts.push_back(std::move(cp));
 		}
 	}
 	catch (sql::SQLException& sqlEx)
@@ -252,7 +280,7 @@ void StrategyContractDAO::UpdateStrategy(const StrategyContractDO & strategyDO)
 	}
 }
 
-void StrategyContractDAO::UpdatePricingContract(const StrategyContractDO& sto)
+void StrategyContractDAO::UpdatePricingContract(const UserContractKey& userContractKey, const StrategyPricingContract& sto)
 {
 	static const std::string sql_delricingcontract(
 		"DELETE FROM strategy_pricing_contract "
@@ -270,15 +298,15 @@ void StrategyContractDAO::UpdatePricingContract(const StrategyContractDO& sto)
 	{
 		auto conn = session->getConnection();
 		AutoClosePreparedStmt_Ptr delstmt(conn->prepareStatement(sql_delricingcontract));
-		delstmt->setString(1, sto.UserID());
-		delstmt->setString(2, sto.ExchangeID());
-		delstmt->setString(3, sto.InstrumentID());
+		delstmt->setString(1, userContractKey.UserID());
+		delstmt->setString(2, userContractKey.ExchangeID());
+		delstmt->setString(3, userContractKey.InstrumentID());
 		delstmt->executeUpdate();
 
 		AutoClosePreparedStmt_Ptr prestmt(conn->prepareStatement(sql_savepricingcontract));
-		prestmt->setString(1, sto.UserID());
-		prestmt->setString(2, sto.ExchangeID());
-		prestmt->setString(3, sto.InstrumentID());
+		prestmt->setString(1, userContractKey.UserID());
+		prestmt->setString(2, userContractKey.ExchangeID());
+		prestmt->setString(3, userContractKey.InstrumentID());
 
 		for (auto& contract : sto.PricingContracts)
 		{

@@ -132,6 +132,9 @@
     <ClInclude Include="PositionTradeDO.h">
       <Filter>头文件\common</Filter>
     </ClInclude>
+    <ClInclude Include="WingsModelReturnDO.h">
+      <Filter>头文件\otc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
