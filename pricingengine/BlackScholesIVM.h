@@ -12,6 +12,7 @@
 #include "IModelAlgorithm.h"
 #include "OptionParams.h"
 
+
 class BlackScholesIVM : public IModelAlgorithm
 {
 public:
@@ -24,7 +25,7 @@ public:
 	virtual const std::map<std::string, double>& DefaultParams(void) const;
 	virtual void ParseParams(const std::map<std::string, double>& modelParams, std::unique_ptr<ParamsBase>& target);
 
-	static double ImpliedVolatility(
+	virtual double CaclImpliedVolatility(
 		double marketOptionPrice,
 		double underlyingPrice,
 		double strikePrice,

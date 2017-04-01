@@ -51,9 +51,13 @@ int CTPMDLoginHandler::LoginFunction(const IMessageProcessor_Ptr& msgProcessor, 
 		std::strncpy(loginInfo->Password, pwd.data(), sizeof(loginInfo->Password));
 	}
 
-	std::string server = severName.empty() ? brokerId + ':' + ExchangeRouterTable::TARGET_MD : severName;
 	std::string address;
-	ExchangeRouterTable::TryFind(server, address);
+	if (!msgProcessor->getServerContext()->getConfigVal(CTP_MD_SERVER, address))
+	{
+		std::string server = severName.empty() ? brokerId + ':' + ExchangeRouterTable::TARGET_MD : severName;
+		ExchangeRouterTable::TryFind(server, address);
+	}
+
 	pProcessor->InitializeServer(userId, address);
 
 	return ((CTPRawAPI*)pProcessor->getRawAPI())->MdAPI->ReqUserLogin(loginInfo, requestId);

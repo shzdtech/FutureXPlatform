@@ -15,3 +15,15 @@ bool MessageHandler::CheckLogin(const IMessageSession_Ptr& session, bool throwBi
 
 	return ret;
 }
+
+bool MessageHandler::CheckRolePermission(const IMessageSession_Ptr & session, UserRoleType leastRole, bool throwBizErr)
+{
+	bool ret = session->getUserInfo().getRole() >= leastRole;
+
+	if (!ret && throwBizErr)
+	{
+		throw ApiException(NO_PERMISSION, "NO PERMISSION!");
+	}
+
+	return ret;
+}

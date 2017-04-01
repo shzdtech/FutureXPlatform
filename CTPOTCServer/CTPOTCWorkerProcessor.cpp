@@ -64,7 +64,10 @@ CTPOTCWorkerProcessor::CTPOTCWorkerProcessor(IServerContext* pServerCtx,
 	_systemUser.setPassword(pwd);
 
 	std::string address;
-	ExchangeRouterTable::TryFind(_systemUser.getBrokerId() + ':' + ExchangeRouterTable::TARGET_MD, address);
+	if (!_serverCtx->getConfigVal(CTP_MD_SERVER, address))
+	{
+		ExchangeRouterTable::TryFind(_systemUser.getBrokerId() + ':' + ExchangeRouterTable::TARGET_MD, address);
+	}
 	_systemUser.setServer(address);
 }
 

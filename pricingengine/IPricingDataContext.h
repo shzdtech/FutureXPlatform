@@ -15,6 +15,7 @@ class IPricingDataContext
 {
 public:
 	virtual StrategyContractDOMap* GetStrategyMap(void) = 0;
+	virtual UserStrategyMap* GetUserStrategyMap(void) = 0;
 	virtual ContractParamDOMap* GetContractParamMap(void) = 0;
 	virtual MarketDataDOMap* GetMarketDataMap(void) = 0;
 	virtual PortfolioDOMap* GetPortfolioMap(void) = 0;

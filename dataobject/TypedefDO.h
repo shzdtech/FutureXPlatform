@@ -1,8 +1,9 @@
 #if !defined(__dataobject_TypedefDO_h)
 #define __dataobject_TypedefDO_h
 
-#include "../utility/autofillmap.h"
 #include "../include/libcuckoo/cuckoohash_map.hh"
+#include "../utility/autofillmap.h"
+#include "../utility/pairhash.h"
 #include "../utility/stringutility.h"
 #include "ContractKey.h"
 #include "ContractParamDO.h"
@@ -12,6 +13,7 @@
 #include "MarketDataDO.h"
 #include "InstrumentDO.h"
 #include "UserPositionDO.h"
+#include "TemplateDO.h"
 #include "EnumTypes.h"
 
 template <typename V>
@@ -26,11 +28,16 @@ using UserContractMap = typename autofillmap<UserContractKey, V>;
 //template <typename V>
 //using User_ContractMap = typename autofillmap<std::string, ContractMap<V>>;
 
-typedef ContractMap<StrategyContractDO> StrategyContractDOMap;
+template <typename T>
+using TContractMap = typename cuckoohash_map<ContractKey, T, ContractKeyHash>;
+
+typedef TContractMap<StrategyContractDO_Ptr> StrategyContractDOMap;
+
+typedef autofillmap<std::string, autofillmap<std::string, std::shared_ptr<StrategyContractDOMap>>> UserStrategyMap;
 
 typedef cuckoohash_map<std::string, MarketDataDO> MarketDataDOMap;
 
-typedef cuckoohash_map<ContractKey, IPricingDO_Ptr, ContractKeyHash> PricingDataDOMap;
+typedef TContractMap<IPricingDO_Ptr> PricingDataDOMap;
 
 typedef ContractMap<UserContractParamDO> UserContractParamDOMap;
 
@@ -45,5 +52,6 @@ using PortfolioMap = typename autofillmap<PortfolioKey, V>;
 
 typedef PortfolioMap<PortfolioDO> PortfolioDOMap;
 
+typedef VectorDO<ContractKey> ContractList;
 
 #endif

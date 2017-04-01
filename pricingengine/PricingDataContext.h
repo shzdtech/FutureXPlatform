@@ -16,7 +16,9 @@
 class PRICINGENGINE_CLASS_EXPORTS PricingDataContext : public IPricingDataContext
 {
 public:
+	PricingDataContext();
 	StrategyContractDOMap* GetStrategyMap();
+	UserStrategyMap* GetUserStrategyMap();
 	ContractParamDOMap* GetContractParamMap();
 	MarketDataDOMap* GetMarketDataMap();
 	PortfolioDOMap* GetPortfolioMap();
@@ -26,6 +28,7 @@ protected:
 
 private:
 	StrategyContractDOMap _strategyContractDOMap;
+	UserStrategyMap _userStrategyMap;
 	ContractParamDOMap _contractDOMap;
 	MarketDataDOMap _marketDataDOMap;
 	PortfolioDOMap _portfolioDOMap;

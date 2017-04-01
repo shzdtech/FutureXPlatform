@@ -90,6 +90,12 @@
     <ClInclude Include="BlackScholesIVM.h">
       <Filter>头文件\model</Filter>
     </ClInclude>
+    <ClInclude Include="BsBinPricingAlgorithm.h">
+      <Filter>头文件\pricing</Filter>
+    </ClInclude>
+    <ClInclude Include="BsBinIVM.h">
+      <Filter>头文件\model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PricingAlgorithmManager.cpp">
@@ -130,6 +136,12 @@
     </ClCompile>
     <ClCompile Include="OptionParams.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BsBinPricingAlgorithm.cpp">
+      <Filter>源文件\pricing</Filter>
+    </ClCompile>
+    <ClCompile Include="BsBinIVM.cpp">
+      <Filter>源文件\model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -39,77 +39,43 @@ dataobj_ptr OTCUpdateStrategy::HandleRequest(const uint32_t serialId, const data
 
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
-		auto strategyMap = pWorkerProc->PricingDataContext()->GetStrategyMap();
+		auto pStrategyMap = pWorkerProc->PricingDataContext()->GetStrategyMap();
 
-		auto strategyDO = *(StrategyContractDO*)reqDO.get();
-		strategyDO.SetUserID(session->getUserInfo().getUserId());
+		auto pStrategyDO = (StrategyContractDO*)reqDO.get();
+		pStrategyDO->SetUserID(session->getUserInfo().getUserId());
 
-		auto it = strategyMap->find(strategyDO);
-		if (it != strategyMap->end())
+		StrategyContractDO_Ptr strategy_ptr;
+		if (pStrategyMap->find(*pStrategyDO, strategy_ptr))
 		{
-			StrategyContractDO& scDO = it->second;
-			if(!strategyDO.StrategyName.empty())
-				scDO.StrategyName = strategyDO.StrategyName;
+			if(!pStrategyDO->StrategyName.empty())
+				strategy_ptr->StrategyName = pStrategyDO->StrategyName;
 
-			scDO.BidQT = strategyDO.BidQT;
-			scDO.AskQT = strategyDO.AskQT;
-			scDO.Depth = strategyDO.Depth;
+			strategy_ptr->BidQT = pStrategyDO->BidQT;
+			strategy_ptr->AskQT = pStrategyDO->AskQT;
+			strategy_ptr->Depth = pStrategyDO->Depth;
 
 			if (auto userContractMap_Ptr = std::static_pointer_cast<UserContractParamDOMap>
 				(session->getContext()->getAttribute(STR_KEY_USER_CONTRACTS)))
 			{
-				if (auto ucp = userContractMap_Ptr->tryfind(strategyDO))
-					ucp->Quantity = scDO.BidQT;
+				if (auto ucp = userContractMap_Ptr->tryfind(*pStrategyDO))
+					ucp->Quantity = strategy_ptr->BidQT;
 			}
 
-			scDO.BidEnabled = strategyDO.BidEnabled;
-			scDO.AskEnabled = strategyDO.AskEnabled;
+			strategy_ptr->BidEnabled = pStrategyDO->BidEnabled;
+			strategy_ptr->AskEnabled = pStrategyDO->AskEnabled;
 
-			//if (auto cnt = strategyDO.PricingContracts->PricingContracts.size())
-			//{
-			//	if(scDO.PricingContracts->PricingContracts.size() != cnt)
-			//	{
-			//		scDO.PricingContracts->PricingContracts.resize(cnt);
-			//	}
+			StrategyContractDAO::UpdateStrategy(*strategy_ptr);
 
-			//	for (int i = 0; i < cnt; i++)
-			//	{
-			//		scDO.PricingContracts->PricingContracts[i] = strategyDO.PricingContracts->PricingContracts[i];
-			//	}
+			pWorkerProc->TriggerOTCPricing(*strategy_ptr);
 
-			//	StrategyContractDAO::UpdatePricingContract(scDO.UserID(), *scDO.PricingContracts);
-			//}
+			strategy_ptr->Hedging = pStrategyDO->Hedging;
 
-			if (strategyDO.PricingModel && scDO.PricingModel->InstanceName != strategyDO.PricingModel->InstanceName)
-			{
-				if (auto model = StrategyModelCache::FindOrRetrieveModel(*strategyDO.PricingModel))
-					scDO.PricingModel = model;
-			}
-
-			if (strategyDO.IVModel && scDO.IVModel->InstanceName != strategyDO.IVModel->InstanceName)
-			{
-				if (auto model = StrategyModelCache::FindOrRetrieveModel(*strategyDO.IVModel))
-					scDO.IVModel = model;
-			}
-
-			if (strategyDO.VolModel && scDO.VolModel->InstanceName != strategyDO.VolModel->InstanceName)
-			{
-				if (auto model = StrategyModelCache::FindOrRetrieveModel(*strategyDO.VolModel))
-					scDO.VolModel = model;
-			}
-
-			StrategyContractDAO::UpdateStrategy(scDO);
-
-			pWorkerProc->TriggerOTCPricing(scDO);
-
-			scDO.Hedging = strategyDO.Hedging;
-
-			if (scDO.Hedging)
-				pWorkerProc->GetOTCTradeProcessor()->TriggerHedgeOrderUpdating(scDO);
+			if (strategy_ptr->Hedging)
+				pWorkerProc->GetOTCTradeProcessor()->TriggerHedgeOrderUpdating(*strategy_ptr);
 			else
-				pWorkerProc->GetOTCTradeProcessor()->CancelHedgeOrder(scDO);
+				pWorkerProc->GetOTCTradeProcessor()->CancelHedgeOrder(*strategy_ptr);
 
-			ret->push_back(scDO);
+			ret->push_back(*strategy_ptr);
 		}
 	}
 

@@ -105,6 +105,15 @@
     <ClCompile Include="OTCUpdateTempModelParam.cpp">
       <Filter>源文件\TradingDesk</Filter>
     </ClCompile>
+    <ClCompile Include="OTCUpdatePricingContract.cpp">
+      <Filter>源文件\TradingDesk</Filter>
+    </ClCompile>
+    <ClCompile Include="OTCSubTradingDeskData.cpp">
+      <Filter>源文件\TradingDesk</Filter>
+    </ClCompile>
+    <ClCompile Include="OTCUnSubTradingDeskData.cpp">
+      <Filter>源文件\TradingDesk</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="otcserver_export.h">
@@ -183,6 +192,15 @@
       <Filter>头文件\TradingDesk</Filter>
     </ClInclude>
     <ClInclude Include="OTCQueryStrategy.h">
+      <Filter>头文件\TradingDesk</Filter>
+    </ClInclude>
+    <ClInclude Include="OTCUpdatePricingContract.h">
+      <Filter>头文件\TradingDesk</Filter>
+    </ClInclude>
+    <ClInclude Include="OTCSubTradingDeskData.h">
+      <Filter>头文件\TradingDesk</Filter>
+    </ClInclude>
+    <ClInclude Include="OTCUnSubTradingDeskData.h">
       <Filter>头文件\TradingDesk</Filter>
     </ClInclude>
   </ItemGroup>

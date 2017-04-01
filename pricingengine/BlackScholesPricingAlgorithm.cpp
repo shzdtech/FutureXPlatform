@@ -6,7 +6,6 @@
  ***********************************************************************/
 
 #include "BlackScholesPricingAlgorithm.h"
-#include <ql/quantlib.hpp>
 
 #include "../dataobject/StrategyContractDO.h"
 #include "../dataobject/MarketDataDO.h"
@@ -15,6 +14,9 @@
 #include "../dataobject/ContractParamDO.h"
 #include "../dataobject/TypedefDO.h"
 #include "../bizutility/GlobalSettings.h"
+#include "../message/BizError.h"
+
+#include <ql/quantlib.hpp>
 
 using namespace QuantLib;
 
@@ -44,6 +46,11 @@ IPricingDO_Ptr BlackScholesPricingAlgorithm::Compute(
 	IPricingDataContext& priceCtx,
 	const param_vector* params)
 {
+	if (!sdo.PricingContracts || sdo.PricingContracts->PricingContracts.empty())
+	{
+		throw NotFoundException("Cannot find PM pricing contract for " + sdo.InstrumentID() + '.' + sdo.ExchangeID());
+	}
+
 	if (!sdo.PricingModel->ParsedParams)
 	{
 		ParseParams(sdo.PricingModel->Params, sdo.PricingModel->ParsedParams);
@@ -58,22 +65,25 @@ IPricingDO_Ptr BlackScholesPricingAlgorithm::Compute(
 	if (!priceCtx.GetMarketDataMap()->find(sdo.PricingContracts->PricingContracts[0].InstrumentID(), mDO))
 		return nullptr;
 
+	/*if (mDO.Ask().Volume <= 0 && mDO.Bid().Volume <= 0)
+		return nullptr;*/
+
+	double bidPrice = mDO.Bid().Price;
+	double askdPrice = mDO.Ask().Price;
+
 	double adjust = sdo.PricingContracts->PricingContracts[0].Adjust;
-
-	double bidPrice = mDO.Bid().Price + adjust;
-	double askdPrice = mDO.Ask().Price + adjust;
-
-	if (bidPrice <= 0 || askdPrice <= 0)
+	double price = (bidPrice + askdPrice) / 2 + adjust;
+	if (price <= 0)
 		return nullptr;
 
-	if (sdo.ContractType == ContractType::CONTRACTTYPE_PUT_OPTION) std::swap(bidPrice, askdPrice);
+	// if (sdo.ContractType == ContractType::CONTRACTTYPE_PUT_OPTION) std::swap(bidPrice, askdPrice);
 
 	auto pricingDO = std::make_shared<OptionPricingDO>(sdo.ExchangeID(), sdo.InstrumentID());
 
-	ComputeOptionPrice(bidPrice, sdo.StrikePrice, paramObj->bidVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration, pricingDO->TBid());
+	ComputeOptionPrice(price, sdo.StrikePrice, paramObj->bidVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration, pricingDO->TBid());
 	pricingDO->TBid().Price = std::floor( std::max(0.0, pricingDO->TBid().Price) / sdo.TickSize) * sdo.TickSize;
 	
-	ComputeOptionPrice(askdPrice, sdo.StrikePrice, paramObj->askVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration, pricingDO->TAsk());
+	ComputeOptionPrice(price, sdo.StrikePrice, paramObj->askVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration, pricingDO->TAsk());
 	pricingDO->TAsk().Price = std::ceil(pricingDO->TAsk().Price / sdo.TickSize) * sdo.TickSize;
 	
 	return pricingDO;

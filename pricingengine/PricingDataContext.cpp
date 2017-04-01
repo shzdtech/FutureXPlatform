@@ -12,9 +12,19 @@
 #include "../databaseop/StrategyContractDAO.h"
 
 
+PricingDataContext::PricingDataContext()
+	: _strategyContractDOMap(256), _marketDataDOMap(256), _pricingDataDOMap(256)
+{
+}
+
 StrategyContractDOMap* PricingDataContext::GetStrategyMap()
 {
 	return &_strategyContractDOMap;
+}
+
+UserStrategyMap* PricingDataContext::GetUserStrategyMap()
+{
+	return &_userStrategyMap;
 }
 
 ContractParamDOMap* PricingDataContext::GetContractParamMap()

@@ -18,11 +18,11 @@ const std::string ETPParams::coeff_name("coeff");
 const std::string ETPParams::offset_name("offset");
 const std::string ETPParams::spread_name("spread");
 
- ////////////////////////////////////////////////////////////////////////
- // Name:       ETPPricingAlgorithm::Name()
- // Purpose:    Implementation of ETPPricingAlgorithm::Name()
- // Return:     std::string
- ////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+// Name:       ETPPricingAlgorithm::Name()
+// Purpose:    Implementation of ETPPricingAlgorithm::Name()
+// Return:     std::string
+////////////////////////////////////////////////////////////////////////
 
 const std::string& ETPPricingAlgorithm::Name(void) const
 {
@@ -66,22 +66,22 @@ IPricingDO_Ptr ETPPricingAlgorithm::Compute(
 		MarketDataDO md;
 		for (auto& conparam : sdo.PricingContracts->PricingContracts)
 		{
-			auto& baseCon = conDOMap.at(conparam);
+			auto pBaseCon = conDOMap.tryfind(conparam);
+			if (!pBaseCon)
+				return ret;
+
 			mdDOMap.find(conparam.InstrumentID(), md);
 
-			double K = std::fabs(conparam.Weight) *
-				quantity * sdo.Multiplier / baseCon.Multiplier;
+			double K = std::fabs(conparam.Weight) *	quantity * sdo.Multiplier / pBaseCon->Multiplier;
 
 			double mdBidPrice = md.Bid().Price + conparam.Adjust;
 			double mdAskPrice = md.Ask().Price + conparam.Adjust;
 
 			double VolAdjBidPrice =
-				mdBidPrice - baseCon.TickSize *
-				(std::fmax(K - md.Bid().Volume, 0.0) / baseCon.DepthVol + baseCon.Gamma);
+				mdBidPrice - pBaseCon->TickSize * (std::fmax(K - md.Bid().Volume, 0.0) / pBaseCon->DepthVol + pBaseCon->Gamma);
 
 			double VolAdjAskPrice =
-				mdAskPrice + baseCon.TickSize *
-				(std::fmax(K - md.Ask().Volume, 0.0) / baseCon.DepthVol + baseCon.Gamma);
+				mdAskPrice + pBaseCon->TickSize * (std::fmax(K - md.Ask().Volume, 0.0) / pBaseCon->DepthVol + pBaseCon->Gamma);
 
 			if (conparam.Weight < 0)
 				std::swap(VolAdjBidPrice, VolAdjAskPrice);

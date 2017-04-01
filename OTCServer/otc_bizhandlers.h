@@ -21,5 +21,8 @@
 #include "OTCUpdateModelParams.h"
 #include "OTCQueryModelParams.h"
 #include "OTCUpdateTempModelParam.h"
+#include "OTCUpdatePricingContract.h"
+#include "OTCSubTradingDeskData.h"
+#include "OTCUnSubTradingDeskData.h"
 
 #endif

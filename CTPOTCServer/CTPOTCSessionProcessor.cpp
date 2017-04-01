@@ -56,10 +56,10 @@ bool CTPOTCSessionProcessor::OnSessionClosing(void)
 			{
 				auto pStrategyMap = pWorkerProc->PricingDataContext()->GetStrategyMap();
 
-				if (auto strategyVec_Ptr = std::static_pointer_cast<std::vector<ContractKey>>(
+				if (auto strategySet_Ptr = std::static_pointer_cast<std::set<ContractKey>>(
 					sessionPtr->getContext()->getAttribute(STR_KEY_USER_STRATEGY)))
 				{
-					for (auto& contract : *strategyVec_Ptr)
+					for (auto& contract : *strategySet_Ptr)
 					{
 						if (auto pStrategy = pStrategyMap->tryfind(contract))
 						{

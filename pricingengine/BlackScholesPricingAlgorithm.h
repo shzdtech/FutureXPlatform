@@ -12,7 +12,6 @@
 #include "IPricingAlgorithm.h"
 #include "OptionParams.h"
 
-
 class BlackScholesPricingAlgorithm : public IPricingAlgorithm
 {
 public:
@@ -25,7 +24,7 @@ public:
 	virtual const std::map<std::string, double>& DefaultParams(void) const;
 	virtual void ParseParams(const std::map<std::string, double>& modelParams, std::unique_ptr<ParamsBase>& target);
 
-	void ComputeOptionPrice(
+	virtual void ComputeOptionPrice(
 		double underlyingPrice,
 		double strikePrice,
 		double volatility,

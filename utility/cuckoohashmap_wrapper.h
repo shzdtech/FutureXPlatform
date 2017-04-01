@@ -21,7 +21,7 @@ public:
 
 	cuckoohashmap_wrapper(
 		bool initilizeMap, 
-		size_t initialsize = 1024)
+		size_t initialsize = 128)
 	{
 		if (initilizeMap)
 			_innerMap.reset(new cuckoohash_map<K, V, Hash, Pred>(initialsize));

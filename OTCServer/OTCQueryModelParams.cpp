@@ -22,6 +22,7 @@
 dataobj_ptr OTCQueryModelParams::HandleRequest(const uint32_t serialId, const dataobj_ptr & reqDO, IRawAPI * rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
+	CheckRolePermission(session, ROLE_TRADINGDESK);
 
 	ModelParamsDO_Ptr ret;
 	auto& userId = session->getUserInfo().getUserId();

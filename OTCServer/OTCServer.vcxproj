@@ -169,6 +169,7 @@
     <ClCompile Include="OTCQueryModelParams.cpp" />
     <ClCompile Include="OTCQueryPortfolio.cpp" />
     <ClCompile Include="OTCQueryTrade.cpp" />
+    <ClCompile Include="OTCSubTradingDeskData.cpp" />
     <ClCompile Include="OTCUnSubMarketData.cpp" />
     <ClCompile Include="OTCCancelOrder.cpp" />
     <ClCompile Include="OTCNewOrder.cpp" />
@@ -180,8 +181,10 @@
     <ClCompile Include="otcserver_export.cpp" />
     <ClCompile Include="OTCSubMarketData.cpp" />
     <ClCompile Include="OTCTradeProcessor.cpp" />
+    <ClCompile Include="OTCUnSubTradingDeskData.cpp" />
     <ClCompile Include="OTCUpdateContractParam.cpp" />
     <ClCompile Include="OTCUpdateModelParams.cpp" />
+    <ClCompile Include="OTCUpdatePricingContract.cpp" />
     <ClCompile Include="OTCUpdateStrategy.cpp" />
     <ClCompile Include="OTCUpdateTempModelParam.cpp" />
     <ClCompile Include="OTCUpdateUserParam.cpp" />
@@ -195,6 +198,7 @@
     <ClInclude Include="OTCQueryModelParams.h" />
     <ClInclude Include="OTCQueryPortfolio.h" />
     <ClInclude Include="OTCQueryTrade.h" />
+    <ClInclude Include="OTCSubTradingDeskData.h" />
     <ClInclude Include="OTCUnSubMarketData.h" />
     <ClInclude Include="OTCCancelOrder.h" />
     <ClInclude Include="OTCNewOrder.h" />
@@ -206,8 +210,10 @@
     <ClInclude Include="otcserver_export.h" />
     <ClInclude Include="OTCSubMarketData.h" />
     <ClInclude Include="OTCTradeProcessor.h" />
+    <ClInclude Include="OTCUnSubTradingDeskData.h" />
     <ClInclude Include="OTCUpdateContractParam.h" />
     <ClInclude Include="OTCUpdateModelParams.h" />
+    <ClInclude Include="OTCUpdatePricingContract.h" />
     <ClInclude Include="OTCUpdateStrategy.h" />
     <ClInclude Include="OTCUpdateTempModelParam.h" />
     <ClInclude Include="OTCUpdateUserParam.h" />

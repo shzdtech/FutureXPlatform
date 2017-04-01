@@ -3,6 +3,8 @@
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/WingsModelReturnDO.h"
 
+#include "../message/BizError.h"
+
 const std::string WingsParams::PARAM_ALPHA("alpha");
 const std::string WingsParams::PARAM_SSR("ssr");
 const std::string WingsParams::PARAM_F_REF("f_ref");
@@ -47,14 +49,20 @@ dataobj_ptr WingsVolatilityModel::Compute(
 	IPricingDataContext& priceCtx,
 	const param_vector* params)
 {
+	if (!sdo.VolContracts || sdo.VolContracts->PricingContracts.empty())
+	{
+		throw NotFoundException("Cannot find VM prcing contract for " + sdo.InstrumentID() + '.' + sdo.ExchangeID());
+	}
+
 	if (!sdo.VolModel->ParsedParams)
 	{
 		ParseParams(sdo.VolModel->Params, sdo.VolModel->ParsedParams);
 	}
 
+	auto& strContract = sdo.VolContracts->PricingContracts[0];
+
 	auto paramObj = (WingsParams*)sdo.VolModel->ParsedParams.get();
 	double f_atm;
-
 	if (pInputObject)
 	{
 		f_atm = *(double*)pInputObject;
@@ -63,12 +71,16 @@ dataobj_ptr WingsVolatilityModel::Compute(
 	{
 		MarketDataDO mDO;
 		if (!sdo.VolContracts || 
-			!priceCtx.GetMarketDataMap()->find(sdo.VolContracts->PricingContracts[0].InstrumentID(), mDO))
+			!priceCtx.GetMarketDataMap()->find(strContract.InstrumentID(), mDO))
 			return nullptr;
 		f_atm = (mDO.Ask().Price + mDO.Bid().Price) / 2;
-		if (f_atm == 0)
-			return nullptr;
+		/*if (f_atm == 0)
+			return nullptr;*/
 	}
+
+	f_atm += strContract.Adjust;
+	if (f_atm <= 0)
+		return nullptr;
 
 	auto strikeprice = sdo.StrikePrice;
 
@@ -79,6 +91,7 @@ dataobj_ptr WingsVolatilityModel::Compute(
 	if (days < 0)
 		return nullptr;
 
+	double midVol;
 	// synthetic forward price
 	double f_ref = paramObj->f_ref;
 	double ssr = paramObj->ssr;
@@ -87,25 +100,31 @@ dataobj_ptr WingsVolatilityModel::Compute(
 
 	auto ret = std::make_shared<WingsModelReturnDO>();
 
+	ret->f_atm = f_atm;
+	ret->f_ref = f_ref;
+
 	////synthetic forward price
-	//  f_syn = f_atm ^ (SSR / 100) * f_ref ^ (1 - SSR / 100)	
-	ret->f_syn = std::pow(f_atm, (paramObj->ssr / 100)) * std::pow(f_ref, (1 - ssr / 100));
+	//  f_syn = f_atm ^ (SSR / 100) * f_ref ^ (1 - SSR / 100)
+	double ssr_ratio = ssr / 100;
+	ret->f_syn = std::pow(f_atm, ssr_ratio) * std::pow(f_ref, 1 - ssr_ratio);
 
 	// log - moneyness, i.e., transformed strike price
-	ret->x = (1 / std::pow((days / 365), alpha)) * std::log(strikeprice / ret->f_syn);
-
-	double midVol;
+	double div = std::pow(days == 0 ? DBL_EPSILON : days / 365.0, alpha);
+	if (div < DBL_EPSILON) div = DBL_EPSILON;
+	double x = (1 / div) * std::log(strikeprice / ret->f_syn);
+	
 	std::tie(midVol, ret->vol_curr, ret->slope_curr, ret->x0, ret->x1, ret->x2, ret->x3)
-		= ComputeVolatility(ret->f_syn, ret->x, f_ref, alpha, ssr,
+		= ComputeVolatility(ret->f_syn, x, f_ref, ssr,
 		paramObj->scr, paramObj->vcr, paramObj->vol_ref, paramObj->slope_ref, paramObj->dn_cf, paramObj->up_cf, paramObj->dn_sm, paramObj->up_sm, paramObj->dn_slope, paramObj->up_slope, paramObj->put_curv, paramObj->call_curv);
 
-	double offsetVol;
-	std::tie(offsetVol, ret->vol_curr_offset, ret->slope_curr_offset, ret->x0_offset, ret->x1_offset, ret->x2_offset, ret->x3_offset)
-		= ComputeVolatility(ret->f_syn, ret->x, f_ref, alpha, ssr,
+	double offsetVol, x0_dummy, x1_dummy, x2_dummy, x3_dummy;
+	std::tie(offsetVol, ret->vol_curr_offset, ret->slope_curr_offset, x0_dummy, x1_dummy, x2_dummy, x3_dummy)
+		= ComputeVolatility(ret->f_syn, x, f_ref, ssr,
 		paramObj->scr_offset, paramObj->vcr_offset, paramObj->vol_ref_offset, paramObj->slope_ref_offset, paramObj->dn_cf_offset, paramObj->up_cf_offset, paramObj->dn_sm_offset, paramObj->up_sm_offset, paramObj->dn_slope_offset, paramObj->up_slope_offset, paramObj->put_curv_offset, paramObj->call_curv_offset);
 
 	ret->TBid().Volatility = midVol - offsetVol;
 	ret->TAsk().Volatility = midVol + offsetVol;
+	// ret->x = ret->f_syn * std::exp(ret->x);
 
 	return ret;
 }
@@ -115,7 +134,6 @@ std::tuple<double, double, double, double, double, double, double>
 	double f_syn,
 	double x,
 	double f_ref,
-	double alpha,
 	double ssr,
 	double scr,
 	double vcr,
@@ -154,8 +172,10 @@ std::tuple<double, double, double, double, double, double, double>
 	//	 dn_sm_b = dn_slope - (d_sigma_x1 - dn_slope) * x0 / (x1 - x0)
 	//	 dn_sm_a = sigma_x1 - dn_sm_b * x1 - dn_sm_c * x1 ^ 2
 	//	 sigma_x0 = dn_sm_a + dn_sm_b * x0 + dn_sm_c * x0 ^ 2
-	double dn_sm_c = (d_sigma_x1 - dn_slope) / (2 * (x1 - x0));
-	double dn_sm_b = dn_slope - (d_sigma_x1 - dn_slope) * x0 / (x1 - x0);
+	double x1_x0 = x1 - x0;
+	if (x1_x0 == 0) x1_x0 = DBL_EPSILON;
+	double dn_sm_c = (d_sigma_x1 - dn_slope) / (2 * x1_x0);
+	double dn_sm_b = dn_slope - (d_sigma_x1 - dn_slope) * x0 / x1_x0;
 	double dn_sm_a = sigma_x1 - dn_sm_b * x1 - dn_sm_c * x1 * x1;
 	double sigma_x0 = dn_sm_a + dn_sm_b * x0 + dn_sm_c * x0 * x0;
 
@@ -170,8 +190,10 @@ std::tuple<double, double, double, double, double, double, double>
 	//	up_sm_b = up_slope - (d_sigma_x2 - up_slope) * x3 / (x2 - x3)
 	//	up_sm_a = sigma_x2 - up_sm_b * x2 - up_sm_c * x2 ^ 2
 	//	sigma_x3 = up_sm_a + up_sm_b * x3 + up_sm_c * x3 ^ 2
-	double up_sm_c = (d_sigma_x2 - up_slope) / (2 * (x2 - x3));
-	double up_sm_b = up_slope - (d_sigma_x2 - up_slope) * x3 / (x2 - x3);
+	double x2_x3 = x2 - x3;
+	if (x2_x3 == 0) x2_x3 = DBL_EPSILON;
+	double up_sm_c = (d_sigma_x2 - up_slope) / (2 * x2_x3);
+	double up_sm_b = up_slope - (d_sigma_x2 - up_slope) * x3 / x2_x3;
 	double up_sm_a = sigma_x2 - up_sm_b * x2 - up_sm_c * x2 * x2;
 	double sigma_x3 = up_sm_a + up_sm_b * x3 + up_sm_c * x3 * x3;
 
@@ -202,7 +224,7 @@ std::tuple<double, double, double, double, double, double, double>
 		theo = up_slope * (x - x3) + sigma_x3;
 	}
 
-	return std::make_tuple(theo, vol_curr, slope_curr,  x0, x1, x2, x3);
+	return std::make_tuple(theo, vol_curr, slope_curr, f_syn * std::exp(x0), f_syn * std::exp(x1), f_syn * std::exp(x2), f_syn * std::exp(x3));
 }
 
 const std::map<std::string, double>& WingsVolatilityModel::DefaultParams(void) const

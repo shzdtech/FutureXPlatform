@@ -17,7 +17,7 @@
  // Return:     std::shared_ptr<std::vector<StrategyContractDO>>
  ////////////////////////////////////////////////////////////////////////
 
-VectorDO_Ptr<StrategyContractDO> StrategyContractDAO::LoadStrategyContractByProductType(int productType)
+VectorDO_Ptr<StrategyContractDO_Ptr> StrategyContractDAO::LoadStrategyContractByProductType(int productType)
 {
 	static const std::string sql_findstrategy(
 		"SELECT exchange_symbol, contract_symbol, underlying_symbol, tick_size, multiplier, "
@@ -26,15 +26,11 @@ VectorDO_Ptr<StrategyContractDO> StrategyContractDAO::LoadStrategyContractByProd
 		"FROM vw_strategy_contract_info "
 		"WHERE product_type = ?");
 
-	VectorDO_Ptr<StrategyContractDO> ret = std::make_shared<VectorDO<StrategyContractDO>>();
+	auto ret = std::make_shared<VectorDO<StrategyContractDO_Ptr>>();
 
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
 	{
-		static const std::string PM("pm");
-		static const std::string IVM("ivm");
-		static const std::string VM("vm");
-
 		autofillmap<UserStrategyName, autofillmap<ContractKey, StrategyPricingContract_Ptr>> pmPricingContractMap;
 		RetrievePricingContractsByProductType(productType, PM, pmPricingContractMap);
 
@@ -60,51 +56,51 @@ VectorDO_Ptr<StrategyContractDO> StrategyContractDAO::LoadStrategyContractByProd
 		{
 			std::string portfolio;
 			if (!rs->isNull(14)) portfolio = rs->getString(14);
-			StrategyContractDO stcdo(rs->getString(1), rs->getString(2), rs->getString(10), portfolio);
-			stcdo.TradingDay.Year = pTM->tm_year + 1900;
-			stcdo.TradingDay.Month = pTM->tm_mon + 1;
-			stcdo.TradingDay.Day = pTM->tm_mday;
-			stcdo.Underlying = rs->getString(3);
-			stcdo.TickSize = rs->getDouble(4);
-			stcdo.Multiplier = rs->getDouble(5);
-			stcdo.StrategyName = rs->getString(6);
-			stcdo.ContractType = (ContractType)rs->getInt(7);
-			stcdo.StrikePrice = rs->getDouble(8);
+			auto stcdo_ptr = std::make_shared<StrategyContractDO>(rs->getString(1), rs->getString(2), rs->getString(10), portfolio);
+			stcdo_ptr->TradingDay.Year = pTM->tm_year + 1900;
+			stcdo_ptr->TradingDay.Month = pTM->tm_mon + 1;
+			stcdo_ptr->TradingDay.Day = pTM->tm_mday;
+			stcdo_ptr->Underlying = rs->getString(3);
+			stcdo_ptr->TickSize = rs->getDouble(4);
+			stcdo_ptr->Multiplier = rs->getDouble(5);
+			stcdo_ptr->StrategyName = rs->getString(6);
+			stcdo_ptr->ContractType = (ContractType)rs->getInt(7);
+			stcdo_ptr->StrikePrice = rs->getDouble(8);
 			if (!rs->isNull(9))
 			{
 				std::string strDate = rs->getString(9);
-				stcdo.Expiration = DateType(strDate);
+				stcdo_ptr->Expiration = DateType(strDate);
 			}
 			
-			stcdo.ProductType = (ProductType)rs->getInt(11);
-			stcdo.BidEnabled = rs->getBoolean(12);
-			stcdo.AskEnabled = rs->getBoolean(13);
+			stcdo_ptr->ProductType = (ProductType)rs->getInt(11);
+			stcdo_ptr->BidEnabled = rs->getBoolean(12);
+			stcdo_ptr->AskEnabled = rs->getBoolean(13);
 
-			auto userStrategySymb = UserStrategyName(stcdo.UserID(), stcdo.StrategyName);
+			auto userStrategySymb = UserStrategyName(stcdo_ptr->UserID(), stcdo_ptr->StrategyName);
 			auto& modelMap = strategyDOMap.getorfill(userStrategySymb);
 
 			std::string modelInstance;
 			
 			if (modelMap.tryfind(PM, modelInstance))
-				stcdo.PricingModel = std::make_shared<ModelParamsDO>(modelInstance, "", stcdo.UserID());
+				stcdo_ptr->PricingModel = std::make_shared<ModelParamsDO>(modelInstance, "", stcdo_ptr->UserID());
 			if (auto pMap = pmPricingContractMap.tryfind(userStrategySymb))
-				if(auto pContractsPtr = pMap->tryfind(stcdo))
-					stcdo.PricingContracts = *pContractsPtr;
+				if(auto pContractsPtr = pMap->tryfind(*stcdo_ptr))
+					stcdo_ptr->PricingContracts = *pContractsPtr;
 
 
 			if (modelMap.tryfind(IVM, modelInstance))
-				stcdo.IVModel = std::make_shared<ModelParamsDO>(modelInstance, "", stcdo.UserID());
+				stcdo_ptr->IVModel = std::make_shared<ModelParamsDO>(modelInstance, "", stcdo_ptr->UserID());
 			if (auto pMap = ivmPricingContractMap.tryfind(userStrategySymb))
-				if (auto pContractsPtr = pMap->tryfind(stcdo))
-					stcdo.IVMContracts = *pContractsPtr;
+				if (auto pContractsPtr = pMap->tryfind(*stcdo_ptr))
+					stcdo_ptr->IVMContracts = *pContractsPtr;
 
 			if (modelMap.tryfind(VM, modelInstance))
-				stcdo.VolModel = std::make_shared<ModelParamsDO>(modelInstance, "", stcdo.UserID());
+				stcdo_ptr->VolModel = std::make_shared<ModelParamsDO>(modelInstance, "", stcdo_ptr->UserID());
 			if (auto pMap = vmPricingContractMap.tryfind(userStrategySymb))
-				if (auto pContractsPtr = pMap->tryfind(stcdo))
-					stcdo.VolContracts = *pContractsPtr;
+				if (auto pContractsPtr = pMap->tryfind(*stcdo_ptr))
+					stcdo_ptr->VolContracts = *pContractsPtr;
 
-			ret->push_back(std::move(stcdo));
+			ret->push_back(stcdo_ptr);
 		}
 	}
 	catch (sql::SQLException& sqlEx)
@@ -252,7 +248,9 @@ bool StrategyContractDAO::FindStrategyModelByAim(const std::string & strategySym
 void StrategyContractDAO::UpdateStrategy(const StrategyContractDO & strategyDO)
 {
 	static const std::string sql_savepStrategy(
-		"CALL Strategy_Upsert(?,?,?,?,?,?,?,?,?,?)");
+		"INSERT INTO strategy (accountid, trading_exchange_symbol, trading_contract_symbol, strategy_symbol, bid_allowed, ask_allowed) "
+		"VALUES(?, ?, ?, ?, ?, ?) "
+		"ON DUPLICATE KEY UPDATE bid_allowed = ?, ask_allowed = ? ");
 
 	ModelParamsDO_Ptr ret;
 
@@ -263,13 +261,11 @@ void StrategyContractDAO::UpdateStrategy(const StrategyContractDO & strategyDO)
 		prestmt->setString(1, strategyDO.UserID());
 		prestmt->setString(2, strategyDO.ExchangeID());
 		prestmt->setString(3, strategyDO.InstrumentID());
-		prestmt->setString(4, strategyDO.PortfolioID());
+		prestmt->setString(4, strategyDO.StrategyName);
 		prestmt->setBoolean(5, strategyDO.BidEnabled);
 		prestmt->setBoolean(6, strategyDO.AskEnabled);
-		prestmt->setString(7, strategyDO.StrategyName);
-		strategyDO.PricingModel ? prestmt->setString(8, strategyDO.PricingModel->InstanceName) : prestmt->setNull(8, sql::DataType::VARCHAR);
-		strategyDO.IVModel ? prestmt->setString(9, strategyDO.IVModel->InstanceName) : prestmt->setNull(9, sql::DataType::VARCHAR);
-		strategyDO.VolModel ? prestmt->setString(10, strategyDO.VolModel->InstanceName) : prestmt->setNull(10, sql::DataType::VARCHAR);
+		prestmt->setBoolean(7, strategyDO.BidEnabled);
+		prestmt->setBoolean(8, strategyDO.AskEnabled);
 
 		prestmt->executeUpdate();
 	}
@@ -280,15 +276,42 @@ void StrategyContractDAO::UpdateStrategy(const StrategyContractDO & strategyDO)
 	}
 }
 
-void StrategyContractDAO::UpdatePricingContract(const UserContractKey& userContractKey, const StrategyPricingContract& sto)
+void StrategyContractDAO::UpdateStrategyModel(const StrategyContractDO & strategyDO)
+{
+	static const std::string sql_savepStrategy(
+		"CALL StrategyModel_Update(?,?,?,?,?)");
+
+	ModelParamsDO_Ptr ret;
+
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
+	try
+	{
+		AutoClosePreparedStmt_Ptr prestmt(session->getConnection()->prepareStatement(sql_savepStrategy));
+		prestmt->setString(1, strategyDO.UserID());
+		prestmt->setString(2, strategyDO.StrategyName);
+		strategyDO.PricingModel ? prestmt->setString(3, strategyDO.PricingModel->InstanceName) : prestmt->setNull(3, sql::DataType::VARCHAR);
+		strategyDO.IVModel ? prestmt->setString(4, strategyDO.IVModel->InstanceName) : prestmt->setNull(4, sql::DataType::VARCHAR);
+		strategyDO.VolModel ? prestmt->setString(5, strategyDO.VolModel->InstanceName) : prestmt->setNull(5, sql::DataType::VARCHAR);
+
+		prestmt->executeUpdate();
+	}
+	catch (sql::SQLException& sqlEx)
+	{
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
+		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
+	}
+}
+
+void StrategyContractDAO::UpdatePricingContract(const UserContractKey& userContractKey, const std::string& strategySymb,
+	const std::string& modelAim, const StrategyPricingContract& sto)
 {
 	static const std::string sql_delricingcontract(
 		"DELETE FROM strategy_pricing_contract "
-		"WHERE accountid=? AND strategy_exchange=? AND strategy_contract=?");
+		"WHERE accountid=? AND strategy_exchange=? AND strategy_contract=? AND strategy_symbol=? AND modelaim=?");
 
 	static const std::string sql_savepricingcontract(
-		"INSERT INTO strategy_pricing_contract (accountid, strategy_exchange, strategy_contract, "
-		"pricing_exchange, pricing_contract, weight, adjust) VALUES (?,?,?,?,?,?,?) "
+		"INSERT INTO strategy_pricing_contract (accountid, strategy_exchange, strategy_contract, strategy_symbol, modelaim, "
+		"pricing_exchange, pricing_contract, weight, adjust) VALUES (?,?,?,?,?,?,?,?,?) "
 		"ON DUPLICATE KEY UPDATE weight = ?, adjust = ?");
 
 	ModelParamsDO_Ptr ret;
@@ -301,21 +324,24 @@ void StrategyContractDAO::UpdatePricingContract(const UserContractKey& userContr
 		delstmt->setString(1, userContractKey.UserID());
 		delstmt->setString(2, userContractKey.ExchangeID());
 		delstmt->setString(3, userContractKey.InstrumentID());
+		delstmt->setString(4, strategySymb);
+		delstmt->setString(5, modelAim);
 		delstmt->executeUpdate();
 
 		AutoClosePreparedStmt_Ptr prestmt(conn->prepareStatement(sql_savepricingcontract));
 		prestmt->setString(1, userContractKey.UserID());
 		prestmt->setString(2, userContractKey.ExchangeID());
 		prestmt->setString(3, userContractKey.InstrumentID());
-
+		prestmt->setString(4, strategySymb);
+		prestmt->setString(5, modelAim);
 		for (auto& contract : sto.PricingContracts)
 		{
-			prestmt->setDouble(4, contract.Weight);
-			prestmt->setDouble(5, contract.Adjust);
 			prestmt->setString(6, contract.ExchangeID());
 			prestmt->setString(7, contract.InstrumentID());
 			prestmt->setDouble(8, contract.Weight);
 			prestmt->setDouble(9, contract.Adjust);
+			prestmt->setDouble(10, contract.Weight);
+			prestmt->setDouble(11, contract.Adjust);
 			prestmt->executeUpdate();
 		}
 	}

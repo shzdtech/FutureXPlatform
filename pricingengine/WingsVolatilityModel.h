@@ -84,7 +84,6 @@ public:
 		double f_syn,
 		double x,
 		double f_ref,
-		double alpha,
 		double ssr,
 		double scr,
 		double vcr,

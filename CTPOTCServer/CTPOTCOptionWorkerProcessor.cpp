@@ -55,13 +55,21 @@ void CTPOTCOptionWorkerProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketData
 {
 	auto pMarketDataMap = PricingDataContext()->GetMarketDataMap();
 	MarketDataDO mDO;
-	if(pMarketDataMap->find(pDepthMarketData->InstrumentID, mDO))
+	if (pMarketDataMap->find(pDepthMarketData->InstrumentID, mDO))
 	{
 		double bidPrice = pDepthMarketData->BidPrice1;
 		double askPrice = pDepthMarketData->AskPrice1;
-		if (bidPrice < 1e-2 || bidPrice > 1e32 || askPrice < 1e-2 || askPrice > 1e32)
+		if (bidPrice > 1e32)
 		{
-			return;
+			bidPrice = pDepthMarketData->LowerLimitPrice;
+			if (bidPrice > 1e32)
+				bidPrice = pDepthMarketData->PreClosePrice;
+		}
+		if (askPrice > 1e32)
+		{
+			askPrice = pDepthMarketData->UpperLimitPrice;
+			if (askPrice > 1e32)
+				askPrice = pDepthMarketData->PreClosePrice;
 		}
 		if (mDO.Bid().Price != bidPrice || mDO.Ask().Price != askPrice)
 		{

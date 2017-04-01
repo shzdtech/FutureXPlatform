@@ -43,6 +43,10 @@ std::map<uint, IMessageHandler_Ptr> CTPOTCServiceFactory::CreateMessageHandlers(
 
 	msg_hdl_map[MSG_ID_UNSUB_PRICING] = std::make_shared<OTCUnSubMarketData>();
 
+	msg_hdl_map[MSG_ID_SUB_TRADINGDESK_PRICING] = std::make_shared<OTCSubTradingDeskData>();
+
+	msg_hdl_map[MSG_ID_UNSUB_TRADINGDESK_PRICING] = std::make_shared<OTCUnSubTradingDeskData>();
+
 	msg_hdl_map[MSG_ID_RTN_PRICING] = std::make_shared<ReturnHandler<IPricingDO_Ptr>>();
 
 	msg_hdl_map[MSG_ID_MODIFY_USER_PARAM] = std::make_shared<OTCUpdateUserParam>();
@@ -71,13 +75,15 @@ std::map<uint, IMessageHandler_Ptr> CTPOTCServiceFactory::CreateMessageHandlers(
 
 	msg_hdl_map[MSG_ID_QUERY_PORTFOLIO] = std::make_shared<OTCQueryPortfolio>();
 
-	msg_hdl_map[MSD_ID_PORTFOLIO_NEW] = std::make_shared<OTCNewPortfolio>();
+	msg_hdl_map[MSG_ID_PORTFOLIO_NEW] = std::make_shared<OTCNewPortfolio>();
 
 	msg_hdl_map[MSG_ID_UPDATE_MODELPARAMS] = std::make_shared<OTCUpdateModelParams>();
 
 	msg_hdl_map[MSG_ID_QUERY_MODELPARAMS] = std::make_shared<OTCQueryModelParams>();
 
 	msg_hdl_map[MSG_ID_UPDATE_TEMPMODELPARAMS] = std::make_shared<OTCUpdateTempModelParam>();
+
+	msg_hdl_map[MSG_ID_MODIFY_PRICING_CONTRACT] = std::make_shared<OTCUpdatePricingContract>();
 
 	// For simulation
 	msg_hdl_map[MSG_ID_RET_MARKETDATA] = std::make_shared<CTPSimMarketData>();

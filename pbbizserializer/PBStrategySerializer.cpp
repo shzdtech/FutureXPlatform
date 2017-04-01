@@ -33,39 +33,62 @@ data_buffer PBStrategySerializer::Serialize(const dataobj_ptr& abstractDO)
 		pStrategy->set_hedging(sdo.Hedging);
 		pStrategy->set_underlying(sdo.Underlying);
 		pStrategy->set_symbol(sdo.StrategyName);
-		pStrategy->set_description(sdo.Description);
 		pStrategy->set_depth(sdo.Depth);
 		pStrategy->set_bidenabled(sdo.BidEnabled);
 		pStrategy->set_askenabled(sdo.AskEnabled);
 		pStrategy->set_bidqt(sdo.BidQT);
 		pStrategy->set_askqt(sdo.AskQT);
 
-		if (sdo.PricingContracts)
-		{
-			for (auto& pricingContract : sdo.PricingContracts->PricingContracts)
-			{
-				auto pContract = pStrategy->add_pricingcontracts();
-				pContract->set_exchange(pricingContract.ExchangeID());
-				pContract->set_contract(pricingContract.InstrumentID());
-				pContract->set_weight(pricingContract.Weight);
-				pContract->set_adjust(pricingContract.Adjust);
-			}
-		}
-
 		// Fill Models
 		if (sdo.PricingModel)
 		{
 			pStrategy->set_pricingmodel(sdo.PricingModel->InstanceName);
+
+			if (sdo.PricingContracts)
+			{
+				for (auto& pricingContract : sdo.PricingContracts->PricingContracts)
+				{
+					auto pContract = pStrategy->add_pricingcontracts();
+					pContract->set_exchange(pricingContract.ExchangeID());
+					pContract->set_contract(pricingContract.InstrumentID());
+					pContract->set_weight(pricingContract.Weight);
+					pContract->set_adjust(pricingContract.Adjust);
+				}
+			}
 		}
 
 		if (sdo.IVModel)
 		{
 			pStrategy->set_ivmodel(sdo.IVModel->InstanceName);
+
+			if (sdo.IVMContracts)
+			{
+				for (auto& pricingContract : sdo.IVMContracts->PricingContracts)
+				{
+					auto pContract = pStrategy->add_ivmcontracts();
+					pContract->set_exchange(pricingContract.ExchangeID());
+					pContract->set_contract(pricingContract.InstrumentID());
+					pContract->set_weight(pricingContract.Weight);
+					pContract->set_adjust(pricingContract.Adjust);
+				}
+			}
 		}
 
 		if (sdo.VolModel)
 		{
 			pStrategy->set_volmodel(sdo.VolModel->InstanceName);
+
+			if (sdo.VolContracts)
+			{
+				for (auto& pricingContract : sdo.VolContracts->PricingContracts)
+				{
+					auto pContract = pStrategy->add_volcontracts();
+					pContract->set_exchange(pricingContract.ExchangeID());
+					pContract->set_contract(pricingContract.InstrumentID());
+					pContract->set_weight(pricingContract.Weight);
+					pContract->set_adjust(pricingContract.Adjust);
+				}
+			}
 		}
 
 	}
@@ -95,33 +118,6 @@ dataobj_ptr PBStrategySerializer::Deserialize(const data_buffer& rawdata)
 	sdo->AskEnabled = pbstrtg.askenabled();
 	sdo->BidQT = pbstrtg.bidqt();
 	sdo->AskQT = pbstrtg.askqt();
-
-	//if (!pbstrtg.pricingcontracts().empty())
-	//{
-	//	for (auto& bc : pbstrtg.pricingcontracts())
-	//	{
-	//		PricingContract cp(bc.exchange(), bc.contract());
-	//		cp.Weight = bc.weight();
-	//		cp.Adjust = bc.adjust();
-	//		sdo->PricingContracts.push_back(std::move(cp));
-	//	}
-	//}
-
-	// Fill Models
-	if (!pbstrtg.pricingmodel().empty())
-	{
-		sdo->PricingModel = std::make_shared<ModelParamsDO>(pbstrtg.pricingmodel(), "", "");
-	}
-
-	if (!pbstrtg.ivmodel().empty())
-	{
-		sdo->IVModel = std::make_shared<ModelParamsDO>(pbstrtg.ivmodel(), "", "");
-	}
-
-	if (!pbstrtg.volmodel().empty())
-	{
-		sdo->VolModel = std::make_shared<ModelParamsDO>(pbstrtg.volmodel(), "", "");
-	}
 
 	return sdo;
 }

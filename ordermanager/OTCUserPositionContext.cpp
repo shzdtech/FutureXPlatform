@@ -70,9 +70,10 @@ ContractMap<double> OTCUserPositionContext::GenSpreadPoints(const PortfolioKey& 
 			int position = it.second;
 			if (position != 0)
 			{
-				if (auto pStrategy = pStrategyMap->tryfind(it.first))
+				StrategyContractDO_Ptr strategy_ptr;
+				if (pStrategyMap->find(it.first, strategy_ptr))
 				{
-					for (auto& bit : pStrategy->PricingContracts->PricingContracts)
+					for (auto& bit : strategy_ptr->PricingContracts->PricingContracts)
 					{
 						double pos = bit.Weight*position;
 						auto &mktpos = hedgeMap.getorfill(bit);

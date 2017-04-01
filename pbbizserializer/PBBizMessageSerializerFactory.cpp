@@ -28,7 +28,7 @@ PBBizMessageSerializerFactory::PBBizMessageSerializerFactory()
 	_serializer_map[MSG_ID_ORDER_CANCEL] = PBOrderSerializer::Instance();
 	_serializer_map[MSG_ID_QUERY_ACCOUNT_INFO] = PBAccountInfoSerializer::Instance();
 	_serializer_map[MSG_ID_QUERY_EXCHANGE] = PBExchangeSerializer::Instance();
-	_serializer_map[MSG_ID_QUERY_INSTRUMENT] = PBInstrumentSerializer::Instance();
+	_serializer_map[MSG_ID_QUERY_INSTRUMENT] = PBContractInfoSerializer::Instance();
 	_serializer_map[MSG_ID_QUERY_ORDER] = std::make_shared<PBCombineSerializer>
 		(PBOrderSerializer::Instance(), PBStringMapSerializer::Instance());
 	_serializer_map[MSG_ID_ORDER_UPDATE] = PBOrderSerializer::Instance();
@@ -56,17 +56,20 @@ PBBizMessageSerializerFactory::PBBizMessageSerializerFactory()
 		(PBResultSerializer::Instance(), PBUserParamSerializer::Instance());
 	_serializer_map[MSG_ID_QUERY_TRADINGDESK] = PBUserInfoListSerializer::Instance();
 	_serializer_map[MSG_ID_QUERY_STRATEGY] = std::make_shared<PBCombineSerializer>
-		(PBStrategySerializer::Instance(), PBStringMapSerializer::Instance());
+		(PBStrategySerializer::Instance(), PBInstrumentSerializer::Instance());
 	_serializer_map[MSG_ID_QUERY_CONTRACT_PARAM] = std::make_shared<PBCombineSerializer>
-		(PBContractParamSerializer::Instance(), PBStringMapSerializer::Instance());
+		(PBContractParamSerializer::Instance(), PBInstrumentSerializer::Instance());
 	_serializer_map[MSG_ID_MODIFY_CONTRACT_PARAM] = std::make_shared<PBCombineSerializer>
 		(PBResultSerializer::Instance(), PBContractParamSerializer::Instance());
 	_serializer_map[MSG_ID_MODIFY_STRATEGY] = PBStrategySerializer::Instance();
 	_serializer_map[MSG_ID_QUERY_PORTFOLIO] = std::make_shared<PBCombineSerializer>
-		(PBPortfolioSerializer::Instance(), PBStringMapSerializer::Instance());
-	_serializer_map[MSD_ID_PORTFOLIO_NEW] = std::make_shared<PBCombineSerializer>
+		(PBPortfolioSerializer::Instance(), PBInstrumentSerializer::Instance());
+	_serializer_map[MSG_ID_PORTFOLIO_NEW] = std::make_shared<PBCombineSerializer>
 		(PBResultSerializer::Instance(), PBPortfolioSerializer::Instance());
 	_serializer_map[MSG_ID_RTN_TRADINGDESK_PRICING] = PBTradingDeskParamsSerializer::Instance();
+	_serializer_map[MSG_ID_MODIFY_PRICING_CONTRACT] = PBPricingContractSerializer::Instance();
+	_serializer_map[MSG_ID_SUB_TRADINGDESK_PRICING] = PBInstrumentSerializer::Instance();
+	_serializer_map[MSG_ID_UNSUB_TRADINGDESK_PRICING] = PBInstrumentSerializer::Instance();
 }
 
 ////////////////////////////////////////////////////////////////////////

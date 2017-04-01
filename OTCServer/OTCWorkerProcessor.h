@@ -11,6 +11,7 @@
 #include "libcuckoo/cuckoohash_map.hh"
 #include <list>
 #include <thread>
+#include "../utility/cuckoohashmap_wrapper.h"
 #include "../ordermanager/OTCOrderManager.h"
 #include "../dataobject/TypedefDO.h"
 #include "../bizutility/ContractCache.h"
@@ -35,6 +36,8 @@ public:
 	virtual void AddContractToMonitor(const ContractKey& contractId);
 
 	virtual int SubscribePricingContracts(const ContractKey & strategyKey, const StrategyPricingContract& strategyContract);
+
+	virtual int UnsubscribePricingContracts(const ContractKey & strategyKey, const StrategyPricingContract & strategyContract);
 
 	virtual void TriggerOTCPricing(const StrategyContractDO& strategyDO);
 	virtual void TriggerTadingDeskParams(const StrategyContractDO& strategyDO);
@@ -64,7 +67,7 @@ public:
 	IPricingDataContext_Ptr& PricingDataContext();
 
 protected:
-	cuckoohash_map<ContractKey, std::shared_ptr<std::set<ContractKey>>, ContractKeyHash> _baseContractStrategyMap;
+	cuckoohash_map<ContractKey, cuckoohashmap_wrapper<ContractKey, bool, ContractKeyHash>, ContractKeyHash> _baseContractStrategyMap;
 	// cuckoohash_map<ContractKey, ContractKey, ContractKeyHash> _exchangeStrategyMap;
 	// cuckoohash_map<ContractKey, bool, ContractKeyHash> _otcStrategySet;
 	SessionContainer_Ptr<ContractKey, ContractKeyHash> _pricingNotifers;

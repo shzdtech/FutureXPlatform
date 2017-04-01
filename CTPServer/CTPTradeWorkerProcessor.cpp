@@ -49,9 +49,12 @@ CTPTradeWorkerProcessor::CTPTradeWorkerProcessor(IServerContext* pServerCtx)
 	_systemUser.setPassword(pwd);
 
 	std::string address;
-	ExchangeRouterTable::TryFind(_systemUser.getBrokerId() + ':' + ExchangeRouterTable::TARGET_TD, address);
-	if (address.empty() && !_serverCtx->getConfigVal(CTP_TRADER_SERVER, address))
-		SysParam::TryGet(CTP_TRADER_SERVER, address);
+	if (!_serverCtx->getConfigVal(CTP_TRADER_SERVER, address))
+	{
+		ExchangeRouterTable::TryFind(_systemUser.getBrokerId() + ':' + ExchangeRouterTable::TARGET_TD, address);
+		if (address.empty() && !_serverCtx->getConfigVal(CTP_TRADER_SERVER, address))
+			SysParam::TryGet(CTP_TRADER_SERVER, address);
+	}
 	_systemUser.setServer(address);
 }
 
@@ -178,6 +181,21 @@ int CTPTradeWorkerProcessor::LoginSystemUserIfNeed(void)
 
 int CTPTradeWorkerProcessor::LoadDataAsync(void)
 {
+	std::string logout_dataloaded;
+	if (getServerContext()->getConfigVal("load_contract_db", logout_dataloaded) &&
+		stringutility::compare(logout_dataloaded.data(), "true") == 0)
+	{
+		for (auto productType : _productTypes)
+		{
+			if (auto vectPtr = ContractDAO::FindContractByProductType(productType))
+			{
+				InstrumentCache& cache = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE);
+				for (auto& contract : *vectPtr)
+					cache.Add(contract);
+			}
+		}
+	}
+
 	if (!(DataLoadMask & INSTRUMENT_DATA_LOADED))
 	{
 		auto trdAPI = _rawAPI->TrdAPI;

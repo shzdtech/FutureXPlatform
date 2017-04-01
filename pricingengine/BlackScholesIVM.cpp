@@ -6,11 +6,9 @@
  ***********************************************************************/
 
 #include "BlackScholesIVM.h"
-#include <ql/pricingengines/blackcalculator.hpp>
-#include <ql/time/daycounters/actual365fixed.hpp>
-#include <ql/math/solvers1d/brent.hpp>
 
 #include "../dataobject/StrategyContractDO.h"
+#include "../dataobject/TradingDeskOptionParams.h"
 #include "../dataobject/MarketDataDO.h"
 #include "../dataobject/UserContractParamDO.h"
 #include "../dataobject/PricingDO.h"
@@ -18,6 +16,10 @@
 #include "../dataobject/TypedefDO.h"
 #include "../dataobject/TemplateDO.h"
 #include "../bizutility/GlobalSettings.h"
+
+#include "../message/BizError.h"
+
+#include <ql/quantlib.hpp>
 
 using namespace QuantLib;
 
@@ -47,6 +49,11 @@ dataobj_ptr BlackScholesIVM::Compute(
 	IPricingDataContext& priceCtx,
 	const param_vector* params)
 {
+	if (!sdo.IVMContracts || sdo.IVMContracts->PricingContracts.empty())
+	{
+		throw NotFoundException("Cannot find IVM pricing contract for " + sdo.InstrumentID() + '.' + sdo.ExchangeID());
+	}
+
 	if (!sdo.IVModel->ParsedParams)
 	{
 		ParseParams(sdo.IVModel->Params, sdo.IVModel->ParsedParams);
@@ -58,35 +65,54 @@ dataobj_ptr BlackScholesIVM::Compute(
 		return nullptr;
 
 	MarketDataDO mDO;
-	if (!priceCtx.GetMarketDataMap()->find(sdo.InstrumentID(), mDO))
+	if (!priceCtx.GetMarketDataMap()->find(sdo.InstrumentID(), mDO) ||
+		mDO.Ask().Volume <= 0 && mDO.Bid().Volume <= 0)
 		return nullptr;
 
 	MarketDataDO mBaseDO;
 	if (!priceCtx.GetMarketDataMap()->find(sdo.IVMContracts->PricingContracts[0].InstrumentID(), mBaseDO))
 		return nullptr;
 
-	double adjust = sdo.IVMContracts->PricingContracts[0].Adjust;
-
-	double price = (mDO.Bid().Price + mDO.Ask().Price) / 2;
-
-	double base_bidPrice = mBaseDO.Bid().Price + adjust;
-	double base_askdPrice = mBaseDO.Ask().Price + adjust;
-
-	if (price <= 0 || base_bidPrice <= 0 || base_askdPrice <= 0)
-	{
+	if (mBaseDO.Ask().Volume <= 0 && mBaseDO.Bid().Volume <= 0)
 		return nullptr;
-	}
 
-	auto ret = std::make_shared<TDataObject<std::pair<double, double>>>();
+	double base_bidPrice = mBaseDO.Bid().Price;
+	double base_askdPrice = mBaseDO.Ask().Price;
+
+	double adjust = sdo.IVMContracts->PricingContracts[0].Adjust;
+	double price = (base_bidPrice + base_askdPrice) / 2 + adjust;
+
+	auto ret = std::make_shared<TDataObject<ImpliedVolatility>>();
+	try
+	{
+		if (mDO.Bid().Volume > 0)
+			ret->Data.BidVolatility = CaclImpliedVolatility(mDO.Bid().Price, price, sdo.StrikePrice, paramObj->bidVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration);
+		else
+			ret->Data.BidVolatility = std::nan(nullptr);
+	}
+	catch (QuantLib::Error& e)
+	{
+		paramObj->bidVolatility = OptionParams::DEFAULT_VOLATILITY();
+	}
+	catch (...)
+	{
+		ret->Data.BidVolatility = std::nan(nullptr);
+	}
 
 	try
 	{
-		ret->Data.first = ImpliedVolatility(price, base_bidPrice, sdo.StrikePrice, paramObj->bidVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration);
-		ret->Data.second = ImpliedVolatility(price, base_askdPrice, sdo.StrikePrice, paramObj->askVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration);
+		if (mDO.Ask().Volume > 0)
+			ret->Data.AskVolatility = CaclImpliedVolatility(mDO.Ask().Price, price, sdo.StrikePrice, paramObj->askVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration);
+		else
+			ret->Data.AskVolatility = std::nan(nullptr);
 	}
-	catch(...)
+	catch (QuantLib::Error& e)
 	{
-		ret = nullptr;
+		paramObj->askVolatility = OptionParams::DEFAULT_VOLATILITY();
+	}
+	catch (...)
+	{
+		ret->Data.AskVolatility = std::nan(nullptr);
 	}
 
 	return ret;
@@ -111,7 +137,7 @@ void BlackScholesIVM::ParseParams(const std::map<std::string, double>& modelPara
 	target = std::move(ret);
 }
 
-double BlackScholesIVM::ImpliedVolatility(
+double BlackScholesIVM::CaclImpliedVolatility(
 	double marketOptionPrice,
 	double underlyingPrice,
 	double strikePrice,
@@ -128,8 +154,6 @@ double BlackScholesIVM::ImpliedVolatility(
 
 	Date settlementDate((Day)tradingDate.Day, (Month)(tradingDate.Month), (Year)(tradingDate.Year));
 
-	Time timeToMaturity = dayCounter.yearFraction(settlementDate, maturity);
-
 	Option::Type optionType = contractType == ContractType::CONTRACTTYPE_CALL_OPTION ? Option::Call : Option::Put;
 
 	//auto volatilityPtr = boost::shared_ptr<SimpleQuote>(new SimpleQuote(volatility));
@@ -137,45 +161,54 @@ double BlackScholesIVM::ImpliedVolatility(
 
 	// BlackConstantVol blackVol(settlementDate, TARGET(), hQute, dayCounter);
 
-	const static double accuracy = 1e-3, xMin = 0, xMax = 5;
-	const int maxit = 200;
+	const static int maxit = 200;
+	const static double xMin = 0;
+	const static double default_vol = OptionParams::DEFAULT_VOLATILITY();
+	const static double default_vol_2 = default_vol + default_vol;
+	double accuracy = 1e-3;
+	double xMax = 10;
+	if (default_vol != volatility)
+	{
+		accuracy = 1e-4;
+		xMax = 2 * volatility;
+		if (xMax < default_vol_2)
+			xMax = default_vol_2;
+	}
 
-	Volatility guess = (volatility < xMin || volatility > xMax) ? (xMin + xMax) / 2 : volatility;
+	/*Volatility guess = (volatility < xMin || volatility > xMax) ? (xMin + xMax) / 2 : volatility;
 
 	Brent solver1D;
 	solver1D.setMaxEvaluations(maxit);
+	Time timeToMaturity = dayCounter.yearFraction(settlementDate, maturity);
+	timeToMaturity = std::sqrt(timeToMaturity);
 	Volatility imv = solver1D.solve([&](const Volatility & sigma) {
-		/* volatilityPtr->setValue(sigma);
-		Real variance = blackVol.blackVariance(timeToMaturity, strikePrice);
-		Real stdDev = std::sqrt(variance);*/
-		Real stdDev = std::abs(sigma) * std::sqrt(timeToMaturity);
+		Real stdDev = std::abs(sigma) * timeToMaturity;
 		BlackCalculator blackCalculator(optionType, strikePrice, underlyingPrice, stdDev);
 		return blackCalculator.value() - marketOptionPrice; },
-		accuracy, guess, xMin, xMax);
+		accuracy, guess, xMin, xMax);*/
 
 
-	//Handle<Quote> underlyingH(boost::shared_ptr<Quote>(new SimpleQuote(underlyingPrice)));
+	Handle<Quote> underlyingH(boost::shared_ptr<Quote>(new SimpleQuote(underlyingPrice)));
 
-	//// bootstrap the yield/dividend/vol curves
-	//Handle<YieldTermStructure> flatTermStructure(
-	//	boost::shared_ptr<YieldTermStructure>(new FlatForward(settlementDate, riskFreeRate, dayCounter)));
-	//Handle<YieldTermStructure> flatDividendTS(
-	//	boost::shared_ptr<YieldTermStructure>(new FlatForward(settlementDate, dividendYield, dayCounter)));
-	//Handle<BlackVolTermStructure> flatVolTS(
-	//	boost::shared_ptr<BlackVolTermStructure>(new BlackConstantVol(settlementDate, TARGET(), volatility, dayCounter)));
+	Handle<YieldTermStructure> flatTermStructure(
+		boost::shared_ptr<YieldTermStructure>(new FlatForward(settlementDate, riskFreeRate, dayCounter)));
+	Handle<YieldTermStructure> flatDividendTS(
+		boost::shared_ptr<YieldTermStructure>(new FlatForward(settlementDate, dividendYield, dayCounter)));
+	Handle<BlackVolTermStructure> flatVolTS(
+		boost::shared_ptr<BlackVolTermStructure>(new BlackConstantVol(settlementDate, TARGET(), volatility, dayCounter)));
 
-	//boost::shared_ptr<StrikedTypePayoff> payoff(
-	//	new PlainVanillaPayoff(optionType, strikePrice));
+	boost::shared_ptr<StrikedTypePayoff> payoff(new PlainVanillaPayoff(optionType, strikePrice));
 
-	//// options
-	//boost::shared_ptr<Exercise> europeanExercise(new EuropeanExercise(maturity));
+	boost::shared_ptr<BlackScholesMertonProcess> bsmProcess(new BlackScholesMertonProcess(underlyingH, flatDividendTS, flatTermStructure, flatVolTS));
 
-	//VanillaOption europeanOption(payoff, europeanExercise);
+	boost::shared_ptr<PricingEngine> pricingEngine(new AnalyticEuropeanEngine(bsmProcess));
+	// options
+	boost::shared_ptr<Exercise> europeanExercise(new EuropeanExercise(maturity));
 
-	//boost::shared_ptr<BlackScholesMertonProcess> bsmProcess(
-	//	new BlackScholesMertonProcess(underlyingH, flatDividendTS, flatTermStructure, flatVolTS));
+	VanillaOption europeanOption(payoff, europeanExercise);
+	europeanOption.setPricingEngine(pricingEngine);
 
-	//Volatility imv = europeanOption.impliedVolatility(marketOptionPrice, bsmProcess, 1e-4, 100, 1e-2, 2);
+	Volatility imv = europeanOption.impliedVolatility(marketOptionPrice, bsmProcess, accuracy, maxit, xMin, xMax);
 
 	return imv;
 }

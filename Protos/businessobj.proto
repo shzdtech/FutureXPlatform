@@ -5,6 +5,18 @@ import "modelalgorithm.proto";
 
 package Micro.Future.Message.Business;
 
+message PBInstrument
+{
+	string exchange = 1;
+	string contract = 2;
+}
+
+message PBInstrumentList
+{
+	DataHeader header = 1;
+	repeated PBInstrument instrument = 2;
+}
+
 message PBMarketData 
 {
 	DataHeader header = 1;
@@ -82,6 +94,19 @@ message PBPricingDataList
 	DataHeader header = 2;
 }
 
+message PBOptionMarketData
+{
+	double askPrice = 1;
+	double bidPrice = 2;
+	int32 askSize = 3;
+	int32 bidSize = 4;
+}
+
+message PBImpliedVolatility
+{
+	double askVolatility = 1;
+	double bidVolatility = 2;
+}
 message PBOptionData
 {
 	double askPrice = 1;
@@ -102,20 +127,17 @@ message PBOptionData
 
 message PBWingsModelReturn
 {
-	double f_syn = 1;
-	double x = 2;
-	double vol_curr = 3;
-	double vol_curr_offset = 4;
-	double slope_curr = 6;
-	double slope_curr_offset = 7;
-	double x0 = 8;
-	double x0_offset = 9;
-	double x1 = 10;
-	double x1_offset = 11;
-	double x2 = 12;
-	double x2_offset = 13;
-	double x3 = 14;
-	double x3_offset = 15;
+	double f_atm = 1;
+	double f_ref = 2;
+	double f_syn = 3;
+	double vol_curr = 5;
+	double vol_curr_offset = 6;
+	double slope_curr = 7;
+	double slope_curr_offset = 8;
+	double x0 = 9;
+	double x1 = 11;
+	double x2 = 13;
+	double x3 = 15;
 }
 
 message PBTradingDeskOptionParams
@@ -123,10 +145,11 @@ message PBTradingDeskOptionParams
 	DataHeader header = 1;
 	string exchange = 2;
 	string contract = 3;
-	PBOptionData marketData = 4;
-	PBOptionData theoData = 5;
-	PBWingsModelReturn wingsReturn = 6;
-	PBOptionData theoDataTemp = 7;
+	PBOptionMarketData marketData = 4;
+	PBImpliedVolatility impliedVol = 5;
+	PBOptionData theoData = 6;
+	PBWingsModelReturn wingsReturn = 7;
+	PBOptionData theoDataTemp = 8;
 }
 
 message PBPricingContract
@@ -144,17 +167,18 @@ message PBStrategy
 	string contract = 3;
 	string underlying = 4;
 	string symbol = 5;
-	string description = 6;
-	bool hedging = 7;
-	bool bidEnabled = 8;
-	bool askEnabled = 9;
-	int32 bidQT = 10;
-	int32 askQT = 11;
-	int32 depth = 12;
-	repeated PBPricingContract pricingContracts = 13;
-	string pricingModel = 14;
+	bool hedging = 6;
+	bool bidEnabled = 7;
+	bool askEnabled = 8;
+	int32 bidQT = 9;
+	int32 askQT = 10;
+	int32 depth = 11;
+	repeated PBPricingContract pricingContracts = 12;
+	string pricingModel = 13;
+	repeated PBPricingContract ivmContracts = 14;
 	string ivModel = 15;
-	string volModel = 16;
+	repeated PBPricingContract volContracts = 16;
+	string volModel = 17;
 }
 
 message PBStrategyList

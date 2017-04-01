@@ -16,6 +16,7 @@
 #include "PBAccountInfoSerializer.h"
 #include "PBExchangeSerializer.h"
 #include "PBInstrumentSerializer.h"
+#include "PBContractInfoSerializer.h"
 #include "PBMarketDataSerializer.h"
 #include "PBSubMarketDataSerializer.h"
 #include "PBOrderSerializer.h"
@@ -28,6 +29,7 @@
 #include "PBSubPricingDataSerializer.h"
 #include "PBPortfolioSerializer.h"
 #include "PBTradingDeskParamsSerializer.h"
+#include "PBPricingContractSerializer.h"
 
 #include "PBBankSerializer.h"
 #include "PBBankOperationSerializer.h"

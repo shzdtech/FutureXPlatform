@@ -28,8 +28,11 @@ dataobj_ptr OTCUpdateModelParams::HandleRequest(const uint32_t serialId, const d
 
 	if (pModelParam->Params.empty())
 	{
-		ModelParamsDAO::NewUserModel(*pModelParam);
-		StrategyModelCache::FindOrRetrieveModel(*pModelParam);
+		if (!pModelParam->Model.empty() && !pModelParam->InstanceName.empty())
+		{
+			ModelParamsDAO::NewUserModel(*pModelParam);
+			StrategyModelCache::FindOrRetrieveModel(*pModelParam);
+		}
 	}
 	else
 	{
@@ -58,20 +61,26 @@ dataobj_ptr OTCUpdateModelParams::HandleRequest(const uint32_t serialId, const d
 
 			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 			{
-				auto pStrategyMap = pWorkerProc->PricingDataContext()->GetStrategyMap();
-
-				for (auto& pair : *pStrategyMap)
+				if (auto pStrategyMap = pWorkerProc->PricingDataContext()->GetUserStrategyMap()->tryfind(pModelParam->UserID()))
 				{
-					auto& strategyDO = pair.second;
-					auto ivmModel_Ptr = strategyDO.IVModel;
-					auto volModel_Ptr = strategyDO.VolModel;
-					if ((ivmModel_Ptr && ivmModel_Ptr->operator==(*pModelParam)) ||
-						(volModel_Ptr && volModel_Ptr->operator==(*pModelParam)))
+					for (auto& pairMap : *pStrategyMap)
 					{
-						pWorkerProc->TriggerTadingDeskParams(strategyDO);
-
-						if (strategyDO.PricingContracts && strategyDO.IsOTC())
-							pWorkerProc->TriggerOTCPricing(strategyDO);
+						if (auto stMap_ptr = pairMap.second)
+						{
+							auto it = stMap_ptr->lock_table();
+							for (auto& pair : it)
+							{
+								auto& strategyDO = pair.second;
+								auto ivmModel_Ptr = strategyDO->IVModel;
+								auto volModel_Ptr = strategyDO->VolModel;
+								if ((ivmModel_Ptr && ivmModel_Ptr->operator==(*pModelParam)) ||
+									(volModel_Ptr && volModel_Ptr->operator==(*pModelParam)))
+								{
+									pWorkerProc->TriggerTadingDeskParams(*strategyDO);
+									pWorkerProc->TriggerOTCPricing(*strategyDO);
+								}
+							}
+						}
 					}
 				}
 			}

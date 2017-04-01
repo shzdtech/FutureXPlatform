@@ -36,30 +36,26 @@
 dataobj_ptr OTCQueryStrategy::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
+
 	auto sDOVec_Ptr = std::make_shared<VectorDO<StrategyContractDO>>();
-	auto role = session->getUserInfo().getRole();
 
-	if (role == ROLE_TRADINGDESK)
-	{
-		if (auto strategyVec_Ptr = std::static_pointer_cast<std::vector<ContractKey>>(
-			session->getContext()->getAttribute(STR_KEY_USER_STRATEGY)))
-			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+	if (auto strategySet_Ptr = std::static_pointer_cast<std::set<ContractKey>>(
+		session->getContext()->getAttribute(STR_KEY_USER_STRATEGY)))
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+		{
+			auto pStrategyMap = pWorkerProc->PricingDataContext()->GetStrategyMap();
+			auto sessionPtr = msgProcessor->getMessageSession();
+
+			for (auto& strategyKey : *strategySet_Ptr)
 			{
-				auto pStrategyMap = pWorkerProc->PricingDataContext()->GetStrategyMap();
-				auto sessionPtr = msgProcessor->getMessageSession();
-
-				for (auto& strategyKey : *strategyVec_Ptr)
+				StrategyContractDO_Ptr strategy_ptr;
+				if (pStrategyMap->find(strategyKey, strategy_ptr))
 				{
-					if (auto pStrategy = pStrategyMap->tryfind(strategyKey))
-					{
-						pWorkerProc->RegisterTradingDeskListener(*pStrategy, sessionPtr);
-						pWorkerProc->SubscribeStrategy(*pStrategy);
-						sDOVec_Ptr->push_back(*pStrategy);
-					}
+					sDOVec_Ptr->push_back(*strategy_ptr);
 				}
-				ThrowNotFoundExceptionIfEmpty(sDOVec_Ptr);
 			}
-	}
+			ThrowNotFoundExceptionIfEmpty(sDOVec_Ptr);
+		}
 
 	return sDOVec_Ptr;
 }

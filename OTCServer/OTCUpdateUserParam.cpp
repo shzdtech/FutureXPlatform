@@ -43,7 +43,7 @@ dataobj_ptr OTCUpdateUserParam::HandleRequest(const uint32_t serialId, const dat
 
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
-		auto strategyMap = pWorkerProc->PricingDataContext()->GetStrategyMap();
+		auto pStrategyMap = pWorkerProc->PricingDataContext()->GetStrategyMap();
 
 		for (auto& userConDO : *vecUserConDO_Ptr)
 		{
@@ -51,10 +51,10 @@ dataobj_ptr OTCUpdateUserParam::HandleRequest(const uint32_t serialId, const dat
 			{
 				pUserContract->Quantity = userConDO.Quantity;
 
-				auto it = strategyMap->find(userConDO);
-				if (it != strategyMap->end())
+				StrategyContractDO_Ptr strategy_ptr;
+				if (pStrategyMap->find(userConDO, strategy_ptr))
 				{
-					OnResponseProcMacro(msgProcessor, MSG_ID_RTN_PRICING, serialId, &it->second);
+					OnResponseProcMacro(msgProcessor, MSG_ID_RTN_PRICING, serialId, strategy_ptr.get());
 				}
 			}
 		}

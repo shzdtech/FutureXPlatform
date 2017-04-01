@@ -10,6 +10,7 @@
 #include "BetaSumPricingAlgorithm.h"
 #include "ETPPricingAlgorithm.h"
 #include "BlackScholesPricingAlgorithm.h"
+#include "BsBinPricingAlgorithm.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       PricingAlgorithmFactory::CreateAlgorithms()
@@ -26,6 +27,7 @@ std::vector<IPricingAlgorithm_Ptr> PricingAlgorithmFactory::CreateAlgorithms(voi
 	ret.push_back(std::make_shared<BetaSumPricingAlgorithm>());
 	ret.push_back(std::make_shared<ETPPricingAlgorithm>());
 	ret.push_back(std::make_shared<BlackScholesPricingAlgorithm>());
+	ret.push_back(std::make_shared<BsBinPricingAlgorithm>());
 	
 	return ret;
 }

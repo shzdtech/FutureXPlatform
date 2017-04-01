@@ -7,6 +7,7 @@
 
 #include "ModelAlgorithmFactory.h"
 #include "BlackScholesIVM.h"
+#include "BsBinIVM.h"
 #include "WingsVolatilityModel.h"
 
 ////////////////////////////////////////////////////////////////////////
@@ -23,7 +24,7 @@ std::vector<IModelAlgorithm_Ptr> ModelAlgorithmFactory::CreateModelAlgorithms(vo
 
 	ret.push_back(std::make_shared<WingsVolatilityModel>());
 	ret.push_back(std::make_shared<BlackScholesIVM>());
-
+	ret.push_back(std::make_shared<BsBinIVM>());
 	
 	return ret;
 }

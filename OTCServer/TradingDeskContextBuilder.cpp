@@ -115,57 +115,53 @@ void TradingDeskContextBuilder::LoadContractParam(const IMessageProcessor_Ptr& m
 
 void TradingDeskContextBuilder::LoadStrategy(const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	auto strategyVec_Ptr = std::make_shared<std::vector<ContractKey>>();
-	session->getContext()->setAttribute(STR_KEY_USER_STRATEGY, strategyVec_Ptr);
+	auto strategySet_Ptr = std::make_shared<std::set<ContractKey>>();
+	session->getContext()->setAttribute(STR_KEY_USER_STRATEGY, strategySet_Ptr);
 
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
-		for (auto productType : pWorkerProc->GetStrategyProductTypes())
+		auto& userid = session->getUserInfo().getUserId();
+
+		auto& strategyMap = pWorkerProc->PricingDataContext()->GetUserStrategyMap()->getorfill(session->getUserInfo().getUserId());
+
+		for (auto& pairMap : strategyMap)
 		{
-			auto& userid = session->getUserInfo().getUserId();
-
-			auto strategyMap = pWorkerProc->PricingDataContext()->GetStrategyMap();
-
-			for (auto it = strategyMap->begin(); ; it++)
+			for (auto& pair : pairMap.second->lock_table())
 			{
-				it = std::find_if(it, strategyMap->end(),
-					[&userid, productType](const std::pair<ContractKey, StrategyContractDO>& pair) { return  pair.second.UserID() == userid && pair.second.ProductType == productType; });
-
-				if (it == strategyMap->end())
-					break;
-
-				auto& strategy = it->second;
-				if (strategy.IVModel && !strategy.IVModel->ParsedParams)
+				auto& strategy_ptr = pair.second;
+				if (strategy_ptr->IVModel && !strategy_ptr->IVModel->ParsedParams)
 				{
-					if (auto model = ModelAlgorithmManager::Instance()->FindModel(strategy.IVModel->Model))
+					if (auto model = ModelAlgorithmManager::Instance()->FindModel(strategy_ptr->IVModel->Model))
 					{
 						auto& params = model->DefaultParams();
-						strategy.IVModel->Params.insert(params.begin(), params.end());
-						model->ParseParams(strategy.IVModel->Params, strategy.IVModel->ParsedParams);
+						strategy_ptr->IVModel->Params.insert(params.begin(), params.end());
+						model->ParseParams(strategy_ptr->IVModel->Params, strategy_ptr->IVModel->ParsedParams);
 					}
 				}
 
-				if (strategy.PricingModel && !strategy.PricingModel->ParsedParams)
+				if (strategy_ptr->PricingModel && !strategy_ptr->PricingModel->ParsedParams)
 				{
-					if (auto model = PricingAlgorithmManager::Instance()->FindModel(strategy.PricingModel->Model))
+					if (auto model = PricingAlgorithmManager::Instance()->FindModel(strategy_ptr->PricingModel->Model))
 					{
 						auto& params = model->DefaultParams();
-						strategy.PricingModel->Params.insert(params.begin(), params.end());
-						model->ParseParams(strategy.PricingModel->Params, strategy.PricingModel->ParsedParams);
+						strategy_ptr->PricingModel->Params.insert(params.begin(), params.end());
+						model->ParseParams(strategy_ptr->PricingModel->Params, strategy_ptr->PricingModel->ParsedParams);
 					}
 				}
 
-				if (strategy.VolModel && !strategy.VolModel->ParsedParams)
+				if (strategy_ptr->VolModel && !strategy_ptr->VolModel->ParsedParams)
 				{
-					if (auto model = ModelAlgorithmManager::Instance()->FindModel(strategy.VolModel->Model))
+					if (auto model = ModelAlgorithmManager::Instance()->FindModel(strategy_ptr->VolModel->Model))
 					{
 						auto& params = model->DefaultParams();
-						strategy.VolModel->Params.insert(params.begin(), params.end());
-						model->ParseParams(strategy.VolModel->Params, strategy.VolModel->ParsedParams);
+						strategy_ptr->VolModel->Params.insert(params.begin(), params.end());
+						model->ParseParams(strategy_ptr->VolModel->Params, strategy_ptr->VolModel->ParsedParams);
 					}
 				}
 
-				strategyVec_Ptr->push_back(strategy);
+				strategySet_Ptr->emplace(*strategy_ptr);
+
+				pWorkerProc->SubscribeStrategy(*strategy_ptr);
 			}
 		}
 	}

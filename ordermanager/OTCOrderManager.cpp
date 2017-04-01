@@ -27,19 +27,18 @@ OrderDO_Ptr OTCOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 {
 	OrderDO_Ptr ret;
 
-	auto pStrategyMap = _pricingCtx->GetStrategyMap();
-
-	if (auto pStrategy = pStrategyMap->tryfind(orderInfo))
+	StrategyContractDO_Ptr strategy_ptr;
+	if (_pricingCtx->GetStrategyMap()->find(orderInfo, strategy_ptr))
 	{
 		bool reject = false;
 		if (orderInfo.Direction != DirectionType::SELL)
 		{
-			if (!pStrategy->BidEnabled)
+			if (!strategy_ptr->BidEnabled)
 				reject = true;
 		}
 		else
 		{
-			if (!pStrategy->AskEnabled)
+			if (!strategy_ptr->AskEnabled)
 				reject = true;
 		}
 
@@ -55,7 +54,7 @@ OrderDO_Ptr OTCOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 			IPricingDO_Ptr pricingDO_ptr;
 			if (!_pricingCtx->GetPricingDataDOMap()->find(orderInfo, pricingDO_ptr))
 			{
-				pricingDO_ptr = PricingUtility::Pricing(&pStrategy->BidQT, orderInfo, *_pricingCtx);
+				pricingDO_ptr = PricingUtility::Pricing(&strategy_ptr->BidQT, orderInfo, *_pricingCtx);
 			}
 
 			if (pricingDO_ptr)

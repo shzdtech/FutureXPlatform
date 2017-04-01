@@ -192,10 +192,9 @@ int AutoOrderManager::OnMarketOrderUpdated(OrderDO& orderInfo)
 
 		if (addnew)
 		{
-			auto pMap = _pricingCtx->GetStrategyMap();
-			auto it = pMap->find(orderInfo);
-			if (it != pMap->end())
-				TradeByStrategy(it->second);
+			StrategyContractDO_Ptr strategy_ptr;
+			if (_pricingCtx->GetStrategyMap()->find(orderInfo, strategy_ptr))
+				TradeByStrategy(*strategy_ptr);
 		}
 
 		ret = 0;

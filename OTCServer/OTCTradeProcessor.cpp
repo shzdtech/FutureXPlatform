@@ -16,11 +16,12 @@ bool OTCTradeProcessor::Dispose(void)
 {
 	if (auto pMap = PricingDataContext()->GetStrategyMap())
 	{
-		for (auto it : *pMap)
+		auto table = pMap->lock_table();
+		for (auto it : table)
 		{
-			auto& stragety = it.second;
-			stragety.BidEnabled = stragety.AskEnabled = false;
-			stragety.Hedging = false;
+			auto& stragety_ptr = it.second;
+			stragety_ptr->BidEnabled = stragety_ptr->AskEnabled = false;
+			stragety_ptr->Hedging = false;
 		}
 	}
 

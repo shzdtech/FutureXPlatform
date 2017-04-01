@@ -61,8 +61,9 @@ int OTCWorkerProcessor::LoadContractToCache(ProductType productType)
 {
 	if (auto vectPtr = ContractDAO::FindContractByProductType(productType))
 	{
+		auto& cache = GetInstrumentCache();
 		for (auto& contract : *vectPtr)
-			GetInstrumentCache().Add(contract);
+			cache.Add(contract);
 
 		return vectPtr->size();
 	}
@@ -74,58 +75,66 @@ int OTCWorkerProcessor::LoadStrategyToCache(ProductType productType)
 {
 	auto allStrategy = StrategyContractDAO::LoadStrategyContractByProductType(productType);
 	auto strategyMap = PricingDataContext()->GetStrategyMap();
-	for (auto& strategy : *allStrategy)
+	auto userStrategyMap = PricingDataContext()->GetUserStrategyMap();
+	for (auto& strategy_ptr : *allStrategy)
 	{
-		if (strategy.PricingModel)
+		if (strategy_ptr->PricingModel)
 		{
 			// Pricing Model Initialization
-			if (auto modelptr = StrategyModelCache::FindOrRetrieveModel(*strategy.PricingModel))
+			if (auto modelptr = StrategyModelCache::FindOrRetrieveModel(*strategy_ptr->PricingModel))
 			{
-				strategy.PricingModel = modelptr;
+				strategy_ptr->PricingModel = modelptr;
 			}
 
-			if (auto model = ComplexAlgoirthmManager::Instance()->FindModel(strategy.PricingModel->Model))
+			if (auto model = ComplexAlgoirthmManager::Instance()->FindModel(strategy_ptr->PricingModel->Model))
 			{
 				auto& params = model->DefaultParams();
-				strategy.PricingModel->Params.insert(params.begin(), params.end());
-				model->ParseParams(strategy.PricingModel->Params, strategy.PricingModel->ParsedParams);
+				strategy_ptr->PricingModel->Params.insert(params.begin(), params.end());
+				model->ParseParams(strategy_ptr->PricingModel->Params, strategy_ptr->PricingModel->ParsedParams);
 			}
 		}
 
 		// Implied Volatility Model Initialization
-		if (strategy.IVModel)
+		if (strategy_ptr->IVModel)
 		{
-			if (auto modelptr = StrategyModelCache::FindOrRetrieveModel(*strategy.IVModel))
+			if (auto modelptr = StrategyModelCache::FindOrRetrieveModel(*strategy_ptr->IVModel))
 			{
-				strategy.IVModel = modelptr;
+				strategy_ptr->IVModel = modelptr;
 			}
 
-			if (auto model = ComplexAlgoirthmManager::Instance()->FindModel(strategy.IVModel->Model))
+			if (auto model = ComplexAlgoirthmManager::Instance()->FindModel(strategy_ptr->IVModel->Model))
 			{
 				auto& params = model->DefaultParams();
-				strategy.IVModel->Params.insert(params.begin(), params.end());
-				model->ParseParams(strategy.IVModel->Params, strategy.IVModel->ParsedParams);
+				strategy_ptr->IVModel->Params.insert(params.begin(), params.end());
+				model->ParseParams(strategy_ptr->IVModel->Params, strategy_ptr->IVModel->ParsedParams);
 			}
 		}
 
 
 		// Volatility Model Initialization
-		if (strategy.VolModel)
+		if (strategy_ptr->VolModel)
 		{
-			if (auto modelptr = StrategyModelCache::FindOrRetrieveModel(*strategy.VolModel))
+			if (auto modelptr = StrategyModelCache::FindOrRetrieveModel(*strategy_ptr->VolModel))
 			{
-				strategy.VolModel = modelptr;
+				strategy_ptr->VolModel = modelptr;
 			}
 
-			if (auto model = ComplexAlgoirthmManager::Instance()->FindModel(strategy.VolModel->Model))
+			if (auto model = ComplexAlgoirthmManager::Instance()->FindModel(strategy_ptr->VolModel->Model))
 			{
 				auto& params = model->DefaultParams();
-				strategy.VolModel->Params.insert(params.begin(), params.end());
-				model->ParseParams(strategy.VolModel->Params, strategy.VolModel->ParsedParams);
+				strategy_ptr->VolModel->Params.insert(params.begin(), params.end());
+				model->ParseParams(strategy_ptr->VolModel->Params, strategy_ptr->VolModel->ParsedParams);
 			}
 		}
 
-		strategyMap->emplace(strategy, strategy);
+		strategyMap->insert(*strategy_ptr, strategy_ptr);
+		auto& stSymbMap = userStrategyMap->getorfill(strategy_ptr->UserID());
+		auto& stMap_Ptr = stSymbMap.getorfill(strategy_ptr->StrategyName);
+		if (!stMap_Ptr)
+		{
+			stMap_Ptr = std::make_shared<StrategyContractDOMap>(8);
+		}
+		stMap_Ptr->insert(*strategy_ptr, strategy_ptr);
 	}
 
 	return allStrategy->size();
@@ -156,10 +165,13 @@ int OTCWorkerProcessor::SubscribePricingContracts(const ContractKey& strategyKey
 	{
 		AddContractToMonitor(strategyKey);
 		if (!_baseContractStrategyMap.contains(strategyKey))
-			_baseContractStrategyMap.insert(strategyKey, std::make_shared<std::set<ContractKey>>());
+		{
+			cuckoohashmap_wrapper<ContractKey, bool, ContractKeyHash> cw(true, 16);
+			_baseContractStrategyMap.insert(strategyKey, std::move(cw));
+		}
 
-		if (auto setptr = _baseContractStrategyMap.find(strategyKey))
-			setptr->emplace(strategyKey);
+		auto md2stMap = _baseContractStrategyMap.find(strategyKey);
+		md2stMap.map()->insert(strategyKey, false);
 
 		// _exchangeStrategyMap.insert(bsContract, strategyKey);
 		SubscribeMarketData(strategyKey);
@@ -171,13 +183,31 @@ int OTCWorkerProcessor::SubscribePricingContracts(const ContractKey& strategyKey
 		{
 			AddContractToMonitor(bsContract);
 			if (!_baseContractStrategyMap.contains(bsContract))
-				_baseContractStrategyMap.insert(bsContract, std::make_shared<std::set<ContractKey>>());
+			{
+				cuckoohashmap_wrapper<ContractKey, bool, ContractKeyHash> cw(true, 16);
+				_baseContractStrategyMap.insert(bsContract, std::move(cw));
+			}
 
-			if (auto setptr = _baseContractStrategyMap.find(bsContract))
-				setptr->emplace(strategyKey);
+			auto md2stMap = _baseContractStrategyMap.find(bsContract);
+			md2stMap.map()->insert(strategyKey, false);
 
 			// _exchangeStrategyMap.insert(bsContract, strategyKey);
 			SubscribeMarketData(bsContract);
+		}
+	}
+
+	return 0;
+}
+
+int OTCWorkerProcessor::UnsubscribePricingContracts(const ContractKey& strategyKey, const StrategyPricingContract& strategyContract)
+{
+	for (auto& bsContract : strategyContract.PricingContracts)
+	{
+		if (!bsContract.IsOTC())
+		{
+			cuckoohashmap_wrapper<ContractKey, bool, ContractKeyHash> strategyMap;
+			if (_baseContractStrategyMap.find(bsContract, strategyMap))
+				strategyMap.map()->erase(bsContract);
 		}
 	}
 
@@ -249,7 +279,7 @@ void OTCWorkerProcessor::TriggerOTCPricing(const StrategyContractDO& strategyDO)
 			{
 				pricingDO->Ask().Clear();
 			}
-			
+
 			_pricingNotifers->foreach(strategyDO, [&pricingDO, &strategyDO, &pricingCtx](const IMessageSession_Ptr& session_ptr)
 			{if (auto process_ptr = session_ptr->LockMessageProcessor())
 				OnResponseProcMacro(process_ptr, MSG_ID_RTN_PRICING, strategyDO.SerialId, &pricingDO, &strategyDO, pricingCtx.get()); });
@@ -267,15 +297,17 @@ void OTCWorkerProcessor::TriggerTadingDeskParams(const StrategyContractDO & stra
 
 void OTCWorkerProcessor::TriggerUpdating(const MarketDataDO& mdDO)
 {
-	std::shared_ptr<std::set<ContractKey>> strategySetPtr;
-	if (_baseContractStrategyMap.find(mdDO, strategySetPtr))
+	cuckoohashmap_wrapper<ContractKey, bool, ContractKeyHash> strategyMap;
+	if (_baseContractStrategyMap.find(mdDO, strategyMap))
 	{
 		auto pStrategyMap = PricingDataContext()->GetStrategyMap();
-		for (auto& contractID : *strategySetPtr)
+		auto it = strategyMap.map()->lock_table();
+		for (auto& pair : it)
 		{
-			if (auto pStrategyDO = pStrategyMap->tryfind(contractID))
+			StrategyContractDO_Ptr strategy_ptr;
+			if (auto pStrategyDO = pStrategyMap->find(pair.first, strategy_ptr))
 			{
-				TriggerOTCUpdating(*pStrategyDO);
+				TriggerOTCUpdating(*strategy_ptr);
 			}
 		}
 	}
@@ -285,7 +317,7 @@ void OTCWorkerProcessor::TriggerOTCUpdating(const StrategyContractDO & strategyD
 {
 	if (strategyDO.IVModel)
 		TriggerTadingDeskParams(strategyDO);
-	
+
 	if (strategyDO.PricingContracts && strategyDO.IsOTC())
 		TriggerOTCPricing(strategyDO);
 

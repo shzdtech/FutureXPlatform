@@ -7,8 +7,9 @@
 class OptionParams : public ParamsBase
 {
 public:
-	double askVolatility = 0.2;
-	double bidVolatility = 0.2;
+	static constexpr double DEFAULT_VOLATILITY() { return 0.2; }
+	double askVolatility = DEFAULT_VOLATILITY();
+	double bidVolatility = DEFAULT_VOLATILITY();
 	double riskFreeRate = 0;
 	double dividend = 0;
 

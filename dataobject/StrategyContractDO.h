@@ -17,6 +17,10 @@
 #include "DateType.h"
 #include <ctime>
 
+static const std::string PM("pm");
+static const std::string IVM("ivm");
+static const std::string VM("vm");
+
 class StrategyPricingContract
 {
 public:
@@ -39,7 +43,6 @@ public:
 		: StrategyContractDO(exchangeID, instrumentID, "", "") {}
 
 	std::string StrategyName;
-	std::string Description;
 	std::string Underlying;
 	DateType Expiration;
 	DateType TradingDay;
