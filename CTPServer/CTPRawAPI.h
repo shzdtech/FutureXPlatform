@@ -27,7 +27,7 @@ public:
 	~CTPRawAPI();
 
 	CThostFtdcMdApi* MdAPI = nullptr;
-	CThostFtdcTraderApi* TrdAPI = nullptr;
+	CThostFtdcTraderApi* TdAPI = nullptr;
 
 
 private:

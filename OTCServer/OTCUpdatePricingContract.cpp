@@ -41,6 +41,7 @@ dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, con
 			for (auto& pair : it)
 			{
 				StrategyContractDO_Ptr scDO_ptr = std::make_shared<StrategyContractDO>(*pair.second);
+				scDO_ptr->PricingContracts = std::make_shared<StrategyPricingContract>(*pair.second->PricingContracts);
 
 				pWorkerProc->UnsubscribePricingContracts(*scDO_ptr, *scDO_ptr->PricingContracts);
 				scDO_ptr->PricingContracts->PricingContracts.clear();
@@ -59,7 +60,7 @@ dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, con
 			{
 				pUserStrategyMap_ptr->get()->update(*st_ptr, st_ptr);
 				pStrategyContractMap->update(*st_ptr, st_ptr);
-				StrategyContractDAO::UpdatePricingContract(*st_ptr, st_ptr->StrategyName, PM, *st_ptr->VolContracts);
+				StrategyContractDAO::UpdatePricingContract(*st_ptr, st_ptr->StrategyName, PM, *st_ptr->PricingContracts);
 			}
 		}
 
@@ -71,6 +72,7 @@ dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, con
 			for (auto& pair : it)
 			{
 				StrategyContractDO_Ptr scDO_ptr = std::make_shared<StrategyContractDO>(*pair.second);
+				scDO_ptr->IVMContracts = std::make_shared<StrategyPricingContract>(*pair.second->IVMContracts);
 
 				pWorkerProc->UnsubscribePricingContracts(*scDO_ptr, *scDO_ptr->IVMContracts);
 				scDO_ptr->IVMContracts->PricingContracts.clear();
@@ -89,7 +91,7 @@ dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, con
 			{
 				pUserStrategyMap_ptr->get()->update(*st_ptr, st_ptr);
 				pStrategyContractMap->update(*st_ptr, st_ptr);
-				StrategyContractDAO::UpdatePricingContract(*st_ptr, st_ptr->StrategyName, IVM, *st_ptr->VolContracts);
+				StrategyContractDAO::UpdatePricingContract(*st_ptr, st_ptr->StrategyName, IVM, *st_ptr->IVMContracts);
 			}
 		}
 
@@ -101,6 +103,7 @@ dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, con
 			for (auto& pair : it)
 			{
 				StrategyContractDO_Ptr scDO_ptr = std::make_shared<StrategyContractDO>(*pair.second);
+				scDO_ptr->VolContracts = std::make_shared<StrategyPricingContract>(*pair.second->VolContracts);
 
 				pWorkerProc->UnsubscribePricingContracts(*scDO_ptr, *scDO_ptr->VolContracts);
 				scDO_ptr->VolContracts->PricingContracts.clear();

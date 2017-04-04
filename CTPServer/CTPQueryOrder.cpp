@@ -55,7 +55,7 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 			/*CThostFtdcQryOrderField req{};
 			std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID));
 			std::strncpy(req.InvestorID, investorid.data(), sizeof(req.InvestorID));
-			int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryOrder(&req, serialId);
+			int iRet = ((CTPRawAPI*)rawAPI)->TdAPI->ReqQryOrder(&req, serialId);
 			CTPUtility::CheckReturnError(iRet);*/
 
 			std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);

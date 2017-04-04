@@ -5,6 +5,8 @@
 static cuckoohash_map<std::string, std::string> routerTable(128);
 const std::string ExchangeRouterTable::TARGET_MD("md");
 const std::string ExchangeRouterTable::TARGET_TD("td");
+const std::string ExchangeRouterTable::TARGET_MD_AM("md:am");
+const std::string ExchangeRouterTable::TARGET_TD_AM("td:am");
 ExchangeRouterTable::static_initializer ExchangeRouterTable::_static_init;
 
 ExchangeRouterTable::static_initializer::static_initializer()

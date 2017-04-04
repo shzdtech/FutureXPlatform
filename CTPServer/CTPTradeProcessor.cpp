@@ -60,7 +60,7 @@ int CTPTradeProcessor::InitializeServer(const std::string& flowId, const std::st
 {
 	int ret = 0;
 
-	if (!_rawAPI->TrdAPI)
+	if (!_rawAPI->TdAPI)
 	{
 		fs::path localpath = CTPProcessor::FlowPath;
 		if (!fs::exists(localpath))
@@ -72,7 +72,7 @@ int CTPTradeProcessor::InitializeServer(const std::string& flowId, const std::st
 		localpath /= flowId + "_" + std::to_string(std::time(nullptr)) + "_" + std::to_string(std::rand()) + "_";
 
 		_rawAPI->CreateTdApi(localpath.string().data());
-		_rawAPI->TrdAPI->RegisterSpi(this);
+		_rawAPI->TdAPI->RegisterSpi(this);
 
 		std::string server_addr(serverAddr);
 		if (server_addr.empty() && !_serverCtx->getConfigVal(CTP_TRADER_SERVER, server_addr))
@@ -80,11 +80,11 @@ int CTPTradeProcessor::InitializeServer(const std::string& flowId, const std::st
 			SysParam::TryGet(CTP_TRADER_SERVER, server_addr);
 		}
 
-		_rawAPI->TrdAPI->RegisterFront(const_cast<char*> (server_addr.data()));
+		_rawAPI->TdAPI->RegisterFront(const_cast<char*> (server_addr.data()));
 
-		_rawAPI->TrdAPI->SubscribePrivateTopic(THOST_TERT_RESTART);
-		_rawAPI->TrdAPI->SubscribePublicTopic(THOST_TERT_RESTART);
-		_rawAPI->TrdAPI->Init();
+		_rawAPI->TdAPI->SubscribePrivateTopic(THOST_TERT_RESTART);
+		_rawAPI->TdAPI->SubscribePublicTopic(THOST_TERT_RESTART);
+		_rawAPI->TdAPI->Init();
 
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
@@ -104,7 +104,7 @@ bool CTPTradeProcessor::OnSessionClosing(void)
 			CThostFtdcUserLogoutField logout{};
 			std::strncpy(logout.BrokerID, sessionptr->getUserInfo().getBrokerId().data(), sizeof(logout.BrokerID));
 			std::strncpy(logout.UserID, sessionptr->getUserInfo().getUserId().data(), sizeof(logout.UserID));
-			_rawAPI->TrdAPI->ReqUserLogout(&logout, 0);
+			_rawAPI->TdAPI->ReqUserLogout(&logout, 0);
 		}
 	}
 
@@ -323,7 +323,7 @@ void CTPTradeProcessor::QueryPositionAsync(void)
 		{
 			CThostFtdcQryInvestorPositionField req{};
 			_updateFlag.clear(std::memory_order::memory_order_release);
-			int iRet = _rawAPI->TrdAPI->ReqQryInvestorPosition(&req, -1);
+			int iRet = _rawAPI->TdAPI->ReqQryInvestorPosition(&req, -1);
 			if (iRet == 0 || _updateFlag.test_and_set(std::memory_order::memory_order_acquire)) // check if lock
 				break;
 		}

@@ -10,6 +10,8 @@ public:
 
 	static const std::string TARGET_MD;
 	static const std::string TARGET_TD;
+	static const std::string TARGET_MD_AM;
+	static const std::string TARGET_TD_AM;
 
 private:
 	class static_initializer

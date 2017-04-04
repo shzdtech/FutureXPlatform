@@ -68,6 +68,18 @@ public:
 	ModelParamsDO_Ptr VolModel;
 	StrategyPricingContract_Ptr VolContracts;
 
+	void DeepCopyPricingContract(const StrategyContractDO& st)
+	{
+		if (st.PricingContracts)
+			PricingContracts = std::make_shared<StrategyPricingContract>(*PricingContracts);
+
+		if (st.IVMContracts)
+			IVMContracts = std::make_shared<StrategyPricingContract>(*IVMContracts);
+
+		if (st.VolContracts)
+			VolContracts = std::make_shared<StrategyPricingContract>(*VolContracts);
+	}
+
 protected:
 
 private:

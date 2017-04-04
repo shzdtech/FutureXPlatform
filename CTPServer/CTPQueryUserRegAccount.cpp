@@ -48,7 +48,7 @@ dataobj_ptr CTPQueryUserRegAccount::HandleRequest(const uint32_t serialId, const
 	std::strncpy(req.BrokerID, pDO->BrokerID.data(), sizeof(req.BrokerID));
 	std::strncpy(req.CurrencyID, pDO->CurrencyID.data(), sizeof(req.CurrencyID));
 
-	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryAccountregister(&req, serialId);
+	int iRet = ((CTPRawAPI*)rawAPI)->TdAPI->ReqQryAccountregister(&req, serialId);
 	CTPUtility::CheckReturnError(iRet);
 
 	return nullptr;

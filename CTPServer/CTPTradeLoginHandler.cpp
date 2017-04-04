@@ -18,11 +18,11 @@
 #include "../dataobject/TypedefDO.h"
 #include "../litelogger/LiteLogger.h"
 
-////////////////////////////////////////////////////////////////////////
-// Name:       CTPTradeLoginHandler::LoginFunction()
-// Purpose:    Implementation of CTPTradeLoginHandler::LoginFunction()
-// Return:     int
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       CTPTradeLoginHandler::LoginFunction()
+ // Purpose:    Implementation of CTPTradeLoginHandler::LoginFunction()
+ // Return:     int
+ ////////////////////////////////////////////////////////////////////////
 
 int CTPTradeLoginHandler::LoginFunction(const IMessageProcessor_Ptr& msgProcessor, CThostFtdcReqUserLoginField* loginInfo, uint requestId, const std::string& severName)
 {
@@ -67,8 +67,22 @@ int CTPTradeLoginHandler::LoginFunction(const IMessageProcessor_Ptr& msgProcesso
 
 	pProcessor->InitializeServer(userId, address);
 
+	auto api = (CTPRawAPI*)pProcessor->getRawAPI();
+	int ret = api->TdAPI->ReqUserLogin(loginInfo, requestId);
 
-	return ((CTPRawAPI*)pProcessor->getRawAPI())->TrdAPI->ReqUserLogin(loginInfo, requestId);
+	// try after market server
+	if (ret == -1 && severName.empty())
+	{
+		std::string server = brokerId + ':' + ExchangeRouterTable::TARGET_TD_AM;
+		if (ExchangeRouterTable::TryFind(server, address))
+		{
+			api->ReleaseTdApi();
+			pProcessor->InitializeServer(userId, address);
+			ret = api->TdAPI->ReqUserLogin(loginInfo, requestId);
+		}
+	}
+
+	return ret;
 }
 
 dataobj_ptr CTPTradeLoginHandler::HandleResponse(const uint32_t serialId, const param_vector & rawRespParams, IRawAPI * rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
@@ -78,10 +92,10 @@ dataobj_ptr CTPTradeLoginHandler::HandleResponse(const uint32_t serialId, const 
 	CThostFtdcSettlementInfoConfirmField reqsettle{};
 	std::strncpy(reqsettle.BrokerID, session->getUserInfo().getBrokerId().data(), sizeof(reqsettle.BrokerID));
 	std::strncpy(reqsettle.InvestorID, session->getUserInfo().getInvestorId().data(), sizeof(reqsettle.InvestorID));
-	((CTPRawAPI*)rawAPI)->TrdAPI->ReqSettlementInfoConfirm(&reqsettle, 0);
+	((CTPRawAPI*)rawAPI)->TdAPI->ReqSettlementInfoConfirm(&reqsettle, 0);
 
 	CThostFtdcQryInvestorPositionField req{};
-	((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryInvestorPosition(&req, -1);
+	((CTPRawAPI*)rawAPI)->TdAPI->ReqQryInvestorPosition(&req, -1);
 	std::this_thread::sleep_for(std::chrono::seconds(1));
 
 	return ret;

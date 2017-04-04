@@ -75,7 +75,7 @@ bool ContractDAO::UpsertContracts(const std::vector<InstrumentDO>& instuments)
 		"INSERT INTO contractinfo (exchange_symbol,contract_symbol,name,contract_type,underlying_symbol,expiration,"
 			"strikeprice,underlying_exchange,underlying_contract,product_type,lifephase) "
 			"VALUES(?,?,?,?,?,?,?,?,?,?,?) "
-			"ON DUPLICATE KEY UPDATE name=?, lifephase=?");
+			"ON DUPLICATE KEY UPDATE name=?,lifephase=?,expiration=?");
 
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	//const InstrumentDO* lastContract;
@@ -102,6 +102,7 @@ bool ContractDAO::UpsertContracts(const std::vector<InstrumentDO>& instuments)
 				prestmt->setInt(11, contract.LifePhase);
 				prestmt->setString(12, contract.Name);
 				prestmt->setInt(13, contract.LifePhase);
+				contract.ExpireDate.empty() ? prestmt->setNull(14, sql::DataType::DATE) : prestmt->setString(14, contract.ExpireDate);
 
 				prestmt->executeUpdate();
 			}

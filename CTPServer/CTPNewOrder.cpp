@@ -87,7 +87,7 @@ dataobj_ptr CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_pt
 
 	req.RequestID = serialId;
 
-	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqOrderInsert(&req, serialId);
+	int iRet = ((CTPRawAPI*)rawAPI)->TdAPI->ReqOrderInsert(&req, serialId);
 	CTPUtility::CheckReturnError(iRet);
 
 	return nullptr;

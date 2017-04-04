@@ -48,7 +48,7 @@ dataobj_ptr CTPQueryTransferBank::HandleRequest(const uint32_t serialId, const d
 	std::strncpy(req.BankID, bankid.data(), sizeof(req.BankID));
 	std::strncpy(req.BankBrchID, branchid.data(), sizeof(req.BankBrchID));
 
-	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryTransferBank(&req, serialId);
+	int iRet = ((CTPRawAPI*)rawAPI)->TdAPI->ReqQryTransferBank(&req, serialId);
 	CTPUtility::CheckReturnError(iRet);
 
 	return nullptr;

@@ -45,7 +45,7 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const uint32_t serialId, const da
 	std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID));
 	std::strncpy(req.InvestorID, investorid.data(), sizeof(req.InvestorID));
 
-	int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryTradingAccount(&req, serialId);
+	int iRet = ((CTPRawAPI*)rawAPI)->TdAPI->ReqQryTradingAccount(&req, serialId);
 	if (iRet != 0) // too frequent request
 	{
 		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))

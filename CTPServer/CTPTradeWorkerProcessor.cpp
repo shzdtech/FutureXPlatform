@@ -79,8 +79,6 @@ CTPTradeWorkerProcessor::~CTPTradeWorkerProcessor()
 
 void CTPTradeWorkerProcessor::Initialize(IServerContext* pServerCtx)
 {
-	InitializeServer(_systemUser.getInvestorId(), _systemUser.getServer());
-
 	std::string productTypes;
 	if (getServerContext()->getConfigVal("product_type", productTypes))
 	{
@@ -106,7 +104,7 @@ int CTPTradeWorkerProcessor::RequestData(void)
 	if (HasLogged())
 	{
 		LOG_INFO << _serverCtx->getServerUri() << ": Try preloading data...";
-		auto trdAPI = _rawAPI->TrdAPI;
+		auto trdAPI = _rawAPI->TdAPI;
 
 		/*std::this_thread::sleep_for(delay);
 		CThostFtdcQryTradingAccountField reqaccount{};
@@ -166,15 +164,31 @@ int CTPTradeWorkerProcessor::LoginSystemUser(void)
 	std::strncpy(req.BrokerID, _systemUser.getBrokerId().data(), sizeof(req.BrokerID));
 	std::strncpy(req.UserID, _systemUser.getUserId().data(), sizeof(req.UserID));
 	std::strncpy(req.Password, _systemUser.getPassword().data(), sizeof(req.Password));
-	return _rawAPI->TrdAPI->ReqUserLogin(&req, AppContext::GenNextSeq());
+	return _rawAPI->TdAPI->ReqUserLogin(&req, AppContext::GenNextSeq());
 }
 
 int CTPTradeWorkerProcessor::LoginSystemUserIfNeed(void)
 {
 	int ret = 0;
 
-	if (!_isLogged)
-		ret = LoginSystemUser();
+	if (_rawAPI->TdAPI)
+		_rawAPI->ReleaseMdApi();
+
+	InitializeServer(_systemUser.getUserId(), _systemUser.getServer());
+
+	ret = LoginSystemUser();
+	if (ret == -1)
+	{
+		std::string address;
+		if (ExchangeRouterTable::TryFind(_systemUser.getBrokerId() + ':' + ExchangeRouterTable::TARGET_TD_AM, address))
+		{
+			if (_rawAPI->TdAPI)
+				_rawAPI->ReleaseTdApi();
+
+			InitializeServer(_systemUser.getUserId(), address);
+			ret = LoginSystemUser();
+		}
+	}
 
 	return ret;
 }
@@ -198,14 +212,13 @@ int CTPTradeWorkerProcessor::LoadDataAsync(void)
 
 	if (!(DataLoadMask & INSTRUMENT_DATA_LOADED))
 	{
-		auto trdAPI = _rawAPI->TrdAPI;
-		_initializer = std::move(std::thread([trdAPI, this]() {
+		_initializer = std::move(std::thread([this]() {
 			auto millsec = std::chrono::milliseconds(500);
 			while (!(DataLoadMask & INSTRUMENT_DATA_LOADED))
 			{
 				if (!HasLogged())
 				{
-					if (!CTPUtility::HasReturnError(LoginSystemUser()))
+					if (!CTPUtility::HasReturnError(LoginSystemUserIfNeed()))
 					{
 						std::this_thread::sleep_for(std::chrono::seconds(3)); //wait 3 secs for login CTP server
 						if (!(DataLoadMask & INSTRUMENT_DATA_LOADED))
@@ -237,7 +250,7 @@ void CTPTradeWorkerProcessor::OnDataLoaded(void)
 		CThostFtdcUserLogoutField logout{};
 		std::strncpy(logout.BrokerID, _systemUser.getBrokerId().data(), sizeof(logout.BrokerID));
 		std::strncpy(logout.UserID, _systemUser.getUserId().data(), sizeof(logout.UserID));
-		_rawAPI->TrdAPI->ReqUserLogout(&logout, 0);
+		_rawAPI->TdAPI->ReqUserLogout(&logout, 0);
 		_isLogged = false;
 
 		LOG_INFO << getServerContext()->getServerUri() << ": System user has logout.";
@@ -270,7 +283,7 @@ void CTPTradeWorkerProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUs
 		CThostFtdcSettlementInfoConfirmField reqsettle{};
 		std::strncpy(reqsettle.BrokerID, _systemUser.getBrokerId().data(), sizeof(reqsettle.BrokerID));
 		std::strncpy(reqsettle.InvestorID, _systemUser.getInvestorId().data(), sizeof(reqsettle.InvestorID));
-		_rawAPI->TrdAPI->ReqSettlementInfoConfirm(&reqsettle, 0);
+		_rawAPI->TdAPI->ReqSettlementInfoConfirm(&reqsettle, 0);
 
 		_isLogged = true;
 

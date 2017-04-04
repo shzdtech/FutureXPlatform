@@ -87,7 +87,7 @@ OrderDO_Ptr CTPOTCTradeProcessor::CreateOrder(const OrderRequestDO& orderInfo)
 	// 自动挂起标志
 	req.IsAutoSuspend = false;
 
-	if (_rawAPI->TrdAPI->ReqOrderInsert(&req, 0) != 0)
+	if (_rawAPI->TdAPI->ReqOrderInsert(&req, 0) != 0)
 		return nullptr;
 
 	return CTPUtility::ParseRawOrder(&req, nullptr, _systemUser.getSessionId());
@@ -116,7 +116,7 @@ OrderDO_Ptr CTPOTCTradeProcessor::CancelOrder(const OrderRequestDO& orderInfo)
 		std::snprintf(req.OrderRef, sizeof(req.OrderRef), FMT_ORDERREF, orderInfo.OrderID);
 	}
 
-	if (_rawAPI->TrdAPI->ReqOrderAction(&req, AppContext::GenNextSeq()) != 0)
+	if (_rawAPI->TdAPI->ReqOrderAction(&req, AppContext::GenNextSeq()) != 0)
 		return nullptr;
 
 	req.SessionID = _systemUser.getSessionId();
@@ -163,7 +163,7 @@ void CTPOTCTradeProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserL
 	CThostFtdcSettlementInfoConfirmField reqsettle{};
 	std::strncpy(reqsettle.BrokerID, _systemUser.getBrokerId().data(), sizeof(reqsettle.BrokerID));
 	std::strncpy(reqsettle.InvestorID, _systemUser.getInvestorId().data(), sizeof(reqsettle.InvestorID));
-	_rawAPI->TrdAPI->ReqSettlementInfoConfirm(&reqsettle, 0);
+	_rawAPI->TdAPI->ReqSettlementInfoConfirm(&reqsettle, 0);
 
 	_isLogged = true;
 	LOG_INFO << getServerContext()->getServerUri() << ": System user has logged.";

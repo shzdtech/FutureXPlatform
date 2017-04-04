@@ -59,7 +59,7 @@ dataobj_ptr CTPQueryInstrument::HandleRequest(const uint32_t serialId, const dat
 
 	if (TUtil::IsNullOrEmpty(ret))
 	{
-		if (auto pTradeAPI = ((CTPRawAPI*)rawAPI)->TrdAPI)
+		if (auto pTradeAPI = ((CTPRawAPI*)rawAPI)->TdAPI)
 		{
 			CThostFtdcQryInstrumentField req{};
 			std::strncpy(req.ExchangeID, exchangeid.data(), sizeof(req.ExchangeID));

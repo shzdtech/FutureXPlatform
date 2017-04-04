@@ -48,7 +48,7 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const uint32_t serialId, const datao
 		if (exchangeInfo.empty())
 		{
 			CThostFtdcQryExchangeField req{};
-			int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryExchange(&req, serialId);
+			int iRet = ((CTPRawAPI*)rawAPI)->TdAPI->ReqQryExchange(&req, serialId);
 			CTPUtility::CheckReturnError(iRet);
 
 			// std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
@@ -88,7 +88,7 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const uint32_t serialId, const datao
 	else
 	{
 		CThostFtdcQryExchangeField req{};
-		int iRet = ((CTPRawAPI*)rawAPI)->TrdAPI->ReqQryExchange(&req, serialId);
+		int iRet = ((CTPRawAPI*)rawAPI)->TdAPI->ReqQryExchange(&req, serialId);
 		CTPUtility::CheckReturnError(iRet);
 	}
 

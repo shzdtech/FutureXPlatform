@@ -97,8 +97,6 @@ bool CTPOTCWorkerProcessor::OnSessionClosing(void)
 
 void CTPOTCWorkerProcessor::Initialize(IServerContext* serverCtx)
 {
-	InitializeServer(_systemUser.getUserId(), _systemUser.getServer());
-
 	CTPMarketDataProcessor::Initialize(serverCtx);
 
 	OTCWorkerProcessor::Initialize();
@@ -126,7 +124,26 @@ int CTPOTCWorkerProcessor::LoginSystemUserIfNeed(void)
 	int ret = 0;
 
 	if (!_isLogged)
+	{
+		if (_rawAPI->MdAPI)
+			_rawAPI->ReleaseMdApi();
+
+		InitializeServer(_systemUser.getUserId(), _systemUser.getServer());
+
 		ret = LoginSystemUser();
+		if (ret == -1)
+		{
+			std::string address;
+			if (ExchangeRouterTable::TryFind(_systemUser.getBrokerId() + ':' + ExchangeRouterTable::TARGET_MD_AM, address))
+			{
+				if (_rawAPI->MdAPI)
+					_rawAPI->ReleaseMdApi();
+
+				InitializeServer(_systemUser.getUserId(), address);
+				ret = LoginSystemUser();
+			}
+		}
+	}
 
 	return ret;
 }
@@ -139,7 +156,7 @@ int CTPOTCWorkerProcessor::LoadDataAsync(void)
 		{
 			if (!HasLogged())
 			{
-				if (!CTPUtility::HasReturnError(LoginSystemUser()))
+				if (!CTPUtility::HasReturnError(LoginSystemUserIfNeed()))
 					break;
 			}
 

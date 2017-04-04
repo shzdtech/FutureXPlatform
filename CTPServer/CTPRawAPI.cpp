@@ -13,7 +13,7 @@ void CTPRawAPI::CreateMdApi(const char * path)
 
 void CTPRawAPI::CreateTdApi(const char * path)
 {
-	TrdAPI = CThostFtdcTraderApi::CreateFtdcTraderApi(path);
+	TdAPI = CThostFtdcTraderApi::CreateFtdcTraderApi(path);
 }
 
 void CTPRawAPI::ReleaseMdApi()
@@ -27,9 +27,9 @@ void CTPRawAPI::ReleaseMdApi()
 
 void CTPRawAPI::ReleaseTdApi()
 {
-	if (TrdAPI)
+	if (TdAPI)
 	{
-		TrdAPI->Release();
-		TrdAPI = nullptr;
+		TdAPI->Release();
+		TdAPI = nullptr;
 	}
 }

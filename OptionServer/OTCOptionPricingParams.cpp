@@ -38,6 +38,11 @@ dataobj_ptr OTCOptionPricingParams::HandleResponse(const uint32_t serialId, cons
 			if (auto result = ivmodel_ptr->Compute(nullptr, *pStrategy, pricingCtx, nullptr))
 			{
 				ret->ImpliedVol = std::make_shared<ImpliedVolatility>(((TDataObject<ImpliedVolatility>*)result.get())->Data);
+				auto pOptionParams = (OptionParams*)pStrategy->IVModel->ParsedParams.get();
+				if (!std::isnan(ret->ImpliedVol->AskVolatility))
+					pOptionParams->askVolatility = ret->ImpliedVol->AskVolatility;
+				if (!std::isnan(ret->ImpliedVol->BidVolatility))
+					pOptionParams->bidVolatility = ret->ImpliedVol->BidVolatility;
 			}
 		}
 
@@ -63,14 +68,6 @@ dataobj_ptr OTCOptionPricingParams::HandleResponse(const uint32_t serialId, cons
 						if (auto tempVol = volmodel_ptr->Compute(nullptr, tempSto, pricingCtx, nullptr))
 						{
 							ret->TheoDataTemp = std::static_pointer_cast<WingsModelReturnDO>(tempVol);
-
-							auto pOptionParams = (OptionParams*)tempSto.PricingModel->ParsedParams.get();
-							if (!std::isnan(ret->TheoDataTemp->TBid().Volatility))
-								pOptionParams->bidVolatility = ret->TheoDataTemp->TBid().Volatility;
-							if (!std::isnan(ret->TheoDataTemp->TBid().Volatility))
-								pOptionParams->askVolatility = ret->TheoDataTemp->TAsk().Volatility;
-
-							// prcingmodel_ptr = PricingAlgorithmManager::Instance()->FindModel(tempSto.PricingModel->Model);
 						}
 					}
 
