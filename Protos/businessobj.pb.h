@@ -1954,17 +1954,17 @@ class PBStrategy : public ::google::protobuf::Message {
   bool askenabled() const;
   void set_askenabled(bool value);
 
-  // optional int32 bidQT = 9;
-  void clear_bidqt();
-  static const int kBidQTFieldNumber = 9;
-  ::google::protobuf::int32 bidqt() const;
-  void set_bidqt(::google::protobuf::int32 value);
+  // optional int32 bidQV = 9;
+  void clear_bidqv();
+  static const int kBidQVFieldNumber = 9;
+  ::google::protobuf::int32 bidqv() const;
+  void set_bidqv(::google::protobuf::int32 value);
 
-  // optional int32 askQT = 10;
-  void clear_askqt();
-  static const int kAskQTFieldNumber = 10;
-  ::google::protobuf::int32 askqt() const;
-  void set_askqt(::google::protobuf::int32 value);
+  // optional int32 askQV = 10;
+  void clear_askqv();
+  static const int kAskQVFieldNumber = 10;
+  ::google::protobuf::int32 askqv() const;
+  void set_askqv(::google::protobuf::int32 value);
 
   // optional int32 depth = 11;
   void clear_depth();
@@ -2054,8 +2054,8 @@ class PBStrategy : public ::google::protobuf::Message {
   bool hedging_;
   bool bidenabled_;
   bool askenabled_;
-  ::google::protobuf::int32 bidqt_;
-  ::google::protobuf::int32 askqt_;
+  ::google::protobuf::int32 bidqv_;
+  ::google::protobuf::int32 askqv_;
   ::google::protobuf::int32 depth_;
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBPricingContract > pricingcontracts_;
   ::google::protobuf::internal::ArenaStringPtr pricingmodel_;
@@ -7528,32 +7528,32 @@ inline void PBStrategy::set_askenabled(bool value) {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.askEnabled)
 }
 
-// optional int32 bidQT = 9;
-inline void PBStrategy::clear_bidqt() {
-  bidqt_ = 0;
+// optional int32 bidQV = 9;
+inline void PBStrategy::clear_bidqv() {
+  bidqv_ = 0;
 }
-inline ::google::protobuf::int32 PBStrategy::bidqt() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.bidQT)
-  return bidqt_;
+inline ::google::protobuf::int32 PBStrategy::bidqv() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.bidQV)
+  return bidqv_;
 }
-inline void PBStrategy::set_bidqt(::google::protobuf::int32 value) {
+inline void PBStrategy::set_bidqv(::google::protobuf::int32 value) {
   
-  bidqt_ = value;
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.bidQT)
+  bidqv_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.bidQV)
 }
 
-// optional int32 askQT = 10;
-inline void PBStrategy::clear_askqt() {
-  askqt_ = 0;
+// optional int32 askQV = 10;
+inline void PBStrategy::clear_askqv() {
+  askqv_ = 0;
 }
-inline ::google::protobuf::int32 PBStrategy::askqt() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.askQT)
-  return askqt_;
+inline ::google::protobuf::int32 PBStrategy::askqv() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.askQV)
+  return askqv_;
 }
-inline void PBStrategy::set_askqt(::google::protobuf::int32 value) {
+inline void PBStrategy::set_askqv(::google::protobuf::int32 value) {
   
-  askqt_ = value;
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.askQT)
+  askqv_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.askQV)
 }
 
 // optional int32 depth = 11;

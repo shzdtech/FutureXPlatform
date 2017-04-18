@@ -10,6 +10,7 @@
 #include "CTPRawAPI.h"
 #include "CTPConstant.h"
 #include "CTPTradeWorkerProcessor.h"
+#include "CTPUtility.h"
 
 #include "../message/DefMessageID.h"
 #include "../message/MessageUtility.h"
@@ -29,46 +30,49 @@ int CTPTradeLoginHandler::LoginFunction(const IMessageProcessor_Ptr& msgProcesso
 	auto pProcessor = (CTPProcessor*)msgProcessor.get();
 
 	std::string brokerId(loginInfo->BrokerID);
-	if (brokerId.empty())
-	{
-		if (!msgProcessor->getServerContext()->getConfigVal(CTP_TRADER_BROKERID, brokerId))
-		{
-			SysParam::TryGet(CTP_TRADER_BROKERID, brokerId);
-		}
-		std::strncpy(loginInfo->BrokerID, brokerId.data(), sizeof(loginInfo->BrokerID));
-	}
-
 	std::string userId(loginInfo->UserID);
-	if (userId.empty())
-	{
-		if (!msgProcessor->getServerContext()->getConfigVal(CTP_TRADER_USERID, userId))
-		{
-			SysParam::TryGet(CTP_TRADER_USERID, userId);
-		}
-		std::strncpy(loginInfo->UserID, userId.data(), sizeof(loginInfo->UserID));
-	}
-
 	std::string pwd(loginInfo->Password);
-	if (pwd.empty())
-	{
-		if (!msgProcessor->getServerContext()->getConfigVal(CTP_TRADER_PASSWORD, pwd))
-		{
-			SysParam::TryGet(CTP_TRADER_PASSWORD, pwd);
-		}
-		std::strncpy(loginInfo->Password, pwd.data(), sizeof(loginInfo->Password));
-	}
+
+	//bool hasPermission = CheckRolePermission(msgProcessor->getMessageSession(), UserRoleType::ROLE_TRADINGDESK, false);
+	//if (hasPermission)
+	//{
+	//	if (brokerId.empty())
+	//	{
+	//		if (!msgProcessor->getServerContext()->getConfigVal(CTP_TRADER_BROKERID, brokerId))
+	//		{
+	//			SysParam::TryGet(CTP_TRADER_BROKERID, brokerId);
+	//		}
+	//		std::strncpy(loginInfo->BrokerID, brokerId.data(), sizeof(loginInfo->BrokerID));
+	//	}
+
+	//	if (userId.empty())
+	//	{
+	//		if (!msgProcessor->getServerContext()->getConfigVal(CTP_TRADER_USERID, userId))
+	//		{
+	//			SysParam::TryGet(CTP_TRADER_USERID, userId);
+	//		}
+	//		std::strncpy(loginInfo->UserID, userId.data(), sizeof(loginInfo->UserID));
+	//	}
+
+	//	if (pwd.empty())
+	//	{
+	//		if (!msgProcessor->getServerContext()->getConfigVal(CTP_TRADER_PASSWORD, pwd))
+	//		{
+	//			SysParam::TryGet(CTP_TRADER_PASSWORD, pwd);
+	//		}
+	//		std::strncpy(loginInfo->Password, pwd.data(), sizeof(loginInfo->Password));
+	//	}
+	//}
 
 	std::string address;
-	if (!msgProcessor->getServerContext()->getConfigVal(CTP_MD_SERVER, address))
+	if (!msgProcessor->getServerContext()->getConfigVal(CTP_TRADER_SERVER, address))
 	{
 		std::string server = severName.empty() ? brokerId + ':' + ExchangeRouterTable::TARGET_TD : severName;
 		ExchangeRouterTable::TryFind(server, address);
 	}
 
-	pProcessor->InitializeServer(userId, address);
-
-	auto api = (CTPRawAPI*)pProcessor->getRawAPI();
-	int ret = api->TdAPI->ReqUserLogin(loginInfo, requestId);
+	pProcessor->CreateCTPAPI(userId, address);
+	int ret = pProcessor->RawAPI_Ptr()->TdAPI->ReqUserLogin(loginInfo, requestId);
 
 	// try after market server
 	if (ret == -1 && severName.empty())
@@ -76,9 +80,8 @@ int CTPTradeLoginHandler::LoginFunction(const IMessageProcessor_Ptr& msgProcesso
 		std::string server = brokerId + ':' + ExchangeRouterTable::TARGET_TD_AM;
 		if (ExchangeRouterTable::TryFind(server, address))
 		{
-			api->ReleaseTdApi();
-			pProcessor->InitializeServer(userId, address);
-			ret = api->TdAPI->ReqUserLogin(loginInfo, requestId);
+			pProcessor->CreateCTPAPI(userId, address);
+			ret = pProcessor->RawAPI_Ptr()->TdAPI->ReqUserLogin(loginInfo, requestId);
 		}
 	}
 

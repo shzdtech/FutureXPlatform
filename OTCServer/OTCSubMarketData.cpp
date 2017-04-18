@@ -43,8 +43,7 @@ dataobj_ptr OTCSubMarketData::HandleRequest(const uint32_t serialId, const datao
 
 	auto stdo = (StringTableDO*)reqDO.get();
 
-	if (auto pWorkerProc =
-		MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		if (!stdo->Data.empty())
 		{
@@ -58,6 +57,7 @@ dataobj_ptr OTCSubMarketData::HandleRequest(const uint32_t serialId, const datao
 				session->getContext()->setAttribute(STR_KEY_USER_CONTRACTS, userContractMap_Ptr);
 			}
 
+			auto pricingDOMap = pWorkerProc->PricingDataContext()->GetPricingDataDOMap();
 			if (session->getUserInfo().getRole() == ROLE_TRADINGDESK)
 			{
 				if (auto strategySet_Ptr = std::static_pointer_cast<std::set<ContractKey>>(
@@ -66,6 +66,13 @@ dataobj_ptr OTCSubMarketData::HandleRequest(const uint32_t serialId, const datao
 					for (auto& contract : *strategySet_Ptr)
 					{
 						PricingDO mdo(contract.ExchangeID(), contract.InstrumentID());
+						IPricingDO_Ptr pricing_ptr;
+						if (pricingDOMap->find(mdo, pricing_ptr))
+						{
+							mdo.Ask() = pricing_ptr->Ask();
+							mdo.Bid() = pricing_ptr->Bid();
+						}
+						
 						ret->push_back(std::move(mdo));
 					}
 				}
@@ -74,9 +81,17 @@ dataobj_ptr OTCSubMarketData::HandleRequest(const uint32_t serialId, const datao
 			{
 				for (auto& inst : instList)
 				{
-					if (auto contract = pWorkerProc->GetInstrumentCache().QueryInstrumentById(inst))
+					if (auto pContract = pWorkerProc->GetInstrumentCache().QueryInstrumentById(inst))
 					{
-						PricingDO mdo(contract->ExchangeID(), contract->InstrumentID());
+						PricingDO mdo(pContract->ExchangeID(), pContract->InstrumentID());
+
+						IPricingDO_Ptr pricing_ptr;
+						if (pricingDOMap->find(mdo, pricing_ptr))
+						{
+							mdo.Ask() = pricing_ptr->Ask();
+							mdo.Bid() = pricing_ptr->Bid();
+						}
+
 						ret->push_back(std::move(mdo));
 					}
 				}

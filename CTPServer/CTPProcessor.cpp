@@ -21,6 +21,7 @@ std::string CTPProcessor::FlowPath("ctpflow");
 CTPProcessor::CTPProcessor()
 	: _rawAPI(new CTPRawAPI)
 {
+	DataLoadMask = NO_DATA_LOADED;
 	_isLogged = false;
 	_isConnected = false;
 }
@@ -28,6 +29,7 @@ CTPProcessor::CTPProcessor()
  CTPProcessor::CTPProcessor(const CTPRawAPI_Ptr& rawAPI)
 	 : _rawAPI(rawAPI)
  {
+	 DataLoadMask = NO_DATA_LOADED;
 	 _isLogged = false;
 	 _isConnected = false;
  }
@@ -53,9 +55,9 @@ void CTPProcessor::Initialize(IServerContext* serverCtx)
 {
 }
 
-int CTPProcessor::InitializeServer(const std::string& flowId, const std::string& serverAddr)
+bool CTPProcessor::CreateCTPAPI(const std::string& flowId, const std::string& serverAddr)
 {
-	return 0;
+	return false;
 }
 
 bool CTPProcessor::HasLogged(void)

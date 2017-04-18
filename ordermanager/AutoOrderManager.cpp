@@ -7,6 +7,7 @@
 
 #include <thread>
 #include <algorithm>
+#include "../utility/epsdouble.h"
 #include "AutoOrderManager.h"
 #include "OrderSeqGen.h"
 #include "../databaseop/OrderDAO.h"
@@ -14,7 +15,7 @@
 
 
 AutoOrderManager::AutoOrderManager(IOrderAPI* pOrderAPI, const IPricingDataContext_Ptr& pricingCtx)
-	: OrderManager(pOrderAPI, pricingCtx)
+	: OrderManager(pOrderAPI, pricingCtx), _updatinglock(2048)
 {
 }
 
@@ -30,8 +31,7 @@ OrderDO_Ptr AutoOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 {
 	OrderDO_Ptr ret;
 
-	auto orderId = orderInfo.OrderID;
-	if (orderId == 0 || !FindOrder(ParseOrderID(orderId)))
+	if (orderInfo.OrderID == 0 || !FindOrder(ParseOrderID(orderInfo.OrderID)))
 	{
 		orderInfo.OrderID = OrderSeqGen::GenOrderID(_pOrderAPI->GetSessionId());
 		_contractOrderCtx.UpsertOrder(orderInfo.OrderID, orderInfo);
@@ -55,50 +55,78 @@ OrderDO_Ptr AutoOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 
 void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 {
-	OrderDOVec_Ptr ret;
-	std::vector<uint64_t> orderCancelList;
+	if (!strategyDO.Hedging || strategyDO.IsOTC())
+		return;
 
-	_contractOrderCtx.ContractOrderMap().update_fn(strategyDO.InstrumentID(), [&](cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>& orders)
+	_updatinglock.upsert(strategyDO.InstrumentID(), [](bool& lock) { lock = true; }, true);
+
+	_updatinglock.update_fn(strategyDO.InstrumentID(), [this, &strategyDO](bool& lock)
 	{
-		if (auto pricingDO_ptr = PricingUtility::Pricing(nullptr, strategyDO, *_pricingCtx))
+		OrderDOVec_Ptr ret;
+		cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr> orders;
+
+		if (!_contractOrderCtx.ContractOrderMap().find(strategyDO.InstrumentID(), orders))
+		{
+			_contractOrderCtx.ContractOrderMap().insert(strategyDO.InstrumentID(), cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>(true, strategyDO.Depth * 2));
+			_contractOrderCtx.ContractOrderMap().find(strategyDO.InstrumentID(), orders);
+		}
+
+		IPricingDO_Ptr pricingDO_ptr;
+		if (_pricingCtx->GetPricingDataDOMap()->find(strategyDO, pricingDO_ptr))
 		{
 			ret = std::make_shared<VectorDO<OrderDO>>();
 
 			int depth = strategyDO.Depth;
+			bool askEnable = strategyDO.AskEnabled;
+			bool bidEnable = strategyDO.BidEnabled;
 			double pricingbuyMax = pricingDO_ptr->Bid().Price;
 			double pricingbuyMin = pricingbuyMax - (depth - 1)*strategyDO.TickSize;
 			double pricingsellMin = pricingDO_ptr->Ask().Price;
 			double pricingsellMax = pricingsellMin + (depth - 1)*strategyDO.TickSize;
 
-			std::vector<double> tlBuyPrices;
-			std::vector<double> tlSellPrices;
+			std::vector<epsdouble> tlBuyPrices;
+			std::vector<epsdouble> tlSellPrices;
+			std::vector<uint64_t> orderCancelList;
 
 			auto tradingOrders = orders.map()->lock_table();
-
 			for (auto& pair : tradingOrders)
 			{
 				auto& order = *pair.second;
 				bool canceled = false;
 				if (order.Direction == DirectionType::SELL)
 				{
-					if (order.LimitPrice < pricingsellMin || order.LimitPrice > pricingsellMax)
+					if (askEnable)
 					{
-						canceled = true;
+						if (order.LimitPrice < pricingsellMin || order.LimitPrice > pricingsellMax)
+						{
+							canceled = true;
+						}
+						else
+						{
+							tlSellPrices.push_back(order.LimitPrice);
+						}
 					}
 					else
 					{
-						tlSellPrices.push_back(order.LimitPrice);
+						canceled = true;
 					}
 				}
 				else
 				{
-					if (order.LimitPrice > pricingbuyMax || order.LimitPrice < pricingbuyMin)
+					if (bidEnable)
 					{
-						canceled = true;
+						if (order.LimitPrice > pricingbuyMax || order.LimitPrice < pricingbuyMin)
+						{
+							canceled = true;
+						}
+						else
+						{
+							tlBuyPrices.push_back(order.LimitPrice);
+						}
 					}
 					else
 					{
-						tlBuyPrices.push_back(order.LimitPrice);
+						canceled = true;
 					}
 				}
 
@@ -107,15 +135,18 @@ void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 					if (auto order_ptr = _pOrderAPI->CancelOrder(order))
 					{
 						order.OrderStatus = OrderStatusType::CANCELED;
-						orderCancelList.push_back(order.OrderID);
+						orderCancelList.push_back(pair.first);
 						ret->push_back(order);
 					}
 				}
 			}
+			tradingOrders.release();
+
+			for (auto orderId : orderCancelList)
+				_contractOrderCtx.RemoveOrder(orderId);
 
 			// Make new orders
 			OrderRequestDO newOrder(strategyDO);
-			newOrder.Volume = strategyDO.BidQT;
 
 			double sellPrice = pricingsellMin;
 			double buyPrice = pricingbuyMax;
@@ -123,19 +154,21 @@ void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 
 			for (int i = 0; i < strategyDO.Depth; i++)
 			{
-				if (std::find(tlSellPrices.begin(), tlSellPrices.end(), sellPrice) == tlSellPrices.end())
+				if (askEnable && std::find(tlSellPrices.begin(), tlSellPrices.end(), sellPrice) == tlSellPrices.end())
 				{
 					newOrder.OrderID = 0;
 					newOrder.Direction = DirectionType::SELL;
+					newOrder.Volume = strategyDO.AskQV;
 					newOrder.LimitPrice = sellPrice;
 					CreateOrder(newOrder);
 					ret->push_back(newOrder);
 				}
 
-				if (std::find(tlBuyPrices.begin(), tlBuyPrices.end(), buyPrice) == tlBuyPrices.end())
+				if (bidEnable && std::find(tlBuyPrices.begin(), tlBuyPrices.end(), buyPrice) == tlBuyPrices.end())
 				{
 					newOrder.OrderID = 0;
 					newOrder.Direction = DirectionType::BUY;
+					newOrder.Volume = strategyDO.BidQV;
 					newOrder.LimitPrice = buyPrice;
 					CreateOrder(newOrder);
 					ret->push_back(newOrder);
@@ -145,12 +178,9 @@ void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 				buyPrice -= tickSize;
 			}
 		}
-	});
 
-	for (auto orderId : orderCancelList)
-	{
-		_contractOrderCtx.RemoveOrder(ParseOrderID(orderId));
-	}
+		lock = true;
+	});
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -165,19 +195,19 @@ int AutoOrderManager::OnMarketOrderUpdated(OrderDO& orderInfo)
 {
 	int ret = -1;
 
-	auto orderId = (uint64_t)orderInfo.SessionID << 32 | orderInfo.OrderID;
+	auto orderId = ParseOrderID(orderInfo.OrderID);
 
 	if (auto order_ptr = FindOrder(orderId))
 	{
 		if (order_ptr->OrderSysID == 0 && orderInfo.OrderSysID != 0)
 			order_ptr->OrderSysID = orderInfo.OrderSysID;
 
-		bool addnew = false;
+		bool needUpdaing = false;
 		switch (orderInfo.OrderStatus)
 		{
 		case OrderStatusType::ALL_TRADED:
 		case OrderStatusType::CANCELED:
-			addnew = true;
+			needUpdaing = true;
 			break;
 		case OrderStatusType::PARTIAL_TRADING:
 			break;
@@ -190,7 +220,7 @@ int AutoOrderManager::OnMarketOrderUpdated(OrderDO& orderInfo)
 			_contractOrderCtx.RemoveOrder(orderId);
 		}
 
-		if (addnew)
+		if (needUpdaing)
 		{
 			StrategyContractDO_Ptr strategy_ptr;
 			if (_pricingCtx->GetStrategyMap()->find(orderInfo, strategy_ptr))
@@ -205,7 +235,8 @@ int AutoOrderManager::OnMarketOrderUpdated(OrderDO& orderInfo)
 
 uint64_t AutoOrderManager::ParseOrderID(uint64_t rawOrderId)
 {
-	return ((uint64_t)_pOrderAPI->GetSessionId()) << 32 | rawOrderId;
+	uint64_t sessionId = _pOrderAPI->GetSessionId();
+	return sessionId << 32 | rawOrderId;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -221,10 +252,26 @@ OrderDO_Ptr AutoOrderManager::CancelOrder(OrderRequestDO& orderInfo)
 	OrderDO_Ptr ret;
 	if (orderInfo.OrderID != 0)
 	{
-		if (ret = FindOrder(ParseOrderID(orderInfo.OrderID)))
+		if (ret = FindOrder(orderInfo.OrderID))
 		{
 			ret = _pOrderAPI->CancelOrder(orderInfo);
 			_contractOrderCtx.RemoveOrder(orderInfo.OrderID);
+		}
+	}
+	else
+	{
+		cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr> orders;
+		if (_contractOrderCtx.ContractOrderMap().find(orderInfo.InstrumentID(), orders))
+		{
+			std::vector<uint64_t> orderCancelList;
+			for (auto& pair : orders.map()->lock_table())
+			{
+				_pOrderAPI->CancelOrder(*pair.second);
+				orderCancelList.push_back(pair.first);
+			}
+			
+			for (auto orderId : orderCancelList)
+				_contractOrderCtx.RemoveOrder(orderId);
 		}
 	}
 
@@ -251,7 +298,7 @@ int AutoOrderManager::Reset()
 		auto lt = orderMap.lock_table();
 		for (auto& it : lt)
 		{
-			RejectOrder(*(it.second));
+			CancelOrder(*(it.second));
 		}
 	}
 	_contractOrderCtx.Clear();

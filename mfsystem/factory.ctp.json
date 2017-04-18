@@ -15,6 +15,7 @@
         "module.path": "CTPServer.dll",
         "class.uuid": "factory.ctp.marketdata.service",
         "params": {
+          "product_type": "0;1;2"
         }
       },
       "trade": {
@@ -22,7 +23,7 @@
         "module.path": "CTPServer.dll",
         "class.uuid": "factory.ctp.trade.service",
         "params": {
-          "product_type": "0;2",
+          "product_type": "0;1;2",
           "logout_dataloaded": "true",
           "save_contract": "true"
         }
@@ -32,18 +33,18 @@
         "module.path": "CTPServer.dll",
         "class.uuid": "factory.ctp.marketdata.service",
         "params": {
-          "load_workprocessor": "true",
-          "product_type": "1;5",
-          "logout_dataloaded": "true",
-          "save_contract": "true",
-          "CTP.MD.SERVER": "tcp://ctpfz1-front3.citicsf.com:51213",
-          "CTP.MD.LOGIN.BROKERID": "66666",
-          "CTP.MD.LOGIN.USERID": "895816",
-          "CTP.MD.LOGIN.PASSWORD": "260519",
-          "CTP.TRADER.SERVER": "tcp://ctpfz1-front3.citicsf.com:51205",
-          "CTP.TRADER.LOGIN.BROKERID": "66666",
-          "CTP.TRADER.LOGIN.USERID": "895816",
-          "CTP.TRADER.LOGIN.PASSWORD": "260519"
+          "//load_workprocessor": "true",
+          "//product_type": "1",
+          "//logout_dataloaded": "true",
+          "//save_contract": "true",
+          "//CTP.MD.SERVER": "tcp://180.166.132.69:41213",
+          "CTP.MD.LOGIN.BROKERID": "6000",
+          "CTP.MD.LOGIN.USERID": "01301321",
+          "CTP.MD.LOGIN.PASSWORD": "123456",
+          "//CTP.TRADER.SERVER": "tcp://180.166.132.69:41205",
+          "//CTP.TRADER.LOGIN.BROKERID": "6000",
+          "//CTP.TRADER.LOGIN.USERID": "01301321",
+          "//CTP.TRADER.LOGIN.PASSWORD": "123456"
         }
       }
     },

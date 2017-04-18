@@ -52,6 +52,11 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const uint32_t serialId, const da
 		{
 			auto& accountInfoMap = pWorkerProc->GetAccountInfo(session->getUserInfo().getUserId());
 
+			if (TUtil::IsNullOrEmpty(&accountInfoMap) && session->getUserInfo().getRole() >= ROLE_TRADINGDESK)
+			{
+				accountInfoMap = pWorkerProc->GetAccountInfo(pWorkerProc->getMessageSession()->getUserInfo().getUserId());
+			}
+
 			ThrowNotFoundExceptionIfEmpty(&accountInfoMap);
 
 			auto endit = accountInfoMap.end();

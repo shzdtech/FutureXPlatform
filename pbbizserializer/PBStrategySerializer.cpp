@@ -36,8 +36,8 @@ data_buffer PBStrategySerializer::Serialize(const dataobj_ptr& abstractDO)
 		pStrategy->set_depth(sdo.Depth);
 		pStrategy->set_bidenabled(sdo.BidEnabled);
 		pStrategy->set_askenabled(sdo.AskEnabled);
-		pStrategy->set_bidqt(sdo.BidQT);
-		pStrategy->set_askqt(sdo.AskQT);
+		pStrategy->set_bidqv(sdo.BidQV);
+		pStrategy->set_askqv(sdo.AskQV);
 
 		// Fill Models
 		if (sdo.PricingModel)
@@ -116,8 +116,8 @@ dataobj_ptr PBStrategySerializer::Deserialize(const data_buffer& rawdata)
 	sdo->Hedging = pbstrtg.hedging();
 	sdo->BidEnabled = pbstrtg.bidenabled();
 	sdo->AskEnabled = pbstrtg.askenabled();
-	sdo->BidQT = pbstrtg.bidqt();
-	sdo->AskQT = pbstrtg.askqt();
+	sdo->BidQV = pbstrtg.bidqv();
+	sdo->AskQV = pbstrtg.askqv();
 
 	return sdo;
 }

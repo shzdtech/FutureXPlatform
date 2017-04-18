@@ -6,7 +6,7 @@ std::atomic_uint MessageHandler::_requestIdGen;
 
 bool MessageHandler::CheckLogin(const IMessageSession_Ptr& session, bool throwBizErr)
 {
-	bool ret = session->getLoginTimeStamp();
+	bool ret = session->getLoginTimeStamp() > 0;
 
 	if (!ret && throwBizErr)
 	{

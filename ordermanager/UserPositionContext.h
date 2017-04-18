@@ -26,7 +26,7 @@ class ORDERMGR_CLASS_EXPORT UserPositionContext
 public:
 	UserPositionExDO_Ptr UpsertPosition(const std::string& userId, const UserPositionExDO& positionDO, bool updateYdPosition = false, bool closeYdFirst = false);
 
-	UserPositionExDO_Ptr UpsertPosition(const TradeRecordDO_Ptr & tradeDO, PositionDirectionType pd, InstrumentDO* pContractInfo, bool closeYdFirst = false);
+	UserPositionExDO_Ptr UpsertPosition(const std::string& userid, const TradeRecordDO_Ptr & tradeDO, PositionDirectionType pd, InstrumentDO* pContractInfo, bool closeYdFirst = false);
 
 	void Clear(void);
 

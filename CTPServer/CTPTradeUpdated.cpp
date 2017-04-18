@@ -25,7 +25,7 @@ dataobj_ptr CTPTradeUpdated::HandleResponse(const uint32_t serialId, const param
 
 					auto pContractInfo = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(ret->InstrumentID());
 
-					auto position_ptr = pWorkerProc->GetUserPositionContext().UpsertPosition(ret, pd, pContractInfo, ret->ExchangeID() != EXCHANGE_SHFE);
+					auto position_ptr = pWorkerProc->GetUserPositionContext().UpsertPosition(ret->UserID(), ret, pd, pContractInfo, ret->ExchangeID() != EXCHANGE_SHFE);
 
 					auto pProcessor = (CTPProcessor*)msgProcessor.get();
 					if (pProcessor->DataLoadMask & CTPTradeProcessor::POSITION_DATA_LOADED && position_ptr->Position() >= 0)

@@ -192,8 +192,7 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(CThostFtdcOrderField *pOrder, OrderDO_Ptr 
 		std::string ivid(pOrder->InvestorID);
 		std::string brokerid(pOrder->BrokerID);
 
-		baseOrder.reset(new OrderDO(ToUInt64(pOrder->OrderRef),
-			pOrder->ExchangeID, pOrder->InstrumentID,
+		baseOrder.reset(new OrderDO(ToUInt64(pOrder->OrderRef),	pOrder->ExchangeID, pOrder->InstrumentID,
 			(uid.empty() || uid == ivid) ? MakeUserID(brokerid, ivid) : uid));
 	}
 

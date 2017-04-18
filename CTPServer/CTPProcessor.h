@@ -24,7 +24,7 @@ public:
 	CTPProcessor(const CTPRawAPI_Ptr& rawAPI);
 	virtual IRawAPI* getRawAPI(void);
 	virtual void Initialize(IServerContext* serverCtx);
-	virtual int InitializeServer(const std::string& flowId, const std::string& serverAddr = "");
+	virtual bool CreateCTPAPI(const std::string& flowId, const std::string& serverAddr = "");
 	virtual bool HasLogged(void);
 	virtual bool ConnectedToServer(void);
 	CTPRawAPI_Ptr& RawAPI_Ptr(void);

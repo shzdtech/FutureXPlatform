@@ -145,28 +145,11 @@ AutoOrderManager * CTPOTCTradeProcessor::GetAutoOrderManager(void)
 ///登录请求响应
 void CTPOTCTradeProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	if (pRspUserLogin && !CTPUtility::HasError(pRspInfo))
+	CTPTradeWorkerProcessor::OnRspUserLogin(pRspUserLogin, pRspInfo, nRequestID, bIsLast);
+	if (!CTPUtility::HasError(pRspInfo))
 	{
-		if (auto sessionptr = getMessageSession())
-		{
-			auto& userInfo = sessionptr->getUserInfo();
-			userInfo.setSessionId(pRspUserLogin->SessionID);
-			userInfo.setFrontId(pRspUserLogin->FrontID);
-			userInfo.setTradingDay(std::atoi(pRspUserLogin->TradingDay));
-			_systemUser.setSessionId(pRspUserLogin->SessionID);
-			_systemUser.setFrontId(pRspUserLogin->FrontID);
-
-			_autoOrderMgr.Reset();
-		}
+		_autoOrderMgr.Reset();
 	}
-
-	CThostFtdcSettlementInfoConfirmField reqsettle{};
-	std::strncpy(reqsettle.BrokerID, _systemUser.getBrokerId().data(), sizeof(reqsettle.BrokerID));
-	std::strncpy(reqsettle.InvestorID, _systemUser.getInvestorId().data(), sizeof(reqsettle.InvestorID));
-	_rawAPI->TdAPI->ReqSettlementInfoConfirm(&reqsettle, 0);
-
-	_isLogged = true;
-	LOG_INFO << getServerContext()->getServerUri() << ": System user has logged.";
 }
 
 ///报单录入请求响应

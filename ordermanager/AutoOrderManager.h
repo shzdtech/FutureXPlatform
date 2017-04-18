@@ -27,6 +27,7 @@ public:
 	void TradeByStrategy(const StrategyContractDO& strategyDO);
 
 protected:
+	cuckoohash_map<std::string, bool> _updatinglock;
 
 private:
 

@@ -57,7 +57,7 @@ IPricingDO_Ptr BetaSumPricingAlgorithm::Compute(
 	double BidPrice = 0;
 	double AskPrice = 0;
 
-	int quantity = pInputObject ? *(int*)pInputObject : sdo.BidQT;
+	int quantity = pInputObject ? *(int*)pInputObject : sdo.Quantity;
 
 	if (sdo.PricingContracts)
 	{

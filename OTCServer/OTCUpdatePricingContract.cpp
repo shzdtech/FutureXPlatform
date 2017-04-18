@@ -235,6 +235,8 @@ dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, con
 		for (auto& pair : it)
 		{
 			pWorkerProc->TriggerTadingDeskParams(*pair.second);
+			pWorkerProc->SendOTCPricing(*pair.second);
+			pWorkerProc->TriggerOTCTrading(*pair.second);
 			ret->push_back(*pair.second);
 		}
 	}

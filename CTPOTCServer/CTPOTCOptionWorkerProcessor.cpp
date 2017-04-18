@@ -53,8 +53,8 @@ InstrumentCache & CTPOTCOptionWorkerProcessor::GetInstrumentCache()
 //CTP APIs
 void CTPOTCOptionWorkerProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
 {
-	auto pMarketDataMap = PricingDataContext()->GetMarketDataMap();
 	MarketDataDO mDO;
+	auto pMarketDataMap = PricingDataContext()->GetMarketDataMap();
 	if (pMarketDataMap->find(pDepthMarketData->InstrumentID, mDO))
 	{
 		double bidPrice = pDepthMarketData->BidPrice1;
@@ -80,7 +80,7 @@ void CTPOTCOptionWorkerProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketData
 
 			pMarketDataMap->update(pDepthMarketData->InstrumentID, mDO);
 
-			TriggerUpdating(mDO);
+			TriggerMarketDataUpdating(mDO);
 		}
 	}
 }

@@ -17,13 +17,13 @@
 // Return:     std::shared_ptr<std::vector<ContractKey>>
 ////////////////////////////////////////////////////////////////////////
 
-VectorDO_Ptr<InstrumentDO> ContractDAO::FindContractByProductType(int productType)
+VectorDO_Ptr<InstrumentDO> ContractDAO::FindContractByProductType(int productType, int lifePhase)
 {
 	static const std::string sql_findallcontract(
 		"SELECT exchange_symbol, contract_symbol, contract_type, tick_size, multiplier, "
 		"underlying_symbol, expiration, underlying_exchange, underlying_contract, strikeprice "
 		"FROM vw_contract_property "
-		"where product_type = ?");
+		"WHERE lifephase = ? AND product_type = ?");
 
 	auto ret = std::make_shared<VectorDO<InstrumentDO>>();
 
@@ -32,7 +32,8 @@ VectorDO_Ptr<InstrumentDO> ContractDAO::FindContractByProductType(int productTyp
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
 			session->getConnection()->prepareStatement(sql_findallcontract));
-		prestmt->setInt(1, productType);
+		prestmt->setInt(1, lifePhase);
+		prestmt->setInt(2, productType);
 
 		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
 

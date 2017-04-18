@@ -115,10 +115,10 @@ bool UserPositionContext::RemovePosition(const std::string & userID, const std::
 	return ret;
 }
 
-UserPositionExDO_Ptr UserPositionContext::UpsertPosition(const TradeRecordDO_Ptr& tradeDO, PositionDirectionType pd, InstrumentDO* pContractInfo, bool closeYdFirst)
+UserPositionExDO_Ptr UserPositionContext::UpsertPosition(const std::string& userid, const TradeRecordDO_Ptr& tradeDO, PositionDirectionType pd, InstrumentDO* pContractInfo, bool closeYdFirst)
 {
-	if (!_userPositionMap.contains(tradeDO->UserID()))
-		_userPositionMap.insert(tradeDO->UserID(), std::move(cuckoohashmap_wrapper<std::pair<std::string, int>,
+	if (!_userPositionMap.contains(userid))
+		_userPositionMap.insert(userid, std::move(cuckoohashmap_wrapper<std::pair<std::string, int>,
 			UserPositionExDO_Ptr, pairhash<std::string, int>>(true, 2)));
 
 	// cost
@@ -152,7 +152,7 @@ UserPositionExDO_Ptr UserPositionContext::UpsertPosition(const TradeRecordDO_Ptr
 		}
 	}
 
-	_userPositionMap.update_fn(tradeDO->UserID(), [&tradeDO, &positionDO_Ptr, pContractInfo, closeYdFirst](cuckoohashmap_wrapper<std::pair<std::string, int>,
+	_userPositionMap.update_fn(userid, [&tradeDO, &positionDO_Ptr, pContractInfo, closeYdFirst](cuckoohashmap_wrapper<std::pair<std::string, int>,
 		UserPositionExDO_Ptr, pairhash<std::string, int>>&positionMap)
 	{
 		positionMap.map()->upsert(std::pair<std::string, int>(tradeDO->InstrumentID(), positionDO_Ptr->Direction),

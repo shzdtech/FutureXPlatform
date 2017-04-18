@@ -21,6 +21,7 @@
 dataobj_ptr OTCUpdateTempModelParam::HandleRequest(const uint32_t serialId, const dataobj_ptr & reqDO, IRawAPI * rawAPI, const IMessageProcessor_Ptr & msgProcessor, const IMessageSession_Ptr & session)
 {
 	CheckLogin(session);
+	CheckRolePermission(session, UserRoleType::ROLE_TRADINGDESK);
 
 	auto modelParam_ptr = std::static_pointer_cast<ModelParamsDO>(reqDO);
 	modelParam_ptr->SetUserID(session->getUserInfo().getUserId());
@@ -52,20 +53,26 @@ dataobj_ptr OTCUpdateTempModelParam::HandleRequest(const uint32_t serialId, cons
 			modelAlg->ParseParams(modelptr->Params, modelptr->ParsedParams);
 
 			StrategyModelCache::InsertTempModel(modelptr);
+		}
+	}
 
-			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+	{
+		if (auto pStrategyMap = pWorkerProc->PricingDataContext()->GetUserStrategyMap()->tryfind(modelParam_ptr->UserID()))
+		{
+			for (auto& pairMap : *pStrategyMap)
 			{
-				auto pStrategyMap = pWorkerProc->PricingDataContext()->GetStrategyMap();
-				auto it = pStrategyMap->lock_table();
-				for (auto& pair : it)
+				if (auto stMap_ptr = pairMap.second)
 				{
-					auto& strategy_ptr = pair.second;
-					auto ivmModel_Ptr = strategy_ptr->IVModel;
-					auto volModel_Ptr = strategy_ptr->VolModel;
-					if ((ivmModel_Ptr && ivmModel_Ptr->operator==(*modelParam_ptr)) ||
-						(volModel_Ptr && volModel_Ptr->operator==(*modelParam_ptr)))
+					auto it = stMap_ptr->lock_table();
+					for (auto& pair : it)
 					{
-						pWorkerProc->TriggerTadingDeskParams(*strategy_ptr);
+						auto& strategyDO = pair.second;
+						auto volModel_Ptr = strategyDO->VolModel;
+						if (volModel_Ptr && volModel_Ptr->operator==(*modelParam_ptr))
+						{
+							pWorkerProc->TriggerTadingDeskParams(*strategyDO);
+						}
 					}
 				}
 			}

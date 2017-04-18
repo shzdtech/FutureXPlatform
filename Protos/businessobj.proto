@@ -170,8 +170,8 @@ message PBStrategy
 	bool hedging = 6;
 	bool bidEnabled = 7;
 	bool askEnabled = 8;
-	int32 bidQT = 9;
-	int32 askQT = 10;
+	int32 bidQV = 9;
+	int32 askQV = 10;
 	int32 depth = 11;
 	repeated PBPricingContract pricingContracts = 12;
 	string pricingModel = 13;

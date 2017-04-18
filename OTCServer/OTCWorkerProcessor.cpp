@@ -263,10 +263,11 @@ IPricingDataContext_Ptr& OTCWorkerProcessor::PricingDataContext()
 
 void OTCWorkerProcessor::TriggerOTCPricing(const StrategyContractDO& strategyDO)
 {
-	if (strategyDO.BidEnabled || strategyDO.AskEnabled)
+	if (strategyDO.PricingModel &&
+		(strategyDO.BidEnabled || strategyDO.AskEnabled))
 	{
 		auto pricingCtx = PricingDataContext();
-		if (auto pricingDO = PricingUtility::Pricing(&strategyDO.BidQT, strategyDO, *pricingCtx))
+		if (auto pricingDO = PricingUtility::Pricing(nullptr, strategyDO, *pricingCtx))
 		{
 			pricingCtx->GetPricingDataDOMap()->upsert(strategyDO, [&pricingDO](IPricingDO_Ptr& pricing_ptr) { pricing_ptr = pricingDO; }, pricingDO);
 
@@ -287,6 +288,28 @@ void OTCWorkerProcessor::TriggerOTCPricing(const StrategyContractDO& strategyDO)
 	}
 }
 
+void OTCWorkerProcessor::SendOTCPricing(const StrategyContractDO& strategyDO)
+{
+	auto pricingCtx = PricingDataContext();
+	IPricingDO_Ptr pricingDO;
+	if (pricingCtx->GetPricingDataDOMap()->find(strategyDO, pricingDO))
+	{
+		if (!strategyDO.BidEnabled)
+		{
+			pricingDO->Bid().Clear();
+		}
+
+		if (!strategyDO.AskEnabled)
+		{
+			pricingDO->Ask().Clear();
+		}
+
+		_pricingNotifers->foreach(strategyDO, [&pricingDO, &strategyDO, &pricingCtx](const IMessageSession_Ptr& session_ptr)
+		{if (auto process_ptr = session_ptr->LockMessageProcessor())
+			OnResponseProcMacro(process_ptr, MSG_ID_RTN_PRICING, strategyDO.SerialId, &pricingDO, &strategyDO, pricingCtx.get()); });
+	}
+}
+
 void OTCWorkerProcessor::TriggerTadingDeskParams(const StrategyContractDO & strategyDO)
 {
 	auto pricingCtx = PricingDataContext();
@@ -295,7 +318,7 @@ void OTCWorkerProcessor::TriggerTadingDeskParams(const StrategyContractDO & stra
 		OnResponseProcMacro(process_ptr, MSG_ID_RTN_TRADINGDESK_PRICING, strategyDO.SerialId, &strategyDO, pricingCtx.get()); });
 }
 
-void OTCWorkerProcessor::TriggerUpdating(const MarketDataDO& mdDO)
+void OTCWorkerProcessor::TriggerMarketDataUpdating(const MarketDataDO& mdDO)
 {
 	cuckoohashmap_wrapper<ContractKey, bool, ContractKeyHash> strategyMap;
 	if (_baseContractStrategyMap.find(mdDO, strategyMap))
@@ -307,22 +330,21 @@ void OTCWorkerProcessor::TriggerUpdating(const MarketDataDO& mdDO)
 			StrategyContractDO_Ptr strategy_ptr;
 			if (auto pStrategyDO = pStrategyMap->find(pair.first, strategy_ptr))
 			{
-				TriggerOTCUpdating(*strategy_ptr);
+				TriggerTadingDeskParams(*strategy_ptr);
+
+				TriggerOTCPricing(*strategy_ptr);
+
+				TriggerOTCTrading(*strategy_ptr);
 			}
 		}
 	}
 }
 
-void OTCWorkerProcessor::TriggerOTCUpdating(const StrategyContractDO & strategyDO)
+
+void OTCWorkerProcessor::TriggerOTCTrading(const StrategyContractDO & strategyDO)
 {
-	if (strategyDO.IVModel)
-		TriggerTadingDeskParams(strategyDO);
+	GetOTCTradeProcessor()->TriggerHedgeOrderUpdating(strategyDO);
 
-	if (strategyDO.PricingContracts && strategyDO.IsOTC())
-		TriggerOTCPricing(strategyDO);
-
-	// GetOTCTradeProcessor()->TriggerHedgeOrderUpdating(strategyDO);
-
-	// GetOTCTradeProcessor()->TriggerOTCOrderUpdating(strategyDO);
+	GetOTCTradeProcessor()->TriggerOTCOrderUpdating(strategyDO);
 }
 

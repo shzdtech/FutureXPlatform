@@ -41,13 +41,11 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const uint32_t serialId, const datao
 	CheckLogin(session);
 
 	auto stdo = (MapDO<std::string>*)reqDO.get();
-	auto& userid = session->getUserInfo().getUserId();
 	auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
 
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 	{
-		auto positionMap = pWorkerProc->GetUserPositionContext().GetPositionsByUser(userid);
-
+		cuckoohashmap_wrapper<std::pair<std::string, int>, UserPositionExDO_Ptr, pairhash<std::string, int>> positionMap;
 		auto pProcessor = (CTPProcessor*)msgProcessor.get();
 		if (!(pProcessor->DataLoadMask & CTPTradeProcessor::POSITION_DATA_LOADED))
 		{
@@ -55,8 +53,10 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const uint32_t serialId, const datao
 			int iRet = ((CTPRawAPI*)rawAPI)->TdAPI->ReqQryInvestorPosition(&req, serialId);
 			CTPUtility::CheckReturnError(iRet);
 			std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
-			positionMap = pWorkerProc->GetUserPositionContext().GetPositionsByUser(userid);
 		}
+
+		auto& userId = session->getUserInfo().getUserId();
+		positionMap = pWorkerProc->GetUserPositionContext().GetPositionsByUser(userId);
 
 		ThrowNotFoundExceptionIfEmpty(&positionMap);
 

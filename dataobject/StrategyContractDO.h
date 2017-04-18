@@ -15,7 +15,6 @@
 #include "ModelParamsDO.h"
 #include "EnumTypes.h"
 #include "DateType.h"
-#include <ctime>
 
 static const std::string PM("pm");
 static const std::string IVM("ivm");
@@ -48,12 +47,13 @@ public:
 	DateType TradingDay;
 	ProductType ProductType;
 	ContractType ContractType;
-	int BidQT = 1;
-	int AskQT = 1;
+	int Quantity = 1;
+	int BidQV = 1;
+	int AskQV = 1;
 	int Depth = 2;
-	bool Hedging = false;
-	bool BidEnabled = true;
-	bool AskEnabled = true;
+	volatile bool Hedging = false;
+	volatile bool BidEnabled = true;
+	volatile bool AskEnabled = true;
 
 	double TickSize = 1;
 	double Multiplier = 1;

@@ -48,6 +48,8 @@ public:
    virtual std::set<ProductType>& GetProductTypeToLoad();
    //virtual UserOrderContext& GetUserErrOrderContext(void);
 
+   void QueryPositionAsync(const std::string& userId);
+
    int RetryInterval = 60000;
 
 protected:
@@ -64,6 +66,7 @@ protected:
 
 
 public:
+	virtual void OnFrontConnected();
 	///登录请求响应
 	virtual void OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	///请求查询合约响应
@@ -81,6 +84,9 @@ public:
 
 	///成交通知
 	virtual void OnRtnTrade(CThostFtdcTradeField *pTrade);
+
+	///请求查询投资者持仓响应
+	virtual void OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 };
 
 #endif

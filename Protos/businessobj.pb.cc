@@ -423,8 +423,8 @@ void protobuf_AssignDesc_businessobj_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, hedging_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, bidenabled_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, askenabled_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, bidqt_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, askqt_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, bidqv_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, askqv_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, depth_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, pricingcontracts_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, pricingmodel_),
@@ -1119,7 +1119,7 @@ void protobuf_AddDesc_businessobj_2eproto() {
     "nge\030\002 \001(\t\022\020\n\010contract\030\003 \001(\t\022\022\n\nunderlyin"
     "g\030\004 \001(\t\022\016\n\006symbol\030\005 \001(\t\022\017\n\007hedging\030\006 \001(\010"
     "\022\022\n\nbidEnabled\030\007 \001(\010\022\022\n\naskEnabled\030\010 \001(\010"
-    "\022\r\n\005bidQT\030\t \001(\005\022\r\n\005askQT\030\n \001(\005\022\r\n\005depth\030"
+    "\022\r\n\005bidQV\030\t \001(\005\022\r\n\005askQV\030\n \001(\005\022\r\n\005depth\030"
     "\013 \001(\005\022J\n\020pricingContracts\030\014 \003(\01320.Micro."
     "Future.Message.Business.PBPricingContrac"
     "t\022\024\n\014pricingModel\030\r \001(\t\022F\n\014ivmContracts\030"
@@ -9620,8 +9620,8 @@ const int PBStrategy::kSymbolFieldNumber;
 const int PBStrategy::kHedgingFieldNumber;
 const int PBStrategy::kBidEnabledFieldNumber;
 const int PBStrategy::kAskEnabledFieldNumber;
-const int PBStrategy::kBidQTFieldNumber;
-const int PBStrategy::kAskQTFieldNumber;
+const int PBStrategy::kBidQVFieldNumber;
+const int PBStrategy::kAskQVFieldNumber;
 const int PBStrategy::kDepthFieldNumber;
 const int PBStrategy::kPricingContractsFieldNumber;
 const int PBStrategy::kPricingModelFieldNumber;
@@ -9662,8 +9662,8 @@ void PBStrategy::SharedCtor() {
   hedging_ = false;
   bidenabled_ = false;
   askenabled_ = false;
-  bidqt_ = 0;
-  askqt_ = 0;
+  bidqv_ = 0;
+  askqv_ = 0;
   depth_ = 0;
   pricingmodel_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ivmodel_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
@@ -9738,7 +9738,7 @@ void PBStrategy::Clear() {
   contract_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   underlying_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   symbol_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ZR_(bidqt_, depth_);
+  ZR_(bidqv_, depth_);
   pricingmodel_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ivmodel_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   volmodel_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
@@ -9882,32 +9882,32 @@ bool PBStrategy::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(72)) goto parse_bidQT;
+        if (input->ExpectTag(72)) goto parse_bidQV;
         break;
       }
 
-      // optional int32 bidQT = 9;
+      // optional int32 bidQV = 9;
       case 9: {
         if (tag == 72) {
-         parse_bidQT:
+         parse_bidQV:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &bidqt_)));
+                 input, &bidqv_)));
 
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(80)) goto parse_askQT;
+        if (input->ExpectTag(80)) goto parse_askQV;
         break;
       }
 
-      // optional int32 askQT = 10;
+      // optional int32 askQV = 10;
       case 10: {
         if (tag == 80) {
-         parse_askQT:
+         parse_askQV:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &askqt_)));
+                 input, &askqv_)));
 
         } else {
           goto handle_unusual;
@@ -10118,14 +10118,14 @@ void PBStrategy::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteBool(8, this->askenabled(), output);
   }
 
-  // optional int32 bidQT = 9;
-  if (this->bidqt() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(9, this->bidqt(), output);
+  // optional int32 bidQV = 9;
+  if (this->bidqv() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(9, this->bidqv(), output);
   }
 
-  // optional int32 askQT = 10;
-  if (this->askqt() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(10, this->askqt(), output);
+  // optional int32 askQV = 10;
+  if (this->askqv() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(10, this->askqv(), output);
   }
 
   // optional int32 depth = 11;
@@ -10253,14 +10253,14 @@ void PBStrategy::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(8, this->askenabled(), target);
   }
 
-  // optional int32 bidQT = 9;
-  if (this->bidqt() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(9, this->bidqt(), target);
+  // optional int32 bidQV = 9;
+  if (this->bidqv() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(9, this->bidqv(), target);
   }
 
-  // optional int32 askQT = 10;
-  if (this->askqt() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(10, this->askqt(), target);
+  // optional int32 askQV = 10;
+  if (this->askqv() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(10, this->askqv(), target);
   }
 
   // optional int32 depth = 11;
@@ -10380,18 +10380,18 @@ int PBStrategy::ByteSize() const {
     total_size += 1 + 1;
   }
 
-  // optional int32 bidQT = 9;
-  if (this->bidqt() != 0) {
+  // optional int32 bidQV = 9;
+  if (this->bidqv() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->bidqt());
+        this->bidqv());
   }
 
-  // optional int32 askQT = 10;
-  if (this->askqt() != 0) {
+  // optional int32 askQV = 10;
+  if (this->askqv() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->askqt());
+        this->askqv());
   }
 
   // optional int32 depth = 11;
@@ -10501,11 +10501,11 @@ void PBStrategy::MergeFrom(const PBStrategy& from) {
   if (from.askenabled() != 0) {
     set_askenabled(from.askenabled());
   }
-  if (from.bidqt() != 0) {
-    set_bidqt(from.bidqt());
+  if (from.bidqv() != 0) {
+    set_bidqv(from.bidqv());
   }
-  if (from.askqt() != 0) {
-    set_askqt(from.askqt());
+  if (from.askqv() != 0) {
+    set_askqv(from.askqv());
   }
   if (from.depth() != 0) {
     set_depth(from.depth());
@@ -10556,8 +10556,8 @@ void PBStrategy::InternalSwap(PBStrategy* other) {
   std::swap(hedging_, other->hedging_);
   std::swap(bidenabled_, other->bidenabled_);
   std::swap(askenabled_, other->askenabled_);
-  std::swap(bidqt_, other->bidqt_);
-  std::swap(askqt_, other->askqt_);
+  std::swap(bidqv_, other->bidqv_);
+  std::swap(askqv_, other->askqv_);
   std::swap(depth_, other->depth_);
   pricingcontracts_.UnsafeArenaSwap(&other->pricingcontracts_);
   pricingmodel_.Swap(&other->pricingmodel_);
@@ -10836,32 +10836,32 @@ void PBStrategy::clear_askenabled() {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.askEnabled)
 }
 
-// optional int32 bidQT = 9;
-void PBStrategy::clear_bidqt() {
-  bidqt_ = 0;
+// optional int32 bidQV = 9;
+void PBStrategy::clear_bidqv() {
+  bidqv_ = 0;
 }
- ::google::protobuf::int32 PBStrategy::bidqt() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.bidQT)
-  return bidqt_;
+ ::google::protobuf::int32 PBStrategy::bidqv() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.bidQV)
+  return bidqv_;
 }
- void PBStrategy::set_bidqt(::google::protobuf::int32 value) {
+ void PBStrategy::set_bidqv(::google::protobuf::int32 value) {
   
-  bidqt_ = value;
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.bidQT)
+  bidqv_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.bidQV)
 }
 
-// optional int32 askQT = 10;
-void PBStrategy::clear_askqt() {
-  askqt_ = 0;
+// optional int32 askQV = 10;
+void PBStrategy::clear_askqv() {
+  askqv_ = 0;
 }
- ::google::protobuf::int32 PBStrategy::askqt() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.askQT)
-  return askqt_;
+ ::google::protobuf::int32 PBStrategy::askqv() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.askQV)
+  return askqv_;
 }
- void PBStrategy::set_askqt(::google::protobuf::int32 value) {
+ void PBStrategy::set_askqv(::google::protobuf::int32 value) {
   
-  askqt_ = value;
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.askQT)
+  askqv_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.askQV)
 }
 
 // optional int32 depth = 11;

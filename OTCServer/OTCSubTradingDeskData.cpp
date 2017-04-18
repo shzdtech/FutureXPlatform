@@ -65,7 +65,9 @@ dataobj_ptr OTCSubTradingDeskData::HandleRequest(const uint32_t serialId, const 
 			{
 				StrategyContractDO_Ptr strategy_ptr;
 				if (pStrategyMap->find(contract, strategy_ptr))
+				{
 					pWorkerProc->TriggerTadingDeskParams(*strategy_ptr);
+				}
 			}
 		}
 	}

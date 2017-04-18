@@ -11,6 +11,7 @@
 #include "../dataobject/FieldName.h"
 #include "../dataobject/TypedefDO.h"
 #include "../dataobject/DateType.h"
+#include "../databaseop/ContractDAO.h"
 
 #include "CTPTradeWorkerProcessor.h"
 #include "../message/DefMessageID.h"
@@ -49,16 +50,18 @@ dataobj_ptr CTPQueryInstrument::HandleRequest(const uint32_t serialId, const dat
 	auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
 	auto& exchangeid = stdo->TryFind(STR_EXCHANGE_ID, EMPTY_STRING);
 	auto& productid = stdo->TryFind(STR_PRODUCT_ID, EMPTY_STRING);
+	auto& instrumentCache = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE);
 
 	VectorDO_Ptr<InstrumentDO> ret;
 
 	if (instrumentid == EMPTY_STRING && exchangeid == EMPTY_STRING && productid == EMPTY_STRING)
-		ret = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).AllInstruments();
+		ret = instrumentCache.AllInstruments();
 	else
-		ret = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrument(instrumentid, exchangeid, productid);
+		ret = instrumentCache.QueryInstrument(instrumentid, exchangeid, productid);
 
 	if (TUtil::IsNullOrEmpty(ret))
 	{
+		bool loaded = false;
 		if (auto pTradeAPI = ((CTPRawAPI*)rawAPI)->TdAPI)
 		{
 			CThostFtdcQryInstrumentField req{};
@@ -66,9 +69,33 @@ dataobj_ptr CTPQueryInstrument::HandleRequest(const uint32_t serialId, const dat
 			std::strncpy(req.InstrumentID, instrumentid.data(), sizeof(req.InstrumentID));
 			std::strncpy(req.ProductID, productid.data(), sizeof(req.ProductID));
 			auto retCode = pTradeAPI->ReqQryInstrument(&req, serialId);
-			// CTPUtility::CheckReturnError(retCode);
+			loaded = retCode == 0;
 		}
-		throw NotFoundException();
+
+		if (!loaded)
+		{
+			std::string productTypes;
+			if (msgProcessor->getServerContext()->getConfigVal("product_type", productTypes))
+			{
+				std::vector<std::string> productVec;
+				stringutility::split(productTypes, productVec);
+
+				for (auto productType : productVec)
+				{
+					auto vectPtr = ContractDAO::FindContractByProductType(std::stoi(productType));
+					for (auto& contract : *vectPtr)
+						instrumentCache.Add(contract);
+				}
+			}
+		}
+
+		if (instrumentid == EMPTY_STRING && exchangeid == EMPTY_STRING && productid == EMPTY_STRING)
+			ret = instrumentCache.AllInstruments();
+		else
+			ret = instrumentCache.QueryInstrument(instrumentid, exchangeid, productid);
+
+		if (TUtil::IsNullOrEmpty(ret))
+			throw NotFoundException();
 	}
 
 	ret->HasMore = false;

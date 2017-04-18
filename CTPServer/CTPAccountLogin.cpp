@@ -43,12 +43,36 @@
 dataobj_ptr CTPAccountLogin::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	auto ret = Login(reqDO, rawAPI, msgProcessor, session);
+	auto role = session->getUserInfo().getRole();
+
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 	{
-		pWorkerProc->RegisterLoggedSession(msgProcessor->getMessageSession());
-		if (!pWorkerProc->HasLogged())
+		if (role == ROLE_TRADINGDESK)
 		{
-			throw SystemException(CONNECTION_ERROR, "Cannot connect to CTP Server!");
+			pWorkerProc->getMessageSession()->getUserInfo().setUserId(session->getUserInfo().getUserId());
+		}
+
+		pWorkerProc->RegisterLoggedSession(msgProcessor->getMessageSession());
+
+		bool connected = pWorkerProc->ConnectedToServer();
+		bool logged = pWorkerProc->HasLogged();
+
+		if (!connected || !logged)
+		{
+			if (role >= ROLE_TRADINGDESK)
+			{
+				pWorkerProc->LoginSystemUserIfNeed();
+				std::this_thread::sleep_for(std::chrono::seconds(1));
+			}
+
+			if (!pWorkerProc->HasLogged())
+				throw SystemException(CONNECTION_ERROR, msgProcessor->getServerContext()->getServerUri() + " has not initialized!");
+		}
+
+		if (role == ROLE_TRADINGDESK)
+		{
+			CThostFtdcQryInvestorPositionField req{};
+			((CTPRawAPI*)rawAPI)->TdAPI->ReqQryInvestorPosition(&req, -1);
 		}
 	}
 
@@ -72,7 +96,7 @@ dataobj_ptr CTPAccountLogin::HandleResponse(const uint32_t serialId, const param
 
 std::shared_ptr<UserInfoDO> CTPAccountLogin::Login(const dataobj_ptr reqDO, IRawAPI * rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	if (!session->getLoginTimeStamp())
+	if (session->getLoginTimeStamp() <= 0)
 	{
 		auto stdo = (MapDO<std::string>*)reqDO.get();
 		auto& userid = stdo->TryFind(STR_USER_NAME, EMPTY_STRING);

@@ -39,10 +39,12 @@ public:
 
 	virtual int UnsubscribePricingContracts(const ContractKey & strategyKey, const StrategyPricingContract & strategyContract);
 
+	virtual void TriggerMarketDataUpdating(const MarketDataDO& mdDO);
+
 	virtual void TriggerOTCPricing(const StrategyContractDO& strategyDO);
+	virtual void SendOTCPricing(const StrategyContractDO & strategyDO);
 	virtual void TriggerTadingDeskParams(const StrategyContractDO& strategyDO);
-	virtual void TriggerUpdating(const MarketDataDO& mdDO);
-	virtual void TriggerOTCUpdating(const StrategyContractDO& strategyDO);
+	virtual void TriggerOTCTrading(const StrategyContractDO & strategyDO);
 
 	virtual void RegisterPricingListener(const ContractKey& contractId,
 		const IMessageSession_Ptr& sessionPtr);

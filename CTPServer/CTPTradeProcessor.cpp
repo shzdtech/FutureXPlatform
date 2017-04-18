@@ -28,7 +28,6 @@ namespace fs = std::experimental::filesystem;
 CTPTradeProcessor::CTPTradeProcessor()
 	: CTPProcessor()
 {
-	DataLoadMask = NO_DATA_LOADED;
 	_exiting = false;
 	_tradeCnt = 0;
 	_updateFlag.clear(std::memory_order_release);
@@ -37,7 +36,6 @@ CTPTradeProcessor::CTPTradeProcessor()
 CTPTradeProcessor::CTPTradeProcessor(const CTPRawAPI_Ptr& rawAPI)
 	: CTPProcessor(rawAPI)
 {
-	DataLoadMask = NO_DATA_LOADED;
 	_exiting = false;
 	_tradeCnt = 0;
 	_updateFlag.clear(std::memory_order_release);
@@ -56,40 +54,39 @@ CTPTradeProcessor::~CTPTradeProcessor()
 }
 
 
-int CTPTradeProcessor::InitializeServer(const std::string& flowId, const std::string & serverAddr)
+bool CTPTradeProcessor::CreateCTPAPI(const std::string& flowId, const std::string & serverAddr)
 {
-	int ret = 0;
+	CTPRawAPI_Ptr ret = std::make_shared<CTPRawAPI>();
 
-	if (!_rawAPI->TdAPI)
+	fs::path localpath = CTPProcessor::FlowPath;
+	if (!fs::exists(localpath))
 	{
-		fs::path localpath = CTPProcessor::FlowPath;
-		if (!fs::exists(localpath))
-		{
-			std::error_code ec;
-			fs::create_directories(localpath, ec);
-		}
-
-		localpath /= flowId + "_" + std::to_string(std::time(nullptr)) + "_" + std::to_string(std::rand()) + "_";
-
-		_rawAPI->CreateTdApi(localpath.string().data());
-		_rawAPI->TdAPI->RegisterSpi(this);
-
-		std::string server_addr(serverAddr);
-		if (server_addr.empty() && !_serverCtx->getConfigVal(CTP_TRADER_SERVER, server_addr))
-		{
-			SysParam::TryGet(CTP_TRADER_SERVER, server_addr);
-		}
-
-		_rawAPI->TdAPI->RegisterFront(const_cast<char*> (server_addr.data()));
-
-		_rawAPI->TdAPI->SubscribePrivateTopic(THOST_TERT_RESTART);
-		_rawAPI->TdAPI->SubscribePublicTopic(THOST_TERT_RESTART);
-		_rawAPI->TdAPI->Init();
-
-		std::this_thread::sleep_for(std::chrono::seconds(1));
+		std::error_code ec;
+		fs::create_directories(localpath, ec);
 	}
 
-	return ret;
+	localpath /= flowId + "_" + std::to_string(std::time(nullptr)) + "_" + std::to_string(std::rand()) + "_";
+
+	ret->CreateTdApi(localpath.string().data());
+	ret->TdAPI->RegisterSpi(this);
+
+	std::string server_addr(serverAddr);
+	if (server_addr.empty() && !_serverCtx->getConfigVal(CTP_TRADER_SERVER, server_addr))
+	{
+		SysParam::TryGet(CTP_TRADER_SERVER, server_addr);
+	}
+
+	ret->TdAPI->RegisterFront(const_cast<char*> (server_addr.data()));
+
+	ret->TdAPI->SubscribePrivateTopic(THOST_TERT_RESTART);
+	ret->TdAPI->SubscribePublicTopic(THOST_TERT_RESTART);
+	ret->TdAPI->Init();
+
+	_rawAPI = ret;
+
+	std::this_thread::sleep_for(std::chrono::seconds(1));
+
+	return (bool)ret;
 }
 
 bool CTPTradeProcessor::OnSessionClosing(void)
@@ -210,12 +207,15 @@ void CTPTradeProcessor::OnRspQryTrade(CThostFtdcTradeField *pTrade, CThostFtdcRs
 ///请求查询投资者持仓响应
 void CTPTradeProcessor::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	auto msgId = nRequestID == -1 ? MSG_ID_POSITION_UPDATED : MSG_ID_QUERY_POSITION;
+	if (pInvestorPosition)
+	{
+		auto msgId = nRequestID == -1 ? MSG_ID_POSITION_UPDATED : MSG_ID_QUERY_POSITION;
 
-	OnResponseMacro(msgId, nRequestID, pInvestorPosition, pRspInfo, &nRequestID, &bIsLast);
+		if (bIsLast)
+			DataLoadMask |= CTPTradeProcessor::POSITION_DATA_LOADED;
 
-	if (bIsLast)
-		DataLoadMask |= CTPTradeProcessor::POSITION_DATA_LOADED;
+		OnResponseMacro(msgId, nRequestID, pInvestorPosition, pRspInfo, &nRequestID, &bIsLast);	
+	}
 }
 
 ///请求查询资金账户响应

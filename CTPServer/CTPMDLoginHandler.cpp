@@ -58,20 +58,17 @@ int CTPMDLoginHandler::LoginFunction(const IMessageProcessor_Ptr& msgProcessor, 
 		ExchangeRouterTable::TryFind(server, address);
 	}
 
-	pProcessor->InitializeServer(userId, address);
-
-	auto api = (CTPRawAPI*)pProcessor->getRawAPI();
-	int ret = api->MdAPI->ReqUserLogin(loginInfo, requestId);
+	pProcessor->CreateCTPAPI(userId, address);
+	int ret = pProcessor->RawAPI_Ptr()->MdAPI->ReqUserLogin(loginInfo, requestId);
 
 	// try after market server
 	if (ret == -1 && severName.empty())
 	{
-		std::string server = brokerId + ':' + ExchangeRouterTable::TARGET_TD_AM;
+		std::string server = brokerId + ':' + ExchangeRouterTable::TARGET_MD_AM;
 		if (ExchangeRouterTable::TryFind(server, address))
 		{
-			api->ReleaseMdApi();
-			pProcessor->InitializeServer(userId, address);
-			ret = api->MdAPI->ReqUserLogin(loginInfo, requestId);
+			pProcessor->CreateCTPAPI(userId, address);
+			ret = pProcessor->RawAPI_Ptr()->MdAPI->ReqUserLogin(loginInfo, requestId);
 		}
 	}
 

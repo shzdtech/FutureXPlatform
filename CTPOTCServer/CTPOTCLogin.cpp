@@ -44,18 +44,31 @@ dataobj_ptr CTPOTCLogin::HandleRequest(const uint32_t serialId, const dataobj_pt
 {
 	auto ret = Login(reqDO, rawAPI, msgProcessor, session);
 
+	auto role = session->getUserInfo().getRole();
+	
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCWorkerProcessor>(msgProcessor))
 	{
-		pWorkerProc->RegisterLoggedSession(msgProcessor->getMessageSession());
-
-		//if (session->getUserInfo().getRole() == ROLE_TRADINGDESK)
-		//{
-		//	pWorkerProc->LoginSystemUserIfNeed();
-		//}
-
-		if (!(pWorkerProc->ConnectedToServer() && pWorkerProc->HasLogged()))
+		if (role == ROLE_TRADINGDESK)
 		{
-			throw SystemException(CONNECTION_ERROR, "CTP Market Data Server not connected!");
+			pWorkerProc->GetCTPOTCTradeProcessor()->getMessageSession()
+				->getUserInfo().setUserId(session->getUserInfo().getUserId());
+		}
+
+		pWorkerProc->RegisterLoggedSession(pWorkerProc->getMessageSession());
+
+		bool connected = pWorkerProc->ConnectedToServer();
+		bool logged = pWorkerProc->HasLogged();
+
+		if (!connected || !logged)
+		{
+			if (role >= ROLE_TRADINGDESK)
+			{
+				pWorkerProc->LoginSystemUserIfNeed();
+				std::this_thread::sleep_for(std::chrono::seconds(1));
+			}
+
+			if (!pWorkerProc->HasLogged())
+				throw SystemException(CONNECTION_ERROR, msgProcessor->getServerContext()->getServerUri() + " has not initialized!");
 		}
 	}
 

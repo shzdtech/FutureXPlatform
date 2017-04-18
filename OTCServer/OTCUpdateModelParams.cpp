@@ -22,6 +22,7 @@
 dataobj_ptr OTCUpdateModelParams::HandleRequest(const uint32_t serialId, const dataobj_ptr & reqDO, IRawAPI * rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
+	CheckRolePermission(session, UserRoleType::ROLE_TRADINGDESK);
 
 	auto pModelParam = (ModelParamsDO*)reqDO.get();
 	pModelParam->SetUserID(session->getUserInfo().getUserId());
@@ -73,11 +74,16 @@ dataobj_ptr OTCUpdateModelParams::HandleRequest(const uint32_t serialId, const d
 								auto& strategyDO = pair.second;
 								auto ivmModel_Ptr = strategyDO->IVModel;
 								auto volModel_Ptr = strategyDO->VolModel;
-								if ((ivmModel_Ptr && ivmModel_Ptr->operator==(*pModelParam)) ||
-									(volModel_Ptr && volModel_Ptr->operator==(*pModelParam)))
+								auto pmModel_Ptr = strategyDO->PricingModel;
+								if (
+									(volModel_Ptr && volModel_Ptr->operator==(*pModelParam)) ||
+									(pmModel_Ptr && pmModel_Ptr->operator==(*pModelParam)) ||
+									(ivmModel_Ptr && ivmModel_Ptr->operator==(*pModelParam))
+									)
 								{
 									pWorkerProc->TriggerTadingDeskParams(*strategyDO);
-									pWorkerProc->TriggerOTCPricing(*strategyDO);
+									pWorkerProc->SendOTCPricing(*strategyDO);
+									pWorkerProc->TriggerOTCTrading(*strategyDO);
 								}
 							}
 						}

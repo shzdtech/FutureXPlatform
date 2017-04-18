@@ -33,18 +33,19 @@ dataobj_ptr OTCOptionPricingParams::HandleResponse(const uint32_t serialId, cons
 		}
 
 		// Implied Volatility Model
-		if (auto ivmodel_ptr = ModelAlgorithmManager::Instance()->FindModel(pStrategy->IVModel->Model))
-		{
-			if (auto result = ivmodel_ptr->Compute(nullptr, *pStrategy, pricingCtx, nullptr))
+		if (pStrategy->IVModel)
+			if (auto ivmodel_ptr = ModelAlgorithmManager::Instance()->FindModel(pStrategy->IVModel->Model))
 			{
-				ret->ImpliedVol = std::make_shared<ImpliedVolatility>(((TDataObject<ImpliedVolatility>*)result.get())->Data);
-				auto pOptionParams = (OptionParams*)pStrategy->IVModel->ParsedParams.get();
-				if (!std::isnan(ret->ImpliedVol->AskVolatility))
-					pOptionParams->askVolatility = ret->ImpliedVol->AskVolatility;
-				if (!std::isnan(ret->ImpliedVol->BidVolatility))
-					pOptionParams->bidVolatility = ret->ImpliedVol->BidVolatility;
+				if (auto result = ivmodel_ptr->Compute(nullptr, *pStrategy, pricingCtx, nullptr))
+				{
+					ret->ImpliedVol = std::make_shared<ImpliedVolatility>(((TDataObject<ImpliedVolatility>*)result.get())->Data);
+					auto pOptionParams = (OptionParams*)pStrategy->IVModel->ParsedParams.get();
+					if (!std::isnan(ret->ImpliedVol->AskVolatility))
+						pOptionParams->askVolatility = ret->ImpliedVol->AskVolatility;
+					if (!std::isnan(ret->ImpliedVol->BidVolatility))
+						pOptionParams->bidVolatility = ret->ImpliedVol->BidVolatility;
+				}
 			}
-		}
 
 		// Volatility Model
 		if (pStrategy->VolModel)
@@ -71,25 +72,28 @@ dataobj_ptr OTCOptionPricingParams::HandleResponse(const uint32_t serialId, cons
 						}
 					}
 
-					// Pricing Model				
-					if (IPricingAlgorithm_Ptr prcingmodel_ptr = PricingAlgorithmManager::Instance()->FindModel(pStrategy->PricingModel->Model))
-					{
-						if (auto result = prcingmodel_ptr->Compute(nullptr, *pStrategy, pricingCtx, nullptr))
+					// Pricing Model	
+					if (pStrategy->PricingModel)
+						if (auto prcingmodel_ptr = PricingAlgorithmManager::Instance()->FindModel(pStrategy->PricingModel->Model))
 						{
-							auto pOptionPricing = (OptionPricingDO*)result.get();
-							ret->TheoData->TBid().Price = pOptionPricing->TBid().Price;
-							ret->TheoData->TBid().Delta = pOptionPricing->TBid().Delta;
-							ret->TheoData->TBid().Gamma = pOptionPricing->TBid().Gamma;
-							ret->TheoData->TBid().Vega = pOptionPricing->TBid().Vega;
-							ret->TheoData->TBid().Theta = pOptionPricing->TBid().Theta;
+							if (auto pricingDO = prcingmodel_ptr->Compute(nullptr, *pStrategy, pricingCtx, nullptr))
+							{
+								auto pOptionPricing = (OptionPricingDO*)pricingDO.get();
+								ret->TheoData->TBid().Price = pOptionPricing->TBid().Price;
+								ret->TheoData->TBid().Delta = pOptionPricing->TBid().Delta;
+								ret->TheoData->TBid().Gamma = pOptionPricing->TBid().Gamma;
+								ret->TheoData->TBid().Vega = pOptionPricing->TBid().Vega;
+								ret->TheoData->TBid().Theta = pOptionPricing->TBid().Theta;
 
-							ret->TheoData->TAsk().Price = pOptionPricing->TAsk().Price;
-							ret->TheoData->TAsk().Delta = pOptionPricing->TAsk().Delta;
-							ret->TheoData->TAsk().Gamma = pOptionPricing->TAsk().Gamma;
-							ret->TheoData->TAsk().Vega = pOptionPricing->TAsk().Vega;
-							ret->TheoData->TAsk().Theta = pOptionPricing->TAsk().Theta;
+								ret->TheoData->TAsk().Price = pOptionPricing->TAsk().Price;
+								ret->TheoData->TAsk().Delta = pOptionPricing->TAsk().Delta;
+								ret->TheoData->TAsk().Gamma = pOptionPricing->TAsk().Gamma;
+								ret->TheoData->TAsk().Vega = pOptionPricing->TAsk().Vega;
+								ret->TheoData->TAsk().Theta = pOptionPricing->TAsk().Theta;
+
+								pricingCtx.GetPricingDataDOMap()->upsert(*pStrategy, [&pricingDO](IPricingDO_Ptr& pricing_ptr) { pricing_ptr = pricingDO; }, pricingDO);
+							}
 						}
-					}
 				}
 	}
 

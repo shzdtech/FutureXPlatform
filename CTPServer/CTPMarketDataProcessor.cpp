@@ -40,35 +40,35 @@ CTPMarketDataProcessor::~CTPMarketDataProcessor() {
 	LOG_DEBUG << __FUNCTION__;
 }
 
-int CTPMarketDataProcessor::InitializeServer(const std::string& flowId, const std::string & serverAddr)
+bool CTPMarketDataProcessor::CreateCTPAPI(const std::string& flowId, const std::string & serverAddr)
 {
-	int ret = 0;
+	CTPRawAPI_Ptr ret = std::make_shared<CTPRawAPI>();
 
-	if (!_rawAPI->MdAPI) {
-		fs::path localpath = CTPProcessor::FlowPath;
-		if (!fs::exists(localpath))
-		{
-			std::error_code ec;
-			fs::create_directories(localpath, ec);
-		}
-
-		localpath /= flowId + "_" + std::to_string(std::time(nullptr)) + "_" + std::to_string(std::rand()) + "_";
-
-		_rawAPI->CreateMdApi(localpath.string().data());
-		_rawAPI->MdAPI->RegisterSpi(this);
-
-		std::string server_addr(serverAddr);
-		if (server_addr.empty() && !_serverCtx->getConfigVal(CTP_MD_SERVER, server_addr))
-		{
-			SysParam::TryGet(CTP_MD_SERVER, server_addr);
-		}
-
-		_rawAPI->MdAPI->RegisterFront(const_cast<char*> (server_addr.data()));
-		_rawAPI->MdAPI->Init();
-		std::this_thread::sleep_for(std::chrono::seconds(1));
+	fs::path localpath = CTPProcessor::FlowPath;
+	if (!fs::exists(localpath))
+	{
+		std::error_code ec;
+		fs::create_directories(localpath, ec);
 	}
 
-	return ret;
+	localpath /= flowId + "_" + std::to_string(std::time(nullptr)) + "_" + std::to_string(std::rand()) + "_";
+
+	ret->CreateMdApi(localpath.string().data());
+	ret->MdAPI->RegisterSpi(this);
+
+	std::string server_addr(serverAddr);
+	if (server_addr.empty() && !_serverCtx->getConfigVal(CTP_MD_SERVER, server_addr))
+	{
+		SysParam::TryGet(CTP_MD_SERVER, server_addr);
+	}
+
+	ret->MdAPI->RegisterFront(const_cast<char*> (server_addr.data()));
+	ret->MdAPI->Init();
+	_rawAPI = ret;
+
+	std::this_thread::sleep_for(std::chrono::seconds(1));
+
+	return (bool)ret;
 }
 
 void CTPMarketDataProcessor::OnRspError(CThostFtdcRspInfoField *pRspInfo,

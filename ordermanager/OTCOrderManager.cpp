@@ -54,7 +54,7 @@ OrderDO_Ptr OTCOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 			IPricingDO_Ptr pricingDO_ptr;
 			if (!_pricingCtx->GetPricingDataDOMap()->find(orderInfo, pricingDO_ptr))
 			{
-				pricingDO_ptr = PricingUtility::Pricing(&strategy_ptr->BidQT, orderInfo, *_pricingCtx);
+				pricingDO_ptr = PricingUtility::Pricing(nullptr, orderInfo, *_pricingCtx);
 			}
 
 			if (pricingDO_ptr)
@@ -91,45 +91,43 @@ void OTCOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 		auto lt = orders.map()->lock_table();
 
 		IPricingDO_Ptr pricingDO_ptr;
-		if (!_pricingCtx->GetPricingDataDOMap()->find(strategyDO, pricingDO_ptr))
+		if (_pricingCtx->GetPricingDataDOMap()->find(strategyDO, pricingDO_ptr))
 		{
-			pricingDO_ptr = PricingUtility::Pricing(&strategyDO.BidQT, strategyDO, *_pricingCtx);
-		}
-
-		for (auto& it : lt)
-		{
-			auto& orderDO = *it.second;
-			bool accept = false;
-			if (orderDO.Direction != DirectionType::SELL)
+			for (auto& it : lt)
 			{
-				if (strategyDO.BidEnabled)
+				auto& orderDO = *it.second;
+				bool accept = false;
+				if (orderDO.Direction != DirectionType::SELL)
 				{
-					//auto pricingDO_ptr = PricingUtility::Pricing(&orderDO.Volume, strategyDO, *_pricingCtx);
-					if (pricingDO_ptr && orderDO.LimitPrice >= pricingDO_ptr->Ask().Price)
-						accept = true;
+					if (strategyDO.BidEnabled)
+					{
+						//auto pricingDO_ptr = PricingUtility::Pricing(&orderDO.Volume, strategyDO, *_pricingCtx);
+						if (orderDO.LimitPrice >= pricingDO_ptr->Ask().Price)
+							accept = true;
+					}
 				}
-			}
-			else
-			{
-				if (strategyDO.AskEnabled)
+				else
 				{
-					// auto pricingDO_ptr = PricingUtility::Pricing(&orderDO.Volume, strategyDO, *_pricingCtx);
-					if (pricingDO_ptr && orderDO.LimitPrice <= pricingDO_ptr->Bid().Price)
-						accept = true;
+					if (strategyDO.AskEnabled)
+					{
+						// auto pricingDO_ptr = PricingUtility::Pricing(&orderDO.Volume, strategyDO, *_pricingCtx);
+						if (orderDO.LimitPrice <= pricingDO_ptr->Bid().Price)
+							accept = true;
+					}
 				}
-			}
 
-			if (accept)
-			{
-				OrderStatusType currStatus;
-				if (OTCOrderDAO::AcceptOrder(orderDO, currStatus))
+				if (accept)
 				{
-					orderDO.OrderStatus = currStatus;
-					orderDO.VolumeTraded = orderDO.Volume;
-					orderDO.VolumeRemain = 0;
-					ret->push_back(orderDO);
-					_positionCtx.UpdatePosition(strategyDO, orderDO.Direction, orderDO.OpenClose, orderDO.Volume);
-					_contractOrderCtx.RemoveOrder(orderDO.OrderID);
+					OrderStatusType currStatus;
+					if (OTCOrderDAO::AcceptOrder(orderDO, currStatus))
+					{
+						orderDO.OrderStatus = currStatus;
+						orderDO.VolumeTraded = orderDO.Volume;
+						orderDO.VolumeRemain = 0;
+						ret->push_back(orderDO);
+						_positionCtx.UpdatePosition(strategyDO, orderDO.Direction, orderDO.OpenClose, orderDO.Volume);
+						_contractOrderCtx.RemoveOrder(orderDO.OrderID);
+					}
 				}
 			}
 		}
@@ -137,7 +135,7 @@ void OTCOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 
 	if (ret && ret->size() > 0)
 	{
-		Hedge(strategyDO);
+		// Hedge(strategyDO);
 	}
 }
 

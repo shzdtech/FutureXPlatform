@@ -19,7 +19,7 @@ public:
 	movable_mutex()
 		:_mutex_ptr(new M){};
 
-	M& mutex(void)
+	M& mutex(void) const
 	{
 		return *_mutex_ptr;
 	}
@@ -30,6 +30,8 @@ protected:
 private:
 
 };
+
+typedef movable_mutex<std::shared_mutex> movable_mutex_s;
 
 template <typename T, typename M>
 struct entrywisemutex : public movable_mutex<M>

@@ -50,15 +50,15 @@ dataobj_ptr OTCUpdateStrategy::HandleRequest(const uint32_t serialId, const data
 			if(!pStrategyDO->StrategyName.empty())
 				strategy_ptr->StrategyName = pStrategyDO->StrategyName;
 
-			strategy_ptr->BidQT = pStrategyDO->BidQT;
-			strategy_ptr->AskQT = pStrategyDO->AskQT;
+			strategy_ptr->BidQV = pStrategyDO->BidQV;
+			strategy_ptr->AskQV = pStrategyDO->AskQV;
 			strategy_ptr->Depth = pStrategyDO->Depth;
 
 			if (auto userContractMap_Ptr = std::static_pointer_cast<UserContractParamDOMap>
 				(session->getContext()->getAttribute(STR_KEY_USER_CONTRACTS)))
 			{
 				if (auto ucp = userContractMap_Ptr->tryfind(*pStrategyDO))
-					ucp->Quantity = strategy_ptr->BidQT;
+					ucp->Quantity = strategy_ptr->Quantity;
 			}
 
 			strategy_ptr->BidEnabled = pStrategyDO->BidEnabled;

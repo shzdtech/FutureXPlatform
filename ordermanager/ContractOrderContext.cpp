@@ -25,8 +25,7 @@ void ContractOrderContext::UpsertOrder(uint64_t orderID, const OrderDO_Ptr & ord
 
 	_contractOrderMap.update_fn(orderDO_Ptr->InstrumentID(), [orderID, &orderDO_Ptr](cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>& orderMap)
 	{
-		orderMap.map()->upsert(orderID,
-			[&orderDO_Ptr](OrderDO_Ptr& orderptr)
+		orderMap.map()->upsert(orderID, [&orderDO_Ptr](OrderDO_Ptr& orderptr)
 		{
 			*orderptr = *orderDO_Ptr;
 		},

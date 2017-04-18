@@ -80,7 +80,8 @@ CTPOTCWorkerProcessor::CTPOTCWorkerProcessor(IServerContext* pServerCtx,
 CTPOTCWorkerProcessor::~CTPOTCWorkerProcessor()
 {
 	_closing = true;
-	_initializer.join();
+	if (_initializer.joinable())
+		_initializer.join();
 	LOG_DEBUG << __FUNCTION__;
 }
 
@@ -123,25 +124,32 @@ int CTPOTCWorkerProcessor::LoginSystemUserIfNeed(void)
 {
 	int ret = 0;
 
-	if (!_isLogged)
+	if (!_isLogged || !_isConnected)
 	{
-		if (_rawAPI->MdAPI)
-			_rawAPI->ReleaseMdApi();
+		_isLogged = false;
 
-		InitializeServer(_systemUser.getUserId(), _systemUser.getServer());
+		std::string address(_systemUser.getServer());
+		CreateCTPAPI(_systemUser.getUserId(), address);
 
 		ret = LoginSystemUser();
 		if (ret == -1)
 		{
-			std::string address;
 			if (ExchangeRouterTable::TryFind(_systemUser.getBrokerId() + ':' + ExchangeRouterTable::TARGET_MD_AM, address))
 			{
-				if (_rawAPI->MdAPI)
-					_rawAPI->ReleaseMdApi();
-
-				InitializeServer(_systemUser.getUserId(), address);
+				CreateCTPAPI(_systemUser.getUserId(), address);
 				ret = LoginSystemUser();
 			}
+		}
+
+		if (ret == 0)
+		{
+			LOG_INFO << getServerContext()->getServerUri() << ": System user " << _systemUser.getUserId()
+				<< " has connected to market data server at: " << address;
+		}
+		else
+		{
+			LOG_WARN << getServerContext()->getServerUri() << ": System user " << _systemUser.getUserId()
+				<< " cannot connect to market data server at: " << address;
 		}
 	}
 
@@ -154,11 +162,8 @@ int CTPOTCWorkerProcessor::LoadDataAsync(void)
 		auto millsec = std::chrono::milliseconds(500);
 		while (!_closing)
 		{
-			if (!HasLogged())
-			{
-				if (!CTPUtility::HasReturnError(LoginSystemUserIfNeed()))
-					break;
-			}
+			if (!CTPUtility::HasReturnError(LoginSystemUserIfNeed()))
+				break;
 
 			for (int cum_ms = 0; cum_ms < RetryInterval && !_closing; cum_ms += millsec.count())
 			{
@@ -200,8 +205,28 @@ OTCTradeProcessor * CTPOTCWorkerProcessor::GetOTCTradeProcessor()
 	return _ctpOtcTradeProcessorPtr.get();
 }
 
+CTPOTCTradeProcessor * CTPOTCWorkerProcessor::GetCTPOTCTradeProcessor()
+{
+	return _ctpOtcTradeProcessorPtr.get();
+}
+
+
+
 
 //CTP APIs
+
+void CTPOTCWorkerProcessor::OnFrontConnected()
+{
+	CTPMarketDataProcessor::OnFrontConnected();
+
+	auto loginTime = _systemUser.getLoginTime();
+	auto now = std::time(nullptr);
+	if (_isLogged && (now - loginTime) > 600)
+	{
+		LoginSystemUser();
+	}
+}
+
 
 void CTPOTCWorkerProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
 {
@@ -233,32 +258,71 @@ void CTPOTCWorkerProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField 
 			mdMap->update(pDepthMarketData->InstrumentID, mdo);
 
 			// Start to trigger pricing
-			TriggerUpdating(mdo);
+			TriggerMarketDataUpdating(mdo);
 		}
 	}
 }
 
 void CTPOTCWorkerProcessor::OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument,
-	CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
-}
+	CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{ }
 
 void CTPOTCWorkerProcessor::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument,
-	CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
-}
+	CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{ }
 
 void CTPOTCWorkerProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin,
-	CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
-	if (_isLogged = !CTPUtility::HasError(pRspInfo))
+	CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	if (CTPUtility::HasError(pRspInfo))
 	{
-		_tradingDay = std::atoi(pRspUserLogin->TradingDay);
+		LOG_ERROR << _serverCtx->getServerUri() << ": " << pRspInfo->ErrorMsg;
 	}
-	
+	else
+	{
+		if (auto session = getMessageSession())
+		{
+			session->setLoginTimeStamp();
+			auto& userInfo = session->getUserInfo();
+			userInfo.setBrokerId(pRspUserLogin->BrokerID);
+			userInfo.setInvestorId(pRspUserLogin->UserID);
+			userInfo.setUserId(CTPUtility::MakeUserID(pRspUserLogin->BrokerID, pRspUserLogin->UserID));
+			userInfo.setPermission(ALLOW_TRADING);
+			userInfo.setFrontId(pRspUserLogin->FrontID);
+			userInfo.setSessionId(pRspUserLogin->SessionID);
+			userInfo.setTradingDay(std::atoi(pRspUserLogin->TradingDay));
+
+			_systemUser.setLoginTime(std::time(nullptr));
+			_systemUser.setFrontId(pRspUserLogin->FrontID);
+			_systemUser.setSessionId(pRspUserLogin->SessionID);
+		}
+
+		_isLogged = true;
+
+		_tradingDay = std::atoi(pRspUserLogin->TradingDay);
+
+		ResubMarketData();
+
+		LOG_INFO << getServerContext()->getServerUri() << ": System user " << _systemUser.getUserId() << " has logged on market data server..";
+		LOG_FLUSH;
+	}
+}
+
+int CTPOTCWorkerProcessor::ResubMarketData(void)
+{
+	int ret = 0;
+
 	if (auto mdMap = PricingDataContext()->GetMarketDataMap())
 	{
 		auto table = mdMap->lock_table();
 		for (auto it : table)
 		{
-			SubscribeMarketData(it.first);
+			if (SubscribeMarketData(it.first) == 0)
+			{
+				ret++;
+			}
 		}
 	}
+
+	return ret;
 }

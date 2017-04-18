@@ -48,6 +48,10 @@ public:
 
 	OTCTradeProcessor* GetOTCTradeProcessor();
 
+	CTPOTCTradeProcessor* GetCTPOTCTradeProcessor();
+
+	int ResubMarketData(void);
+
 protected:
 	std::shared_ptr<CTPOTCTradeProcessor> _ctpOtcTradeProcessorPtr;
 	std::thread _initializer;
@@ -61,6 +65,9 @@ private:
 
 	//CTP APIs
 public:
+
+	///当客户端与交易后台建立起通信连接时（还未登录前），该方法被调用。
+	virtual void OnFrontConnected();
 
 	///订阅行情应答
 	virtual void OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);

@@ -93,9 +93,6 @@ dataobj_ptr BlackScholesIVM::Compute(
 	catch (QuantLib::Error& e)
 	{
 		paramObj->bidVolatility = OptionParams::DEFAULT_VOLATILITY();
-	}
-	catch (...)
-	{
 		ret->Data.BidVolatility = std::nan(nullptr);
 	}
 
@@ -109,9 +106,6 @@ dataobj_ptr BlackScholesIVM::Compute(
 	catch (QuantLib::Error& e)
 	{
 		paramObj->askVolatility = OptionParams::DEFAULT_VOLATILITY();
-	}
-	catch (...)
-	{
 		ret->Data.AskVolatility = std::nan(nullptr);
 	}
 
