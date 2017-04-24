@@ -11,7 +11,7 @@
 #include "../ordermanager/OTCOrderManager.h"
 #include "../ordermanager/AutoOrderManager.h"
 #include "../ordermanager/HedgeOrderManager.h"
-#include "../CTPServer/CTPTradeWorkerProcessor.h"
+#include "../CTPServer/CTPTradeWorkerProcessorEx.h"
 #include "../message/SessionContainer.h"
 #include "../dataobject/StrategyContractDO.h"
 #include "../OTCServer/OTCTradeProcessor.h"
@@ -19,7 +19,7 @@
 
 #include "ctpotc_export.h"
 
-class CTP_OTC_CLASS_EXPORT CTPOTCTradeProcessor : public CTPTradeWorkerProcessor, public OTCTradeProcessor
+class CTP_OTC_CLASS_EXPORT CTPOTCTradeProcessor : public CTPTradeWorkerProcessorEx, public OTCTradeProcessor
 {
 public:
 	CTPOTCTradeProcessor(IServerContext* pServerCtx, const IPricingDataContext_Ptr& pricingDataCtx);

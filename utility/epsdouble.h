@@ -33,30 +33,54 @@ public:
 		return *this;
 	}
 
+	inline _myespdouble& operator-=(double value) {
+		_value -= value;
+		return *this;
+	}
+
+	inline _myespdouble& operator-=(const _myespdouble& epsdbl) {
+		_value -= epsdbl._value;
+		return *this;
+	}
+
 	inline bool operator==(double value) const {
-		double delta = _value - value;
-		return delta < EPSILON || -delta < EPSILON;
+		return std::abs(_value - value) < EPSILON;
 	}
 
 	inline bool operator==(const _myespdouble& epsdbl) const {
-		double delta = _value - epsdbl._value;
-		return delta < EPSILON || EPSILON;
+		return std::abs(_value - epsdbl._value) < EPSILON;
 	}
 
 	inline bool operator<(double value) const {
-		return value - _value > EPSILON;
+		return (value - _value) > EPSILON;
 	}
 
 	inline bool operator<(const _myespdouble& epsdbl) const {
-		return epsdbl._value - _value > EPSILON;
+		return (epsdbl._value - _value) > EPSILON;
+	}
+
+	inline bool operator<=(double value) const {
+		return operator<(value) || operator==(value);
+	}
+
+	inline bool operator<=(const _myespdouble& epsdbl) const {
+		return operator<(epsdbl) || operator==(epsdbl);
 	}
 
 	inline bool operator>(double value) const {
-		return _value - value > EPSILON;
+		return (_value - value) > EPSILON;
 	}
 
 	inline bool operator>(const _myespdouble& epsdbl) const {
-		return _value - epsdbl._value > EPSILON;
+		return (_value - epsdbl._value) > EPSILON;
+	}
+
+	inline bool operator>=(double value) const {
+		return operator>(value) || operator==(value);
+	}
+
+	inline bool operator>=(const _myespdouble& epsdbl) const {
+		return operator>(epsdbl) || operator==(epsdbl);
 	}
 
 	inline double value() {

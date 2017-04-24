@@ -40,7 +40,7 @@ data_buffer PBOrderSerializer::Serialize(const dataobj_ptr& abstractDO)
 	PB.set_active(pDO->Active);
 	PB.set_orderstatus(pDO->OrderStatus);
 	PB.set_volumetraded(pDO->VolumeTraded);
-	PB.set_volumeremain(pDO->VolumeRemain);
+	PB.set_volumeremain(pDO->VolumeRemain());
 	PB.set_inserttime(pDO->InsertTime);
 	PB.set_updatetime(pDO->UpdateTime);
 	PB.set_canceltime(pDO->CancelTime);

@@ -8,8 +8,9 @@
 #if !defined(__dataobject_UserInfoDO_h)
 #define __dataobject_UserInfoDO_h
 
-#include "PortfolioDO.h"
+#include <set>
 #include <string>
+#include "dataobjectbase.h"
 
 enum GenderType
 {
@@ -37,7 +38,7 @@ public:
 	int Role;
 	int Permission;
 
-	vector_ptr<PortfolioDO> Portfolios;
+	std::set<std::string> Portfolios;
 
 protected:
 

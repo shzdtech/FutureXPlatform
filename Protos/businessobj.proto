@@ -63,7 +63,7 @@ message PBPortfolio
 {
 	string name = 1;
 	int32 hedgeDelay = 2;
-	string description =3;
+	double threshold = 3;
 }
 
 message PBPortfolioList
@@ -179,12 +179,34 @@ message PBStrategy
 	string ivModel = 15;
 	repeated PBPricingContract volContracts = 16;
 	string volModel = 17;
+
+	string baseExchange = 18;
+	string baseContract = 19;
+	string portfolio = 20;
 }
 
 message PBStrategyList
 {
 	DataHeader header = 1;
 	repeated PBStrategy strategy = 2;
+}
+
+message PBRisk
+{
+	DataHeader header = 1;
+	string exchange = 2;
+	string contract = 3;
+	int32 position = 4;
+	double delta = 5;
+	double theta = 6;
+	double gamma = 7;
+	double vega = 8;
+}
+
+message PBRiskList
+{
+	DataHeader header = 1;
+	repeated PBRisk risk = 2;
 }
 
 message PBContractParam

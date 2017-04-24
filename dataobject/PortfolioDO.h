@@ -15,6 +15,8 @@
 class PortfolioKey : virtual public UserKey
 {
 public:
+	PortfolioKey() = default;
+
 	PortfolioKey(const std::string& portfolioID, const std::string& userID) :
 		_portfolioID(portfolioID), UserKey(userID){}
 
@@ -81,6 +83,7 @@ public:
 	PortfolioDO(const std::string& portfolioID, const std::string& userID) :
 		PortfolioKey(portfolioID, userID), UserKey(userID) {}
 
+	double Threshold;
 	long HedgeDelay;
 	std::chrono::steady_clock::time_point LastHedge;
 

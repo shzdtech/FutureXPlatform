@@ -258,7 +258,7 @@ void CTPOTCWorkerProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField 
 			mdMap->update(pDepthMarketData->InstrumentID, mdo);
 
 			// Start to trigger pricing
-			TriggerMarketDataUpdating(mdo);
+			TriggerUpdateByMarketData(mdo);
 		}
 	}
 }

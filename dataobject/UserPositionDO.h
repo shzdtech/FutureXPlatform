@@ -9,15 +9,18 @@
 #define __dataobject_UserPositionDO_h
 
 #include "ContractKey.h"
+#include "PortfolioDO.h"
 #include "dataobjectbase.h"
 #include "EnumTypes.h"
 
-class UserPositionDO : public ContractKey, public dataobjectbase
+class UserPositionDO : public UserContractKey, public PortfolioKey, public dataobjectbase
 {
 public:
-	UserPositionDO() {}
+	UserPositionDO(const std::string& exchangeID, const std::string& instrumentID, const std::string& portfolioID, const std::string& userID)
+		: UserKey(userID), UserContractKey(exchangeID, instrumentID, userID), PortfolioKey(portfolioID, userID) {}
 	UserPositionDO(const std::string& exchangeID, const std::string& instrumentID)
-		: ContractKey(exchangeID, instrumentID)	{}
+		: UserPositionDO(exchangeID, instrumentID, "", "") {}
+	UserPositionDO() = default;
 
 	PositionDirectionType Direction = PositionDirectionType::PD_NET;
 	int TradingDay;
@@ -55,9 +58,11 @@ private:
 class UserPositionExDO : public UserPositionDO
 {
 public:
-	UserPositionExDO() {}
+	UserPositionExDO(const std::string& exchangeID, const std::string& instrumentID, const std::string& portfolioID, const std::string& userID)
+		: UserPositionDO(exchangeID, instrumentID, portfolioID, userID) {}
 	UserPositionExDO(const std::string& exchangeID, const std::string& instrumentID)
-		: UserPositionDO(exchangeID, instrumentID)	{}
+		: UserPositionDO(exchangeID, instrumentID) {}
+	UserPositionExDO() = default;
 
 	int SettlementID = 0;
 	int FrozenVolume = 0;

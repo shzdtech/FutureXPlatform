@@ -207,7 +207,6 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(CThostFtdcOrderField *pOrder, OrderDO_Ptr 
 	pDO->Active = IsOrderActive(pOrder->OrderStatus);
 	pDO->OrderStatus = CheckOrderStatus(pOrder->OrderStatus, pOrder->OrderSubmitStatus);
 	pDO->VolumeTraded = pOrder->VolumeTraded;
-	pDO->VolumeRemain = pOrder->VolumeTotal;
 	pDO->TIF = pOrder->TimeCondition == THOST_FTDC_TC_IOC ? OrderTIFType::IOC : OrderTIFType::GFD;
 
 	pDO->BrokerID = pOrder->BrokerID;
@@ -282,7 +281,6 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(
 	pDO->Direction = (pOrderInput->Direction == THOST_FTDC_D_Buy) ? DirectionType::BUY : DirectionType::SELL;
 	pDO->LimitPrice = pOrderInput->LimitPrice;
 	pDO->Volume = pOrderInput->VolumeTotalOriginal;
-	pDO->VolumeRemain = pOrderInput->VolumeTotalOriginal;
 	pDO->StopPrice = pOrderInput->StopPrice;
 	pDO->Active = pRsp == nullptr;
 	pDO->OrderStatus = pRsp ? OrderStatusType::OPEN_REJECTED : OrderStatusType::OPENING;

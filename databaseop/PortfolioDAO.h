@@ -16,7 +16,7 @@ class DATABASEOP_CLASS_EXPORTS PortfolioDAO
 {
 public:
 	static VectorDO_Ptr<PortfolioDO> FindPortfolioByUser(const std::string& userid);
-	static int CreatePortofolio(const PortfolioDO& portfolio);
+	static int UpsertPortofolio(const PortfolioDO& portfolio);
 
 protected:
 private:

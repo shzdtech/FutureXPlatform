@@ -41,6 +41,8 @@ public:
 	StrategyContractDO(const std::string& exchangeID, const std::string& instrumentID)
 		: StrategyContractDO(exchangeID, instrumentID, "", "") {}
 
+	std::shared_ptr<ContractKey> BaseContract;
+
 	std::string StrategyName;
 	std::string Underlying;
 	DateType Expiration;

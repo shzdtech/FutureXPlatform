@@ -45,7 +45,7 @@ dataobj_ptr CTPOTCLogin::HandleRequest(const uint32_t serialId, const dataobj_pt
 	auto ret = Login(reqDO, rawAPI, msgProcessor, session);
 
 	auto role = session->getUserInfo().getRole();
-	
+
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCWorkerProcessor>(msgProcessor))
 	{
 		if (role == ROLE_TRADINGDESK)
@@ -55,7 +55,6 @@ dataobj_ptr CTPOTCLogin::HandleRequest(const uint32_t serialId, const dataobj_pt
 		}
 
 		pWorkerProc->RegisterLoggedSession(pWorkerProc->getMessageSession());
-
 		bool connected = pWorkerProc->ConnectedToServer();
 		bool logged = pWorkerProc->HasLogged();
 
@@ -68,10 +67,27 @@ dataobj_ptr CTPOTCLogin::HandleRequest(const uint32_t serialId, const dataobj_pt
 			}
 
 			if (!pWorkerProc->HasLogged())
-				throw SystemException(CONNECTION_ERROR, msgProcessor->getServerContext()->getServerUri() + " has not initialized!");
+				throw SystemException(STATUS_NOT_LOGIN, pWorkerProc->getServerContext()->getServerUri() + " market server has not logged!");
+		}
+
+		OTCUserContextBuilder::Instance()->BuildContext(msgProcessor, session);
+
+		auto pTradeProcessor = (CTPOTCTradeProcessor*)pWorkerProc->GetOTCTradeProcessor();
+		connected = pTradeProcessor->ConnectedToServer();
+		logged = pTradeProcessor->HasLogged();
+
+		if (!connected || !logged)
+		{
+			if (role >= ROLE_TRADINGDESK)
+			{
+				pTradeProcessor->LoginSystemUserIfNeed();
+				std::this_thread::sleep_for(std::chrono::seconds(1));
+			}
+
+			if (!pTradeProcessor->HasLogged())
+				throw SystemException(STATUS_NOT_LOGIN, pTradeProcessor->getServerContext()->getServerUri() + " trade server has not logged!");
 		}
 	}
 
-	OTCUserContextBuilder::Instance()->BuildContext(msgProcessor, session);
 	return ret;
 }

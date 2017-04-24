@@ -66,8 +66,6 @@ dataobj_ptr OTCUpdateStrategy::HandleRequest(const uint32_t serialId, const data
 
 			StrategyContractDAO::UpdateStrategy(*strategy_ptr);
 
-			pWorkerProc->TriggerOTCPricing(*strategy_ptr);
-
 			strategy_ptr->Hedging = pStrategyDO->Hedging;
 
 			if (strategy_ptr->Hedging)

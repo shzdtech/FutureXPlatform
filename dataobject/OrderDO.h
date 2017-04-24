@@ -59,6 +59,7 @@ public:
 
 	uint64_t OrderID = 0;
 	uint64_t OrderSysID = 0;
+	int SessionID = 0;
 	double LimitPrice = 0;
 	int Volume = 0;
 	int ErrorCode = 0;
@@ -94,8 +95,6 @@ public:
 
 	OrderStatusType OrderStatus = OrderStatusType::UNDEFINED;
 	int VolumeTraded = 0;
-	int VolumeRemain = 0;
-	int SessionID = 0;
 	int TradingDay;
 	bool Active = false;
 	double StopPrice = 0;
@@ -106,6 +105,10 @@ public:
 	std::string CancelTime;
 	std::string Message;
 
+	int VolumeRemain()
+	{
+		return Volume - VolumeTraded;
+	}
 protected:
 
 private:

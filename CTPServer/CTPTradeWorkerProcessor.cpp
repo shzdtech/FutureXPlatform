@@ -14,9 +14,12 @@
 #include "../message/DefMessageID.h"
 #include "../message/message_macro.h"
 #include "../bizutility/ExchangeRouterTable.h"
+
 #include "../databaseop/VersionDAO.h"
 #include "../databaseop/ContractDAO.h"
 #include "../databaseop/TradeDAO.h"
+#include "../ordermanager/OrderSeqGen.h"
+#include "../ordermanager/OrderPortfolioCache.h"
 
 #include "../bizutility/ContractCache.h"
 #include "../litelogger/LiteLogger.h"
@@ -299,10 +302,11 @@ void CTPTradeWorkerProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUs
 			userInfo.setFrontId(pRspUserLogin->FrontID);
 			userInfo.setSessionId(pRspUserLogin->SessionID);
 			userInfo.setTradingDay(std::atoi(pRspUserLogin->TradingDay));
-
-			_systemUser.setFrontId(pRspUserLogin->FrontID);
-			_systemUser.setSessionId(pRspUserLogin->SessionID);
 		}
+
+		_systemUser.setFrontId(pRspUserLogin->FrontID);
+		_systemUser.setSessionId(pRspUserLogin->SessionID);
+		_systemUser.setTradingDay(std::atoi(pRspUserLogin->TradingDay));
 
 		CThostFtdcSettlementInfoConfirmField reqsettle{};
 		std::strncpy(reqsettle.BrokerID, _systemUser.getBrokerId().data(), sizeof(reqsettle.BrokerID));
@@ -348,6 +352,10 @@ void CTPTradeWorkerProcessor::OnErrRtnOrderInsert(CThostFtdcInputOrderField *pIn
 	{
 		if (auto orderptr = CTPUtility::ParseRawOrder(pInputOrder, pRspInfo, _systemUser.getSessionId()))
 		{
+			if (orderptr->ErrorCode)
+			{
+				OrderPortfolioCache::Remove(OrderSeqGen::GetOrderID(orderptr->OrderID, orderptr->SessionID));
+			}
 			orderptr->HasMore = false;
 			DispatchUserMessage(MSG_ID_ORDER_NEW, pInputOrder->RequestID, orderptr->UserID(), orderptr);
 		}
@@ -378,6 +386,10 @@ void CTPTradeWorkerProcessor::OnRspOrderInsert(CThostFtdcInputOrderField *pInput
 	{
 		if (auto orderptr = CTPUtility::ParseRawOrder(pInputOrder, pRspInfo, _systemUser.getSessionId()))
 		{
+			if (orderptr->ErrorCode)
+			{
+				OrderPortfolioCache::Remove(OrderSeqGen::GetOrderID(orderptr->OrderID, orderptr->SessionID));
+			}
 			orderptr->HasMore = !bIsLast;
 			DispatchUserMessage(MSG_ID_ORDER_NEW, nRequestID, orderptr->UserID(), orderptr);
 		}
@@ -429,8 +441,34 @@ void CTPTradeWorkerProcessor::OnRtnTrade(CThostFtdcTradeField * pTrade)
 		{
 			if (auto order_ptr = _userOrderCtx.FindOrder(trdDO_Ptr->OrderSysID))
 			{
-				trdDO_Ptr->SetPortfolioID(order_ptr->PortfolioID());
+				if (!order_ptr->PortfolioID().empty())
+				{
+					trdDO_Ptr->SetPortfolioID(order_ptr->PortfolioID());
+				}
+				else
+				{
+					std::string portfolio;
+					if (OrderPortfolioCache::Find(OrderSeqGen::GetOrderID(order_ptr->OrderID, order_ptr->SessionID), portfolio))
+					{
+						if (!portfolio.empty())
+						{
+							trdDO_Ptr->SetPortfolioID(portfolio);
+						}
+					}
+				}
 			}
+			else
+			{
+				std::string portfolio;
+				if (OrderPortfolioCache::Find(OrderSeqGen::GetOrderID(trdDO_Ptr->OrderID, _systemUser.getSessionId()), portfolio))
+				{
+					if (!portfolio.empty())
+					{
+						trdDO_Ptr->SetPortfolioID(portfolio);
+					}
+				}
+			}
+
 			TradeDAO::SaveExchangeTrade(*trdDO_Ptr);
 
 			if (_userTradeCtx.InsertTrade(trdDO_Ptr))
@@ -548,7 +586,7 @@ std::set<ExchangeDO>& CTPTradeWorkerProcessor::GetExchangeInfo()
 	return _exchangeInfo_Set;
 }
 
-UserPositionContext& CTPTradeWorkerProcessor::GetUserPositionContext()
+IUserPositionContext& CTPTradeWorkerProcessor::GetUserPositionContext()
 {
 	return _userPositionCtx;
 }

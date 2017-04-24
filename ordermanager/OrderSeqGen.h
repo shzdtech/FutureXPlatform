@@ -18,6 +18,7 @@ public:
 	static uint64_t GetNextSeq(void);
 	static uint64_t GetCurrentSeq(void);
 	static uint64_t GenOrderID(uint32_t high32 = 0);
+	static uint64_t GetOrderID(uint32_t orderId32, uint32_t high32 = 0);
 
 protected:
 private:

@@ -31,19 +31,16 @@ dataobj_ptr TestingCreateOrderHandler::HandleRequest(const uint32_t serialId, co
 					sessionptr->getUserInfo().getName(), "TestPortfolio");
 			tradeptr->Direction = orderptr->Direction;
 			tradeptr->OpenClose = orderptr->OpenClose;
-
-			orderptr->VolumeRemain = orderptr->Volume;
 			
 
-			while (orderptr->VolumeRemain > 0)
+			while (orderptr->VolumeRemain() > 0)
 			{
 				std::this_thread::sleep_for(std::chrono::seconds(3));
 
 				orderptr->OrderStatus = OrderStatusType::PARTIAL_TRADED;
-				orderptr->VolumeRemain--;
-				orderptr->VolumeTraded = orderptr->Volume - orderptr->VolumeRemain;
+				orderptr->VolumeTraded++;
 
-				if (orderptr->VolumeRemain < 1)
+				if (orderptr->VolumeRemain() < 1)
 					orderptr->OrderStatus = OrderStatusType::ALL_TRADED;
 
 

@@ -180,6 +180,9 @@
     <ClInclude Include="CTPAccountLogin.h">
       <Filter>头文件\CTPHandler\SharedAccount</Filter>
     </ClInclude>
+    <ClInclude Include="CTPTradeWorkerProcessorEx.h">
+      <Filter>头文件\CTPHandler\Trader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ctpexport.cpp">
@@ -289,6 +292,9 @@
     </ClCompile>
     <ClCompile Include="CTPRawAPI.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPTradeWorkerProcessorEx.cpp">
+      <Filter>源文件\CTPHandler\Trader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

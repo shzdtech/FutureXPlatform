@@ -3,7 +3,6 @@
 
 #include "stdafx.h"
 #include "../databaseop/AbstractConnectionManager.h"
-#include "../dataobject/UserPositionDO.h"
 #include <thread>
 #include <set>
 #include <map>

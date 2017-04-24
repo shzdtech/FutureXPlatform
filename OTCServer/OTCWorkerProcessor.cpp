@@ -261,64 +261,62 @@ IPricingDataContext_Ptr& OTCWorkerProcessor::PricingDataContext()
 	return _pricingCtx;
 }
 
-void OTCWorkerProcessor::TriggerOTCPricing(const StrategyContractDO& strategyDO)
+void OTCWorkerProcessor::TriggerOTCPricing(const StrategyContractDO& strategyDO, bool findInCache)
 {
-	if (strategyDO.PricingModel &&
-		(strategyDO.BidEnabled || strategyDO.AskEnabled))
+	auto& pricingCtx = PricingDataContext();
+
+	IPricingDO_Ptr pricingDO;
+	if (!findInCache || !pricingCtx->GetPricingDataDOMap()->find(strategyDO, pricingDO))
 	{
-		auto pricingCtx = PricingDataContext();
-		if (auto pricingDO = PricingUtility::Pricing(nullptr, strategyDO, *pricingCtx))
+		if (strategyDO.PricingModel && (strategyDO.BidEnabled || strategyDO.AskEnabled))
 		{
-			pricingCtx->GetPricingDataDOMap()->upsert(strategyDO, [&pricingDO](IPricingDO_Ptr& pricing_ptr) { pricing_ptr = pricingDO; }, pricingDO);
-
-			if (!strategyDO.BidEnabled)
+			if (pricingDO = PricingUtility::Pricing(nullptr, strategyDO, *pricingCtx))
 			{
-				pricingDO->Bid().Clear();
+				pricingCtx->GetPricingDataDOMap()->upsert(strategyDO,
+					[&pricingDO](IPricingDO_Ptr& pricing_ptr)
+				{ pricing_ptr = pricingDO; },
+					pricingDO);
 			}
-
-			if (!strategyDO.AskEnabled)
-			{
-				pricingDO->Ask().Clear();
-			}
-
-			_pricingNotifers->foreach(strategyDO, [&pricingDO, &strategyDO, &pricingCtx](const IMessageSession_Ptr& session_ptr)
-			{if (auto process_ptr = session_ptr->LockMessageProcessor())
-				OnResponseProcMacro(process_ptr, MSG_ID_RTN_PRICING, strategyDO.SerialId, &pricingDO, &strategyDO, pricingCtx.get()); });
 		}
 	}
-}
 
-void OTCWorkerProcessor::SendOTCPricing(const StrategyContractDO& strategyDO)
-{
-	auto pricingCtx = PricingDataContext();
-	IPricingDO_Ptr pricingDO;
-	if (pricingCtx->GetPricingDataDOMap()->find(strategyDO, pricingDO))
+	if (pricingDO)
 	{
+		auto pricingCopy = std::make_shared<PricingDO>(*(PricingDO*)pricingDO.get());
+
 		if (!strategyDO.BidEnabled)
 		{
-			pricingDO->Bid().Clear();
+			pricingCopy->Bid().Clear();
 		}
 
 		if (!strategyDO.AskEnabled)
 		{
-			pricingDO->Ask().Clear();
+			pricingCopy->Ask().Clear();
 		}
 
-		_pricingNotifers->foreach(strategyDO, [&pricingDO, &strategyDO, &pricingCtx](const IMessageSession_Ptr& session_ptr)
+		_pricingNotifers->foreach(strategyDO, [&pricingCopy, &strategyDO, &pricingCtx](const IMessageSession_Ptr& session_ptr)
 		{if (auto process_ptr = session_ptr->LockMessageProcessor())
-			OnResponseProcMacro(process_ptr, MSG_ID_RTN_PRICING, strategyDO.SerialId, &pricingDO, &strategyDO, pricingCtx.get()); });
+			OnResponseProcMacro(process_ptr, MSG_ID_RTN_PRICING, strategyDO.SerialId, &pricingCopy); });
 	}
 }
 
-void OTCWorkerProcessor::TriggerTadingDeskParams(const StrategyContractDO & strategyDO)
+bool OTCWorkerProcessor::TriggerTadingDeskParams(const StrategyContractDO & strategyDO)
 {
+	bool ret = false;
 	auto pricingCtx = PricingDataContext();
-	_tradingDeskNotifers->foreach(strategyDO, [&strategyDO, &pricingCtx](const IMessageSession_Ptr& session_ptr)
-	{if (auto process_ptr = session_ptr->LockMessageProcessor())
-		OnResponseProcMacro(process_ptr, MSG_ID_RTN_TRADINGDESK_PRICING, strategyDO.SerialId, &strategyDO, pricingCtx.get()); });
+	_tradingDeskNotifers->foreach(strategyDO, [&strategyDO, &pricingCtx, &ret](const IMessageSession_Ptr& session_ptr)
+	{
+		if (auto process_ptr = session_ptr->LockMessageProcessor())
+		{
+			OnResponseProcMacro(process_ptr, MSG_ID_RTN_TRADINGDESK_PRICING, strategyDO.SerialId, &strategyDO, pricingCtx.get());
+			ret = true;
+		}
+	});
+
+	return ret;
 }
 
-void OTCWorkerProcessor::TriggerMarketDataUpdating(const MarketDataDO& mdDO)
+void OTCWorkerProcessor::TriggerUpdateByMarketData(const MarketDataDO& mdDO)
 {
 	cuckoohashmap_wrapper<ContractKey, bool, ContractKeyHash> strategyMap;
 	if (_baseContractStrategyMap.find(mdDO, strategyMap))
@@ -330,16 +328,11 @@ void OTCWorkerProcessor::TriggerMarketDataUpdating(const MarketDataDO& mdDO)
 			StrategyContractDO_Ptr strategy_ptr;
 			if (auto pStrategyDO = pStrategyMap->find(pair.first, strategy_ptr))
 			{
-				TriggerTadingDeskParams(*strategy_ptr);
-
-				TriggerOTCPricing(*strategy_ptr);
-
-				TriggerOTCTrading(*strategy_ptr);
+				TriggerUpdateByStrategy(*strategy_ptr);
 			}
 		}
 	}
 }
-
 
 void OTCWorkerProcessor::TriggerOTCTrading(const StrategyContractDO & strategyDO)
 {
@@ -347,4 +340,15 @@ void OTCWorkerProcessor::TriggerOTCTrading(const StrategyContractDO & strategyDO
 
 	GetOTCTradeProcessor()->TriggerOTCOrderUpdating(strategyDO);
 }
+
+void OTCWorkerProcessor::TriggerUpdateByStrategy(const StrategyContractDO & strategyDO)
+{
+	bool cached = TriggerTadingDeskParams(strategyDO);
+
+	TriggerOTCPricing(strategyDO, cached);
+
+	TriggerOTCTrading(strategyDO);
+}
+
+
 

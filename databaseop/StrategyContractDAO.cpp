@@ -22,7 +22,7 @@ VectorDO_Ptr<StrategyContractDO_Ptr> StrategyContractDAO::LoadStrategyContractBy
 	static const std::string sql_findstrategy(
 		"SELECT exchange_symbol, contract_symbol, underlying_symbol, tick_size, multiplier, "
 		"strategy_symbol, contract_type, strikeprice, expiration, accountid, "
-		"product_type, bid_allowed, ask_allowed, portfolio_symbol "
+		"product_type, bid_allowed, ask_allowed, portfolio_symbol, underlying_exchange, underlying_contract "
 		"FROM vw_strategy_contract_info "
 		"WHERE product_type = ?");
 
@@ -75,6 +75,11 @@ VectorDO_Ptr<StrategyContractDO_Ptr> StrategyContractDAO::LoadStrategyContractBy
 			stcdo_ptr->ProductType = (ProductType)rs->getInt(11);
 			stcdo_ptr->BidEnabled = rs->getBoolean(12);
 			stcdo_ptr->AskEnabled = rs->getBoolean(13);
+
+			if (!rs->isNull(15) && !rs->isNull(16))
+			{
+				stcdo_ptr->BaseContract = std::make_shared<ContractKey>(rs->getString(15), rs->getString(16));
+			}
 
 			auto userStrategySymb = UserStrategyName(stcdo_ptr->UserID(), stcdo_ptr->StrategyName);
 			auto& modelMap = strategyDOMap.getorfill(userStrategySymb);

@@ -72,6 +72,12 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* PBStrategyList_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   PBStrategyList_reflection_ = NULL;
+const ::google::protobuf::Descriptor* PBRisk_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  PBRisk_reflection_ = NULL;
+const ::google::protobuf::Descriptor* PBRiskList_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  PBRiskList_reflection_ = NULL;
 const ::google::protobuf::Descriptor* PBContractParam_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   PBContractParam_reflection_ = NULL;
@@ -220,7 +226,7 @@ void protobuf_AssignDesc_businessobj_2eproto() {
   static const int PBPortfolio_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPortfolio, name_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPortfolio, hedgedelay_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPortfolio, description_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPortfolio, threshold_),
   };
   PBPortfolio_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
@@ -414,7 +420,7 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPricingContract, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPricingContract, _is_default_instance_));
   PBStrategy_descriptor_ = file->message_type(14);
-  static const int PBStrategy_offsets_[17] = {
+  static const int PBStrategy_offsets_[20] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, header_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, exchange_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, contract_),
@@ -432,6 +438,9 @@ void protobuf_AssignDesc_businessobj_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, ivmodel_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, volcontracts_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, volmodel_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, baseexchange_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, basecontract_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategy, portfolio_),
   };
   PBStrategy_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
@@ -460,7 +469,45 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       sizeof(PBStrategyList),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategyList, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategyList, _is_default_instance_));
-  PBContractParam_descriptor_ = file->message_type(16);
+  PBRisk_descriptor_ = file->message_type(16);
+  static const int PBRisk_offsets_[8] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBRisk, header_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBRisk, exchange_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBRisk, contract_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBRisk, position_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBRisk, delta_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBRisk, theta_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBRisk, gamma_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBRisk, vega_),
+  };
+  PBRisk_reflection_ =
+    ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
+      PBRisk_descriptor_,
+      PBRisk::default_instance_,
+      PBRisk_offsets_,
+      -1,
+      -1,
+      -1,
+      sizeof(PBRisk),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBRisk, _internal_metadata_),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBRisk, _is_default_instance_));
+  PBRiskList_descriptor_ = file->message_type(17);
+  static const int PBRiskList_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBRiskList, header_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBRiskList, risk_),
+  };
+  PBRiskList_reflection_ =
+    ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
+      PBRiskList_descriptor_,
+      PBRiskList::default_instance_,
+      PBRiskList_offsets_,
+      -1,
+      -1,
+      -1,
+      sizeof(PBRiskList),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBRiskList, _internal_metadata_),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBRiskList, _is_default_instance_));
+  PBContractParam_descriptor_ = file->message_type(18);
   static const int PBContractParam_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBContractParam, exchange_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBContractParam, contract_),
@@ -478,7 +525,7 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       sizeof(PBContractParam),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBContractParam, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBContractParam, _is_default_instance_));
-  PBContractParamList_descriptor_ = file->message_type(17);
+  PBContractParamList_descriptor_ = file->message_type(19);
   static const int PBContractParamList_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBContractParamList, header_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBContractParamList, params_),
@@ -494,7 +541,7 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       sizeof(PBContractParamList),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBContractParamList, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBContractParamList, _is_default_instance_));
-  PBOTCUserParam_descriptor_ = file->message_type(18);
+  PBOTCUserParam_descriptor_ = file->message_type(20);
   static const int PBOTCUserParam_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBOTCUserParam, exchange_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBOTCUserParam, contract_),
@@ -511,7 +558,7 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       sizeof(PBOTCUserParam),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBOTCUserParam, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBOTCUserParam, _is_default_instance_));
-  PBOTCUserParamList_descriptor_ = file->message_type(19);
+  PBOTCUserParamList_descriptor_ = file->message_type(21);
   static const int PBOTCUserParamList_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBOTCUserParamList, header_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBOTCUserParamList, params_),
@@ -527,7 +574,7 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       sizeof(PBOTCUserParamList),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBOTCUserParamList, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBOTCUserParamList, _is_default_instance_));
-  PBOrderRequest_descriptor_ = file->message_type(20);
+  PBOrderRequest_descriptor_ = file->message_type(22);
   static const int PBOrderRequest_offsets_[12] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBOrderRequest, header_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBOrderRequest, orderid_),
@@ -553,7 +600,7 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       sizeof(PBOrderRequest),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBOrderRequest, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBOrderRequest, _is_default_instance_));
-  PBOrderInfo_descriptor_ = file->message_type(21);
+  PBOrderInfo_descriptor_ = file->message_type(23);
   static const int PBOrderInfo_offsets_[29] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBOrderInfo, header_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBOrderInfo, orderid_),
@@ -596,7 +643,7 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       sizeof(PBOrderInfo),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBOrderInfo, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBOrderInfo, _is_default_instance_));
-  PBTradeInfo_descriptor_ = file->message_type(22);
+  PBTradeInfo_descriptor_ = file->message_type(24);
   static const int PBTradeInfo_offsets_[19] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBTradeInfo, header_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBTradeInfo, tradeid_),
@@ -629,7 +676,7 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       sizeof(PBTradeInfo),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBTradeInfo, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBTradeInfo, _is_default_instance_));
-  PBPosition_descriptor_ = file->message_type(23);
+  PBPosition_descriptor_ = file->message_type(25);
   static const int PBPosition_offsets_[18] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPosition, exchange_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPosition, contract_),
@@ -661,7 +708,7 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       sizeof(PBPosition),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPosition, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPosition, _is_default_instance_));
-  PBAccountInfo_descriptor_ = file->message_type(24);
+  PBAccountInfo_descriptor_ = file->message_type(26);
   static const int PBAccountInfo_offsets_[32] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBAccountInfo, brokerid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBAccountInfo, accountid_),
@@ -707,7 +754,7 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       sizeof(PBAccountInfo),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBAccountInfo, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBAccountInfo, _is_default_instance_));
-  PBMarketInfo_descriptor_ = file->message_type(25);
+  PBMarketInfo_descriptor_ = file->message_type(27);
   static const int PBMarketInfo_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMarketInfo, header_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMarketInfo, exchange_),
@@ -725,7 +772,7 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       sizeof(PBMarketInfo),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMarketInfo, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMarketInfo, _is_default_instance_));
-  PBContractInfo_descriptor_ = file->message_type(26);
+  PBContractInfo_descriptor_ = file->message_type(28);
   static const int PBContractInfo_offsets_[28] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBContractInfo, exchange_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBContractInfo, contract_),
@@ -767,7 +814,7 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       sizeof(PBContractInfo),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBContractInfo, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBContractInfo, _is_default_instance_));
-  PBContractInfoList_descriptor_ = file->message_type(27);
+  PBContractInfoList_descriptor_ = file->message_type(29);
   static const int PBContractInfoList_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBContractInfoList, header_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBContractInfoList, contractinfo_),
@@ -783,7 +830,7 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       sizeof(PBContractInfoList),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBContractInfoList, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBContractInfoList, _is_default_instance_));
-  PBBankOpRequest_descriptor_ = file->message_type(28);
+  PBBankOpRequest_descriptor_ = file->message_type(30);
   static const int PBBankOpRequest_offsets_[11] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpRequest, header_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpRequest, bankid_),
@@ -808,7 +855,7 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       sizeof(PBBankOpRequest),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpRequest, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpRequest, _is_default_instance_));
-  PBBankOpResult_descriptor_ = file->message_type(29);
+  PBBankOpResult_descriptor_ = file->message_type(31);
   static const int PBBankOpResult_offsets_[24] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpResult, header_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpResult, bankid_),
@@ -846,7 +893,7 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       sizeof(PBBankOpResult),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpResult, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankOpResult, _is_default_instance_));
-  PBBankInfo_descriptor_ = file->message_type(30);
+  PBBankInfo_descriptor_ = file->message_type(32);
   static const int PBBankInfo_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankInfo, header_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankInfo, bankid_),
@@ -864,7 +911,7 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       sizeof(PBBankInfo),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankInfo, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBBankInfo, _is_default_instance_));
-  PBUserAccountInfo_descriptor_ = file->message_type(31);
+  PBUserAccountInfo_descriptor_ = file->message_type(33);
   static const int PBUserAccountInfo_offsets_[14] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserAccountInfo, header_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserAccountInfo, bankid_),
@@ -937,6 +984,10 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
       PBStrategyList_descriptor_, &PBStrategyList::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+      PBRisk_descriptor_, &PBRisk::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+      PBRiskList_descriptor_, &PBRiskList::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
       PBContractParam_descriptor_, &PBContractParam::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
       PBContractParamList_descriptor_, &PBContractParamList::default_instance());
@@ -1005,6 +1056,10 @@ void protobuf_ShutdownFile_businessobj_2eproto() {
   delete PBStrategy_reflection_;
   delete PBStrategyList::default_instance_;
   delete PBStrategyList_reflection_;
+  delete PBRisk::default_instance_;
+  delete PBRisk_reflection_;
+  delete PBRiskList::default_instance_;
+  delete PBRiskList_reflection_;
   delete PBContractParam::default_instance_;
   delete PBContractParam_reflection_;
   delete PBContractParamList::default_instance_;
@@ -1071,190 +1126,199 @@ void protobuf_AddDesc_businessobj_2eproto() {
     "(\005\"\205\001\n\020PBMarketDataList\0220\n\006header\030\001 \001(\0132"
     " .Micro.Future.Message.DataHeader\022\?\n\nmar"
     "ketData\030\002 \003(\0132+.Micro.Future.Message.Bus"
-    "iness.PBMarketData\"D\n\013PBPortfolio\022\014\n\004nam"
-    "e\030\001 \001(\t\022\022\n\nhedgeDelay\030\002 \001(\005\022\023\n\013descripti"
-    "on\030\003 \001(\t\"\202\001\n\017PBPortfolioList\0220\n\006header\030\001"
-    " \001(\0132 .Micro.Future.Message.DataHeader\022="
-    "\n\tportfolio\030\002 \003(\0132*.Micro.Future.Message"
-    ".Business.PBPortfolio\"\253\001\n\rPBPricingData\022"
+    "iness.PBMarketData\"B\n\013PBPortfolio\022\014\n\004nam"
+    "e\030\001 \001(\t\022\022\n\nhedgeDelay\030\002 \001(\005\022\021\n\tthreshold"
+    "\030\003 \001(\001\"\202\001\n\017PBPortfolioList\0220\n\006header\030\001 \001"
+    "(\0132 .Micro.Future.Message.DataHeader\022=\n\t"
+    "portfolio\030\002 \003(\0132*.Micro.Future.Message.B"
+    "usiness.PBPortfolio\"\253\001\n\rPBPricingData\0220\n"
+    "\006header\030\001 \001(\0132 .Micro.Future.Message.Dat"
+    "aHeader\022\020\n\010exchange\030\002 \001(\t\022\020\n\010contract\030\003 "
+    "\001(\t\022\020\n\010askPrice\030\004 \001(\001\022\020\n\010bidPrice\030\005 \001(\001\022"
+    "\017\n\007askSize\030\006 \001(\005\022\017\n\007bidSize\030\007 \001(\005\"\210\001\n\021PB"
+    "PricingDataList\022A\n\013pricingData\030\001 \003(\0132,.M"
+    "icro.Future.Message.Business.PBPricingDa"
+    "ta\0220\n\006header\030\002 \001(\0132 .Micro.Future.Messag"
+    "e.DataHeader\"Z\n\022PBOptionMarketData\022\020\n\010as"
+    "kPrice\030\001 \001(\001\022\020\n\010bidPrice\030\002 \001(\001\022\017\n\007askSiz"
+    "e\030\003 \001(\005\022\017\n\007bidSize\030\004 \001(\005\"C\n\023PBImpliedVol"
+    "atility\022\025\n\raskVolatility\030\001 \001(\001\022\025\n\rbidVol"
+    "atility\030\002 \001(\001\"\220\002\n\014PBOptionData\022\020\n\010askPri"
+    "ce\030\001 \001(\001\022\020\n\010bidPrice\030\002 \001(\001\022\017\n\007askSize\030\003 "
+    "\001(\005\022\017\n\007bidSize\030\004 \001(\005\022\025\n\raskVolatility\030\005 "
+    "\001(\001\022\025\n\rbidVolatility\030\006 \001(\001\022\020\n\010askDelta\030\007"
+    " \001(\001\022\020\n\010bidDelta\030\010 \001(\001\022\020\n\010askTheta\030\t \001(\001"
+    "\022\020\n\010bidTheta\030\n \001(\001\022\020\n\010askGamma\030\013 \001(\001\022\020\n\010"
+    "bidGamma\030\014 \001(\001\022\017\n\007askVega\030\r \001(\001\022\017\n\007bidVe"
+    "ga\030\016 \001(\001\"\313\001\n\022PBWingsModelReturn\022\r\n\005f_atm"
+    "\030\001 \001(\001\022\r\n\005f_ref\030\002 \001(\001\022\r\n\005f_syn\030\003 \001(\001\022\020\n\010"
+    "vol_curr\030\005 \001(\001\022\027\n\017vol_curr_offset\030\006 \001(\001\022"
+    "\022\n\nslope_curr\030\007 \001(\001\022\031\n\021slope_curr_offset"
+    "\030\010 \001(\001\022\n\n\002x0\030\t \001(\001\022\n\n\002x1\030\013 \001(\001\022\n\n\002x2\030\r \001"
+    "(\001\022\n\n\002x3\030\017 \001(\001\"\312\003\n\031PBTradingDeskOptionPa"
+    "rams\0220\n\006header\030\001 \001(\0132 .Micro.Future.Mess"
+    "age.DataHeader\022\020\n\010exchange\030\002 \001(\t\022\020\n\010cont"
+    "ract\030\003 \001(\t\022E\n\nmarketData\030\004 \001(\01321.Micro.F"
+    "uture.Message.Business.PBOptionMarketDat"
+    "a\022F\n\nimpliedVol\030\005 \001(\01322.Micro.Future.Mes"
+    "sage.Business.PBImpliedVolatility\022=\n\010the"
+    "oData\030\006 \001(\0132+.Micro.Future.Message.Busin"
+    "ess.PBOptionData\022F\n\013wingsReturn\030\007 \001(\01321."
+    "Micro.Future.Message.Business.PBWingsMod"
+    "elReturn\022A\n\014theoDataTemp\030\010 \001(\0132+.Micro.F"
+    "uture.Message.Business.PBOptionData\"W\n\021P"
+    "BPricingContract\022\020\n\010exchange\030\001 \001(\t\022\020\n\010co"
+    "ntract\030\002 \001(\t\022\016\n\006weight\030\003 \001(\001\022\016\n\006adjust\030\004"
+    " \001(\001\"\300\004\n\nPBStrategy\0220\n\006header\030\001 \001(\0132 .Mi"
+    "cro.Future.Message.DataHeader\022\020\n\010exchang"
+    "e\030\002 \001(\t\022\020\n\010contract\030\003 \001(\t\022\022\n\nunderlying\030"
+    "\004 \001(\t\022\016\n\006symbol\030\005 \001(\t\022\017\n\007hedging\030\006 \001(\010\022\022"
+    "\n\nbidEnabled\030\007 \001(\010\022\022\n\naskEnabled\030\010 \001(\010\022\r"
+    "\n\005bidQV\030\t \001(\005\022\r\n\005askQV\030\n \001(\005\022\r\n\005depth\030\013 "
+    "\001(\005\022J\n\020pricingContracts\030\014 \003(\01320.Micro.Fu"
+    "ture.Message.Business.PBPricingContract\022"
+    "\024\n\014pricingModel\030\r \001(\t\022F\n\014ivmContracts\030\016 "
+    "\003(\01320.Micro.Future.Message.Business.PBPr"
+    "icingContract\022\017\n\007ivModel\030\017 \001(\t\022F\n\014volCon"
+    "tracts\030\020 \003(\01320.Micro.Future.Message.Busi"
+    "ness.PBPricingContract\022\020\n\010volModel\030\021 \001(\t"
+    "\022\024\n\014baseExchange\030\022 \001(\t\022\024\n\014baseContract\030\023"
+    " \001(\t\022\021\n\tportfolio\030\024 \001(\t\"\177\n\016PBStrategyLis"
+    "t\0220\n\006header\030\001 \001(\0132 .Micro.Future.Message"
+    ".DataHeader\022;\n\010strategy\030\002 \003(\0132).Micro.Fu"
+    "ture.Message.Business.PBStrategy\"\253\001\n\006PBR"
+    "isk\0220\n\006header\030\001 \001(\0132 .Micro.Future.Messa"
+    "ge.DataHeader\022\020\n\010exchange\030\002 \001(\t\022\020\n\010contr"
+    "act\030\003 \001(\t\022\020\n\010position\030\004 \001(\005\022\r\n\005delta\030\005 \001"
+    "(\001\022\r\n\005theta\030\006 \001(\001\022\r\n\005gamma\030\007 \001(\001\022\014\n\004vega"
+    "\030\010 \001(\001\"s\n\nPBRiskList\0220\n\006header\030\001 \001(\0132 .M"
+    "icro.Future.Message.DataHeader\0223\n\004risk\030\002"
+    " \003(\0132%.Micro.Future.Message.Business.PBR"
+    "isk\"V\n\017PBContractParam\022\020\n\010exchange\030\001 \001(\t"
+    "\022\020\n\010contract\030\002 \001(\t\022\020\n\010depthVol\030\003 \001(\005\022\r\n\005"
+    "gamma\030\004 \001(\001\"\207\001\n\023PBContractParamList\0220\n\006h"
+    "eader\030\001 \001(\0132 .Micro.Future.Message.DataH"
+    "eader\022>\n\006params\030\002 \003(\0132..Micro.Future.Mes"
+    "sage.Business.PBContractParam\"F\n\016PBOTCUs"
+    "erParam\022\020\n\010exchange\030\001 \001(\t\022\020\n\010contract\030\002 "
+    "\001(\t\022\020\n\010quantity\030\003 \001(\001\"\205\001\n\022PBOTCUserParam"
+    "List\0220\n\006header\030\001 \001(\0132 .Micro.Future.Mess"
+    "age.DataHeader\022=\n\006params\030\002 \003(\0132-.Micro.F"
+    "uture.Message.Business.PBOTCUserParam\"\207\002"
+    "\n\016PBOrderRequest\0220\n\006header\030\001 \001(\0132 .Micro"
+    ".Future.Message.DataHeader\022\017\n\007orderID\030\002 "
+    "\001(\004\022\022\n\norderSysID\030\003 \001(\004\022\020\n\010exchange\030\004 \001("
+    "\t\022\020\n\010contract\030\005 \001(\t\022\022\n\nlimitPrice\030\006 \001(\001\022"
+    "\016\n\006volume\030\007 \001(\005\022\020\n\010execType\030\010 \001(\005\022\013\n\003tif"
+    "\030\t \001(\005\022\021\n\tdirection\030\n \001(\005\022\021\n\topenclose\030\013"
+    " \001(\005\022\021\n\tportfolio\030\014 \001(\t\"\327\004\n\013PBOrderInfo\022"
     "0\n\006header\030\001 \001(\0132 .Micro.Future.Message.D"
-    "ataHeader\022\020\n\010exchange\030\002 \001(\t\022\020\n\010contract\030"
-    "\003 \001(\t\022\020\n\010askPrice\030\004 \001(\001\022\020\n\010bidPrice\030\005 \001("
-    "\001\022\017\n\007askSize\030\006 \001(\005\022\017\n\007bidSize\030\007 \001(\005\"\210\001\n\021"
-    "PBPricingDataList\022A\n\013pricingData\030\001 \003(\0132,"
-    ".Micro.Future.Message.Business.PBPricing"
-    "Data\0220\n\006header\030\002 \001(\0132 .Micro.Future.Mess"
-    "age.DataHeader\"Z\n\022PBOptionMarketData\022\020\n\010"
-    "askPrice\030\001 \001(\001\022\020\n\010bidPrice\030\002 \001(\001\022\017\n\007askS"
-    "ize\030\003 \001(\005\022\017\n\007bidSize\030\004 \001(\005\"C\n\023PBImpliedV"
-    "olatility\022\025\n\raskVolatility\030\001 \001(\001\022\025\n\rbidV"
-    "olatility\030\002 \001(\001\"\220\002\n\014PBOptionData\022\020\n\010askP"
-    "rice\030\001 \001(\001\022\020\n\010bidPrice\030\002 \001(\001\022\017\n\007askSize\030"
-    "\003 \001(\005\022\017\n\007bidSize\030\004 \001(\005\022\025\n\raskVolatility\030"
-    "\005 \001(\001\022\025\n\rbidVolatility\030\006 \001(\001\022\020\n\010askDelta"
-    "\030\007 \001(\001\022\020\n\010bidDelta\030\010 \001(\001\022\020\n\010askTheta\030\t \001"
-    "(\001\022\020\n\010bidTheta\030\n \001(\001\022\020\n\010askGamma\030\013 \001(\001\022\020"
-    "\n\010bidGamma\030\014 \001(\001\022\017\n\007askVega\030\r \001(\001\022\017\n\007bid"
-    "Vega\030\016 \001(\001\"\313\001\n\022PBWingsModelReturn\022\r\n\005f_a"
-    "tm\030\001 \001(\001\022\r\n\005f_ref\030\002 \001(\001\022\r\n\005f_syn\030\003 \001(\001\022\020"
-    "\n\010vol_curr\030\005 \001(\001\022\027\n\017vol_curr_offset\030\006 \001("
-    "\001\022\022\n\nslope_curr\030\007 \001(\001\022\031\n\021slope_curr_offs"
-    "et\030\010 \001(\001\022\n\n\002x0\030\t \001(\001\022\n\n\002x1\030\013 \001(\001\022\n\n\002x2\030\r"
-    " \001(\001\022\n\n\002x3\030\017 \001(\001\"\312\003\n\031PBTradingDeskOption"
-    "Params\0220\n\006header\030\001 \001(\0132 .Micro.Future.Me"
-    "ssage.DataHeader\022\020\n\010exchange\030\002 \001(\t\022\020\n\010co"
-    "ntract\030\003 \001(\t\022E\n\nmarketData\030\004 \001(\01321.Micro"
-    ".Future.Message.Business.PBOptionMarketD"
-    "ata\022F\n\nimpliedVol\030\005 \001(\01322.Micro.Future.M"
-    "essage.Business.PBImpliedVolatility\022=\n\010t"
-    "heoData\030\006 \001(\0132+.Micro.Future.Message.Bus"
-    "iness.PBOptionData\022F\n\013wingsReturn\030\007 \001(\0132"
-    "1.Micro.Future.Message.Business.PBWingsM"
-    "odelReturn\022A\n\014theoDataTemp\030\010 \001(\0132+.Micro"
-    ".Future.Message.Business.PBOptionData\"W\n"
-    "\021PBPricingContract\022\020\n\010exchange\030\001 \001(\t\022\020\n\010"
-    "contract\030\002 \001(\t\022\016\n\006weight\030\003 \001(\001\022\016\n\006adjust"
-    "\030\004 \001(\001\"\201\004\n\nPBStrategy\0220\n\006header\030\001 \001(\0132 ."
-    "Micro.Future.Message.DataHeader\022\020\n\010excha"
-    "nge\030\002 \001(\t\022\020\n\010contract\030\003 \001(\t\022\022\n\nunderlyin"
-    "g\030\004 \001(\t\022\016\n\006symbol\030\005 \001(\t\022\017\n\007hedging\030\006 \001(\010"
-    "\022\022\n\nbidEnabled\030\007 \001(\010\022\022\n\naskEnabled\030\010 \001(\010"
-    "\022\r\n\005bidQV\030\t \001(\005\022\r\n\005askQV\030\n \001(\005\022\r\n\005depth\030"
-    "\013 \001(\005\022J\n\020pricingContracts\030\014 \003(\01320.Micro."
-    "Future.Message.Business.PBPricingContrac"
-    "t\022\024\n\014pricingModel\030\r \001(\t\022F\n\014ivmContracts\030"
-    "\016 \003(\01320.Micro.Future.Message.Business.PB"
-    "PricingContract\022\017\n\007ivModel\030\017 \001(\t\022F\n\014volC"
-    "ontracts\030\020 \003(\01320.Micro.Future.Message.Bu"
-    "siness.PBPricingContract\022\020\n\010volModel\030\021 \001"
-    "(\t\"\177\n\016PBStrategyList\0220\n\006header\030\001 \001(\0132 .M"
-    "icro.Future.Message.DataHeader\022;\n\010strate"
-    "gy\030\002 \003(\0132).Micro.Future.Message.Business"
-    ".PBStrategy\"V\n\017PBContractParam\022\020\n\010exchan"
-    "ge\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022\020\n\010depthVol\030\003"
-    " \001(\005\022\r\n\005gamma\030\004 \001(\001\"\207\001\n\023PBContractParamL"
-    "ist\0220\n\006header\030\001 \001(\0132 .Micro.Future.Messa"
-    "ge.DataHeader\022>\n\006params\030\002 \003(\0132..Micro.Fu"
-    "ture.Message.Business.PBContractParam\"F\n"
-    "\016PBOTCUserParam\022\020\n\010exchange\030\001 \001(\t\022\020\n\010con"
-    "tract\030\002 \001(\t\022\020\n\010quantity\030\003 \001(\001\"\205\001\n\022PBOTCU"
-    "serParamList\0220\n\006header\030\001 \001(\0132 .Micro.Fut"
-    "ure.Message.DataHeader\022=\n\006params\030\002 \003(\0132-"
-    ".Micro.Future.Message.Business.PBOTCUser"
-    "Param\"\207\002\n\016PBOrderRequest\0220\n\006header\030\001 \001(\013"
-    "2 .Micro.Future.Message.DataHeader\022\017\n\007or"
-    "derID\030\002 \001(\004\022\022\n\norderSysID\030\003 \001(\004\022\020\n\010excha"
-    "nge\030\004 \001(\t\022\020\n\010contract\030\005 \001(\t\022\022\n\nlimitPric"
-    "e\030\006 \001(\001\022\016\n\006volume\030\007 \001(\005\022\020\n\010execType\030\010 \001("
-    "\005\022\013\n\003tif\030\t \001(\005\022\021\n\tdirection\030\n \001(\005\022\021\n\tope"
-    "nclose\030\013 \001(\005\022\021\n\tportfolio\030\014 \001(\t\"\327\004\n\013PBOr"
-    "derInfo\0220\n\006header\030\001 \001(\0132 .Micro.Future.M"
-    "essage.DataHeader\022\017\n\007orderID\030\002 \001(\004\022\022\n\nor"
-    "derSysID\030\003 \001(\004\022\020\n\010brokerID\030\004 \001(\t\022\022\n\ninve"
-    "storID\030\005 \001(\t\022\020\n\010exchange\030\006 \001(\t\022\020\n\010contra"
-    "ct\030\007 \001(\t\022\020\n\010execType\030\010 \001(\005\022\013\n\003tif\030\t \001(\005\022"
-    "\023\n\013tradingType\030\n \001(\005\022\021\n\tdirection\030\013 \001(\005\022"
-    "\022\n\nlimitPrice\030\014 \001(\001\022\021\n\tstopPrice\030\r \001(\001\022\023"
-    "\n\013orderStatus\030\016 \001(\005\022\021\n\torderType\030\017 \001(\005\022\016"
-    "\n\006volume\030\020 \001(\005\022\022\n\ninsertTime\030\021 \001(\t\022\022\n\nup"
-    "dateTime\030\022 \001(\t\022\022\n\ncancelTime\030\023 \001(\t\022\024\n\014vo"
-    "lumeTraded\030\024 \001(\005\022\024\n\014volumeRemain\030\025 \001(\005\022\027"
-    "\n\017volumeCondition\030\026 \001(\005\022\022\n\ntradingDay\030\027 "
-    "\001(\005\022\016\n\006active\030\030 \001(\010\022\021\n\topenclose\030\031 \001(\005\022\017"
-    "\n\007message\030\032 \001(\014\022\021\n\tsessionID\030\033 \001(\005\022\021\n\tpo"
-    "rtfolio\030\034 \001(\t\022\022\n\ninsertDate\030\035 \001(\t\"\207\003\n\013PB"
-    "TradeInfo\0220\n\006header\030\001 \001(\0132 .Micro.Future"
-    ".Message.DataHeader\022\017\n\007tradeID\030\002 \001(\004\022\021\n\t"
-    "direction\030\003 \001(\005\022\021\n\topenclose\030\004 \001(\005\022\022\n\nor"
-    "derSysID\030\005 \001(\004\022\017\n\007orderID\030\006 \001(\004\022\r\n\005price"
-    "\030\007 \001(\001\022\016\n\006volume\030\010 \001(\005\022\020\n\010brokerID\030\t \001(\t"
-    "\022\022\n\ninvestorID\030\n \001(\t\022\020\n\010exchange\030\013 \001(\t\022\020"
-    "\n\010contract\030\014 \001(\t\022\016\n\006userID\030\r \001(\t\022\021\n\ttrad"
-    "eDate\030\016 \001(\t\022\021\n\ttradeTime\030\017 \001(\t\022\021\n\ttradeT"
-    "ype\030\020 \001(\005\022\021\n\thedgeFlag\030\021 \001(\005\022\022\n\ncommissi"
-    "on\030\022 \001(\001\022\021\n\tportfolio\030\023 \001(\t\"\206\003\n\nPBPositi"
-    "on\022\020\n\010exchange\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022\021"
-    "\n\tdirection\030\003 \001(\005\022\020\n\010position\030\005 \001(\005\022\022\n\ny"
-    "dPosition\030\004 \001(\005\022\030\n\020positionDateFlag\030\006 \001("
-    "\005\022\022\n\nopenVolume\030\007 \001(\005\022\023\n\013closeVolume\030\010 \001"
-    "(\005\022\022\n\nopenAmount\030\t \001(\001\022\023\n\013closeAmount\030\n "
-    "\001(\001\022\014\n\004cost\030\013 \001(\001\022\020\n\010openCost\030\014 \001(\001\022\016\n\006p"
-    "rofit\030\r \001(\001\022\023\n\013closeProfit\030\016 \001(\001\022\021\n\tuseM"
-    "argin\030\017 \001(\001\022\021\n\thedgeFlag\030\020 \001(\005\022\022\n\ntdPosi"
-    "tion\030\021 \001(\005\0220\n\006header\030\022 \001(\0132 .Micro.Futur"
-    "e.Message.DataHeader\"\275\005\n\rPBAccountInfo\022\020"
-    "\n\010brokerID\030\002 \001(\t\022\021\n\taccountID\030\003 \001(\t\022\023\n\013p"
-    "reMortgage\030\004 \001(\001\022\021\n\tpreCredit\030\005 \001(\001\022\022\n\np"
-    "reDeposit\030\006 \001(\001\022\022\n\npreBalance\030\007 \001(\001\022\021\n\tp"
-    "reMargin\030\010 \001(\001\022\024\n\014interestBase\030\t \001(\001\022\020\n\010"
-    "interest\030\n \001(\001\022\017\n\007deposit\030\013 \001(\001\022\020\n\010withd"
-    "raw\030\014 \001(\001\022\024\n\014frozenMargin\030\r \001(\001\022\022\n\nfroze"
-    "nCash\030\016 \001(\001\022\030\n\020frozenCommission\030\017 \001(\001\022\022\n"
-    "\ncurrMargin\030\020 \001(\001\022\016\n\006cashIn\030\021 \001(\001\022\022\n\ncom"
-    "mission\030\022 \001(\001\022\023\n\013closeProfit\030\023 \001(\001\022\026\n\016po"
-    "sitionProfit\030\024 \001(\001\022\017\n\007balance\030\025 \001(\001\022\021\n\ta"
-    "vailable\030\026 \001(\001\022\025\n\rwithdrawQuota\030\027 \001(\001\022\017\n"
-    "\007reserve\030\030 \001(\001\022\022\n\ntradingDay\030\031 \001(\005\022\024\n\014se"
-    "ttlementID\030\032 \001(\005\022\016\n\006credit\030\033 \001(\001\022\020\n\010mort"
-    "gage\030\034 \001(\001\022\026\n\016exchangeMargin\030\035 \001(\001\022\026\n\016de"
-    "liveryMargin\030\036 \001(\001\022\036\n\026exchangeDeliveryMa"
-    "rgin\030\037 \001(\001\022\026\n\016reserveBalance\030  \001(\001\0220\n\006he"
-    "ader\030! \001(\0132 .Micro.Future.Message.DataHe"
-    "ader\"r\n\014PBMarketInfo\0220\n\006header\030\001 \001(\0132 .M"
-    "icro.Future.Message.DataHeader\022\020\n\010exchan"
-    "ge\030\002 \001(\t\022\014\n\004name\030\003 \001(\014\022\020\n\010property\030\004 \001(\014"
-    "\"\214\005\n\016PBContractInfo\022\020\n\010exchange\030\001 \001(\t\022\020\n"
-    "\010contract\030\002 \001(\t\022\014\n\004name\030\003 \001(\014\022\021\n\tproduct"
-    "ID\030\004 \001(\t\022\023\n\013productType\030\005 \001(\005\022\024\n\014deliver"
-    "yYear\030\006 \001(\005\022\025\n\rdeliveryMonth\030\007 \001(\005\022\034\n\024ma"
-    "xMarketOrderVolume\030\010 \001(\005\022\034\n\024minMarketOrd"
-    "erVolume\030\t \001(\005\022\033\n\023maxLimitOrderVolume\030\n "
-    "\001(\005\022\033\n\023minLimitOrderVolume\030\013 \001(\005\022\026\n\016volu"
-    "meMultiple\030\014 \001(\005\022\021\n\tpriceTick\030\r \001(\001\022\022\n\nc"
-    "reateDate\030\016 \001(\t\022\020\n\010openDate\030\017 \001(\t\022\022\n\nexp"
-    "ireDate\030\020 \001(\t\022\026\n\016startDelivDate\030\021 \001(\t\022\024\n"
-    "\014endDelivDate\030\022 \001(\t\022\021\n\tlifePhase\030\023 \001(\005\022\021"
-    "\n\tisTrading\030\024 \001(\010\022\024\n\014positionType\030\025 \001(\005\022"
-    "\030\n\020positionDateType\030\026 \001(\005\022\027\n\017longMarginR"
-    "atio\030\027 \001(\001\022\030\n\020shortMarginRatio\030\030 \001(\001\022\032\n\022"
-    "underlyingExchange\030\031 \001(\t\022\032\n\022underlyingCo"
-    "ntract\030\032 \001(\t\022\024\n\014contractType\030\033 \001(\005\022\023\n\013st"
-    "rikePrice\030\034 \001(\001\"\213\001\n\022PBContractInfoList\0220"
-    "\n\006header\030\001 \001(\0132 .Micro.Future.Message.Da"
-    "taHeader\022C\n\014contractInfo\030\002 \003(\0132-.Micro.F"
-    "uture.Message.Business.PBContractInfo\"\214\002"
-    "\n\017PBBankOpRequest\0220\n\006header\030\001 \001(\0132 .Micr"
-    "o.Future.Message.DataHeader\022\016\n\006bankID\030\002 "
-    "\001(\t\022\024\n\014bankBranchID\030\003 \001(\t\022\024\n\014bankPasswor"
-    "d\030\004 \001(\t\022\023\n\013bankAccount\030\005 \001(\t\022\020\n\010brokerID"
-    "\030\006 \001(\t\022\026\n\016brokerBranchID\030\007 \001(\t\022\021\n\taccoun"
-    "tID\030\010 \001(\t\022\020\n\010password\030\t \001(\t\022\022\n\ncurrencyI"
-    "D\030\n \001(\t\022\023\n\013tradeAmount\030\013 \001(\001\"\210\004\n\016PBBankO"
-    "pResult\0220\n\006header\030\001 \001(\0132 .Micro.Future.M"
-    "essage.DataHeader\022\016\n\006bankID\030\002 \001(\t\022\024\n\014ban"
-    "kBranchID\030\003 \001(\t\022\024\n\014bankPassword\030\004 \001(\t\022\023\n"
-    "\013bankAccount\030\005 \001(\t\022\020\n\010brokerID\030\006 \001(\t\022\026\n\016"
-    "brokerBranchID\030\007 \001(\t\022\021\n\taccountID\030\010 \001(\t\022"
-    "\020\n\010password\030\t \001(\t\022\022\n\ncurrencyID\030\n \001(\t\022\023\n"
-    "\013tradeAmount\030\013 \001(\001\022\021\n\tserialNum\030\014 \001(\t\022\022\n"
-    "\ntradingDay\030\r \001(\005\022\021\n\ttradeDate\030\016 \001(\t\022\021\n\t"
-    "tradeTime\030\017 \001(\t\022\021\n\ttradeCode\030\020 \001(\t\022\022\n\nba"
-    "nkSerial\030\021 \001(\t\022\025\n\rfutureAccType\030\022 \001(\005\022\023\n"
-    "\013bankAccType\030\023 \001(\005\022\024\n\014futureSerial\030\024 \001(\t"
-    "\022\017\n\007custFee\030\025 \001(\001\022\021\n\tbrokerFee\030\026 \001(\001\022\017\n\007"
-    "errorID\030\027 \001(\005\022\020\n\010errorMsg\030\030 \001(\014\"n\n\nPBBan"
-    "kInfo\0220\n\006header\030\001 \001(\0132 .Micro.Future.Mes"
-    "sage.DataHeader\022\016\n\006bankID\030\002 \001(\t\022\020\n\010branc"
-    "hID\030\003 \001(\t\022\014\n\004name\030\004 \001(\014\"\320\002\n\021PBUserAccoun"
-    "tInfo\0220\n\006header\030\001 \001(\0132 .Micro.Future.Mes"
-    "sage.DataHeader\022\016\n\006bankID\030\002 \001(\t\022\024\n\014bankB"
-    "ranchID\030\003 \001(\t\022\023\n\013bankAccount\030\004 \001(\t\022\020\n\010br"
-    "okerID\030\005 \001(\t\022\026\n\016brokerBranchID\030\006 \001(\t\022\021\n\t"
-    "accountID\030\007 \001(\t\022\020\n\010idCardNo\030\010 \001(\t\022\024\n\014cus"
-    "tomerName\030\t \001(\014\022\022\n\ncurrencyID\030\n \001(\t\022\020\n\010c"
-    "ustType\030\013 \001(\005\022\023\n\013bankAccType\030\014 \001(\005\022\025\n\rba"
-    "nkUseAmount\030\r \001(\001\022\027\n\017bankFetchAmount\030\016 \001"
-    "(\001b\006proto3", 8250);
+    "ataHeader\022\017\n\007orderID\030\002 \001(\004\022\022\n\norderSysID"
+    "\030\003 \001(\004\022\020\n\010brokerID\030\004 \001(\t\022\022\n\ninvestorID\030\005"
+    " \001(\t\022\020\n\010exchange\030\006 \001(\t\022\020\n\010contract\030\007 \001(\t"
+    "\022\020\n\010execType\030\010 \001(\005\022\013\n\003tif\030\t \001(\005\022\023\n\013tradi"
+    "ngType\030\n \001(\005\022\021\n\tdirection\030\013 \001(\005\022\022\n\nlimit"
+    "Price\030\014 \001(\001\022\021\n\tstopPrice\030\r \001(\001\022\023\n\013orderS"
+    "tatus\030\016 \001(\005\022\021\n\torderType\030\017 \001(\005\022\016\n\006volume"
+    "\030\020 \001(\005\022\022\n\ninsertTime\030\021 \001(\t\022\022\n\nupdateTime"
+    "\030\022 \001(\t\022\022\n\ncancelTime\030\023 \001(\t\022\024\n\014volumeTrad"
+    "ed\030\024 \001(\005\022\024\n\014volumeRemain\030\025 \001(\005\022\027\n\017volume"
+    "Condition\030\026 \001(\005\022\022\n\ntradingDay\030\027 \001(\005\022\016\n\006a"
+    "ctive\030\030 \001(\010\022\021\n\topenclose\030\031 \001(\005\022\017\n\007messag"
+    "e\030\032 \001(\014\022\021\n\tsessionID\030\033 \001(\005\022\021\n\tportfolio\030"
+    "\034 \001(\t\022\022\n\ninsertDate\030\035 \001(\t\"\207\003\n\013PBTradeInf"
+    "o\0220\n\006header\030\001 \001(\0132 .Micro.Future.Message"
+    ".DataHeader\022\017\n\007tradeID\030\002 \001(\004\022\021\n\tdirectio"
+    "n\030\003 \001(\005\022\021\n\topenclose\030\004 \001(\005\022\022\n\norderSysID"
+    "\030\005 \001(\004\022\017\n\007orderID\030\006 \001(\004\022\r\n\005price\030\007 \001(\001\022\016"
+    "\n\006volume\030\010 \001(\005\022\020\n\010brokerID\030\t \001(\t\022\022\n\ninve"
+    "storID\030\n \001(\t\022\020\n\010exchange\030\013 \001(\t\022\020\n\010contra"
+    "ct\030\014 \001(\t\022\016\n\006userID\030\r \001(\t\022\021\n\ttradeDate\030\016 "
+    "\001(\t\022\021\n\ttradeTime\030\017 \001(\t\022\021\n\ttradeType\030\020 \001("
+    "\005\022\021\n\thedgeFlag\030\021 \001(\005\022\022\n\ncommission\030\022 \001(\001"
+    "\022\021\n\tportfolio\030\023 \001(\t\"\206\003\n\nPBPosition\022\020\n\010ex"
+    "change\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022\021\n\tdirect"
+    "ion\030\003 \001(\005\022\020\n\010position\030\005 \001(\005\022\022\n\nydPositio"
+    "n\030\004 \001(\005\022\030\n\020positionDateFlag\030\006 \001(\005\022\022\n\nope"
+    "nVolume\030\007 \001(\005\022\023\n\013closeVolume\030\010 \001(\005\022\022\n\nop"
+    "enAmount\030\t \001(\001\022\023\n\013closeAmount\030\n \001(\001\022\014\n\004c"
+    "ost\030\013 \001(\001\022\020\n\010openCost\030\014 \001(\001\022\016\n\006profit\030\r "
+    "\001(\001\022\023\n\013closeProfit\030\016 \001(\001\022\021\n\tuseMargin\030\017 "
+    "\001(\001\022\021\n\thedgeFlag\030\020 \001(\005\022\022\n\ntdPosition\030\021 \001"
+    "(\005\0220\n\006header\030\022 \001(\0132 .Micro.Future.Messag"
+    "e.DataHeader\"\275\005\n\rPBAccountInfo\022\020\n\010broker"
+    "ID\030\002 \001(\t\022\021\n\taccountID\030\003 \001(\t\022\023\n\013preMortga"
+    "ge\030\004 \001(\001\022\021\n\tpreCredit\030\005 \001(\001\022\022\n\npreDeposi"
+    "t\030\006 \001(\001\022\022\n\npreBalance\030\007 \001(\001\022\021\n\tpreMargin"
+    "\030\010 \001(\001\022\024\n\014interestBase\030\t \001(\001\022\020\n\010interest"
+    "\030\n \001(\001\022\017\n\007deposit\030\013 \001(\001\022\020\n\010withdraw\030\014 \001("
+    "\001\022\024\n\014frozenMargin\030\r \001(\001\022\022\n\nfrozenCash\030\016 "
+    "\001(\001\022\030\n\020frozenCommission\030\017 \001(\001\022\022\n\ncurrMar"
+    "gin\030\020 \001(\001\022\016\n\006cashIn\030\021 \001(\001\022\022\n\ncommission\030"
+    "\022 \001(\001\022\023\n\013closeProfit\030\023 \001(\001\022\026\n\016positionPr"
+    "ofit\030\024 \001(\001\022\017\n\007balance\030\025 \001(\001\022\021\n\tavailable"
+    "\030\026 \001(\001\022\025\n\rwithdrawQuota\030\027 \001(\001\022\017\n\007reserve"
+    "\030\030 \001(\001\022\022\n\ntradingDay\030\031 \001(\005\022\024\n\014settlement"
+    "ID\030\032 \001(\005\022\016\n\006credit\030\033 \001(\001\022\020\n\010mortgage\030\034 \001"
+    "(\001\022\026\n\016exchangeMargin\030\035 \001(\001\022\026\n\016deliveryMa"
+    "rgin\030\036 \001(\001\022\036\n\026exchangeDeliveryMargin\030\037 \001"
+    "(\001\022\026\n\016reserveBalance\030  \001(\001\0220\n\006header\030! \001"
+    "(\0132 .Micro.Future.Message.DataHeader\"r\n\014"
+    "PBMarketInfo\0220\n\006header\030\001 \001(\0132 .Micro.Fut"
+    "ure.Message.DataHeader\022\020\n\010exchange\030\002 \001(\t"
+    "\022\014\n\004name\030\003 \001(\014\022\020\n\010property\030\004 \001(\014\"\214\005\n\016PBC"
+    "ontractInfo\022\020\n\010exchange\030\001 \001(\t\022\020\n\010contrac"
+    "t\030\002 \001(\t\022\014\n\004name\030\003 \001(\014\022\021\n\tproductID\030\004 \001(\t"
+    "\022\023\n\013productType\030\005 \001(\005\022\024\n\014deliveryYear\030\006 "
+    "\001(\005\022\025\n\rdeliveryMonth\030\007 \001(\005\022\034\n\024maxMarketO"
+    "rderVolume\030\010 \001(\005\022\034\n\024minMarketOrderVolume"
+    "\030\t \001(\005\022\033\n\023maxLimitOrderVolume\030\n \001(\005\022\033\n\023m"
+    "inLimitOrderVolume\030\013 \001(\005\022\026\n\016volumeMultip"
+    "le\030\014 \001(\005\022\021\n\tpriceTick\030\r \001(\001\022\022\n\ncreateDat"
+    "e\030\016 \001(\t\022\020\n\010openDate\030\017 \001(\t\022\022\n\nexpireDate\030"
+    "\020 \001(\t\022\026\n\016startDelivDate\030\021 \001(\t\022\024\n\014endDeli"
+    "vDate\030\022 \001(\t\022\021\n\tlifePhase\030\023 \001(\005\022\021\n\tisTrad"
+    "ing\030\024 \001(\010\022\024\n\014positionType\030\025 \001(\005\022\030\n\020posit"
+    "ionDateType\030\026 \001(\005\022\027\n\017longMarginRatio\030\027 \001"
+    "(\001\022\030\n\020shortMarginRatio\030\030 \001(\001\022\032\n\022underlyi"
+    "ngExchange\030\031 \001(\t\022\032\n\022underlyingContract\030\032"
+    " \001(\t\022\024\n\014contractType\030\033 \001(\005\022\023\n\013strikePric"
+    "e\030\034 \001(\001\"\213\001\n\022PBContractInfoList\0220\n\006header"
+    "\030\001 \001(\0132 .Micro.Future.Message.DataHeader"
+    "\022C\n\014contractInfo\030\002 \003(\0132-.Micro.Future.Me"
+    "ssage.Business.PBContractInfo\"\214\002\n\017PBBank"
+    "OpRequest\0220\n\006header\030\001 \001(\0132 .Micro.Future"
+    ".Message.DataHeader\022\016\n\006bankID\030\002 \001(\t\022\024\n\014b"
+    "ankBranchID\030\003 \001(\t\022\024\n\014bankPassword\030\004 \001(\t\022"
+    "\023\n\013bankAccount\030\005 \001(\t\022\020\n\010brokerID\030\006 \001(\t\022\026"
+    "\n\016brokerBranchID\030\007 \001(\t\022\021\n\taccountID\030\010 \001("
+    "\t\022\020\n\010password\030\t \001(\t\022\022\n\ncurrencyID\030\n \001(\t\022"
+    "\023\n\013tradeAmount\030\013 \001(\001\"\210\004\n\016PBBankOpResult\022"
+    "0\n\006header\030\001 \001(\0132 .Micro.Future.Message.D"
+    "ataHeader\022\016\n\006bankID\030\002 \001(\t\022\024\n\014bankBranchI"
+    "D\030\003 \001(\t\022\024\n\014bankPassword\030\004 \001(\t\022\023\n\013bankAcc"
+    "ount\030\005 \001(\t\022\020\n\010brokerID\030\006 \001(\t\022\026\n\016brokerBr"
+    "anchID\030\007 \001(\t\022\021\n\taccountID\030\010 \001(\t\022\020\n\010passw"
+    "ord\030\t \001(\t\022\022\n\ncurrencyID\030\n \001(\t\022\023\n\013tradeAm"
+    "ount\030\013 \001(\001\022\021\n\tserialNum\030\014 \001(\t\022\022\n\ntrading"
+    "Day\030\r \001(\005\022\021\n\ttradeDate\030\016 \001(\t\022\021\n\ttradeTim"
+    "e\030\017 \001(\t\022\021\n\ttradeCode\030\020 \001(\t\022\022\n\nbankSerial"
+    "\030\021 \001(\t\022\025\n\rfutureAccType\030\022 \001(\005\022\023\n\013bankAcc"
+    "Type\030\023 \001(\005\022\024\n\014futureSerial\030\024 \001(\t\022\017\n\007cust"
+    "Fee\030\025 \001(\001\022\021\n\tbrokerFee\030\026 \001(\001\022\017\n\007errorID\030"
+    "\027 \001(\005\022\020\n\010errorMsg\030\030 \001(\014\"n\n\nPBBankInfo\0220\n"
+    "\006header\030\001 \001(\0132 .Micro.Future.Message.Dat"
+    "aHeader\022\016\n\006bankID\030\002 \001(\t\022\020\n\010branchID\030\003 \001("
+    "\t\022\014\n\004name\030\004 \001(\014\"\320\002\n\021PBUserAccountInfo\0220\n"
+    "\006header\030\001 \001(\0132 .Micro.Future.Message.Dat"
+    "aHeader\022\016\n\006bankID\030\002 \001(\t\022\024\n\014bankBranchID\030"
+    "\003 \001(\t\022\023\n\013bankAccount\030\004 \001(\t\022\020\n\010brokerID\030\005"
+    " \001(\t\022\026\n\016brokerBranchID\030\006 \001(\t\022\021\n\taccountI"
+    "D\030\007 \001(\t\022\020\n\010idCardNo\030\010 \001(\t\022\024\n\014customerNam"
+    "e\030\t \001(\014\022\022\n\ncurrencyID\030\n \001(\t\022\020\n\010custType\030"
+    "\013 \001(\005\022\023\n\013bankAccType\030\014 \001(\005\022\025\n\rbankUseAmo"
+    "unt\030\r \001(\001\022\027\n\017bankFetchAmount\030\016 \001(\001b\006prot"
+    "o3", 8602);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "businessobj.proto", &protobuf_RegisterTypes);
   PBInstrument::default_instance_ = new PBInstrument();
@@ -1273,6 +1337,8 @@ void protobuf_AddDesc_businessobj_2eproto() {
   PBPricingContract::default_instance_ = new PBPricingContract();
   PBStrategy::default_instance_ = new PBStrategy();
   PBStrategyList::default_instance_ = new PBStrategyList();
+  PBRisk::default_instance_ = new PBRisk();
+  PBRiskList::default_instance_ = new PBRiskList();
   PBContractParam::default_instance_ = new PBContractParam();
   PBContractParamList::default_instance_ = new PBContractParamList();
   PBOTCUserParam::default_instance_ = new PBOTCUserParam();
@@ -1305,6 +1371,8 @@ void protobuf_AddDesc_businessobj_2eproto() {
   PBPricingContract::default_instance_->InitAsDefaultInstance();
   PBStrategy::default_instance_->InitAsDefaultInstance();
   PBStrategyList::default_instance_->InitAsDefaultInstance();
+  PBRisk::default_instance_->InitAsDefaultInstance();
+  PBRiskList::default_instance_->InitAsDefaultInstance();
   PBContractParam::default_instance_->InitAsDefaultInstance();
   PBContractParamList::default_instance_->InitAsDefaultInstance();
   PBOTCUserParam::default_instance_->InitAsDefaultInstance();
@@ -4100,7 +4168,7 @@ PBMarketDataList::marketdata() const {
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int PBPortfolio::kNameFieldNumber;
 const int PBPortfolio::kHedgeDelayFieldNumber;
-const int PBPortfolio::kDescriptionFieldNumber;
+const int PBPortfolio::kThresholdFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 PBPortfolio::PBPortfolio()
@@ -4127,7 +4195,7 @@ void PBPortfolio::SharedCtor() {
   _cached_size_ = 0;
   name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   hedgedelay_ = 0;
-  description_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  threshold_ = 0;
 }
 
 PBPortfolio::~PBPortfolio() {
@@ -4137,7 +4205,6 @@ PBPortfolio::~PBPortfolio() {
 
 void PBPortfolio::SharedDtor() {
   name_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  description_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != default_instance_) {
   }
 }
@@ -4169,9 +4236,28 @@ PBPortfolio* PBPortfolio::New(::google::protobuf::Arena* arena) const {
 
 void PBPortfolio::Clear() {
 // @@protoc_insertion_point(message_clear_start:Micro.Future.Message.Business.PBPortfolio)
+#if defined(__clang__)
+#define ZR_HELPER_(f) \
+  _Pragma("clang diagnostic push") \
+  _Pragma("clang diagnostic ignored \"-Winvalid-offsetof\"") \
+  __builtin_offsetof(PBPortfolio, f) \
+  _Pragma("clang diagnostic pop")
+#else
+#define ZR_HELPER_(f) reinterpret_cast<char*>(\
+  &reinterpret_cast<PBPortfolio*>(16)->f)
+#endif
+
+#define ZR_(first, last) do {\
+  ::memset(&first, 0,\
+           ZR_HELPER_(last) - ZR_HELPER_(first) + sizeof(last));\
+} while (0)
+
+  ZR_(threshold_, hedgedelay_);
   name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  hedgedelay_ = 0;
-  description_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+
+#undef ZR_HELPER_
+#undef ZR_
+
 }
 
 bool PBPortfolio::MergePartialFromCodedStream(
@@ -4211,20 +4297,18 @@ bool PBPortfolio::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(26)) goto parse_description;
+        if (input->ExpectTag(25)) goto parse_threshold;
         break;
       }
 
-      // optional string description = 3;
+      // optional double threshold = 3;
       case 3: {
-        if (tag == 26) {
-         parse_description:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_description()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->description().data(), this->description().length(),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "Micro.Future.Message.Business.PBPortfolio.description"));
+        if (tag == 25) {
+         parse_threshold:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &threshold_)));
+
         } else {
           goto handle_unusual;
         }
@@ -4271,14 +4355,9 @@ void PBPortfolio::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->hedgedelay(), output);
   }
 
-  // optional string description = 3;
-  if (this->description().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->description().data(), this->description().length(),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "Micro.Future.Message.Business.PBPortfolio.description");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      3, this->description(), output);
+  // optional double threshold = 3;
+  if (this->threshold() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(3, this->threshold(), output);
   }
 
   // @@protoc_insertion_point(serialize_end:Micro.Future.Message.Business.PBPortfolio)
@@ -4303,15 +4382,9 @@ void PBPortfolio::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->hedgedelay(), target);
   }
 
-  // optional string description = 3;
-  if (this->description().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->description().data(), this->description().length(),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "Micro.Future.Message.Business.PBPortfolio.description");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        3, this->description(), target);
+  // optional double threshold = 3;
+  if (this->threshold() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(3, this->threshold(), target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.Business.PBPortfolio)
@@ -4336,11 +4409,9 @@ int PBPortfolio::ByteSize() const {
         this->hedgedelay());
   }
 
-  // optional string description = 3;
-  if (this->description().size() > 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->description());
+  // optional double threshold = 3;
+  if (this->threshold() != 0) {
+    total_size += 1 + 8;
   }
 
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
@@ -4374,9 +4445,8 @@ void PBPortfolio::MergeFrom(const PBPortfolio& from) {
   if (from.hedgedelay() != 0) {
     set_hedgedelay(from.hedgedelay());
   }
-  if (from.description().size() > 0) {
-
-    description_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.description_);
+  if (from.threshold() != 0) {
+    set_threshold(from.threshold());
   }
 }
 
@@ -4406,7 +4476,7 @@ void PBPortfolio::Swap(PBPortfolio* other) {
 void PBPortfolio::InternalSwap(PBPortfolio* other) {
   name_.Swap(&other->name_);
   std::swap(hedgedelay_, other->hedgedelay_);
-  description_.Swap(&other->description_);
+  std::swap(threshold_, other->threshold_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -4480,48 +4550,18 @@ void PBPortfolio::clear_hedgedelay() {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPortfolio.hedgeDelay)
 }
 
-// optional string description = 3;
-void PBPortfolio::clear_description() {
-  description_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// optional double threshold = 3;
+void PBPortfolio::clear_threshold() {
+  threshold_ = 0;
 }
- const ::std::string& PBPortfolio::description() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPortfolio.description)
-  return description_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+ double PBPortfolio::threshold() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPortfolio.threshold)
+  return threshold_;
 }
- void PBPortfolio::set_description(const ::std::string& value) {
+ void PBPortfolio::set_threshold(double value) {
   
-  description_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPortfolio.description)
-}
- void PBPortfolio::set_description(const char* value) {
-  
-  description_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBPortfolio.description)
-}
- void PBPortfolio::set_description(const char* value, size_t size) {
-  
-  description_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBPortfolio.description)
-}
- ::std::string* PBPortfolio::mutable_description() {
-  
-  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBPortfolio.description)
-  return description_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
- ::std::string* PBPortfolio::release_description() {
-  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBPortfolio.description)
-  
-  return description_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
- void PBPortfolio::set_allocated_description(::std::string* description) {
-  if (description != NULL) {
-    
-  } else {
-    
-  }
-  description_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), description);
-  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBPortfolio.description)
+  threshold_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPortfolio.threshold)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -9629,6 +9669,9 @@ const int PBStrategy::kIvmContractsFieldNumber;
 const int PBStrategy::kIvModelFieldNumber;
 const int PBStrategy::kVolContractsFieldNumber;
 const int PBStrategy::kVolModelFieldNumber;
+const int PBStrategy::kBaseExchangeFieldNumber;
+const int PBStrategy::kBaseContractFieldNumber;
+const int PBStrategy::kPortfolioFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 PBStrategy::PBStrategy()
@@ -9668,6 +9711,9 @@ void PBStrategy::SharedCtor() {
   pricingmodel_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ivmodel_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   volmodel_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  baseexchange_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  basecontract_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  portfolio_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 PBStrategy::~PBStrategy() {
@@ -9683,6 +9729,9 @@ void PBStrategy::SharedDtor() {
   pricingmodel_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ivmodel_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   volmodel_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  baseexchange_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  basecontract_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  portfolio_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != default_instance_) {
     delete header_;
   }
@@ -9742,6 +9791,9 @@ void PBStrategy::Clear() {
   pricingmodel_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ivmodel_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   volmodel_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  baseexchange_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  basecontract_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  portfolio_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 
 #undef ZR_HELPER_
 #undef ZR_
@@ -10029,6 +10081,57 @@ bool PBStrategy::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
+        if (input->ExpectTag(146)) goto parse_baseExchange;
+        break;
+      }
+
+      // optional string baseExchange = 18;
+      case 18: {
+        if (tag == 146) {
+         parse_baseExchange:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_baseexchange()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->baseexchange().data(), this->baseexchange().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBStrategy.baseExchange"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(154)) goto parse_baseContract;
+        break;
+      }
+
+      // optional string baseContract = 19;
+      case 19: {
+        if (tag == 154) {
+         parse_baseContract:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_basecontract()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->basecontract().data(), this->basecontract().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBStrategy.baseContract"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(162)) goto parse_portfolio;
+        break;
+      }
+
+      // optional string portfolio = 20;
+      case 20: {
+        if (tag == 162) {
+         parse_portfolio:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_portfolio()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->portfolio().data(), this->portfolio().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBStrategy.portfolio"));
+        } else {
+          goto handle_unusual;
+        }
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -10181,6 +10284,36 @@ void PBStrategy::SerializeWithCachedSizes(
       17, this->volmodel(), output);
   }
 
+  // optional string baseExchange = 18;
+  if (this->baseexchange().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->baseexchange().data(), this->baseexchange().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBStrategy.baseExchange");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      18, this->baseexchange(), output);
+  }
+
+  // optional string baseContract = 19;
+  if (this->basecontract().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->basecontract().data(), this->basecontract().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBStrategy.baseContract");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      19, this->basecontract(), output);
+  }
+
+  // optional string portfolio = 20;
+  if (this->portfolio().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->portfolio().data(), this->portfolio().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBStrategy.portfolio");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      20, this->portfolio(), output);
+  }
+
   // @@protoc_insertion_point(serialize_end:Micro.Future.Message.Business.PBStrategy)
 }
 
@@ -10322,6 +10455,39 @@ void PBStrategy::SerializeWithCachedSizes(
         17, this->volmodel(), target);
   }
 
+  // optional string baseExchange = 18;
+  if (this->baseexchange().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->baseexchange().data(), this->baseexchange().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBStrategy.baseExchange");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        18, this->baseexchange(), target);
+  }
+
+  // optional string baseContract = 19;
+  if (this->basecontract().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->basecontract().data(), this->basecontract().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBStrategy.baseContract");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        19, this->basecontract(), target);
+  }
+
+  // optional string portfolio = 20;
+  if (this->portfolio().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->portfolio().data(), this->portfolio().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBStrategy.portfolio");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        20, this->portfolio(), target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.Business.PBStrategy)
   return target;
 }
@@ -10420,6 +10586,27 @@ int PBStrategy::ByteSize() const {
     total_size += 2 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->volmodel());
+  }
+
+  // optional string baseExchange = 18;
+  if (this->baseexchange().size() > 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->baseexchange());
+  }
+
+  // optional string baseContract = 19;
+  if (this->basecontract().size() > 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->basecontract());
+  }
+
+  // optional string portfolio = 20;
+  if (this->portfolio().size() > 0) {
+    total_size += 2 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->portfolio());
   }
 
   // repeated .Micro.Future.Message.Business.PBPricingContract pricingContracts = 12;
@@ -10522,6 +10709,18 @@ void PBStrategy::MergeFrom(const PBStrategy& from) {
 
     volmodel_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.volmodel_);
   }
+  if (from.baseexchange().size() > 0) {
+
+    baseexchange_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.baseexchange_);
+  }
+  if (from.basecontract().size() > 0) {
+
+    basecontract_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.basecontract_);
+  }
+  if (from.portfolio().size() > 0) {
+
+    portfolio_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.portfolio_);
+  }
 }
 
 void PBStrategy::CopyFrom(const ::google::protobuf::Message& from) {
@@ -10565,6 +10764,9 @@ void PBStrategy::InternalSwap(PBStrategy* other) {
   ivmodel_.Swap(&other->ivmodel_);
   volcontracts_.UnsafeArenaSwap(&other->volcontracts_);
   volmodel_.Swap(&other->volmodel_);
+  baseexchange_.Swap(&other->baseexchange_);
+  basecontract_.Swap(&other->basecontract_);
+  portfolio_.Swap(&other->portfolio_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -11100,6 +11302,138 @@ void PBStrategy::clear_volmodel() {
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBStrategy.volModel)
 }
 
+// optional string baseExchange = 18;
+void PBStrategy::clear_baseexchange() {
+  baseexchange_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBStrategy::baseexchange() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.baseExchange)
+  return baseexchange_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBStrategy::set_baseexchange(const ::std::string& value) {
+  
+  baseexchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.baseExchange)
+}
+ void PBStrategy::set_baseexchange(const char* value) {
+  
+  baseexchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBStrategy.baseExchange)
+}
+ void PBStrategy::set_baseexchange(const char* value, size_t size) {
+  
+  baseexchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBStrategy.baseExchange)
+}
+ ::std::string* PBStrategy::mutable_baseexchange() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBStrategy.baseExchange)
+  return baseexchange_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBStrategy::release_baseexchange() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBStrategy.baseExchange)
+  
+  return baseexchange_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBStrategy::set_allocated_baseexchange(::std::string* baseexchange) {
+  if (baseexchange != NULL) {
+    
+  } else {
+    
+  }
+  baseexchange_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), baseexchange);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBStrategy.baseExchange)
+}
+
+// optional string baseContract = 19;
+void PBStrategy::clear_basecontract() {
+  basecontract_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBStrategy::basecontract() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.baseContract)
+  return basecontract_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBStrategy::set_basecontract(const ::std::string& value) {
+  
+  basecontract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.baseContract)
+}
+ void PBStrategy::set_basecontract(const char* value) {
+  
+  basecontract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBStrategy.baseContract)
+}
+ void PBStrategy::set_basecontract(const char* value, size_t size) {
+  
+  basecontract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBStrategy.baseContract)
+}
+ ::std::string* PBStrategy::mutable_basecontract() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBStrategy.baseContract)
+  return basecontract_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBStrategy::release_basecontract() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBStrategy.baseContract)
+  
+  return basecontract_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBStrategy::set_allocated_basecontract(::std::string* basecontract) {
+  if (basecontract != NULL) {
+    
+  } else {
+    
+  }
+  basecontract_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), basecontract);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBStrategy.baseContract)
+}
+
+// optional string portfolio = 20;
+void PBStrategy::clear_portfolio() {
+  portfolio_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBStrategy::portfolio() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.portfolio)
+  return portfolio_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBStrategy::set_portfolio(const ::std::string& value) {
+  
+  portfolio_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.portfolio)
+}
+ void PBStrategy::set_portfolio(const char* value) {
+  
+  portfolio_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBStrategy.portfolio)
+}
+ void PBStrategy::set_portfolio(const char* value, size_t size) {
+  
+  portfolio_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBStrategy.portfolio)
+}
+ ::std::string* PBStrategy::mutable_portfolio() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBStrategy.portfolio)
+  return portfolio_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBStrategy::release_portfolio() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBStrategy.portfolio)
+  
+  return portfolio_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBStrategy::set_allocated_portfolio(::std::string* portfolio) {
+  if (portfolio != NULL) {
+    
+  } else {
+    
+  }
+  portfolio_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), portfolio);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBStrategy.portfolio)
+}
+
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
 
 // ===================================================================
@@ -11432,6 +11766,1072 @@ const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::
 PBStrategyList::strategy() const {
   // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBStrategyList.strategy)
   return strategy_;
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int PBRisk::kHeaderFieldNumber;
+const int PBRisk::kExchangeFieldNumber;
+const int PBRisk::kContractFieldNumber;
+const int PBRisk::kPositionFieldNumber;
+const int PBRisk::kDeltaFieldNumber;
+const int PBRisk::kThetaFieldNumber;
+const int PBRisk::kGammaFieldNumber;
+const int PBRisk::kVegaFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+PBRisk::PBRisk()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:Micro.Future.Message.Business.PBRisk)
+}
+
+void PBRisk::InitAsDefaultInstance() {
+  _is_default_instance_ = true;
+  header_ = const_cast< ::Micro::Future::Message::DataHeader*>(&::Micro::Future::Message::DataHeader::default_instance());
+}
+
+PBRisk::PBRisk(const PBRisk& from)
+  : ::google::protobuf::Message(),
+    _internal_metadata_(NULL) {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:Micro.Future.Message.Business.PBRisk)
+}
+
+void PBRisk::SharedCtor() {
+    _is_default_instance_ = false;
+  ::google::protobuf::internal::GetEmptyString();
+  _cached_size_ = 0;
+  header_ = NULL;
+  exchange_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  contract_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  position_ = 0;
+  delta_ = 0;
+  theta_ = 0;
+  gamma_ = 0;
+  vega_ = 0;
+}
+
+PBRisk::~PBRisk() {
+  // @@protoc_insertion_point(destructor:Micro.Future.Message.Business.PBRisk)
+  SharedDtor();
+}
+
+void PBRisk::SharedDtor() {
+  exchange_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  contract_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (this != default_instance_) {
+    delete header_;
+  }
+}
+
+void PBRisk::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* PBRisk::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return PBRisk_descriptor_;
+}
+
+const PBRisk& PBRisk::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_businessobj_2eproto();
+  return *default_instance_;
+}
+
+PBRisk* PBRisk::default_instance_ = NULL;
+
+PBRisk* PBRisk::New(::google::protobuf::Arena* arena) const {
+  PBRisk* n = new PBRisk;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void PBRisk::Clear() {
+// @@protoc_insertion_point(message_clear_start:Micro.Future.Message.Business.PBRisk)
+#if defined(__clang__)
+#define ZR_HELPER_(f) \
+  _Pragma("clang diagnostic push") \
+  _Pragma("clang diagnostic ignored \"-Winvalid-offsetof\"") \
+  __builtin_offsetof(PBRisk, f) \
+  _Pragma("clang diagnostic pop")
+#else
+#define ZR_HELPER_(f) reinterpret_cast<char*>(\
+  &reinterpret_cast<PBRisk*>(16)->f)
+#endif
+
+#define ZR_(first, last) do {\
+  ::memset(&first, 0,\
+           ZR_HELPER_(last) - ZR_HELPER_(first) + sizeof(last));\
+} while (0)
+
+  ZR_(delta_, position_);
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
+  exchange_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  contract_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+
+#undef ZR_HELPER_
+#undef ZR_
+
+}
+
+bool PBRisk::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:Micro.Future.Message.Business.PBRisk)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional .Micro.Future.Message.DataHeader header = 1;
+      case 1: {
+        if (tag == 10) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_header()));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(18)) goto parse_exchange;
+        break;
+      }
+
+      // optional string exchange = 2;
+      case 2: {
+        if (tag == 18) {
+         parse_exchange:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_exchange()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->exchange().data(), this->exchange().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBRisk.exchange"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(26)) goto parse_contract;
+        break;
+      }
+
+      // optional string contract = 3;
+      case 3: {
+        if (tag == 26) {
+         parse_contract:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_contract()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->contract().data(), this->contract().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBRisk.contract"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(32)) goto parse_position;
+        break;
+      }
+
+      // optional int32 position = 4;
+      case 4: {
+        if (tag == 32) {
+         parse_position:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &position_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(41)) goto parse_delta;
+        break;
+      }
+
+      // optional double delta = 5;
+      case 5: {
+        if (tag == 41) {
+         parse_delta:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &delta_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(49)) goto parse_theta;
+        break;
+      }
+
+      // optional double theta = 6;
+      case 6: {
+        if (tag == 49) {
+         parse_theta:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &theta_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(57)) goto parse_gamma;
+        break;
+      }
+
+      // optional double gamma = 7;
+      case 7: {
+        if (tag == 57) {
+         parse_gamma:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &gamma_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(65)) goto parse_vega;
+        break;
+      }
+
+      // optional double vega = 8;
+      case 8: {
+        if (tag == 65) {
+         parse_vega:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &vega_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:Micro.Future.Message.Business.PBRisk)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:Micro.Future.Message.Business.PBRisk)
+  return false;
+#undef DO_
+}
+
+void PBRisk::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:Micro.Future.Message.Business.PBRisk)
+  // optional .Micro.Future.Message.DataHeader header = 1;
+  if (this->has_header()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, *this->header_, output);
+  }
+
+  // optional string exchange = 2;
+  if (this->exchange().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->exchange().data(), this->exchange().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBRisk.exchange");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->exchange(), output);
+  }
+
+  // optional string contract = 3;
+  if (this->contract().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->contract().data(), this->contract().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBRisk.contract");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      3, this->contract(), output);
+  }
+
+  // optional int32 position = 4;
+  if (this->position() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->position(), output);
+  }
+
+  // optional double delta = 5;
+  if (this->delta() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(5, this->delta(), output);
+  }
+
+  // optional double theta = 6;
+  if (this->theta() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(6, this->theta(), output);
+  }
+
+  // optional double gamma = 7;
+  if (this->gamma() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(7, this->gamma(), output);
+  }
+
+  // optional double vega = 8;
+  if (this->vega() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(8, this->vega(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:Micro.Future.Message.Business.PBRisk)
+}
+
+::google::protobuf::uint8* PBRisk::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:Micro.Future.Message.Business.PBRisk)
+  // optional .Micro.Future.Message.DataHeader header = 1;
+  if (this->has_header()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        1, *this->header_, target);
+  }
+
+  // optional string exchange = 2;
+  if (this->exchange().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->exchange().data(), this->exchange().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBRisk.exchange");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->exchange(), target);
+  }
+
+  // optional string contract = 3;
+  if (this->contract().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->contract().data(), this->contract().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBRisk.contract");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->contract(), target);
+  }
+
+  // optional int32 position = 4;
+  if (this->position() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->position(), target);
+  }
+
+  // optional double delta = 5;
+  if (this->delta() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(5, this->delta(), target);
+  }
+
+  // optional double theta = 6;
+  if (this->theta() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(6, this->theta(), target);
+  }
+
+  // optional double gamma = 7;
+  if (this->gamma() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(7, this->gamma(), target);
+  }
+
+  // optional double vega = 8;
+  if (this->vega() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(8, this->vega(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.Business.PBRisk)
+  return target;
+}
+
+int PBRisk::ByteSize() const {
+// @@protoc_insertion_point(message_byte_size_start:Micro.Future.Message.Business.PBRisk)
+  int total_size = 0;
+
+  // optional .Micro.Future.Message.DataHeader header = 1;
+  if (this->has_header()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->header_);
+  }
+
+  // optional string exchange = 2;
+  if (this->exchange().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->exchange());
+  }
+
+  // optional string contract = 3;
+  if (this->contract().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->contract());
+  }
+
+  // optional int32 position = 4;
+  if (this->position() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->position());
+  }
+
+  // optional double delta = 5;
+  if (this->delta() != 0) {
+    total_size += 1 + 8;
+  }
+
+  // optional double theta = 6;
+  if (this->theta() != 0) {
+    total_size += 1 + 8;
+  }
+
+  // optional double gamma = 7;
+  if (this->gamma() != 0) {
+    total_size += 1 + 8;
+  }
+
+  // optional double vega = 8;
+  if (this->vega() != 0) {
+    total_size += 1 + 8;
+  }
+
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void PBRisk::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Micro.Future.Message.Business.PBRisk)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  const PBRisk* source = 
+      ::google::protobuf::internal::DynamicCastToGenerated<const PBRisk>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Micro.Future.Message.Business.PBRisk)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Micro.Future.Message.Business.PBRisk)
+    MergeFrom(*source);
+  }
+}
+
+void PBRisk::MergeFrom(const PBRisk& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Micro.Future.Message.Business.PBRisk)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (from.has_header()) {
+    mutable_header()->::Micro::Future::Message::DataHeader::MergeFrom(from.header());
+  }
+  if (from.exchange().size() > 0) {
+
+    exchange_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.exchange_);
+  }
+  if (from.contract().size() > 0) {
+
+    contract_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.contract_);
+  }
+  if (from.position() != 0) {
+    set_position(from.position());
+  }
+  if (from.delta() != 0) {
+    set_delta(from.delta());
+  }
+  if (from.theta() != 0) {
+    set_theta(from.theta());
+  }
+  if (from.gamma() != 0) {
+    set_gamma(from.gamma());
+  }
+  if (from.vega() != 0) {
+    set_vega(from.vega());
+  }
+}
+
+void PBRisk::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Micro.Future.Message.Business.PBRisk)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void PBRisk::CopyFrom(const PBRisk& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Micro.Future.Message.Business.PBRisk)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool PBRisk::IsInitialized() const {
+
+  return true;
+}
+
+void PBRisk::Swap(PBRisk* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void PBRisk::InternalSwap(PBRisk* other) {
+  std::swap(header_, other->header_);
+  exchange_.Swap(&other->exchange_);
+  contract_.Swap(&other->contract_);
+  std::swap(position_, other->position_);
+  std::swap(delta_, other->delta_);
+  std::swap(theta_, other->theta_);
+  std::swap(gamma_, other->gamma_);
+  std::swap(vega_, other->vega_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata PBRisk::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = PBRisk_descriptor_;
+  metadata.reflection = PBRisk_reflection_;
+  return metadata;
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// PBRisk
+
+// optional .Micro.Future.Message.DataHeader header = 1;
+bool PBRisk::has_header() const {
+  return !_is_default_instance_ && header_ != NULL;
+}
+void PBRisk::clear_header() {
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
+}
+const ::Micro::Future::Message::DataHeader& PBRisk::header() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBRisk.header)
+  return header_ != NULL ? *header_ : *default_instance_->header_;
+}
+::Micro::Future::Message::DataHeader* PBRisk::mutable_header() {
+  
+  if (header_ == NULL) {
+    header_ = new ::Micro::Future::Message::DataHeader;
+  }
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBRisk.header)
+  return header_;
+}
+::Micro::Future::Message::DataHeader* PBRisk::release_header() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBRisk.header)
+  
+  ::Micro::Future::Message::DataHeader* temp = header_;
+  header_ = NULL;
+  return temp;
+}
+void PBRisk::set_allocated_header(::Micro::Future::Message::DataHeader* header) {
+  delete header_;
+  header_ = header;
+  if (header) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBRisk.header)
+}
+
+// optional string exchange = 2;
+void PBRisk::clear_exchange() {
+  exchange_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBRisk::exchange() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBRisk.exchange)
+  return exchange_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBRisk::set_exchange(const ::std::string& value) {
+  
+  exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBRisk.exchange)
+}
+ void PBRisk::set_exchange(const char* value) {
+  
+  exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBRisk.exchange)
+}
+ void PBRisk::set_exchange(const char* value, size_t size) {
+  
+  exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBRisk.exchange)
+}
+ ::std::string* PBRisk::mutable_exchange() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBRisk.exchange)
+  return exchange_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBRisk::release_exchange() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBRisk.exchange)
+  
+  return exchange_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBRisk::set_allocated_exchange(::std::string* exchange) {
+  if (exchange != NULL) {
+    
+  } else {
+    
+  }
+  exchange_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), exchange);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBRisk.exchange)
+}
+
+// optional string contract = 3;
+void PBRisk::clear_contract() {
+  contract_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBRisk::contract() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBRisk.contract)
+  return contract_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBRisk::set_contract(const ::std::string& value) {
+  
+  contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBRisk.contract)
+}
+ void PBRisk::set_contract(const char* value) {
+  
+  contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBRisk.contract)
+}
+ void PBRisk::set_contract(const char* value, size_t size) {
+  
+  contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBRisk.contract)
+}
+ ::std::string* PBRisk::mutable_contract() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBRisk.contract)
+  return contract_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBRisk::release_contract() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBRisk.contract)
+  
+  return contract_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBRisk::set_allocated_contract(::std::string* contract) {
+  if (contract != NULL) {
+    
+  } else {
+    
+  }
+  contract_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), contract);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBRisk.contract)
+}
+
+// optional int32 position = 4;
+void PBRisk::clear_position() {
+  position_ = 0;
+}
+ ::google::protobuf::int32 PBRisk::position() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBRisk.position)
+  return position_;
+}
+ void PBRisk::set_position(::google::protobuf::int32 value) {
+  
+  position_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBRisk.position)
+}
+
+// optional double delta = 5;
+void PBRisk::clear_delta() {
+  delta_ = 0;
+}
+ double PBRisk::delta() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBRisk.delta)
+  return delta_;
+}
+ void PBRisk::set_delta(double value) {
+  
+  delta_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBRisk.delta)
+}
+
+// optional double theta = 6;
+void PBRisk::clear_theta() {
+  theta_ = 0;
+}
+ double PBRisk::theta() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBRisk.theta)
+  return theta_;
+}
+ void PBRisk::set_theta(double value) {
+  
+  theta_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBRisk.theta)
+}
+
+// optional double gamma = 7;
+void PBRisk::clear_gamma() {
+  gamma_ = 0;
+}
+ double PBRisk::gamma() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBRisk.gamma)
+  return gamma_;
+}
+ void PBRisk::set_gamma(double value) {
+  
+  gamma_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBRisk.gamma)
+}
+
+// optional double vega = 8;
+void PBRisk::clear_vega() {
+  vega_ = 0;
+}
+ double PBRisk::vega() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBRisk.vega)
+  return vega_;
+}
+ void PBRisk::set_vega(double value) {
+  
+  vega_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBRisk.vega)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int PBRiskList::kHeaderFieldNumber;
+const int PBRiskList::kRiskFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+PBRiskList::PBRiskList()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:Micro.Future.Message.Business.PBRiskList)
+}
+
+void PBRiskList::InitAsDefaultInstance() {
+  _is_default_instance_ = true;
+  header_ = const_cast< ::Micro::Future::Message::DataHeader*>(&::Micro::Future::Message::DataHeader::default_instance());
+}
+
+PBRiskList::PBRiskList(const PBRiskList& from)
+  : ::google::protobuf::Message(),
+    _internal_metadata_(NULL) {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:Micro.Future.Message.Business.PBRiskList)
+}
+
+void PBRiskList::SharedCtor() {
+    _is_default_instance_ = false;
+  _cached_size_ = 0;
+  header_ = NULL;
+}
+
+PBRiskList::~PBRiskList() {
+  // @@protoc_insertion_point(destructor:Micro.Future.Message.Business.PBRiskList)
+  SharedDtor();
+}
+
+void PBRiskList::SharedDtor() {
+  if (this != default_instance_) {
+    delete header_;
+  }
+}
+
+void PBRiskList::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* PBRiskList::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return PBRiskList_descriptor_;
+}
+
+const PBRiskList& PBRiskList::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_businessobj_2eproto();
+  return *default_instance_;
+}
+
+PBRiskList* PBRiskList::default_instance_ = NULL;
+
+PBRiskList* PBRiskList::New(::google::protobuf::Arena* arena) const {
+  PBRiskList* n = new PBRiskList;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void PBRiskList::Clear() {
+// @@protoc_insertion_point(message_clear_start:Micro.Future.Message.Business.PBRiskList)
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
+  risk_.Clear();
+}
+
+bool PBRiskList::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:Micro.Future.Message.Business.PBRiskList)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional .Micro.Future.Message.DataHeader header = 1;
+      case 1: {
+        if (tag == 10) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_header()));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(18)) goto parse_risk;
+        break;
+      }
+
+      // repeated .Micro.Future.Message.Business.PBRisk risk = 2;
+      case 2: {
+        if (tag == 18) {
+         parse_risk:
+          DO_(input->IncrementRecursionDepth());
+         parse_loop_risk:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtualNoRecursionDepth(
+                input, add_risk()));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(18)) goto parse_loop_risk;
+        input->UnsafeDecrementRecursionDepth();
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:Micro.Future.Message.Business.PBRiskList)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:Micro.Future.Message.Business.PBRiskList)
+  return false;
+#undef DO_
+}
+
+void PBRiskList::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:Micro.Future.Message.Business.PBRiskList)
+  // optional .Micro.Future.Message.DataHeader header = 1;
+  if (this->has_header()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, *this->header_, output);
+  }
+
+  // repeated .Micro.Future.Message.Business.PBRisk risk = 2;
+  for (unsigned int i = 0, n = this->risk_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      2, this->risk(i), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:Micro.Future.Message.Business.PBRiskList)
+}
+
+::google::protobuf::uint8* PBRiskList::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:Micro.Future.Message.Business.PBRiskList)
+  // optional .Micro.Future.Message.DataHeader header = 1;
+  if (this->has_header()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        1, *this->header_, target);
+  }
+
+  // repeated .Micro.Future.Message.Business.PBRisk risk = 2;
+  for (unsigned int i = 0, n = this->risk_size(); i < n; i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        2, this->risk(i), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.Business.PBRiskList)
+  return target;
+}
+
+int PBRiskList::ByteSize() const {
+// @@protoc_insertion_point(message_byte_size_start:Micro.Future.Message.Business.PBRiskList)
+  int total_size = 0;
+
+  // optional .Micro.Future.Message.DataHeader header = 1;
+  if (this->has_header()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->header_);
+  }
+
+  // repeated .Micro.Future.Message.Business.PBRisk risk = 2;
+  total_size += 1 * this->risk_size();
+  for (int i = 0; i < this->risk_size(); i++) {
+    total_size +=
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        this->risk(i));
+  }
+
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void PBRiskList::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Micro.Future.Message.Business.PBRiskList)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  const PBRiskList* source = 
+      ::google::protobuf::internal::DynamicCastToGenerated<const PBRiskList>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Micro.Future.Message.Business.PBRiskList)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Micro.Future.Message.Business.PBRiskList)
+    MergeFrom(*source);
+  }
+}
+
+void PBRiskList::MergeFrom(const PBRiskList& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Micro.Future.Message.Business.PBRiskList)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  risk_.MergeFrom(from.risk_);
+  if (from.has_header()) {
+    mutable_header()->::Micro::Future::Message::DataHeader::MergeFrom(from.header());
+  }
+}
+
+void PBRiskList::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Micro.Future.Message.Business.PBRiskList)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void PBRiskList::CopyFrom(const PBRiskList& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Micro.Future.Message.Business.PBRiskList)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool PBRiskList::IsInitialized() const {
+
+  return true;
+}
+
+void PBRiskList::Swap(PBRiskList* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void PBRiskList::InternalSwap(PBRiskList* other) {
+  std::swap(header_, other->header_);
+  risk_.UnsafeArenaSwap(&other->risk_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata PBRiskList::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = PBRiskList_descriptor_;
+  metadata.reflection = PBRiskList_reflection_;
+  return metadata;
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// PBRiskList
+
+// optional .Micro.Future.Message.DataHeader header = 1;
+bool PBRiskList::has_header() const {
+  return !_is_default_instance_ && header_ != NULL;
+}
+void PBRiskList::clear_header() {
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
+}
+const ::Micro::Future::Message::DataHeader& PBRiskList::header() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBRiskList.header)
+  return header_ != NULL ? *header_ : *default_instance_->header_;
+}
+::Micro::Future::Message::DataHeader* PBRiskList::mutable_header() {
+  
+  if (header_ == NULL) {
+    header_ = new ::Micro::Future::Message::DataHeader;
+  }
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBRiskList.header)
+  return header_;
+}
+::Micro::Future::Message::DataHeader* PBRiskList::release_header() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBRiskList.header)
+  
+  ::Micro::Future::Message::DataHeader* temp = header_;
+  header_ = NULL;
+  return temp;
+}
+void PBRiskList::set_allocated_header(::Micro::Future::Message::DataHeader* header) {
+  delete header_;
+  header_ = header;
+  if (header) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBRiskList.header)
+}
+
+// repeated .Micro.Future.Message.Business.PBRisk risk = 2;
+int PBRiskList::risk_size() const {
+  return risk_.size();
+}
+void PBRiskList::clear_risk() {
+  risk_.Clear();
+}
+const ::Micro::Future::Message::Business::PBRisk& PBRiskList::risk(int index) const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBRiskList.risk)
+  return risk_.Get(index);
+}
+::Micro::Future::Message::Business::PBRisk* PBRiskList::mutable_risk(int index) {
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBRiskList.risk)
+  return risk_.Mutable(index);
+}
+::Micro::Future::Message::Business::PBRisk* PBRiskList::add_risk() {
+  // @@protoc_insertion_point(field_add:Micro.Future.Message.Business.PBRiskList.risk)
+  return risk_.Add();
+}
+::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBRisk >*
+PBRiskList::mutable_risk() {
+  // @@protoc_insertion_point(field_mutable_list:Micro.Future.Message.Business.PBRiskList.risk)
+  return &risk_;
+}
+const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBRisk >&
+PBRiskList::risk() const {
+  // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBRiskList.risk)
+  return risk_;
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

@@ -39,6 +39,15 @@ data_buffer PBStrategySerializer::Serialize(const dataobj_ptr& abstractDO)
 		pStrategy->set_bidqv(sdo.BidQV);
 		pStrategy->set_askqv(sdo.AskQV);
 
+		pStrategy->set_portfolio(sdo.PortfolioID());
+		
+		if (sdo.BaseContract)
+		{
+			pStrategy->set_baseexchange(sdo.BaseContract->ExchangeID());
+			pStrategy->set_basecontract(sdo.BaseContract->InstrumentID());
+		}
+
+
 		// Fill Models
 		if (sdo.PricingModel)
 		{

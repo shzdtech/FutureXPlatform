@@ -13,7 +13,7 @@ IRawAPI * TestingWorkProcessor::getRawAPI(void)
 	return nullptr;
 }
 
-UserPositionContext & TestingWorkProcessor::GetUserPositionContext()
+IUserPositionContext & TestingWorkProcessor::GetUserPositionContext()
 {
 	return _userPositionCtx;
 }

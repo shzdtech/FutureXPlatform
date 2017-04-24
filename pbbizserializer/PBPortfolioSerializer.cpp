@@ -16,7 +16,7 @@ data_buffer PBPortfolioSerializer::Serialize(const dataobj_ptr & abstractDO)
 		auto pParam = PB.add_portfolio();
 		pParam->set_name(po.PortfolioID());
 		pParam->set_hedgedelay(po.HedgeDelay);
-		// pParam->set_description(po.di)
+		pParam->set_threshold(po.Threshold);
 	}
 
 	SerializeWithReturn(PB);
@@ -36,6 +36,7 @@ dataobj_ptr PBPortfolioSerializer::Deserialize(const data_buffer & rawdata)
 	{
 		PortfolioDO pdo(p.name(), "");
 		pdo.HedgeDelay = p.hedgedelay();
+		pdo.Threshold = p.threshold();
 		ret->push_back(std::move(pdo));
 	}
 

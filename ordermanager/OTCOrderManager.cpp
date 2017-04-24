@@ -123,7 +123,6 @@ void OTCOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 					{
 						orderDO.OrderStatus = currStatus;
 						orderDO.VolumeTraded = orderDO.Volume;
-						orderDO.VolumeRemain = 0;
 						ret->push_back(orderDO);
 						_positionCtx.UpdatePosition(strategyDO, orderDO.Direction, orderDO.OpenClose, orderDO.Volume);
 						_contractOrderCtx.RemoveOrder(orderDO.OrderID);

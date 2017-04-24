@@ -21,7 +21,7 @@
 CTPOTCTradeProcessor::CTPOTCTradeProcessor(
 	IServerContext* pServerCtx,
 	const IPricingDataContext_Ptr& pricingDataCtx)
-	: OTCTradeProcessor(pricingDataCtx), CTPTradeWorkerProcessor(pServerCtx),
+	: OTCTradeProcessor(pricingDataCtx), CTPTradeWorkerProcessorEx(pServerCtx),
 	_otcOrderMgr(this, pricingDataCtx, this),
 	_autoOrderMgr(this, pricingDataCtx)
 {
@@ -103,6 +103,7 @@ OrderDO_Ptr CTPOTCTradeProcessor::CancelOrder(const OrderRequestDO& orderInfo)
 	std::strncpy(req.BrokerID, _systemUser.getBrokerId().data(), sizeof(req.BrokerID));
 	std::strncpy(req.InvestorID, _systemUser.getUserId().data(), sizeof(req.InvestorID));
 	std::strncpy(req.UserID, orderInfo.UserID().data(), sizeof(req.UserID));
+
 	if (orderInfo.OrderSysID != 0)
 	{
 		std::strncpy(req.ExchangeID, orderInfo.ExchangeID().data(), sizeof(req.ExchangeID));
@@ -110,8 +111,8 @@ OrderDO_Ptr CTPOTCTradeProcessor::CancelOrder(const OrderRequestDO& orderInfo)
 	}
 	else
 	{
-		req.SessionID = _systemUser.getSessionId();
 		req.FrontID = _systemUser.getFrontId();
+		req.SessionID = orderInfo.SessionID ? orderInfo.SessionID : _systemUser.getSessionId();
 		std::strncpy(req.InstrumentID, orderInfo.InstrumentID().data(), sizeof(req.InstrumentID));
 		std::snprintf(req.OrderRef, sizeof(req.OrderRef), FMT_ORDERREF, orderInfo.OrderID);
 	}
@@ -119,7 +120,7 @@ OrderDO_Ptr CTPOTCTradeProcessor::CancelOrder(const OrderRequestDO& orderInfo)
 	if (_rawAPI->TdAPI->ReqOrderAction(&req, AppContext::GenNextSeq()) != 0)
 		return nullptr;
 
-	req.SessionID = _systemUser.getSessionId();
+	req.SessionID = orderInfo.SessionID ? orderInfo.SessionID : _systemUser.getSessionId();
 
 	return CTPUtility::ParseRawOrder(&req, nullptr);
 }

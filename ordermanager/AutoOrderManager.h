@@ -22,7 +22,7 @@ public:
 	OrderDO_Ptr CancelOrder(OrderRequestDO& orderInfo);
 	OrderDO_Ptr RejectOrder(OrderRequestDO& orderInfo);
 	int OnMarketOrderUpdated(OrderDO& orderInfo);
-	uint64_t ParseOrderID(uint64_t rawOrderId);
+	uint64_t ParseOrderID(uint64_t rawOrderId, uint64_t sessionId);
 
 	void TradeByStrategy(const StrategyContractDO& strategyDO);
 

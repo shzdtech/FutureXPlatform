@@ -81,9 +81,7 @@ dataobj_ptr OTCUpdateModelParams::HandleRequest(const uint32_t serialId, const d
 									(ivmModel_Ptr && ivmModel_Ptr->operator==(*pModelParam))
 									)
 								{
-									pWorkerProc->TriggerTadingDeskParams(*strategyDO);
-									pWorkerProc->SendOTCPricing(*strategyDO);
-									pWorkerProc->TriggerOTCTrading(*strategyDO);
+									pWorkerProc->TriggerUpdateByStrategy(*strategyDO);
 								}
 							}
 						}

@@ -17,6 +17,8 @@
 #include "../message/DefMessageID.h"
 #include "../message/MessageUtility.h"
 
+#include "../ordermanager/OrderPortfolioCache.h"
+
 #include "../dataobject/OrderDO.h"
 
 
@@ -48,7 +50,7 @@ dataobj_ptr CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_pt
 	// 合约代码
 	std::strncpy(req.InstrumentID, pDO->InstrumentID().data(), sizeof(req.InstrumentID));
 	///报单引用
-	pDO->OrderID = OrderSeqGen::GenOrderID();
+	pDO->OrderID = OrderSeqGen::GenOrderID(userInfo.getSessionId());
 
 	std::snprintf(req.OrderRef, sizeof(req.OrderRef), FMT_ORDERREF, pDO->OrderID);
 	// 用户代码
@@ -89,6 +91,14 @@ dataobj_ptr CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_pt
 
 	int iRet = ((CTPRawAPI*)rawAPI)->TdAPI->ReqOrderInsert(&req, serialId);
 	CTPUtility::CheckReturnError(iRet);
+
+	if (userInfo.getRole() == ROLE_TRADINGDESK && !pDO->PortfolioID().empty())
+	{
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+		{
+			OrderPortfolioCache::Insert(pDO->OrderID, pDO->PortfolioID());
+		}
+	}
 
 	return nullptr;
 }

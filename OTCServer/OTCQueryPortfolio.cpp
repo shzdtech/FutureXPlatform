@@ -21,9 +21,27 @@ dataobj_ptr OTCQueryPortfolio::HandleRequest(const uint32_t serialId, const data
 
 	if (auto userInfoPtr = std::static_pointer_cast<UserInfoDO>(session->getUserInfo().getExtInfo()))
 	{
-		ThrowNotFoundExceptionIfEmpty(userInfoPtr->Portfolios);
+		ThrowNotFoundExceptionIfEmpty(&userInfoPtr->Portfolios);
 
-		return std::make_shared<VectorDO<PortfolioDO>>(*userInfoPtr->Portfolios);
+		auto ret = std::make_shared<VectorDO<PortfolioDO>>();
+
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+		{
+			auto pPortfoliorMap = pWorkerProc->PricingDataContext()->GetPortfolioMap();
+
+			auto& userid = session->getUserInfo().getUserId();
+
+			for (auto portfolio : userInfoPtr->Portfolios)
+			{
+				auto it = pPortfoliorMap->find(PortfolioKey(portfolio, userid));
+				if (it != pPortfoliorMap->end())
+				{
+					ret->push_back(it->second);
+				}
+			}
+		}
+
+		return ret;
 	}
 
 	return nullptr;

@@ -4,6 +4,7 @@
 #include "../dataobject/TradingDeskOptionParams.h"
 #include "../pricingengine/ComplexAlgoirthmManager.h"
 #include "../pricingengine/OptionParams.h"
+#include "../pricingengine/PricingUtility.h"
 #include "../common/Attribute_Key.h"
 #include "../message/MessageUtility.h"
 #include "../OTCServer/OTCWorkerProcessor.h"
@@ -25,10 +26,8 @@ dataobj_ptr OTCOptionPricingParams::HandleResponse(const uint32_t serialId, cons
 			if (pricingCtx.GetMarketDataMap()->find(pStrategy->InstrumentID(), mDO))
 			{
 				ret->MarketData = std::make_shared<PricingDO>();
-				ret->MarketData->TBid().Price = mDO.Bid().Price;
-				ret->MarketData->TBid().Volume = mDO.Bid().Volume;
-				ret->MarketData->TAsk().Price = mDO.Ask().Price;
-				ret->MarketData->TAsk().Volume = mDO.Ask().Volume;
+				ret->MarketData->Bid() = mDO.Bid();
+				ret->MarketData->Ask() = mDO.Ask();
 			}
 		}
 
@@ -71,30 +70,29 @@ dataobj_ptr OTCOptionPricingParams::HandleResponse(const uint32_t serialId, cons
 							ret->TheoDataTemp = std::static_pointer_cast<WingsModelReturnDO>(tempVol);
 						}
 					}
-
-					// Pricing Model	
-					if (pStrategy->PricingModel)
-						if (auto prcingmodel_ptr = PricingAlgorithmManager::Instance()->FindModel(pStrategy->PricingModel->Model))
-						{
-							if (auto pricingDO = prcingmodel_ptr->Compute(nullptr, *pStrategy, pricingCtx, nullptr))
-							{
-								auto pOptionPricing = (OptionPricingDO*)pricingDO.get();
-								ret->TheoData->TBid().Price = pOptionPricing->TBid().Price;
-								ret->TheoData->TBid().Delta = pOptionPricing->TBid().Delta;
-								ret->TheoData->TBid().Gamma = pOptionPricing->TBid().Gamma;
-								ret->TheoData->TBid().Vega = pOptionPricing->TBid().Vega;
-								ret->TheoData->TBid().Theta = pOptionPricing->TBid().Theta;
-
-								ret->TheoData->TAsk().Price = pOptionPricing->TAsk().Price;
-								ret->TheoData->TAsk().Delta = pOptionPricing->TAsk().Delta;
-								ret->TheoData->TAsk().Gamma = pOptionPricing->TAsk().Gamma;
-								ret->TheoData->TAsk().Vega = pOptionPricing->TAsk().Vega;
-								ret->TheoData->TAsk().Theta = pOptionPricing->TAsk().Theta;
-
-								pricingCtx.GetPricingDataDOMap()->upsert(*pStrategy, [&pricingDO](IPricingDO_Ptr& pricing_ptr) { pricing_ptr = pricingDO; }, pricingDO);
-							}
-						}
 				}
+
+		// Pricing Model	
+		if (auto pricingDO = PricingUtility::Pricing(nullptr, *pStrategy, pricingCtx))
+		{
+			if (!ret->TheoData)
+				ret->TheoData = std::make_shared<WingsModelReturnDO>();
+
+			auto pOptionPricing = (OptionPricingDO*)pricingDO.get();
+			ret->TheoData->TBid().Price = pOptionPricing->TBid().Price;
+			ret->TheoData->TBid().Delta = pOptionPricing->TBid().Delta;
+			ret->TheoData->TBid().Gamma = pOptionPricing->TBid().Gamma;
+			ret->TheoData->TBid().Vega = pOptionPricing->TBid().Vega;
+			ret->TheoData->TBid().Theta = pOptionPricing->TBid().Theta;
+
+			ret->TheoData->TAsk().Price = pOptionPricing->TAsk().Price;
+			ret->TheoData->TAsk().Delta = pOptionPricing->TAsk().Delta;
+			ret->TheoData->TAsk().Gamma = pOptionPricing->TAsk().Gamma;
+			ret->TheoData->TAsk().Vega = pOptionPricing->TAsk().Vega;
+			ret->TheoData->TAsk().Theta = pOptionPricing->TAsk().Theta;
+
+			pricingCtx.GetPricingDataDOMap()->upsert(*pStrategy, [&pricingDO](IPricingDO_Ptr& pricing_ptr) { pricing_ptr = pricingDO; }, pricingDO);
+		}
 	}
 
 	return ret;

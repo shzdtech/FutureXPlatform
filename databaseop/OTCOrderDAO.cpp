@@ -200,7 +200,6 @@ OrderDOVec_Ptr OTCOrderDAO::QueryTradingOrder(const ContractKey& contractKey)
 			obDO.LimitPrice = rs->getDouble(6);
 			obDO.Volume = rs->getInt(7);
 			obDO.VolumeTraded = rs->getInt(8);
-			obDO.VolumeRemain = obDO.Volume - obDO.VolumeTraded;
 			obDO.Direction = rs->getBoolean(9) ? DirectionType::BUY : DirectionType::SELL;
 			obDO.OrderStatus = (OrderStatusType)rs->getInt(10);
 			obDO.TIF = (OrderTIFType)rs->getInt(11);
@@ -258,7 +257,6 @@ OrderDOVec_Ptr OTCOrderDAO::QueryTodayOrder(const std::string& userId, const Con
 			obDO.LimitPrice = rs->getDouble(6);
 			obDO.Volume = rs->getInt(7);
 			obDO.VolumeTraded = rs->getInt(8);
-			obDO.VolumeRemain = obDO.Volume - obDO.VolumeTraded;
 			obDO.Direction = rs->getBoolean(9) != 0 ? DirectionType::BUY : DirectionType::SELL;
 			obDO.OrderStatus = (OrderStatusType)rs->getInt(10);
 			obDO.TIF = (OrderTIFType)rs->getInt(11);

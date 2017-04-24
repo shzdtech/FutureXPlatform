@@ -42,7 +42,7 @@ public:
    virtual void DispatchUserMessage(int msgId, int serialId, const std::string& userId, const dataobj_ptr& dataobj_ptr);
    virtual autofillmap<std::string, AccountInfoDO>& GetAccountInfo(const std::string userId);
    virtual std::set<ExchangeDO>& GetExchangeInfo();
-   virtual UserPositionContext& GetUserPositionContext();
+   virtual IUserPositionContext& GetUserPositionContext();
    virtual UserTradeContext& GetUserTradeContext();
    virtual UserOrderContext& GetUserOrderContext(void);
    virtual std::set<ProductType>& GetProductTypeToLoad();

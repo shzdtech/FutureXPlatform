@@ -19,7 +19,7 @@
 VectorDO_Ptr<PortfolioDO> PortfolioDAO::FindPortfolioByUser(const std::string& userid)
 {
 	static const std::string sql_findportfolio(
-		"SELECT portfolio_symbol, hedge_delay FROM portfolio "
+		"SELECT portfolio_symbol, hedge_delay, hedge_threshold FROM portfolio "
 		"WHERE accountid = ?");
 
 	auto ret = std::make_shared<VectorDO<PortfolioDO>>();
@@ -36,6 +36,7 @@ VectorDO_Ptr<PortfolioDO> PortfolioDAO::FindPortfolioByUser(const std::string& u
 		{
 			PortfolioDO pfdo(rs->getString(1), userid);
 			pfdo.HedgeDelay = rs->getInt(2);
+			pfdo.Threshold = rs->getDouble(3);
 
 			ret->push_back(std::move(pfdo));
 		}
@@ -49,11 +50,11 @@ VectorDO_Ptr<PortfolioDO> PortfolioDAO::FindPortfolioByUser(const std::string& u
 	return ret;
 }
 
-int PortfolioDAO::CreatePortofolio(const PortfolioDO & portfolio)
+int PortfolioDAO::UpsertPortofolio(const PortfolioDO & portfolio)
 {
 	static const std::string sql_newportfolio(
-		"insert into portfolio (accountid, portfolio_symbol, hedge_delay, descript) "
-		"values (?,?,?,?)");
+		"INSERT INTO portfolio (accountid, portfolio_symbol, hedge_delay, hedge_threshold) "
+		"VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE hedge_delay = ?, hedge_threshold = ? ");
 
 	auto ret = -1;
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
@@ -64,7 +65,9 @@ int PortfolioDAO::CreatePortofolio(const PortfolioDO & portfolio)
 		prestmt->setString(1, portfolio.UserID());
 		prestmt->setString(2, portfolio.PortfolioID());
 		prestmt->setInt(3, portfolio.HedgeDelay);
-		prestmt->setString(4, portfolio.PortfolioID());
+		prestmt->setDouble(4, portfolio.Threshold);
+		prestmt->setInt(5, portfolio.HedgeDelay);
+		prestmt->setDouble(6, portfolio.Threshold);
 
 		prestmt->executeUpdate();
 

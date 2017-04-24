@@ -24,13 +24,19 @@ IPricingDO_Ptr PricingUtility::Pricing(
 	IPricingDataContext& priceCtx,
 	const param_vector* params)
 {
-	auto algorithm =
-		PricingAlgorithmManager::Instance()->FindModel(sdo.PricingModel->Model);
+	IPricingDO_Ptr ret;
 
-	if (!algorithm)
-		throw NotFoundException("Prcing algorithm '" + sdo.PricingModel->Model + "' not found");
+	if (sdo.PricingModel)
+	{
+		auto algorithm = PricingAlgorithmManager::Instance()->FindModel(sdo.PricingModel->Model);
 
-	return algorithm->Compute(pInputObject, sdo, priceCtx, params);
+		if (!algorithm)
+			throw NotFoundException("Prcing algorithm '" + sdo.PricingModel->Model + "' not found");
+
+		ret = algorithm->Compute(pInputObject, sdo, priceCtx, params);
+	}
+
+	return ret;
 }
 
 IPricingDO_Ptr PricingUtility::Pricing(

@@ -77,10 +77,12 @@ void CTPOTCOptionWorkerProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketData
 			mDO.Ask().Price = askPrice;
 			mDO.Bid().Volume = pDepthMarketData->BidVolume1;
 			mDO.Ask().Volume = pDepthMarketData->AskVolume1;
+			mDO.LowerLimitPrice = pDepthMarketData->LowerLimitPrice;
+			mDO.UpperLimitPrice = pDepthMarketData->UpperLimitPrice;
 
 			pMarketDataMap->update(pDepthMarketData->InstrumentID, mDO);
 
-			TriggerMarketDataUpdating(mDO);
+			TriggerUpdateByMarketData(mDO);
 		}
 	}
 }

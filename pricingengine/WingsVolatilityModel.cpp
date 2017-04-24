@@ -70,7 +70,7 @@ dataobj_ptr WingsVolatilityModel::Compute(
 	else
 	{
 		MarketDataDO mDO;
-		if (!sdo.VolContracts || 
+		if (!sdo.VolContracts ||
 			!priceCtx.GetMarketDataMap()->find(strContract.InstrumentID(), mDO))
 			return nullptr;
 		f_atm = (mDO.Ask().Price + mDO.Bid().Price) / 2;
@@ -112,25 +112,25 @@ dataobj_ptr WingsVolatilityModel::Compute(
 	double div = std::pow(days == 0 ? DBL_EPSILON : days / 365.0, alpha);
 	if (div < DBL_EPSILON) div = DBL_EPSILON;
 	double x = (1 / div) * std::log(strikeprice / ret->f_syn);
-	
+
 	std::tie(midVol, ret->vol_curr, ret->slope_curr, ret->x0, ret->x1, ret->x2, ret->x3)
 		= ComputeVolatility(ret->f_syn, x, f_ref, ssr,
-		paramObj->scr, paramObj->vcr, paramObj->vol_ref, paramObj->slope_ref, paramObj->dn_cf, paramObj->up_cf, paramObj->dn_sm, paramObj->up_sm, paramObj->dn_slope, paramObj->up_slope, paramObj->put_curv, paramObj->call_curv);
+			paramObj->scr, paramObj->vcr, paramObj->vol_ref, paramObj->slope_ref, paramObj->dn_cf, paramObj->up_cf, paramObj->dn_sm, paramObj->up_sm, paramObj->dn_slope, paramObj->up_slope, paramObj->put_curv, paramObj->call_curv);
 
 	double offsetVol, x0_dummy, x1_dummy, x2_dummy, x3_dummy;
 	std::tie(offsetVol, ret->vol_curr_offset, ret->slope_curr_offset, x0_dummy, x1_dummy, x2_dummy, x3_dummy)
 		= ComputeVolatility(ret->f_syn, x, f_ref, ssr,
-		paramObj->scr_offset, paramObj->vcr_offset, paramObj->vol_ref_offset, paramObj->slope_ref_offset, paramObj->dn_cf_offset, paramObj->up_cf_offset, paramObj->dn_sm_offset, paramObj->up_sm_offset, paramObj->dn_slope_offset, paramObj->up_slope_offset, paramObj->put_curv_offset, paramObj->call_curv_offset);
+			paramObj->scr_offset, paramObj->vcr_offset, paramObj->vol_ref_offset, paramObj->slope_ref_offset, paramObj->dn_cf_offset, paramObj->up_cf_offset, paramObj->dn_sm_offset, paramObj->up_sm_offset, paramObj->dn_slope_offset, paramObj->up_slope_offset, paramObj->put_curv_offset, paramObj->call_curv_offset);
 
-	ret->TBid().Volatility = midVol - offsetVol;
-	ret->TAsk().Volatility = midVol + offsetVol;
+	ret->TBid().Volatility = std::max(midVol - offsetVol, 0.0);
+	ret->TAsk().Volatility = std::max(midVol + offsetVol, 0.0);
 	// ret->x = ret->f_syn * std::exp(ret->x);
 
 	return ret;
 }
 
 std::tuple<double, double, double, double, double, double, double>
-	WingsVolatilityModel::ComputeVolatility(
+WingsVolatilityModel::ComputeVolatility(
 	double f_syn,
 	double x,
 	double f_ref,

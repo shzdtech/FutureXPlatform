@@ -83,7 +83,8 @@ void TradingDeskContextBuilder::LoadPortfolio(const IMessageProcessor_Ptr& msgPr
 			}
 
 			if (auto userInfoPtr = std::static_pointer_cast<UserInfoDO>(session->getUserInfo().getExtInfo()))
-				userInfoPtr->Portfolios = portfolioDOVec_Ptr;
+				for (auto& portfolio : *portfolioDOVec_Ptr)
+					userInfoPtr->Portfolios.emplace(portfolio.PortfolioID());
 		}
 	}
 }

@@ -11,7 +11,7 @@ public:
 	TestingWorkProcessor();
 	void Initialize(IServerContext* pServerCtx);
 	virtual IRawAPI* getRawAPI(void);
-	virtual UserPositionContext& GetUserPositionContext();
+	virtual IUserPositionContext& GetUserPositionContext();
 	virtual UserTradeContext& GetUserTradeContext();
 	virtual UserOrderContext& GetUserOrderContext(void);
 
