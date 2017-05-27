@@ -28,8 +28,6 @@
 
 dataobj_ptr CTPSubMarketData::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	CheckLogin(session);
-
 	auto stdo = (StringTableDO*)reqDO.get();
 	VectorDO_Ptr<MarketDataDO> ret;
 
@@ -55,9 +53,24 @@ dataobj_ptr CTPSubMarketData::HandleRequest(const uint32_t serialId, const datao
 
 					i++;
 				}
+				else
+				{
+					MarketDataDO mdo("", inst);
+					mdo.TradingDay = tradingDay;
+					ret->push_back(std::move(mdo));
+
+					i++;
+				}
 			}
-			int iRet = ((CTPRawAPI*)rawAPI)->MdAPI->SubscribeMarketData(ppInstrments.get(), i);
-			CTPUtility::CheckReturnError(iRet);
+
+			if (rawAPI)
+			{
+				if (auto pMdAPI = ((CTPRawAPI*)rawAPI)->MdAPI)
+				{
+					int iRet = pMdAPI->SubscribeMarketData(ppInstrments.get(), i);
+					CTPUtility::CheckReturnError(iRet);
+				}
+			}
 		}
 	}
 

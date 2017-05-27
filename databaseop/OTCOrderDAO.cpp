@@ -18,7 +18,7 @@
 
 OrderDO_Ptr OTCOrderDAO::CreateOrder(const OrderRequestDO& orderDO, const IPricingDO& pricingDO)
 {
-	static const std::string sql_proc_createorder("CALL Order_OTC_New(?,?,?,?,?,?,?,?,?,?,@orderID,@orderSysID,@orderStatus)");
+	static const std::string sql_proc_createorder("CALL Order_OTC_New(?,?,?,?,?,?,?,?,?,?,?,@orderID,@orderSysID,@orderStatus)");
 
 	auto ret = std::make_shared<OrderDO>(orderDO);
 
@@ -37,7 +37,7 @@ OrderDO_Ptr OTCOrderDAO::CreateOrder(const OrderRequestDO& orderDO, const IPrici
 		prestmt->setBoolean(8, orderDO.Direction != DirectionType::SELL);
 		prestmt->setInt(9, orderDO.ExecType);
 		prestmt->setInt(10, orderDO.TIF);
-
+		prestmt->setInt(11, orderDO.TradingDay);
 		prestmt->execute();
 
 		AutoCloseStatement_Ptr stmt(session->getConnection()->createStatement());
@@ -104,11 +104,11 @@ bool OTCOrderDAO::CancelOrder(const OrderRequestDO& orderDO, OrderStatusType& st
 // Return:     bool
 ////////////////////////////////////////////////////////////////////////
 
-bool OTCOrderDAO::AcceptOrder(const OrderRequestDO& orderDO, OrderStatusType& status)
+uint64_t OTCOrderDAO::AcceptOrder(const OrderRequestDO& orderDO, OrderStatusType& status)
 {
-	static const std::string sql_proc_acceptorder("CALL Order_OTC_Accept(?)");
+	static const std::string sql_proc_acceptorder("CALL Order_OTC_Accept(?, @tradeID)");
 
-	bool ret = true;
+	uint64_t ret = 0;
 	status = OrderStatusType::UNDEFINED;
 
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
@@ -118,9 +118,18 @@ bool OTCOrderDAO::AcceptOrder(const OrderRequestDO& orderDO, OrderStatusType& st
 			session->getConnection()->prepareStatement(sql_proc_acceptorder));
 		prestmt->setUInt64(1, orderDO.OrderID);
 
-		if (prestmt->executeUpdate() > 0)
+		prestmt->execute();
+		
+		AutoCloseStatement_Ptr stmt(session->getConnection()->createStatement());
+		AutoCloseResultSet_Ptr rsout(stmt->executeQuery("select @tradeID"));
+		if (rsout->next())
 		{
-			ret = status == OrderStatusType::ALL_TRADED;
+			ret = rsout->getUInt64(1);
+
+			if (ret > 0)
+			{
+				status = OrderStatusType::ALL_TRADED;
+			}
 		}
 	}
 	catch (sql::SQLException& sqlEx)

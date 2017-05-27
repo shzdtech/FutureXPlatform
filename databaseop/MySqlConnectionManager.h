@@ -12,7 +12,7 @@
 
 #include <string>
 #include <memory>
-#include <thread>
+#include <future>
 #include "../litelogger/LiteLogger.h"
 #include "../message/BizError.h"
 #include "../common/BizErrorIDs.h"
@@ -40,7 +40,7 @@ private:
 
 	std::shared_ptr<connection_pool<sql::Connection>> _connpool_ptr;
 	bool _runing;
-	std::thread _heartbeatTask;
+	std::future<void> _heartbeatTask;
 
 };
 

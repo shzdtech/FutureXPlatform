@@ -37,7 +37,7 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const uint32_t serialId, const da
 {
 	CheckLogin(session);
 
-	auto stdo = (MapDO<std::string>*)reqDO.get();
+	auto stdo = (StringMapDO<std::string>*)reqDO.get();
 	auto& brokeid = session->getUserInfo().getBrokerId();
 	auto& investorid = session->getUserInfo().getInvestorId();
 

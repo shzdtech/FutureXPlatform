@@ -10,12 +10,16 @@
 
 #include "CTPProcessor.h"
 #include "ctpexport.h"
+#include "../utility/lockfree_set.h"
 
 class CTP_CLASS_EXPORT CTPMarketDataProcessor : public CTPProcessor, public CThostFtdcMdSpi {
 public:
 	CTPMarketDataProcessor();
 	~CTPMarketDataProcessor();
 	bool CreateCTPAPI(const std::string& flowId, const std::string& serverAddr);
+
+public:
+	lockfree_set<std::string> _subedInstuments;
 
 private:
 	CThostFtdcMdApi* _mdAPI;

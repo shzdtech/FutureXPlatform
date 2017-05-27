@@ -48,7 +48,5 @@ dataobj_ptr OTCCancelOrder::HandleRequest(const uint32_t serialId, const dataobj
 
 dataobj_ptr OTCCancelOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	auto& orderDO = *((OrderDO*)rawRespParams[0]);
-
-	return std::make_shared<OrderDO>(orderDO);
+	return nullptr;
 }

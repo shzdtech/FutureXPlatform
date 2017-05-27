@@ -1,11 +1,11 @@
-#if !defined(__pbserializer_PBPricingContractSerializer_h)
-#define __pbserializer_PBPricingContractSerializer_h
+#if !defined(__pbserializer_PBRiskSerializer_h)
+#define __pbserializer_PBRiskSerializer_h
 
 #include "../dataserializer/IDataSerializer.h"
 #include "../utility/singleton_templ.h"
 #include "pbbizserializer_exp.h"
 
-class PBPricingContractSerializer : public IDataSerializer, public singleton_ptr<PBPricingContractSerializer>
+class PBBIZSERIALIZER_CLASS_EXPORTS PBRiskSerializer : public IDataSerializer, public singleton_ptr<PBRiskSerializer>
 {
 public:
 	data_buffer Serialize(const dataobj_ptr& abstractDO);
@@ -13,3 +13,4 @@ public:
 };
 
 #endif
+

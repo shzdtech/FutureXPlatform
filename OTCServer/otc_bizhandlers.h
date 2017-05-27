@@ -24,5 +24,10 @@
 #include "OTCUpdatePricingContract.h"
 #include "OTCSubTradingDeskData.h"
 #include "OTCUnSubTradingDeskData.h"
+#include "OTCQueryPosition.h"
+#include "OTCQueryRisk.h"
+#include "OTCRiskUpdated.h"
+#include "OTCUpdatePortfolio.h"
+#include "OTCUpdateHedgeContract.h"
 
 #endif

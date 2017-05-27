@@ -28,7 +28,7 @@ dataobj_ptr CTPQuerySettlementInfoCfm::HandleRequest(const uint32_t serialId, co
 {
 	CheckLogin(session);
 
-	auto stdo = (MapDO<std::string>*)reqDO.get();
+	auto stdo = (StringMapDO<std::string>*)reqDO.get();
 
 	auto& brokeid = session->getUserInfo().getBrokerId();
 	auto& investorid = session->getUserInfo().getInvestorId();
@@ -62,7 +62,7 @@ dataobj_ptr CTPQuerySettlementInfoCfm::HandleResponse(const uint32_t serialId, c
 	CTPUtility::CheckNotFound(rawRespParams[0]);
 	CTPUtility::CheckError(rawRespParams[1]);
 	
-	auto pDO = new MapDO<std::string>();
+	auto pDO = new StringMapDO<std::string>();
 	dataobj_ptr ret(pDO);
 
 	if (auto pData = (CThostFtdcSettlementInfoConfirmField*)rawRespParams[0])

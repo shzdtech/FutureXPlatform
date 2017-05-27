@@ -286,7 +286,7 @@ VectorDO_Ptr<OrderDO> CTSAPIWrapperImpl::QueryOrder()
 	return vectorPtr;
 }
 
-VectorDO_Ptr<TradeRecordDO> CTSAPIWrapperImpl::QueryTrade()
+VectorDO_Ptr<TradeRecordDO> CTSAPIWrapperImpl::QueryOTCUserTrades()
 {
 
 	auto vectorPtr = std::make_shared<VectorDO<TradeRecordDO>>();

@@ -31,7 +31,7 @@ dataobj_ptr TestingQueryOrder::HandleRequest(const uint32_t serialId, const data
 {
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<TestingWorkProcessor>(msgProcessor))
 	{
-		auto stdo = (MapDO<std::string>*)reqDO.get();
+		auto stdo = (StringMapDO<std::string>*)reqDO.get();
 
 		auto& brokeid = session->getUserInfo().getBrokerId();
 		auto& investorid = session->getUserInfo().getInvestorId();

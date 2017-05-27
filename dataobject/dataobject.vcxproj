@@ -176,6 +176,7 @@
     <ClInclude Include="PricingDO.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ResultDO.h" />
+    <ClInclude Include="RiskDO.h" />
     <ClInclude Include="StrategyContractDO.h" />
     <ClInclude Include="TemplateDO.h" />
     <ClInclude Include="MarketDataDO.h" />

@@ -22,6 +22,7 @@
 #include "../dataobject/OrderDO.h"
 
 
+
  ////////////////////////////////////////////////////////////////////////
  // Name:       CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, IMessageProcessor* msgProcessor
  // Purpose:    Implementation of CTPNewOrder::HandleRequest()
@@ -75,7 +76,8 @@ dataobj_ptr CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_pt
 	// GTD日期
 	//std::strcpy(req.GTDDate, "");
 	// 成交量类型
-	req.VolumeCondition = THOST_FTDC_VC_AV;
+	auto vit = CTPVolCondMapping.find((OrderVolType)pDO->VolCondition);
+	req.VolumeCondition = vit != CTPVolCondMapping.end() ? vit->second : THOST_FTDC_VC_AV;
 	// 最小成交量
 	req.MinVolume = 1;
 	// 触发条件
@@ -89,16 +91,21 @@ dataobj_ptr CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_pt
 
 	req.RequestID = serialId;
 
-	int iRet = ((CTPRawAPI*)rawAPI)->TdAPI->ReqOrderInsert(&req, serialId);
-	CTPUtility::CheckReturnError(iRet);
+	bool insertPortfolio = userInfo.getRole() == ROLE_TRADINGDESK && !pDO->PortfolioID().empty();
 
-	if (userInfo.getRole() == ROLE_TRADINGDESK && !pDO->PortfolioID().empty())
+	if (insertPortfolio)
 	{
-		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
-		{
-			OrderPortfolioCache::Insert(pDO->OrderID, pDO->PortfolioID());
-		}
+		OrderPortfolioCache::Insert(pDO->OrderID, *pDO);
 	}
+
+	int iRet = ((CTPRawAPI*)rawAPI)->TdAPI->ReqOrderInsert(&req, serialId);
+
+	if (iRet != 0 && insertPortfolio)
+	{
+		OrderPortfolioCache::Remove(pDO->OrderID);
+	}
+
+	CTPUtility::CheckReturnError(iRet);
 
 	return nullptr;
 }
@@ -123,7 +130,12 @@ dataobj_ptr CTPNewOrder::HandleResponse(const uint32_t serialId, const param_vec
 	{
 		auto pRsp = (CThostFtdcRspInfoField*)rawRespParams[1];
 		CTPUtility::CheckError(pRsp);
-		ret = CTPUtility::ParseRawOrder(pData, pRsp, session->getUserInfo().getSessionId());
+		if (ret = CTPUtility::ParseRawOrder(pData, pRsp, session->getUserInfo().getSessionId()))
+			if (ret->IsSystemUserId())
+			{
+				ret->SetUserID(CTPUtility::MakeUserID(ret->BrokerID, ret->InvestorID));
+			}
+
 		ret->HasMore = false;
 	}
 

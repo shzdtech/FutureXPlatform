@@ -17,7 +17,7 @@
  // Return:     int
  ////////////////////////////////////////////////////////////////////////
 
-int CTPMDLoginHandler::LoginFunction(const IMessageProcessor_Ptr& msgProcessor, CThostFtdcReqUserLoginField* loginInfo, uint requestId, const std::string& severName)
+int CTPMDLoginHandler::LoginFunction(const IMessageProcessor_Ptr& msgProcessor, CThostFtdcReqUserLoginField* loginInfo, uint requestId, const std::string& serverName)
 {
 	auto pProcessor = (CTPProcessor*)msgProcessor.get();
 
@@ -54,7 +54,7 @@ int CTPMDLoginHandler::LoginFunction(const IMessageProcessor_Ptr& msgProcessor, 
 	std::string address;
 	if (!msgProcessor->getServerContext()->getConfigVal(CTP_MD_SERVER, address))
 	{
-		std::string server = severName.empty() ? brokerId + ':' + ExchangeRouterTable::TARGET_MD : severName;
+		std::string server = serverName.empty() ? brokerId + ':' + ExchangeRouterTable::TARGET_MD : serverName;
 		ExchangeRouterTable::TryFind(server, address);
 	}
 
@@ -62,7 +62,7 @@ int CTPMDLoginHandler::LoginFunction(const IMessageProcessor_Ptr& msgProcessor, 
 	int ret = pProcessor->RawAPI_Ptr()->MdAPI->ReqUserLogin(loginInfo, requestId);
 
 	// try after market server
-	if (ret == -1 && severName.empty())
+	if (ret == -1 && serverName.empty())
 	{
 		std::string server = brokerId + ':' + ExchangeRouterTable::TARGET_MD_AM;
 		if (ExchangeRouterTable::TryFind(server, address))

@@ -10,7 +10,7 @@
 
 #include "libcuckoo/cuckoohash_map.hh"
 #include <list>
-#include <thread>
+#include <future>
 #include "../utility/cuckoohashmap_wrapper.h"
 #include "../ordermanager/OTCOrderManager.h"
 #include "../dataobject/TypedefDO.h"
@@ -27,37 +27,40 @@ public:
 	~OTCWorkerProcessor();
 
 	virtual void Initialize();
+
 	virtual int LoginSystemUserIfNeed(void) = 0;
 
 	virtual int LoadContractToCache(ProductType productType);
+
 	virtual int LoadStrategyToCache(ProductType productType);
 
+	virtual void LoadPortfolios();
+
 	virtual int SubscribeStrategy(const StrategyContractDO& strategyDO);
+
 	virtual void AddContractToMonitor(const ContractKey& contractId);
 
-	virtual int SubscribePricingContracts(const ContractKey & strategyKey, const StrategyPricingContract& strategyContract);
+	virtual int SubscribePricingContracts(const UserContractKey& strategyKey, const StrategyPricingContract& strategyContract);
 
-	virtual int UnsubscribePricingContracts(const ContractKey & strategyKey, const StrategyPricingContract & strategyContract);
+	virtual void AddMarketDataStrategyTrigger(const ContractKey & marketContract, const UserContractKey & strategyKey);
+
+	virtual int UnsubscribePricingContracts(const UserContractKey & strategyKey, const StrategyPricingContract & strategyContract);
 
 	virtual void TriggerUpdateByMarketData(const MarketDataDO& mdDO);
 
-	virtual void TriggerUpdateByStrategy(const StrategyContractDO & strategyDO);
+	virtual void TriggerPricingByStrategy(const StrategyContractDO & strategyDO);
 
 	virtual bool TriggerTadingDeskParams(const StrategyContractDO& strategyDO);
 
 	virtual void TriggerOTCPricing(const StrategyContractDO& strategyDO, bool findInCache);
 
-	virtual void TriggerOTCTrading(const StrategyContractDO & strategyDO);
+	virtual void TriggerOTCTradingByStrategy(const StrategyContractDO & strategyDO);
 
-	virtual void RegisterPricingListener(const ContractKey& contractId,
-		const IMessageSession_Ptr& sessionPtr);
-	virtual void UnregisterPricingListener(const ContractKey& contractId,
-		const IMessageSession_Ptr& sessionPtr);
+	virtual void RegisterPricingListener(const ContractKey& contractId,	const IMessageSession_Ptr& sessionPtr);
+	virtual void UnregisterPricingListener(const ContractKey& contractId, const IMessageSession_Ptr& sessionPtr);
 
-	virtual void RegisterTradingDeskListener(const ContractKey& contractId,
-		const IMessageSession_Ptr& sessionPtr);
-	virtual void UnregisterTradingDeskListener(const ContractKey& contractId,
-		const IMessageSession_Ptr& sessionPtr);
+	virtual void RegisterTradingDeskListener(const ContractKey& contractId,	const IMessageSession_Ptr& sessionPtr);
+	virtual void UnregisterTradingDeskListener(const ContractKey& contractId, const IMessageSession_Ptr& sessionPtr);
 
 	virtual InstrumentCache& GetInstrumentCache();
 
@@ -72,16 +75,11 @@ public:
 	IPricingDataContext_Ptr& PricingDataContext();
 
 protected:
-	cuckoohash_map<ContractKey, cuckoohashmap_wrapper<ContractKey, bool, ContractKeyHash>, ContractKeyHash> _baseContractStrategyMap;
-	// cuckoohash_map<ContractKey, ContractKey, ContractKeyHash> _exchangeStrategyMap;
-	// cuckoohash_map<ContractKey, bool, ContractKeyHash> _otcStrategySet;
+	cuckoohash_map<ContractKey, cuckoohashmap_wrapper<UserContractKey, bool, UserContractKeyHash>, ContractKeyHash> _baseContractStrategyMap;
 	SessionContainer_Ptr<ContractKey, ContractKeyHash> _pricingNotifers;
 	SessionContainer_Ptr<ContractKey, ContractKeyHash> _tradingDeskNotifers;
 	SessionContainer_Ptr<uint64_t> _otcOrderNotifers;
 	IPricingDataContext_Ptr _pricingCtx;
-
-	bool _runingTradingDeskFlag;
-	std::thread _tradingDeskWorderThread;
 
 private:
 

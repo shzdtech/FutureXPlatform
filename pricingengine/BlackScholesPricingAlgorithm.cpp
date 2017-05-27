@@ -16,7 +16,6 @@
 #include "../bizutility/GlobalSettings.h"
 #include "../message/BizError.h"
 
-#include <ql/quantlib.hpp>
 
 using namespace QuantLib;
 
@@ -69,23 +68,39 @@ IPricingDO_Ptr BlackScholesPricingAlgorithm::Compute(
 		return nullptr;*/
 
 	double bidPrice = mDO.Bid().Price;
-	double askdPrice = mDO.Ask().Price;
+	double askPrice = mDO.Ask().Price;
 
 	double adjust = sdo.PricingContracts->PricingContracts[0].Adjust;
-	double price = (bidPrice + askdPrice) / 2 + adjust;
-	if (price <= 0)
+	bidPrice += adjust;
+	askPrice += adjust;
+
+	if (bidPrice <= 0 || askPrice <= 0)
 		return nullptr;
 
-	// if (sdo.ContractType == ContractType::CONTRACTTYPE_PUT_OPTION) std::swap(bidPrice, askdPrice);
+	if (sdo.ContractType == ContractType::CONTRACTTYPE_PUT_OPTION)
+	{
+		std::swap(bidPrice, askPrice);
+	}
 
 	auto pricingDO = std::make_shared<OptionPricingDO>(sdo.ExchangeID(), sdo.InstrumentID());
 
-	ComputeOptionPrice(price, sdo.StrikePrice, paramObj->bidVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration, pricingDO->TBid());
-	pricingDO->TBid().Price = std::floor( std::max(0.0, pricingDO->TBid().Price) / sdo.TickSize) * sdo.TickSize;
+	auto bidOption
+		= ComputeOptionPrice(bidPrice, sdo.StrikePrice, paramObj->bidVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration);
+	pricingDO->TBid().Price = std::floor( std::max(0.0, bidOption->NPV()) / sdo.TickSize) * sdo.TickSize;
 	
-	ComputeOptionPrice(price, sdo.StrikePrice, paramObj->askVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration, pricingDO->TAsk());
-	pricingDO->TAsk().Price = std::ceil(pricingDO->TAsk().Price / sdo.TickSize) * sdo.TickSize;
+	auto askOption
+		= ComputeOptionPrice(askPrice, sdo.StrikePrice, paramObj->askVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration);
+	pricingDO->TAsk().Price = std::ceil(askOption->NPV() / sdo.TickSize) * sdo.TickSize;
+
+	auto greeks
+		= ComputeOptionPrice((bidPrice + askPrice)/2, sdo.StrikePrice, paramObj->midVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration);
 	
+	pricingDO->Delta = greeks->delta();
+	pricingDO->Gamma = greeks->gamma();
+	pricingDO->Theta = greeks->theta();
+	pricingDO->Vega = greeks->vega();
+	pricingDO->Rho = greeks->rho();
+
 	return pricingDO;
 }
 
@@ -109,7 +124,7 @@ void BlackScholesPricingAlgorithm::ParseParams(const std::map<std::string, doubl
 }
 
 
-void BlackScholesPricingAlgorithm::ComputeOptionPrice(
+std::shared_ptr<VanillaOption> BlackScholesPricingAlgorithm::ComputeOptionPrice(
 	double underlyingPrice,
 	double strikePrice,
 	double volatility,
@@ -117,8 +132,7 @@ void BlackScholesPricingAlgorithm::ComputeOptionPrice(
 	double dividendYield,
 	ContractType contractType,
 	const DateType& tradingDate,
-	const DateType& maturityDate,
-	OptionPricing & option)
+	const DateType& maturityDate)
 {
 	DayCounter dayCounter = Actual365Fixed();
 
@@ -147,12 +161,8 @@ void BlackScholesPricingAlgorithm::ComputeOptionPrice(
 	// options
 	boost::shared_ptr<Exercise> europeanExercise(new EuropeanExercise(maturity));
 
-	VanillaOption europeanOption(payoff, europeanExercise);
-	europeanOption.setPricingEngine(pricingEngine);
+	auto europeanOption = std::make_shared<VanillaOption>(payoff, europeanExercise);
+	europeanOption->setPricingEngine(pricingEngine);
 
-	option.Price = europeanOption.NPV();
-	option.Delta = europeanOption.delta();
-	option.Vega = europeanOption.vega();
-	option.Gamma = europeanOption.gamma();
-	option.Theta = europeanOption.theta();
+	return europeanOption;
 }

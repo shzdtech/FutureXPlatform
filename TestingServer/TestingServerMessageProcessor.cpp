@@ -48,7 +48,7 @@ bool TestingServerMessageProcessor::OnSessionClosing(void)
 	try
 	{
 		if (_mdThread.valid())
-			_mdThread.wait_for(std::chrono::seconds(10));
+			_mdThread.wait();
 	}
 	catch (...)
 	{

@@ -11,6 +11,7 @@
 #include "IOrderManager.h"
 #include "IOrderAPI.h"
 #include "ContractOrderContext.h"
+#include "IUserPositionContext.h"
 #include "../pricingengine/IPricingDataContext.h"
 
 #include "ordermgr_export.h"

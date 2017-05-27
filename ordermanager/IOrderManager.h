@@ -13,6 +13,7 @@
 #include "../dataobject/PricingDO.h"
 #include "../dataobject/TradeRecordDO.h"
 #include "../dataobject/TemplateDO.h"
+#include "IUserPositionContext.h"
 #include <functional>
 
 class IOrderUpdatedEvent

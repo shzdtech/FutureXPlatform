@@ -8,10 +8,8 @@
 #if !defined(__dataobject_dataobjectbase_h)
 #define __dataobject_dataobjectbase_h
 
-#include <string>
-#include <vector>
 #include <memory>
-#include <map>
+#include "../common/typedefs.h"
 
 class dataobjectbase
 {
@@ -26,9 +24,5 @@ private:
 };
 
 typedef std::shared_ptr<dataobjectbase> dataobj_ptr;
-
-typedef std::map<std::string, std::vector<int>> MapIntVector;
-typedef std::map<std::string, std::vector<double>> MapDoubleVector;
-typedef std::map<std::string, std::vector<std::string>> MapStringVector;
 
 #endif

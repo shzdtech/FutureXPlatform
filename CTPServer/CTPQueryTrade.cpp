@@ -72,7 +72,7 @@ dataobj_ptr CTPQueryTrade::HandleRequest(const uint32_t serialId, const dataobj_
 	}
 	else
 	{
-		auto stdo = (MapDO<std::string>*)reqDO.get();
+		auto stdo = (StringMapDO<std::string>*)reqDO.get();
 		auto& brokeid = session->getUserInfo().getBrokerId();
 		auto& investorid = session->getUserInfo().getInvestorId();
 		auto& instrid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
@@ -116,6 +116,11 @@ dataobj_ptr CTPQueryTrade::HandleResponse(const uint32_t serialId, const param_v
 	TradeRecordDO_Ptr ret;
 	if (ret = CTPUtility::ParseRawTrade(pTradeInfo))
 	{
+		if (ret->IsSystemUserId())
+		{
+			ret->SetUserID(CTPUtility::MakeUserID(ret->BrokerID, ret->InvestorID));
+		}
+
 		ret->HasMore = !*(bool*)rawRespParams[3];
 
 		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))

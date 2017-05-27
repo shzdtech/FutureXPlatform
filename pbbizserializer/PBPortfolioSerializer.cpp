@@ -7,16 +7,21 @@
 
 data_buffer PBPortfolioSerializer::Serialize(const dataobj_ptr & abstractDO)
 {
-	Micro::Future::Message::Business::PBPortfolioList PB;
-	auto pDO = (VectorDO<PortfolioDO>*)abstractDO.get();
+	Micro::Future::Message::Business::PBPortfolio PB;
+	auto pDO = (PortfolioDO*)abstractDO.get();
 	FillPBHeader(PB, pDO);
 
-	for (auto& po : *pDO)
+	PB.set_name(pDO->PortfolioID());
+	PB.set_hedging(pDO->Hedging);
+	PB.set_hedgedelay(pDO->HedgeDelay);
+	PB.set_threshold(pDO->Threshold);
+
+	for (auto pair : pDO->HedgeContracts)
 	{
-		auto pParam = PB.add_portfolio();
-		pParam->set_name(po.PortfolioID());
-		pParam->set_hedgedelay(po.HedgeDelay);
-		pParam->set_threshold(po.Threshold);
+		auto pHedgeContracts = PB.add_hedgecontracts();
+		pHedgeContracts->set_exchange(pair.second->ExchangeID());
+		pHedgeContracts->set_contract(pair.second->InstrumentID());
+		pHedgeContracts->set_underlying(pair.first);
 	}
 
 	SerializeWithReturn(PB);
@@ -24,20 +29,19 @@ data_buffer PBPortfolioSerializer::Serialize(const dataobj_ptr & abstractDO)
 
 dataobj_ptr PBPortfolioSerializer::Deserialize(const data_buffer & rawdata)
 {
-	Micro::Future::Message::Business::PBPortfolioList PB;
+	Micro::Future::Message::Business::PBPortfolio PB;
 	ParseWithReturn(PB, rawdata);
 
-	auto ret = std::make_shared<VectorDO<PortfolioDO>>();
+	auto ret = std::make_shared<PortfolioDO>(PB.name(), "");
 	FillDOHeader(ret, PB);
 
-	auto& params = PB.portfolio();
+	ret->Hedging = PB.hedging();
+	ret->HedgeDelay = PB.hedgedelay();
+	ret->Threshold = PB.threshold();
 
-	for (auto& p : params)
+	for (auto& hc : PB.hedgecontracts())
 	{
-		PortfolioDO pdo(p.name(), "");
-		pdo.HedgeDelay = p.hedgedelay();
-		pdo.Threshold = p.threshold();
-		ret->push_back(std::move(pdo));
+		ret->HedgeContracts[hc.underlying()] = std::make_shared<ContractKey>(hc.exchange(), hc.contract());
 	}
 
 	return ret;

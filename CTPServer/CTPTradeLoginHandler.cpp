@@ -25,7 +25,7 @@
  // Return:     int
  ////////////////////////////////////////////////////////////////////////
 
-int CTPTradeLoginHandler::LoginFunction(const IMessageProcessor_Ptr& msgProcessor, CThostFtdcReqUserLoginField* loginInfo, uint requestId, const std::string& severName)
+int CTPTradeLoginHandler::LoginFunction(const IMessageProcessor_Ptr& msgProcessor, CThostFtdcReqUserLoginField* loginInfo, uint requestId, const std::string& serverName)
 {
 	auto pProcessor = (CTPProcessor*)msgProcessor.get();
 
@@ -67,7 +67,7 @@ int CTPTradeLoginHandler::LoginFunction(const IMessageProcessor_Ptr& msgProcesso
 	std::string address;
 	if (!msgProcessor->getServerContext()->getConfigVal(CTP_TRADER_SERVER, address))
 	{
-		std::string server = severName.empty() ? brokerId + ':' + ExchangeRouterTable::TARGET_TD : severName;
+		std::string server = serverName.empty() ? brokerId + ':' + ExchangeRouterTable::TARGET_TD : serverName;
 		ExchangeRouterTable::TryFind(server, address);
 	}
 
@@ -75,7 +75,7 @@ int CTPTradeLoginHandler::LoginFunction(const IMessageProcessor_Ptr& msgProcesso
 	int ret = pProcessor->RawAPI_Ptr()->TdAPI->ReqUserLogin(loginInfo, requestId);
 
 	// try after market server
-	if (ret == -1 && severName.empty())
+	if (ret == -1 && serverName.empty())
 	{
 		std::string server = brokerId + ':' + ExchangeRouterTable::TARGET_TD_AM;
 		if (ExchangeRouterTable::TryFind(server, address))

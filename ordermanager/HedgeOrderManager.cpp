@@ -8,28 +8,15 @@
 #include "HedgeOrderManager.h"
 #include "../utility/atomicutil.h"
 #include "../utility/epsdouble.h"
+#include "../bizutility/ContractCache.h"
+#include "../litelogger/LiteLogger.h"
 
-HedgeOrderManager::HedgeOrderManager(const PortfolioKey& portfolio,
-	IOrderAPI* pOrderAPI, const IPricingDataContext_Ptr& pricingCtx)
-	: _portfolio(portfolio), AutoOrderManager(pOrderAPI, pricingCtx),
-	_contractFlag(1024), _contractPosition(1024)
+HedgeOrderManager::HedgeOrderManager(IOrderAPI* pOrderAPI,
+	const IPricingDataContext_Ptr& pricingCtx, const IUserPositionContext_Ptr& exchangePositionCtx)
+	: AutoOrderManager(pOrderAPI, pricingCtx, exchangePositionCtx), _updatingPortfolioLock(1024)
 {
 
 }
-
-////////////////////////////////////////////////////////////////////////
-// Name:       HedgeOrderManager::CreateOrder(const OrderDO& orderInfo)
-// Purpose:    Implementation of AutoOrderManager::CreateOrder()
-// Parameters:
-// - orderInfo
-// Return:     OrderDO_Ptr
-////////////////////////////////////////////////////////////////////////
-
-OrderDO_Ptr HedgeOrderManager::CreateOrder(OrderRequestDO& orderInfo)
-{
-	return AutoOrderManager::CreateOrder(orderInfo);
-}
-
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       HedgeOrderManager::UpdateByStrategy(const StrategyContractDO& strategyDO)
@@ -42,71 +29,7 @@ OrderDO_Ptr HedgeOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 void HedgeOrderManager::TradeByStrategy(
 	const StrategyContractDO& strategyDO)
 {
-}
-
-////////////////////////////////////////////////////////////////////////
-// Name:       HedgeOrderManager::OnOrderUpdated(OrderDO& orderInfo)
-// Purpose:    Implementation of OnMarketOrderUpdated::OnMarketOrderUpdated()
-// Parameters:
-// - orderInfo
-// Return:     int
-////////////////////////////////////////////////////////////////////////
-
-int HedgeOrderManager::OnMarketOrderUpdated(OrderDO& orderInfo)
-{
-	int ret = -1;
-
-	if (auto order_ptr = FindOrder(orderInfo.OrderID))
-	{
-		switch (orderInfo.OrderStatus)
-		{
-		case OrderStatusType::ALL_TRADED:
-		case OrderStatusType::CANCELED:
-		{
-			int delta = orderInfo.VolumeTraded - order_ptr->VolumeTraded;
-			if (delta > 0)
-			{
-				_mktPosCtx.UpdatePosition(orderInfo,
-					(DirectionType)orderInfo.Direction,
-					delta);
-
-				if (orderInfo.Direction == DirectionType::SELL)
-					delta = -delta;
-
-				double remain = 0;
-				_contractPosition.upsert(orderInfo, [&remain, delta](double& pos)
-				{ remain = (pos += delta); }, delta);
-
-				if (remain <= -1 || remain >= 1)
-				{
-					OrderRequestDO newOrder(orderInfo);
-					newOrder.Volume = std::labs(remain);
-					OrderRequestDO_Ptr req1;
-					OrderRequestDO_Ptr req2;
-					SplitOrders(newOrder, req1, req2);
-					if (req1) CreateOrder(*req1);
-					if (req2) CreateOrder(*req2);
-				}
-				else
-				{
-					_contractFlag.update(orderInfo, false);
-				}
-			}
-		}
-		break;
-		default:
-			break;
-		}
-
-		if (!orderInfo.Active)
-		{
-			_contractOrderCtx.RemoveOrder(orderInfo.OrderID);
-		}
-
-		ret = 0;
-	}
-
-	return ret;
+	Hedge(strategyDO);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -115,96 +38,336 @@ int HedgeOrderManager::OnMarketOrderUpdated(OrderDO& orderInfo)
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-int HedgeOrderManager::Hedge(void)
+void HedgeOrderManager::Hedge(const PortfolioKey& portfolioKey)
 {
-	auto lt = _contractPosition.lock_table();
-	for (auto& it : lt)
+	PortfolioDO* pPortfolio = nullptr;
+	if (auto pPortfolioMap = _pricingCtx->GetPortfolioMap())
 	{
-		double position = it.second;
-		if (position <= -1 || position >= 1)
+		if (auto pUserPortfolios = pPortfolioMap->tryfind(portfolioKey.UserID()))
 		{
-			bool hedging;
-			_contractFlag.update_fn(it.first, [&hedging](bool& h) { hedging = h; h = true; });
-			if (!hedging) //if not starting hedging for this contract
+			pPortfolio = pUserPortfolios->tryfind(portfolioKey.PortfolioID());
+		}
+	}
+
+	if (!pPortfolio || !pPortfolio->Hedging)
+		return;
+
+	_updatingPortfolioLock.upsert(*pPortfolio, [](bool& lock) { lock = true; }, true);
+
+	_updatingPortfolioLock.update_fn(*pPortfolio, [this, pPortfolio](bool& lock)
+	{
+		UnderlyingRiskMap portfolioMap;
+		_exchangePositionCtx->GetRiskByPortfolio(pPortfolio->UserID(), pPortfolio->PortfolioID(), portfolioMap);
+
+		bool needHedge = false;
+
+		auto duration = std::chrono::steady_clock::now() - pPortfolio->LastHedge;
+
+		if (std::chrono::duration_cast<std::chrono::seconds>(duration).count() > pPortfolio->HedgeDelay)
+		{
+			pPortfolio->HedingFlag = true;
+		}
+
+		for (auto pair : portfolioMap)
+		{
+			auto& riskDOMap = pair.second;
+
+			double totalDelta = 0;
+
+			for (auto& risk : riskDOMap)
 			{
-				// Make new orders
-				OrderRequestDO newOrder(0, it.first.ExchangeID(), it.first.InstrumentID(),
-					_portfolio.UserID(), _portfolio.PortfolioID());
-				newOrder.Volume = std::labs(position);
-				newOrder.Direction = position < 0 ? DirectionType::SELL : DirectionType::BUY;
-				OrderRequestDO_Ptr req1;
-				OrderRequestDO_Ptr req2;
-				SplitOrders(newOrder, req1, req2);
-				if (req1) CreateOrder(*req1);
-				if (req2) CreateOrder(*req2);
+				totalDelta += risk.second.Delta;
+			}
+
+			if (!pPortfolio->HedingFlag && std::abs(totalDelta) <= pPortfolio->Threshold)
+				continue;
+
+			pPortfolio->HedingFlag = true;
+
+			auto& underlying = pair.first;
+
+			auto it = pPortfolio->HedgeContracts.find(underlying);
+
+			if (it == pPortfolio->HedgeContracts.end() || !it->second)
+				continue;
+
+			auto hedgeContract = it->second;
+
+			double hedgeDelta = 1;
+			IPricingDO_Ptr pricingDO;
+			if (_pricingCtx->GetPricingDataDOMap()->find(*hedgeContract, pricingDO))
+			{
+				hedgeDelta = pricingDO->Delta;
+			}
+
+			if (std::abs(totalDelta) < std::abs(hedgeDelta))
+				continue;
+
+			needHedge = true;
+
+			cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr> orders;
+
+			if (!_contractOrderCtx.ContractOrderMap().find(hedgeContract->InstrumentID(), orders))
+			{
+				_contractOrderCtx.ContractOrderMap().insert(hedgeContract->InstrumentID(), cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>(true, 4));
+				_contractOrderCtx.ContractOrderMap().find(hedgeContract->InstrumentID(), orders);
+			}
+
+			MarketDataDO mdo;
+			_pricingCtx->GetMarketDataMap()->find(hedgeContract->InstrumentID(), mdo);
+			if (mdo.Ask().Price < DBL_EPSILON)
+				continue;
+
+			std::vector<uint64_t> removeList;
+
+			double pricingBid = mdo.Bid().Price;
+			double pricingAsk = mdo.Ask().Price;
+
+			double sellOpenVol = 0;
+			double buyOpenVol = 0;
+
+			double sellCloseVol = 0;
+			double buyCloseVol = 0;
+
+			for (auto& pair : orders.map()->lock_table())
+			{
+				auto& order = pair.second;
+
+				if (order->PortfolioID() == pPortfolio->PortfolioID())
+				{
+					int vol = order->Volume;
+					if (!order->Active)
+					{
+						vol = order->VolumeTraded;
+						removeList.push_back(order->OrderID);
+					}
+
+					if (order->Direction == DirectionType::SELL)
+					{
+						if (order->OpenClose == OrderOpenCloseType::OPEN)
+						{
+							sellOpenVol += vol;
+						}
+						else
+						{
+							sellCloseVol += vol;
+						}
+
+						if (order->Active && (totalDelta < 0 || order->LimitPrice > pricingBid))
+						{
+							_pOrderAPI->CancelOrder(*order);
+						}
+					}
+					else
+					{
+						if (order->OpenClose == OrderOpenCloseType::OPEN)
+						{
+							buyOpenVol += vol;
+						}
+						else
+						{
+							buyCloseVol += vol;
+						}
+
+						if (order->Active && (totalDelta > 0 || order->LimitPrice < pricingAsk))
+						{
+							_pOrderAPI->CancelOrder(*order);
+						}
+					}
+				}
+			}
+
+			for (auto it : removeList)
+			{
+				_contractOrderCtx.RemoveOrder(it);
+			}
+
+			int remainVol = 0;
+			if (totalDelta > 0)
+			{
+				remainVol = (totalDelta / hedgeDelta) - (sellOpenVol + sellCloseVol);
+			}
+			else
+			{
+				remainVol = std::abs(totalDelta / hedgeDelta) - (buyOpenVol + buyCloseVol);
+			}
+
+			if (remainVol <= 0)
+				continue;
+
+			LOG_DEBUG << "Total Delta: " << totalDelta << ", RemainVol: " << remainVol;
+
+			// Check max order volume
+			if (auto pInstumentInfo = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(hedgeContract->InstrumentID()))
+			{
+				remainVol = std::min(pInstumentInfo->MaxLimitOrderVolume, remainVol);
+			}
+
+			// Make new orders
+			OrderRequestDO newOrder(0, hedgeContract->ExchangeID(), hedgeContract->InstrumentID(), pPortfolio->UserID(), pPortfolio->PortfolioID());
+			newOrder.TIF = OrderTIFType::IOC;
+			newOrder.VolCondition = OrderVolType::ANYVOLUME;
+
+			bool isSHFE = newOrder.ExchangeID() == "SHFE";
+
+			if (totalDelta > 0) // Long position
+			{
+				newOrder.Direction = DirectionType::SELL;
+				newOrder.LimitPrice = pricingBid;
+
+				auto longPos_Ptr = _exchangePositionCtx->GetPosition(pPortfolio->UserID(), hedgeContract->InstrumentID(),
+					PositionDirectionType::PD_LONG, pPortfolio->PortfolioID());
+
+				// Auto Close
+				int availableYD = longPos_Ptr ? longPos_Ptr->LastPosition() - sellCloseVol : 0;
+				if (isSHFE && availableYD > 0)
+				{
+					newOrder.OpenClose = OrderOpenCloseType::CLOSEYESTERDAY;
+					newOrder.Volume = std::min(remainVol, availableYD);
+					if (newOrder.Volume > 0 && CreateOrder(newOrder))
+					{
+						remainVol -= newOrder.Volume;
+					}
+				}
+				else
+				{
+					newOrder.OpenClose = OrderOpenCloseType::CLOSE;
+					availableYD = longPos_Ptr ? longPos_Ptr->Position() - sellCloseVol : 0;
+					newOrder.Volume = std::min(remainVol, availableYD);
+					if (newOrder.Volume > 0 && CreateOrder(newOrder))
+					{
+						remainVol -= newOrder.Volume;
+					}
+				}
+
+				// Open remain
+				if (remainVol > 0)
+				{
+					newOrder.OrderID = 0;
+					newOrder.OpenClose = OrderOpenCloseType::OPEN;
+					newOrder.Volume = remainVol;
+					CreateOrder(newOrder);
+				}
+			}
+			else // Short position
+			{
+				newOrder.Direction = DirectionType::BUY;
+				newOrder.LimitPrice = pricingAsk;
+
+				auto shortPos_Ptr = _exchangePositionCtx->GetPosition(pPortfolio->UserID(), hedgeContract->InstrumentID(),
+					PositionDirectionType::PD_SHORT, pPortfolio->PortfolioID());
+
+				// Auto Close
+				int availableYD = shortPos_Ptr ? shortPos_Ptr->LastPosition() - buyCloseVol : 0;
+				if (isSHFE && availableYD > 0)
+				{
+					newOrder.OpenClose = OrderOpenCloseType::CLOSEYESTERDAY;
+					newOrder.Volume = std::min(remainVol, availableYD);
+					if (newOrder.Volume > 0 &&
+						CreateOrder(newOrder))
+					{
+						remainVol -= newOrder.Volume;
+					}
+				}
+				else
+				{
+					newOrder.OpenClose = OrderOpenCloseType::CLOSE;
+					availableYD = shortPos_Ptr ? shortPos_Ptr->Position() - buyCloseVol : 0;
+					newOrder.Volume = std::min(remainVol, availableYD);
+					if (newOrder.Volume > 0 &&
+						CreateOrder(newOrder))
+					{
+						remainVol -= newOrder.Volume;
+					}
+				}
+
+				// Open remain
+				if (remainVol > 0)
+				{
+					newOrder.OrderID = 0;
+					newOrder.OpenClose = OrderOpenCloseType::OPEN;
+					newOrder.Volume = remainVol;
+					CreateOrder(newOrder);
+				}
+			}
+		}
+
+		if (pPortfolio->HedingFlag && !needHedge)
+		{
+			pPortfolio->HedingFlag = false;
+			pPortfolio->LastHedge = std::chrono::steady_clock::now();
+		}
+
+		lock = true;
+	});
+}
+
+OrderDO_Ptr HedgeOrderManager::CancelOrder(OrderRequestDO& orderReq)
+{
+	OrderDO_Ptr ret;
+	if (orderReq.OrderID != 0)
+	{
+		if (ret = FindOrder(orderReq.OrderID))
+		{
+			ret = _pOrderAPI->CancelOrder(orderReq);
+			// _contractOrderCtx.RemoveOrder(orderReq.OrderID);
+		}
+	}
+	else
+	{
+		if (auto pPortfolioMap = _pricingCtx->GetPortfolioMap())
+		{
+			if (auto pUserPortfolios = pPortfolioMap->tryfind(orderReq.UserID()))
+			{
+				if (auto pPortfolio = pUserPortfolios->tryfind(orderReq.PortfolioID()))
+				{
+					for (auto& pair : pPortfolio->HedgeContracts)
+					{
+						cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr> orders;
+						if (_contractOrderCtx.ContractOrderMap().find(pair.second->InstrumentID(), orders))
+						{
+							std::vector<uint64_t> orderCancelList;
+							for (auto& pair : orders.map()->lock_table())
+							{
+								if (pair.second->PortfolioID() == orderReq.PortfolioID())
+									_pOrderAPI->CancelOrder(*pair.second);
+							}
+						}
+					}
+				}
 			}
 		}
 	}
 
-	return 0;
+	return ret;
 }
 
-
-////////////////////////////////////////////////////////////////////////
-// Name:       HedgeOrderManager::Reset()
-// Purpose:    Implementation of HedgeOrderManager::Reset()
-// Return:     int
-////////////////////////////////////////////////////////////////////////
-
-int HedgeOrderManager::Reset(void)
+int HedgeOrderManager::OnMarketOrderUpdated(OrderDO& orderInfo)
 {
-	return 0;
-}
+	int ret = 0;
 
+	auto orderId = ParseOrderID(orderInfo.OrderID, orderInfo.SessionID);
 
-void HedgeOrderManager::FillPosition(const ContractMap<double>& positionMap)
-{
-	for (auto& it : positionMap)
+	if (auto order_ptr = FindOrder(orderId))
 	{
-		double position = it.second;
-		_contractPosition.upsert(it.first,
-			[position](double& pos) { pos += position; }, position);
-	}
-}
+		switch (orderInfo.OrderStatus)
+		{
+		case OrderStatusType::ALL_TRADED:
+		case OrderStatusType::PARTIAL_TRADING:
+			ret = orderInfo.VolumeTraded - order_ptr->VolumeTraded;
+			break;
+		case OrderStatusType::CANCELED:
+			ret = -1;
+			break;
+		default:
+			ret = 0;
+			break;
+		}
 
-void HedgeOrderManager::SplitOrders(const OrderRequestDO & orderInfo, OrderRequestDO_Ptr& req1, OrderRequestDO_Ptr& req2)
-{
-	auto pMdMap = _pricingCtx->GetMarketDataMap();
-	MarketDataDO mDO;
-	if (pMdMap->find(orderInfo.InstrumentID(), mDO))
-	{
-		req1.reset(new OrderRequestDO(orderInfo));
-		req1->TIF = OrderTIFType::IOC;
-
-		int pos = _mktPosCtx.GetPosition(orderInfo);
-		if (orderInfo.Direction == DirectionType::SELL && pos > 0)
-		{
-			req1->LimitPrice = mDO.Ask().Price;
-			req1->OpenClose = OrderOpenCloseType::CLOSE;
-			if (pos < orderInfo.Volume)
-			{
-				req1->Volume = pos;
-				req2.reset(new OrderRequestDO(*req1));
-				req2->OpenClose = OrderOpenCloseType::OPEN;
-				req2->Volume = orderInfo.Volume - pos;
-			}
-		}
-		else if (orderInfo.Direction != DirectionType::SELL && pos < 0)
-		{
-			req1->LimitPrice = mDO.Bid().Price;
-			pos = -pos;
-			req1->OpenClose = OrderOpenCloseType::CLOSE;
-			if (pos < orderInfo.Volume)
-			{
-				req1->Volume = pos;
-				req2.reset(new OrderRequestDO(*req1));
-				req2->OpenClose = OrderOpenCloseType::OPEN;
-				req2->Volume = orderInfo.Volume - pos;
-			}
-		}
-		else
-		{
-			req2.reset();
-		}
+		order_ptr->Active = orderInfo.Active;
+		order_ptr->VolumeTraded = orderInfo.VolumeTraded;
+		order_ptr->OrderStatus = orderInfo.OrderStatus;
 	}
+
+	return ret;
 }

@@ -19,7 +19,7 @@ public:
    void BuildContext(const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session);
 
 protected:
-	void LoadPortfolio(const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session);
+	void LoadPortfolio(const IMessageProcessor_Ptr & msgProcessor, const IMessageSession_Ptr & session);
 	void LoadStrategy(const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session);
 	void LoadContractParam(const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session);
 

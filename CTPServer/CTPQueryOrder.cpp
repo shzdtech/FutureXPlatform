@@ -36,7 +36,7 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 	{
-		auto stdo = (MapDO<std::string>*)reqDO.get();
+		auto stdo = (StringMapDO<std::string>*)reqDO.get();
 
 		auto& brokeid = session->getUserInfo().getBrokerId();
 		auto& investorid = session->getUserInfo().getInvestorId();
@@ -116,6 +116,11 @@ dataobj_ptr CTPQueryOrder::HandleResponse(const uint32_t serialId, const param_v
 				if (!ret)
 				{
 					ret = CTPUtility::ParseRawOrder(pData);
+					if (ret->IsSystemUserId())
+					{
+						ret->SetUserID(CTPUtility::MakeUserID(ret->BrokerID, ret->InvestorID));
+					}
+
 					pWorkerProc->GetUserOrderContext().UpsertOrder(orderid, ret);
 					ret.reset();
 				}
@@ -124,6 +129,11 @@ dataobj_ptr CTPQueryOrder::HandleResponse(const uint32_t serialId, const param_v
 		else
 		{
 			ret = CTPUtility::ParseRawOrder(pData);
+			if (ret->IsSystemUserId())
+			{
+				ret->SetUserID(CTPUtility::MakeUserID(ret->BrokerID, ret->InvestorID));
+			}
+
 			ret->HasMore = !*(bool*)rawRespParams[3];
 		}
 	}

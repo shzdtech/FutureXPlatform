@@ -60,31 +60,26 @@ void TradingDeskContextBuilder::BuildContext(const IMessageProcessor_Ptr& msgPro
 	LoadContractParam(msgProcessor, session);
 }
 
-
 void TradingDeskContextBuilder::LoadPortfolio(const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	if (auto portfolioDOVec_Ptr = PortfolioDAO::FindPortfolioByUser(session->getUserInfo().getUserId()))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
-		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
-		{
-			auto pPortfoliorMap = pWorkerProc->PricingDataContext()->GetPortfolioMap();
+		auto pPortfoliorMap = pWorkerProc->PricingDataContext()->GetPortfolioMap();
 
-			for (auto& portfolio : *portfolioDOVec_Ptr)
+		auto& userid = session->getUserInfo().getUserId();
+
+		auto it = pPortfoliorMap->find(userid);
+
+		if (it != pPortfoliorMap->end())
+		{
+			for (auto pair : it->second)
 			{
-				auto it = pPortfoliorMap->find(portfolio);
-				if (it != pPortfoliorMap->end())
+				for (auto& contract : pair.second.HedgeContracts)
 				{
-					portfolio = it->second;
-				}
-				else
-				{
-					pPortfoliorMap->emplace(portfolio, portfolio);
+					if (contract.second)
+						pWorkerProc->AddContractToMonitor(*contract.second);
 				}
 			}
-
-			if (auto userInfoPtr = std::static_pointer_cast<UserInfoDO>(session->getUserInfo().getExtInfo()))
-				for (auto& portfolio : *portfolioDOVec_Ptr)
-					userInfoPtr->Portfolios.emplace(portfolio.PortfolioID());
 		}
 	}
 }
@@ -116,14 +111,14 @@ void TradingDeskContextBuilder::LoadContractParam(const IMessageProcessor_Ptr& m
 
 void TradingDeskContextBuilder::LoadStrategy(const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	auto strategySet_Ptr = std::make_shared<std::set<ContractKey>>();
+	auto strategySet_Ptr = std::make_shared<std::set<UserContractKey>>();
 	session->getContext()->setAttribute(STR_KEY_USER_STRATEGY, strategySet_Ptr);
 
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		auto& userid = session->getUserInfo().getUserId();
 
-		auto& strategyMap = pWorkerProc->PricingDataContext()->GetUserStrategyMap()->getorfill(session->getUserInfo().getUserId());
+		auto& strategyMap = pWorkerProc->PricingDataContext()->GetUserStrategyMap()->getorfill(userid);
 
 		for (auto& pairMap : strategyMap)
 		{

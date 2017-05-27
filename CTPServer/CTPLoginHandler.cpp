@@ -40,7 +40,7 @@ dataobj_ptr CTPLoginHandler::HandleRequest(const uint32_t serialId, const dataob
 	{
 		auto pProcessor = (CTPProcessor*)msgProcessor.get();;
 
-		auto stdo = (MapDO<std::string>*)reqDO.get();
+		auto stdo = (StringMapDO<std::string>*)reqDO.get();
 
 		auto& brokeid = stdo->TryFind(STR_BROKER_ID, EMPTY_STRING);
 		auto& userid = stdo->TryFind(STR_USER_NAME, EMPTY_STRING);

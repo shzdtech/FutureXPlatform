@@ -6,25 +6,40 @@
  ***********************************************************************/
 
 #include "CTPOTCTradeProcessor.h"
-#include "../CTPServer/CTPConstant.h"
 #include "../CTPServer/CTPUtility.h"
-
+#include "../CTPServer/CTPConstant.h"
+#include "../CTPServer/CTPMapping.h"
+#include "../dataobject/TradeRecordDO.h"
 #include "../common/Attribute_Key.h"
-
-#include "../message/message_macro.h"
-#include "../message/DefMessageID.h"
 #include "../systemsettings/AppContext.h"
+#include "../message/DefMessageID.h"
+#include "../message/message_macro.h"
+#include "../bizutility/ExchangeRouterTable.h"
+#include "../bizutility/PositionPortfolioMap.h"
+
+#include "../databaseop/VersionDAO.h"
+#include "../databaseop/ContractDAO.h"
 #include "../databaseop/TradeDAO.h"
+#include "../ordermanager/OrderSeqGen.h"
+#include "../ordermanager/OrderPortfolioCache.h"
+
+#include "../bizutility/ContractCache.h"
 #include "../litelogger/LiteLogger.h"
 
 
 CTPOTCTradeProcessor::CTPOTCTradeProcessor(
 	IServerContext* pServerCtx,
 	const IPricingDataContext_Ptr& pricingDataCtx)
-	: OTCTradeProcessor(pricingDataCtx), CTPTradeWorkerProcessorEx(pServerCtx),
+	: OTCTradeProcessor(pricingDataCtx),
+	CTPTradeWorkerSAProcessor(pServerCtx, pricingDataCtx),
 	_otcOrderMgr(this, pricingDataCtx, this),
-	_autoOrderMgr(this, pricingDataCtx)
+	_autoOrderMgr(this, pricingDataCtx, _userPositionCtx_Ptr),
+	_hedgeOrderMgr(this, pricingDataCtx, _userPositionCtx_Ptr)
 {
+	_logTrades = false;
+
+	_autoOrderWorker = std::async(std::launch::async, &CTPOTCTradeProcessor::AutoOrderWorker, this);
+	_hedgeOrderWorker = std::async(std::launch::async, &CTPOTCTradeProcessor::HedgeOrderWorker, this);
 }
 
 
@@ -36,16 +51,92 @@ CTPOTCTradeProcessor::CTPOTCTradeProcessor(
 
 CTPOTCTradeProcessor::~CTPOTCTradeProcessor()
 {
+	if (!_closing)
+		Dispose();
+
 	LOG_DEBUG << __FUNCTION__;
+}
+
+bool CTPOTCTradeProcessor::Dispose(void)
+{
+	_closing = true;
+
+	if (_autoOrderWorker.valid())
+		_autoOrderWorker.wait();
+
+	if (_hedgeOrderWorker.valid())
+		_hedgeOrderWorker.wait();
+
+
+	return OTCTradeProcessor::Dispose();
+}
+
+
+void CTPOTCTradeProcessor::AutoOrderWorker()
+{
+	while (!_closing)
+	{
+		UserContractKey strategyKey;
+		if (_autoOrderQueue.pop(strategyKey))
+		{
+			int limitOrders = _userOrderCtx.GetLimitOrderCount(strategyKey.InstrumentID());
+
+			StrategyContractDO_Ptr strategy_ptr;
+			if (PricingDataContext()->GetStrategyMap()->find(strategyKey, strategy_ptr))
+			{
+				if (strategy_ptr->AutoOrderSettings.LimitOrderCounter < limitOrders)
+				{
+					strategy_ptr->AutoOrderSettings.LimitOrderCounter = limitOrders;
+				}
+
+				_autoOrderMgr.TradeByStrategy(*strategy_ptr);
+			}
+		}
+		else
+		{
+			std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		}
+	}
+}
+
+void CTPOTCTradeProcessor::HedgeOrderWorker()
+{
+	while (!_closing)
+	{
+		PortfolioKey portfolioKey;
+		if (_hedgeOrderQueue.pop(portfolioKey))
+		{
+			_hedgeOrderMgr.Hedge(portfolioKey);
+		}
+		else
+		{
+			std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		}
+	}
+}
+
+void CTPOTCTradeProcessor::TriggerHedgeOrderUpdating(const PortfolioKey& portfolioKey)
+{
+	_hedgeOrderQueue.emplace(portfolioKey);
+}
+
+void CTPOTCTradeProcessor::TriggerAutoOrderUpdating(const StrategyContractDO& strategyDO)
+{
+	_autoOrderQueue.emplace(strategyDO);
 }
 
 void CTPOTCTradeProcessor::OnTraded(const TradeRecordDO_Ptr& tradeDO)
 {
 	DispatchUserMessage(MSG_ID_TRADE_RTN, 0, tradeDO->UserID(), tradeDO);
+
+	if (auto position_ptr = GetOTCOrderManager().GetPositionContext().GetPosition(tradeDO->UserID(), tradeDO->PortfolioID(), *tradeDO))
+	{
+		DispatchUserMessage(MSG_ID_POSITION_UPDATED, 0, tradeDO->UserID(), position_ptr);
+	}
 }
 
 
-OrderDO_Ptr CTPOTCTradeProcessor::CreateOrder(const OrderRequestDO& orderInfo)
+OrderDO_Ptr CTPOTCTradeProcessor::CreateOrder(const OrderRequestDO& orderReq)
 {
 	// 端登成功,发出报单录入请求
 	CThostFtdcInputOrderField req{};
@@ -55,27 +146,28 @@ OrderDO_Ptr CTPOTCTradeProcessor::CreateOrder(const OrderRequestDO& orderInfo)
 	//投资者代码
 	std::strncpy(req.InvestorID, _systemUser.getInvestorId().data(), sizeof(req.InvestorID));
 	// 合约代码
-	std::strncpy(req.InstrumentID, orderInfo.InstrumentID().data(), sizeof(req.InstrumentID));
+	std::strncpy(req.InstrumentID, orderReq.InstrumentID().data(), sizeof(req.InstrumentID));
 	///报单引用
-	std::snprintf(req.OrderRef, sizeof(req.OrderRef), FMT_ORDERREF, orderInfo.OrderID);
+	std::snprintf(req.OrderRef, sizeof(req.OrderRef), FMT_ORDERREF, orderReq.OrderID);
 	// 用户代码
-	std::strncpy(req.UserID, orderInfo.UserID().data(), sizeof(req.UserID));
+	std::strncpy(req.UserID, orderReq.UserID().data(), sizeof(req.UserID));
 	// 报单价格条件
 	req.OrderPriceType = THOST_FTDC_OPT_LimitPrice;
 	// 买卖方向
-	req.Direction = orderInfo.Direction > 0 ? THOST_FTDC_D_Buy : THOST_FTDC_D_Sell;
+	req.Direction = orderReq.Direction > 0 ? THOST_FTDC_D_Buy : THOST_FTDC_D_Sell;
 	///组合开平标志: 开仓
-	req.CombOffsetFlag[0] = THOST_FTDC_OF_Open + orderInfo.OpenClose;
+	req.CombOffsetFlag[0] = THOST_FTDC_OF_Open + orderReq.OpenClose;
 	///组合投机套保标志
 	req.CombHedgeFlag[0] = THOST_FTDC_HF_Speculation;
 	// 价格
-	req.LimitPrice = orderInfo.LimitPrice;
+	req.LimitPrice = orderReq.LimitPrice;
 	// 数量
-	req.VolumeTotalOriginal = orderInfo.Volume;
+	req.VolumeTotalOriginal = orderReq.Volume;
 	// 有效期类型
-	req.TimeCondition = orderInfo.TIF == OrderTIFType::IOC ? THOST_FTDC_TC_IOC : THOST_FTDC_TC_GFD;
+	req.TimeCondition = orderReq.TIF == OrderTIFType::IOC ? THOST_FTDC_TC_IOC : THOST_FTDC_TC_GFD;
 	// 成交量类型
-	req.VolumeCondition = THOST_FTDC_VC_AV;
+	auto vit = CTPVolCondMapping.find((OrderVolType)orderReq.VolCondition);
+	req.VolumeCondition = vit != CTPVolCondMapping.end() ? vit->second : THOST_FTDC_VC_AV;
 	// 最小成交量
 	req.MinVolume = 1;
 	// 触发条件
@@ -87,14 +179,19 @@ OrderDO_Ptr CTPOTCTradeProcessor::CreateOrder(const OrderRequestDO& orderInfo)
 	// 自动挂起标志
 	req.IsAutoSuspend = false;
 
-	if (_rawAPI->TdAPI->ReqOrderInsert(&req, 0) != 0)
-		return nullptr;
+	OrderPortfolioCache::Insert(orderReq.OrderID, orderReq);
 
-	return CTPUtility::ParseRawOrder(&req, nullptr, _systemUser.getSessionId());
+	if (_rawAPI->TdAPI->ReqOrderInsert(&req, 0) != 0)
+	{
+		OrderPortfolioCache::Remove(orderReq.OrderID);
+		return nullptr;
+	}
+
+	return CTPUtility::ParseRawOrder(&req, nullptr, orderReq.SessionID ? orderReq.SessionID : _systemUser.getSessionId());
 }
 
 
-OrderDO_Ptr CTPOTCTradeProcessor::CancelOrder(const OrderRequestDO& orderInfo)
+OrderDO_Ptr CTPOTCTradeProcessor::CancelOrder(const OrderRequestDO& orderReq)
 {
 	CThostFtdcInputOrderActionField req{};
 
@@ -102,25 +199,25 @@ OrderDO_Ptr CTPOTCTradeProcessor::CancelOrder(const OrderRequestDO& orderInfo)
 	//经纪公司代码
 	std::strncpy(req.BrokerID, _systemUser.getBrokerId().data(), sizeof(req.BrokerID));
 	std::strncpy(req.InvestorID, _systemUser.getUserId().data(), sizeof(req.InvestorID));
-	std::strncpy(req.UserID, orderInfo.UserID().data(), sizeof(req.UserID));
+	std::strncpy(req.UserID, orderReq.UserID().data(), sizeof(req.UserID));
 
-	if (orderInfo.OrderSysID != 0)
+	if (orderReq.OrderSysID != 0)
 	{
-		std::strncpy(req.ExchangeID, orderInfo.ExchangeID().data(), sizeof(req.ExchangeID));
-		std::snprintf(req.OrderSysID, sizeof(req.OrderSysID), FMT_ORDERSYSID, orderInfo.OrderSysID);
+		std::strncpy(req.ExchangeID, orderReq.ExchangeID().data(), sizeof(req.ExchangeID));
+		std::snprintf(req.OrderSysID, sizeof(req.OrderSysID), FMT_ORDERSYSID, orderReq.OrderSysID);
 	}
 	else
 	{
 		req.FrontID = _systemUser.getFrontId();
-		req.SessionID = orderInfo.SessionID ? orderInfo.SessionID : _systemUser.getSessionId();
-		std::strncpy(req.InstrumentID, orderInfo.InstrumentID().data(), sizeof(req.InstrumentID));
-		std::snprintf(req.OrderRef, sizeof(req.OrderRef), FMT_ORDERREF, orderInfo.OrderID);
+		req.SessionID = orderReq.SessionID ? orderReq.SessionID : _systemUser.getSessionId();
+		std::strncpy(req.InstrumentID, orderReq.InstrumentID().data(), sizeof(req.InstrumentID));
+		std::snprintf(req.OrderRef, sizeof(req.OrderRef), FMT_ORDERREF, orderReq.OrderID);
 	}
 
 	if (_rawAPI->TdAPI->ReqOrderAction(&req, AppContext::GenNextSeq()) != 0)
 		return nullptr;
 
-	req.SessionID = orderInfo.SessionID ? orderInfo.SessionID : _systemUser.getSessionId();
+	req.SessionID = orderReq.SessionID ? orderReq.SessionID : _systemUser.getSessionId();
 
 	return CTPUtility::ParseRawOrder(&req, nullptr);
 }
@@ -130,14 +227,24 @@ uint32_t CTPOTCTradeProcessor::GetSessionId(void)
 	return _systemUser.getSessionId();
 }
 
-OTCOrderManager * CTPOTCTradeProcessor::GetOTCOrderManager(void)
+OTCOrderManager& CTPOTCTradeProcessor::GetOTCOrderManager(void)
 {
-	return &_otcOrderMgr;
+	return _otcOrderMgr;
 }
 
-AutoOrderManager * CTPOTCTradeProcessor::GetAutoOrderManager(void)
+AutoOrderManager& CTPOTCTradeProcessor::GetAutoOrderManager(void)
 {
-	return &_autoOrderMgr;
+	return _autoOrderMgr;
+}
+
+HedgeOrderManager& CTPOTCTradeProcessor::GetHedgeOrderManager(void)
+{
+	return _hedgeOrderMgr;
+}
+
+UserOrderContext& CTPOTCTradeProcessor::GetExchangeOrderContext()
+{
+	return _userOrderCtx;
 }
 
 
@@ -146,7 +253,7 @@ AutoOrderManager * CTPOTCTradeProcessor::GetAutoOrderManager(void)
 ///登录请求响应
 void CTPOTCTradeProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	CTPTradeWorkerProcessor::OnRspUserLogin(pRspUserLogin, pRspInfo, nRequestID, bIsLast);
+	CTPTradeWorkerSAProcessor::OnRspUserLogin(pRspUserLogin, pRspInfo, nRequestID, bIsLast);
 	if (!CTPUtility::HasError(pRspInfo))
 	{
 		_autoOrderMgr.Reset();
@@ -159,8 +266,8 @@ void CTPOTCTradeProcessor::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrd
 	if (pInputOrder)
 	{
 		auto orderptr = CTPUtility::ParseRawOrder(pInputOrder, pRspInfo, _systemUser.getSessionId());
-		int ret = _autoOrderMgr.OnMarketOrderUpdated(*orderptr);
-		DispatchUserMessage(MSG_ID_ORDER_NEW, nRequestID, orderptr->UserID(), orderptr);
+		_autoOrderMgr.OnMarketOrderUpdated(*orderptr);
+		_hedgeOrderMgr.OnMarketOrderUpdated(*orderptr);
 	}
 }
 
@@ -171,8 +278,8 @@ void CTPOTCTradeProcessor::OnRspOrderAction(CThostFtdcInputOrderActionField *pIn
 		if (pInputOrderAction->ActionFlag == THOST_FTDC_AF_Delete)
 		{
 			auto orderptr = CTPUtility::ParseRawOrder(pInputOrderAction, pRspInfo);
-			int ret = _autoOrderMgr.OnMarketOrderUpdated(*orderptr);
-			DispatchUserMessage(MSG_ID_ORDER_CANCEL, nRequestID, orderptr->UserID(), orderptr);
+			_autoOrderMgr.OnMarketOrderUpdated(*orderptr);
+			_hedgeOrderMgr.OnMarketOrderUpdated(*orderptr);
 		}
 	}
 }
@@ -184,8 +291,8 @@ void CTPOTCTradeProcessor::OnErrRtnOrderInsert(CThostFtdcInputOrderField *pInput
 	{
 		if (auto orderptr = CTPUtility::ParseRawOrder(pInputOrder, pRspInfo, _systemUser.getSessionId()))
 		{
-			int ret = _autoOrderMgr.OnMarketOrderUpdated(*orderptr);
-			DispatchUserMessage(MSG_ID_ORDER_NEW, pInputOrder->RequestID, orderptr->UserID(), orderptr);
+			_autoOrderMgr.OnMarketOrderUpdated(*orderptr);
+			_hedgeOrderMgr.OnMarketOrderUpdated(*orderptr);
 		}
 	}
 }
@@ -199,8 +306,8 @@ void CTPOTCTradeProcessor::OnErrRtnOrderAction(CThostFtdcOrderActionField *pOrde
 		{
 			if (auto orderptr = CTPUtility::ParseRawOrder(pOrderAction, pRspInfo))
 			{
-				int ret = _autoOrderMgr.OnMarketOrderUpdated(*orderptr);
-				DispatchUserMessage(MSG_ID_ORDER_CANCEL, pOrderAction->RequestID, orderptr->UserID(), orderptr);
+				_autoOrderMgr.OnMarketOrderUpdated(*orderptr);
+				_hedgeOrderMgr.OnMarketOrderUpdated(*orderptr);
 			}
 		}
 	}
@@ -210,16 +317,45 @@ void CTPOTCTradeProcessor::OnRtnOrder(CThostFtdcOrderField *pOrder)
 {
 	if (pOrder)
 	{
-		auto orderptr = CTPUtility::ParseRawOrder(pOrder);
+		auto orderptr = RefineOrder(pOrder);
+
+		// update auto orders
 		int ret = _autoOrderMgr.OnMarketOrderUpdated(*orderptr);
-		if (ret == 0)
+		if (ret != 0)
 		{
-			if (auto msgId = CTPUtility::ParseOrderMessageID(orderptr->OrderStatus))
+			StrategyContractDO_Ptr strategy_ptr;
+			_pricingCtx->GetStrategyMap()->find(*orderptr, strategy_ptr);
+			if (strategy_ptr)
 			{
-				auto sid = msgId == MSG_ID_ORDER_CANCEL ? orderptr->OrderSysID : pOrder->RequestID;
-				DispatchUserMessage(msgId, sid, orderptr->UserID(), orderptr);
+				if (ret > 0)
+				{
+					if (orderptr->Direction == DirectionType::SELL)
+					{
+						strategy_ptr->AutoOrderSettings.AskCounter += ret;
+					}
+					else
+					{
+						strategy_ptr->AutoOrderSettings.BidCounter += ret;
+					}
+				}
+
+				DispatchUserMessage(MSG_ID_MODIFY_STRATEGY, 0, strategy_ptr->UserID(), strategy_ptr);
 			}
-			DispatchUserMessage(MSG_ID_ORDER_UPDATE, pOrder->RequestID, orderptr->UserID(), orderptr);
+
+			_autoOrderQueue.emplace(*orderptr);
+		}
+
+		// update hedge orders
+		ret = _hedgeOrderMgr.OnMarketOrderUpdated(*orderptr);
+		if (!orderptr->PortfolioID().empty())
+		{
+			auto orderStatus = orderptr->OrderStatus;
+			if (orderStatus == OrderStatusType::PARTIAL_TRADING ||
+				orderStatus == OrderStatusType::ALL_TRADED ||
+				orderStatus == OrderStatusType::CANCELED)
+			{
+				_hedgeOrderQueue.emplace(*orderptr);
+			}
 		}
 	}
 }
@@ -239,14 +375,12 @@ void CTPOTCTradeProcessor::OnRtnTrade(CThostFtdcTradeField * pTrade)
 {
 	if (pTrade)
 	{
-		if (auto trdDO_Ptr = CTPUtility::ParseRawTrade(pTrade))
+		if (auto trdDO_Ptr = RefineTrade(pTrade))
 		{
-			if (auto order_ptr = _autoOrderMgr.FindOrder(trdDO_Ptr->OrderID))
-			{
-				trdDO_Ptr->SetPortfolioID(order_ptr->PortfolioID());
-			}
-			TradeDAO::SaveExchangeTrade(*trdDO_Ptr);
-			DispatchUserMessage(MSG_ID_TRADE_RTN, 0, pTrade->UserID, trdDO_Ptr);
+			if (_logTrades)
+				_tradeQueue.push(trdDO_Ptr);
+
+			UpdatePosition(trdDO_Ptr);
 		}
 	}
 }

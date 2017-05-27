@@ -31,10 +31,8 @@ dataobj_ptr OTCQueryModelParams::HandleRequest(const uint32_t serialId, const da
 	if (pModelParam->InstanceName.empty())
 	{
 		auto models = StrategyModelCache::FindModelsByUser(userId);
-		if (!models)
-		{
-			throw NotFoundException();
-		}
+
+		ThrowNotFoundExceptionIfEmpty(models);
 
 		for (auto& model : *models)
 		{

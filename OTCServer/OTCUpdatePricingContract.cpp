@@ -18,6 +18,7 @@
 dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, const dataobj_ptr & reqDO, IRawAPI * rawAPI, const IMessageProcessor_Ptr & msgProcessor, const IMessageSession_Ptr & session)
 {
 	CheckLogin(session);
+	CheckRolePermission(session, UserRoleType::ROLE_TRADINGDESK);
 
 	auto ret = std::make_shared<VectorDO<StrategyContractDO>>();
 
@@ -234,7 +235,7 @@ dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, con
 		auto it = pUserStrategyMap_ptr->get()->lock_table();
 		for (auto& pair : it)
 		{
-			pWorkerProc->TriggerUpdateByStrategy(*pair.second);
+			pWorkerProc->TriggerPricingByStrategy(*pair.second);
 			ret->push_back(*pair.second);
 		}
 	}

@@ -28,6 +28,8 @@ public:
 
 	void setMessageSession(const IMessageSession_Ptr& msgSession_ptr);
 
+	void setServiceLocator(const IMessageServiceLocator_Ptr & svcLct_Ptr);
+
 	bool OnSessionClosing(void);
 
 	void Initialize(IServerContext* pServerCtx);
@@ -54,7 +56,7 @@ public:
 
 protected:
 	std::shared_ptr<CTPOTCTradeProcessor> _ctpOtcTradeProcessorPtr;
-	std::thread _initializer;
+	std::future<void> _initializer;
 	UserInfo _systemUser;
 	int RetryInterval = 60000;
 	volatile bool _closing = false;

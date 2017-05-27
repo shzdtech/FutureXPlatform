@@ -73,20 +73,23 @@ dataobj_ptr BlackScholesIVM::Compute(
 	if (!priceCtx.GetMarketDataMap()->find(sdo.IVMContracts->PricingContracts[0].InstrumentID(), mBaseDO))
 		return nullptr;
 
-	if (mBaseDO.Ask().Volume <= 0 && mBaseDO.Bid().Volume <= 0)
+	if (mBaseDO.Ask().Price <= 0 || mBaseDO.Bid().Price <= 0)
 		return nullptr;
 
-	double base_bidPrice = mBaseDO.Bid().Price;
-	double base_askdPrice = mBaseDO.Ask().Price;
-
 	double adjust = sdo.IVMContracts->PricingContracts[0].Adjust;
-	double price = (base_bidPrice + base_askdPrice) / 2 + adjust;
+	double base_bidPrice = mBaseDO.Bid().Price + adjust;
+	double base_askdPrice = mBaseDO.Ask().Price + adjust;
+
+	if (sdo.ContractType == ContractType::CONTRACTTYPE_CALL_OPTION)
+	{
+		std::swap(base_bidPrice, base_askdPrice);
+	}
 
 	auto ret = std::make_shared<TDataObject<ImpliedVolatility>>();
 	try
 	{
 		if (mDO.Bid().Volume > 0)
-			ret->Data.BidVolatility = CaclImpliedVolatility(mDO.Bid().Price, price, sdo.StrikePrice, paramObj->bidVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration);
+			ret->Data.BidVolatility = CaclImpliedVolatility(mDO.Bid().Price, base_bidPrice, sdo.StrikePrice, paramObj->bidVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration);
 		else
 			ret->Data.BidVolatility = std::nan(nullptr);
 	}
@@ -99,7 +102,7 @@ dataobj_ptr BlackScholesIVM::Compute(
 	try
 	{
 		if (mDO.Ask().Volume > 0)
-			ret->Data.AskVolatility = CaclImpliedVolatility(mDO.Ask().Price, price, sdo.StrikePrice, paramObj->askVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration);
+			ret->Data.AskVolatility = CaclImpliedVolatility(mDO.Ask().Price, base_askdPrice, sdo.StrikePrice, paramObj->askVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration);
 		else
 			ret->Data.AskVolatility = std::nan(nullptr);
 	}

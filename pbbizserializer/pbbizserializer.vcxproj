@@ -209,9 +209,12 @@
     <ClCompile Include="PBInstrumentSerializer.cpp" />
     <ClCompile Include="PBMarketDataSerializer.cpp" />
     <ClCompile Include="PBOrderSerializer.cpp" />
+    <ClCompile Include="PBPortfolioListSerializer.cpp" />
     <ClCompile Include="PBPortfolioSerializer.cpp" />
-    <ClCompile Include="PBPricingContractSerializer.cpp" />
+    <ClCompile Include="PBPositionDifferSerializer.cpp" />
+    <ClCompile Include="PBStrategyPricingContractSerializer.cpp" />
     <ClCompile Include="PBPricingDataSerializer.cpp" />
+    <ClCompile Include="PBRiskSerializer.cpp" />
     <ClCompile Include="PBStrategySerializer.cpp" />
     <ClCompile Include="PBSubMarketDataSerializer.cpp" />
     <ClCompile Include="PBSubPricingDataSerializer.cpp" />
@@ -237,9 +240,12 @@
     <ClInclude Include="PBInstrumentSerializer.h" />
     <ClInclude Include="PBMarketDataSerializer.h" />
     <ClInclude Include="PBOrderSerializer.h" />
+    <ClInclude Include="PBPortfolioListSerializer.h" />
     <ClInclude Include="PBPortfolioSerializer.h" />
-    <ClInclude Include="PBPricingContractSerializer.h" />
+    <ClInclude Include="PBPositionDifferSerializer.h" />
+    <ClInclude Include="PBStrategyPricingContractSerializer.h" />
     <ClInclude Include="PBPricingDataSerializer.h" />
+    <ClInclude Include="PBRiskSerializer.h" />
     <ClInclude Include="PBStrategySerializer.h" />
     <ClInclude Include="PBSubMarketDataSerializer.h" />
     <ClInclude Include="PBSubPricingDataSerializer.h" />

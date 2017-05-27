@@ -9,7 +9,7 @@
 #define __dataobject_PortfolioDO_h
 
 #include "dataobjectbase.h"
-#include "ContractKey.h"
+#include "PricingContract.h"
 #include <chrono>
 
 class PortfolioKey : virtual public UserKey
@@ -23,8 +23,10 @@ public:
 	PortfolioKey(const char* portfolioID, const char* userID) :
 		_portfolioID(portfolioID), UserKey(userID) {}
 
-	PortfolioKey& operator= (const PortfolioKey& contractKey)
+	PortfolioKey& operator= (const PortfolioKey& portfolioKey)
 	{
+		this->_portfolioID = portfolioKey._portfolioID;
+		this->_userID = portfolioKey._userID;
 		return *this;
 	}
 
@@ -83,9 +85,15 @@ public:
 	PortfolioDO(const std::string& portfolioID, const std::string& userID) :
 		PortfolioKey(portfolioID, userID), UserKey(userID) {}
 
-	double Threshold;
-	long HedgeDelay;
+	bool Hedging = false;
+	double Threshold = 1;
+	long HedgeDelay = 0;
 	std::chrono::steady_clock::time_point LastHedge;
+
+	volatile bool HedingFlag = false;
+
+
+	std::map<std::string, std::shared_ptr<ContractKey>> HedgeContracts;
 
 protected:
 private:

@@ -193,11 +193,17 @@
     <ClInclude Include="UserTradeContext.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\bizutility\bizutility.vcxproj">
+      <Project>{e3f399cf-2d32-49a8-b536-ea7fad14483f}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\databaseop\databaseop.vcxproj">
       <Project>{dc2aae7b-2f79-42fc-94c2-bc3c9c1108c9}</Project>
     </ProjectReference>
     <ProjectReference Include="..\dataobject\dataobject.vcxproj">
       <Project>{6257959c-c51c-47ba-9b4c-b40e83f8453a}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\litelogger\litelogger.vcxproj">
+      <Project>{c1d53247-d933-4f39-9b56-09909f6a1c27}</Project>
     </ProjectReference>
     <ProjectReference Include="..\message\message.vcxproj">
       <Project>{e9adaa2b-1ccb-4111-9ac3-bddb3dc114f2}</Project>

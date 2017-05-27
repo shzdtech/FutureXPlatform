@@ -20,7 +20,7 @@ public:
 	static bool CancelOrder(const OrderRequestDO& orderDO, OrderStatusType& status);
 	static bool RejectOrder(const OrderRequestDO& orderDO, OrderStatusType& status);
 
-	static bool AcceptOrder(const OrderRequestDO& orderDO, OrderStatusType& status);
+	static uint64_t AcceptOrder(const OrderRequestDO& orderDO, OrderStatusType& status);
 	static OrderDOVec_Ptr QueryTradingOrder(const ContractKey& contractKey);
 	static OrderDOVec_Ptr QueryTodayOrder(const std::string& userId, const ContractKey& contractKey);
 

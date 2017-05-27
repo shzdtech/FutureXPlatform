@@ -60,7 +60,7 @@ dataobj_ptr OTCSubMarketData::HandleRequest(const uint32_t serialId, const datao
 			auto pricingDOMap = pWorkerProc->PricingDataContext()->GetPricingDataDOMap();
 			if (session->getUserInfo().getRole() == ROLE_TRADINGDESK)
 			{
-				if (auto strategySet_Ptr = std::static_pointer_cast<std::set<ContractKey>>(
+				if (auto strategySet_Ptr = std::static_pointer_cast<std::set<UserContractKey>>(
 					session->getContext()->getAttribute(STR_KEY_USER_STRATEGY)))
 				{
 					for (auto& contract : *strategySet_Ptr)

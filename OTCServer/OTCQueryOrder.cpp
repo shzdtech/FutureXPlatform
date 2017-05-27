@@ -37,7 +37,7 @@ dataobj_ptr OTCQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 {
 	CheckLogin(session);
 
-	auto stdo = (MapDO<std::string>*)reqDO.get();
+	auto stdo = (StringMapDO<std::string>*)reqDO.get();
 
 	auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
 
@@ -71,7 +71,5 @@ dataobj_ptr OTCQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 
 dataobj_ptr OTCQueryOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	auto& orderDO = *((OrderDO*)rawRespParams[0]);
-
-	return std::make_shared<OrderDO>(orderDO);
+	return nullptr;
 }

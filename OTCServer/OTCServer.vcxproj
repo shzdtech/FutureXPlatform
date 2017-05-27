@@ -26,26 +26,26 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -168,7 +168,10 @@
     <ClCompile Include="OTCQueryInstrument.cpp" />
     <ClCompile Include="OTCQueryModelParams.cpp" />
     <ClCompile Include="OTCQueryPortfolio.cpp" />
+    <ClCompile Include="OTCQueryPosition.cpp" />
+    <ClCompile Include="OTCQueryRisk.cpp" />
     <ClCompile Include="OTCQueryTrade.cpp" />
+    <ClCompile Include="OTCRiskUpdated.cpp" />
     <ClCompile Include="OTCSubTradingDeskData.cpp" />
     <ClCompile Include="OTCUnSubMarketData.cpp" />
     <ClCompile Include="OTCCancelOrder.cpp" />
@@ -184,12 +187,14 @@
     <ClCompile Include="OTCUnSubTradingDeskData.cpp" />
     <ClCompile Include="OTCUpdateContractParam.cpp" />
     <ClCompile Include="OTCUpdateModelParams.cpp" />
+    <ClCompile Include="OTCUpdatePortfolio.cpp" />
     <ClCompile Include="OTCUpdatePricingContract.cpp" />
     <ClCompile Include="OTCUpdateStrategy.cpp" />
     <ClCompile Include="OTCUpdateTempModelParam.cpp" />
     <ClCompile Include="OTCUpdateUserParam.cpp" />
     <ClCompile Include="OTCUserContextBuilder.cpp" />
     <ClCompile Include="OTCWorkerProcessor.cpp" />
+    <ClCompile Include="OTCUpdateHedgeContract.cpp" />
     <ClCompile Include="TradingDeskContextBuilder.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -197,7 +202,10 @@
     <ClInclude Include="OTCQueryInstrument.h" />
     <ClInclude Include="OTCQueryModelParams.h" />
     <ClInclude Include="OTCQueryPortfolio.h" />
+    <ClInclude Include="OTCQueryPosition.h" />
+    <ClInclude Include="OTCQueryRisk.h" />
     <ClInclude Include="OTCQueryTrade.h" />
+    <ClInclude Include="OTCRiskUpdated.h" />
     <ClInclude Include="OTCSubTradingDeskData.h" />
     <ClInclude Include="OTCUnSubMarketData.h" />
     <ClInclude Include="OTCCancelOrder.h" />
@@ -213,6 +221,7 @@
     <ClInclude Include="OTCUnSubTradingDeskData.h" />
     <ClInclude Include="OTCUpdateContractParam.h" />
     <ClInclude Include="OTCUpdateModelParams.h" />
+    <ClInclude Include="OTCUpdatePortfolio.h" />
     <ClInclude Include="OTCUpdatePricingContract.h" />
     <ClInclude Include="OTCUpdateStrategy.h" />
     <ClInclude Include="OTCUpdateTempModelParam.h" />
@@ -220,6 +229,7 @@
     <ClInclude Include="OTCUserContextBuilder.h" />
     <ClInclude Include="OTCWorkerProcessor.h" />
     <ClInclude Include="otc_bizhandlers.h" />
+    <ClInclude Include="OTCUpdateHedgeContract.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="TradingDeskContextBuilder.h" />
   </ItemGroup>

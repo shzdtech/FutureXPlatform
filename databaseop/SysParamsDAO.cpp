@@ -44,3 +44,33 @@ std::shared_ptr<std::map<std::string, std::string>> SysParamsDAO::FindSysParams(
 
 	return ret;
 }
+
+bool SysParamsDAO::FindSysParamValue(const std::string & key, std::string & value)
+{
+	bool ret = false;
+
+	const static std::string sql_findparams(
+		"SELECT val FROM sys_param WHERE keycode = ?");
+
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
+	try
+	{
+		AutoClosePreparedStmt_Ptr prestmt(
+			session->getConnection()->prepareStatement(sql_findparams));
+		prestmt->setString(1, key);
+
+		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
+
+		while (rs->next())
+			value = rs->getString(1);
+
+		ret = true;
+	}
+	catch (sql::SQLException& sqlEx)
+	{
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
+		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
+	}
+
+	return ret;
+}

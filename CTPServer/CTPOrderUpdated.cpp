@@ -20,12 +20,20 @@ dataobj_ptr CTPOrderUpdated::HandleResponse(const uint32_t serialId, const param
 			if (orderPtr = pWorkerProc->GetUserOrderContext().FindOrder(CTPUtility::ToUInt64(pOrder->OrderSysID)))
 			{
 				orderPtr = CTPUtility::ParseRawOrder(pOrder, orderPtr);
+				if (orderPtr->IsSystemUserId())
+				{
+					orderPtr->SetUserID(CTPUtility::MakeUserID(orderPtr->BrokerID, orderPtr->InvestorID));
+				}
 			}
 			else
 			{
 				orderPtr = CTPUtility::ParseRawOrder(pOrder);
 				if (orderPtr && orderPtr->OrderSysID)
 				{
+					if (orderPtr->IsSystemUserId())
+					{
+						orderPtr->SetUserID(CTPUtility::MakeUserID(orderPtr->BrokerID, orderPtr->InvestorID));
+					}
 					pWorkerProc->GetUserOrderContext().UpsertOrder(orderPtr->OrderSysID, orderPtr);
 				}
 			}
@@ -33,6 +41,10 @@ dataobj_ptr CTPOrderUpdated::HandleResponse(const uint32_t serialId, const param
 		else
 		{
 			orderPtr = CTPUtility::ParseRawOrder(pOrder);
+			if (orderPtr->IsSystemUserId())
+			{
+				orderPtr->SetUserID(CTPUtility::MakeUserID(orderPtr->BrokerID, orderPtr->InvestorID));
+			}
 		}
 
 		if (orderPtr)

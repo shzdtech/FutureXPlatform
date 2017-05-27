@@ -4,5 +4,6 @@
 //OTC
 #include "CTPOTCLogin.h"
 #include "CTPSimMarketData.h"
+#include "CTPOTCQueryRisk.h"
 
 #endif

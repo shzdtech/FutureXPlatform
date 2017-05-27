@@ -6,16 +6,17 @@
  ***********************************************************************/
 
 #include "CTPAccountTradeServiceFactory.h"
-#include "../CTPServer/CTPWorkerProcessorID.h"
+#include "CTPWorkerProcessorID.h"
 #include "ctp_bizhandlers.h"
-#include "../CTPServer/ctp_bizhandlers.h"
-#include "../CTPServer/CTPTradeWorkerProcessor.h"
+#include "CTPTradeWorkerSAProcessor.h"
 #include "../message/MessageUtility.h"
 #include "../common/Attribute_Key.h"
 
 #include "../message/EchoMessageHandler.h"
 #include "../message/EchoMessageSerializer.h"
 #include "../message/DefMessageID.h"
+
+#include "../pricingengine/PricingDataContext.h"
 #include "../dataserializer/AbstractDataSerializerFactory.h"
 
  ////////////////////////////////////////////////////////////////////////
@@ -30,6 +31,8 @@ std::map<uint, IMessageHandler_Ptr> CTPAccountTradeServiceFactory::CreateMessage
 		CTPTradeServiceFactory::CreateMessageHandlers(serverCtx);
 
 	msg_hdl_map[MSG_ID_LOGIN] = std::make_shared<CTPAccountLogin>();
+	msg_hdl_map[MSG_ID_QUERY_POSITION] = std::make_shared<CTPAccountQueryPosition>();
+	msg_hdl_map[MSG_ID_QUERY_POSITION_DIFFER] = std::make_shared<CTPQueryPositionDiffer>();
 
 	return msg_hdl_map;
 }
@@ -55,7 +58,7 @@ std::map<uint, IDataSerializer_Ptr> CTPAccountTradeServiceFactory::CreateDataSer
 
 IMessageProcessor_Ptr CTPAccountTradeServiceFactory::CreateMessageProcessor(IServerContext* serverCtx)
 {
-	auto pWorker = std::static_pointer_cast<CTPTradeWorkerProcessor>(serverCtx->getWorkerProcessor());
+	auto pWorker = std::static_pointer_cast<CTPTradeWorkerSAProcessor>(serverCtx->getWorkerProcessor());
 	return std::make_shared<CTPProcessor>(pWorker->RawAPI_Ptr());
 }
 
@@ -69,7 +72,7 @@ IMessageProcessor_Ptr CTPAccountTradeServiceFactory::CreateWorkerProcessor(IServ
 {
 	if (!serverCtx->getWorkerProcessor())
 	{
-		auto worker_ptr = std::make_shared<CTPTradeWorkerProcessor>(serverCtx);
+		auto worker_ptr = std::make_shared<CTPTradeWorkerSAProcessor>(serverCtx, std::make_shared<PricingDataContext>());
 		worker_ptr->Initialize(serverCtx);
 		serverCtx->setWorkerProcessor(worker_ptr);
 	}

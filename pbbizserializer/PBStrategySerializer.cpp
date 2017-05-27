@@ -21,86 +21,28 @@
 
 data_buffer PBStrategySerializer::Serialize(const dataobj_ptr& abstractDO)
 {
-	Micro::Future::Message::Business::PBStrategyList PB;
-	auto pDO = (VectorDO<StrategyContractDO>*)abstractDO.get();
+	Micro::Future::Message::Business::PBStrategy PB;
+	auto pDO = (StrategyContractDO*)abstractDO.get();
 	FillPBHeader(PB, pDO);
 
-	for (auto& sdo : *pDO)
-	{
-		auto pStrategy = PB.add_strategy();
-		pStrategy->set_exchange(sdo.ExchangeID());
-		pStrategy->set_contract(sdo.InstrumentID());
-		pStrategy->set_hedging(sdo.Hedging);
-		pStrategy->set_underlying(sdo.Underlying);
-		pStrategy->set_symbol(sdo.StrategyName);
-		pStrategy->set_depth(sdo.Depth);
-		pStrategy->set_bidenabled(sdo.BidEnabled);
-		pStrategy->set_askenabled(sdo.AskEnabled);
-		pStrategy->set_bidqv(sdo.BidQV);
-		pStrategy->set_askqv(sdo.AskQV);
+	PB.set_exchange(pDO->ExchangeID());
+	PB.set_contract(pDO->InstrumentID());
 
-		pStrategy->set_portfolio(sdo.PortfolioID());
-		
-		if (sdo.BaseContract)
-		{
-			pStrategy->set_baseexchange(sdo.BaseContract->ExchangeID());
-			pStrategy->set_basecontract(sdo.BaseContract->InstrumentID());
-		}
-
-
-		// Fill Models
-		if (sdo.PricingModel)
-		{
-			pStrategy->set_pricingmodel(sdo.PricingModel->InstanceName);
-
-			if (sdo.PricingContracts)
-			{
-				for (auto& pricingContract : sdo.PricingContracts->PricingContracts)
-				{
-					auto pContract = pStrategy->add_pricingcontracts();
-					pContract->set_exchange(pricingContract.ExchangeID());
-					pContract->set_contract(pricingContract.InstrumentID());
-					pContract->set_weight(pricingContract.Weight);
-					pContract->set_adjust(pricingContract.Adjust);
-				}
-			}
-		}
-
-		if (sdo.IVModel)
-		{
-			pStrategy->set_ivmodel(sdo.IVModel->InstanceName);
-
-			if (sdo.IVMContracts)
-			{
-				for (auto& pricingContract : sdo.IVMContracts->PricingContracts)
-				{
-					auto pContract = pStrategy->add_ivmcontracts();
-					pContract->set_exchange(pricingContract.ExchangeID());
-					pContract->set_contract(pricingContract.InstrumentID());
-					pContract->set_weight(pricingContract.Weight);
-					pContract->set_adjust(pricingContract.Adjust);
-				}
-			}
-		}
-
-		if (sdo.VolModel)
-		{
-			pStrategy->set_volmodel(sdo.VolModel->InstanceName);
-
-			if (sdo.VolContracts)
-			{
-				for (auto& pricingContract : sdo.VolContracts->PricingContracts)
-				{
-					auto pContract = pStrategy->add_volcontracts();
-					pContract->set_exchange(pricingContract.ExchangeID());
-					pContract->set_contract(pricingContract.InstrumentID());
-					pContract->set_weight(pricingContract.Weight);
-					pContract->set_adjust(pricingContract.Adjust);
-				}
-			}
-		}
-
-	}
+	PB.set_hedging(pDO->Hedging);
+	PB.set_depth(pDO->Depth);
+	PB.set_bidenabled(pDO->BidEnabled);
+	PB.set_askenabled(pDO->AskEnabled);
+	PB.set_bidqv(pDO->AutoOrderSettings.BidQV);
+	PB.set_askqv(pDO->AutoOrderSettings.AskQV);
+	PB.set_askcounter(pDO->AutoOrderSettings.AskCounter);
+	PB.set_bidcounter(pDO->AutoOrderSettings.BidCounter);
+	PB.set_maxautotrade(pDO->AutoOrderSettings.MaxAutoTrade);
+	PB.set_bidnotcross(pDO->AutoOrderSettings.BidNotCross);
+	PB.set_closemode(pDO->AutoOrderSettings.CloseMode);
+	PB.set_tif(pDO->AutoOrderSettings.TIF);
+	PB.set_volcond(pDO->AutoOrderSettings.VolCondition);
+	PB.set_limitordercounter(pDO->AutoOrderSettings.LimitOrderCounter);
+	PB.set_ticksizemult(pDO->TickSizeMult);
 
 	SerializeWithReturn(PB);
 }
@@ -125,8 +67,16 @@ dataobj_ptr PBStrategySerializer::Deserialize(const data_buffer& rawdata)
 	sdo->Hedging = pbstrtg.hedging();
 	sdo->BidEnabled = pbstrtg.bidenabled();
 	sdo->AskEnabled = pbstrtg.askenabled();
-	sdo->BidQV = pbstrtg.bidqv();
-	sdo->AskQV = pbstrtg.askqv();
+	sdo->AutoOrderSettings.BidQV = pbstrtg.bidqv();
+	sdo->AutoOrderSettings.AskQV = pbstrtg.askqv();
+	sdo->AutoOrderSettings.BidNotCross = pbstrtg.bidnotcross();
+	sdo->AutoOrderSettings.MaxAutoTrade = pbstrtg.maxautotrade();
+	sdo->AutoOrderSettings.AskCounter = pbstrtg.askcounter();
+	sdo->AutoOrderSettings.BidCounter = pbstrtg.bidcounter();
+	sdo->AutoOrderSettings.CloseMode = pbstrtg.closemode();
+	sdo->AutoOrderSettings.TIF = (OrderTIFType)pbstrtg.tif();
+	sdo->AutoOrderSettings.VolCondition = (OrderVolType)pbstrtg.volcond();
+	sdo->TickSizeMult = pbstrtg.ticksizemult();
 
 	return sdo;
 }

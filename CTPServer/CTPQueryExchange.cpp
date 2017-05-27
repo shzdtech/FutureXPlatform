@@ -41,7 +41,7 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const uint32_t serialId, const datao
 
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 	{
-		auto stdo = (MapDO<std::string>*)reqDO.get();
+		auto stdo = (StringMapDO<std::string>*)reqDO.get();
 		auto& exchangeid = stdo->TryFind(STR_EXCHANGE_ID, EMPTY_STRING);
 
 		auto& exchangeInfo = pWorkerProc->GetExchangeInfo();

@@ -59,11 +59,21 @@ message PBMarketDataList
 	repeated PBMarketData marketData = 2;
 }
 
+message PBHedgeContract
+{
+	string exchange = 1;
+	string contract = 2;
+	string underlying = 3;
+}
+
 message PBPortfolio
 {
-	string name = 1;
-	int32 hedgeDelay = 2;
-	double threshold = 3;
+	DataHeader header = 1;
+	string name = 2;
+	int32 hedgeDelay = 3;
+	double threshold = 4;
+	bool hedging = 5;
+	repeated PBHedgeContract hedgeContracts = 6;
 }
 
 message PBPortfolioList
@@ -115,14 +125,12 @@ message PBOptionData
 	int32 bidSize = 4;
 	double askVolatility = 5;
 	double bidVolatility = 6;
-	double askDelta = 7;
-	double bidDelta = 8;
-	double askTheta = 9;
-	double bidTheta = 10;
-	double askGamma = 11;
-	double bidGamma = 12;
-	double askVega = 13;
-	double bidVega = 14;
+	double midVolatility = 7;
+	double delta = 8;
+	double theta = 9;
+	double gamma = 10;
+	double vega = 11;
+	double rho = 12;
 }
 
 message PBWingsModelReturn
@@ -183,6 +191,16 @@ message PBStrategy
 	string baseExchange = 18;
 	string baseContract = 19;
 	string portfolio = 20;
+
+	int32 maxAutoTrade = 21;
+	int32 bidCounter = 22;
+	int32 askCounter = 23;
+	bool bidNotCross = 24;
+	bool closeMode = 25;
+	int32 limitOrderCounter = 26;
+	int32 tif = 27;
+	int32 volCond = 28;
+	int32 tickSizeMult = 29;
 }
 
 message PBStrategyList
@@ -196,11 +214,13 @@ message PBRisk
 	DataHeader header = 1;
 	string exchange = 2;
 	string contract = 3;
-	int32 position = 4;
-	double delta = 5;
-	double theta = 6;
-	double gamma = 7;
-	double vega = 8;
+	string underlying = 4;
+	int32 position = 5;
+	double delta = 6;
+	double theta = 7;
+	double gamma = 8;
+	double vega = 9;
+	double rho = 10;
 }
 
 message PBRiskList
@@ -262,6 +282,8 @@ message PBOrderRequest {
 	int32 openclose = 11;
 	///
 	string portfolio = 12;
+	/// vol condition
+	int32 volCond = 13;
 }
 
 message PBOrderInfo {
@@ -367,42 +389,43 @@ message PBTradeInfo {
 }
 
 message PBPosition {
+	DataHeader header = 1;
 	///交易所代码
-	string	exchange = 1;
+	string	exchange = 2;
 	///合约代码
-	string	contract = 2;
+	string	contract = 3;
 	///持仓多空方向
-	int32 direction = 3;
+	int32 direction = 4;
 	///持仓
 	int32 position = 5;
 	///上日持仓
-	int32 ydPosition = 4;
+	int32 ydPosition = 6;
 	///持仓日期标识
-	int32 positionDateFlag = 6;	
+	int32 positionDateFlag = 7;	
 	///开仓量
-	int32 openVolume = 7;
+	int32 openVolume = 8;
 	///平仓量
-	int32 closeVolume = 8;
+	int32 closeVolume = 9;
 	///开仓金额
-	double	openAmount = 9;
+	double openAmount = 10;
 	///平仓金额
-	double	closeAmount = 10;
+	double closeAmount = 11;
 	///持仓成本
-	double	cost = 11;
+	double cost = 12;
 	///开仓成本
-	double	openCost = 12;
+	double openCost = 13;
 	///持仓盈亏
-	double profit = 13;
+	double profit = 14;
 	///平仓盈亏
-	double	closeProfit = 14;
+	double	closeProfit = 15;
 	///占用的保证金
-	double	useMargin = 15;
+	double	useMargin = 16;
 	///投机套保标志
-	int32 hedgeFlag = 16;
+	int32 hedgeFlag = 17;
 	///今日持仓
-	int32 tdPosition = 17;
-
-	DataHeader header = 18;
+	int32 tdPosition = 18;
+	///Portfolio
+	string portfolio = 19;
 }
 
 message PBAccountInfo {
@@ -661,4 +684,18 @@ message PBUserAccountInfo {
 	double bankUseAmount = 13;
 	///银行可取金额
 	double bankFetchAmount = 14;
+}
+
+message PBPositionCompare
+{
+	string contract = 1;
+	int32 direction = 2;
+	int32 dbPosition = 3;
+	int32 sysPosition = 4;
+}
+
+message PBPositionCompareList
+{
+	DataHeader header = 1;
+	repeated PBPositionCompare positions = 2;
 }

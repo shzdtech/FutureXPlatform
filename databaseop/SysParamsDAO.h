@@ -17,6 +17,7 @@ class DATABASEOP_CLASS_EXPORTS SysParamsDAO
 {
 public:
    static std::shared_ptr<std::map<std::string,std::string>> FindSysParams(const std::string& key);
+   static bool FindSysParamValue(const std::string& key, std::string& value);
 
 protected:
 private:

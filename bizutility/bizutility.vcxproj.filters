@@ -36,6 +36,9 @@
     <ClInclude Include="ExchangeRouterTable.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="PositionPortfolioMap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InstrumentCache.cpp">
@@ -51,6 +54,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ExchangeRouterTable.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PositionPortfolioMap.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

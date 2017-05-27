@@ -6,8 +6,6 @@
       "service.ctp_option",
       "service.otc_option",
       "service.otc",
-      "service.cts",
-      "service.testing",
       "service.admin"
     ],
     "admin": {

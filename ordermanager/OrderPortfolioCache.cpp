@@ -3,14 +3,14 @@
 #include "../utility/commonconst.h"
 
 
-static cuckoohash_map<uint64_t, std::string> orderPortfolioMap(1024);
+static cuckoohash_map<uint64_t, PortfolioKey> orderPortfolioMap(1024);
 
-bool OrderPortfolioCache::Insert(uint64_t orderId, const std::string & portfolio)
+bool OrderPortfolioCache::Insert(uint64_t orderId, const PortfolioKey & portfolio)
 {
 	return orderPortfolioMap.insert(orderId, portfolio);
 }
 
-bool OrderPortfolioCache::Find(uint64_t orderId, std::string& portfolio)
+bool OrderPortfolioCache::Find(uint64_t orderId, PortfolioKey& portfolio)
 {
 	return orderPortfolioMap.find(orderId, portfolio);
 }

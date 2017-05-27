@@ -28,11 +28,15 @@
 #include "PBUserParamSerializer.h"
 #include "PBSubPricingDataSerializer.h"
 #include "PBPortfolioSerializer.h"
+#include "PBPortfolioListSerializer.h"
 #include "PBTradingDeskParamsSerializer.h"
-#include "PBPricingContractSerializer.h"
+#include "PBStrategyPricingContractSerializer.h"
 
 #include "PBBankSerializer.h"
 #include "PBBankOperationSerializer.h"
 #include "PBUserAccountSerializer.h"
+
+#include "PBRiskSerializer.h"
+#include "PBPositionDifferSerializer.h"
 
 #endif

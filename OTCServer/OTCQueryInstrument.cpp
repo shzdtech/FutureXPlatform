@@ -38,7 +38,7 @@ dataobj_ptr OTCQueryInstrument::HandleRequest(const uint32_t serialId, const dat
 {
 	CheckLogin(session);
 
-	auto stdo = (MapDO<std::string>*)reqDO.get();
+	auto stdo = (StringMapDO<std::string>*)reqDO.get();
 
 	auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
 	auto& exchangeid = stdo->TryFind(STR_EXCHANGE_ID, EMPTY_STRING);

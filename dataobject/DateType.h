@@ -25,6 +25,13 @@ struct DateType
 			throw std::exception("Wrong date format, it should be yyyymmdd or yyyy-mm-dd");
 	}
 
+	DateType(int yyyymmdd)
+	{
+		Year = yyyymmdd / 10000;
+		Month = (yyyymmdd % 100) / 100;
+		Day = yyyymmdd % 100;
+	}
+
 	static bool YYYYMMDD2YYYY_MM_DD(const std::string& strDate, std::string& desDate)
 	{
 		bool ret = false;
@@ -59,6 +66,11 @@ struct DateType
 		}
 
 		return ret;
+	}
+
+	int YYYYMMDD()
+	{
+		return Year * 10000 + Month * 100 + Day;
 	}
 
 	void Normalize(std::string& strDate)

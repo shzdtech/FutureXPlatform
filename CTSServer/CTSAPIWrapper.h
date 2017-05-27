@@ -32,7 +32,7 @@ public:
 	int CreateOrder(OrderRequestDO& orderDO);
 	int CancelOrder(OrderRequestDO& orderDO);
 	VectorDO_Ptr<OrderDO> QueryOrder();
-	VectorDO_Ptr<TradeRecordDO> QueryTrade();
+	VectorDO_Ptr<TradeRecordDO> QueryOTCUserTrades();
 	VectorDO_Ptr<UserPositionExDO> QueryPosition();
 	VectorDO_Ptr<AccountInfoDO> QueryAccount();
 

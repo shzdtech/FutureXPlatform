@@ -249,12 +249,23 @@ bool MicroFurtureSystem::Stop(void)
 	LOG_INFO << "Stopping servers:";
 	int i = 0;
 	for (auto& svr : _servers) {
-		if (svr->Stop())
+		try
 		{
-			i++;
-			LOG_INFO << "  " << svr->getUri() << " has stopped.";
+			if (svr->Stop())
+			{
+				i++;
+				LOG_INFO << "  " << svr->getUri() << " has stopped.";
+			}
+			else
+			{
+				LOG_ERROR << "  " << svr->getUri() << " failed to stop!";
+			}
 		}
-		else
+		catch (std::exception& ex)
+		{
+			LOG_ERROR << "  " << svr->getUri() << " failed to stop: " << ex.what();
+		}
+		catch (...)
 		{
 			LOG_ERROR << "  " << svr->getUri() << " failed to stop!";
 		}

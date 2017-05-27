@@ -10,6 +10,7 @@
 
 #include "../message/LoginHandler.h"
 #include "../dataobject/UserInfoDO.h"
+#include "../ordermanager/IUserPositionContext.h"
 #include "ctpexport.h"
 
 class CTP_CLASS_EXPORT CTPAccountLogin : public LoginHandler

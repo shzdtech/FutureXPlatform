@@ -32,7 +32,7 @@
 dataobj_ptr TestingQueryTrade::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
-	auto stdo = (MapDO<std::string>*)reqDO.get();
+	auto stdo = (StringMapDO<std::string>*)reqDO.get();
 	auto& brokeid = session->getUserInfo().getBrokerId();
 	auto& investorid = session->getUserInfo().getInvestorId();
 	auto& instrid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);

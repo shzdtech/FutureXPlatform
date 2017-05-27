@@ -183,6 +183,7 @@
     <ClInclude Include="OTCOrderDAO.h" />
     <ClInclude Include="PortfolioDAO.h" />
     <ClInclude Include="MySqlDefinition.h" />
+    <ClInclude Include="PositionDAO.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="StrategyContractDAO.h" />
     <ClInclude Include="SysParamsDAO.h" />
@@ -199,6 +200,7 @@
     <ClCompile Include="OrderDAO.cpp" />
     <ClCompile Include="OTCOrderDAO.cpp" />
     <ClCompile Include="PortfolioDAO.cpp" />
+    <ClCompile Include="PositionDAO.cpp" />
     <ClCompile Include="StrategyContractDAO.cpp" />
     <ClCompile Include="SysParamsDAO.cpp" />
     <ClCompile Include="TradeDAO.cpp" />

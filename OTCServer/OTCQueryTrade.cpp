@@ -37,7 +37,7 @@ dataobj_ptr OTCQueryTrade::HandleRequest(const uint32_t serialId, const dataobj_
 {
 	CheckLogin(session);
 
-	auto stdo = (MapDO<std::string>*)reqDO.get();
+	auto stdo = (StringMapDO<std::string>*)reqDO.get();
 
 	auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
 	auto& exchangeid = stdo->TryFind(STR_EXCHANGE_ID, EMPTY_STRING);
@@ -48,7 +48,7 @@ dataobj_ptr OTCQueryTrade::HandleRequest(const uint32_t serialId, const dataobj_
 	auto& tmstart = stdo->TryFind(STR_TIME_START, today);
 	auto& tmend = stdo->TryFind(STR_TIME_END, today);
 
-	auto tradeVec_Ptr = TradeDAO::QueryTrade(session->getUserInfo().getUserId(),
+	auto tradeVec_Ptr = TradeDAO::QueryOTCUserTrades(session->getUserInfo().getUserId(),
 		ContractKey(exchangeid, instrumentid), tmstart, tmend);
 	ThrowNotFoundExceptionIfEmpty(tradeVec_Ptr);
 
@@ -79,7 +79,5 @@ dataobj_ptr OTCQueryTrade::HandleRequest(const uint32_t serialId, const dataobj_
 
 dataobj_ptr OTCQueryTrade::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	auto& orderDO = *((OrderDO*)rawRespParams[0]);
-
-	return std::make_shared<OrderDO>(orderDO);
+	return nullptr;
 }

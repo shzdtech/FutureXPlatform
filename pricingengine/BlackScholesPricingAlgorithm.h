@@ -11,6 +11,9 @@
 #include "../dataobject/Pricing.h"
 #include "IPricingAlgorithm.h"
 #include "OptionParams.h"
+#include <ql/quantlib.hpp>
+
+using namespace QuantLib;
 
 class BlackScholesPricingAlgorithm : public IPricingAlgorithm
 {
@@ -24,7 +27,7 @@ public:
 	virtual const std::map<std::string, double>& DefaultParams(void) const;
 	virtual void ParseParams(const std::map<std::string, double>& modelParams, std::unique_ptr<ParamsBase>& target);
 
-	virtual void ComputeOptionPrice(
+	std::shared_ptr<VanillaOption> ComputeOptionPrice(
 		double underlyingPrice,
 		double strikePrice,
 		double volatility,
@@ -32,8 +35,7 @@ public:
 		double dividendYield,
 		ContractType contractType,
 		const DateType& tradingDate,
-		const DateType& maturityDate,
-		OptionPricing & option);
+		const DateType& maturityDate);
 
 private:
 

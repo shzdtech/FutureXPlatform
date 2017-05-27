@@ -20,27 +20,21 @@
 class ORDERMGR_CLASS_EXPORT HedgeOrderManager : public AutoOrderManager
 {
 public:
-	HedgeOrderManager(const PortfolioKey& portfolio, IOrderAPI* pOrderAPI, const IPricingDataContext_Ptr& pricingCtx);
+	HedgeOrderManager(IOrderAPI* pOrderAPI, 
+		const IPricingDataContext_Ptr& pricingCtx,
+		const IUserPositionContext_Ptr& exchangePositionCtx);
 
-	OrderDO_Ptr CreateOrder(OrderRequestDO& orderInfo);
+	void Hedge(const PortfolioKey& portfolioKey);
 
-	int OnMarketOrderUpdated(OrderDO& orderInfo);
+	OrderDO_Ptr CancelOrder(OrderRequestDO & orderReq);
 
-	int Hedge(void);
-
-	int Reset(void);
+	int OnMarketOrderUpdated(OrderDO & orderInfo);
 
 	void TradeByStrategy(const StrategyContractDO& strategyDO);
 
-	void FillPosition(const ContractMap<double>& positionMap);
-
 protected:
-	PortfolioKey _portfolio;
-	cuckoohash_map<ContractKey, bool, ContractKeyHash> _contractFlag;
-	cuckoohash_map<ContractKey, double, ContractKeyHash> _contractPosition;
-	MarketPositionContext _mktPosCtx;
 
-	void SplitOrders(const OrderRequestDO& orderInfo, OrderRequestDO_Ptr& req1, OrderRequestDO_Ptr& req2);
+	cuckoohash_map<PortfolioKey, bool, PortfolioKeyHash> _updatingPortfolioLock;
 private:
 
 };

@@ -6,9 +6,11 @@
  ***********************************************************************/
 
 #include "CTPAccountLogin.h"
-#include "../CTPServer/CTPWorkerProcessorID.h"
+#include "CTPConstant.h"
 
-#include "../CTPServer/CTPTradeWorkerProcessor.h"
+#include "CTPWorkerProcessorID.h"
+
+#include "CTPTradeWorkerProcessor.h"
 
 #include <boost/locale/encoding.hpp>
 #include "../utility/TUtil.h"
@@ -26,6 +28,7 @@
 #include "../common/BizErrorIDs.h"
 
 #include "../databaseop/UserInfoDAO.h"
+#include "../databaseop/PositionDAO.h"
 
 #include "../common/Attribute_Key.h"
 
@@ -43,17 +46,11 @@
 dataobj_ptr CTPAccountLogin::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	auto ret = Login(reqDO, rawAPI, msgProcessor, session);
-	auto role = session->getUserInfo().getRole();
+	auto& userInfo = session->getUserInfo();
+	auto role = userInfo.getRole();
 
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 	{
-		if (role == ROLE_TRADINGDESK)
-		{
-			pWorkerProc->getMessageSession()->getUserInfo().setUserId(session->getUserInfo().getUserId());
-		}
-
-		pWorkerProc->RegisterLoggedSession(msgProcessor->getMessageSession());
-
 		bool connected = pWorkerProc->ConnectedToServer();
 		bool logged = pWorkerProc->HasLogged();
 
@@ -66,14 +63,14 @@ dataobj_ptr CTPAccountLogin::HandleRequest(const uint32_t serialId, const dataob
 			}
 
 			if (!pWorkerProc->HasLogged())
-				throw SystemException(CONNECTION_ERROR, msgProcessor->getServerContext()->getServerUri() + " has not initialized!");
+				throw SystemException(CONNECTION_ERROR, msgProcessor->getServerContext()->getServerUri() + " has not logged!");
 		}
 
-		if (role == ROLE_TRADINGDESK)
-		{
-			CThostFtdcQryInvestorPositionField req{};
-			((CTPRawAPI*)rawAPI)->TdAPI->ReqQryInvestorPosition(&req, -1);
-		}
+		userInfo.setInvestorId(pWorkerProc->GetSystemUser().getInvestorId());
+		userInfo.setBrokerId(pWorkerProc->GetSystemUser().getBrokerId());
+		userInfo.setTradingDay(pWorkerProc->GetSystemUser().getTradingDay());
+
+		pWorkerProc->RegisterLoggedSession(session);
 	}
 
 	return ret;
@@ -98,7 +95,7 @@ std::shared_ptr<UserInfoDO> CTPAccountLogin::Login(const dataobj_ptr reqDO, IRaw
 {
 	if (session->getLoginTimeStamp() <= 0)
 	{
-		auto stdo = (MapDO<std::string>*)reqDO.get();
+		auto stdo = (StringMapDO<std::string>*)reqDO.get();
 		auto& userid = stdo->TryFind(STR_USER_NAME, EMPTY_STRING);
 		auto& password = stdo->TryFind(STR_PASSWORD, EMPTY_STRING);
 
@@ -129,10 +126,8 @@ std::shared_ptr<UserInfoDO> CTPAccountLogin::Login(const dataobj_ptr reqDO, IRaw
 		}
 
 		auto& userInfo = session->getUserInfo();
-		userInfo.setBrokerId(userInfo_Ptr->Company);
 		userInfo.setName(userInfo_Ptr->UserName);
 		userInfo.setPassword(userInfo_Ptr->Password);
-		userInfo.setInvestorId(userInfo_Ptr->UserId);
 		userInfo.setUserId(userInfo_Ptr->UserId);
 		userInfo.setRole(userInfo_Ptr->Role);
 		userInfo.setPermission(userInfo_Ptr->Permission);
@@ -146,4 +141,3 @@ std::shared_ptr<UserInfoDO> CTPAccountLogin::Login(const dataobj_ptr reqDO, IRaw
 
 	return userInfoDO_Ptr;
 }
-

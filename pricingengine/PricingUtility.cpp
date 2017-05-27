@@ -49,21 +49,21 @@ IPricingDO_Ptr PricingUtility::Pricing(
 
 IPricingDO_Ptr PricingUtility::Pricing(
 	const void* pInputObject,
-	const ContractKey& contractKey,
+	const UserContractKey& strategyKey,
 	IPricingDataContext& priceCtx,
 	const param_vector* params)
 {
 	StrategyContractDO_Ptr strategy_ptr;
-	if (priceCtx.GetStrategyMap()->find(contractKey, strategy_ptr))
-		throw NotFoundException("Prcing strategy for " + contractKey.InstrumentID() + "not found");
+	if (priceCtx.GetStrategyMap()->find(strategyKey, strategy_ptr))
+		throw NotFoundException("Prcing strategy for " + strategyKey.InstrumentID() + "not found");
 
 	return Pricing(pInputObject, *strategy_ptr, priceCtx);
 }
 
 IPricingDO_Ptr PricingUtility::Pricing(
 	const void* pInputObject,
-	const ContractKey& contractKey,
+	const UserContractKey& strategyKey,
 	IPricingDataContext& priceCtx)
 {
-	return Pricing(pInputObject, contractKey, priceCtx, nullptr);
+	return Pricing(pInputObject, strategyKey, priceCtx, nullptr);
 }

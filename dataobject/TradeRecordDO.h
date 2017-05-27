@@ -37,8 +37,19 @@ public:
 	HedgeType HedgeFlag = HedgeType::HEDGETYPE_SPECULATION;
 
 	std::string BrokerID;
+	std::string InvestorID;
 	std::string TradeDate;
 	std::string TradeTime;
+
+	bool IsSystemUserId()
+	{
+		return UserID().empty() || UserID() == InvestorID;
+	}
+
+	uint128 TradeID128()
+	{
+		return uint128(TradeID, OrderSysID);
+	}
 
 protected:
 

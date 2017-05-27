@@ -34,6 +34,7 @@
 dataobj_ptr OTCQueryContractParam::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
+	CheckRolePermission(session, UserRoleType::ROLE_TRADINGDESK);
 
 	auto cpVec_Ptr = std::static_pointer_cast<std::vector<ContractKey>>(
 		session->getContext()->getAttribute(STR_KEY_USER_CONTRACT_PARAM));

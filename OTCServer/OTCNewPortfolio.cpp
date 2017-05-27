@@ -18,23 +18,19 @@
 dataobj_ptr OTCNewPortfolio::HandleRequest(const uint32_t serialId, const dataobj_ptr & reqDO, IRawAPI * rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
+	CheckRolePermission(session, UserRoleType::ROLE_TRADINGDESK);
 
-	auto vecDO_Ptr = (VectorDO<PortfolioDO>*)reqDO.get();
+	auto pPortfolioDO = (PortfolioDO*)reqDO.get();
 
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		auto& userid = session->getUserInfo().getUserId();
-		auto pUserInfo = (UserInfoDO*)session->getUserInfo().getExtInfo().get();
-		for (auto& portfolioDO : *vecDO_Ptr)
-		{
-			portfolioDO.SetUserID(userid);
-			PortfolioDAO::UpsertPortofolio(portfolioDO);
-			if (pUserInfo)
-			{
-				pUserInfo->Portfolios.emplace(portfolioDO.PortfolioID());
-			}
-		}
+		pPortfolioDO->SetUserID(userid);
+
+		auto pPortfolioMap = pWorkerProc->PricingDataContext()->GetPortfolioMap();
+		pPortfolioMap->getorfill(userid).emplace(pPortfolioDO->PortfolioID(), *pPortfolioDO);
+		PortfolioDAO::UpsertPortofolio(*pPortfolioDO);
 	}
 
-	return std::make_shared<ResultDO>();
+	return reqDO;
 }

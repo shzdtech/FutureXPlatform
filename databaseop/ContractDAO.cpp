@@ -69,6 +69,113 @@ VectorDO_Ptr<InstrumentDO> ContractDAO::FindContractByProductType(int productTyp
 	return ret;
 }
 
+bool ContractDAO::FindContractById(const ContractKey& contractKey, InstrumentDO& instumentDO)
+{
+	bool ret = false;
+
+	static const std::string sql_findallcontract(
+		"SELECT exchange_symbol, contract_symbol, contract_type, tick_size, multiplier, "
+		"underlying_symbol, expiration, underlying_exchange, underlying_contract, strikeprice, "
+		"product_type "
+		"FROM vw_contract_property "
+		"WHERE exchange_symbol = ? AND contract_symbol = ?");
+
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
+	try
+	{
+		AutoClosePreparedStmt_Ptr prestmt(
+			session->getConnection()->prepareStatement(sql_findallcontract));
+		prestmt->setString(1, contractKey.ExchangeID());
+		prestmt->setString(2, contractKey.InstrumentID());
+
+		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
+
+		while (rs->next())
+		{
+			InstrumentDO cdo(rs->getString(1), rs->getString(2));
+			cdo.ContractType = (ContractType)rs->getInt(3);
+			cdo.PriceTick = rs->getDouble(4);
+			cdo.VolumeMultiple = rs->getDouble(5);
+			cdo.ProductID = rs->getString(6);
+			if (!rs->isNull(7))	cdo.ExpireDate = rs->getString(7);
+
+			std::string underlying_exchange;
+			std::string underlying_contract;
+			if (!rs->isNull(8)) underlying_exchange = rs->getString(8);
+			if (!rs->isNull(9)) underlying_contract = rs->getString(9);
+
+			cdo.StrikePrice = rs->getDouble(10);
+			cdo.ProductType = (ProductType)rs->getInt(11);
+
+			cdo.UnderlyingContract = ContractKey(underlying_exchange, underlying_contract);
+
+			instumentDO = std::move(cdo);
+
+			ret = true;
+		}
+	}
+	catch (sql::SQLException& sqlEx)
+	{
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
+		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
+	}
+
+	return ret;
+}
+
+bool ContractDAO::FindExchangeContractById(const std::string& instrumentId, InstrumentDO& instumentDO)
+{
+	bool ret = false;
+
+	static const std::string sql_findallcontract(
+		"SELECT exchange_symbol, contract_symbol, contract_type, tick_size, multiplier, "
+		"underlying_symbol, expiration, underlying_exchange, underlying_contract, strikeprice, "
+		"product_type "
+		"FROM vw_contract_property "
+		"WHERE contract_symbol = ? and exchange_symbol not like 'otc%' ");
+
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
+	try
+	{
+		AutoClosePreparedStmt_Ptr prestmt(
+			session->getConnection()->prepareStatement(sql_findallcontract));
+		prestmt->setString(1, instrumentId);
+
+		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
+
+		while (rs->next())
+		{
+			InstrumentDO cdo(rs->getString(1), rs->getString(2));
+			cdo.ContractType = (ContractType)rs->getInt(3);
+			cdo.PriceTick = rs->getDouble(4);
+			cdo.VolumeMultiple = rs->getDouble(5);
+			cdo.ProductID = rs->getString(6);
+			if (!rs->isNull(7))	cdo.ExpireDate = rs->getString(7);
+
+			std::string underlying_exchange;
+			std::string underlying_contract;
+			if (!rs->isNull(8)) underlying_exchange = rs->getString(8);
+			if (!rs->isNull(9)) underlying_contract = rs->getString(9);
+
+			cdo.StrikePrice = rs->getDouble(10);
+			cdo.ProductType = (ProductType)rs->getInt(11);
+
+			cdo.UnderlyingContract = ContractKey(underlying_exchange, underlying_contract);
+
+			instumentDO = std::move(cdo);
+
+			ret = true;
+		}
+	}
+	catch (sql::SQLException& sqlEx)
+	{
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
+		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
+	}
+
+	return ret;
+}
+
 bool ContractDAO::UpsertContracts(const std::vector<InstrumentDO>& instuments)
 {
 	bool ret = false;

@@ -40,12 +40,12 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const uint32_t serialId, const datao
 {
 	CheckLogin(session);
 
-	auto stdo = (MapDO<std::string>*)reqDO.get();
+	auto stdo = (StringMapDO<std::string>*)reqDO.get();
 	auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
 
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 	{
-		cuckoohashmap_wrapper<std::pair<std::string, int>, UserPositionExDO_Ptr, pairhash<std::string, int>> positionMap;
+		PortfolioPosition positionMap;
 		auto pProcessor = (CTPProcessor*)msgProcessor.get();
 		if (!(pProcessor->DataLoadMask & CTPTradeProcessor::POSITION_DATA_LOADED))
 		{
@@ -56,29 +56,39 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const uint32_t serialId, const datao
 		}
 
 		auto& userId = session->getUserInfo().getUserId();
-		positionMap = pWorkerProc->GetUserPositionContext().GetPositionsByUser(userId);
+		positionMap = pWorkerProc->GetUserPositionContext()->GetPortfolioPositionsByUser(userId);
+		if (positionMap.empty())
+		{
+			throw NotFoundException();
+		}
 
-		ThrowNotFoundExceptionIfEmpty(&positionMap);
 
+		bool found = false;
 		if (instrumentid != EMPTY_STRING)
 		{
-			UserPositionExDO_Ptr longPosition;
-			positionMap.map()->find(std::make_pair(instrumentid, PD_LONG), longPosition);
-			UserPositionExDO_Ptr shortPosition;
-			positionMap.map()->find(std::make_pair(instrumentid, PD_SHORT), shortPosition);
-			if (!longPosition && !shortPosition)
-				throw NotFoundException();
+			for (auto it : positionMap.map()->lock_table())
+			{
+				UserPositionExDO_Ptr longPosition;
+				it.second.map()->find(std::make_pair(instrumentid, PD_LONG), longPosition);
+				UserPositionExDO_Ptr shortPosition;
+				it.second.map()->find(std::make_pair(instrumentid, PD_SHORT), shortPosition);
 
-			if (longPosition)
-			{
-				auto position_ptr = std::make_shared<UserPositionExDO>(*longPosition);
-				position_ptr->HasMore = (bool)shortPosition;
-				pWorkerProc->SendDataObject(session, MSG_ID_QUERY_POSITION, serialId, position_ptr);
-			}
-			if (shortPosition)
-			{
-				auto position_ptr = std::make_shared<UserPositionExDO>(*shortPosition);
-				pWorkerProc->SendDataObject(session, MSG_ID_QUERY_POSITION, serialId, position_ptr);
+				if (longPosition)
+				{
+					found = true;
+					auto position_ptr = std::make_shared<UserPositionExDO>(*longPosition);
+					position_ptr->HasMore = (bool)shortPosition;
+					pWorkerProc->SendDataObject(session, MSG_ID_QUERY_POSITION, serialId, position_ptr);
+				}
+				if (shortPosition)
+				{
+					found = true;
+					auto position_ptr = std::make_shared<UserPositionExDO>(*shortPosition);
+					pWorkerProc->SendDataObject(session, MSG_ID_QUERY_POSITION, serialId, position_ptr);
+				}
+
+				if (found)
+					break;
 			}
 		}
 		else
@@ -87,12 +97,24 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const uint32_t serialId, const datao
 			auto endit = locktb.end();
 			for (auto it = locktb.begin(); it != endit; it++)
 			{
-				auto positionDO_Ptr = std::make_shared<UserPositionExDO>(*it->second);
-				positionDO_Ptr->HasMore = std::next(it) != endit;
+				if (!it->second.empty())
+				{
+					auto clock = it->second.map()->lock_table();
+					auto cendit = clock.end();
+					for (auto cit = clock.begin(); cit != cendit; cit++)
+					{
+						auto positionDO_Ptr = std::make_shared<UserPositionExDO>(*cit->second);
+						positionDO_Ptr->HasMore = std::next(it) != endit && std::next(cit) != cendit;
+						pWorkerProc->SendDataObject(session, MSG_ID_QUERY_POSITION, serialId, positionDO_Ptr);
 
-				pWorkerProc->SendDataObject(session, MSG_ID_QUERY_POSITION, serialId, positionDO_Ptr);
+						found = true;
+					}
+				}
 			}
 		}
+
+		if (!found)
+			throw NotFoundException();
 	}
 	else
 	{
@@ -140,15 +162,15 @@ dataobj_ptr CTPQueryPosition::HandleResponse(const uint32_t serialId, const para
 		{
 			if (pData->PositionDate == THOST_FTDC_PSD_Today)
 			{
-				ret = pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo().getUserId(), *ret, false, false);
+				ret = pWorkerProc->GetUserPositionContext()->UpsertPosition(session->getUserInfo().getUserId(), *ret, false, false);
 			}
 			else
 			{
-				ret = pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo().getUserId(), *ret, true, false);
+				ret = pWorkerProc->GetUserPositionContext()->UpsertPosition(session->getUserInfo().getUserId(), *ret, true, false);
 			}
 		}
 		else
-			ret = pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo().getUserId(), *ret, false, true);
+			ret = pWorkerProc->GetUserPositionContext()->UpsertPosition(session->getUserInfo().getUserId(), *ret, false, true);
 	}
 
 	return nullptr;

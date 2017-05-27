@@ -19,6 +19,10 @@ class DATABASEOP_CLASS_EXPORTS ContractDAO
 public:
 	static VectorDO_Ptr<InstrumentDO> FindContractByProductType(int productType, int lifePhase = 1);
 
+	static bool FindContractById(const ContractKey& contractKey, InstrumentDO& instumentDO);
+
+	static bool FindExchangeContractById(const std::string & instrumentId, InstrumentDO & instumentDO);
+
 	static bool UpsertContracts(const std::vector<InstrumentDO>& instuments);
 
 protected:

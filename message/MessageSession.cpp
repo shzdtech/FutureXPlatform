@@ -127,8 +127,7 @@ bool MessageSession::NotifyClosing(void)
 	if (ret)
 	{
 		auto this_ptr = shared_from_this();
-		auto wkptrs = _sessionHub.lock_table();
-		for (auto pair : wkptrs)
+		for (auto pair : _sessionHub.lock_table())
 		{
 			if (auto event_ptr = pair.first.lock())
 			{

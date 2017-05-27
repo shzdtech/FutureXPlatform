@@ -90,10 +90,19 @@
     <ClCompile Include="PBBankOperationSerializer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="PBPricingContractSerializer.cpp">
+    <ClCompile Include="PBContractInfoSerializer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="PBContractInfoSerializer.cpp">
+    <ClCompile Include="PBRiskSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PBStrategyPricingContractSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PBPortfolioListSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PBPositionDifferSerializer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -173,10 +182,19 @@
     <ClInclude Include="PBBankOperationSerializer.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="PBPricingContractSerializer.h">
+    <ClInclude Include="PBContractInfoSerializer.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="PBContractInfoSerializer.h">
+    <ClInclude Include="PBRiskSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PBStrategyPricingContractSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PBPortfolioListSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PBPositionDifferSerializer.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

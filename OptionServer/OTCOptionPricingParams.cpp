@@ -54,6 +54,8 @@ dataobj_ptr OTCOptionPricingParams::HandleResponse(const uint32_t serialId, cons
 					ret->TheoData = std::static_pointer_cast<WingsModelReturnDO>(result);
 					if (auto pOptionParams = (OptionParams*)pStrategy->PricingModel->ParsedParams.get())
 					{
+						if (!std::isnan(ret->TheoData->Volatility))
+							pOptionParams->midVolatility = ret->TheoData->Volatility;
 						if (!std::isnan(ret->TheoData->TBid().Volatility))
 							pOptionParams->bidVolatility = ret->TheoData->TBid().Volatility;
 						if (!std::isnan(ret->TheoData->TAsk().Volatility))
@@ -78,18 +80,13 @@ dataobj_ptr OTCOptionPricingParams::HandleResponse(const uint32_t serialId, cons
 			if (!ret->TheoData)
 				ret->TheoData = std::make_shared<WingsModelReturnDO>();
 
-			auto pOptionPricing = (OptionPricingDO*)pricingDO.get();
-			ret->TheoData->TBid().Price = pOptionPricing->TBid().Price;
-			ret->TheoData->TBid().Delta = pOptionPricing->TBid().Delta;
-			ret->TheoData->TBid().Gamma = pOptionPricing->TBid().Gamma;
-			ret->TheoData->TBid().Vega = pOptionPricing->TBid().Vega;
-			ret->TheoData->TBid().Theta = pOptionPricing->TBid().Theta;
+			ret->TheoData->Bid().Price = pricingDO->Bid().Price;
+			ret->TheoData->Ask().Price = pricingDO->Ask().Price;
 
-			ret->TheoData->TAsk().Price = pOptionPricing->TAsk().Price;
-			ret->TheoData->TAsk().Delta = pOptionPricing->TAsk().Delta;
-			ret->TheoData->TAsk().Gamma = pOptionPricing->TAsk().Gamma;
-			ret->TheoData->TAsk().Vega = pOptionPricing->TAsk().Vega;
-			ret->TheoData->TAsk().Theta = pOptionPricing->TAsk().Theta;
+			ret->TheoData->Delta = pricingDO->Delta;
+			ret->TheoData->Gamma = pricingDO->Gamma;
+			ret->TheoData->Vega = pricingDO->Vega;
+			ret->TheoData->Theta = pricingDO->Theta;
 
 			pricingCtx.GetPricingDataDOMap()->upsert(*pStrategy, [&pricingDO](IPricingDO_Ptr& pricing_ptr) { pricing_ptr = pricingDO; }, pricingDO);
 		}

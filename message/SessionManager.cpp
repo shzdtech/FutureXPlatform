@@ -57,13 +57,18 @@ void SessionManager::OnServerStarting(void)
 
 void SessionManager::OnServerClosing(void)
 {
-	auto processors = _sessionSet.lock_table();
-	for (auto pair : processors)
+	for (auto pair : _sessionSet.lock_table())
 	{
-		pair.first->getMessageSession()->NotifyClosing();
+		if(auto msgSession = pair.first->getMessageSession())
+			msgSession->NotifyClosing();
 	}
-	processors.release();
 	_sessionSet.clear();
+
+	if (_workerSession)
+	{
+		_workerSession->NotifyClosing();
+	}
+
 	_server->getContext()->Reset();
 }
 

@@ -39,19 +39,23 @@
 dataobj_ptr OTCSubTradingDeskData::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
+	CheckRolePermission(session, UserRoleType::ROLE_TRADINGDESK);
 
 	auto pInstList = (ContractList*)reqDO.get();
 	
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
+		auto& userInfo = session->getUserInfo();
+
 		auto ret = std::make_shared<ContractList>();
-		if (auto strategySet_Ptr = std::static_pointer_cast<std::set<ContractKey>>(
+		if (auto strategySet_Ptr = std::static_pointer_cast<std::set<UserContractKey>>(
 			session->getContext()->getAttribute(STR_KEY_USER_STRATEGY)))
 		{
 			auto pStrategyMap = pWorkerProc->PricingDataContext()->GetStrategyMap();
 			for (auto& inst : *pInstList)
 			{
-				if (strategySet_Ptr->find(inst) != strategySet_Ptr->end())
+				UserContractKey uck(inst.ExchangeID(), inst.InstrumentID(), userInfo.getUserId());
+				if (strategySet_Ptr->find(uck) != strategySet_Ptr->end())
 				{
 					pWorkerProc->RegisterTradingDeskListener(inst, session);
 					ret->push_back(inst);
@@ -63,8 +67,9 @@ dataobj_ptr OTCSubTradingDeskData::HandleRequest(const uint32_t serialId, const 
 			// std::this_thread::sleep_for(std::chrono::seconds(1));
 			for (auto& contract : *ret)
 			{
+				UserContractKey uck(contract.ExchangeID(), contract.InstrumentID(), userInfo.getUserId());
 				StrategyContractDO_Ptr strategy_ptr;
-				if (pStrategyMap->find(contract, strategy_ptr))
+				if (pStrategyMap->find(uck, strategy_ptr))
 				{
 					pWorkerProc->TriggerTadingDeskParams(*strategy_ptr);
 				}

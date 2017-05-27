@@ -46,6 +46,8 @@ dataobj_ptr OTCOptionSubMarketData::HandleRequest(const uint32_t serialId, const
 	if (auto pWorkerProc =
 		MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
+		auto& userInfo = session->getUserInfo();
+
 		if (!stdo->Data.empty())
 		{
 			auto& instList = stdo->Data.begin()->second;
@@ -53,14 +55,15 @@ dataobj_ptr OTCOptionSubMarketData::HandleRequest(const uint32_t serialId, const
 
 			if (session->getUserInfo().getRole() == ROLE_TRADINGDESK)
 			{
-				if (auto strategySet_Ptr = std::static_pointer_cast<std::set<ContractKey>>(
+				if (auto strategySet_Ptr = std::static_pointer_cast<std::set<UserContractKey>>(
 					sessionPtr->getContext()->getAttribute(STR_KEY_USER_STRATEGY)))
 				{
 					for (auto& inst : instList)
 					{
 						if (auto pContract = pWorkerProc->GetInstrumentCache().QueryInstrumentById(inst))
 						{
-							if (strategySet_Ptr->find(*pContract) != strategySet_Ptr->end())
+							UserContractKey uck(pContract->ExchangeID(), pContract->InstrumentID(), userInfo.getUserId());
+							if (strategySet_Ptr->find(uck) != strategySet_Ptr->end())
 							{
 								PricingDO mdo(pContract->ExchangeID(), pContract->InstrumentID());
 								ret->push_back(std::move(mdo));

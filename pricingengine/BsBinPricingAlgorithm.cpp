@@ -1,6 +1,6 @@
 #include "BsBinPricingAlgorithm.h"
 
-#include <ql/quantlib.hpp>
+using namespace QuantLib;
 
 const std::string & BsBinPricingAlgorithm::Name(void) const
 {
@@ -8,7 +8,7 @@ const std::string & BsBinPricingAlgorithm::Name(void) const
 	return bs;
 }
 
-void BsBinPricingAlgorithm::ComputeOptionPrice(
+std::shared_ptr<VanillaOption> BsBinPricingAlgorithm::ComputeOptionPrice(
 	double underlyingPrice,
 	double strikePrice, 
 	double volatility, 
@@ -16,8 +16,7 @@ void BsBinPricingAlgorithm::ComputeOptionPrice(
 	double dividendYield, 
 	ContractType contractType, 
 	const DateType & tradingDate, 
-	const DateType & maturityDate, 
-	OptionPricing & option)
+	const DateType & maturityDate)
 {
 	using namespace QuantLib;
 
@@ -48,12 +47,8 @@ void BsBinPricingAlgorithm::ComputeOptionPrice(
 	// options
 	boost::shared_ptr<Exercise> americanExercise(new AmericanExercise(settlementDate, maturity));
 
-	VanillaOption americanOption(payoff, americanExercise);
-	americanOption.setPricingEngine(pricingEngine);
+	auto americanOption = std::make_shared<VanillaOption>(payoff, americanExercise);
+	americanOption->setPricingEngine(pricingEngine);
 
-	option.Price = americanOption.NPV();
-	option.Delta = americanOption.delta();
-	// option.Vega = americanOption.vega();
-	option.Gamma = americanOption.gamma();
-	option.Theta = americanOption.theta();
+	return americanOption;
 }

@@ -15,7 +15,7 @@
 class ContractKey
 {
 public:
-	ContractKey() {}
+	ContractKey() = default;
 
 	ContractKey(const char* instrumentID) :
 		_instrumentID(instrumentID) {}
@@ -92,7 +92,7 @@ public:
 class UserKey
 {
 public:
-	UserKey() {};
+	UserKey() = default;
 	UserKey(const std::string& userID) : _userID(userID) {};
 	UserKey(const char* userID) : _userID(userID) {};
 
@@ -118,6 +118,8 @@ protected:
 class UserContractKey : public ContractKey, virtual public UserKey
 {
 public:
+	UserContractKey() = default;
+
 	UserContractKey(const char* instrumentID, const char* userID) :
 		ContractKey(instrumentID), UserKey(userID) {}
 
@@ -132,6 +134,9 @@ public:
 
 	UserContractKey& operator= (const UserContractKey& userContractKey)
 	{
+		this->_exchangeID = userContractKey._exchangeID;
+		this->_instrumentID = userContractKey._instrumentID;
+		this->_userID = userContractKey._userID;
 		return *this;
 	}
 
@@ -150,6 +155,15 @@ public:
 	bool operator== (const UserContractKey& userContractKey) const
 	{
 		return compare(userContractKey) == 0;
+	}
+};
+
+class UserContractKeyHash
+{
+public:
+	std::size_t operator()(const UserContractKey& k) const {
+		static std::hash<std::string> hasher;
+		return hasher(k.ExchangeID()) ^ hasher(k.InstrumentID()) ^ hasher(k.UserID());
 	}
 };
 

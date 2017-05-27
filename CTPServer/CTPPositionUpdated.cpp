@@ -28,15 +28,15 @@ dataobj_ptr CTPPositionUpdated::HandleResponse(const uint32_t serialId, const pa
 			{
 				if (pData->PositionDate == THOST_FTDC_PSD_Today)
 				{
-					ret = pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo().getUserId(), *ret, false, false);
+					ret = pWorkerProc->GetUserPositionContext()->UpsertPosition(session->getUserInfo().getUserId(), *ret, false, false);
 				}
 				else
 				{
-					ret = pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo().getUserId(), *ret, true, false);
+					ret = pWorkerProc->GetUserPositionContext()->UpsertPosition(session->getUserInfo().getUserId(), *ret, true, false);
 				}
 			}
 			else
-				ret = pWorkerProc->GetUserPositionContext().UpsertPosition(session->getUserInfo().getUserId(), *ret, false, true);
+				ret = pWorkerProc->GetUserPositionContext()->UpsertPosition(session->getUserInfo().getUserId(), *ret, false, true);
 
 			auto pProcessor = (CTPProcessor*)msgProcessor.get();
 			if (!(pProcessor->DataLoadMask & CTPTradeProcessor::POSITION_DATA_LOADED) || ret->Position() < 0)

@@ -59,7 +59,7 @@ class UserPositionExDO : public UserPositionDO
 {
 public:
 	UserPositionExDO(const std::string& exchangeID, const std::string& instrumentID, const std::string& portfolioID, const std::string& userID)
-		: UserPositionDO(exchangeID, instrumentID, portfolioID, userID) {}
+		: UserKey(userID), UserPositionDO(exchangeID, instrumentID, portfolioID, userID) {}
 	UserPositionExDO(const std::string& exchangeID, const std::string& instrumentID)
 		: UserPositionDO(exchangeID, instrumentID) {}
 	UserPositionExDO() = default;

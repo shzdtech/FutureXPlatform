@@ -27,6 +27,22 @@ public:
 		return std::shared_ptr<SessionContainer<K, Hash, Pred>>(new SessionContainer<K, Hash, Pred>());
 	}
 
+	bool contains(const K& key)
+	{
+		return _sessionMap.contains(key);
+	}
+
+	size_t size(const K& key)
+	{
+		size_t sz = 0;
+		_sessionMap.update_fn(key, [&sz](std::unordered_set<IMessageSession_Ptr>& sessionSet)
+		{
+			sz = sessionSet.size();
+		});
+
+		return sz;
+	}
+
 	void foreach(const K& key, std::function<void(const IMessageSession_Ptr&)> func)
 	{
 		//std::shared_lock<std::shared_mutex> read_lock(_mutex);

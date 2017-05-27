@@ -50,6 +50,8 @@ data_buffer PBOrderSerializer::Serialize(const dataobj_ptr& abstractDO)
 	PB.set_sessionid(pDO->SessionID);
 	PB.set_portfolio(pDO->PortfolioID());
 	PB.set_insertdate(pDO->InsertDate);
+	PB.set_tif(pDO->TIF);
+	PB.set_volumecondition(pDO->VolCondition);
 	
 	SerializeWithReturn(PB);
 }
@@ -75,6 +77,7 @@ dataobj_ptr PBOrderSerializer::Deserialize(const data_buffer& rawdata)
 	ret->LimitPrice = PB.limitprice();
 	ret->Volume = PB.volume();
 	ret->TIF = (OrderTIFType)PB.tif();
+	ret->VolCondition = (OrderVolType)PB.volcond();
 	ret->ExecType = (OrderExecType)PB.exectype();
 	ret->OpenClose = (OrderOpenCloseType)PB.openclose();
 

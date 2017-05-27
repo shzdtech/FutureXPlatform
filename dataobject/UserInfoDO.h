@@ -38,8 +38,6 @@ public:
 	int Role;
 	int Permission;
 
-	std::set<std::string> Portfolios;
-
 protected:
 
 private:

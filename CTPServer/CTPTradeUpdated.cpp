@@ -3,6 +3,7 @@
 #include "CTPConstant.h"
 #include "CTPTradeWorkerProcessor.h"
 #include "../bizutility/ContractCache.h"
+#include "../databaseop/ContractDAO.h"
 
 #include "../message/DefMessageID.h"
 #include "../message/MessageUtility.h"
@@ -14,18 +15,30 @@ dataobj_ptr CTPTradeUpdated::HandleResponse(const uint32_t serialId, const param
 	{
 		if (ret = CTPUtility::ParseRawTrade(pTrade))
 		{
+			if (ret->IsSystemUserId())
+			{
+				ret->SetUserID(CTPUtility::MakeUserID(ret->BrokerID, ret->InvestorID));
+			}
+
 			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 			{
 				if (pWorkerProc->GetUserTradeContext().InsertTrade(ret))
 				{
-					PositionDirectionType pd =
-						(ret->Direction == DirectionType::SELL && ret->OpenClose == OrderOpenCloseType::OPEN) ||
-						(ret->Direction != DirectionType::SELL && ret->OpenClose != OrderOpenCloseType::OPEN) ?
-						PositionDirectionType::PD_SHORT : PositionDirectionType::PD_LONG;
+					int multiplier = 1;
+					if (auto pContractInfo = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(ret->InstrumentID()))
+					{
+						multiplier = pContractInfo->VolumeMultiple;
+					}
+					else
+					{
+						InstrumentDO instDO;
+						if (ContractDAO::FindContractById(*ret, instDO))
+						{
+							multiplier = instDO.VolumeMultiple;
+						}
+					}
 
-					auto pContractInfo = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(ret->InstrumentID());
-
-					auto position_ptr = pWorkerProc->GetUserPositionContext().UpsertPosition(ret->UserID(), ret, pd, pContractInfo, ret->ExchangeID() != EXCHANGE_SHFE);
+					auto position_ptr = pWorkerProc->GetUserPositionContext()->UpsertPosition(ret->UserID(), ret, multiplier, ret->ExchangeID() != EXCHANGE_SHFE);
 
 					auto pProcessor = (CTPProcessor*)msgProcessor.get();
 					if (pProcessor->DataLoadMask & CTPTradeProcessor::POSITION_DATA_LOADED && position_ptr->Position() >= 0)

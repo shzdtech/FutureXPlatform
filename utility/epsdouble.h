@@ -60,11 +60,11 @@ public:
 	}
 
 	inline bool operator<=(double value) const {
-		return operator<(value) || operator==(value);
+		return !operator>(value);
 	}
 
 	inline bool operator<=(const _myespdouble& epsdbl) const {
-		return operator<(epsdbl) || operator==(epsdbl);
+		return !operator>(epsdbl);
 	}
 
 	inline bool operator>(double value) const {
@@ -76,11 +76,11 @@ public:
 	}
 
 	inline bool operator>=(double value) const {
-		return operator>(value) || operator==(value);
+		return !operator<(value);
 	}
 
 	inline bool operator>=(const _myespdouble& epsdbl) const {
-		return operator>(epsdbl) || operator==(epsdbl);
+		return !operator<(epsdbl);
 	}
 
 	inline double value() {

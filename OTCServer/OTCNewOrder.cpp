@@ -31,6 +31,7 @@ dataobj_ptr OTCNewOrder::HandleRequest(const uint32_t serialId, const dataobj_pt
 
 	auto& orderDO = *((OrderRequestDO*)reqDO.get());
 	orderDO.SetUserID(session->getUserInfo().getUserId());
+	orderDO.TradingDay = session->getUserInfo().getTradingDay();
 	if (auto pWorkerProc =
 		MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{

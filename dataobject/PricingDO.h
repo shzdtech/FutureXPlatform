@@ -28,6 +28,14 @@ public:
 	virtual Pricing& Ask() = 0;
 	virtual const Pricing& Bid() const = 0;
 	virtual const Pricing& Ask() const = 0;
+
+public:
+	double Delta = 1;
+	double Vega = 0;
+	double Gamma = 0;
+	double Theta = 0;
+	double Rho = 0;
+	double Volatility = 0;
 };
 
 template <class T>

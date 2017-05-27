@@ -94,9 +94,14 @@ bool ASIOTCPServer::Stop(void) {
 		_iosrv.stop();
 
 		for (auto& th : _workers) {
-			th.join();
+			if (th.joinable())
+				th.join();
 		}
 		_workers.clear();
+	}
+	catch (std::exception& ex)
+	{
+		LOG_ERROR << ex.what();
 	}
 	catch (...)
 	{
@@ -205,6 +210,6 @@ void ASIOTCPServer::asyc_accept(void) {
 		else
 		{
 			LOG_INFO << getUri() << ": acceptor has exited: " << ec.message();
-		}			
+		}
 	});
 }

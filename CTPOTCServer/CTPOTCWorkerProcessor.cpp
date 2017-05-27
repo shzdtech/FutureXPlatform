@@ -79,9 +79,6 @@ CTPOTCWorkerProcessor::CTPOTCWorkerProcessor(IServerContext* pServerCtx,
 
 CTPOTCWorkerProcessor::~CTPOTCWorkerProcessor()
 {
-	_closing = true;
-	if (_initializer.joinable())
-		_initializer.join();
 	LOG_DEBUG << __FUNCTION__;
 }
 
@@ -91,16 +88,29 @@ void CTPOTCWorkerProcessor::setMessageSession(const IMessageSession_Ptr& msgSess
 	((CTPOTCTradeProcessor*)GetOTCTradeProcessor())->setMessageSession(msgSession_ptr);
 }
 
+void CTPOTCWorkerProcessor::setServiceLocator(const IMessageServiceLocator_Ptr& svcLct_Ptr)
+{
+	CTPMarketDataProcessor::setServiceLocator(svcLct_Ptr);
+	((CTPOTCTradeProcessor*)GetOTCTradeProcessor())->setServiceLocator(svcLct_Ptr);
+}
+
 bool CTPOTCWorkerProcessor::OnSessionClosing(void)
 {
-	return GetOTCTradeProcessor()->Dispose();
+	_closing = true;
+
+	if (_initializer.valid())
+		_initializer.wait();
+
+	GetOTCTradeProcessor()->Dispose();
+
+	return true;
 }
 
 void CTPOTCWorkerProcessor::Initialize(IServerContext* serverCtx)
 {
-	CTPMarketDataProcessor::Initialize(serverCtx);
-
 	OTCWorkerProcessor::Initialize();
+
+	CTPMarketDataProcessor::Initialize(serverCtx);
 
 	LoadDataAsync();
 }
@@ -158,7 +168,7 @@ int CTPOTCWorkerProcessor::LoginSystemUserIfNeed(void)
 
 int CTPOTCWorkerProcessor::LoadDataAsync(void)
 {
-	_initializer = std::move(std::thread([this]() {
+	_initializer = std::async(std::launch::async, [this]() {
 		auto millsec = std::chrono::milliseconds(500);
 		while (!_closing)
 		{
@@ -170,7 +180,7 @@ int CTPOTCWorkerProcessor::LoadDataAsync(void)
 				std::this_thread::sleep_for(millsec);
 			}
 		}
-	}));
+	});
 
 	return 0;
 }
@@ -217,13 +227,14 @@ CTPOTCTradeProcessor * CTPOTCWorkerProcessor::GetCTPOTCTradeProcessor()
 
 void CTPOTCWorkerProcessor::OnFrontConnected()
 {
-	CTPMarketDataProcessor::OnFrontConnected();
+	_isConnected = true;
 
 	auto loginTime = _systemUser.getLoginTime();
 	auto now = std::time(nullptr);
 	if (_isLogged && (now - loginTime) > 600)
 	{
 		LoginSystemUser();
+		ResubMarketData();
 	}
 }
 

@@ -16,6 +16,11 @@ static const std::map<OrderTIFType, TThostFtdcTimeConditionType> CTPTIFMapping =
 	{ OrderTIFType::GFD, THOST_FTDC_TC_GFD }
 };
 
-
+static const std::map<OrderVolType, TThostFtdcVolumeConditionType> CTPVolCondMapping =
+{
+	{ OrderVolType::ANYVOLUME, THOST_FTDC_VC_AV },
+	{ OrderVolType::MINIVOLUME, THOST_FTDC_VC_MV },
+	{ OrderVolType::ALLVOLUME, THOST_FTDC_VC_CV }
+};
 
 #endif	/* __CTPMAPPING_H */

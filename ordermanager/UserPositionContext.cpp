@@ -79,6 +79,19 @@ cuckoohash_map<std::string, ContractPosition>& UserPositionContext::AllUserPosit
 	return _userPositionMap;
 }
 
+bool UserPositionContext::AllPosition(std::vector<UserPositionExDO_Ptr>& positions)
+{
+	for (auto it : _userPositionMap.lock_table())
+	{
+		for (auto uit : it.second.map()->lock_table())
+		{
+			positions.push_back(uit.second);
+		}
+	}
+
+	return true;
+}
+
 PortfolioPosition UserPositionContext::GetPortfolioPositionsByUser(const std::string & userID)
 {
 	PortfolioPosition ret(true, 1);
@@ -120,20 +133,23 @@ bool UserPositionContext::RemovePosition(const std::string & userID, const std::
 	return ret;
 }
 
-UserPositionExDO_Ptr UserPositionContext::UpsertPosition(const std::string& userid, const TradeRecordDO_Ptr& tradeDO, PositionDirectionType pd, InstrumentDO* pContractInfo, bool closeYdFirst)
+UserPositionExDO_Ptr UserPositionContext::UpsertPosition(const std::string& userid, const TradeRecordDO_Ptr& tradeDO,
+	int multiplier, bool closeYdFirst)
 {
 	if (!_userPositionMap.contains(userid))
 		_userPositionMap.insert(userid, std::move(ContractPosition(true, 2)));
 
 	// cost
 	double cost = tradeDO->Price * tradeDO->Volume;
-	if (pContractInfo)
-		cost *= pContractInfo->VolumeMultiple;
+	cost *= multiplier;
 
 	// construct position
-	UserPositionExDO_Ptr positionDO_Ptr(new UserPositionExDO(tradeDO->ExchangeID(), tradeDO->InstrumentID()));
+	UserPositionExDO_Ptr positionDO_Ptr(new UserPositionExDO(tradeDO->ExchangeID(), tradeDO->InstrumentID(), tradeDO->PortfolioID(), tradeDO->UserID()));
 	positionDO_Ptr->TradingDay = tradeDO->TradingDay;
-	positionDO_Ptr->Direction = pd;
+	positionDO_Ptr->Direction =
+		(tradeDO->Direction == DirectionType::SELL && tradeDO->OpenClose == OrderOpenCloseType::OPEN) ||
+		(tradeDO->Direction != DirectionType::SELL && tradeDO->OpenClose != OrderOpenCloseType::OPEN) ?
+		PositionDirectionType::PD_SHORT : PositionDirectionType::PD_LONG;
 	positionDO_Ptr->HedgeFlag = tradeDO->HedgeFlag;
 
 	if (tradeDO->OpenClose == OrderOpenCloseType::OPEN)
@@ -156,10 +172,10 @@ UserPositionExDO_Ptr UserPositionContext::UpsertPosition(const std::string& user
 		}
 	}
 
-	_userPositionMap.update_fn(userid, [&tradeDO, &positionDO_Ptr, pContractInfo, closeYdFirst](ContractPosition& positionMap)
+	_userPositionMap.update_fn(userid, [&tradeDO, &positionDO_Ptr, multiplier, closeYdFirst](ContractPosition& positionMap)
 	{
 		positionMap.map()->upsert(std::pair<std::string, int>(tradeDO->InstrumentID(), positionDO_Ptr->Direction),
-			[&tradeDO, &positionDO_Ptr, pContractInfo, closeYdFirst](UserPositionExDO_Ptr& position_ptr)
+			[&tradeDO, &positionDO_Ptr, multiplier, closeYdFirst](UserPositionExDO_Ptr& position_ptr)
 		{
 			if (tradeDO->OpenClose == OrderOpenCloseType::OPEN)
 			{
@@ -202,8 +218,7 @@ UserPositionExDO_Ptr UserPositionContext::UpsertPosition(const std::string& user
 				double tdmean = position_ptr->OpenVolume ? position_ptr->OpenAmount / position_ptr->OpenVolume : 0;
 				position_ptr->TdCost = tdmean * position_ptr->TdPosition;
 				position_ptr->YdCost = position_ptr->PreSettlementPrice * position_ptr->LastPosition();
-				if (pContractInfo)
-					position_ptr->YdCost *= pContractInfo->VolumeMultiple;
+				position_ptr->YdCost *= multiplier;
 			}
 
 			*positionDO_Ptr = *position_ptr;
@@ -256,4 +271,9 @@ bool UserPositionContext::FreezePosition(const OrderRequestDO& orderRequestDO, i
 	}
 
 	return ret;
+}
+
+bool UserPositionContext::GetRiskByPortfolio(const std::string & userID, const std::string & portfolio, UnderlyingRiskMap& risks)
+{
+	return false;
 }

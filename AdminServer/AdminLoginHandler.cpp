@@ -41,7 +41,7 @@ dataobj_ptr AdminLoginHandler::HandleRequest(const uint32_t serialId, const data
 
 	if (!session->getLoginTimeStamp())
 	{
-		auto stdo = (MapDO<std::string>*)reqDO.get();
+		auto stdo = (StringMapDO<std::string>*)reqDO.get();
 
 		auto& userid = stdo->TryFind(STR_USER_NAME, EMPTY_STRING);
 		auto& password = stdo->TryFind(STR_PASSWORD, EMPTY_STRING);

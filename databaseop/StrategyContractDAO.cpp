@@ -7,6 +7,7 @@
 
 #include "StrategyContractDAO.h"
 #include "MySqlConnectionManager.h"
+#include "SysParamsDAO.h"
 #include <ctime>
 
  ////////////////////////////////////////////////////////////////////////
@@ -31,6 +32,13 @@ VectorDO_Ptr<StrategyContractDO_Ptr> StrategyContractDAO::LoadStrategyContractBy
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
 	{
+		int maxLimitOrder = 480;
+		std::string value;
+		if (SysParamsDAO::FindSysParamValue("LIMITORDER.MAXCOUNT", value))
+		{
+			maxLimitOrder = std::stoi(value, nullptr, 0);
+		}
+
 		autofillmap<UserStrategyName, autofillmap<ContractKey, StrategyPricingContract_Ptr>> pmPricingContractMap;
 		RetrievePricingContractsByProductType(productType, PM, pmPricingContractMap);
 
@@ -57,6 +65,8 @@ VectorDO_Ptr<StrategyContractDO_Ptr> StrategyContractDAO::LoadStrategyContractBy
 			std::string portfolio;
 			if (!rs->isNull(14)) portfolio = rs->getString(14);
 			auto stcdo_ptr = std::make_shared<StrategyContractDO>(rs->getString(1), rs->getString(2), rs->getString(10), portfolio);
+			stcdo_ptr->AutoOrderSettings.MaxLimitOrder = maxLimitOrder;
+
 			stcdo_ptr->TradingDay.Year = pTM->tm_year + 1900;
 			stcdo_ptr->TradingDay.Month = pTM->tm_mon + 1;
 			stcdo_ptr->TradingDay.Day = pTM->tm_mday;
@@ -118,50 +128,20 @@ VectorDO_Ptr<StrategyContractDO_Ptr> StrategyContractDAO::LoadStrategyContractBy
 }
 
 
-void StrategyContractDAO::RetrievePricingContracts(const std::string& strategyExchange, const std::string& strategyContract, const std::string& userid,
-	std::vector<PricingContract>& pricingContracts)
-{
-	static const std::string sql_findcontractparam(
-		"SELECT pricing_exchange, pricing_contract, weight, adjust FROM strategy_pricing_contract "
-		"WHERE strategy_exchange = ? and strategy_contract = ? and accountid = ?");
-
-	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
-	try
-	{
-		AutoClosePreparedStmt_Ptr prestmt(
-			session->getConnection()->prepareStatement(sql_findcontractparam));
-		prestmt->setString(1, strategyExchange);
-		prestmt->setString(2, strategyContract);
-		prestmt->setString(3, userid);
-
-		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
-
-		while (rs->next())
-		{
-			PricingContract cp(rs->getString(1), rs->getString(2), rs->getDouble(3), rs->getDouble(4));
-			pricingContracts.push_back(std::move(cp));
-		}
-	}
-	catch (sql::SQLException& sqlEx)
-	{
-		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
-		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
-	}
-}
-
-
 void StrategyContractDAO::RetrievePricingContractsByProductType(int productType, const std::string& modelaim,
 	autofillmap<UserStrategyName, autofillmap<ContractKey, StrategyPricingContract_Ptr>>& pricingContractMap)
 {
-	static const std::string sql_findcontractparam(
-		"SELECT accountid, strategy_symbol, strategy_exchange, strategy_contract, pricing_exchange, pricing_contract, weight, adjust from vw_pricing_contract_property "
+	static const std::string sql_retrieve_pricingcontracts(
+		"SELECT accountid, strategy_symbol, strategy_exchange, strategy_contract, "
+		"pricing_exchange, pricing_contract, underlying_symbol, weight, adjust "
+		"FROM vw_pricing_contract_property "
 		"WHERE strategy_product_type = ? and modelaim = ?");
 
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
-			session->getConnection()->prepareStatement(sql_findcontractparam));
+			session->getConnection()->prepareStatement(sql_retrieve_pricingcontracts));
 		prestmt->setInt(1, productType);
 		prestmt->setString(2, modelaim);
 
@@ -178,7 +158,7 @@ void StrategyContractDAO::RetrievePricingContractsByProductType(int productType,
 				auto pair = pricingContracts.emplace(contractKey, std::make_shared<StrategyPricingContract>());
 				pStrategyPricingContractPtr = &pair.first->second;
 			}
-			PricingContract cp(rs->getString(5), rs->getString(6), rs->getDouble(7), rs->getDouble(8));
+			PricingContract cp(rs->getString(5), rs->getString(6), rs->getString(7), rs->getDouble(8), rs->getDouble(9));
 			(*pStrategyPricingContractPtr)->PricingContracts.push_back(std::move(cp));
 		}
 	}

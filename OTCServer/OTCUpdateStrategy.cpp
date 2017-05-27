@@ -34,8 +34,9 @@
 dataobj_ptr OTCUpdateStrategy::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
+	CheckRolePermission(session, UserRoleType::ROLE_TRADINGDESK);
 
-	auto ret = std::make_shared<VectorDO<StrategyContractDO>>();
+	StrategyContractDO_Ptr strategy_ptr;
 
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
@@ -44,15 +45,32 @@ dataobj_ptr OTCUpdateStrategy::HandleRequest(const uint32_t serialId, const data
 		auto pStrategyDO = (StrategyContractDO*)reqDO.get();
 		pStrategyDO->SetUserID(session->getUserInfo().getUserId());
 
-		StrategyContractDO_Ptr strategy_ptr;
 		if (pStrategyMap->find(*pStrategyDO, strategy_ptr))
 		{
-			if(!pStrategyDO->StrategyName.empty())
+			if (!pStrategyDO->StrategyName.empty())
 				strategy_ptr->StrategyName = pStrategyDO->StrategyName;
 
-			strategy_ptr->BidQV = pStrategyDO->BidQV;
-			strategy_ptr->AskQV = pStrategyDO->AskQV;
 			strategy_ptr->Depth = pStrategyDO->Depth;
+			strategy_ptr->Multiplier = pStrategyDO->Multiplier;
+			strategy_ptr->Hedging = pStrategyDO->Hedging;
+
+			strategy_ptr->AutoOrderSettings.BidQV = pStrategyDO->AutoOrderSettings.BidQV;
+			strategy_ptr->AutoOrderSettings.AskQV = pStrategyDO->AutoOrderSettings.AskQV;
+			strategy_ptr->AutoOrderSettings.MaxAutoTrade = pStrategyDO->AutoOrderSettings.MaxAutoTrade;
+			strategy_ptr->AutoOrderSettings.BidNotCross = pStrategyDO->AutoOrderSettings.BidNotCross;
+			strategy_ptr->AutoOrderSettings.CloseMode = pStrategyDO->AutoOrderSettings.CloseMode;
+			strategy_ptr->AutoOrderSettings.TIF = pStrategyDO->AutoOrderSettings.TIF;
+			strategy_ptr->AutoOrderSettings.VolCondition = pStrategyDO->AutoOrderSettings.VolCondition;
+			
+			int limitOrderCnt = pWorkerProc->GetOTCTradeProcessor()->GetExchangeOrderContext().GetLimitOrderCount(strategy_ptr->InstrumentID());
+			if (strategy_ptr->AutoOrderSettings.LimitOrderCounter < limitOrderCnt)
+				strategy_ptr->AutoOrderSettings.LimitOrderCounter = limitOrderCnt;
+
+			if (pStrategyDO->AutoOrderSettings.AskCounter < 0)
+				strategy_ptr->AutoOrderSettings.AskCounter = 0;
+
+			if (pStrategyDO->AutoOrderSettings.BidCounter < 0)
+				strategy_ptr->AutoOrderSettings.BidCounter = 0;
 
 			if (auto userContractMap_Ptr = std::static_pointer_cast<UserContractParamDOMap>
 				(session->getContext()->getAttribute(STR_KEY_USER_CONTRACTS)))
@@ -61,21 +79,29 @@ dataobj_ptr OTCUpdateStrategy::HandleRequest(const uint32_t serialId, const data
 					ucp->Quantity = strategy_ptr->Quantity;
 			}
 
-			strategy_ptr->BidEnabled = pStrategyDO->BidEnabled;
-			strategy_ptr->AskEnabled = pStrategyDO->AskEnabled;
-
-			StrategyContractDAO::UpdateStrategy(*strategy_ptr);
-
-			strategy_ptr->Hedging = pStrategyDO->Hedging;
+			if (strategy_ptr->BidEnabled != pStrategyDO->BidEnabled ||
+				strategy_ptr->AskEnabled != pStrategyDO->AskEnabled)
+			{
+				strategy_ptr->BidEnabled = pStrategyDO->BidEnabled;
+				strategy_ptr->AskEnabled = pStrategyDO->AskEnabled;
+				StrategyContractDAO::UpdateStrategy(*strategy_ptr);
+			}
 
 			if (strategy_ptr->Hedging)
-				pWorkerProc->GetOTCTradeProcessor()->TriggerHedgeOrderUpdating(*strategy_ptr);
+			{
+				pWorkerProc->GetOTCTradeProcessor()->TriggerAutoOrderUpdating(*strategy_ptr);
+			}
 			else
-				pWorkerProc->GetOTCTradeProcessor()->CancelHedgeOrder(*strategy_ptr);
-
-			ret->push_back(*strategy_ptr);
+			{
+				pWorkerProc->GetOTCTradeProcessor()->CancelAutoOrder(*strategy_ptr);
+			}
 		}
 	}
 
-	return ret;
+	return strategy_ptr;
+}
+
+dataobj_ptr OTCUpdateStrategy::HandleResponse(const uint32_t serialId, const param_vector & rawRespParams, IRawAPI * rawAPI, const IMessageProcessor_Ptr & msgProcessor, const IMessageSession_Ptr & session)
+{
+	return *(StrategyContractDO_Ptr*)rawRespParams[0];
 }

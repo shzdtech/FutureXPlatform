@@ -114,6 +114,21 @@
     <ClCompile Include="OTCUnSubTradingDeskData.cpp">
       <Filter>源文件\TradingDesk</Filter>
     </ClCompile>
+    <ClCompile Include="OTCQueryRisk.cpp">
+      <Filter>源文件\TradingDesk</Filter>
+    </ClCompile>
+    <ClCompile Include="OTCRiskUpdated.cpp">
+      <Filter>源文件\TradingDesk</Filter>
+    </ClCompile>
+    <ClCompile Include="OTCQueryPosition.cpp">
+      <Filter>源文件\TradeHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="OTCUpdatePortfolio.cpp">
+      <Filter>源文件\TradingDesk</Filter>
+    </ClCompile>
+    <ClCompile Include="OTCUpdateHedgeContract.cpp">
+      <Filter>源文件\TradingDesk</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="otcserver_export.h">
@@ -201,6 +216,21 @@
       <Filter>头文件\TradingDesk</Filter>
     </ClInclude>
     <ClInclude Include="OTCUnSubTradingDeskData.h">
+      <Filter>头文件\TradingDesk</Filter>
+    </ClInclude>
+    <ClInclude Include="OTCQueryRisk.h">
+      <Filter>头文件\TradingDesk</Filter>
+    </ClInclude>
+    <ClInclude Include="OTCRiskUpdated.h">
+      <Filter>头文件\TradingDesk</Filter>
+    </ClInclude>
+    <ClInclude Include="OTCQueryPosition.h">
+      <Filter>头文件\TradeHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="OTCUpdatePortfolio.h">
+      <Filter>头文件\TradingDesk</Filter>
+    </ClInclude>
+    <ClInclude Include="OTCUpdateHedgeContract.h">
       <Filter>头文件\TradingDesk</Filter>
     </ClInclude>
   </ItemGroup>

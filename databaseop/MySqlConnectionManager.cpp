@@ -13,16 +13,16 @@
 #include <future>
 
 
-//std::once_flag MySqlConnectionManager::_instance_flag;
-//std::shared_ptr<MySqlConnectionManager> MySqlConnectionManager::_instance;
+ //std::once_flag MySqlConnectionManager::_instance_flag;
+ //std::shared_ptr<MySqlConnectionManager> MySqlConnectionManager::_instance;
 
-////////////////////////////////////////////////////////////////////////
-// Name:       MySqlConnectionManager::LoadConfig(std::string& config)
-// Purpose:    Implementation of MySqlConnectionManager::LoadConfig()
-// Parameters:
-// - config
-// Return:     void
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       MySqlConnectionManager::LoadConfig(std::string& config)
+ // Purpose:    Implementation of MySqlConnectionManager::LoadConfig()
+ // Parameters:
+ // - config
+ // Return:     void
+ ////////////////////////////////////////////////////////////////////////
 
 bool MySqlConnectionManager::LoadDbConfig(const std::map<std::string, std::string>& cfgMap)
 {
@@ -111,7 +111,9 @@ MySqlConnectionManager::MySqlConnectionManager()
 MySqlConnectionManager::~MySqlConnectionManager()
 {
 	_runing = false;
-	_heartbeatTask.join();
+
+	if (_heartbeatTask.valid())
+		_heartbeatTask.wait();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -160,11 +162,11 @@ void MySqlConnectionManager::InitPool()
 	}
 	catch (std::exception& ex)
 	{
-		LOG_ERROR <<"Cannot create db pool : " << ex.what();
+		LOG_ERROR << "Cannot create db pool : " << ex.what();
 	}
 	_runing = true;
 
-	_heartbeatTask = std::move(std::thread(&MySqlConnectionManager::CheckStatus, this));
+	_heartbeatTask = std::async(std::launch::async, &MySqlConnectionManager::CheckStatus, this);
 }
 
 void MySqlConnectionManager::CheckStatus()

@@ -23,6 +23,8 @@ static const std::string STR_CURRENCY_ID = "CurrencyID";
 static const std::string STR_BANK_ID = "BankID";
 static const std::string STR_BRANCH_ID = "BranchID";
 static const std::string STR_ACCOUNT_ID = "AccountID";
+static const std::string STR_PORTFOLIO_ID = "PortfolioID";
+
 
 static const std::string STR_DATE = "Date";
 static const std::string STR_TIME = "Time";

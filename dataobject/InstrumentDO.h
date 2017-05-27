@@ -35,14 +35,14 @@ public:
 
 	int DeliveryYear = 0;
 	int DeliveryMonth = 0;
-	int MaxMarketOrderVolume = 0;
-	int MinMarketOrderVolume = 0;
-	int MaxLimitOrderVolume = 0;
-	int MinLimitOrderVolume = 0;
+	int MaxMarketOrderVolume = 100;
+	int MinMarketOrderVolume = 1;
+	int MaxLimitOrderVolume = 100;
+	int MinLimitOrderVolume = 1;
 	int VolumeMultiple = 1;
 	bool IsTrading = true;
 
-	double PriceTick = 0;
+	double PriceTick = 1;
 	double LongMarginRatio = 0;
 	double ShortMarginRatio = 0;
 	double StrikePrice = 0;

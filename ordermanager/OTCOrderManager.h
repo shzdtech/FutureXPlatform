@@ -26,17 +26,19 @@ public:
 
 	void TradeByStrategy(const StrategyContractDO& strategyDO);
 
-	void Hedge(const PortfolioKey& portfolioKey);
+	OTCUserPositionContext& GetPositionContext();
+
+	//void Hedge(const PortfolioKey& portfolioKey);
 
 protected:
-	HedgeOrderManager_Ptr FindHedgeManager(const PortfolioKey& portfolioKey);
+	// HedgeOrderManager_Ptr FindHedgeManager(const PortfolioKey& portfolioKey);
 
 	std::mutex _mutex;
 	OTCUserPositionContext _positionCtx;
-	PortfolioMap<HedgeOrderManager_Ptr> _hedgeMgr;
 
+	cuckoohash_map<ContractKey, bool, ContractKeyHash> _updatinglock;
 private:
-	HedgeOrderManager_Ptr initHedgeOrderMgr(const PortfolioKey& portfolio);
+
 };
 
 #endif

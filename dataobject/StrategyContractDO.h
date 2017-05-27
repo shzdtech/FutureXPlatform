@@ -15,6 +15,7 @@
 #include "ModelParamsDO.h"
 #include "EnumTypes.h"
 #include "DateType.h"
+#include "OrderDO.h"
 
 static const std::string PM("pm");
 static const std::string IVM("ivm");
@@ -30,6 +31,24 @@ typedef std::shared_ptr<StrategyPricingContract> StrategyPricingContract_Ptr;
 
 class StrategyContractDO : public UserContractKey, public PortfolioKey, public dataobjectbase
 {
+public:
+	struct AutoOrderSettings
+	{
+		int BidQV = 1;
+		int AskQV = 1;
+		int MaxAutoTrade = 10;
+		mutable int BidCounter = 0;
+		mutable int AskCounter = 0;
+		mutable int LimitOrderCounter = 0;
+
+		bool CloseMode = false;
+		bool BidNotCross = true;
+
+		int MaxLimitOrder = 480;
+		OrderTIFType TIF = OrderTIFType::GFD;
+		OrderVolType VolCondition = OrderVolType::ANYVOLUME;
+	};
+
 public:
 	StrategyContractDO(const std::string& exchangeID, const std::string& instrumentID,
 		const std::string& userID, const std::string& portfolioID)
@@ -50,16 +69,18 @@ public:
 	ProductType ProductType;
 	ContractType ContractType;
 	int Quantity = 1;
-	int BidQV = 1;
-	int AskQV = 1;
 	int Depth = 2;
-	volatile bool Hedging = false;
+
 	volatile bool BidEnabled = true;
 	volatile bool AskEnabled = true;
+	volatile bool Hedging = false;
 
 	double TickSize = 1;
 	double Multiplier = 1;
+	int TickSizeMult = 1;
 	double StrikePrice;
+
+	AutoOrderSettings AutoOrderSettings;
 
 	ModelParamsDO_Ptr PricingModel;
 	StrategyPricingContract_Ptr PricingContracts;
@@ -69,6 +90,11 @@ public:
 
 	ModelParamsDO_Ptr VolModel;
 	StrategyPricingContract_Ptr VolContracts;
+
+	double EffectiveTickSize() const
+	{
+		return TickSize * (TickSizeMult <= 0 ? 1 : TickSizeMult);
+	}
 
 	void DeepCopyPricingContract(const StrategyContractDO& st)
 	{

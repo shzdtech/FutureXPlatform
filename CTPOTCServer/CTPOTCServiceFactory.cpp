@@ -77,6 +77,10 @@ std::map<uint, IMessageHandler_Ptr> CTPOTCServiceFactory::CreateMessageHandlers(
 
 	msg_hdl_map[MSG_ID_PORTFOLIO_NEW] = std::make_shared<OTCNewPortfolio>();
 
+	msg_hdl_map[MSG_ID_MODIFY_PORTFOLIO] = std::make_shared<OTCUpdatePortfolio>();
+
+	msg_hdl_map[MSG_ID_HEDGE_CONTRACT_UPDATE] = std::make_shared<OTCUpdateHedgeContract>();
+
 	msg_hdl_map[MSG_ID_UPDATE_MODELPARAMS] = std::make_shared<OTCUpdateModelParams>();
 
 	msg_hdl_map[MSG_ID_QUERY_MODELPARAMS] = std::make_shared<OTCQueryModelParams>();
@@ -84,6 +88,12 @@ std::map<uint, IMessageHandler_Ptr> CTPOTCServiceFactory::CreateMessageHandlers(
 	msg_hdl_map[MSG_ID_UPDATE_TEMPMODELPARAMS] = std::make_shared<OTCUpdateTempModelParam>();
 
 	msg_hdl_map[MSG_ID_MODIFY_PRICING_CONTRACT] = std::make_shared<OTCUpdatePricingContract>();
+
+	msg_hdl_map[MSG_ID_QUERY_POSITION] = std::make_shared<OTCQueryPosition>();
+
+	msg_hdl_map[MSG_ID_QUERY_RISK] = std::make_shared<CTPOTCQueryRisk>();
+
+	msg_hdl_map[MSG_ID_RISK_UPDATED] = std::make_shared<OTCRiskUpdated>();
 
 	// For simulation
 	msg_hdl_map[MSG_ID_RET_MARKETDATA] = std::make_shared<CTPSimMarketData>();
@@ -130,9 +140,9 @@ IMessageProcessor_Ptr CTPOTCServiceFactory::CreateWorkerProcessor(IServerContext
 	{
 		auto pricingCtx = std::static_pointer_cast<IPricingDataContext>(serverCtx->getAttribute(STR_KEY_SERVER_PRICING_DATACONTEXT));
 		std::shared_ptr<CTPOTCTradeProcessor> tradeProcessor(new CTPOTCTradeProcessor(serverCtx, pricingCtx));
-		tradeProcessor->Initialize(serverCtx);
 		std::shared_ptr<CTPOTCWorkerProcessor> worker_ptr(new CTPOTCWorkerProcessor(serverCtx, tradeProcessor));
 		worker_ptr->Initialize(serverCtx);
+		tradeProcessor->Initialize(serverCtx);
 		serverCtx->setWorkerProcessor(worker_ptr);
 		serverCtx->setSubTypeWorkerPtr(static_cast<OTCWorkerProcessor*>(worker_ptr.get()));
 	}

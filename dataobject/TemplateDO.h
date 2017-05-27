@@ -34,16 +34,16 @@ public:
 template <typename T> using SetDO_Ptr = typename std::shared_ptr<SetDO<T>>;
 
 template <typename T>
-class MapDO : public std::map<std::string, T>, public dataobjectbase
+class StringMapDO : public std::map<std::string, T>, public dataobjectbase
 {
 public:
-	MapDO() = default;
+	StringMapDO() = default;
 
 	typedef std::map<std::string, T> _baseMap;
-	MapDO(const _baseMap& other) : _baseMap(other) {}
+	StringMapDO(const _baseMap& other) : _baseMap(other) {}
 
 	template <typename TIt>
-	MapDO(TIt first, TIt last)
+	StringMapDO(TIt first, TIt last)
 		: _baseMap(first, last) {}
 
 	const T& TryFind(const std::string& key, const T& defaultVal)
@@ -52,8 +52,28 @@ public:
 		return (it != end()) ? it->second : defaultVal;
 	}
 };
-template <typename T> using MapDO_Ptr = typename std::shared_ptr<MapDO<T>>;
+template <typename T> using StringMapDO_Ptr = typename std::shared_ptr<StringMapDO<T>>;
 
+template <typename K, typename V>
+class MapDO : public std::map<K, V>, public dataobjectbase
+{
+public:
+	MapDO() = default;
+
+	typedef std::map<K, V> _baseMap;
+	MapDO(const _baseMap& other) : _baseMap(other) {}
+
+	template <typename TIt>
+	MapDO(TIt first, TIt last)
+		: _baseMap(first, last) {}
+
+	const V& TryFind(const K& key, const V& defaultVal)
+	{
+		auto it = find(key);
+		return (it != end()) ? it->second : defaultVal;
+	}
+};
+template <typename K, typename V> using MapDO_Ptr = typename std::shared_ptr<MapDO<K, V>>;
 
 template <typename T>
 class TDataObject : public dataobjectbase

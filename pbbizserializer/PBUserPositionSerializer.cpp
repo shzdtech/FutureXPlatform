@@ -28,6 +28,7 @@ data_buffer PBUserPositionSerializer::Serialize(const dataobj_ptr& abstractDO)
 
 	PB.set_exchange(pDO->ExchangeID().data());
 	PB.set_contract(pDO->InstrumentID().data());
+	PB.set_portfolio(pDO->PortfolioID().data());
 	PB.set_direction(pDO->Direction);
 	PB.set_hedgeflag(pDO->HedgeFlag);
 	PB.set_positiondateflag(pDO->PositionDateFlag);
@@ -43,6 +44,7 @@ data_buffer PBUserPositionSerializer::Serialize(const dataobj_ptr& abstractDO)
 	PB.set_closeprofit(pDO->CloseProfit);
 	PB.set_profit(pDO->Profit());
 	PB.set_opencost(pDO->OpenCost);
+	PB.set_portfolio(pDO->PortfolioID());
 	/*PB.set_longfrozen(pDO->LongFrozen);
 	PB.set_shortfrozen(pDO->ShortFrozen);
 	PB.set_longfrozenamount(pDO->LongFrozenAmount);

@@ -78,6 +78,24 @@ void CTPMarketDataProcessor::OnRspError(CThostFtdcRspInfoField *pRspInfo,
 
 void CTPMarketDataProcessor::OnFrontConnected() {
 	_isConnected = true;
+
+	if (_isLogged)
+	{
+		if (_rawAPI)
+		{
+			if (auto pMdAPI = _rawAPI->MdAPI)
+			{
+				_subedInstuments.lock();
+				for (auto instument : _subedInstuments.rawset())
+				{
+					char* contract[] = { const_cast<char*>(instument.data()) };
+					pMdAPI->SubscribeMarketData(contract, 1);
+				}
+				_subedInstuments.unlock();
+			}
+		}
+	}
+
 	LOG_DEBUG << __FUNCTION__;
 }
 
@@ -97,7 +115,7 @@ void CTPMarketDataProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUse
 		_tradingDay = std::atoi(pRspUserLogin->TradingDay);
 	}
 	if (!nRequestID) nRequestID = LoginSerialId;
-	OnResponseMacro(MSG_ID_LOGIN, nRequestID, pRspUserLogin, pRspInfo, &nRequestID, &bIsLast)
+	OnResponseMacro(MSG_ID_LOGIN, nRequestID, pRspUserLogin, pRspInfo, &nRequestID, &bIsLast);
 }
 
 void CTPMarketDataProcessor::OnRspUserLogout(CThostFtdcUserLogoutField *pUserLogout,
@@ -109,11 +127,21 @@ void CTPMarketDataProcessor::OnRspUserLogout(CThostFtdcUserLogoutField *pUserLog
 
 void CTPMarketDataProcessor::OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument,
 	CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
+	if (pSpecificInstrument && !CTPUtility::HasError(pRspInfo))
+	{
+		_subedInstuments.emplace(pSpecificInstrument->InstrumentID);
+	}
+
 	OnResponseMacro(MSG_ID_SUB_MARKETDATA, nRequestID, pSpecificInstrument, pRspInfo, &nRequestID, &bIsLast)
 }
 
 void CTPMarketDataProcessor::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument,
 	CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {
+	if (pSpecificInstrument)
+	{
+		_subedInstuments.erase(pSpecificInstrument->InstrumentID);
+	}
+
 	OnResponseMacro(MSG_ID_UNSUB_MARKETDATA, nRequestID, pSpecificInstrument, pRspInfo, &nRequestID, &bIsLast)
 }
 

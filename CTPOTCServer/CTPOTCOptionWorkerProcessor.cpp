@@ -63,14 +63,17 @@ void CTPOTCOptionWorkerProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketData
 		{
 			bidPrice = pDepthMarketData->LowerLimitPrice;
 			if (bidPrice > 1e32)
-				bidPrice = pDepthMarketData->PreClosePrice;
+				bidPrice = pDepthMarketData->PreSettlementPrice;
 		}
 		if (askPrice > 1e32)
 		{
 			askPrice = pDepthMarketData->UpperLimitPrice;
 			if (askPrice > 1e32)
-				askPrice = pDepthMarketData->PreClosePrice;
+				askPrice = pDepthMarketData->PreSettlementPrice;
 		}
+
+		mDO.SettlementPrice = pDepthMarketData->SettlementPrice < 1e32 ? pDepthMarketData->SettlementPrice : 0;
+
 		if (mDO.Bid().Price != bidPrice || mDO.Ask().Price != askPrice)
 		{
 			mDO.Bid().Price = bidPrice;

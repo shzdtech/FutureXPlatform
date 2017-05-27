@@ -80,6 +80,9 @@
     <ClInclude Include="VersionDAO.h">
       <Filter>头文件\DAO</Filter>
     </ClInclude>
+    <ClInclude Include="PositionDAO.h">
+      <Filter>头文件\DAO</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AbstractConnectionManager.cpp">
@@ -119,6 +122,9 @@
       <Filter>源文件\DAO</Filter>
     </ClCompile>
     <ClCompile Include="VersionDAO.cpp">
+      <Filter>源文件\DAO</Filter>
+    </ClCompile>
+    <ClCompile Include="PositionDAO.cpp">
       <Filter>源文件\DAO</Filter>
     </ClCompile>
   </ItemGroup>

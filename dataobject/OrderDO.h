@@ -12,7 +12,6 @@
 #include "TemplateDO.h"
 #include "EnumTypes.h"
 #include "PortfolioDO.h"
-#include "StrategyContractDO.h"
 
 enum OrderStatusType
 {
@@ -41,6 +40,15 @@ enum OrderTIFType
 	IOC = 1,
 };
 
+enum OrderVolType
+{
+	ANYVOLUME = 0,
+	///最小数量
+	MINIVOLUME = 1,
+	///全部数量
+	ALLVOLUME = 2
+};
+
 class OrderRequestDO : public UserContractKey, public PortfolioKey, public dataobjectbase
 {
 public:
@@ -52,21 +60,21 @@ public:
 		const std::string& userID, const std::string& portfolioID) : OrderID(orderID), UserKey(userID), 
 		UserContractKey(exchangeID, instrumentID, userID), PortfolioKey(portfolioID, userID) {}
 
-	OrderRequestDO(const UserContractKey& userContractKey) : 
-		UserKey(userContractKey), UserContractKey(userContractKey), PortfolioKey("", userContractKey.UserID()) {}
-
-	OrderRequestDO(const StrategyContractDO& strategy) : UserKey(strategy.UserID()), UserContractKey(strategy), PortfolioKey(strategy) {}
+	OrderRequestDO(const UserContractKey& userContractKey, const std::string& portfolioID) : 
+		UserKey(userContractKey.UserID()), UserContractKey(userContractKey), PortfolioKey(portfolioID, userContractKey.UserID()) {}
 
 	uint64_t OrderID = 0;
 	uint64_t OrderSysID = 0;
 	int SessionID = 0;
 	double LimitPrice = 0;
 	int Volume = 0;
+	int TradingDay;
 	int ErrorCode = 0;
 	DirectionType Direction = DirectionType::SELL;
 	OrderOpenCloseType OpenClose = OrderOpenCloseType::OPEN;
 	OrderTIFType TIF = OrderTIFType::GFD;
 	OrderExecType ExecType = OrderExecType::LIMIT;
+	OrderVolType VolCondition = OrderVolType::ANYVOLUME;
 	OrderTradingType TradingType = OrderTradingType::TRADINGTYPE_MANUAL;
 	OrderConditionFiled ConditionField = OrderConditionFiled::CON_FLD_UNSPECIFIED;
 	double ConValueUpper = DBL_MAX;
@@ -88,22 +96,27 @@ public:
 	OrderDO(const OrderRequestDO& requestDO) : UserKey(requestDO.UserID()),
 		OrderRequestDO(requestDO) {}
 
-	OrderDO(const UserContractKey& userContractKey) : 
-		UserKey(userContractKey.UserID()), OrderRequestDO(userContractKey) {}
+	OrderDO(const UserContractKey& userContractKey, const std::string& portfolioID) :
+		UserKey(userContractKey.UserID()), OrderRequestDO(userContractKey, portfolioID) {}
 
 	OrderDO(const uint64_t orderID) : OrderDO(orderID, "", "", "", ""){}
 
 	OrderStatusType OrderStatus = OrderStatusType::UNDEFINED;
 	int VolumeTraded = 0;
-	int TradingDay;
-	bool Active = false;
+	bool Active = true;
 	double StopPrice = 0;
 	std::string BrokerID;
+	std::string InvestorID;
 	std::string InsertDate;
 	std::string InsertTime;
 	std::string UpdateTime;
 	std::string CancelTime;
 	std::string Message;
+
+	bool IsSystemUserId()
+	{
+		return UserID().empty() || UserID() == InvestorID;
+	}
 
 	int VolumeRemain()
 	{

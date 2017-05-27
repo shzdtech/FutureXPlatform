@@ -16,6 +16,10 @@
 #include "../utility/cuckoohashmap_wrapper.h"
 #include "ordermgr_export.h"
 
+typedef cuckoohashmap_wrapper<uint128, TradeRecordDO_Ptr, UINT128Hash> UserTradeMapType;
+typedef cuckoohash_map<std::string, UserTradeMapType> TradeMapType;
+typedef cuckoohash_map<uint128, TradeRecordDO_Ptr, UINT128Hash> TradeIDMapType;
+
 class ORDERMGR_CLASS_EXPORT UserTradeContext
 {
 public:
@@ -24,17 +28,17 @@ public:
 	bool InsertTrade(const TradeRecordDO_Ptr& tradeDO_Ptr);
 	bool InsertTrade(const TradeRecordDO& tradeDO);
 	void Clear(void);
-	TradeRecordDO_Ptr RemoveTrade(uint64_t tradeID);
-	cuckoohash_map<uint64_t, TradeRecordDO_Ptr>& GetAllTrade();
-	cuckoohash_map<std::string, cuckoohashmap_wrapper<uint64_t, TradeRecordDO_Ptr>>& UserTradeMap();
-	cuckoohashmap_wrapper<uint64_t, TradeRecordDO_Ptr> GetTradesByUser(const std::string& userID);
-	bool Contains(uint64_t tradeID);
-	TradeRecordDO_Ptr FindTrade(uint64_t tradeID);
+	TradeRecordDO_Ptr RemoveTrade(uint128 tradeID);
+	TradeIDMapType& GetAllTrade();
+	TradeMapType& UserTradeMap();
+	UserTradeMapType GetTradesByUser(const std::string& userID);
+	bool Contains(uint128 tradeID);
+	TradeRecordDO_Ptr FindTrade(uint128 tradeID);
 
 
 protected:
-	cuckoohash_map<uint64_t, TradeRecordDO_Ptr> _tradeIdMap;
-	cuckoohash_map<std::string, cuckoohashmap_wrapper<uint64_t, TradeRecordDO_Ptr>> _userTradeMap;
+	TradeIDMapType _tradeIdMap;
+	TradeMapType _userTradeMap;
 };
 
 #endif

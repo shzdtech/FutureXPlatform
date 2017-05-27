@@ -42,8 +42,15 @@ dataobj_ptr CTPUnsubMarketData::HandleRequest(const uint32_t serialId, const dat
 			{
 				ppInstrments[i] = const_cast<char*>(instList[i].data());
 			}
-			ret = ((CTPRawAPI*)rawAPI)->MdAPI->UnSubscribeMarketData(ppInstrments, nInstrument);
-			CTPUtility::CheckReturnError(ret);
+
+			if (rawAPI)
+			{
+				if (auto pMdAPI = ((CTPRawAPI*)rawAPI)->MdAPI)
+				{
+					ret = pMdAPI->UnSubscribeMarketData(ppInstrments, nInstrument);
+					CTPUtility::CheckReturnError(ret);
+				}
+			}
 		}
 	}
 

@@ -55,9 +55,9 @@ IDataSerializer_Ptr MessageServiceLocator::FindDataSerializer(uint msgId) {
 MessageServiceLocator::MessageServiceLocator(const IMessageServiceFactory_Ptr& msgsvc_fac, IServerContext* serverCtx)
 {
 	msgsvc_fac->SetServerContext(serverCtx);
-	serverCtx->setWorkerProcessor(msgsvc_fac->CreateWorkerProcessor(serverCtx));
     _msghdlMap = msgsvc_fac->CreateMessageHandlers(serverCtx);
 	_dataSerialMap = msgsvc_fac->CreateDataSerializers(serverCtx);
+	serverCtx->setWorkerProcessor(msgsvc_fac->CreateWorkerProcessor(serverCtx));
 }
 
 MessageServiceLocator::~MessageServiceLocator()

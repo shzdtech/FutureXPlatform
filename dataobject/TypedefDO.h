@@ -31,7 +31,10 @@ using UserContractMap = typename autofillmap<UserContractKey, V>;
 template <typename T>
 using TContractMap = typename cuckoohash_map<ContractKey, T, ContractKeyHash>;
 
-typedef TContractMap<StrategyContractDO_Ptr> StrategyContractDOMap;
+template <typename T>
+using TUserContractMap = typename cuckoohash_map<UserContractKey, T, UserContractKeyHash>;
+
+typedef TUserContractMap<StrategyContractDO_Ptr> StrategyContractDOMap;
 
 typedef autofillmap<std::string, autofillmap<std::string, std::shared_ptr<StrategyContractDOMap>>> UserStrategyMap;
 
@@ -47,10 +50,7 @@ typedef autofillmap<std::string, InstrumentDO, ci_less> InstrumentDOMap;
 
 typedef autofillmap<std::string, autofillmap<std::pair<PositionDateFlagType, PositionDirectionType>, UserPositionExDO>, ci_less> UserPositionExDOMap;
 
-template <typename V>
-using PortfolioMap = typename autofillmap<PortfolioKey, V>;
-
-typedef PortfolioMap<PortfolioDO> PortfolioDOMap;
+typedef autofillmap<std::string, autofillmap<std::string, PortfolioDO>> PortfolioDOMap;
 
 typedef VectorDO<ContractKey> ContractList;
 

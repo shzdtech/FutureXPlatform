@@ -53,18 +53,17 @@ data_buffer PBTradingDeskParamsSerializer::Serialize(const dataobj_ptr& abstract
 		pTheoData->set_bidprice(pDO->TheoData->TBid().Price);
 		pTheoData->set_bidsize(pDO->TheoData->TBid().Volume);
 		pTheoData->set_bidvolatility(pDO->TheoData->TBid().Volatility);
-		pTheoData->set_biddelta(pDO->TheoData->TBid().Delta);
-		pTheoData->set_bidgamma(pDO->TheoData->TBid().Gamma);
-		pTheoData->set_bidtheta(pDO->TheoData->TBid().Theta);
-		pTheoData->set_bidvega(pDO->TheoData->TBid().Vega);
 
 		pTheoData->set_askprice(pDO->TheoData->TAsk().Price);
 		pTheoData->set_asksize(pDO->TheoData->TAsk().Volume);
 		pTheoData->set_askvolatility(pDO->TheoData->TAsk().Volatility);
-		pTheoData->set_askdelta(pDO->TheoData->TAsk().Delta);
-		pTheoData->set_askgamma(pDO->TheoData->TAsk().Gamma);
-		pTheoData->set_asktheta(pDO->TheoData->TAsk().Theta);
-		pTheoData->set_askvega(pDO->TheoData->TAsk().Vega);
+
+		pTheoData->set_midvolatility(pDO->TheoData->Volatility);
+		pTheoData->set_delta(pDO->TheoData->Delta);
+		pTheoData->set_gamma(pDO->TheoData->Gamma);
+		pTheoData->set_theta(pDO->TheoData->Theta);
+		pTheoData->set_vega(pDO->TheoData->Vega);
+		pTheoData->set_rho(pDO->TheoData->Rho);
 
 		if (!pDO->TheoDataTemp)
 		{
@@ -88,6 +87,7 @@ data_buffer PBTradingDeskParamsSerializer::Serialize(const dataobj_ptr& abstract
 		auto pTempTheoData = PB.mutable_theodatatemp();
 		pTempTheoData->set_askvolatility(pDO->TheoDataTemp->TAsk().Volatility);
 		pTempTheoData->set_bidvolatility(pDO->TheoDataTemp->TBid().Volatility);
+		pTempTheoData->set_midvolatility(pDO->TheoDataTemp->Volatility);
 
 		auto pWingsReturn = PB.mutable_wingsreturn();
 		pWingsReturn->set_f_atm(pDO->TheoDataTemp->f_atm);

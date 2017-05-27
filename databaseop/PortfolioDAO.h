@@ -10,13 +10,23 @@
 
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/PortfolioDO.h"
+#include "../utility/autofillmap.h"
 #include "databaseop_exp.h"
 
 class DATABASEOP_CLASS_EXPORTS PortfolioDAO
 {
 public:
-	static VectorDO_Ptr<PortfolioDO> FindPortfolioByUser(const std::string& userid);
+	static VectorDO_Ptr<PortfolioDO> FindAllPortfolios();
+
 	static int UpsertPortofolio(const PortfolioDO& portfolio);
+
+	static int UpsertPortofolioSettings(const PortfolioDO& portfolio);
+
+	static int UpsertHedgeContracts(const PortfolioDO & portfolio);
+
+	static void RetrieveHedgeContracts(std::map<PortfolioKey, std::pair<std::string, ContractKey>>& pricingContractMap);
+
+	static bool QueryDefaultPortfolio(std::map<std::string, PortfolioKey>& portfolios);
 
 protected:
 private:

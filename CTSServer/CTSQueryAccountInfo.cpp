@@ -24,7 +24,7 @@
 dataobj_ptr CTSQueryAccountInfo::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	auto api = (CTSAPIWrapper*)rawAPI;
-	auto vectorPtr = api->Impl()->QueryTrade();
+	auto vectorPtr = api->Impl()->QueryOTCUserTrades();
 
 	ThrowNotFoundExceptionIfEmpty(vectorPtr);
 

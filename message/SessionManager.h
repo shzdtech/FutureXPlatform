@@ -28,6 +28,7 @@ public:
 
 protected:
 	cuckoohash_map<IMessageProcessor_Ptr, bool> _sessionSet;
+	IMessageSession_Ptr _workerSession;
 	IMessageServer* _server;
 
 private:

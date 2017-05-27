@@ -60,6 +60,9 @@
     <ClCompile Include="CTPSimMarketData.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="CTPOTCQueryRisk.cpp">
+      <Filter>源文件\OTC</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ctpotc_bizhandlers.h">
@@ -94,6 +97,9 @@
     </ClInclude>
     <ClInclude Include="CTPSimMarketData.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPOTCQueryRisk.h">
+      <Filter>头文件\OTC</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

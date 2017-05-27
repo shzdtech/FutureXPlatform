@@ -10,22 +10,46 @@
 
 #include <atomic>
 #include "../dataobject/TypedefDO.h"
-#include "../dataobject/OrderDO.h"
+#include "../dataobject/TradeRecordDO.h"
+#include "../dataobject/UserPositionDO.h"
+#include "../dataobject/RiskDO.h"
+#include "../utility/autofillmap.h"
 #include "../utility/cuckoohashmap_wrapper.h"
 #include "../pricingengine/IPricingDataContext.h"
+#include "IUserPositionContext.h"
+#include "ordermgr_export.h"
 
-class OTCUserPositionContext
+typedef cuckoohashmap_wrapper<ContractKey, UserPositionExDO_Ptr, ContractKeyHash> OTCPositionType;
+typedef cuckoohashmap_wrapper<std::string, OTCPositionType> OTCPortfolioPositionType;
+typedef cuckoohash_map<std::string, OTCPortfolioPositionType> OTCUserPositionType;
+
+class ORDERMGR_CLASS_EXPORT OTCUserPositionContext
 {
 public:
 	OTCUserPositionContext(const IPricingDataContext_Ptr& pricingCtx);
 
-	int UpdatePosition(const StrategyContractDO& strategyDO, DirectionType direction,
-		OrderOpenCloseType openClose, int deltaPos);
+	virtual UserPositionExDO_Ptr UpsertPosition(const std::string & userid, const UserPositionExDO & positionDO);
+
+	virtual UserPositionExDO_Ptr UpsertPosition(const std::string& userid, const TradeRecordDO_Ptr & tradeDO);
+
+	void Clear(void);
+
+	virtual OTCUserPositionType& AllOTCPosition();
+
+	virtual OTCPortfolioPositionType GetPortfolioPositionsByUser(const std::string& userID);
+
+	virtual OTCPositionType GetPositionsByUser(const std::string& userID, const std::string& portfolio);
+
+	virtual UserPositionExDO_Ptr GetPosition(const std::string & userID, const std::string & portfolio, const ContractKey & contract);
+
+	virtual bool RemovePosition(const std::string & userID, const std::string & portfolio, const ContractKey & contract);
 
 	ContractMap<double> GenSpreadPoints(const PortfolioKey& portfolioKey);
 
+	bool GetRiskByPortfolio(const std::string& userID, const std::string& portfolio, UnderlyingRiskMap& risks);
+
 protected:
-	cuckoohash_map<PortfolioKey, cuckoohashmap_wrapper<ContractKey, int, ContractKeyHash>, PortfolioKeyHash> _position;
+	cuckoohash_map<std::string, OTCPortfolioPositionType> _userPositionMap;
 	IPricingDataContext_Ptr _pricingCtx;
 
 private:

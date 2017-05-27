@@ -29,7 +29,7 @@
 class CTP_CLASS_EXPORT CTPTradeWorkerProcessor : public CTPTradeProcessor
 {
 public:
-   CTPTradeWorkerProcessor(IServerContext* pServerCtx);
+	CTPTradeWorkerProcessor(IServerContext* pServerCtx, const IUserPositionContext_Ptr& positionCtx = nullptr);
    ~CTPTradeWorkerProcessor();
    virtual void Initialize(IServerContext* pServerCtx);
    virtual int RequestData(void);
@@ -42,28 +42,44 @@ public:
    virtual void DispatchUserMessage(int msgId, int serialId, const std::string& userId, const dataobj_ptr& dataobj_ptr);
    virtual autofillmap<std::string, AccountInfoDO>& GetAccountInfo(const std::string userId);
    virtual std::set<ExchangeDO>& GetExchangeInfo();
-   virtual IUserPositionContext& GetUserPositionContext();
+   virtual IUserPositionContext_Ptr& GetUserPositionContext();
    virtual UserTradeContext& GetUserTradeContext();
-   virtual UserOrderContext& GetUserOrderContext(void);
+   virtual UserOrderContext& GetUserOrderContext();
    virtual std::set<ProductType>& GetProductTypeToLoad();
    //virtual UserOrderContext& GetUserErrOrderContext(void);
+   virtual const IUserInfo& GetSystemUser();
 
-   void QueryPositionAsync(const std::string& userId);
+   int ComparePosition(autofillmap<std::pair<std::string, PositionDirectionType>, std::pair<int, int>>& positions);
 
-   int RetryInterval = 60000;
+   virtual TradeRecordDO_Ptr RefineTrade(CThostFtdcTradeField * pTrade);
+
+   virtual void UpdatePosition(const TradeRecordDO_Ptr& trdDO_Ptr);
+
+   virtual OrderDO_Ptr CTPTradeWorkerProcessor::RefineOrder(CThostFtdcOrderField *pOrder);
+
+   bool IsLoadPositionFromDB();
+
+   void LoadPositonFromDatabase(const std::string& sysuserid, const std::string& tradingday);
+
+   int RetryInterval = 30000;
 
 protected:
    UserInfo _systemUser;
-   std::thread _initializer;
+   volatile bool _closing = false;
+   std::future<void> _initializer;
    SessionContainer_Ptr<std::string> _userSessionCtn_Ptr;
    autofillmap<std::string, autofillmap<std::string, AccountInfoDO>> _accountInfoMap;
    std::set<ExchangeDO> _exchangeInfo_Set;
-   UserPositionContext _userPositionCtx;
+   IUserPositionContext_Ptr _userPositionCtx_Ptr;
    UserTradeContext _userTradeCtx;
    UserOrderContext _userOrderCtx;
    //UserOrderContext _userErrOrderCtx;
    std::set<ProductType> _productTypes;
 
+   bool _loadPositionFromDB;
+
+   autofillmap<std::pair<std::string, PositionDirectionType>, int> _ydDBPositions;
+   autofillmap<std::pair<std::string, PositionDirectionType>, int> _ydSysPositions;
 
 public:
 	virtual void OnFrontConnected();

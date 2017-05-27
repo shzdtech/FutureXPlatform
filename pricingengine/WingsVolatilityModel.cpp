@@ -122,6 +122,7 @@ dataobj_ptr WingsVolatilityModel::Compute(
 		= ComputeVolatility(ret->f_syn, x, f_ref, ssr,
 			paramObj->scr_offset, paramObj->vcr_offset, paramObj->vol_ref_offset, paramObj->slope_ref_offset, paramObj->dn_cf_offset, paramObj->up_cf_offset, paramObj->dn_sm_offset, paramObj->up_sm_offset, paramObj->dn_slope_offset, paramObj->up_slope_offset, paramObj->put_curv_offset, paramObj->call_curv_offset);
 
+	ret->Volatility = std::max(midVol, 0.0);
 	ret->TBid().Volatility = std::max(midVol - offsetVol, 0.0);
 	ret->TAsk().Volatility = std::max(midVol + offsetVol, 0.0);
 	// ret->x = ret->f_syn * std::exp(ret->x);

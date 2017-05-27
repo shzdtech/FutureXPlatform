@@ -180,8 +180,14 @@
     <ClInclude Include="CTPAccountLogin.h">
       <Filter>头文件\CTPHandler\SharedAccount</Filter>
     </ClInclude>
-    <ClInclude Include="CTPTradeWorkerProcessorEx.h">
-      <Filter>头文件\CTPHandler\Trader</Filter>
+    <ClInclude Include="CTPAccountQueryPosition.h">
+      <Filter>头文件\CTPHandler\SharedAccount</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPTradeWorkerSAProcessor.h">
+      <Filter>头文件\CTPHandler\SharedAccount</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPQueryPositionDiffer.h">
+      <Filter>头文件\CTPHandler\SharedAccount</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -293,8 +299,14 @@
     <ClCompile Include="CTPRawAPI.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CTPTradeWorkerProcessorEx.cpp">
-      <Filter>源文件\CTPHandler\Trader</Filter>
+    <ClCompile Include="CTPAccountQueryPosition.cpp">
+      <Filter>源文件\CTPHandler\SharedAccount</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPTradeWorkerSAProcessor.cpp">
+      <Filter>源文件\CTPHandler\SharedAccount</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPQueryPositionDiffer.cpp">
+      <Filter>源文件\CTPHandler\SharedAccount</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

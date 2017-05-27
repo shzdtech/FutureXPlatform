@@ -9,7 +9,7 @@ dataobj_ptr PBStringMapSerializer::Deserialize(const data_buffer & rawdata)
 	StringMap PBMap;
 	ParseWithReturn(PBMap, rawdata);
 
-	auto ret = std::make_shared<MapDO<std::string>>(PBMap.entry().begin(), PBMap.entry().end());
+	auto ret = std::make_shared<StringMapDO<std::string>>(PBMap.entry().begin(), PBMap.entry().end());
 	FillDOHeader(ret, PBMap);
 
 	return ret;
@@ -17,7 +17,7 @@ dataobj_ptr PBStringMapSerializer::Deserialize(const data_buffer & rawdata)
 
 data_buffer PBStringMapSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
-	auto pMapDO = (MapDO<std::string>*)abstractDO.get();
+	auto pMapDO = (StringMapDO<std::string>*)abstractDO.get();
 	StringMap PBMap;
 	FillPBHeader(PBMap, pMapDO);
 

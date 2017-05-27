@@ -15,6 +15,14 @@
 #include "../utility/cuckoohashmap_wrapper.h"
 #include "ordermgr_export.h"
 
+typedef cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr> OrderIDInnerMapType;
+typedef cuckoohashmap_wrapper<std::string, OrderIDInnerMapType> OrderContractInnerMapType;
+typedef cuckoohash_map<std::string, OrderContractInnerMapType> UserOrderMapType;
+
+typedef cuckoohash_map<uint64_t, OrderDO_Ptr> OrderIDMapType;
+
+typedef cuckoohash_map<std::string, int> LimitOrderCount;
+
 class ORDERMGR_CLASS_EXPORT UserOrderContext
 {
 public:
@@ -24,15 +32,17 @@ public:
 	void UpsertOrder(uint64_t orderID, const OrderDO& orderDO);
 	void Clear(void);
 	OrderDO_Ptr RemoveOrder(uint64_t orderID);
-	cuckoohash_map<uint64_t, OrderDO_Ptr>& GetAllOrder();
-	cuckoohash_map<std::string, cuckoohashmap_wrapper<std::string, cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>>>& UserOrderMap();
+	OrderIDMapType& GetAllOrder();
+	UserOrderMapType& UserOrderMap();
 	vector_ptr<OrderDO_Ptr> GetOrdersByUser(const std::string& userID);
 	OrderDO_Ptr FindOrder(uint64_t orderID);
+	int GetLimitOrderCount(const std::string& contractID);
 
 
 private:
-	cuckoohash_map<uint64_t, OrderDO_Ptr> _orderIdMap;
-	cuckoohash_map<std::string, cuckoohashmap_wrapper<std::string, cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>>> _userContractOrderMap;
+	OrderIDMapType _orderIdMap;
+	UserOrderMapType _userContractOrderMap;
+	LimitOrderCount _limitOrderCount;
 };
 
 #endif

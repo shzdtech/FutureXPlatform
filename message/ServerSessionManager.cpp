@@ -97,11 +97,9 @@ void ServerSessionManager::OnServerStarting(void)
 
 	if (auto workProcPtr = _server->getContext()->getWorkerProcessor())
 	{
-		auto msgSession_Ptr = std::make_shared<MessageSession>(shared_from_this());
+		_workerSession = std::make_shared<MessageSession>(shared_from_this());
+		workProcPtr->setMessageSession(_workerSession);
 		workProcPtr->setServiceLocator(_msgsvclocator);
-		msgSession_Ptr->RegisterProcessor(workProcPtr);
-		workProcPtr->setMessageSession(msgSession_Ptr);
-
-		AddSession(msgSession_Ptr);
+		_workerSession->RegisterProcessor(workProcPtr);
 	}
 }

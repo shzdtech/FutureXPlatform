@@ -43,16 +43,19 @@ dataobj_ptr OTCUpdateUserParam::HandleRequest(const uint32_t serialId, const dat
 
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
+		auto& userInfo = session->getUserInfo();
+
 		auto pStrategyMap = pWorkerProc->PricingDataContext()->GetStrategyMap();
 
 		for (auto& userConDO : *vecUserConDO_Ptr)
 		{
+			UserContractKey uck(userConDO.ExchangeID(), userConDO.InstrumentID(), userInfo.getUserId());
 			if (auto pUserContract = userContractMap_Ptr->tryfind(userConDO))
 			{
 				pUserContract->Quantity = userConDO.Quantity;
 
 				StrategyContractDO_Ptr strategy_ptr;
-				if (pStrategyMap->find(userConDO, strategy_ptr))
+				if (pStrategyMap->find(uck, strategy_ptr))
 				{
 					OnResponseProcMacro(msgProcessor, MSG_ID_RTN_PRICING, serialId, strategy_ptr.get());
 				}

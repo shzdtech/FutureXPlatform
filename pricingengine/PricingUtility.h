@@ -32,13 +32,13 @@ public:
 
 	static IPricingDO_Ptr Pricing(
 		const void* pInputObject,
-		const ContractKey& contractKey,
+		const UserContractKey& strategyKey,
 		IPricingDataContext& priceCtx,
 		const param_vector* params);
 
 	static IPricingDO_Ptr Pricing(
 		const void* pInputObject,
-		const ContractKey& contractKey,
+		const UserContractKey& strategyKey,
 		IPricingDataContext& priceCtx);
 
 
