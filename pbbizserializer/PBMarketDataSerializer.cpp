@@ -11,18 +11,18 @@
 #include "../dataobject/MarketDataDO.h"
 #include "../Protos/businessobj.pb.h"
 
-////////////////////////////////////////////////////////////////////////
-// Name:       PBMarketDataSerializer::Serialize(const dataobj_ptr& abstractDO)
-// Purpose:    Implementation of PBMarketDataSerializer::Serialize()
-// Parameters:
-// - abstractDO
-// Return:     data_buffer
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       PBMarketDataSerializer::Serialize(const dataobj_ptr& abstractDO)
+ // Purpose:    Implementation of PBMarketDataSerializer::Serialize()
+ // Parameters:
+ // - abstractDO
+ // Return:     data_buffer
+ ////////////////////////////////////////////////////////////////////////
 
 data_buffer PBMarketDataSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	using namespace Micro::Future::Message::Business;
-	
+
 	PBMarketData PB;
 	auto pDO = (MarketDataDO*)abstractDO.get();
 	FillPBHeader(PB, pDO);
@@ -46,16 +46,18 @@ data_buffer PBMarketDataSerializer::Serialize(const dataobj_ptr& abstractDO)
 		PB.set_updatetime(pDO->UpdateTime);
 
 	// Doesn't change after openning
-	if(pDO->TradingDay > 0)
+	if (pDO->TradingDay > 0)
 		PB.set_tradingday(pDO->TradingDay);
+
 	PB.set_preclosevalue(pDO->PreClosePrice);
 	PB.set_openvalue(pDO->OpenPrice);
+	PB.set_closevalue(pDO->ClosePrice);
 	PB.set_highlimit(pDO->UpperLimitPrice);
 	PB.set_lowlimit(pDO->LowerLimitPrice);
 	PB.set_presettleprice(pDO->PreSettlementPrice);
-	PB.set_settleprice(pDO->SettlementPrice);
 	PB.set_preopeninterest(pDO->PreOpenInterest);
 	PB.set_openinterest(pDO->OpenInterest);
+	PB.set_settleprice(pDO->SettlementPrice);
 
 	SerializeWithReturn(PB);
 }

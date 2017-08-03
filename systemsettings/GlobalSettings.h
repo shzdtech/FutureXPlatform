@@ -7,6 +7,7 @@ class SYSTEMSETTINGS_CLASS_EXPORT GlobalSettings
 {
 public:
 	static double& RiskFreeRate();
+	static double& VolatilityEps();
 };
 
 #endif

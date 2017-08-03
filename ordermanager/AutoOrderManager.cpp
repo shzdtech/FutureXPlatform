@@ -86,8 +86,8 @@ void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 			{
 				mdo.LowerLimitPrice = 0;
 				mdo.UpperLimitPrice = 1e32;
-				mdo.Bid().Price = 0;
-				mdo.Ask().Price = 1e32;
+				mdo.Bid().Price = 1e32;
+				mdo.Ask().Price = 0;
 			}
 
 			bool closeMode = strategyDO.AutoOrderSettings.CloseMode;
@@ -96,16 +96,26 @@ void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 			bool askEnable = strategyDO.AskEnabled && strategyDO.AutoOrderSettings.AskCounter < strategyDO.AutoOrderSettings.MaxAutoTrade;
 			bool bidEnable = strategyDO.BidEnabled && strategyDO.AutoOrderSettings.BidCounter < strategyDO.AutoOrderSettings.MaxAutoTrade;
 
-			double pricingBidMax = strategyDO.AutoOrderSettings.BidNotCross ? std::min(pricingDO_ptr->Bid().Price, mdo.Bid().Price) : pricingDO_ptr->Bid().Price;
+			double pricingBidMax = strategyDO.NotCross ? std::min(pricingDO_ptr->Bid().Price, mdo.Bid().Price) : pricingDO_ptr->Bid().Price;
 			pricingBidMax = std::floor(pricingBidMax / tickSize) * tickSize;
 			double pricingBidMin = pricingBidMax - (depth - 1)*tickSize;
 
-			double pricingAskMin = strategyDO.AutoOrderSettings.BidNotCross ? std::max(pricingDO_ptr->Ask().Price, mdo.Ask().Price) : pricingDO_ptr->Ask().Price;
+			double pricingAskMin = strategyDO.NotCross ? std::max(pricingDO_ptr->Ask().Price, mdo.Ask().Price) : pricingDO_ptr->Ask().Price;
 			pricingAskMin = std::ceil(pricingAskMin / tickSize) * tickSize;
 			double pricingAskMax = pricingAskMin + (depth - 1)*tickSize;
 
 			autofillmap<epsdouble, int> bidPriceOrders;
 			autofillmap<epsdouble, int> askPriceOrders;
+
+			epsdouble askPrice(pricingAskMin);
+			epsdouble bidPrice(pricingBidMax);
+			for (int i = 0; i < depth; i++)
+			{
+				bidPriceOrders.emplace(bidPrice, 0);
+				askPriceOrders.emplace(askPrice, 0);
+				askPrice += tickSize;
+				bidPrice -= tickSize;
+			}
 
 			for (auto& pair : orders.map()->lock_table())
 			{
@@ -114,16 +124,16 @@ void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 
 				if (order->Direction == DirectionType::SELL)
 				{
+					auto pTotalVol = askPriceOrders.tryfind(order->LimitPrice);
 					if (askEnable &&
 						closeMode == closeType &&
-						(order->LimitPrice >= pricingAskMin && order->LimitPrice <= pricingAskMax))
+						pTotalVol)
 					{
-						int& totalVol = askPriceOrders.getorfill(order->LimitPrice);
 						int remain = order->VolumeRemain();
-						if ((totalVol + remain) > strategyDO.AutoOrderSettings.AskQV)
+						if ((*pTotalVol + remain) > strategyDO.AutoOrderSettings.AskQV)
 							_pOrderAPI->CancelOrder(*order);
 						else
-							totalVol += remain;
+							*pTotalVol += remain;
 					}
 					else
 					{
@@ -132,16 +142,16 @@ void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 				}
 				else
 				{
+					auto pTotalVol = bidPriceOrders.tryfind(order->LimitPrice);
 					if (bidEnable &&
 						closeMode == closeType &&
-						(order->LimitPrice <= pricingBidMax && order->LimitPrice >= pricingBidMin))
+						pTotalVol)
 					{
-						int& totalVol = bidPriceOrders.getorfill(order->LimitPrice);
 						int remain = order->VolumeRemain();
-						if ((totalVol + remain) > strategyDO.AutoOrderSettings.BidQV)
+						if ((*pTotalVol + remain) > strategyDO.AutoOrderSettings.BidQV)
 							_pOrderAPI->CancelOrder(*order);
 						else
-							totalVol += remain;
+							*pTotalVol += remain;
 					}
 					else
 					{
@@ -152,10 +162,6 @@ void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 
 			if (askEnable || bidEnable)
 			{
-
-				//for (auto orderId : orderCancelList)
-				//	_contractOrderCtx.RemoveOrder(orderId);
-
 				// Make new orders
 				OrderRequestDO newOrder(strategyDO, strategyDO.PortfolioID());
 
@@ -171,15 +177,12 @@ void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 						PositionDirectionType::PD_SHORT, strategyDO.PortfolioID());
 				}
 
-				epsdouble askPrice(pricingAskMin);
-				epsdouble bidPrice(pricingBidMax);
-
-				for (int i = 0; i < depth; i++)
+				if (askEnable)
 				{
-					if (askEnable)
+					for (auto pair : askPriceOrders)
 					{
-						auto pQV = askPriceOrders.tryfind(askPrice);
-						int orderVol = pQV ? *pQV : 0;
+						auto askPrice = pair.first;
+						int orderVol = pair.second;
 						newOrder.Volume = strategyDO.AutoOrderSettings.AskQV - orderVol;
 
 						if (closeMode)
@@ -216,29 +219,28 @@ void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 							newOrder.Direction = DirectionType::SELL;
 							newOrder.LimitPrice = askPrice.value();
 
-							if (strategyDO.AutoOrderSettings.LimitOrderCounter >= strategyDO.AutoOrderSettings.MaxLimitOrder &&
-								strategyDO.AutoOrderSettings.TIF != OrderTIFType::IOC)
-							{
-								newOrder.TIF = OrderTIFType::IOC;
-								newOrder.VolCondition = OrderVolType::ANYVOLUME;
-							}
-							else
+							if (strategyDO.AutoOrderSettings.LimitOrderCounter < strategyDO.AutoOrderSettings.MaxLimitOrder ||
+								strategyDO.AutoOrderSettings.TIF == OrderTIFType::IOC)
 							{
 								newOrder.TIF = strategyDO.AutoOrderSettings.TIF;
 								newOrder.VolCondition = strategyDO.AutoOrderSettings.VolCondition;
-							}
 
-							if (CreateOrder(newOrder) && newOrder.TIF != OrderTIFType::IOC)
-							{
-								strategyDO.AutoOrderSettings.LimitOrderCounter++;
+								if (CreateOrder(newOrder) && newOrder.TIF != OrderTIFType::IOC)
+								{
+									strategyDO.AutoOrderSettings.LimitOrderCounter++;
+								}
 							}
 						}
 					}
+				}
 
-					if (bidEnable)
+
+				if (bidEnable)
+				{
+					for (auto pair : bidPriceOrders)
 					{
-						auto pQV = bidPriceOrders.tryfind(bidPrice);
-						int orderVol = pQV ? *pQV : 0;
+						auto bidPrice = pair.first;
+						int orderVol = pair.second;
 						newOrder.Volume = strategyDO.AutoOrderSettings.BidQV - orderVol;
 						if (closeMode)
 						{
@@ -274,27 +276,19 @@ void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 							newOrder.Direction = DirectionType::BUY;
 							newOrder.LimitPrice = bidPrice.value();
 
-							if (strategyDO.AutoOrderSettings.LimitOrderCounter >= strategyDO.AutoOrderSettings.MaxLimitOrder &&
-								strategyDO.AutoOrderSettings.TIF != OrderTIFType::IOC)
-							{
-								newOrder.TIF = OrderTIFType::IOC;
-								newOrder.VolCondition = OrderVolType::ANYVOLUME;
-							}
-							else
+							if (strategyDO.AutoOrderSettings.LimitOrderCounter < strategyDO.AutoOrderSettings.MaxLimitOrder ||
+								strategyDO.AutoOrderSettings.TIF == OrderTIFType::IOC)
 							{
 								newOrder.TIF = strategyDO.AutoOrderSettings.TIF;
 								newOrder.VolCondition = strategyDO.AutoOrderSettings.VolCondition;
-							}
 
-							if (CreateOrder(newOrder) && newOrder.TIF != OrderTIFType::IOC)
-							{
-								strategyDO.AutoOrderSettings.LimitOrderCounter++;
+								if (CreateOrder(newOrder) && newOrder.TIF != OrderTIFType::IOC)
+								{
+									strategyDO.AutoOrderSettings.LimitOrderCounter++;
+								}
 							}
 						}
 					}
-
-					askPrice += tickSize;
-					bidPrice -= tickSize;
 				}
 			}
 		}
@@ -327,6 +321,9 @@ int AutoOrderManager::OnMarketOrderUpdated(OrderDO& orderInfo)
 			break;
 		case OrderStatusType::CANCELED:
 			ret = -1;
+			break;
+		case OrderStatusType::OPEN_REJECTED:
+			ret = -2;
 			break;
 		default:
 			ret = 0;

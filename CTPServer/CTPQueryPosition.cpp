@@ -47,10 +47,10 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const uint32_t serialId, const datao
 	{
 		PortfolioPosition positionMap;
 		auto pProcessor = (CTPProcessor*)msgProcessor.get();
-		if (!(pProcessor->DataLoadMask & CTPTradeProcessor::POSITION_DATA_LOADED))
+		if (!(pProcessor->DataLoadMask & CTPProcessor::POSITION_DATA_LOADED))
 		{
 			CThostFtdcQryInvestorPositionField req{};
-			int iRet = ((CTPRawAPI*)rawAPI)->TdAPI->ReqQryInvestorPosition(&req, serialId);
+			int iRet = ((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryInvestorPosition(&req, serialId);
 			CTPUtility::CheckReturnError(iRet);
 			std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
 		}
@@ -126,7 +126,7 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const uint32_t serialId, const datao
 		std::strncpy(req.InvestorID, investorid.data(), sizeof(req.InvestorID));
 		std::strncpy(req.InstrumentID, instrumentid.data(), sizeof(req.InstrumentID));
 
-		int iRet = ((CTPRawAPI*)rawAPI)->TdAPI->ReqQryInvestorPosition(&req, serialId);
+		int iRet = ((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryInvestorPosition(&req, serialId);
 		CTPUtility::CheckReturnError(iRet);
 	}
 

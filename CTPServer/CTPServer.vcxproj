@@ -155,9 +155,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Attribute_Key.h" />
-    <ClInclude Include="CTPAccountLogin.h" />
-    <ClInclude Include="CTPAccountQueryPosition.h" />
-    <ClInclude Include="CTPAccountTradeServiceFactory.h" />
+    <ClInclude Include="CTPTDLoginSA.h" />
+    <ClInclude Include="CTPQueryPositionSA.h" />
+    <ClInclude Include="CTPTradeServiceSAFactory.h" />
     <ClInclude Include="CTPCancelOrder.h" />
     <ClInclude Include="CTPConstant.h" />
     <ClInclude Include="CTPDepthMarketData.h" />
@@ -167,8 +167,11 @@
     <ClInclude Include="CTPLoginHandler.h" />
     <ClInclude Include="CTPMapping.h" />
     <ClInclude Include="CTPMarketDataProcessor.h" />
+    <ClInclude Include="CTPMarketDataSAProcessor.h" />
     <ClInclude Include="CTPMDLoginHandler.h" />
+    <ClInclude Include="CTPMDLoginSAHandler.h" />
     <ClInclude Include="CTPMDServiceFactory.h" />
+    <ClInclude Include="CTPMDServiceSAFactory.h" />
     <ClInclude Include="CTPNewOrder.h" />
     <ClInclude Include="CTPOrderUpdated.h" />
     <ClInclude Include="CTPPositionUpdated.h" />
@@ -186,6 +189,7 @@
     <ClInclude Include="CTPQueryUserRegAccount.h" />
     <ClInclude Include="CTPRawAPI.h" />
     <ClInclude Include="CTPSubMarketData.h" />
+    <ClInclude Include="CTPSubMarketDataSA.h" />
     <ClInclude Include="CTPTradeLoginHandler.h" />
     <ClInclude Include="CTPTradeProcessor.h" />
     <ClInclude Include="CTPTradeServiceFactory.h" />
@@ -195,6 +199,7 @@
     <ClInclude Include="CTPTradeWorkerSAProcessor.h" />
     <ClInclude Include="CTPTransferUpdated.h" />
     <ClInclude Include="CTPUnsubMarketData.h" />
+    <ClInclude Include="CTPUnsubMarketDataSA.h" />
     <ClInclude Include="CTPUtility.h" />
     <ClInclude Include="CTPWorkerProcessorID.h" />
     <ClInclude Include="ctp_bizhandlers.h" />
@@ -205,9 +210,9 @@
     <ClInclude Include="tradeapi\ThostFtdcUserApiStruct.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CTPAccountLogin.cpp" />
-    <ClCompile Include="CTPAccountQueryPosition.cpp" />
-    <ClCompile Include="CTPAccountTradeServiceFactory.cpp" />
+    <ClCompile Include="CTPTDLoginSA.cpp" />
+    <ClCompile Include="CTPQueryPositionSA.cpp" />
+    <ClCompile Include="CTPTradeServiceSAFactory.cpp" />
     <ClCompile Include="CTPCancelOrder.cpp" />
     <ClCompile Include="CTPDepthMarketData.cpp" />
     <ClCompile Include="ctpexport.cpp" />
@@ -215,8 +220,11 @@
     <ClCompile Include="CTPFromFutureToBank.cpp" />
     <ClCompile Include="CTPLoginHandler.cpp" />
     <ClCompile Include="CTPMarketDataProcessor.cpp" />
+    <ClCompile Include="CTPMarketDataSAProcessor.cpp" />
     <ClCompile Include="CTPMDLoginHandler.cpp" />
+    <ClCompile Include="CTPMDLoginSAHandler.cpp" />
     <ClCompile Include="CTPMDServiceFactory.cpp" />
+    <ClCompile Include="CTPMDServiceSAFactory.cpp" />
     <ClCompile Include="CTPNewOrder.cpp" />
     <ClCompile Include="CTPOrderUpdated.cpp" />
     <ClCompile Include="CTPPositionUpdated.cpp" />
@@ -234,6 +242,7 @@
     <ClCompile Include="CTPQueryUserRegAccount.cpp" />
     <ClCompile Include="CTPRawAPI.cpp" />
     <ClCompile Include="CTPSubMarketData.cpp" />
+    <ClCompile Include="CTPSubMarketDataSA.cpp" />
     <ClCompile Include="CTPTradeLoginHandler.cpp" />
     <ClCompile Include="CTPTradeProcessor.cpp" />
     <ClCompile Include="CTPTradeServiceFactory.cpp" />
@@ -243,6 +252,7 @@
     <ClCompile Include="CTPTradeWorkerSAProcessor.cpp" />
     <ClCompile Include="CTPTransferUpdated.cpp" />
     <ClCompile Include="CTPUnsubMarketData.cpp" />
+    <ClCompile Include="CTPUnsubMarketDataSA.cpp" />
     <ClCompile Include="CTPUtility.cpp" />
   </ItemGroup>
   <ItemGroup>

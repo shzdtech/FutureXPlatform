@@ -147,3 +147,31 @@ VectorDO_Ptr<UserInfoDO> UserInfoDAO::FindAllUserByRole(int role)
 
 	return ret;
 }
+
+int UserInfoDAO::ResetPassword(const std::string& userId, const std::string& password)
+{
+	int ret = -1;
+
+	static const std::string sql_resetpassword("UPDATE login SET password = ? WHERE accountid = ?");
+
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
+	try
+	{
+		AutoClosePreparedStmt_Ptr prestmt(
+			session->getConnection()->prepareStatement(sql_resetpassword));
+
+		prestmt->setString(1, password);
+		prestmt->setString(2, userId);
+
+		prestmt->executeUpdate();
+
+		ret = 0;
+	}
+	catch (sql::SQLException& sqlEx)
+	{
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
+		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
+	}
+
+	return ret;
+}

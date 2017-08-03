@@ -26,8 +26,6 @@ typedef cuckoohash_map<std::string, OTCPortfolioPositionType> OTCUserPositionTyp
 class ORDERMGR_CLASS_EXPORT OTCUserPositionContext
 {
 public:
-	OTCUserPositionContext(const IPricingDataContext_Ptr& pricingCtx);
-
 	virtual UserPositionExDO_Ptr UpsertPosition(const std::string & userid, const UserPositionExDO & positionDO);
 
 	virtual UserPositionExDO_Ptr UpsertPosition(const std::string& userid, const TradeRecordDO_Ptr & tradeDO);
@@ -46,11 +44,13 @@ public:
 
 	ContractMap<double> GenSpreadPoints(const PortfolioKey& portfolioKey);
 
-	bool GetRiskByPortfolio(const std::string& userID, const std::string& portfolio, UnderlyingRiskMap& risks);
+	bool GetRiskByPortfolio(const IPricingDataContext_Ptr& pricingCtx_Ptr, const std::string& userID, const std::string& portfolio, UnderlyingRiskMap& risks);
+
+	virtual bool GetValuationRiskByPortfolio(const IPricingDataContext_Ptr& pricingCtx_Ptr,
+		const std::string & userID, const ValuationRiskDO& valuationRisk, UnderlyingRiskMap& risks);
 
 protected:
 	cuckoohash_map<std::string, OTCPortfolioPositionType> _userPositionMap;
-	IPricingDataContext_Ptr _pricingCtx;
 
 private:
 

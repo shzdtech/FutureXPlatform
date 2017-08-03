@@ -26,7 +26,7 @@ dataobj_ptr OTCQueryRisk::HandleRequest(const uint32_t serialId, const dataobj_p
 		{
 			UnderlyingRiskMap riskMap;
 			pWorkerProc->GetOTCTradeProcessor()->GetOTCOrderManager().
-				GetPositionContext().GetRiskByPortfolio(session->getUserInfo().getUserId(), stdo->begin()->second, riskMap);
+				GetPositionContext().GetRiskByPortfolio(pWorkerProc->PricingDataContext(), session->getUserInfo().getUserId(), stdo->begin()->second, riskMap);
 
 			for (auto it : riskMap)
 			{

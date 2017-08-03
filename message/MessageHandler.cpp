@@ -27,3 +27,15 @@ bool MessageHandler::CheckRolePermission(const IMessageSession_Ptr & session, Us
 
 	return ret;
 }
+
+bool MessageHandler::CheckAllowTrade(const IMessageSession_Ptr & session, bool throwBizErr)
+{
+	bool ret = session->getUserInfo().getPermission() & PermissionType::ALLOW_TRADING;
+
+	if (!ret && throwBizErr)
+	{
+		throw ApiException(NO_PERMISSION, "NO TRADE PERMISSION!");
+	}
+
+	return ret;
+}

@@ -13,13 +13,32 @@
       "marketdata": {
         "module.uuid": "com.micro.future.ctp.dll",
         "module.path": "CTPServer.dll",
-        "class.uuid": "factory.ctp.marketdata.service",
+        "class.uuid": "factory.singleaccount.ctp.marketdata.service",
         "params": {
           "product_type": "0;1;2",
-          "//CTP.MD.SERVER": "tcp://180.166.132.69:41213",
-          "CTP.MD.LOGIN.BROKERID": "6000",
-          "CTP.MD.LOGIN.USERID": "01301321",
-          "CTP.MD.LOGIN.PASSWORD": "123456"
+          "//GTJA": "",
+          "//CTP.MD.SERVER": "tcp://180.169.75.19:41213",
+          "//CTP.MD.LOGIN.BROKERID": "7090",
+          "//CTP.MD.LOGIN.USERID": "81504501",
+          "//CTP.MD.LOGIN.PASSWORD": "123123",
+
+          "//Xinhu": "",
+          "//CTP.MD.SERVER": "tcp://116.228.171.216:41213",
+          "CTP.MD.LOGIN.BROKERID": "6090",
+          "CTP.MD.LOGIN.USERID": "16805660",
+          "CTP.MD.LOGIN.PASSWORD": "756482",
+
+          "//Haitong": "",
+          "//CTP.MD.SERVER": "tcp://180.168.212.75:41213",
+          "//CTP.MD.LOGIN.BROKERID": "8000",
+          "//CTP.MD.LOGIN.USERID": "70000542",
+          "//CTP.MD.LOGIN.PASSWORD": "123456",
+
+          "//Xinhu-simu": "",
+          "//CTP.MD.SERVER": "tcp://116.228.171.216:61213",
+          "//CTP.MD.LOGIN.BROKERID": "6090",
+          "//CTP.MD.LOGIN.USERID": "03261",
+          "//CTP.MD.LOGIN.PASSWORD": "260519"
         }
       },
       "trade": {
@@ -29,29 +48,86 @@
         "params": {
           "product_type": "0;1;2",
           "save_contract": "true",
-          "CTP.TRADER.SERVER": "tcp://180.168.212.79:31205",
-          "CTP.TRADER.LOGIN.BROKERID": "8000",
-          "CTP.TRADER.LOGIN.USERID": "41003276",
-          "CTP.TRADER.LOGIN.PASSWORD": "260519"
+          "//GTJA": "",
+          "//CTP.TRADER.SERVER": "tcp://180.169.75.19:41205",
+          "//CTP.TRADER.LOGIN.BROKERID": "7090",
+          "//CTP.TRADER.LOGIN.USERID": "81504501",
+          "//CTP.TRADER.LOGIN.PASSWORD": "123123",
+
+          "//Xinhu": "",
+          "CTP.TRADER.SERVER": "tcp://116.228.171.216:41205",
+          "CTP.TRADER.LOGIN.BROKERID": "6090",
+          "CTP.TRADER.LOGIN.USERID": "16805660",
+          "CTP.TRADER.LOGIN.PASSWORD": "756482",
+
+          "//Haitong": "",
+          "//CTP.TRADER.SERVER": "tcp://180.168.212.75:41205",
+          "//CTP.TRADER.LOGIN.BROKERID": "8000",
+          "//CTP.TRADER.LOGIN.USERID": "70000542",
+          "//CTP.TRADER.LOGIN.PASSWORD": "123456",
+
+          "//Haitong-simu": "",
+          "//CTP.TRADER.SERVER": "tcp://180.168.212.79:31205",
+          "//CTP.TRADER.LOGIN.BROKERID": "8000",
+          "//CTP.TRADER.LOGIN.USERID": "41003276",
+          "//CTP.TRADER.LOGIN.PASSWORD": "260519",
+
+          "//Xinhu-simu": "",
+          "//CTP.TRADER.SERVER": "tcp://116.228.171.216:61205",
+          "//CTP.TRADER.LOGIN.BROKERID": "6090",
+          "//CTP.TRADER.LOGIN.USERID": "03261",
+          "//CTP.TRADER.LOGIN.PASSWORD": "260519"
         }
       },
       "option": {
         "module.uuid": "com.micro.future.ctp.dll",
         "module.path": "CTPServer.dll",
-        "class.uuid": "factory.ctp.marketdata.service",
+        "class.uuid": "factory.singleaccount.ctp.marketdata.service",
         "params": {
           "//load_workprocessor": "true",
           "//product_type": "1",
           "//logout_dataloaded": "true",
           "//save_contract": "true",
-          "//CTP.MD.SERVER": "tcp://180.166.132.69:41213",
-          "CTP.MD.LOGIN.BROKERID": "6000",
-          "CTP.MD.LOGIN.USERID": "01301321",
-          "CTP.MD.LOGIN.PASSWORD": "123456",
-          "//CTP.TRADER.SERVER": "tcp://180.166.132.69:41205",
-          "//CTP.TRADER.LOGIN.BROKERID": "6000",
-          "//CTP.TRADER.LOGIN.USERID": "01301321",
-          "//CTP.TRADER.LOGIN.PASSWORD": "123456"
+
+          "//GTJA": "",
+          "//CTP.MD.SERVER": "tcp://180.169.75.19:41213",
+          "//CTP.MD.LOGIN.BROKERID": "7090",
+          "//CTP.MD.LOGIN.USERID": "81504501",
+          "//CTP.MD.LOGIN.PASSWORD": "123123",
+          "//CTP.TRADER.SERVER": "tcp://180.169.75.19:41205",
+          "//CTP.TRADER.LOGIN.BROKERID": "7090",
+          "//CTP.TRADER.LOGIN.USERID": "81504501",
+          "//CTP.TRADER.LOGIN.PASSWORD": "123123",
+
+          "//Xinhu": "",
+          "//CTP.MD.SERVER": "tcp://116.228.171.216:41213",
+          "CTP.MD.LOGIN.BROKERID": "6090",
+          "CTP.MD.LOGIN.USERID": "16805660",
+          "CTP.MD.LOGIN.PASSWORD": "756482",
+          "//CTP.TRADER.SERVER": "tcp://116.228.171.216:41205",
+          "CTP.TRADER.LOGIN.BROKERID": "6090",
+          "CTP.TRADER.LOGIN.USERID": "16805660",
+          "CTP.TRADER.LOGIN.PASSWORD": "756482",
+
+          "//Haitong": "",
+          "//CTP.MD.SERVER": "tcp://180.168.212.75:41213",
+          "//CTP.MD.LOGIN.BROKERID": "8000",
+          "//CTP.MD.LOGIN.USERID": "70000542",
+          "//CTP.MD.LOGIN.PASSWORD": "123456",
+          "//CTP.TRADER.SERVER": "tcp://180.168.212.75:41205",
+          "//CTP.TRADER.LOGIN.BROKERID": "8000",
+          "//CTP.TRADER.LOGIN.USERID": "70000542",
+          "//CTP.TRADER.LOGIN.PASSWORD": "123456",
+
+          "//Xinhu-sim": "",
+          "//CTP.MD.SERVER": "tcp://116.228.171.216:61213",
+          "//CTP.MD.LOGIN.BROKERID": "6090",
+          "//CTP.MD.LOGIN.USERID": "03261",
+          "//CTP.MD.LOGIN.PASSWORD": "260519",
+          "//CTP.TRADER.SERVER": "tcp://116.228.171.216:61205",
+          "//CTP.TRADER.LOGIN.BROKERID": "6090",
+          "//CTP.TRADER.LOGIN.USERID": "03261",
+          "//CTP.TRADER.LOGIN.PASSWORD": "260519"
         }
       }
     },
@@ -61,10 +137,45 @@
         "module.path": "CTPOTCServer.dll",
         "class.uuid": "factory.otc.contract",
         "params": {
-          "//CTP.MD.SERVER": "tcp://180.166.132.69:41213",
-          "CTP.MD.LOGIN.BROKERID": "6000",
-          "CTP.MD.LOGIN.USERID": "01301321",
-          "CTP.MD.LOGIN.PASSWORD": "123456"
+          "//GTJA": "",
+          "//CTP.MD.SERVER": "tcp://180.169.75.19:41213",
+          "//CTP.MD.LOGIN.BROKERID": "7090",
+          "//CTP.MD.LOGIN.USERID": "81504501",
+          "//CTP.MD.LOGIN.PASSWORD": "123123",
+          "//CTP.TRADER.SERVER": "tcp://180.169.75.19:41205",
+          "//CTP.TRADER.LOGIN.BROKERID": "7090",
+          "//CTP.TRADER.LOGIN.USERID": "81504501",
+          "//CTP.TRADER.LOGIN.PASSWORD": "123123",
+
+          "//Xinhu": "",
+          "//CTP.MD.SERVER": "tcp://116.228.171.216:41213",
+          "CTP.MD.LOGIN.BROKERID": "6090",
+          "CTP.MD.LOGIN.USERID": "16805660",
+          "CTP.MD.LOGIN.PASSWORD": "756482",
+          "//CTP.TRADER.SERVER": "tcp://116.228.171.216:41205",
+          "CTP.TRADER.LOGIN.BROKERID": "6090",
+          "CTP.TRADER.LOGIN.USERID": "16805660",
+          "CTP.TRADER.LOGIN.PASSWORD": "756482",
+
+          "//Haitong": "",
+          "//CTP.MD.SERVER": "tcp://180.168.212.75:41213",
+          "//CTP.MD.LOGIN.BROKERID": "8000",
+          "//CTP.MD.LOGIN.USERID": "70000542",
+          "//CTP.MD.LOGIN.PASSWORD": "123456",
+          "//CTP.TRADER.SERVER": "tcp://180.168.212.75:41205",
+          "//CTP.TRADER.LOGIN.BROKERID": "8000",
+          "//CTP.TRADER.LOGIN.USERID": "70000542",
+          "//CTP.TRADER.LOGIN.PASSWORD": "123456",
+
+          "//Xinhu-simu": "",
+          "//CTP.MD.SERVER": "tcp://116.228.171.216:61213",
+          "//CTP.MD.LOGIN.BROKERID": "6090",
+          "//CTP.MD.LOGIN.USERID": "03261",
+          "//CTP.MD.LOGIN.PASSWORD": "260519",
+          "//CTP.TRADER.SERVER": "tcp://116.228.171.216:61205",
+          "//CTP.TRADER.LOGIN.BROKERID": "6090",
+          "//CTP.TRADER.LOGIN.USERID": "03261",
+          "//CTP.TRADER.LOGIN.PASSWORD": "260519"
         }
       },
       "option": {
@@ -72,14 +183,55 @@
         "module.path": "CTPOTCServer.dll",
         "class.uuid": "factory.otc.option",
         "params": {
-          "//CTP.MD.SERVER": "tcp://180.166.132.69:41213",
-          "CTP.MD.LOGIN.BROKERID": "6000",
-          "CTP.MD.LOGIN.USERID": "01301321",
-          "CTP.MD.LOGIN.PASSWORD": "123456",
-          "CTP.TRADER.SERVER": "tcp://180.168.212.79:31205",
-          "CTP.TRADER.LOGIN.BROKERID": "8000",
-          "CTP.TRADER.LOGIN.USERID": "41003276",
-          "CTP.TRADER.LOGIN.PASSWORD": "260519"
+          "//GTJA": "",
+          "//CTP.MD.SERVER": "tcp://180.169.75.19:41213",
+          "//CTP.MD.LOGIN.BROKERID": "7090",
+          "//CTP.MD.LOGIN.USERID": "81504501",
+          "//CTP.MD.LOGIN.PASSWORD": "123123",
+          "//CTP.TRADER.SERVER": "tcp://180.169.75.19:41205",
+          "//CTP.TRADER.LOGIN.BROKERID": "7090",
+          "//CTP.TRADER.LOGIN.USERID": "81504501",
+          "//CTP.TRADER.LOGIN.PASSWORD": "123123",
+
+          "//Xinhu": "",
+          "//CTP.MD.SERVER": "tcp://116.228.171.216:41213",
+          "CTP.MD.LOGIN.BROKERID": "6090",
+          "CTP.MD.LOGIN.USERID": "16805660",
+          "CTP.MD.LOGIN.PASSWORD": "756482",
+          "//CTP.TRADER.SERVER": "tcp://116.228.171.216:41205",
+          "CTP.TRADER.LOGIN.BROKERID": "6090",
+          "CTP.TRADER.LOGIN.USERID": "16805660",
+          "CTP.TRADER.LOGIN.PASSWORD": "756482",
+
+          "//Haitong": "",
+          "//CTP.MD.SERVER": "tcp://180.168.212.75:41213",
+          "//CTP.MD.LOGIN.BROKERID": "8000",
+          "//CTP.MD.LOGIN.USERID": "70000542",
+          "//CTP.MD.LOGIN.PASSWORD": "123456",
+          "//CTP.TRADER.SERVER": "tcp://180.168.212.75:41205",
+          "//CTP.TRADER.LOGIN.BROKERID": "8000",
+          "//CTP.TRADER.LOGIN.USERID": "70000542",
+          "//CTP.TRADER.LOGIN.PASSWORD": "123456",
+
+          "//Xinhu-simu": "",
+          "//CTP.MD.SERVER": "tcp://116.228.171.216:61213",
+          "//CTP.MD.LOGIN.BROKERID": "6090",
+          "//CTP.MD.LOGIN.USERID": "03261",
+          "//CTP.MD.LOGIN.PASSWORD": "260519",
+          "//CTP.TRADER.SERVER": "tcp://116.228.171.216:61205",
+          "//CTP.TRADER.LOGIN.BROKERID": "6090",
+          "//CTP.TRADER.LOGIN.USERID": "03261",
+          "//CTP.TRADER.LOGIN.PASSWORD": "260519",
+
+          "//Haitong-sumu": "",
+          "//CTP.MD.SERVER": "tcp://180.168.212.79:31213",
+          "//CTP.MD.LOGIN.BROKERID": "8000",
+          "//CTP.MD.LOGIN.USERID": "41003276",
+          "//CTP.MD.LOGIN.PASSWORD": "260519",
+          "//CTP.TRADER.SERVER": "tcp://180.168.212.79:31205",
+          "//CTP.TRADER.LOGIN.BROKERID": "8000",
+          "//CTP.TRADER.LOGIN.USERID": "41003276",
+          "//CTP.TRADER.LOGIN.PASSWORD": "260519"
         }
       }
     },
@@ -102,9 +254,9 @@
           "load_workprocessor": "true",
           "logout_dataloaded": "true",
           "//CTP.TRADER.SERVER": "tcp://ctpfz1-front3.citicsf.com:51205",
-          "CTP.TRADER.LOGIN.BROKERID": "6000",
-          "CTP.TRADER.LOGIN.USERID": "01301321",
-          "CTP.TRADER.LOGIN.PASSWORD": "123456"
+          "//CTP.TRADER.LOGIN.BROKERID": "6000",
+          "//CTP.TRADER.LOGIN.USERID": "01301321",
+          "//CTP.TRADER.LOGIN.PASSWORD": "123456"
         }
       }
     }

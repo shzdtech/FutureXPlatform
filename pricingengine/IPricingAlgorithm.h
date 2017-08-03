@@ -21,7 +21,7 @@ public:
 	virtual IPricingDO_Ptr Compute(
 		const void* pInputObject,
 		const StrategyContractDO& sdo,
-		IPricingDataContext& priceCtx,
+		const IPricingDataContext_Ptr& priceCtx_Ptr,
 		const param_vector* params) = 0;
 
 protected:

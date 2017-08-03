@@ -41,14 +41,12 @@ dataobj_ptr OTCSubMarketData::HandleRequest(const uint32_t serialId, const datao
 
 	auto ret = std::make_shared<VectorDO<PricingDO>>();
 
-	auto stdo = (StringTableDO*)reqDO.get();
+	auto stdo = (VectorDO<ContractKey>*)reqDO.get();
 
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
-		if (!stdo->Data.empty())
+		if (!stdo->empty())
 		{
-			auto& instList = stdo->Data.begin()->second;
-
 			auto userContractMap_Ptr = std::static_pointer_cast<UserContractParamDOMap>(session->getContext()->getAttribute(STR_KEY_USER_CONTRACTS));
 
 			if (!userContractMap_Ptr)
@@ -58,43 +56,19 @@ dataobj_ptr OTCSubMarketData::HandleRequest(const uint32_t serialId, const datao
 			}
 
 			auto pricingDOMap = pWorkerProc->PricingDataContext()->GetPricingDataDOMap();
-			if (session->getUserInfo().getRole() == ROLE_TRADINGDESK)
-			{
-				if (auto strategySet_Ptr = std::static_pointer_cast<std::set<UserContractKey>>(
-					session->getContext()->getAttribute(STR_KEY_USER_STRATEGY)))
-				{
-					for (auto& contract : *strategySet_Ptr)
-					{
-						PricingDO mdo(contract.ExchangeID(), contract.InstrumentID());
-						IPricingDO_Ptr pricing_ptr;
-						if (pricingDOMap->find(mdo, pricing_ptr))
-						{
-							mdo.Ask() = pricing_ptr->Ask();
-							mdo.Bid() = pricing_ptr->Bid();
-						}
-						
-						ret->push_back(std::move(mdo));
-					}
-				}
-			}
-			else
-			{
-				for (auto& inst : instList)
-				{
-					if (auto pContract = pWorkerProc->GetInstrumentCache().QueryInstrumentById(inst))
-					{
-						PricingDO mdo(pContract->ExchangeID(), pContract->InstrumentID());
 
-						IPricingDO_Ptr pricing_ptr;
-						if (pricingDOMap->find(mdo, pricing_ptr))
-						{
-							mdo.Ask() = pricing_ptr->Ask();
-							mdo.Bid() = pricing_ptr->Bid();
-						}
+			for (auto& inst : *stdo)
+			{
+				PricingDO mdo(inst.ExchangeID(), inst.InstrumentID());
 
-						ret->push_back(std::move(mdo));
-					}
+				IPricingDO_Ptr pricing_ptr;
+				if (pricingDOMap->find(mdo, pricing_ptr))
+				{
+					mdo.Ask() = pricing_ptr->Ask();
+					mdo.Bid() = pricing_ptr->Bid();
 				}
+
+				ret->push_back(std::move(mdo));
 			}
 
 			auto sessionPtr = msgProcessor->getMessageSession();

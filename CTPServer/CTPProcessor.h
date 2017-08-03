@@ -25,8 +25,6 @@ public:
 	virtual IRawAPI* getRawAPI(void);
 	virtual void Initialize(IServerContext* serverCtx);
 	virtual bool CreateCTPAPI(const std::string& flowId, const std::string& serverAddr = "");
-	virtual bool HasLogged(void);
-	virtual bool ConnectedToServer(void);
 	CTPRawAPI_Ptr& RawAPI_Ptr(void);
 
 	enum DataLoadType
@@ -50,10 +48,6 @@ public:
 	static std::string FlowPath;
 
 protected:
-	bool _isLogged;
-	bool _isConnected;
-	uint32_t _tradingDay;
-
 	CTPRawAPI_Ptr _rawAPI;	
 
 private:

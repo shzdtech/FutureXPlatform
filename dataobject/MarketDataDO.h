@@ -29,6 +29,7 @@ public:
 
 	double PreClosePrice = 0;
 	double OpenPrice = 0;
+	double ClosePrice = 0;
 	double UpperLimitPrice = 0;
 	double LowerLimitPrice = 0;
 	double PreSettlementPrice = 0;

@@ -1,7 +1,6 @@
 syntax = "proto3";
 
 import "commondefine.proto";
-import "modelalgorithm.proto";
 
 package Micro.Future.Message.Business;
 
@@ -51,6 +50,8 @@ message PBMarketData
 
 	int32 updateTime = 23;
 	int32 tradingDay = 24;
+
+	double closeValue = 25;
 }
 
 message PBMarketDataList
@@ -221,6 +222,7 @@ message PBRisk
 	double gamma = 8;
 	double vega = 9;
 	double rho = 10;
+	double price = 11;
 }
 
 message PBRiskList
@@ -698,4 +700,21 @@ message PBPositionCompareList
 {
 	DataHeader header = 1;
 	repeated PBPositionCompare positions = 2;
+}
+
+message PBValuationContract
+{
+	string exchange = 1;
+	string contract = 2;
+	double price = 3;
+	double volatility = 4;
+}
+
+message PBValuationRisk
+{
+	DataHeader header = 1;
+	repeated PBValuationContract contractValue = 2;
+	int32 daysRemain = 3;
+	double interest = 4;
+	string portfolio = 5;
 }

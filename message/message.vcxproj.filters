@@ -144,6 +144,12 @@
     <ClInclude Include="ReturnHandler.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="MessageWorkerProcessor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="QuerySysParamHandler.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MessageProcessor.cpp">
@@ -189,6 +195,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="MessageContext.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageWorkerProcessor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="QuerySysParamHandler.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -181,6 +181,7 @@
     <ClCompile Include="AdminMessageServiceFactory.cpp" />
     <ClCompile Include="AdminServerExport.cpp" />
     <ClCompile Include="AdminServerMessageProcessor.cpp" />
+    <ClCompile Include="ChangePasswordHandler.cpp" />
     <ClCompile Include="RegisterUserHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -188,6 +189,7 @@
     <ClInclude Include="AdminMessageServiceFactory.h" />
     <ClInclude Include="AdminServerExport.h" />
     <ClInclude Include="AdminServerMessageProcessor.h" />
+    <ClInclude Include="ChangePasswordHandler.h" />
     <ClInclude Include="RegisterUserHandler.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

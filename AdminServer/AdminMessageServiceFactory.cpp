@@ -15,6 +15,7 @@
 
 #include "AdminLoginHandler.h"
 #include "RegisterUserHandler.h"
+#include "ChangePasswordHandler.h"
 
  ////////////////////////////////////////////////////////////////////////
  // Name:       AdminMessageServiceFactory::CreateMessageHandlers()
@@ -33,6 +34,8 @@ std::map<uint, IMessageHandler_Ptr> AdminMessageServiceFactory::CreateMessageHan
 	msg_hdl_map[MSG_ID_USER_NEW] = std::make_shared<RegisterUserHandler>();
 
 	msg_hdl_map[MSG_ID_USER_INFO] = msg_hdl_map[MSG_ID_LOGIN];
+
+	msg_hdl_map[MSG_ID_RESET_PASSWORD] = std::make_shared<ChangePasswordHandler>();
 
 	return msg_hdl_map;
 }

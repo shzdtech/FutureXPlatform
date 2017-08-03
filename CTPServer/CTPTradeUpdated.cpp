@@ -41,7 +41,7 @@ dataobj_ptr CTPTradeUpdated::HandleResponse(const uint32_t serialId, const param
 					auto position_ptr = pWorkerProc->GetUserPositionContext()->UpsertPosition(ret->UserID(), ret, multiplier, ret->ExchangeID() != EXCHANGE_SHFE);
 
 					auto pProcessor = (CTPProcessor*)msgProcessor.get();
-					if (pProcessor->DataLoadMask & CTPTradeProcessor::POSITION_DATA_LOADED && position_ptr->Position() >= 0)
+					if (pProcessor->DataLoadMask & CTPProcessor::POSITION_DATA_LOADED && position_ptr->Position() >= 0)
 					{
 						pWorkerProc->SendDataObject(session, MSG_ID_POSITION_UPDATED, 0, position_ptr);
 					}

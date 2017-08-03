@@ -19,6 +19,7 @@ class MESSAGE_CLASS_EXPORT MessageHandler : public IMessageHandler
 public:
 	virtual bool CheckLogin(const IMessageSession_Ptr& session, bool throwBizErr = true);
 	virtual bool CheckRolePermission(const IMessageSession_Ptr& session, UserRoleType leastRole, bool throwBizErr = true);
+	virtual bool CheckAllowTrade(const IMessageSession_Ptr & session, bool throwBizErr = true);
 
 protected:
 	static std::atomic_uint _requestIdGen;

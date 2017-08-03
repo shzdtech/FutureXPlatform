@@ -6,13 +6,9 @@
  ***********************************************************************/
 
 #include "OTCUserPositionContext.h"
+#include "../pricingengine/PricingUtility.h"
 #include "../utility/atomicutil.h"
 #include "../utility/epsdouble.h"
-
-OTCUserPositionContext::OTCUserPositionContext(const IPricingDataContext_Ptr & pricingCtx)
-	: _pricingCtx(pricingCtx), _userPositionMap(16)
-{
-}
 
 UserPositionExDO_Ptr OTCUserPositionContext::UpsertPosition(const std::string & userid, const UserPositionExDO & positionDO)
 {
@@ -235,7 +231,7 @@ bool OTCUserPositionContext::RemovePosition(const std::string & userID, const st
 	if (_userPositionMap.find(userID, positionMap) && !positionMap.empty())
 	{
 		OTCPositionType position;
-		if(positionMap.map()->find(portfolio, position) && !position.empty())
+		if (positionMap.map()->find(portfolio, position) && !position.empty())
 		{
 			ret = position.map()->erase(contract);
 		}
@@ -247,7 +243,7 @@ bool OTCUserPositionContext::RemovePosition(const std::string & userID, const st
 ContractMap<double> OTCUserPositionContext::GenSpreadPoints(const PortfolioKey& portfolioKey)
 {
 	ContractMap<double> hedgeMap;
-	auto pStrategyMap = _pricingCtx->GetStrategyMap();
+	//auto pStrategyMap = _pricingCtx->GetStrategyMap();
 
 	double initPos = 0;
 	double sumPos = 0;
@@ -279,14 +275,15 @@ ContractMap<double> OTCUserPositionContext::GenSpreadPoints(const PortfolioKey& 
 }
 
 
-bool OTCUserPositionContext::GetRiskByPortfolio(const std::string& userID, const std::string& portfolio, UnderlyingRiskMap& risks)
+bool OTCUserPositionContext::GetRiskByPortfolio(const IPricingDataContext_Ptr& pricingCtx_Ptr,
+	const std::string& userID, const std::string& portfolio, UnderlyingRiskMap& risks)
 {
 	bool ret = false;
 	auto positions = GetPositionsByUser(userID, portfolio);
 	if (!positions.empty())
 	{
-		auto pStrategyMap = _pricingCtx->GetStrategyMap();
-		auto pPricingData = _pricingCtx->GetPricingDataDOMap();
+		auto pStrategyMap = pricingCtx_Ptr->GetStrategyMap();
+		auto pPricingData = pricingCtx_Ptr->GetPricingDataDOMap();
 		for (auto it : positions.map()->lock_table())
 		{
 			auto userPosition_Ptr = it.second;
@@ -319,6 +316,63 @@ bool OTCUserPositionContext::GetRiskByPortfolio(const std::string& userID, const
 								riskDO.Theta = pit.Weight * pricingDO->Theta * position;
 								riskDO.Vega = pit.Weight * pricingDO->Vega * position;
 								pRiskDO->Rho = pit.Weight * pricingDO->Rho * position;
+
+								risks.getorfill(pit.Underlying).emplace(riskDO, riskDO);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		ret = true;
+	}
+
+
+	return ret;
+}
+
+bool OTCUserPositionContext::GetValuationRiskByPortfolio(const IPricingDataContext_Ptr& pricingCtx_Ptr,
+	const std::string & userID, const ValuationRiskDO& valuationRisk, UnderlyingRiskMap& risks)
+{
+	bool ret = false;
+	auto positions = GetPositionsByUser(userID, valuationRisk.PortfolioID);
+	if (!positions.empty())
+	{
+		auto pStrategyMap = pricingCtx_Ptr->GetStrategyMap();
+
+		for (auto it : positions.map()->lock_table())
+		{
+			auto userPosition_Ptr = it.second;
+			if (userPosition_Ptr->Position() > 0)
+			{
+				StrategyContractDO_Ptr strategy;
+				if (pStrategyMap->find(*userPosition_Ptr, strategy) && strategy->PricingContracts)
+				{
+					for (auto pit : strategy->PricingContracts->PricingContracts)
+					{
+						if (auto pricingDO = PricingUtility::Pricing(&valuationRisk, *strategy, pricingCtx_Ptr))
+						{
+							int position = userPosition_Ptr->Position();
+							if (auto pRiskDO = risks.getorfill(pit.Underlying).tryfind(*userPosition_Ptr))
+							{
+								pRiskDO->Delta += pit.Weight * pricingDO->Delta * position;
+								pRiskDO->Gamma += pit.Weight * pricingDO->Gamma * position;
+								pRiskDO->Theta += pit.Weight * pricingDO->Theta * position;
+								pRiskDO->Vega += pit.Weight * pricingDO->Vega * position;
+								pRiskDO->Rho += pit.Weight * pricingDO->Rho * position;
+							}
+							else
+							{
+								RiskDO riskDO(userPosition_Ptr->ExchangeID(), userPosition_Ptr->InstrumentID(), userPosition_Ptr->UserID());
+								riskDO.Underlying = pit.Underlying;
+
+								riskDO.Delta = pit.Weight * pricingDO->Delta * position;
+								riskDO.Gamma = pit.Weight * pricingDO->Gamma * position;
+								riskDO.Theta = pit.Weight * pricingDO->Theta * position;
+								riskDO.Vega = pit.Weight * pricingDO->Vega * position;
+								riskDO.Rho = pit.Weight * pricingDO->Rho * position;
+								riskDO.Price = (pricingDO->Ask().Price + pricingDO->Bid().Price) / 2;
 
 								risks.getorfill(pit.Underlying).emplace(riskDO, riskDO);
 							}

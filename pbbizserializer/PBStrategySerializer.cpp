@@ -32,17 +32,19 @@ data_buffer PBStrategySerializer::Serialize(const dataobj_ptr& abstractDO)
 	PB.set_depth(pDO->Depth);
 	PB.set_bidenabled(pDO->BidEnabled);
 	PB.set_askenabled(pDO->AskEnabled);
+	PB.set_bidnotcross(pDO->NotCross);
+	PB.set_ticksizemult(pDO->TickSizeMult);
+
 	PB.set_bidqv(pDO->AutoOrderSettings.BidQV);
 	PB.set_askqv(pDO->AutoOrderSettings.AskQV);
 	PB.set_askcounter(pDO->AutoOrderSettings.AskCounter);
 	PB.set_bidcounter(pDO->AutoOrderSettings.BidCounter);
 	PB.set_maxautotrade(pDO->AutoOrderSettings.MaxAutoTrade);
-	PB.set_bidnotcross(pDO->AutoOrderSettings.BidNotCross);
 	PB.set_closemode(pDO->AutoOrderSettings.CloseMode);
 	PB.set_tif(pDO->AutoOrderSettings.TIF);
 	PB.set_volcond(pDO->AutoOrderSettings.VolCondition);
 	PB.set_limitordercounter(pDO->AutoOrderSettings.LimitOrderCounter);
-	PB.set_ticksizemult(pDO->TickSizeMult);
+	
 
 	SerializeWithReturn(PB);
 }
@@ -67,16 +69,17 @@ dataobj_ptr PBStrategySerializer::Deserialize(const data_buffer& rawdata)
 	sdo->Hedging = pbstrtg.hedging();
 	sdo->BidEnabled = pbstrtg.bidenabled();
 	sdo->AskEnabled = pbstrtg.askenabled();
+	sdo->NotCross = pbstrtg.bidnotcross();
+	sdo->TickSizeMult = pbstrtg.ticksizemult();
+
 	sdo->AutoOrderSettings.BidQV = pbstrtg.bidqv();
 	sdo->AutoOrderSettings.AskQV = pbstrtg.askqv();
-	sdo->AutoOrderSettings.BidNotCross = pbstrtg.bidnotcross();
 	sdo->AutoOrderSettings.MaxAutoTrade = pbstrtg.maxautotrade();
 	sdo->AutoOrderSettings.AskCounter = pbstrtg.askcounter();
 	sdo->AutoOrderSettings.BidCounter = pbstrtg.bidcounter();
 	sdo->AutoOrderSettings.CloseMode = pbstrtg.closemode();
 	sdo->AutoOrderSettings.TIF = (OrderTIFType)pbstrtg.tif();
 	sdo->AutoOrderSettings.VolCondition = (OrderVolType)pbstrtg.volcond();
-	sdo->TickSizeMult = pbstrtg.ticksizemult();
-
+	
 	return sdo;
 }

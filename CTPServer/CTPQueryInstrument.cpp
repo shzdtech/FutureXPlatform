@@ -62,13 +62,13 @@ dataobj_ptr CTPQueryInstrument::HandleRequest(const uint32_t serialId, const dat
 	if (TUtil::IsNullOrEmpty(ret))
 	{
 		bool loaded = false;
-		if (auto pTradeAPI = ((CTPRawAPI*)rawAPI)->TdAPI)
+		if (auto tradeAPIProxy = ((CTPRawAPI*)rawAPI)->TdAPIProxy())
 		{
 			CThostFtdcQryInstrumentField req{};
 			std::strncpy(req.ExchangeID, exchangeid.data(), sizeof(req.ExchangeID));
 			std::strncpy(req.InstrumentID, instrumentid.data(), sizeof(req.InstrumentID));
 			std::strncpy(req.ProductID, productid.data(), sizeof(req.ProductID));
-			auto retCode = pTradeAPI->ReqQryInstrument(&req, serialId);
+			auto retCode = tradeAPIProxy->get()->ReqQryInstrument(&req, serialId);
 			loaded = retCode == 0;
 		}
 

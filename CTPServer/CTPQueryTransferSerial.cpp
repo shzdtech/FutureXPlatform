@@ -60,7 +60,7 @@ dataobj_ptr CTPQueryTransferSerial::HandleRequest(const uint32_t serialId, const
 		pDO->CurrencyID = "CNY";
 	std::strncpy(req.CurrencyID, pDO->CurrencyID.data(), sizeof(req.CurrencyID));
 
-	int iRet = ((CTPRawAPI*)rawAPI)->TdAPI->ReqQryTransferSerial(&req, serialId);
+	int iRet = ((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryTransferSerial(&req, serialId);
 	CTPUtility::CheckReturnError(iRet);
 
 	return nullptr;

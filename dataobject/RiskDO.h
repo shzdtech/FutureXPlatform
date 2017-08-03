@@ -26,6 +26,7 @@ public:
 	double Theta = 0;
 	double Rho = 0;
 	double Vega = 0;
+	double Price = 0;
 
 protected:
 private:

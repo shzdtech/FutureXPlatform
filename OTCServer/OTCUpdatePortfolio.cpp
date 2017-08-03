@@ -46,8 +46,10 @@ dataobj_ptr OTCUpdatePortfolio::HandleRequest(const uint32_t serialId, const dat
 					PortfolioDAO::UpsertPortofolioSettings(*pPortfolio);
 				}
 
-				if (pPortfolio->Hedging)
+				if (pPortfolio->Hedging && CheckAllowTrade(session, false))
 					pWorkerProc->GetOTCTradeProcessor()->TriggerHedgeOrderUpdating(*pPortfolio);
+				else
+					pPortfolioDO->Hedging = false;
 			}
 		}
 	}

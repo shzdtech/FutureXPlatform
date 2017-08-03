@@ -38,5 +38,6 @@
 
 #include "PBRiskSerializer.h"
 #include "PBPositionDifferSerializer.h"
+#include "PBValuationRiskSerializer.h"
 
 #endif

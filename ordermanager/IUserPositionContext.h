@@ -9,6 +9,7 @@
 #include "../dataobject/UserPositionDO.h"
 #include "../dataobject/TradeRecordDO.h"
 #include "../dataobject/RiskDO.h"
+#include "../dataobject/ValuationRiskDO.h"
 #include "../pricingengine/IPricingDataContext.h"
 
 typedef cuckoohashmap_wrapper<std::pair<std::string, int>, UserPositionExDO_Ptr, pairhash<std::string, int>> ContractPosition;
@@ -34,7 +35,10 @@ public:
 
 	virtual bool AllPosition(std::vector<UserPositionExDO_Ptr>& positions) = 0;
 
-	virtual bool GetRiskByPortfolio(const std::string& userID, const std::string& portfolio, UnderlyingRiskMap& risks) = 0;
+	virtual bool GetRiskByPortfolio(const IPricingDataContext_Ptr& pricingCtx, const std::string& userID, const std::string& portfolio, UnderlyingRiskMap& risks) = 0;
+
+	virtual bool GetValuationRiskByPortfolio(const IPricingDataContext_Ptr& pricingCtx_Ptr,
+		const std::string & userID, const ValuationRiskDO& valuationRisk, UnderlyingRiskMap& risks) = 0;
 };
 
 typedef std::shared_ptr<IUserPositionContext> IUserPositionContext_Ptr;

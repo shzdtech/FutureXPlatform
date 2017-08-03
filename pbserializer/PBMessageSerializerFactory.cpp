@@ -24,6 +24,9 @@ PBMessageSerializerFactory::PBMessageSerializerFactory()
 		(PBResultSerializer::Instance(), PBModelParamsSerializer::Instance());
 	_serializer_map[MSG_ID_UPDATE_TEMPMODELPARAMS] = std::make_shared<PBCombineSerializer>
 		(PBResultSerializer::Instance(), PBModelParamsSerializer::Instance());
+	_serializer_map[MSG_ID_QUERY_SYSPARAMS] = PBStringMapSerializer::Instance();
+
+
 	_serializer_map[MSG_ID_SESSION_CREATED] = PBEchoMessageSerializer::Instance();
 	_serializer_map[MSG_ID_ECHO] = PBEchoMessageSerializer::Instance();
 	_serializer_map[MSG_ID_LOGIN] = std::make_shared<PBCombineSerializer>
@@ -34,6 +37,8 @@ PBMessageSerializerFactory::PBMessageSerializerFactory()
 		(PBUserInfoSerializer::Instance(), PBStringMapSerializer::Instance());
 	_serializer_map[MSG_ID_USER_NEW] = PBUserInfoSerializer::Instance();
 	_serializer_map[MSG_ID_USER_INFO_UPDATE] = PBUserInfoSerializer::Instance();
+	_serializer_map[MSG_ID_RESET_PASSWORD] = std::make_shared<PBCombineSerializer>
+		(PBResultSerializer::Instance(), PBStringMapSerializer::Instance());
 }
 
 ////////////////////////////////////////////////////////////////////////

@@ -14,6 +14,7 @@
 dataobj_ptr CTPOTCQueryRisk::HandleRequest(const uint32_t serialId, const dataobj_ptr & reqDO, IRawAPI * rawAPI, const IMessageProcessor_Ptr & msgProcessor, const IMessageSession_Ptr & session)
 {
 	CheckLogin(session);
+	CheckRolePermission(session, UserRoleType::ROLE_TRADINGDESK);
 
 	auto stdo = (StringMapDO<std::string>*)reqDO.get();
 
@@ -27,9 +28,9 @@ dataobj_ptr CTPOTCQueryRisk::HandleRequest(const uint32_t serialId, const dataob
 
 			auto pOTCTradeProc = (CTPOTCTradeProcessor*)pWorkerProc->GetOTCTradeProcessor();
 
-			pOTCTradeProc->GetUserPositionContext()->GetRiskByPortfolio(session->getUserInfo().getUserId(), stdo->begin()->second, riskMap);
+			pOTCTradeProc->GetUserPositionContext()->GetRiskByPortfolio(pWorkerProc->PricingDataContext(), session->getUserInfo().getUserId(), stdo->begin()->second, riskMap);
 			
-			pOTCTradeProc->GetOTCOrderManager().GetPositionContext().GetRiskByPortfolio(session->getUserInfo().getUserId(), stdo->begin()->second, riskMap);
+			pOTCTradeProc->GetOTCOrderManager().GetPositionContext().GetRiskByPortfolio(pWorkerProc->PricingDataContext(), session->getUserInfo().getUserId(), stdo->begin()->second, riskMap);
 
 			for (auto it : riskMap)
 			{

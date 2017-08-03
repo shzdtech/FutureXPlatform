@@ -30,7 +30,7 @@ public:
 	virtual IPricingDO_Ptr Compute(
 		const void* pInputObject,
 		const StrategyContractDO& sdo,
-		IPricingDataContext& priceCtx,
+		const IPricingDataContext_Ptr& priceCtx_Ptr,
 		const param_vector* params);
 	virtual const std::map<std::string, double>& DefaultParams(void) const;
 	virtual void ParseParams(const std::map<std::string, double>& modelParams, std::unique_ptr<ParamsBase>& target);

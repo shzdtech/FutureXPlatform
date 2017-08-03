@@ -56,7 +56,7 @@ CTPTradeProcessor::~CTPTradeProcessor()
 
 bool CTPTradeProcessor::CreateCTPAPI(const std::string& flowId, const std::string & serverAddr)
 {
-	CTPRawAPI_Ptr ret = std::make_shared<CTPRawAPI>();
+	while (_updateFlag.test_and_set(std::memory_order::memory_order_acquire));
 
 	fs::path localpath = CTPProcessor::FlowPath;
 	if (!fs::exists(localpath))
@@ -66,27 +66,27 @@ bool CTPTradeProcessor::CreateCTPAPI(const std::string& flowId, const std::strin
 	}
 
 	localpath /= flowId + "_" + std::to_string(std::time(nullptr)) + "_" + std::to_string(std::rand()) + "_";
-
-	ret->CreateTdApi(localpath.string().data());
-	ret->TdAPI->RegisterSpi(this);
-
 	std::string server_addr(serverAddr);
 	if (server_addr.empty() && !_serverCtx->getConfigVal(CTP_TRADER_SERVER, server_addr))
 	{
 		SysParam::TryGet(CTP_TRADER_SERVER, server_addr);
 	}
 
-	ret->TdAPI->RegisterFront(const_cast<char*> (server_addr.data()));
+	auto tdAPI = std::make_shared<CTPRawAPI::CThostFtdcTdApiProxy>(localpath.string().data());
 
-	ret->TdAPI->SubscribePrivateTopic(THOST_TERT_RESTART);
-	ret->TdAPI->SubscribePublicTopic(THOST_TERT_RESTART);
-	ret->TdAPI->Init();
+	tdAPI->get()->RegisterSpi(this);
+	tdAPI->get()->RegisterFront(const_cast<char*> (server_addr.data()));
+	tdAPI->get()->SubscribePrivateTopic(THOST_TERT_RESTART);
+	tdAPI->get()->SubscribePublicTopic(THOST_TERT_RESTART);
+	tdAPI->get()->Init();
 
-	_rawAPI = ret;
+	_rawAPI->ResetTdAPIProxy(tdAPI);
 
-	std::this_thread::sleep_for(std::chrono::seconds(1));
+	std::this_thread::sleep_for(std::chrono::seconds(2));
 
-	return (bool)ret;
+	_updateFlag.clear(std::memory_order::memory_order_release);
+
+	return (bool)_rawAPI;
 }
 
 bool CTPTradeProcessor::OnSessionClosing(void)
@@ -94,15 +94,13 @@ bool CTPTradeProcessor::OnSessionClosing(void)
 	_exiting = true;
 	if (_updateTask.valid())
 		_updateTask.wait_for(std::chrono::seconds(10));
-	if (_isLogged)
+
+	if (auto sessionptr = getMessageSession())
 	{
-		if (auto sessionptr = getMessageSession())
-		{
-			CThostFtdcUserLogoutField logout{};
-			std::strncpy(logout.BrokerID, sessionptr->getUserInfo().getBrokerId().data(), sizeof(logout.BrokerID));
-			std::strncpy(logout.UserID, sessionptr->getUserInfo().getUserId().data(), sizeof(logout.UserID));
-			_rawAPI->TdAPI->ReqUserLogout(&logout, 0);
-		}
+		CThostFtdcUserLogoutField logout{};
+		std::strncpy(logout.BrokerID, sessionptr->getUserInfo().getBrokerId().data(), sizeof(logout.BrokerID));
+		std::strncpy(logout.UserID, sessionptr->getUserInfo().getUserId().data(), sizeof(logout.UserID));
+		_rawAPI->TdAPIProxy()->get()->ReqUserLogout(&logout, 0);
 	}
 
 	return true;
@@ -111,7 +109,6 @@ bool CTPTradeProcessor::OnSessionClosing(void)
 ///当客户端与交易后台建立起通信连接时（还未登录前），该方法被调用。
 void CTPTradeProcessor::OnFrontConnected()
 {
-	_isConnected = true;
 }
 
 ///当客户端与交易后台通信连接断开时，该方法被调用。当发生这个情况后，API会自动重新连接，客户端可不做处理。
@@ -122,7 +119,6 @@ void CTPTradeProcessor::OnFrontConnected()
 ///        0x2002 发送心跳失败
 ///        0x2003 收到错误报文
 void CTPTradeProcessor::OnFrontDisconnected(int nReason) {
-	_isConnected = false;
 };
 
 ///心跳超时警告。当长时间未收到报文时，该方法被调用。
@@ -137,7 +133,6 @@ void CTPTradeProcessor::OnRspAuthenticate(CThostFtdcRspAuthenticateField *pRspAu
 ///登录请求响应
 void CTPTradeProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	_isLogged = !CTPUtility::HasError(pRspInfo);
 	if (!nRequestID) nRequestID = LoginSerialId;
 	OnResponseMacro(MSG_ID_LOGIN, nRequestID, pRspUserLogin, pRspInfo, &nRequestID, &bIsLast)
 }
@@ -145,7 +140,6 @@ void CTPTradeProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogi
 ///登出请求响应
 void CTPTradeProcessor::OnRspUserLogout(CThostFtdcUserLogoutField *pUserLogout, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	_isLogged = false;
 	if (!_exiting)
 		OnResponseMacro(MSG_ID_LOGOUT, nRequestID, pUserLogout, pRspInfo, &nRequestID, &bIsLast)
 }
@@ -212,7 +206,7 @@ void CTPTradeProcessor::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField
 		auto msgId = nRequestID == -1 ? MSG_ID_POSITION_UPDATED : MSG_ID_QUERY_POSITION;
 
 		if (bIsLast)
-			DataLoadMask |= CTPTradeProcessor::POSITION_DATA_LOADED;
+			DataLoadMask |= CTPProcessor::POSITION_DATA_LOADED;
 
 		OnResponseMacro(msgId, nRequestID, pInvestorPosition, pRspInfo, &nRequestID, &bIsLast);	
 	}
@@ -323,7 +317,7 @@ void CTPTradeProcessor::QueryPositionAsync(void)
 		{
 			CThostFtdcQryInvestorPositionField req{};
 			_updateFlag.clear(std::memory_order::memory_order_release);
-			int iRet = _rawAPI->TdAPI->ReqQryInvestorPosition(&req, -1);
+			int iRet = _rawAPI->TdAPIProxy()->get()->ReqQryInvestorPosition(&req, -1);
 			if (iRet == 0 || _updateFlag.test_and_set(std::memory_order::memory_order_acquire)) // check if lock
 				break;
 		}

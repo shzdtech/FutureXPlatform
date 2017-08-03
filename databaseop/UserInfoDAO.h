@@ -22,6 +22,8 @@ public:
 
 	static VectorDO_Ptr<UserInfoDO> FindAllUserByRole(int role);
 
+	static int ResetPassword(const std::string& userId, const std::string& password);
+
 protected:
 private:
 

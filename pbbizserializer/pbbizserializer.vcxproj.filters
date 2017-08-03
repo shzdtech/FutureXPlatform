@@ -105,6 +105,9 @@
     <ClCompile Include="PBPositionDifferSerializer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="PBValuationRiskSerializer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Protos\businessobj.pb.h">
@@ -195,6 +198,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="PBPositionDifferSerializer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PBValuationRiskSerializer.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

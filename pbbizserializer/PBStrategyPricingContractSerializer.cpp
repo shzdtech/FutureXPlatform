@@ -25,16 +25,18 @@ data_buffer PBStrategyPricingContractSerializer::Serialize(const dataobj_ptr & a
 		pStrategy->set_depth(sdo.Depth);
 		pStrategy->set_bidenabled(sdo.BidEnabled);
 		pStrategy->set_askenabled(sdo.AskEnabled);
+		pStrategy->set_bidnotcross(sdo.NotCross);
+		pStrategy->set_ticksizemult(sdo.TickSizeMult);
+
 		pStrategy->set_bidqv(sdo.AutoOrderSettings.BidQV);
 		pStrategy->set_askqv(sdo.AutoOrderSettings.AskQV);
 		pStrategy->set_askcounter(sdo.AutoOrderSettings.AskCounter);
 		pStrategy->set_bidcounter(sdo.AutoOrderSettings.BidCounter);
 		pStrategy->set_maxautotrade(sdo.AutoOrderSettings.MaxAutoTrade);
-		pStrategy->set_bidnotcross(sdo.AutoOrderSettings.BidNotCross);
 		pStrategy->set_tif(sdo.AutoOrderSettings.TIF);
 		pStrategy->set_volcond(sdo.AutoOrderSettings.VolCondition);
 		pStrategy->set_limitordercounter(sdo.AutoOrderSettings.LimitOrderCounter);
-		pStrategy->set_ticksizemult(sdo.TickSizeMult);
+		
 
 		if (sdo.BaseContract)
 		{

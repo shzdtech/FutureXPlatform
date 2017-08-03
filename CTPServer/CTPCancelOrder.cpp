@@ -55,7 +55,7 @@ dataobj_ptr CTPCancelOrder::HandleRequest(const uint32_t serialId, const dataobj
 		std::snprintf(req.OrderRef, sizeof(req.OrderRef), FMT_ORDERREF, pDO->OrderID);
 	}
 
-	int iRet = ((CTPRawAPI*)rawAPI)->TdAPI->ReqOrderAction(&req, serialId);
+	int iRet = ((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqOrderAction(&req, serialId);
 	CTPUtility::CheckReturnError(iRet);
 
 	return nullptr;

@@ -10,6 +10,7 @@
 
 #include "CTPProcessor.h"
 #include "ctpexport.h"
+#include "tradeapi/ThostFtdcMdApi.h"
 #include "../utility/lockfree_set.h"
 
 class CTP_CLASS_EXPORT CTPMarketDataProcessor : public CTPProcessor, public CThostFtdcMdSpi {
@@ -18,11 +19,8 @@ public:
 	~CTPMarketDataProcessor();
 	bool CreateCTPAPI(const std::string& flowId, const std::string& serverAddr);
 
-public:
-	lockfree_set<std::string> _subedInstuments;
-
-private:
-	CThostFtdcMdApi* _mdAPI;
+protected:
+	int _tradingDay;
 
 public:
 	virtual void OnRspError(CThostFtdcRspInfoField *pRspInfo,

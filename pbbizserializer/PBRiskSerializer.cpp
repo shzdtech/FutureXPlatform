@@ -22,6 +22,8 @@ data_buffer PBRiskSerializer::Serialize(const dataobj_ptr & abstractDO)
 		pParam->set_theta(po.Theta);
 		pParam->set_vega(po.Vega);
 		pParam->set_rho(po.Rho);
+		if (po.Price > 0)
+			pParam->set_price(po.Price);
 	}
 
 	SerializeWithReturn(PB);

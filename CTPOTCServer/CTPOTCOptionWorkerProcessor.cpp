@@ -6,9 +6,12 @@
  ***********************************************************************/
 
 #include "CTPOTCOptionWorkerProcessor.h"
+#include "../dataobject/TradingDeskOptionParams.h"
 #include "../pricingengine/PricingUtility.h"
 #include "../message/DefMessageID.h"
+#include "../message/message_macro.h"
 #include "../litelogger/LiteLogger.h"
+#include "../OptionServer/OTCOptionPricingParams.h"
 
  ////////////////////////////////////////////////////////////////////////
  // Name:       CTPOTCWorkerProcessor::CTPOTCWorkerProcessor(const std::map<std::string, std::string>& configMap)
@@ -49,43 +52,70 @@ InstrumentCache & CTPOTCOptionWorkerProcessor::GetInstrumentCache()
 	return cache;
 }
 
+bool CTPOTCOptionWorkerProcessor::TriggerTadingDeskParams(const StrategyContractDO & strategyDO)
+{
+	auto pricingCtx = PricingDataContext();
+
+	auto tradingDeskData = OTCOptionPricingParams::GenerateTradingDeskData(strategyDO, pricingCtx, true);
+
+	_tradingDeskNotifers->foreach(strategyDO, [this, &tradingDeskData](const IMessageSession_Ptr& session_ptr)
+	{
+		SendDataObject(session_ptr, MSG_ID_RTN_TRADINGDESK_PRICING, 0, tradingDeskData);
+	});
+
+	return true;
+}
+
+
 
 //CTP APIs
 void CTPOTCOptionWorkerProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
 {
-	MarketDataDO mDO;
-	auto pMarketDataMap = PricingDataContext()->GetMarketDataMap();
-	if (pMarketDataMap->find(pDepthMarketData->InstrumentID, mDO))
+	if (!_closing)
 	{
-		double bidPrice = pDepthMarketData->BidPrice1;
-		double askPrice = pDepthMarketData->AskPrice1;
-		if (bidPrice > 1e32)
+		auto pMarketDataMap = PricingDataContext()->GetMarketDataMap();
+		bool updated = false;
+		bool found = 
+			pMarketDataMap->update_fn(pDepthMarketData->InstrumentID, [pDepthMarketData, &updated](MarketDataDO& mDO)
 		{
-			bidPrice = pDepthMarketData->LowerLimitPrice;
+			double bidPrice = pDepthMarketData->BidPrice1;
+			double askPrice = pDepthMarketData->AskPrice1;
 			if (bidPrice > 1e32)
-				bidPrice = pDepthMarketData->PreSettlementPrice;
-		}
-		if (askPrice > 1e32)
-		{
-			askPrice = pDepthMarketData->UpperLimitPrice;
+			{
+				bidPrice = pDepthMarketData->LowerLimitPrice;
+				if (bidPrice > 1e32)
+					bidPrice = pDepthMarketData->PreSettlementPrice;
+			}
 			if (askPrice > 1e32)
-				askPrice = pDepthMarketData->PreSettlementPrice;
-		}
+			{
+				askPrice = pDepthMarketData->UpperLimitPrice;
+				if (askPrice > 1e32)
+					askPrice = pDepthMarketData->PreSettlementPrice;
+			}
 
-		mDO.SettlementPrice = pDepthMarketData->SettlementPrice < 1e32 ? pDepthMarketData->SettlementPrice : 0;
-
-		if (mDO.Bid().Price != bidPrice || mDO.Ask().Price != askPrice)
-		{
-			mDO.Bid().Price = bidPrice;
-			mDO.Ask().Price = askPrice;
+			mDO.SettlementPrice = pDepthMarketData->SettlementPrice < 1e32 ? pDepthMarketData->SettlementPrice : 0;
 			mDO.Bid().Volume = pDepthMarketData->BidVolume1;
 			mDO.Ask().Volume = pDepthMarketData->AskVolume1;
-			mDO.LowerLimitPrice = pDepthMarketData->LowerLimitPrice;
-			mDO.UpperLimitPrice = pDepthMarketData->UpperLimitPrice;
 
-			pMarketDataMap->update(pDepthMarketData->InstrumentID, mDO);
+			if (mDO.Bid().Price != bidPrice || mDO.Ask().Price != askPrice)
+			{
+				mDO.Bid().Price = bidPrice;
+				mDO.Ask().Price = askPrice;
+				mDO.LowerLimitPrice = pDepthMarketData->LowerLimitPrice;
+				mDO.UpperLimitPrice = pDepthMarketData->UpperLimitPrice;
 
-			TriggerUpdateByMarketData(mDO);
+				updated = true;
+			}
+		});
+
+		if (found)
+		{
+			MarketDataDO mDO;
+			pMarketDataMap->find(pDepthMarketData->InstrumentID, mDO);
+			if (updated)
+			{
+				TriggerUpdateByMarketData(mDO);
+			}
 		}
 	}
 }

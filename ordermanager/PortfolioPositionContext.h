@@ -18,8 +18,6 @@ typedef cuckoohash_map<std::string, cuckoohashmap_wrapper<std::string, ContractP
 class ORDERMGR_CLASS_EXPORT PortfolioPositionContext : public IUserPositionContext
 {
 public:
-	PortfolioPositionContext(const IPricingDataContext_Ptr& pricingCtx);
-
 	virtual UserPositionExDO_Ptr UpsertPosition(const std::string& userId, const UserPositionExDO& positionDO, bool updateYdPosition = false, bool closeYdFirst = false);
 
 	virtual UserPositionExDO_Ptr UpsertPosition(const std::string& userid, const TradeRecordDO_Ptr & tradeDO, int multiplier = 1, bool closeYdFirst = false);
@@ -38,11 +36,13 @@ public:
 
 	virtual bool AllPosition(std::vector<UserPositionExDO_Ptr>& positions);
 
-	virtual bool GetRiskByPortfolio(const std::string& userID, const std::string& portfolio, UnderlyingRiskMap& risks);
+	virtual bool GetRiskByPortfolio(const IPricingDataContext_Ptr& pricingCtx, const std::string& userID, const std::string& portfolio, UnderlyingRiskMap& risks);
+
+	virtual bool GetValuationRiskByPortfolio(const IPricingDataContext_Ptr& pricingCtx_Ptr,
+		const std::string & userID, const ValuationRiskDO& valuationRisk, UnderlyingRiskMap& risks);
 
 private:
 	UserPortfolioPosition _userPositionMap;
-	IPricingDataContext_Ptr _pricingCtx;
 };
 
 #endif

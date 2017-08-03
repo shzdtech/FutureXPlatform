@@ -87,7 +87,7 @@ dataobj_ptr CTPOTCLogin::HandleRequest(const uint32_t serialId, const dataobj_pt
 			if (role >= ROLE_TRADINGDESK)
 			{
 				pTradeProcessor->LoginSystemUserIfNeed();
-				std::this_thread::sleep_for(std::chrono::seconds(2));
+				std::this_thread::sleep_for(std::chrono::seconds(1));
 			}
 
 			/*if (!pTradeProcessor->HasLogged())

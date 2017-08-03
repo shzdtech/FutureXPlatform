@@ -273,7 +273,14 @@ bool UserPositionContext::FreezePosition(const OrderRequestDO& orderRequestDO, i
 	return ret;
 }
 
-bool UserPositionContext::GetRiskByPortfolio(const std::string & userID, const std::string & portfolio, UnderlyingRiskMap& risks)
+bool UserPositionContext::GetRiskByPortfolio(const IPricingDataContext_Ptr& pricingCtx_Ptr, 
+	const std::string & userID, const std::string & portfolio, UnderlyingRiskMap& risks)
+{
+	return false;
+}
+
+bool UserPositionContext::GetValuationRiskByPortfolio(const IPricingDataContext_Ptr& pricingCtx_Ptr,
+	const std::string & userID, const ValuationRiskDO& valuationRisk, UnderlyingRiskMap& risks)
 {
 	return false;
 }

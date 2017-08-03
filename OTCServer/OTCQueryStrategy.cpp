@@ -39,28 +39,28 @@ dataobj_ptr OTCQueryStrategy::HandleRequest(const uint32_t serialId, const datao
 
 	auto sDOVec_Ptr = std::make_shared<VectorDO<StrategyContractDO>>();
 
-	if (auto strategySet_Ptr = std::static_pointer_cast<std::set<UserContractKey>>(
-		session->getContext()->getAttribute(STR_KEY_USER_STRATEGY)))
-		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+	{
+		auto pUserStrategyMap = pWorkerProc->PricingDataContext()->GetUserStrategyMap();
+		auto it = pUserStrategyMap->find(session->getUserInfo().getUserId());
+		if (it != pUserStrategyMap->end())
 		{
 			auto& userOrderCtx = pWorkerProc->GetOTCTradeProcessor()->GetExchangeOrderContext();
-			auto pStrategyMap = pWorkerProc->PricingDataContext()->GetStrategyMap();
-			auto sessionPtr = msgProcessor->getMessageSession();
-
-			for (auto& strategyKey : *strategySet_Ptr)
+			for (auto& strategyMap : it->second)
 			{
-				StrategyContractDO_Ptr strategy_ptr;
-				if (pStrategyMap->find(strategyKey, strategy_ptr))
+				for (auto& pair : strategyMap.second->lock_table())
 				{
-					int orderCnt = userOrderCtx.GetLimitOrderCount(strategyKey.InstrumentID());
+					auto strategy_ptr = pair.second;
+					int orderCnt = userOrderCtx.GetLimitOrderCount(strategy_ptr->InstrumentID());
 					if (strategy_ptr->AutoOrderSettings.LimitOrderCounter < orderCnt)
 						strategy_ptr->AutoOrderSettings.LimitOrderCounter = orderCnt;
 
 					sDOVec_Ptr->push_back(*strategy_ptr);
 				}
 			}
-
 		}
+
+	}
 
 	return sDOVec_Ptr;
 }

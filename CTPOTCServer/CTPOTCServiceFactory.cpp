@@ -19,6 +19,7 @@
 
 #include "../message/ReturnHandler.h"
 #include "../message/EchoMessageHandler.h"
+#include "../message/QuerySysParamHandler.h"
 #include "../message/EchoMessageSerializer.h"
 #include "../message/DefMessageID.h"
 #include "../dataserializer/AbstractDataSerializerFactory.h"
@@ -85,6 +86,8 @@ std::map<uint, IMessageHandler_Ptr> CTPOTCServiceFactory::CreateMessageHandlers(
 
 	msg_hdl_map[MSG_ID_QUERY_MODELPARAMS] = std::make_shared<OTCQueryModelParams>();
 
+	msg_hdl_map[MSG_ID_QUERY_SYSPARAMS] = std::make_shared<QuerySysParamHandler>();
+
 	msg_hdl_map[MSG_ID_UPDATE_TEMPMODELPARAMS] = std::make_shared<OTCUpdateTempModelParam>();
 
 	msg_hdl_map[MSG_ID_MODIFY_PRICING_CONTRACT] = std::make_shared<OTCUpdatePricingContract>();
@@ -94,6 +97,8 @@ std::map<uint, IMessageHandler_Ptr> CTPOTCServiceFactory::CreateMessageHandlers(
 	msg_hdl_map[MSG_ID_QUERY_RISK] = std::make_shared<CTPOTCQueryRisk>();
 
 	msg_hdl_map[MSG_ID_RISK_UPDATED] = std::make_shared<OTCRiskUpdated>();
+
+	msg_hdl_map[MSG_ID_QUERY_VALUATION_RISK] = std::make_shared<CTPOTCQueryValuationRisk>();
 
 	// For simulation
 	msg_hdl_map[MSG_ID_RET_MARKETDATA] = std::make_shared<CTPSimMarketData>();

@@ -72,7 +72,7 @@ int CTPTradeLoginHandler::LoginFunction(const IMessageProcessor_Ptr& msgProcesso
 	}
 
 	pProcessor->CreateCTPAPI(userId, address);
-	int ret = pProcessor->RawAPI_Ptr()->TdAPI->ReqUserLogin(loginInfo, requestId);
+	int ret = pProcessor->RawAPI_Ptr()->TdAPIProxy()->get()->ReqUserLogin(loginInfo, requestId);
 
 	// try after market server
 	if (ret == -1 && serverName.empty())
@@ -81,7 +81,7 @@ int CTPTradeLoginHandler::LoginFunction(const IMessageProcessor_Ptr& msgProcesso
 		if (ExchangeRouterTable::TryFind(server, address))
 		{
 			pProcessor->CreateCTPAPI(userId, address);
-			ret = pProcessor->RawAPI_Ptr()->TdAPI->ReqUserLogin(loginInfo, requestId);
+			ret = pProcessor->RawAPI_Ptr()->TdAPIProxy()->get()->ReqUserLogin(loginInfo, requestId);
 		}
 	}
 
@@ -95,10 +95,10 @@ dataobj_ptr CTPTradeLoginHandler::HandleResponse(const uint32_t serialId, const 
 	CThostFtdcSettlementInfoConfirmField reqsettle{};
 	std::strncpy(reqsettle.BrokerID, session->getUserInfo().getBrokerId().data(), sizeof(reqsettle.BrokerID));
 	std::strncpy(reqsettle.InvestorID, session->getUserInfo().getInvestorId().data(), sizeof(reqsettle.InvestorID));
-	((CTPRawAPI*)rawAPI)->TdAPI->ReqSettlementInfoConfirm(&reqsettle, 0);
+	((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqSettlementInfoConfirm(&reqsettle, 0);
 
 	CThostFtdcQryInvestorPositionField req{};
-	((CTPRawAPI*)rawAPI)->TdAPI->ReqQryInvestorPosition(&req, -1);
+	((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryInvestorPosition(&req, -1);
 	std::this_thread::sleep_for(std::chrono::seconds(1));
 
 	return ret;

@@ -6,12 +6,13 @@
  ***********************************************************************/
 
 #include "PortfolioPositionContext.h"
+#include "../pricingengine/PricingUtility.h"
+#include "../pricingengine/ModelAlgorithmManager.h"
+#include "../pricingengine/OptionParams.h"
+#include "../dataobject/TradingDeskOptionParams.h"
 #include "../bizutility/ContractCache.h"
+#include "../litelogger/LiteLogger.h"
 
-PortfolioPositionContext::PortfolioPositionContext(const IPricingDataContext_Ptr & pricingCtx)
-	: _pricingCtx(pricingCtx)
-{
-}
 
 UserPositionExDO_Ptr PortfolioPositionContext::UpsertPosition(const std::string& userid, const UserPositionExDO& positionDO, bool updateYdPosition, bool closeYdFirst)
 {
@@ -177,14 +178,15 @@ bool PortfolioPositionContext::AllPosition(std::vector<UserPositionExDO_Ptr>& po
 	return true;
 }
 
-bool PortfolioPositionContext::GetRiskByPortfolio(const std::string & userID, const std::string & portfolio, UnderlyingRiskMap& risks)
+bool PortfolioPositionContext::GetRiskByPortfolio(const IPricingDataContext_Ptr& pricingCtx_Ptr,
+	const std::string & userID, const std::string & portfolio, UnderlyingRiskMap& risks)
 {
 	bool ret = false;
 	auto positions = GetPositionsByUser(userID, portfolio);
 	if (!positions.empty())
 	{
-		auto pStrategyMap = _pricingCtx->GetStrategyMap();
-		auto pPricingData = _pricingCtx->GetPricingDataDOMap();
+		auto pStrategyMap = pricingCtx_Ptr->GetStrategyMap();
+		auto pPricingData = pricingCtx_Ptr->GetPricingDataDOMap();
 		for (auto it : positions.map()->lock_table())
 		{
 			auto& userPosition_Ptr = it.second;
@@ -265,6 +267,10 @@ bool PortfolioPositionContext::GetRiskByPortfolio(const std::string & userID, co
 							continue;
 						}
 					}
+					else
+					{
+						LOG_WARN << "Cannot find pricing object: " << userPosition_Ptr->InstrumentID();
+					}
 				}
 
 				InstrumentDO* pInstument = nullptr;
@@ -300,7 +306,7 @@ bool PortfolioPositionContext::GetRiskByPortfolio(const std::string & userID, co
 							pRiskDO->Delta -= delta * position;
 							pRiskDO->Gamma -= gamma * position;
 							pRiskDO->Theta -= theta * position;
-							pRiskDO->Vega -=vega * position;
+							pRiskDO->Vega -= vega * position;
 							pRiskDO->Rho -= rho * position;
 						}
 					}
@@ -335,9 +341,227 @@ bool PortfolioPositionContext::GetRiskByPortfolio(const std::string & userID, co
 		ret = true;
 	}
 
+	return ret;
+}
+
+bool PortfolioPositionContext::GetValuationRiskByPortfolio(const IPricingDataContext_Ptr& pricingCtx_Ptr,
+	const std::string & userID, const ValuationRiskDO& valuationRisk, UnderlyingRiskMap& risks)
+{
+	bool ret = false;
+	auto positions = GetPositionsByUser(userID, valuationRisk.PortfolioID);
+	if (!positions.empty())
+	{
+		auto pStrategyMap = pricingCtx_Ptr->GetStrategyMap();
+
+		for (auto it : positions.map()->lock_table())
+		{
+			auto& userPosition_Ptr = it.second;
+			int position = userPosition_Ptr->Position();
+
+			if (position > 0)
+			{
+				double delta = 0;
+				double gamma = 0;
+				double theta = 0;
+				double vega = 0;
+				double rho = 0;
+				double price = 0;
+
+				std::shared_ptr<ContractKey> baseContract_Ptr;
+
+				StrategyContractDO_Ptr strategy;
+				if (pStrategyMap->find(*userPosition_Ptr, strategy) && strategy->PricingModel)
+				{
+					baseContract_Ptr = strategy->BaseContract;
+					if (baseContract_Ptr)
+					{
+						IPricingDO_Ptr pricingDO;
+
+						if (strategy->VolModel)
+						{
+							if (auto volmodel_ptr = ModelAlgorithmManager::Instance()->FindModel(strategy->VolModel->Model))
+							{
+								auto it = valuationRisk.ValuationPrice.find(baseContract_Ptr->InstrumentID());
+								if (it == valuationRisk.ValuationPrice.end())
+									continue;
+
+								if (auto result = volmodel_ptr->Compute(&it->second.Price, *strategy, pricingCtx_Ptr, nullptr))
+								{
+									auto wresult = std::static_pointer_cast<WingsModelReturnDO>(result);
+									OptionParams param;
+									param.midVolatility = wresult->Volatility;
+									param.bidVolatility = wresult->TBid().Volatility;
+									param.askVolatility = wresult->TAsk().Volatility;
+									param.riskFreeRate = std::max(valuationRisk.Interest, DBL_EPSILON);
+
+									if (auto pParams = (OptionParams*)strategy->PricingModel->ParsedParams.get())
+									{
+										param.dividend = pParams->dividend;
+										param.riskFreeRate = valuationRisk.Interest >= 0 ? valuationRisk.Interest : pParams->riskFreeRate;
+									}
+
+									param_vector params{ &param };
+									pricingDO = PricingUtility::Pricing(&valuationRisk, *strategy, pricingCtx_Ptr, &params);
+								}
+							}
+						}
+						else
+						{
+							pricingDO = PricingUtility::Pricing(&valuationRisk, *strategy, pricingCtx_Ptr);
+						}
+
+						if (pricingDO)
+						{
+							delta = pricingDO->Delta;
+							gamma = pricingDO->Gamma;
+							theta = pricingDO->Theta;
+							vega = pricingDO->Vega;
+							rho = pricingDO->Rho;
+							price = (pricingDO->Ask().Price + pricingDO->Bid().Price) / 2;
+						}
+					}
+					else if (strategy->PricingContracts)
+					{
+						for (auto pit : strategy->PricingContracts->PricingContracts)
+						{
+							if (auto pricingDO = PricingUtility::Pricing(&valuationRisk, *strategy, pricingCtx_Ptr))
+							{
+								delta = pricingDO->Delta;
+								gamma = pricingDO->Gamma;
+								theta = pricingDO->Theta;
+								vega = pricingDO->Vega;
+								rho = pricingDO->Rho;
+								price = (pricingDO->Ask().Price + pricingDO->Bid().Price) / 2;
+							}
+
+							if (auto pRiskDO = risks.getorfill(pit.Underlying).tryfind(pit))
+							{
+								if (it.first.second == PD_LONG)
+								{
+									pRiskDO->Delta += pit.Weight * delta * position;
+									pRiskDO->Gamma += pit.Weight * gamma * position;
+									pRiskDO->Theta += pit.Weight * theta * position;
+									pRiskDO->Vega += pit.Weight * vega * position;
+									pRiskDO->Rho += pit.Weight * rho * position;
+								}
+								else
+								{
+									pRiskDO->Delta -= pit.Weight * delta * position;
+									pRiskDO->Gamma -= pit.Weight * gamma * position;
+									pRiskDO->Theta -= pit.Weight * theta * position;
+									pRiskDO->Vega -= pit.Weight * vega * position;
+									pRiskDO->Rho -= pit.Weight * rho * position;
+								}
+							}
+							else
+							{
+								RiskDO riskDO(pit.ExchangeID(), pit.InstrumentID(), userPosition_Ptr->UserID());
+								riskDO.Underlying = pit.Underlying;
+
+								if (it.first.second == PD_LONG)
+								{
+									riskDO.Delta = pit.Weight * delta * position;
+									riskDO.Gamma = pit.Weight * gamma * position;
+									riskDO.Theta = pit.Weight * theta * position;
+									riskDO.Vega = pit.Weight * vega * position;
+									riskDO.Rho = pit.Weight * rho * position;
+								}
+								else
+								{
+									riskDO.Delta = -pit.Weight * delta * position;
+									riskDO.Gamma = -pit.Weight * gamma * position;
+									riskDO.Theta = -pit.Weight * theta * position;
+									riskDO.Vega = -pit.Weight * vega * position;
+									riskDO.Rho = -pit.Weight * rho * position;
+								}
+
+								riskDO.Price = price;
+
+								risks.getorfill(pit.Underlying).emplace(riskDO, riskDO);
+							}
+						}
+
+						continue;
+					}
+				}
+
+				InstrumentDO* pInstument = nullptr;
+				if (baseContract_Ptr)
+				{
+					pInstument = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(baseContract_Ptr->InstrumentID());
+				}
+				else
+				{
+					if (pInstument = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(userPosition_Ptr->InstrumentID()))
+					{
+						if (pInstument->ContractType == ContractType::CONTRACTTYPE_FUTURE)
+						{
+							delta = 1;
+
+							auto it = valuationRisk.ValuationPrice.find(userPosition_Ptr->InstrumentID());
+							if (it != valuationRisk.ValuationPrice.end())
+								price = it->second.Price;
+						}
+					}
+				}
+
+				if (pInstument)
+				{
+					if (auto pRiskDO = risks.getorfill(pInstument->ProductID).tryfind(*userPosition_Ptr))
+					{
+						if (it.first.second == PD_LONG)
+						{
+							pRiskDO->Delta += delta * position;
+							pRiskDO->Gamma += gamma * position;
+							pRiskDO->Theta += theta * position;
+							pRiskDO->Vega += vega * position;
+							pRiskDO->Rho += rho * position;
+						}
+						else
+						{
+							pRiskDO->Delta -= delta * position;
+							pRiskDO->Gamma -= gamma * position;
+							pRiskDO->Theta -= theta * position;
+							pRiskDO->Vega -= vega * position;
+							pRiskDO->Rho -= rho * position;
+						}
+					}
+					else
+					{
+						RiskDO riskDO(userPosition_Ptr->ExchangeID(), userPosition_Ptr->InstrumentID(), userPosition_Ptr->UserID());
+						riskDO.Underlying = pInstument->ProductID;
+
+						if (it.first.second == PD_LONG)
+						{
+							riskDO.Delta = delta * position;
+							riskDO.Gamma = gamma * position;
+							riskDO.Theta = theta * position;
+							riskDO.Vega = vega * position;
+							riskDO.Rho = rho * position;
+						}
+						else
+						{
+							riskDO.Delta = -delta * position;
+							riskDO.Gamma = -gamma * position;
+							riskDO.Theta = -theta * position;
+							riskDO.Vega = -vega * position;
+							riskDO.Rho = -rho * position;
+						}
+
+						riskDO.Price = price;
+
+						risks.getorfill(pInstument->ProductID).emplace(riskDO, riskDO);
+					}
+				}
+			}
+		}
+
+		ret = true;
+	}
 
 	return ret;
 }
+
 
 UserPositionExDO_Ptr PortfolioPositionContext::UpsertPosition(const std::string& userid,
 	const TradeRecordDO_Ptr& tradeDO, int multiplier, bool closeYdFirst)

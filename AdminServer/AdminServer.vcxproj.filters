@@ -30,6 +30,9 @@
     <ClCompile Include="RegisterUserHandler.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="ChangePasswordHandler.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AdminLoginHandler.h">
@@ -48,6 +51,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ChangePasswordHandler.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

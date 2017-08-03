@@ -15,16 +15,12 @@ std::shared_ptr<VanillaOption> BsBinPricingAlgorithm::ComputeOptionPrice(
 	double riskFreeRate, 
 	double dividendYield, 
 	ContractType contractType, 
-	const DateType & tradingDate, 
-	const DateType & maturityDate)
+	const Date& settleDate,
+	const Date& maturityDate)
 {
 	using namespace QuantLib;
 
 	DayCounter dayCounter = Actual365Fixed();
-
-	Date maturity((Day)maturityDate.Day, (Month)(maturityDate.Month), (Year)(maturityDate.Year));
-
-	Date settlementDate((Day)tradingDate.Day, (Month)(tradingDate.Month), (Year)(tradingDate.Year));
 
 	Option::Type optionType = contractType == ContractType::CONTRACTTYPE_CALL_OPTION ? Option::Call : Option::Put;
 
@@ -32,11 +28,11 @@ std::shared_ptr<VanillaOption> BsBinPricingAlgorithm::ComputeOptionPrice(
 
 	// bootstrap the yield/dividend/vol curves
 	Handle<YieldTermStructure> flatTermStructure(
-		boost::shared_ptr<YieldTermStructure>(new FlatForward(settlementDate, riskFreeRate, dayCounter)));
+		boost::shared_ptr<YieldTermStructure>(new FlatForward(settleDate, riskFreeRate, dayCounter)));
 	Handle<YieldTermStructure> flatDividendTS(
-		boost::shared_ptr<YieldTermStructure>(new FlatForward(settlementDate, dividendYield, dayCounter)));
+		boost::shared_ptr<YieldTermStructure>(new FlatForward(settleDate, dividendYield, dayCounter)));
 	Handle<BlackVolTermStructure> flatVolTS(
-		boost::shared_ptr<BlackVolTermStructure>(new BlackConstantVol(settlementDate, TARGET(), volatility, dayCounter)));
+		boost::shared_ptr<BlackVolTermStructure>(new BlackConstantVol(settleDate, TARGET(), volatility, dayCounter)));
 
 	boost::shared_ptr<StrikedTypePayoff> payoff(new PlainVanillaPayoff(optionType, strikePrice));
 
@@ -45,7 +41,7 @@ std::shared_ptr<VanillaOption> BsBinPricingAlgorithm::ComputeOptionPrice(
 	boost::shared_ptr<PricingEngine> pricingEngine(new BinomialVanillaEngine<JarrowRudd>(bsmProcess, 801));
 
 	// options
-	boost::shared_ptr<Exercise> americanExercise(new AmericanExercise(settlementDate, maturity));
+	boost::shared_ptr<Exercise> americanExercise(new AmericanExercise(settleDate, maturityDate));
 
 	auto americanOption = std::make_shared<VanillaOption>(payoff, americanExercise);
 	americanOption->setPricingEngine(pricingEngine);

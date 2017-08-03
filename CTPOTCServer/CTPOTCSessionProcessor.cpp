@@ -50,45 +50,51 @@ void CTPOTCSessionProcessor::Initialize(IServerContext* serverCtx)
 
 bool CTPOTCSessionProcessor::OnSessionClosing(void)
 {
-	if (auto sessionPtr = getMessageSession())
-		if (sessionPtr->getUserInfo().getRole() == ROLE_TRADINGDESK)
-			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(shared_from_this()))
-			{
-				auto pWorkerTrader = pWorkerProc->GetOTCTradeProcessor();
-
-				// Dispose auto order
-				auto pStrategyMap = pWorkerProc->PricingDataContext()->GetStrategyMap();
-
-				if (auto strategySet_Ptr = std::static_pointer_cast<std::set<UserContractKey>>(
-					sessionPtr->getContext()->getAttribute(STR_KEY_USER_STRATEGY)))
+	try
+	{
+		if (auto sessionPtr = getMessageSession())
+			if (sessionPtr->getUserInfo().getRole() == ROLE_TRADINGDESK)
+				if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(shared_from_this()))
 				{
-					for (auto& contract : *strategySet_Ptr)
+					if (auto pWorkerTrader = pWorkerProc->GetOTCTradeProcessor())
 					{
-						StrategyContractDO_Ptr strategy_ptr;
-						if (pStrategyMap->find(contract, strategy_ptr))
+						// Dispose auto order
+						auto pUserStrategyMap = pWorkerProc->PricingDataContext()->GetUserStrategyMap();
+						auto it = pUserStrategyMap->find(sessionPtr->getUserInfo().getUserId());
+						if (it != pUserStrategyMap->end())
 						{
-							strategy_ptr->AskEnabled = strategy_ptr->BidEnabled = false;
-							strategy_ptr->Hedging = false;
-							pWorkerTrader->CancelAutoOrder(*strategy_ptr);
+							for (auto& strategyMap : it->second)
+							{
+								for (auto& pair : strategyMap.second->lock_table())
+								{
+									if (auto strategy_ptr = pair.second)
+									{
+										strategy_ptr->AskEnabled = strategy_ptr->BidEnabled = false;
+										strategy_ptr->Hedging = false;
+										pWorkerTrader->CancelAutoOrder(*strategy_ptr);
+									}
+								}
+							}
+						}
+
+						// Dispose hedge order
+
+						if (auto pPortfolioMap = pWorkerProc->PricingDataContext()->GetPortfolioMap()
+							->tryfind(sessionPtr->getUserInfo().getUserId()))
+						{
+							for (auto& pair : *pPortfolioMap)
+							{
+								pair.second.Hedging = false;
+								pWorkerTrader->CancelHedgeOrder(pair.second);
+							}
 						}
 					}
 				}
-
-				// Dispose hedge order
-
-				if (auto pPortfolioMap = pWorkerProc->PricingDataContext()->GetPortfolioMap()
-					->tryfind(sessionPtr->getUserInfo().getUserId()))
-				{
-					for (auto& pair : *pPortfolioMap)
-					{
-						pair.second.Hedging = false;
-						pWorkerTrader->CancelHedgeOrder(pair.second);
-					}
-				}
-
-				// Wait for sending commands to servers
-				std::this_thread::sleep_for(std::chrono::seconds(3));
-			}
+	}
+	catch (std::exception& e)
+	{
+		LOG_ERROR << e.what();
+	}
 
 	return true;
 }

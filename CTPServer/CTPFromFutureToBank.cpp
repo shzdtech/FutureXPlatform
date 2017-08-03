@@ -54,7 +54,7 @@ dataobj_ptr CTPFromFutureToBank::HandleRequest(const uint32_t serialId, const da
 	req.SessionID = session->getUserInfo().getSessionId();
 	req.RequestID = serialId;
 
-	int iRet = ((CTPRawAPI*)rawAPI)->TdAPI->ReqFromFutureToBankByFuture(&req, serialId);
+	int iRet = ((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqFromFutureToBankByFuture(&req, serialId);
 	CTPUtility::CheckReturnError(iRet);
 
 	return nullptr;

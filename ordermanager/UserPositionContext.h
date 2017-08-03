@@ -36,7 +36,10 @@ public:
 
 	bool FreezePosition(const OrderRequestDO & orderRequestDO, int& todayVol, int& ydVol);
 
-	virtual bool GetRiskByPortfolio(const std::string& userID, const std::string& portfolio, UnderlyingRiskMap& risks);
+	virtual bool GetRiskByPortfolio(const IPricingDataContext_Ptr& pricingCtx_Ptr, const std::string& userID, const std::string& portfolio, UnderlyingRiskMap& risks);
+
+	virtual bool GetValuationRiskByPortfolio(const IPricingDataContext_Ptr& pricingCtx_Ptr,
+		const std::string & userID, const ValuationRiskDO& valuationRisk, UnderlyingRiskMap& risks);
 
 private:
 	cuckoohash_map<std::string, ContractPosition> _userPositionMap;

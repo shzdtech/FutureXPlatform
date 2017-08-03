@@ -59,7 +59,7 @@ int CTPMDLoginHandler::LoginFunction(const IMessageProcessor_Ptr& msgProcessor, 
 	}
 
 	pProcessor->CreateCTPAPI(userId, address);
-	int ret = pProcessor->RawAPI_Ptr()->MdAPI->ReqUserLogin(loginInfo, requestId);
+	int ret = pProcessor->RawAPI_Ptr()->MdAPIProxy()->get()->ReqUserLogin(loginInfo, requestId);
 
 	// try after market server
 	if (ret == -1 && serverName.empty())
@@ -68,7 +68,7 @@ int CTPMDLoginHandler::LoginFunction(const IMessageProcessor_Ptr& msgProcessor, 
 		if (ExchangeRouterTable::TryFind(server, address))
 		{
 			pProcessor->CreateCTPAPI(userId, address);
-			ret = pProcessor->RawAPI_Ptr()->MdAPI->ReqUserLogin(loginInfo, requestId);
+			ret = pProcessor->RawAPI_Ptr()->MdAPIProxy()->get()->ReqUserLogin(loginInfo, requestId);
 		}
 	}
 

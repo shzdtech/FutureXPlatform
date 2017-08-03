@@ -11,11 +11,15 @@
 #include <iostream>
 #include <string>
 #include <csignal>
+#include <filesystem>
+
 #include "../utility/stringutility.h"
 
 #include "../litelogger/LiteLogger.h"
 
 using namespace std;
+
+namespace fs = std::experimental::filesystem;
 
 Application app;
 
@@ -42,7 +46,19 @@ int main(int argc, char** argv) {
 
 	registsignal();
 	try {
-		MicroFurtureSystem::InitLogger(argv[0], true);
+
+		fs::path logpath = argv[0];
+		logpath = logpath.remove_filename();
+		logpath /= "log";
+		if (!fs::exists(logpath))
+		{
+			std::error_code ec;
+			fs::create_directories(logpath, ec);
+		}
+
+		logpath /= "MicroFuturePlatform";
+
+		MicroFurtureSystem::InitLogger(logpath.string(), true);
 
 		std::string configFile(argc > 1 ? argv[1] : "system");
 		app.Initialize(configFile);

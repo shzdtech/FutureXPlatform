@@ -189,6 +189,7 @@
     <ClInclude Include="UserContractParamDO.h" />
     <ClInclude Include="UserInfoDO.h" />
     <ClInclude Include="UserPositionDO.h" />
+    <ClInclude Include="ValuationRiskDO.h" />
     <ClInclude Include="WingsModelReturnDO.h" />
   </ItemGroup>
   <ItemGroup>

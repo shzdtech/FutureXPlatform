@@ -39,26 +39,28 @@
 dataobj_ptr OTCReturnPricingData::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	auto pStrategyDO = (StrategyContractDO*)rawRespParams[1];
-	auto pPricingCtx = (IPricingDataContext*)rawRespParams[2];
 
 	IPricingDO_Ptr ret;
 
-	auto userContractMap = std::static_pointer_cast<UserContractParamDOMap>
-		(session->getContext()->getAttribute(STR_KEY_USER_CONTRACTS));
-
-	if (auto pContractParam = userContractMap->tryfind(*pStrategyDO))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
-		int quantity = pContractParam->Quantity;
+		auto userContractMap = std::static_pointer_cast<UserContractParamDOMap>
+			(session->getContext()->getAttribute(STR_KEY_USER_CONTRACTS));
 
-		ret = PricingUtility::Pricing(&quantity, *pStrategyDO, *pPricingCtx);
-		if (!pStrategyDO->BidEnabled)
+		if (auto pContractParam = userContractMap->tryfind(*pStrategyDO))
 		{
-			ret->Bid().Clear();
-		}
+			int quantity = pContractParam->Quantity;
 
-		if (!pStrategyDO->AskEnabled)
-		{
-			ret->Ask().Clear();
+			ret = PricingUtility::Pricing(&quantity, *pStrategyDO, pWorkerProc->PricingDataContext());
+			if (!pStrategyDO->BidEnabled)
+			{
+				ret->Bid().Clear();
+			}
+
+			if (!pStrategyDO->AskEnabled)
+			{
+				ret->Ask().Clear();
+			}
 		}
 	}
 

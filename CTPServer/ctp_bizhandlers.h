@@ -6,6 +6,9 @@
 #include "CTPUnsubMarketData.h"
 #include "CTPDepthMarketData.h"
 #include "CTPMDLoginHandler.h"
+#include "CTPMDLoginSAHandler.h"
+#include "CTPSubMarketDataSA.h"
+#include "CTPUnsubMarketDataSA.h"
 
 //Trade
 #include "CTPTradeLoginHandler.h"
@@ -20,9 +23,9 @@
 #include "CTPCancelOrder.h"
 #include "CTPOrderUpdated.h"
 #include "CTPTradeUpdated.h"
-#include "CTPAccountLogin.h"
+#include "CTPTDLoginSA.h"
 #include "CTPPositionUpdated.h"
-#include "CTPAccountQueryPosition.h"
+#include "CTPQueryPositionSA.h"
 #include "CTPQueryPositionDiffer.h"
 
 

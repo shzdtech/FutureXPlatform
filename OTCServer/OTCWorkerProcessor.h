@@ -28,8 +28,6 @@ public:
 
 	virtual void Initialize();
 
-	virtual int LoginSystemUserIfNeed(void) = 0;
-
 	virtual int LoadContractToCache(ProductType productType);
 
 	virtual int LoadStrategyToCache(ProductType productType);
@@ -59,8 +57,8 @@ public:
 	virtual void RegisterPricingListener(const ContractKey& contractId,	const IMessageSession_Ptr& sessionPtr);
 	virtual void UnregisterPricingListener(const ContractKey& contractId, const IMessageSession_Ptr& sessionPtr);
 
-	virtual void RegisterTradingDeskListener(const ContractKey& contractId,	const IMessageSession_Ptr& sessionPtr);
-	virtual void UnregisterTradingDeskListener(const ContractKey& contractId, const IMessageSession_Ptr& sessionPtr);
+	virtual void RegisterTradingDeskListener(const UserContractKey & userContractId, const IMessageSession_Ptr& sessionPtr);
+	virtual void UnregisterTradingDeskListener(const UserContractKey & userContractId, const IMessageSession_Ptr& sessionPtr);
 
 	virtual InstrumentCache& GetInstrumentCache();
 
@@ -77,7 +75,7 @@ public:
 protected:
 	cuckoohash_map<ContractKey, cuckoohashmap_wrapper<UserContractKey, bool, UserContractKeyHash>, ContractKeyHash> _baseContractStrategyMap;
 	SessionContainer_Ptr<ContractKey, ContractKeyHash> _pricingNotifers;
-	SessionContainer_Ptr<ContractKey, ContractKeyHash> _tradingDeskNotifers;
+	SessionContainer_Ptr<UserContractKey, UserContractKeyHash> _tradingDeskNotifers;
 	SessionContainer_Ptr<uint64_t> _otcOrderNotifers;
 	IPricingDataContext_Ptr _pricingCtx;
 

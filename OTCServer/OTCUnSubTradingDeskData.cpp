@@ -29,13 +29,16 @@ dataobj_ptr OTCUnSubTradingDeskData::HandleRequest(const uint32_t serialId, cons
 	CheckLogin(session);
 	CheckRolePermission(session, UserRoleType::ROLE_TRADINGDESK);
 
+	auto& userInfo = session->getUserInfo();
+
 	auto pInstList = (ContractList*)reqDO.get();
 	
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		for (auto& inst : *pInstList)
 		{
-			pWorkerProc->UnregisterTradingDeskListener(inst, session);
+			UserContractKey uck(inst.ExchangeID(), inst.InstrumentID(), userInfo.getUserId());
+			pWorkerProc->UnregisterTradingDeskListener(uck, session);
 		}
 	}
 

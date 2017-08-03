@@ -177,9 +177,11 @@
     <ClInclude Include="MessageServiceFactory.h" />
     <ClInclude Include="MessageSession.h" />
     <ClInclude Include="MessageUtility.h" />
+    <ClInclude Include="MessageWorkerProcessor.h" />
     <ClInclude Include="message_macro.h" />
     <ClInclude Include="NopHandler.h" />
     <ClInclude Include="GlobalProcessorRegistry.h" />
+    <ClInclude Include="QuerySysParamHandler.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ReturnHandler.h" />
     <ClInclude Include="ServerSessionManager.h" />
@@ -202,6 +204,8 @@
     <ClCompile Include="MessageServer.cpp" />
     <ClCompile Include="MessageSession.cpp" />
     <ClCompile Include="GlobalProcessorRegistry.cpp" />
+    <ClCompile Include="MessageWorkerProcessor.cpp" />
+    <ClCompile Include="QuerySysParamHandler.cpp" />
     <ClCompile Include="ServerSessionManager.cpp" />
     <ClCompile Include="ServerContext.cpp" />
     <ClCompile Include="SessionManager.cpp" />

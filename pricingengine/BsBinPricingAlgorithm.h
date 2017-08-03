@@ -17,8 +17,8 @@ public:
 		double riskFreeRate,
 		double dividendYield,
 		ContractType contractType,
-		const DateType& tradingDate,
-		const DateType& maturityDate);
+		const Date& settleDate,
+		const Date& maturityDate);
 };
 
 #endif

@@ -138,6 +138,9 @@
     <ClInclude Include="RiskDO.h">
       <Filter>头文件\otc</Filter>
     </ClInclude>
+    <ClInclude Include="ValuationRiskDO.h">
+      <Filter>头文件\otc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

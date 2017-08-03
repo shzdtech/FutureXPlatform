@@ -129,6 +129,9 @@
     <ClCompile Include="OTCUpdateHedgeContract.cpp">
       <Filter>源文件\TradingDesk</Filter>
     </ClCompile>
+    <ClCompile Include="OTCQueryValuationRisk.cpp">
+      <Filter>源文件\TradingDesk</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="otcserver_export.h">
@@ -231,6 +234,9 @@
       <Filter>头文件\TradingDesk</Filter>
     </ClInclude>
     <ClInclude Include="OTCUpdateHedgeContract.h">
+      <Filter>头文件\TradingDesk</Filter>
+    </ClInclude>
+    <ClInclude Include="OTCQueryValuationRisk.h">
       <Filter>头文件\TradingDesk</Filter>
     </ClInclude>
   </ItemGroup>

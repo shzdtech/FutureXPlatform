@@ -57,7 +57,7 @@ void HedgeOrderManager::Hedge(const PortfolioKey& portfolioKey)
 	_updatingPortfolioLock.update_fn(*pPortfolio, [this, pPortfolio](bool& lock)
 	{
 		UnderlyingRiskMap portfolioMap;
-		_exchangePositionCtx->GetRiskByPortfolio(pPortfolio->UserID(), pPortfolio->PortfolioID(), portfolioMap);
+		_exchangePositionCtx->GetRiskByPortfolio(_pricingCtx, pPortfolio->UserID(), pPortfolio->PortfolioID(), portfolioMap);
 
 		bool needHedge = false;
 

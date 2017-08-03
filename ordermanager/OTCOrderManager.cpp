@@ -12,7 +12,7 @@
 
 OTCOrderManager::OTCOrderManager(IOrderAPI* pOrderAPI, const IPricingDataContext_Ptr& pricingCtx, IOrderUpdatedEvent* listener)
 	: OrderManager(pOrderAPI, pricingCtx, listener),
-	_positionCtx(pricingCtx), _updatinglock(2048)
+	_updatinglock(2048)
 { }
 
 ////////////////////////////////////////////////////////////////////////
@@ -54,7 +54,7 @@ OrderDO_Ptr OTCOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 			IPricingDO_Ptr pricingDO_ptr;
 			if (!_pricingCtx->GetPricingDataDOMap()->find(orderInfo, pricingDO_ptr))
 			{
-				pricingDO_ptr = PricingUtility::Pricing(nullptr, orderInfo, *_pricingCtx);
+				pricingDO_ptr = PricingUtility::Pricing(nullptr, orderInfo, _pricingCtx);
 			}
 
 			if (pricingDO_ptr)

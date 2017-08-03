@@ -10,7 +10,8 @@
 #include "ctpexport.h"
 #include "CTPMDServiceFactory.h"
 #include "CTPTradeServiceFactory.h"
-#include "CTPAccountTradeServiceFactory.h"
+#include "CTPTradeServiceSAFactory.h"
+#include "CTPMDServiceSAFactory.h"
 
 extern "C" CTP_CLASS_EXPORT void* CreateInstance(const char* classUUID) {
     void* instance = NULL;
@@ -19,7 +20,9 @@ extern "C" CTP_CLASS_EXPORT void* CreateInstance(const char* classUUID) {
 	else if (strcmp(UUID_CTP_TRADE_FACTORY, classUUID) == 0)
 		instance = new CTPTradeServiceFactory();
 	else if (std::strcmp(UUID_SINGLE_ACCOUNT_CTP_TRADE_FACTORY, classUUID) == 0)
-		instance = new CTPAccountTradeServiceFactory();
+		instance = new CTPTradeServiceSAFactory();
+	else if (std::strcmp(UUID_SINGLE_ACCOUNT_CTP_MARKETDATA_FACTORY, classUUID) == 0)
+		instance = new CTPMDServiceSAFactory();
 
     return instance;
 }

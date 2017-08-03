@@ -92,7 +92,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;CPPCONN_LIB_BUILD;_DEBUG;_WINDOWS;_USRDLL;DATABASEOP_LIBRARY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;CPPCONN_LIB_BUILD;CRYPTOPP_IMPORTS;_DEBUG;_WINDOWS;_USRDLL;DATABASEOP_LIBRARY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(BOOST_ROOT);$(SolutionDir)include\mysql;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-D_CRT_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
@@ -101,8 +101,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)lib\mysql\$(Platform)\$(Configuration);</AdditionalLibraryDirectories>
-      <AdditionalDependencies>mysqlcppconn-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib\mysql\$(Platform)\$(Configuration);$(SolutionDir)lib\cryptopp\$(Platform)\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>mysqlcppconn-static.lib;cryptlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -110,7 +110,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;CPPCONN_LIB_BUILD;_DEBUG;_WINDOWS;_USRDLL;DATABASEOP_LIBRARY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;CPPCONN_LIB_BUILD;CRYPTOPP_IMPORTS;CRYPTOPP_IMPORTS;_DEBUG;_WINDOWS;_USRDLL;DATABASEOP_LIBRARY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(BOOST_ROOT);$(SolutionDir)include\mysql;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-D_CRT_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
@@ -120,8 +120,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)lib\mysql\$(Platform)\$(Configuration);</AdditionalLibraryDirectories>
-      <AdditionalDependencies>mysqlcppconn-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib\mysql\$(Platform)\$(Configuration);$(SolutionDir)lib\cryptopp\$(Platform)\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>mysqlcppconn-static.lib;cryptopp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -131,7 +131,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;CPPCONN_LIB_BUILD;NDEBUG;_WINDOWS;_USRDLL;DATABASEOP_LIBRARY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;CPPCONN_LIB_BUILD;CRYPTOPP_IMPORTS;NDEBUG;_WINDOWS;_USRDLL;DATABASEOP_LIBRARY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(BOOST_ROOT);$(SolutionDir)include\mysql;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-D_CRT_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
@@ -141,8 +141,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)lib\mysql\$(Platform)\$(Configuration);</AdditionalLibraryDirectories>
-      <AdditionalDependencies>mysqlcppconn-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib\mysql\$(Platform)\$(Configuration);$(SolutionDir)lib\cryptopp\$(Platform)\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>mysqlcppconn-static.lib;cryptlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -152,7 +152,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;CPPCONN_LIB_BUILD;NDEBUG;_WINDOWS;_USRDLL;DATABASEOP_LIBRARY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;CPPCONN_LIB_BUILD;CRYPTOPP_IMPORTS;CRYPTOPP_IMPORTS;NDEBUG;_WINDOWS;_USRDLL;DATABASEOP_LIBRARY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(BOOST_ROOT);$(SolutionDir)include\mysql;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-D_CRT_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
@@ -163,8 +163,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)lib\mysql\$(Platform)\$(Configuration);</AdditionalLibraryDirectories>
-      <AdditionalDependencies>mysqlcppconn-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib\mysql\$(Platform)\$(Configuration);$(SolutionDir)lib\cryptopp\$(Platform)\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>mysqlcppconn-static.lib;cryptopp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -172,7 +172,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractConnectionManager.h" />
+    <ClInclude Include="AESCrypto.h" />
     <ClInclude Include="ExchangeRouterDAO.h" />
+    <ClInclude Include="MarketDataDAO.h" />
     <ClInclude Include="ModelParamsDAO.h" />
     <ClInclude Include="MySqlConnectionManager.h" />
     <ClInclude Include="ConnectionPool.h" />
@@ -193,7 +195,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AbstractConnectionManager.cpp" />
+    <ClCompile Include="AESCrypto.cpp" />
     <ClCompile Include="ExchangeRouterDAO.cpp" />
+    <ClCompile Include="MarketDataDAO.cpp" />
     <ClCompile Include="ModelParamsDAO.cpp" />
     <ClCompile Include="MySqlConnectionManager.cpp" />
     <ClCompile Include="ContractDAO.cpp" />

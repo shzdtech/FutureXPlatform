@@ -224,6 +224,7 @@
     <ClCompile Include="PBUserAccountSerializer.cpp" />
     <ClCompile Include="PBUserParamSerializer.cpp" />
     <ClCompile Include="PBUserPositionSerializer.cpp" />
+    <ClCompile Include="PBValuationRiskSerializer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Protos\businessobj.pb.h" />
@@ -255,6 +256,7 @@
     <ClInclude Include="PBUserAccountSerializer.h" />
     <ClInclude Include="PBUserParamSerializer.h" />
     <ClInclude Include="PBUserPositionSerializer.h" />
+    <ClInclude Include="PBValuationRiskSerializer.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>

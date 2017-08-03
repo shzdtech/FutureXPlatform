@@ -57,7 +57,6 @@ dataobj_ptr OTCUpdateStrategy::HandleRequest(const uint32_t serialId, const data
 			strategy_ptr->AutoOrderSettings.BidQV = pStrategyDO->AutoOrderSettings.BidQV;
 			strategy_ptr->AutoOrderSettings.AskQV = pStrategyDO->AutoOrderSettings.AskQV;
 			strategy_ptr->AutoOrderSettings.MaxAutoTrade = pStrategyDO->AutoOrderSettings.MaxAutoTrade;
-			strategy_ptr->AutoOrderSettings.BidNotCross = pStrategyDO->AutoOrderSettings.BidNotCross;
 			strategy_ptr->AutoOrderSettings.CloseMode = pStrategyDO->AutoOrderSettings.CloseMode;
 			strategy_ptr->AutoOrderSettings.TIF = pStrategyDO->AutoOrderSettings.TIF;
 			strategy_ptr->AutoOrderSettings.VolCondition = pStrategyDO->AutoOrderSettings.VolCondition;
@@ -87,9 +86,25 @@ dataobj_ptr OTCUpdateStrategy::HandleRequest(const uint32_t serialId, const data
 				StrategyContractDAO::UpdateStrategy(*strategy_ptr);
 			}
 
+			if (strategy_ptr->TickSizeMult != pStrategyDO->TickSizeMult ||
+				strategy_ptr->NotCross != pStrategyDO->NotCross)
+			{
+				strategy_ptr->TickSizeMult = pStrategyDO->TickSizeMult;
+				strategy_ptr->NotCross = pStrategyDO->NotCross;
+				pWorkerProc->TriggerPricingByStrategy(*strategy_ptr);
+			}
+			
+
 			if (strategy_ptr->Hedging)
 			{
-				pWorkerProc->GetOTCTradeProcessor()->TriggerAutoOrderUpdating(*strategy_ptr);
+				if (CheckAllowTrade(session, false))
+				{
+					pWorkerProc->GetOTCTradeProcessor()->TriggerAutoOrderUpdating(*strategy_ptr);
+				}
+				else
+				{
+					strategy_ptr->Hedging = false;
+				}
 			}
 			else
 			{

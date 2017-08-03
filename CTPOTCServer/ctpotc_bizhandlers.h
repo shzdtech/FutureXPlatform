@@ -5,5 +5,6 @@
 #include "CTPOTCLogin.h"
 #include "CTPSimMarketData.h"
 #include "CTPOTCQueryRisk.h"
+#include "CTPOTCQueryValuationRisk.h"
 
 #endif

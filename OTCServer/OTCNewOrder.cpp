@@ -26,6 +26,7 @@
 dataobj_ptr OTCNewOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
+	CheckAllowTrade(session);
 
 	OrderDO_Ptr ret;
 

@@ -135,6 +135,12 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* PBPositionCompareList_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   PBPositionCompareList_reflection_ = NULL;
+const ::google::protobuf::Descriptor* PBValuationContract_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  PBValuationContract_reflection_ = NULL;
+const ::google::protobuf::Descriptor* PBValuationRisk_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  PBValuationRisk_reflection_ = NULL;
 
 }  // namespace
 
@@ -178,7 +184,7 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBInstrumentList, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBInstrumentList, _is_default_instance_));
   PBMarketData_descriptor_ = file->message_type(2);
-  static const int PBMarketData_offsets_[24] = {
+  static const int PBMarketData_offsets_[25] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMarketData, header_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMarketData, exchange_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMarketData, contract_),
@@ -203,6 +209,7 @@ void protobuf_AssignDesc_businessobj_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMarketData, averageprice_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMarketData, updatetime_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMarketData, tradingday_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBMarketData, closevalue_),
   };
   PBMarketData_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
@@ -506,7 +513,7 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategyList, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBStrategyList, _is_default_instance_));
   PBRisk_descriptor_ = file->message_type(17);
-  static const int PBRisk_offsets_[10] = {
+  static const int PBRisk_offsets_[11] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBRisk, header_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBRisk, exchange_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBRisk, contract_),
@@ -517,6 +524,7 @@ void protobuf_AssignDesc_businessobj_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBRisk, gamma_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBRisk, vega_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBRisk, rho_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBRisk, price_),
   };
   PBRisk_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
@@ -1013,6 +1021,43 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       sizeof(PBPositionCompareList),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPositionCompareList, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPositionCompareList, _is_default_instance_));
+  PBValuationContract_descriptor_ = file->message_type(37);
+  static const int PBValuationContract_offsets_[4] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBValuationContract, exchange_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBValuationContract, contract_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBValuationContract, price_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBValuationContract, volatility_),
+  };
+  PBValuationContract_reflection_ =
+    ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
+      PBValuationContract_descriptor_,
+      PBValuationContract::default_instance_,
+      PBValuationContract_offsets_,
+      -1,
+      -1,
+      -1,
+      sizeof(PBValuationContract),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBValuationContract, _internal_metadata_),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBValuationContract, _is_default_instance_));
+  PBValuationRisk_descriptor_ = file->message_type(38);
+  static const int PBValuationRisk_offsets_[5] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBValuationRisk, header_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBValuationRisk, contractvalue_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBValuationRisk, daysremain_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBValuationRisk, interest_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBValuationRisk, portfolio_),
+  };
+  PBValuationRisk_reflection_ =
+    ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
+      PBValuationRisk_descriptor_,
+      PBValuationRisk::default_instance_,
+      PBValuationRisk_offsets_,
+      -1,
+      -1,
+      -1,
+      sizeof(PBValuationRisk),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBValuationRisk, _internal_metadata_),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBValuationRisk, _is_default_instance_));
 }
 
 namespace {
@@ -1099,6 +1144,10 @@ void protobuf_RegisterTypes(const ::std::string&) {
       PBPositionCompare_descriptor_, &PBPositionCompare::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
       PBPositionCompareList_descriptor_, &PBPositionCompareList::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+      PBValuationContract_descriptor_, &PBValuationContract::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+      PBValuationRisk_descriptor_, &PBValuationRisk::default_instance());
 }
 
 }  // namespace
@@ -1178,6 +1227,10 @@ void protobuf_ShutdownFile_businessobj_2eproto() {
   delete PBPositionCompare_reflection_;
   delete PBPositionCompareList::default_instance_;
   delete PBPositionCompareList_reflection_;
+  delete PBValuationContract::default_instance_;
+  delete PBValuationContract_reflection_;
+  delete PBValuationRisk::default_instance_;
+  delete PBValuationRisk_reflection_;
 }
 
 void protobuf_AddDesc_businessobj_2eproto() {
@@ -1187,240 +1240,247 @@ void protobuf_AddDesc_businessobj_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::Micro::Future::Message::protobuf_AddDesc_commondefine_2eproto();
-  ::Micro::Future::Message::protobuf_AddDesc_modelalgorithm_2eproto();
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\021businessobj.proto\022\035Micro.Future.Messag"
-    "e.Business\032\022commondefine.proto\032\024modelalg"
-    "orithm.proto\"2\n\014PBInstrument\022\020\n\010exchange"
-    "\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\"\205\001\n\020PBInstrumen"
-    "tList\0220\n\006header\030\001 \001(\0132 .Micro.Future.Mes"
-    "sage.DataHeader\022\?\n\ninstrument\030\002 \003(\0132+.Mi"
-    "cro.Future.Message.Business.PBInstrument"
-    "\"\207\004\n\014PBMarketData\0220\n\006header\030\001 \001(\0132 .Micr"
-    "o.Future.Message.DataHeader\022\020\n\010exchange\030"
-    "\002 \001(\t\022\020\n\010contract\030\003 \001(\t\022\025\n\rpreCloseValue"
-    "\030\004 \001(\001\022\021\n\topenValue\030\005 \001(\001\022\020\n\010turnover\030\006 "
-    "\001(\001\022\016\n\006volume\030\007 \001(\005\022\021\n\thighValue\030\010 \001(\001\022\020"
-    "\n\010lowValue\030\t \001(\001\022\022\n\nmatchPrice\030\n \001(\001\022\020\n\010"
-    "askPrice\030\013 \003(\001\022\021\n\taskVolume\030\014 \003(\005\022\020\n\010bid"
-    "Price\030\r \003(\001\022\021\n\tbidVolume\030\016 \003(\005\022\026\n\016preSet"
-    "tlePrice\030\017 \001(\001\022\023\n\013priceChange\030\020 \001(\001\022\023\n\013s"
-    "ettlePrice\030\021 \001(\001\022\021\n\thighLimit\030\022 \001(\001\022\020\n\010l"
-    "owLimit\030\023 \001(\001\022\027\n\017preOpenInterest\030\024 \001(\001\022\024"
-    "\n\014openInterest\030\025 \001(\001\022\024\n\014averagePrice\030\026 \001"
-    "(\001\022\022\n\nupdateTime\030\027 \001(\005\022\022\n\ntradingDay\030\030 \001"
-    "(\005\"\205\001\n\020PBMarketDataList\0220\n\006header\030\001 \001(\0132"
-    " .Micro.Future.Message.DataHeader\022\?\n\nmar"
-    "ketData\030\002 \003(\0132+.Micro.Future.Message.Bus"
-    "iness.PBMarketData\"I\n\017PBHedgeContract\022\020\n"
-    "\010exchange\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022\022\n\nund"
-    "erlying\030\003 \001(\t\"\315\001\n\013PBPortfolio\0220\n\006header\030"
-    "\001 \001(\0132 .Micro.Future.Message.DataHeader\022"
-    "\014\n\004name\030\002 \001(\t\022\022\n\nhedgeDelay\030\003 \001(\005\022\021\n\tthr"
-    "eshold\030\004 \001(\001\022\017\n\007hedging\030\005 \001(\010\022F\n\016hedgeCo"
-    "ntracts\030\006 \003(\0132..Micro.Future.Message.Bus"
-    "iness.PBHedgeContract\"\202\001\n\017PBPortfolioLis"
-    "t\0220\n\006header\030\001 \001(\0132 .Micro.Future.Message"
-    ".DataHeader\022=\n\tportfolio\030\002 \003(\0132*.Micro.F"
-    "uture.Message.Business.PBPortfolio\"\253\001\n\rP"
-    "BPricingData\0220\n\006header\030\001 \001(\0132 .Micro.Fut"
-    "ure.Message.DataHeader\022\020\n\010exchange\030\002 \001(\t"
-    "\022\020\n\010contract\030\003 \001(\t\022\020\n\010askPrice\030\004 \001(\001\022\020\n\010"
-    "bidPrice\030\005 \001(\001\022\017\n\007askSize\030\006 \001(\005\022\017\n\007bidSi"
-    "ze\030\007 \001(\005\"\210\001\n\021PBPricingDataList\022A\n\013pricin"
-    "gData\030\001 \003(\0132,.Micro.Future.Message.Busin"
-    "ess.PBPricingData\0220\n\006header\030\002 \001(\0132 .Micr"
-    "o.Future.Message.DataHeader\"Z\n\022PBOptionM"
-    "arketData\022\020\n\010askPrice\030\001 \001(\001\022\020\n\010bidPrice\030"
-    "\002 \001(\001\022\017\n\007askSize\030\003 \001(\005\022\017\n\007bidSize\030\004 \001(\005\""
-    "C\n\023PBImpliedVolatility\022\025\n\raskVolatility\030"
-    "\001 \001(\001\022\025\n\rbidVolatility\030\002 \001(\001\"\341\001\n\014PBOptio"
-    "nData\022\020\n\010askPrice\030\001 \001(\001\022\020\n\010bidPrice\030\002 \001("
-    "\001\022\017\n\007askSize\030\003 \001(\005\022\017\n\007bidSize\030\004 \001(\005\022\025\n\ra"
-    "skVolatility\030\005 \001(\001\022\025\n\rbidVolatility\030\006 \001("
-    "\001\022\025\n\rmidVolatility\030\007 \001(\001\022\r\n\005delta\030\010 \001(\001\022"
-    "\r\n\005theta\030\t \001(\001\022\r\n\005gamma\030\n \001(\001\022\014\n\004vega\030\013 "
-    "\001(\001\022\013\n\003rho\030\014 \001(\001\"\313\001\n\022PBWingsModelReturn\022"
-    "\r\n\005f_atm\030\001 \001(\001\022\r\n\005f_ref\030\002 \001(\001\022\r\n\005f_syn\030\003"
-    " \001(\001\022\020\n\010vol_curr\030\005 \001(\001\022\027\n\017vol_curr_offse"
-    "t\030\006 \001(\001\022\022\n\nslope_curr\030\007 \001(\001\022\031\n\021slope_cur"
-    "r_offset\030\010 \001(\001\022\n\n\002x0\030\t \001(\001\022\n\n\002x1\030\013 \001(\001\022\n"
-    "\n\002x2\030\r \001(\001\022\n\n\002x3\030\017 \001(\001\"\312\003\n\031PBTradingDesk"
-    "OptionParams\0220\n\006header\030\001 \001(\0132 .Micro.Fut"
-    "ure.Message.DataHeader\022\020\n\010exchange\030\002 \001(\t"
-    "\022\020\n\010contract\030\003 \001(\t\022E\n\nmarketData\030\004 \001(\01321"
-    ".Micro.Future.Message.Business.PBOptionM"
-    "arketData\022F\n\nimpliedVol\030\005 \001(\01322.Micro.Fu"
-    "ture.Message.Business.PBImpliedVolatilit"
-    "y\022=\n\010theoData\030\006 \001(\0132+.Micro.Future.Messa"
-    "ge.Business.PBOptionData\022F\n\013wingsReturn\030"
-    "\007 \001(\01321.Micro.Future.Message.Business.PB"
-    "WingsModelReturn\022A\n\014theoDataTemp\030\010 \001(\0132+"
-    ".Micro.Future.Message.Business.PBOptionD"
-    "ata\"W\n\021PBPricingContract\022\020\n\010exchange\030\001 \001"
-    "(\t\022\020\n\010contract\030\002 \001(\t\022\016\n\006weight\030\003 \001(\001\022\016\n\006"
-    "adjust\030\004 \001(\001\"\365\005\n\nPBStrategy\0220\n\006header\030\001 "
-    "\001(\0132 .Micro.Future.Message.DataHeader\022\020\n"
-    "\010exchange\030\002 \001(\t\022\020\n\010contract\030\003 \001(\t\022\022\n\nund"
-    "erlying\030\004 \001(\t\022\016\n\006symbol\030\005 \001(\t\022\017\n\007hedging"
-    "\030\006 \001(\010\022\022\n\nbidEnabled\030\007 \001(\010\022\022\n\naskEnabled"
-    "\030\010 \001(\010\022\r\n\005bidQV\030\t \001(\005\022\r\n\005askQV\030\n \001(\005\022\r\n\005"
-    "depth\030\013 \001(\005\022J\n\020pricingContracts\030\014 \003(\01320."
-    "Micro.Future.Message.Business.PBPricingC"
-    "ontract\022\024\n\014pricingModel\030\r \001(\t\022F\n\014ivmCont"
-    "racts\030\016 \003(\01320.Micro.Future.Message.Busin"
-    "ess.PBPricingContract\022\017\n\007ivModel\030\017 \001(\t\022F"
-    "\n\014volContracts\030\020 \003(\01320.Micro.Future.Mess"
-    "age.Business.PBPricingContract\022\020\n\010volMod"
-    "el\030\021 \001(\t\022\024\n\014baseExchange\030\022 \001(\t\022\024\n\014baseCo"
-    "ntract\030\023 \001(\t\022\021\n\tportfolio\030\024 \001(\t\022\024\n\014maxAu"
-    "toTrade\030\025 \001(\005\022\022\n\nbidCounter\030\026 \001(\005\022\022\n\nask"
-    "Counter\030\027 \001(\005\022\023\n\013bidNotCross\030\030 \001(\010\022\021\n\tcl"
-    "oseMode\030\031 \001(\010\022\031\n\021limitOrderCounter\030\032 \001(\005"
-    "\022\013\n\003tif\030\033 \001(\005\022\017\n\007volCond\030\034 \001(\005\022\024\n\014tickSi"
-    "zeMult\030\035 \001(\005\"\177\n\016PBStrategyList\0220\n\006header"
+    "e.Business\032\022commondefine.proto\"2\n\014PBInst"
+    "rument\022\020\n\010exchange\030\001 \001(\t\022\020\n\010contract\030\002 \001"
+    "(\t\"\205\001\n\020PBInstrumentList\0220\n\006header\030\001 \001(\0132"
+    " .Micro.Future.Message.DataHeader\022\?\n\nins"
+    "trument\030\002 \003(\0132+.Micro.Future.Message.Bus"
+    "iness.PBInstrument\"\233\004\n\014PBMarketData\0220\n\006h"
+    "eader\030\001 \001(\0132 .Micro.Future.Message.DataH"
+    "eader\022\020\n\010exchange\030\002 \001(\t\022\020\n\010contract\030\003 \001("
+    "\t\022\025\n\rpreCloseValue\030\004 \001(\001\022\021\n\topenValue\030\005 "
+    "\001(\001\022\020\n\010turnover\030\006 \001(\001\022\016\n\006volume\030\007 \001(\005\022\021\n"
+    "\thighValue\030\010 \001(\001\022\020\n\010lowValue\030\t \001(\001\022\022\n\nma"
+    "tchPrice\030\n \001(\001\022\020\n\010askPrice\030\013 \003(\001\022\021\n\taskV"
+    "olume\030\014 \003(\005\022\020\n\010bidPrice\030\r \003(\001\022\021\n\tbidVolu"
+    "me\030\016 \003(\005\022\026\n\016preSettlePrice\030\017 \001(\001\022\023\n\013pric"
+    "eChange\030\020 \001(\001\022\023\n\013settlePrice\030\021 \001(\001\022\021\n\thi"
+    "ghLimit\030\022 \001(\001\022\020\n\010lowLimit\030\023 \001(\001\022\027\n\017preOp"
+    "enInterest\030\024 \001(\001\022\024\n\014openInterest\030\025 \001(\001\022\024"
+    "\n\014averagePrice\030\026 \001(\001\022\022\n\nupdateTime\030\027 \001(\005"
+    "\022\022\n\ntradingDay\030\030 \001(\005\022\022\n\ncloseValue\030\031 \001(\001"
+    "\"\205\001\n\020PBMarketDataList\0220\n\006header\030\001 \001(\0132 ."
+    "Micro.Future.Message.DataHeader\022\?\n\nmarke"
+    "tData\030\002 \003(\0132+.Micro.Future.Message.Busin"
+    "ess.PBMarketData\"I\n\017PBHedgeContract\022\020\n\010e"
+    "xchange\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022\022\n\nunder"
+    "lying\030\003 \001(\t\"\315\001\n\013PBPortfolio\0220\n\006header\030\001 "
+    "\001(\0132 .Micro.Future.Message.DataHeader\022\014\n"
+    "\004name\030\002 \001(\t\022\022\n\nhedgeDelay\030\003 \001(\005\022\021\n\tthres"
+    "hold\030\004 \001(\001\022\017\n\007hedging\030\005 \001(\010\022F\n\016hedgeCont"
+    "racts\030\006 \003(\0132..Micro.Future.Message.Busin"
+    "ess.PBHedgeContract\"\202\001\n\017PBPortfolioList\022"
+    "0\n\006header\030\001 \001(\0132 .Micro.Future.Message.D"
+    "ataHeader\022=\n\tportfolio\030\002 \003(\0132*.Micro.Fut"
+    "ure.Message.Business.PBPortfolio\"\253\001\n\rPBP"
+    "ricingData\0220\n\006header\030\001 \001(\0132 .Micro.Futur"
+    "e.Message.DataHeader\022\020\n\010exchange\030\002 \001(\t\022\020"
+    "\n\010contract\030\003 \001(\t\022\020\n\010askPrice\030\004 \001(\001\022\020\n\010bi"
+    "dPrice\030\005 \001(\001\022\017\n\007askSize\030\006 \001(\005\022\017\n\007bidSize"
+    "\030\007 \001(\005\"\210\001\n\021PBPricingDataList\022A\n\013pricingD"
+    "ata\030\001 \003(\0132,.Micro.Future.Message.Busines"
+    "s.PBPricingData\0220\n\006header\030\002 \001(\0132 .Micro."
+    "Future.Message.DataHeader\"Z\n\022PBOptionMar"
+    "ketData\022\020\n\010askPrice\030\001 \001(\001\022\020\n\010bidPrice\030\002 "
+    "\001(\001\022\017\n\007askSize\030\003 \001(\005\022\017\n\007bidSize\030\004 \001(\005\"C\n"
+    "\023PBImpliedVolatility\022\025\n\raskVolatility\030\001 "
+    "\001(\001\022\025\n\rbidVolatility\030\002 \001(\001\"\341\001\n\014PBOptionD"
+    "ata\022\020\n\010askPrice\030\001 \001(\001\022\020\n\010bidPrice\030\002 \001(\001\022"
+    "\017\n\007askSize\030\003 \001(\005\022\017\n\007bidSize\030\004 \001(\005\022\025\n\rask"
+    "Volatility\030\005 \001(\001\022\025\n\rbidVolatility\030\006 \001(\001\022"
+    "\025\n\rmidVolatility\030\007 \001(\001\022\r\n\005delta\030\010 \001(\001\022\r\n"
+    "\005theta\030\t \001(\001\022\r\n\005gamma\030\n \001(\001\022\014\n\004vega\030\013 \001("
+    "\001\022\013\n\003rho\030\014 \001(\001\"\313\001\n\022PBWingsModelReturn\022\r\n"
+    "\005f_atm\030\001 \001(\001\022\r\n\005f_ref\030\002 \001(\001\022\r\n\005f_syn\030\003 \001"
+    "(\001\022\020\n\010vol_curr\030\005 \001(\001\022\027\n\017vol_curr_offset\030"
+    "\006 \001(\001\022\022\n\nslope_curr\030\007 \001(\001\022\031\n\021slope_curr_"
+    "offset\030\010 \001(\001\022\n\n\002x0\030\t \001(\001\022\n\n\002x1\030\013 \001(\001\022\n\n\002"
+    "x2\030\r \001(\001\022\n\n\002x3\030\017 \001(\001\"\312\003\n\031PBTradingDeskOp"
+    "tionParams\0220\n\006header\030\001 \001(\0132 .Micro.Futur"
+    "e.Message.DataHeader\022\020\n\010exchange\030\002 \001(\t\022\020"
+    "\n\010contract\030\003 \001(\t\022E\n\nmarketData\030\004 \001(\01321.M"
+    "icro.Future.Message.Business.PBOptionMar"
+    "ketData\022F\n\nimpliedVol\030\005 \001(\01322.Micro.Futu"
+    "re.Message.Business.PBImpliedVolatility\022"
+    "=\n\010theoData\030\006 \001(\0132+.Micro.Future.Message"
+    ".Business.PBOptionData\022F\n\013wingsReturn\030\007 "
+    "\001(\01321.Micro.Future.Message.Business.PBWi"
+    "ngsModelReturn\022A\n\014theoDataTemp\030\010 \001(\0132+.M"
+    "icro.Future.Message.Business.PBOptionDat"
+    "a\"W\n\021PBPricingContract\022\020\n\010exchange\030\001 \001(\t"
+    "\022\020\n\010contract\030\002 \001(\t\022\016\n\006weight\030\003 \001(\001\022\016\n\006ad"
+    "just\030\004 \001(\001\"\365\005\n\nPBStrategy\0220\n\006header\030\001 \001("
+    "\0132 .Micro.Future.Message.DataHeader\022\020\n\010e"
+    "xchange\030\002 \001(\t\022\020\n\010contract\030\003 \001(\t\022\022\n\nunder"
+    "lying\030\004 \001(\t\022\016\n\006symbol\030\005 \001(\t\022\017\n\007hedging\030\006"
+    " \001(\010\022\022\n\nbidEnabled\030\007 \001(\010\022\022\n\naskEnabled\030\010"
+    " \001(\010\022\r\n\005bidQV\030\t \001(\005\022\r\n\005askQV\030\n \001(\005\022\r\n\005de"
+    "pth\030\013 \001(\005\022J\n\020pricingContracts\030\014 \003(\01320.Mi"
+    "cro.Future.Message.Business.PBPricingCon"
+    "tract\022\024\n\014pricingModel\030\r \001(\t\022F\n\014ivmContra"
+    "cts\030\016 \003(\01320.Micro.Future.Message.Busines"
+    "s.PBPricingContract\022\017\n\007ivModel\030\017 \001(\t\022F\n\014"
+    "volContracts\030\020 \003(\01320.Micro.Future.Messag"
+    "e.Business.PBPricingContract\022\020\n\010volModel"
+    "\030\021 \001(\t\022\024\n\014baseExchange\030\022 \001(\t\022\024\n\014baseCont"
+    "ract\030\023 \001(\t\022\021\n\tportfolio\030\024 \001(\t\022\024\n\014maxAuto"
+    "Trade\030\025 \001(\005\022\022\n\nbidCounter\030\026 \001(\005\022\022\n\naskCo"
+    "unter\030\027 \001(\005\022\023\n\013bidNotCross\030\030 \001(\010\022\021\n\tclos"
+    "eMode\030\031 \001(\010\022\031\n\021limitOrderCounter\030\032 \001(\005\022\013"
+    "\n\003tif\030\033 \001(\005\022\017\n\007volCond\030\034 \001(\005\022\024\n\014tickSize"
+    "Mult\030\035 \001(\005\"\177\n\016PBStrategyList\0220\n\006header\030\001"
+    " \001(\0132 .Micro.Future.Message.DataHeader\022;"
+    "\n\010strategy\030\002 \003(\0132).Micro.Future.Message."
+    "Business.PBStrategy\"\333\001\n\006PBRisk\0220\n\006header"
     "\030\001 \001(\0132 .Micro.Future.Message.DataHeader"
-    "\022;\n\010strategy\030\002 \003(\0132).Micro.Future.Messag"
-    "e.Business.PBStrategy\"\314\001\n\006PBRisk\0220\n\006head"
-    "er\030\001 \001(\0132 .Micro.Future.Message.DataHead"
-    "er\022\020\n\010exchange\030\002 \001(\t\022\020\n\010contract\030\003 \001(\t\022\022"
-    "\n\nunderlying\030\004 \001(\t\022\020\n\010position\030\005 \001(\005\022\r\n\005"
-    "delta\030\006 \001(\001\022\r\n\005theta\030\007 \001(\001\022\r\n\005gamma\030\010 \001("
-    "\001\022\014\n\004vega\030\t \001(\001\022\013\n\003rho\030\n \001(\001\"s\n\nPBRiskLi"
-    "st\0220\n\006header\030\001 \001(\0132 .Micro.Future.Messag"
-    "e.DataHeader\0223\n\004risk\030\002 \003(\0132%.Micro.Futur"
-    "e.Message.Business.PBRisk\"V\n\017PBContractP"
-    "aram\022\020\n\010exchange\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t"
-    "\022\020\n\010depthVol\030\003 \001(\005\022\r\n\005gamma\030\004 \001(\001\"\207\001\n\023PB"
-    "ContractParamList\0220\n\006header\030\001 \001(\0132 .Micr"
-    "o.Future.Message.DataHeader\022>\n\006params\030\002 "
-    "\003(\0132..Micro.Future.Message.Business.PBCo"
-    "ntractParam\"F\n\016PBOTCUserParam\022\020\n\010exchang"
-    "e\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022\020\n\010quantity\030\003 "
-    "\001(\001\"\205\001\n\022PBOTCUserParamList\0220\n\006header\030\001 \001"
-    "(\0132 .Micro.Future.Message.DataHeader\022=\n\006"
-    "params\030\002 \003(\0132-.Micro.Future.Message.Busi"
-    "ness.PBOTCUserParam\"\230\002\n\016PBOrderRequest\0220"
-    "\n\006header\030\001 \001(\0132 .Micro.Future.Message.Da"
-    "taHeader\022\017\n\007orderID\030\002 \001(\004\022\022\n\norderSysID\030"
-    "\003 \001(\004\022\020\n\010exchange\030\004 \001(\t\022\020\n\010contract\030\005 \001("
-    "\t\022\022\n\nlimitPrice\030\006 \001(\001\022\016\n\006volume\030\007 \001(\005\022\020\n"
-    "\010execType\030\010 \001(\005\022\013\n\003tif\030\t \001(\005\022\021\n\tdirectio"
-    "n\030\n \001(\005\022\021\n\topenclose\030\013 \001(\005\022\021\n\tportfolio\030"
-    "\014 \001(\t\022\017\n\007volCond\030\r \001(\005\"\327\004\n\013PBOrderInfo\0220"
-    "\n\006header\030\001 \001(\0132 .Micro.Future.Message.Da"
-    "taHeader\022\017\n\007orderID\030\002 \001(\004\022\022\n\norderSysID\030"
-    "\003 \001(\004\022\020\n\010brokerID\030\004 \001(\t\022\022\n\ninvestorID\030\005 "
-    "\001(\t\022\020\n\010exchange\030\006 \001(\t\022\020\n\010contract\030\007 \001(\t\022"
-    "\020\n\010execType\030\010 \001(\005\022\013\n\003tif\030\t \001(\005\022\023\n\013tradin"
-    "gType\030\n \001(\005\022\021\n\tdirection\030\013 \001(\005\022\022\n\nlimitP"
-    "rice\030\014 \001(\001\022\021\n\tstopPrice\030\r \001(\001\022\023\n\013orderSt"
-    "atus\030\016 \001(\005\022\021\n\torderType\030\017 \001(\005\022\016\n\006volume\030"
-    "\020 \001(\005\022\022\n\ninsertTime\030\021 \001(\t\022\022\n\nupdateTime\030"
-    "\022 \001(\t\022\022\n\ncancelTime\030\023 \001(\t\022\024\n\014volumeTrade"
-    "d\030\024 \001(\005\022\024\n\014volumeRemain\030\025 \001(\005\022\027\n\017volumeC"
-    "ondition\030\026 \001(\005\022\022\n\ntradingDay\030\027 \001(\005\022\016\n\006ac"
-    "tive\030\030 \001(\010\022\021\n\topenclose\030\031 \001(\005\022\017\n\007message"
-    "\030\032 \001(\014\022\021\n\tsessionID\030\033 \001(\005\022\021\n\tportfolio\030\034"
-    " \001(\t\022\022\n\ninsertDate\030\035 \001(\t\"\207\003\n\013PBTradeInfo"
+    "\022\020\n\010exchange\030\002 \001(\t\022\020\n\010contract\030\003 \001(\t\022\022\n\n"
+    "underlying\030\004 \001(\t\022\020\n\010position\030\005 \001(\005\022\r\n\005de"
+    "lta\030\006 \001(\001\022\r\n\005theta\030\007 \001(\001\022\r\n\005gamma\030\010 \001(\001\022"
+    "\014\n\004vega\030\t \001(\001\022\013\n\003rho\030\n \001(\001\022\r\n\005price\030\013 \001("
+    "\001\"s\n\nPBRiskList\0220\n\006header\030\001 \001(\0132 .Micro."
+    "Future.Message.DataHeader\0223\n\004risk\030\002 \003(\0132"
+    "%.Micro.Future.Message.Business.PBRisk\"V"
+    "\n\017PBContractParam\022\020\n\010exchange\030\001 \001(\t\022\020\n\010c"
+    "ontract\030\002 \001(\t\022\020\n\010depthVol\030\003 \001(\005\022\r\n\005gamma"
+    "\030\004 \001(\001\"\207\001\n\023PBContractParamList\0220\n\006header"
+    "\030\001 \001(\0132 .Micro.Future.Message.DataHeader"
+    "\022>\n\006params\030\002 \003(\0132..Micro.Future.Message."
+    "Business.PBContractParam\"F\n\016PBOTCUserPar"
+    "am\022\020\n\010exchange\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022\020"
+    "\n\010quantity\030\003 \001(\001\"\205\001\n\022PBOTCUserParamList\022"
+    "0\n\006header\030\001 \001(\0132 .Micro.Future.Message.D"
+    "ataHeader\022=\n\006params\030\002 \003(\0132-.Micro.Future"
+    ".Message.Business.PBOTCUserParam\"\230\002\n\016PBO"
+    "rderRequest\0220\n\006header\030\001 \001(\0132 .Micro.Futu"
+    "re.Message.DataHeader\022\017\n\007orderID\030\002 \001(\004\022\022"
+    "\n\norderSysID\030\003 \001(\004\022\020\n\010exchange\030\004 \001(\t\022\020\n\010"
+    "contract\030\005 \001(\t\022\022\n\nlimitPrice\030\006 \001(\001\022\016\n\006vo"
+    "lume\030\007 \001(\005\022\020\n\010execType\030\010 \001(\005\022\013\n\003tif\030\t \001("
+    "\005\022\021\n\tdirection\030\n \001(\005\022\021\n\topenclose\030\013 \001(\005\022"
+    "\021\n\tportfolio\030\014 \001(\t\022\017\n\007volCond\030\r \001(\005\"\327\004\n\013"
+    "PBOrderInfo\0220\n\006header\030\001 \001(\0132 .Micro.Futu"
+    "re.Message.DataHeader\022\017\n\007orderID\030\002 \001(\004\022\022"
+    "\n\norderSysID\030\003 \001(\004\022\020\n\010brokerID\030\004 \001(\t\022\022\n\n"
+    "investorID\030\005 \001(\t\022\020\n\010exchange\030\006 \001(\t\022\020\n\010co"
+    "ntract\030\007 \001(\t\022\020\n\010execType\030\010 \001(\005\022\013\n\003tif\030\t "
+    "\001(\005\022\023\n\013tradingType\030\n \001(\005\022\021\n\tdirection\030\013 "
+    "\001(\005\022\022\n\nlimitPrice\030\014 \001(\001\022\021\n\tstopPrice\030\r \001"
+    "(\001\022\023\n\013orderStatus\030\016 \001(\005\022\021\n\torderType\030\017 \001"
+    "(\005\022\016\n\006volume\030\020 \001(\005\022\022\n\ninsertTime\030\021 \001(\t\022\022"
+    "\n\nupdateTime\030\022 \001(\t\022\022\n\ncancelTime\030\023 \001(\t\022\024"
+    "\n\014volumeTraded\030\024 \001(\005\022\024\n\014volumeRemain\030\025 \001"
+    "(\005\022\027\n\017volumeCondition\030\026 \001(\005\022\022\n\ntradingDa"
+    "y\030\027 \001(\005\022\016\n\006active\030\030 \001(\010\022\021\n\topenclose\030\031 \001"
+    "(\005\022\017\n\007message\030\032 \001(\014\022\021\n\tsessionID\030\033 \001(\005\022\021"
+    "\n\tportfolio\030\034 \001(\t\022\022\n\ninsertDate\030\035 \001(\t\"\207\003"
+    "\n\013PBTradeInfo\0220\n\006header\030\001 \001(\0132 .Micro.Fu"
+    "ture.Message.DataHeader\022\017\n\007tradeID\030\002 \001(\004"
+    "\022\021\n\tdirection\030\003 \001(\005\022\021\n\topenclose\030\004 \001(\005\022\022"
+    "\n\norderSysID\030\005 \001(\004\022\017\n\007orderID\030\006 \001(\004\022\r\n\005p"
+    "rice\030\007 \001(\001\022\016\n\006volume\030\010 \001(\005\022\020\n\010brokerID\030\t"
+    " \001(\t\022\022\n\ninvestorID\030\n \001(\t\022\020\n\010exchange\030\013 \001"
+    "(\t\022\020\n\010contract\030\014 \001(\t\022\016\n\006userID\030\r \001(\t\022\021\n\t"
+    "tradeDate\030\016 \001(\t\022\021\n\ttradeTime\030\017 \001(\t\022\021\n\ttr"
+    "adeType\030\020 \001(\005\022\021\n\thedgeFlag\030\021 \001(\005\022\022\n\ncomm"
+    "ission\030\022 \001(\001\022\021\n\tportfolio\030\023 \001(\t\"\231\003\n\nPBPo"
+    "sition\0220\n\006header\030\001 \001(\0132 .Micro.Future.Me"
+    "ssage.DataHeader\022\020\n\010exchange\030\002 \001(\t\022\020\n\010co"
+    "ntract\030\003 \001(\t\022\021\n\tdirection\030\004 \001(\005\022\020\n\010posit"
+    "ion\030\005 \001(\005\022\022\n\nydPosition\030\006 \001(\005\022\030\n\020positio"
+    "nDateFlag\030\007 \001(\005\022\022\n\nopenVolume\030\010 \001(\005\022\023\n\013c"
+    "loseVolume\030\t \001(\005\022\022\n\nopenAmount\030\n \001(\001\022\023\n\013"
+    "closeAmount\030\013 \001(\001\022\014\n\004cost\030\014 \001(\001\022\020\n\010openC"
+    "ost\030\r \001(\001\022\016\n\006profit\030\016 \001(\001\022\023\n\013closeProfit"
+    "\030\017 \001(\001\022\021\n\tuseMargin\030\020 \001(\001\022\021\n\thedgeFlag\030\021"
+    " \001(\005\022\022\n\ntdPosition\030\022 \001(\005\022\021\n\tportfolio\030\023 "
+    "\001(\t\"\275\005\n\rPBAccountInfo\022\020\n\010brokerID\030\002 \001(\t\022"
+    "\021\n\taccountID\030\003 \001(\t\022\023\n\013preMortgage\030\004 \001(\001\022"
+    "\021\n\tpreCredit\030\005 \001(\001\022\022\n\npreDeposit\030\006 \001(\001\022\022"
+    "\n\npreBalance\030\007 \001(\001\022\021\n\tpreMargin\030\010 \001(\001\022\024\n"
+    "\014interestBase\030\t \001(\001\022\020\n\010interest\030\n \001(\001\022\017\n"
+    "\007deposit\030\013 \001(\001\022\020\n\010withdraw\030\014 \001(\001\022\024\n\014froz"
+    "enMargin\030\r \001(\001\022\022\n\nfrozenCash\030\016 \001(\001\022\030\n\020fr"
+    "ozenCommission\030\017 \001(\001\022\022\n\ncurrMargin\030\020 \001(\001"
+    "\022\016\n\006cashIn\030\021 \001(\001\022\022\n\ncommission\030\022 \001(\001\022\023\n\013"
+    "closeProfit\030\023 \001(\001\022\026\n\016positionProfit\030\024 \001("
+    "\001\022\017\n\007balance\030\025 \001(\001\022\021\n\tavailable\030\026 \001(\001\022\025\n"
+    "\rwithdrawQuota\030\027 \001(\001\022\017\n\007reserve\030\030 \001(\001\022\022\n"
+    "\ntradingDay\030\031 \001(\005\022\024\n\014settlementID\030\032 \001(\005\022"
+    "\016\n\006credit\030\033 \001(\001\022\020\n\010mortgage\030\034 \001(\001\022\026\n\016exc"
+    "hangeMargin\030\035 \001(\001\022\026\n\016deliveryMargin\030\036 \001("
+    "\001\022\036\n\026exchangeDeliveryMargin\030\037 \001(\001\022\026\n\016res"
+    "erveBalance\030  \001(\001\0220\n\006header\030! \001(\0132 .Micr"
+    "o.Future.Message.DataHeader\"r\n\014PBMarketI"
+    "nfo\0220\n\006header\030\001 \001(\0132 .Micro.Future.Messa"
+    "ge.DataHeader\022\020\n\010exchange\030\002 \001(\t\022\014\n\004name\030"
+    "\003 \001(\014\022\020\n\010property\030\004 \001(\014\"\214\005\n\016PBContractIn"
+    "fo\022\020\n\010exchange\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022\014"
+    "\n\004name\030\003 \001(\014\022\021\n\tproductID\030\004 \001(\t\022\023\n\013produ"
+    "ctType\030\005 \001(\005\022\024\n\014deliveryYear\030\006 \001(\005\022\025\n\rde"
+    "liveryMonth\030\007 \001(\005\022\034\n\024maxMarketOrderVolum"
+    "e\030\010 \001(\005\022\034\n\024minMarketOrderVolume\030\t \001(\005\022\033\n"
+    "\023maxLimitOrderVolume\030\n \001(\005\022\033\n\023minLimitOr"
+    "derVolume\030\013 \001(\005\022\026\n\016volumeMultiple\030\014 \001(\005\022"
+    "\021\n\tpriceTick\030\r \001(\001\022\022\n\ncreateDate\030\016 \001(\t\022\020"
+    "\n\010openDate\030\017 \001(\t\022\022\n\nexpireDate\030\020 \001(\t\022\026\n\016"
+    "startDelivDate\030\021 \001(\t\022\024\n\014endDelivDate\030\022 \001"
+    "(\t\022\021\n\tlifePhase\030\023 \001(\005\022\021\n\tisTrading\030\024 \001(\010"
+    "\022\024\n\014positionType\030\025 \001(\005\022\030\n\020positionDateTy"
+    "pe\030\026 \001(\005\022\027\n\017longMarginRatio\030\027 \001(\001\022\030\n\020sho"
+    "rtMarginRatio\030\030 \001(\001\022\032\n\022underlyingExchang"
+    "e\030\031 \001(\t\022\032\n\022underlyingContract\030\032 \001(\t\022\024\n\014c"
+    "ontractType\030\033 \001(\005\022\023\n\013strikePrice\030\034 \001(\001\"\213"
+    "\001\n\022PBContractInfoList\0220\n\006header\030\001 \001(\0132 ."
+    "Micro.Future.Message.DataHeader\022C\n\014contr"
+    "actInfo\030\002 \003(\0132-.Micro.Future.Message.Bus"
+    "iness.PBContractInfo\"\214\002\n\017PBBankOpRequest"
     "\0220\n\006header\030\001 \001(\0132 .Micro.Future.Message."
-    "DataHeader\022\017\n\007tradeID\030\002 \001(\004\022\021\n\tdirection"
-    "\030\003 \001(\005\022\021\n\topenclose\030\004 \001(\005\022\022\n\norderSysID\030"
-    "\005 \001(\004\022\017\n\007orderID\030\006 \001(\004\022\r\n\005price\030\007 \001(\001\022\016\n"
-    "\006volume\030\010 \001(\005\022\020\n\010brokerID\030\t \001(\t\022\022\n\ninves"
-    "torID\030\n \001(\t\022\020\n\010exchange\030\013 \001(\t\022\020\n\010contrac"
-    "t\030\014 \001(\t\022\016\n\006userID\030\r \001(\t\022\021\n\ttradeDate\030\016 \001"
-    "(\t\022\021\n\ttradeTime\030\017 \001(\t\022\021\n\ttradeType\030\020 \001(\005"
-    "\022\021\n\thedgeFlag\030\021 \001(\005\022\022\n\ncommission\030\022 \001(\001\022"
-    "\021\n\tportfolio\030\023 \001(\t\"\231\003\n\nPBPosition\0220\n\006hea"
-    "der\030\001 \001(\0132 .Micro.Future.Message.DataHea"
-    "der\022\020\n\010exchange\030\002 \001(\t\022\020\n\010contract\030\003 \001(\t\022"
-    "\021\n\tdirection\030\004 \001(\005\022\020\n\010position\030\005 \001(\005\022\022\n\n"
-    "ydPosition\030\006 \001(\005\022\030\n\020positionDateFlag\030\007 \001"
-    "(\005\022\022\n\nopenVolume\030\010 \001(\005\022\023\n\013closeVolume\030\t "
-    "\001(\005\022\022\n\nopenAmount\030\n \001(\001\022\023\n\013closeAmount\030\013"
-    " \001(\001\022\014\n\004cost\030\014 \001(\001\022\020\n\010openCost\030\r \001(\001\022\016\n\006"
-    "profit\030\016 \001(\001\022\023\n\013closeProfit\030\017 \001(\001\022\021\n\tuse"
-    "Margin\030\020 \001(\001\022\021\n\thedgeFlag\030\021 \001(\005\022\022\n\ntdPos"
-    "ition\030\022 \001(\005\022\021\n\tportfolio\030\023 \001(\t\"\275\005\n\rPBAcc"
-    "ountInfo\022\020\n\010brokerID\030\002 \001(\t\022\021\n\taccountID\030"
-    "\003 \001(\t\022\023\n\013preMortgage\030\004 \001(\001\022\021\n\tpreCredit\030"
-    "\005 \001(\001\022\022\n\npreDeposit\030\006 \001(\001\022\022\n\npreBalance\030"
-    "\007 \001(\001\022\021\n\tpreMargin\030\010 \001(\001\022\024\n\014interestBase"
-    "\030\t \001(\001\022\020\n\010interest\030\n \001(\001\022\017\n\007deposit\030\013 \001("
-    "\001\022\020\n\010withdraw\030\014 \001(\001\022\024\n\014frozenMargin\030\r \001("
-    "\001\022\022\n\nfrozenCash\030\016 \001(\001\022\030\n\020frozenCommissio"
-    "n\030\017 \001(\001\022\022\n\ncurrMargin\030\020 \001(\001\022\016\n\006cashIn\030\021 "
-    "\001(\001\022\022\n\ncommission\030\022 \001(\001\022\023\n\013closeProfit\030\023"
-    " \001(\001\022\026\n\016positionProfit\030\024 \001(\001\022\017\n\007balance\030"
-    "\025 \001(\001\022\021\n\tavailable\030\026 \001(\001\022\025\n\rwithdrawQuot"
-    "a\030\027 \001(\001\022\017\n\007reserve\030\030 \001(\001\022\022\n\ntradingDay\030\031"
-    " \001(\005\022\024\n\014settlementID\030\032 \001(\005\022\016\n\006credit\030\033 \001"
-    "(\001\022\020\n\010mortgage\030\034 \001(\001\022\026\n\016exchangeMargin\030\035"
-    " \001(\001\022\026\n\016deliveryMargin\030\036 \001(\001\022\036\n\026exchange"
-    "DeliveryMargin\030\037 \001(\001\022\026\n\016reserveBalance\030 "
-    " \001(\001\0220\n\006header\030! \001(\0132 .Micro.Future.Mess"
-    "age.DataHeader\"r\n\014PBMarketInfo\0220\n\006header"
+    "DataHeader\022\016\n\006bankID\030\002 \001(\t\022\024\n\014bankBranch"
+    "ID\030\003 \001(\t\022\024\n\014bankPassword\030\004 \001(\t\022\023\n\013bankAc"
+    "count\030\005 \001(\t\022\020\n\010brokerID\030\006 \001(\t\022\026\n\016brokerB"
+    "ranchID\030\007 \001(\t\022\021\n\taccountID\030\010 \001(\t\022\020\n\010pass"
+    "word\030\t \001(\t\022\022\n\ncurrencyID\030\n \001(\t\022\023\n\013tradeA"
+    "mount\030\013 \001(\001\"\210\004\n\016PBBankOpResult\0220\n\006header"
     "\030\001 \001(\0132 .Micro.Future.Message.DataHeader"
-    "\022\020\n\010exchange\030\002 \001(\t\022\014\n\004name\030\003 \001(\014\022\020\n\010prop"
-    "erty\030\004 \001(\014\"\214\005\n\016PBContractInfo\022\020\n\010exchang"
-    "e\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022\014\n\004name\030\003 \001(\014\022"
-    "\021\n\tproductID\030\004 \001(\t\022\023\n\013productType\030\005 \001(\005\022"
-    "\024\n\014deliveryYear\030\006 \001(\005\022\025\n\rdeliveryMonth\030\007"
-    " \001(\005\022\034\n\024maxMarketOrderVolume\030\010 \001(\005\022\034\n\024mi"
-    "nMarketOrderVolume\030\t \001(\005\022\033\n\023maxLimitOrde"
-    "rVolume\030\n \001(\005\022\033\n\023minLimitOrderVolume\030\013 \001"
-    "(\005\022\026\n\016volumeMultiple\030\014 \001(\005\022\021\n\tpriceTick\030"
-    "\r \001(\001\022\022\n\ncreateDate\030\016 \001(\t\022\020\n\010openDate\030\017 "
-    "\001(\t\022\022\n\nexpireDate\030\020 \001(\t\022\026\n\016startDelivDat"
-    "e\030\021 \001(\t\022\024\n\014endDelivDate\030\022 \001(\t\022\021\n\tlifePha"
-    "se\030\023 \001(\005\022\021\n\tisTrading\030\024 \001(\010\022\024\n\014positionT"
-    "ype\030\025 \001(\005\022\030\n\020positionDateType\030\026 \001(\005\022\027\n\017l"
-    "ongMarginRatio\030\027 \001(\001\022\030\n\020shortMarginRatio"
-    "\030\030 \001(\001\022\032\n\022underlyingExchange\030\031 \001(\t\022\032\n\022un"
-    "derlyingContract\030\032 \001(\t\022\024\n\014contractType\030\033"
-    " \001(\005\022\023\n\013strikePrice\030\034 \001(\001\"\213\001\n\022PBContract"
-    "InfoList\0220\n\006header\030\001 \001(\0132 .Micro.Future."
-    "Message.DataHeader\022C\n\014contractInfo\030\002 \003(\013"
-    "2-.Micro.Future.Message.Business.PBContr"
-    "actInfo\"\214\002\n\017PBBankOpRequest\0220\n\006header\030\001 "
-    "\001(\0132 .Micro.Future.Message.DataHeader\022\016\n"
-    "\006bankID\030\002 \001(\t\022\024\n\014bankBranchID\030\003 \001(\t\022\024\n\014b"
-    "ankPassword\030\004 \001(\t\022\023\n\013bankAccount\030\005 \001(\t\022\020"
-    "\n\010brokerID\030\006 \001(\t\022\026\n\016brokerBranchID\030\007 \001(\t"
-    "\022\021\n\taccountID\030\010 \001(\t\022\020\n\010password\030\t \001(\t\022\022\n"
-    "\ncurrencyID\030\n \001(\t\022\023\n\013tradeAmount\030\013 \001(\001\"\210"
-    "\004\n\016PBBankOpResult\0220\n\006header\030\001 \001(\0132 .Micr"
-    "o.Future.Message.DataHeader\022\016\n\006bankID\030\002 "
-    "\001(\t\022\024\n\014bankBranchID\030\003 \001(\t\022\024\n\014bankPasswor"
-    "d\030\004 \001(\t\022\023\n\013bankAccount\030\005 \001(\t\022\020\n\010brokerID"
-    "\030\006 \001(\t\022\026\n\016brokerBranchID\030\007 \001(\t\022\021\n\taccoun"
-    "tID\030\010 \001(\t\022\020\n\010password\030\t \001(\t\022\022\n\ncurrencyI"
-    "D\030\n \001(\t\022\023\n\013tradeAmount\030\013 \001(\001\022\021\n\tserialNu"
-    "m\030\014 \001(\t\022\022\n\ntradingDay\030\r \001(\005\022\021\n\ttradeDate"
-    "\030\016 \001(\t\022\021\n\ttradeTime\030\017 \001(\t\022\021\n\ttradeCode\030\020"
-    " \001(\t\022\022\n\nbankSerial\030\021 \001(\t\022\025\n\rfutureAccTyp"
-    "e\030\022 \001(\005\022\023\n\013bankAccType\030\023 \001(\005\022\024\n\014futureSe"
-    "rial\030\024 \001(\t\022\017\n\007custFee\030\025 \001(\001\022\021\n\tbrokerFee"
-    "\030\026 \001(\001\022\017\n\007errorID\030\027 \001(\005\022\020\n\010errorMsg\030\030 \001("
-    "\014\"n\n\nPBBankInfo\0220\n\006header\030\001 \001(\0132 .Micro."
-    "Future.Message.DataHeader\022\016\n\006bankID\030\002 \001("
-    "\t\022\020\n\010branchID\030\003 \001(\t\022\014\n\004name\030\004 \001(\014\"\320\002\n\021PB"
-    "UserAccountInfo\0220\n\006header\030\001 \001(\0132 .Micro."
-    "Future.Message.DataHeader\022\016\n\006bankID\030\002 \001("
-    "\t\022\024\n\014bankBranchID\030\003 \001(\t\022\023\n\013bankAccount\030\004"
-    " \001(\t\022\020\n\010brokerID\030\005 \001(\t\022\026\n\016brokerBranchID"
-    "\030\006 \001(\t\022\021\n\taccountID\030\007 \001(\t\022\020\n\010idCardNo\030\010 "
-    "\001(\t\022\024\n\014customerName\030\t \001(\014\022\022\n\ncurrencyID\030"
-    "\n \001(\t\022\020\n\010custType\030\013 \001(\005\022\023\n\013bankAccType\030\014"
-    " \001(\005\022\025\n\rbankUseAmount\030\r \001(\001\022\027\n\017bankFetch"
-    "Amount\030\016 \001(\001\"a\n\021PBPositionCompare\022\020\n\010con"
-    "tract\030\001 \001(\t\022\021\n\tdirection\030\002 \001(\005\022\022\n\ndbPosi"
-    "tion\030\003 \001(\005\022\023\n\013sysPosition\030\004 \001(\005\"\216\001\n\025PBPo"
-    "sitionCompareList\0220\n\006header\030\001 \001(\0132 .Micr"
-    "o.Future.Message.DataHeader\022C\n\tpositions"
-    "\030\002 \003(\01320.Micro.Future.Message.Business.P"
-    "BPositionCompareb\006proto3", 9264);
+    "\022\016\n\006bankID\030\002 \001(\t\022\024\n\014bankBranchID\030\003 \001(\t\022\024"
+    "\n\014bankPassword\030\004 \001(\t\022\023\n\013bankAccount\030\005 \001("
+    "\t\022\020\n\010brokerID\030\006 \001(\t\022\026\n\016brokerBranchID\030\007 "
+    "\001(\t\022\021\n\taccountID\030\010 \001(\t\022\020\n\010password\030\t \001(\t"
+    "\022\022\n\ncurrencyID\030\n \001(\t\022\023\n\013tradeAmount\030\013 \001("
+    "\001\022\021\n\tserialNum\030\014 \001(\t\022\022\n\ntradingDay\030\r \001(\005"
+    "\022\021\n\ttradeDate\030\016 \001(\t\022\021\n\ttradeTime\030\017 \001(\t\022\021"
+    "\n\ttradeCode\030\020 \001(\t\022\022\n\nbankSerial\030\021 \001(\t\022\025\n"
+    "\rfutureAccType\030\022 \001(\005\022\023\n\013bankAccType\030\023 \001("
+    "\005\022\024\n\014futureSerial\030\024 \001(\t\022\017\n\007custFee\030\025 \001(\001"
+    "\022\021\n\tbrokerFee\030\026 \001(\001\022\017\n\007errorID\030\027 \001(\005\022\020\n\010"
+    "errorMsg\030\030 \001(\014\"n\n\nPBBankInfo\0220\n\006header\030\001"
+    " \001(\0132 .Micro.Future.Message.DataHeader\022\016"
+    "\n\006bankID\030\002 \001(\t\022\020\n\010branchID\030\003 \001(\t\022\014\n\004name"
+    "\030\004 \001(\014\"\320\002\n\021PBUserAccountInfo\0220\n\006header\030\001"
+    " \001(\0132 .Micro.Future.Message.DataHeader\022\016"
+    "\n\006bankID\030\002 \001(\t\022\024\n\014bankBranchID\030\003 \001(\t\022\023\n\013"
+    "bankAccount\030\004 \001(\t\022\020\n\010brokerID\030\005 \001(\t\022\026\n\016b"
+    "rokerBranchID\030\006 \001(\t\022\021\n\taccountID\030\007 \001(\t\022\020"
+    "\n\010idCardNo\030\010 \001(\t\022\024\n\014customerName\030\t \001(\014\022\022"
+    "\n\ncurrencyID\030\n \001(\t\022\020\n\010custType\030\013 \001(\005\022\023\n\013"
+    "bankAccType\030\014 \001(\005\022\025\n\rbankUseAmount\030\r \001(\001"
+    "\022\027\n\017bankFetchAmount\030\016 \001(\001\"a\n\021PBPositionC"
+    "ompare\022\020\n\010contract\030\001 \001(\t\022\021\n\tdirection\030\002 "
+    "\001(\005\022\022\n\ndbPosition\030\003 \001(\005\022\023\n\013sysPosition\030\004"
+    " \001(\005\"\216\001\n\025PBPositionCompareList\0220\n\006header"
+    "\030\001 \001(\0132 .Micro.Future.Message.DataHeader"
+    "\022C\n\tpositions\030\002 \003(\01320.Micro.Future.Messa"
+    "ge.Business.PBPositionCompare\"\\\n\023PBValua"
+    "tionContract\022\020\n\010exchange\030\001 \001(\t\022\020\n\010contra"
+    "ct\030\002 \001(\t\022\r\n\005price\030\003 \001(\001\022\022\n\nvolatility\030\004 "
+    "\001(\001\"\307\001\n\017PBValuationRisk\0220\n\006header\030\001 \001(\0132"
+    " .Micro.Future.Message.DataHeader\022I\n\rcon"
+    "tractValue\030\002 \003(\01322.Micro.Future.Message."
+    "Business.PBValuationContract\022\022\n\ndaysRema"
+    "in\030\003 \001(\005\022\020\n\010interest\030\004 \001(\001\022\021\n\tportfolio\030"
+    "\005 \001(\tb\006proto3", 9573);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "businessobj.proto", &protobuf_RegisterTypes);
   PBInstrument::default_instance_ = new PBInstrument();
@@ -1460,6 +1520,8 @@ void protobuf_AddDesc_businessobj_2eproto() {
   PBUserAccountInfo::default_instance_ = new PBUserAccountInfo();
   PBPositionCompare::default_instance_ = new PBPositionCompare();
   PBPositionCompareList::default_instance_ = new PBPositionCompareList();
+  PBValuationContract::default_instance_ = new PBValuationContract();
+  PBValuationRisk::default_instance_ = new PBValuationRisk();
   PBInstrument::default_instance_->InitAsDefaultInstance();
   PBInstrumentList::default_instance_->InitAsDefaultInstance();
   PBMarketData::default_instance_->InitAsDefaultInstance();
@@ -1497,6 +1559,8 @@ void protobuf_AddDesc_businessobj_2eproto() {
   PBUserAccountInfo::default_instance_->InitAsDefaultInstance();
   PBPositionCompare::default_instance_->InitAsDefaultInstance();
   PBPositionCompareList::default_instance_->InitAsDefaultInstance();
+  PBValuationContract::default_instance_->InitAsDefaultInstance();
+  PBValuationRisk::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_businessobj_2eproto);
 }
 
@@ -2256,6 +2320,7 @@ const int PBMarketData::kOpenInterestFieldNumber;
 const int PBMarketData::kAveragePriceFieldNumber;
 const int PBMarketData::kUpdateTimeFieldNumber;
 const int PBMarketData::kTradingDayFieldNumber;
+const int PBMarketData::kCloseValueFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 PBMarketData::PBMarketData()
@@ -2301,6 +2366,7 @@ void PBMarketData::SharedCtor() {
   averageprice_ = 0;
   updatetime_ = 0;
   tradingday_ = 0;
+  closevalue_ = 0;
 }
 
 PBMarketData::~PBMarketData() {
@@ -2368,8 +2434,10 @@ void PBMarketData::Clear() {
   ZR_(lowvalue_, matchprice_);
   presettleprice_ = 0;
   pricechange_ = 0;
-  ZR_(settleprice_, tradingday_);
+  ZR_(settleprice_, averageprice_);
   updatetime_ = 0;
+  tradingday_ = 0;
+  closevalue_ = 0;
 
 #undef ZR_HELPER_
 #undef ZR_
@@ -2759,6 +2827,21 @@ bool PBMarketData::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
+        if (input->ExpectTag(201)) goto parse_closeValue;
+        break;
+      }
+
+      // optional double closeValue = 25;
+      case 25: {
+        if (tag == 201) {
+         parse_closeValue:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &closevalue_)));
+
+        } else {
+          goto handle_unusual;
+        }
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -2938,6 +3021,11 @@ void PBMarketData::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(24, this->tradingday(), output);
   }
 
+  // optional double closeValue = 25;
+  if (this->closevalue() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(25, this->closevalue(), output);
+  }
+
   // @@protoc_insertion_point(serialize_end:Micro.Future.Message.Business.PBMarketData)
 }
 
@@ -3114,6 +3202,11 @@ void PBMarketData::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(24, this->tradingday(), target);
   }
 
+  // optional double closeValue = 25;
+  if (this->closevalue() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(25, this->closevalue(), target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.Business.PBMarketData)
   return target;
 }
@@ -3232,6 +3325,11 @@ int PBMarketData::ByteSize() const {
     total_size += 2 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->tradingday());
+  }
+
+  // optional double closeValue = 25;
+  if (this->closevalue() != 0) {
+    total_size += 2 + 8;
   }
 
   // repeated double askPrice = 11;
@@ -3386,6 +3484,9 @@ void PBMarketData::MergeFrom(const PBMarketData& from) {
   if (from.tradingday() != 0) {
     set_tradingday(from.tradingday());
   }
+  if (from.closevalue() != 0) {
+    set_closevalue(from.closevalue());
+  }
 }
 
 void PBMarketData::CopyFrom(const ::google::protobuf::Message& from) {
@@ -3436,6 +3537,7 @@ void PBMarketData::InternalSwap(PBMarketData* other) {
   std::swap(averageprice_, other->averageprice_);
   std::swap(updatetime_, other->updatetime_);
   std::swap(tradingday_, other->tradingday_);
+  std::swap(closevalue_, other->closevalue_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -3933,6 +4035,20 @@ void PBMarketData::clear_tradingday() {
   
   tradingday_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.tradingDay)
+}
+
+// optional double closeValue = 25;
+void PBMarketData::clear_closevalue() {
+  closevalue_ = 0;
+}
+ double PBMarketData::closevalue() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBMarketData.closeValue)
+  return closevalue_;
+}
+ void PBMarketData::set_closevalue(double value) {
+  
+  closevalue_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBMarketData.closeValue)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -12937,6 +13053,7 @@ const int PBRisk::kThetaFieldNumber;
 const int PBRisk::kGammaFieldNumber;
 const int PBRisk::kVegaFieldNumber;
 const int PBRisk::kRhoFieldNumber;
+const int PBRisk::kPriceFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 PBRisk::PBRisk()
@@ -12972,6 +13089,7 @@ void PBRisk::SharedCtor() {
   gamma_ = 0;
   vega_ = 0;
   rho_ = 0;
+  price_ = 0;
 }
 
 PBRisk::~PBRisk() {
@@ -13038,7 +13156,7 @@ void PBRisk::Clear() {
   contract_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   underlying_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   position_ = 0;
-  ZR_(vega_, rho_);
+  ZR_(vega_, price_);
 
 #undef ZR_HELPER_
 #undef ZR_
@@ -13204,6 +13322,21 @@ bool PBRisk::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
+        if (input->ExpectTag(89)) goto parse_price;
+        break;
+      }
+
+      // optional double price = 11;
+      case 11: {
+        if (tag == 89) {
+         parse_price:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &price_)));
+
+        } else {
+          goto handle_unusual;
+        }
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -13298,6 +13431,11 @@ void PBRisk::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteDouble(10, this->rho(), output);
   }
 
+  // optional double price = 11;
+  if (this->price() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(11, this->price(), output);
+  }
+
   // @@protoc_insertion_point(serialize_end:Micro.Future.Message.Business.PBRisk)
 }
 
@@ -13374,6 +13512,11 @@ void PBRisk::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(10, this->rho(), target);
   }
 
+  // optional double price = 11;
+  if (this->price() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(11, this->price(), target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.Business.PBRisk)
   return target;
 }
@@ -13442,6 +13585,11 @@ int PBRisk::ByteSize() const {
     total_size += 1 + 8;
   }
 
+  // optional double price = 11;
+  if (this->price() != 0) {
+    total_size += 1 + 8;
+  }
+
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = total_size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
@@ -13499,6 +13647,9 @@ void PBRisk::MergeFrom(const PBRisk& from) {
   if (from.rho() != 0) {
     set_rho(from.rho());
   }
+  if (from.price() != 0) {
+    set_price(from.price());
+  }
 }
 
 void PBRisk::CopyFrom(const ::google::protobuf::Message& from) {
@@ -13535,6 +13686,7 @@ void PBRisk::InternalSwap(PBRisk* other) {
   std::swap(gamma_, other->gamma_);
   std::swap(vega_, other->vega_);
   std::swap(rho_, other->rho_);
+  std::swap(price_, other->price_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -13802,6 +13954,20 @@ void PBRisk::clear_rho() {
   
   rho_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBRisk.rho)
+}
+
+// optional double price = 11;
+void PBRisk::clear_price() {
+  price_ = 0;
+}
+ double PBRisk::price() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBRisk.price)
+  return price_;
+}
+ void PBRisk::set_price(double value) {
+  
+  price_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBRisk.price)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -32944,6 +33110,1042 @@ const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::
 PBPositionCompareList::positions() const {
   // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBPositionCompareList.positions)
   return positions_;
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int PBValuationContract::kExchangeFieldNumber;
+const int PBValuationContract::kContractFieldNumber;
+const int PBValuationContract::kPriceFieldNumber;
+const int PBValuationContract::kVolatilityFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+PBValuationContract::PBValuationContract()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:Micro.Future.Message.Business.PBValuationContract)
+}
+
+void PBValuationContract::InitAsDefaultInstance() {
+  _is_default_instance_ = true;
+}
+
+PBValuationContract::PBValuationContract(const PBValuationContract& from)
+  : ::google::protobuf::Message(),
+    _internal_metadata_(NULL) {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:Micro.Future.Message.Business.PBValuationContract)
+}
+
+void PBValuationContract::SharedCtor() {
+    _is_default_instance_ = false;
+  ::google::protobuf::internal::GetEmptyString();
+  _cached_size_ = 0;
+  exchange_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  contract_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  price_ = 0;
+  volatility_ = 0;
+}
+
+PBValuationContract::~PBValuationContract() {
+  // @@protoc_insertion_point(destructor:Micro.Future.Message.Business.PBValuationContract)
+  SharedDtor();
+}
+
+void PBValuationContract::SharedDtor() {
+  exchange_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  contract_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (this != default_instance_) {
+  }
+}
+
+void PBValuationContract::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* PBValuationContract::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return PBValuationContract_descriptor_;
+}
+
+const PBValuationContract& PBValuationContract::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_businessobj_2eproto();
+  return *default_instance_;
+}
+
+PBValuationContract* PBValuationContract::default_instance_ = NULL;
+
+PBValuationContract* PBValuationContract::New(::google::protobuf::Arena* arena) const {
+  PBValuationContract* n = new PBValuationContract;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void PBValuationContract::Clear() {
+// @@protoc_insertion_point(message_clear_start:Micro.Future.Message.Business.PBValuationContract)
+#if defined(__clang__)
+#define ZR_HELPER_(f) \
+  _Pragma("clang diagnostic push") \
+  _Pragma("clang diagnostic ignored \"-Winvalid-offsetof\"") \
+  __builtin_offsetof(PBValuationContract, f) \
+  _Pragma("clang diagnostic pop")
+#else
+#define ZR_HELPER_(f) reinterpret_cast<char*>(\
+  &reinterpret_cast<PBValuationContract*>(16)->f)
+#endif
+
+#define ZR_(first, last) do {\
+  ::memset(&first, 0,\
+           ZR_HELPER_(last) - ZR_HELPER_(first) + sizeof(last));\
+} while (0)
+
+  ZR_(price_, volatility_);
+  exchange_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  contract_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+
+#undef ZR_HELPER_
+#undef ZR_
+
+}
+
+bool PBValuationContract::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:Micro.Future.Message.Business.PBValuationContract)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional string exchange = 1;
+      case 1: {
+        if (tag == 10) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_exchange()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->exchange().data(), this->exchange().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBValuationContract.exchange"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(18)) goto parse_contract;
+        break;
+      }
+
+      // optional string contract = 2;
+      case 2: {
+        if (tag == 18) {
+         parse_contract:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_contract()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->contract().data(), this->contract().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBValuationContract.contract"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(25)) goto parse_price;
+        break;
+      }
+
+      // optional double price = 3;
+      case 3: {
+        if (tag == 25) {
+         parse_price:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &price_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(33)) goto parse_volatility;
+        break;
+      }
+
+      // optional double volatility = 4;
+      case 4: {
+        if (tag == 33) {
+         parse_volatility:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &volatility_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:Micro.Future.Message.Business.PBValuationContract)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:Micro.Future.Message.Business.PBValuationContract)
+  return false;
+#undef DO_
+}
+
+void PBValuationContract::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:Micro.Future.Message.Business.PBValuationContract)
+  // optional string exchange = 1;
+  if (this->exchange().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->exchange().data(), this->exchange().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBValuationContract.exchange");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->exchange(), output);
+  }
+
+  // optional string contract = 2;
+  if (this->contract().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->contract().data(), this->contract().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBValuationContract.contract");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->contract(), output);
+  }
+
+  // optional double price = 3;
+  if (this->price() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(3, this->price(), output);
+  }
+
+  // optional double volatility = 4;
+  if (this->volatility() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(4, this->volatility(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:Micro.Future.Message.Business.PBValuationContract)
+}
+
+::google::protobuf::uint8* PBValuationContract::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:Micro.Future.Message.Business.PBValuationContract)
+  // optional string exchange = 1;
+  if (this->exchange().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->exchange().data(), this->exchange().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBValuationContract.exchange");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->exchange(), target);
+  }
+
+  // optional string contract = 2;
+  if (this->contract().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->contract().data(), this->contract().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBValuationContract.contract");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->contract(), target);
+  }
+
+  // optional double price = 3;
+  if (this->price() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(3, this->price(), target);
+  }
+
+  // optional double volatility = 4;
+  if (this->volatility() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(4, this->volatility(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.Business.PBValuationContract)
+  return target;
+}
+
+int PBValuationContract::ByteSize() const {
+// @@protoc_insertion_point(message_byte_size_start:Micro.Future.Message.Business.PBValuationContract)
+  int total_size = 0;
+
+  // optional string exchange = 1;
+  if (this->exchange().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->exchange());
+  }
+
+  // optional string contract = 2;
+  if (this->contract().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->contract());
+  }
+
+  // optional double price = 3;
+  if (this->price() != 0) {
+    total_size += 1 + 8;
+  }
+
+  // optional double volatility = 4;
+  if (this->volatility() != 0) {
+    total_size += 1 + 8;
+  }
+
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void PBValuationContract::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Micro.Future.Message.Business.PBValuationContract)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  const PBValuationContract* source = 
+      ::google::protobuf::internal::DynamicCastToGenerated<const PBValuationContract>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Micro.Future.Message.Business.PBValuationContract)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Micro.Future.Message.Business.PBValuationContract)
+    MergeFrom(*source);
+  }
+}
+
+void PBValuationContract::MergeFrom(const PBValuationContract& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Micro.Future.Message.Business.PBValuationContract)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (from.exchange().size() > 0) {
+
+    exchange_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.exchange_);
+  }
+  if (from.contract().size() > 0) {
+
+    contract_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.contract_);
+  }
+  if (from.price() != 0) {
+    set_price(from.price());
+  }
+  if (from.volatility() != 0) {
+    set_volatility(from.volatility());
+  }
+}
+
+void PBValuationContract::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Micro.Future.Message.Business.PBValuationContract)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void PBValuationContract::CopyFrom(const PBValuationContract& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Micro.Future.Message.Business.PBValuationContract)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool PBValuationContract::IsInitialized() const {
+
+  return true;
+}
+
+void PBValuationContract::Swap(PBValuationContract* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void PBValuationContract::InternalSwap(PBValuationContract* other) {
+  exchange_.Swap(&other->exchange_);
+  contract_.Swap(&other->contract_);
+  std::swap(price_, other->price_);
+  std::swap(volatility_, other->volatility_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata PBValuationContract::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = PBValuationContract_descriptor_;
+  metadata.reflection = PBValuationContract_reflection_;
+  return metadata;
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// PBValuationContract
+
+// optional string exchange = 1;
+void PBValuationContract::clear_exchange() {
+  exchange_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBValuationContract::exchange() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBValuationContract.exchange)
+  return exchange_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBValuationContract::set_exchange(const ::std::string& value) {
+  
+  exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBValuationContract.exchange)
+}
+ void PBValuationContract::set_exchange(const char* value) {
+  
+  exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBValuationContract.exchange)
+}
+ void PBValuationContract::set_exchange(const char* value, size_t size) {
+  
+  exchange_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBValuationContract.exchange)
+}
+ ::std::string* PBValuationContract::mutable_exchange() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBValuationContract.exchange)
+  return exchange_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBValuationContract::release_exchange() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBValuationContract.exchange)
+  
+  return exchange_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBValuationContract::set_allocated_exchange(::std::string* exchange) {
+  if (exchange != NULL) {
+    
+  } else {
+    
+  }
+  exchange_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), exchange);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBValuationContract.exchange)
+}
+
+// optional string contract = 2;
+void PBValuationContract::clear_contract() {
+  contract_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBValuationContract::contract() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBValuationContract.contract)
+  return contract_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBValuationContract::set_contract(const ::std::string& value) {
+  
+  contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBValuationContract.contract)
+}
+ void PBValuationContract::set_contract(const char* value) {
+  
+  contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBValuationContract.contract)
+}
+ void PBValuationContract::set_contract(const char* value, size_t size) {
+  
+  contract_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBValuationContract.contract)
+}
+ ::std::string* PBValuationContract::mutable_contract() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBValuationContract.contract)
+  return contract_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBValuationContract::release_contract() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBValuationContract.contract)
+  
+  return contract_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBValuationContract::set_allocated_contract(::std::string* contract) {
+  if (contract != NULL) {
+    
+  } else {
+    
+  }
+  contract_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), contract);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBValuationContract.contract)
+}
+
+// optional double price = 3;
+void PBValuationContract::clear_price() {
+  price_ = 0;
+}
+ double PBValuationContract::price() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBValuationContract.price)
+  return price_;
+}
+ void PBValuationContract::set_price(double value) {
+  
+  price_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBValuationContract.price)
+}
+
+// optional double volatility = 4;
+void PBValuationContract::clear_volatility() {
+  volatility_ = 0;
+}
+ double PBValuationContract::volatility() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBValuationContract.volatility)
+  return volatility_;
+}
+ void PBValuationContract::set_volatility(double value) {
+  
+  volatility_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBValuationContract.volatility)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int PBValuationRisk::kHeaderFieldNumber;
+const int PBValuationRisk::kContractValueFieldNumber;
+const int PBValuationRisk::kDaysRemainFieldNumber;
+const int PBValuationRisk::kInterestFieldNumber;
+const int PBValuationRisk::kPortfolioFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+PBValuationRisk::PBValuationRisk()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:Micro.Future.Message.Business.PBValuationRisk)
+}
+
+void PBValuationRisk::InitAsDefaultInstance() {
+  _is_default_instance_ = true;
+  header_ = const_cast< ::Micro::Future::Message::DataHeader*>(&::Micro::Future::Message::DataHeader::default_instance());
+}
+
+PBValuationRisk::PBValuationRisk(const PBValuationRisk& from)
+  : ::google::protobuf::Message(),
+    _internal_metadata_(NULL) {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:Micro.Future.Message.Business.PBValuationRisk)
+}
+
+void PBValuationRisk::SharedCtor() {
+    _is_default_instance_ = false;
+  ::google::protobuf::internal::GetEmptyString();
+  _cached_size_ = 0;
+  header_ = NULL;
+  daysremain_ = 0;
+  interest_ = 0;
+  portfolio_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+PBValuationRisk::~PBValuationRisk() {
+  // @@protoc_insertion_point(destructor:Micro.Future.Message.Business.PBValuationRisk)
+  SharedDtor();
+}
+
+void PBValuationRisk::SharedDtor() {
+  portfolio_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (this != default_instance_) {
+    delete header_;
+  }
+}
+
+void PBValuationRisk::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* PBValuationRisk::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return PBValuationRisk_descriptor_;
+}
+
+const PBValuationRisk& PBValuationRisk::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_businessobj_2eproto();
+  return *default_instance_;
+}
+
+PBValuationRisk* PBValuationRisk::default_instance_ = NULL;
+
+PBValuationRisk* PBValuationRisk::New(::google::protobuf::Arena* arena) const {
+  PBValuationRisk* n = new PBValuationRisk;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void PBValuationRisk::Clear() {
+// @@protoc_insertion_point(message_clear_start:Micro.Future.Message.Business.PBValuationRisk)
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
+  daysremain_ = 0;
+  interest_ = 0;
+  portfolio_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  contractvalue_.Clear();
+}
+
+bool PBValuationRisk::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:Micro.Future.Message.Business.PBValuationRisk)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional .Micro.Future.Message.DataHeader header = 1;
+      case 1: {
+        if (tag == 10) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_header()));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(18)) goto parse_contractValue;
+        break;
+      }
+
+      // repeated .Micro.Future.Message.Business.PBValuationContract contractValue = 2;
+      case 2: {
+        if (tag == 18) {
+         parse_contractValue:
+          DO_(input->IncrementRecursionDepth());
+         parse_loop_contractValue:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtualNoRecursionDepth(
+                input, add_contractvalue()));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(18)) goto parse_loop_contractValue;
+        input->UnsafeDecrementRecursionDepth();
+        if (input->ExpectTag(24)) goto parse_daysRemain;
+        break;
+      }
+
+      // optional int32 daysRemain = 3;
+      case 3: {
+        if (tag == 24) {
+         parse_daysRemain:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &daysremain_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(33)) goto parse_interest;
+        break;
+      }
+
+      // optional double interest = 4;
+      case 4: {
+        if (tag == 33) {
+         parse_interest:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &interest_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(42)) goto parse_portfolio;
+        break;
+      }
+
+      // optional string portfolio = 5;
+      case 5: {
+        if (tag == 42) {
+         parse_portfolio:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_portfolio()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->portfolio().data(), this->portfolio().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBValuationRisk.portfolio"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:Micro.Future.Message.Business.PBValuationRisk)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:Micro.Future.Message.Business.PBValuationRisk)
+  return false;
+#undef DO_
+}
+
+void PBValuationRisk::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:Micro.Future.Message.Business.PBValuationRisk)
+  // optional .Micro.Future.Message.DataHeader header = 1;
+  if (this->has_header()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, *this->header_, output);
+  }
+
+  // repeated .Micro.Future.Message.Business.PBValuationContract contractValue = 2;
+  for (unsigned int i = 0, n = this->contractvalue_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      2, this->contractvalue(i), output);
+  }
+
+  // optional int32 daysRemain = 3;
+  if (this->daysremain() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->daysremain(), output);
+  }
+
+  // optional double interest = 4;
+  if (this->interest() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(4, this->interest(), output);
+  }
+
+  // optional string portfolio = 5;
+  if (this->portfolio().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->portfolio().data(), this->portfolio().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBValuationRisk.portfolio");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      5, this->portfolio(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:Micro.Future.Message.Business.PBValuationRisk)
+}
+
+::google::protobuf::uint8* PBValuationRisk::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:Micro.Future.Message.Business.PBValuationRisk)
+  // optional .Micro.Future.Message.DataHeader header = 1;
+  if (this->has_header()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        1, *this->header_, target);
+  }
+
+  // repeated .Micro.Future.Message.Business.PBValuationContract contractValue = 2;
+  for (unsigned int i = 0, n = this->contractvalue_size(); i < n; i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        2, this->contractvalue(i), target);
+  }
+
+  // optional int32 daysRemain = 3;
+  if (this->daysremain() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->daysremain(), target);
+  }
+
+  // optional double interest = 4;
+  if (this->interest() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(4, this->interest(), target);
+  }
+
+  // optional string portfolio = 5;
+  if (this->portfolio().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->portfolio().data(), this->portfolio().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBValuationRisk.portfolio");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        5, this->portfolio(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.Business.PBValuationRisk)
+  return target;
+}
+
+int PBValuationRisk::ByteSize() const {
+// @@protoc_insertion_point(message_byte_size_start:Micro.Future.Message.Business.PBValuationRisk)
+  int total_size = 0;
+
+  // optional .Micro.Future.Message.DataHeader header = 1;
+  if (this->has_header()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->header_);
+  }
+
+  // optional int32 daysRemain = 3;
+  if (this->daysremain() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->daysremain());
+  }
+
+  // optional double interest = 4;
+  if (this->interest() != 0) {
+    total_size += 1 + 8;
+  }
+
+  // optional string portfolio = 5;
+  if (this->portfolio().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->portfolio());
+  }
+
+  // repeated .Micro.Future.Message.Business.PBValuationContract contractValue = 2;
+  total_size += 1 * this->contractvalue_size();
+  for (int i = 0; i < this->contractvalue_size(); i++) {
+    total_size +=
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        this->contractvalue(i));
+  }
+
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void PBValuationRisk::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Micro.Future.Message.Business.PBValuationRisk)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  const PBValuationRisk* source = 
+      ::google::protobuf::internal::DynamicCastToGenerated<const PBValuationRisk>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Micro.Future.Message.Business.PBValuationRisk)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Micro.Future.Message.Business.PBValuationRisk)
+    MergeFrom(*source);
+  }
+}
+
+void PBValuationRisk::MergeFrom(const PBValuationRisk& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Micro.Future.Message.Business.PBValuationRisk)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  contractvalue_.MergeFrom(from.contractvalue_);
+  if (from.has_header()) {
+    mutable_header()->::Micro::Future::Message::DataHeader::MergeFrom(from.header());
+  }
+  if (from.daysremain() != 0) {
+    set_daysremain(from.daysremain());
+  }
+  if (from.interest() != 0) {
+    set_interest(from.interest());
+  }
+  if (from.portfolio().size() > 0) {
+
+    portfolio_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.portfolio_);
+  }
+}
+
+void PBValuationRisk::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Micro.Future.Message.Business.PBValuationRisk)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void PBValuationRisk::CopyFrom(const PBValuationRisk& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Micro.Future.Message.Business.PBValuationRisk)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool PBValuationRisk::IsInitialized() const {
+
+  return true;
+}
+
+void PBValuationRisk::Swap(PBValuationRisk* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void PBValuationRisk::InternalSwap(PBValuationRisk* other) {
+  std::swap(header_, other->header_);
+  contractvalue_.UnsafeArenaSwap(&other->contractvalue_);
+  std::swap(daysremain_, other->daysremain_);
+  std::swap(interest_, other->interest_);
+  portfolio_.Swap(&other->portfolio_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata PBValuationRisk::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = PBValuationRisk_descriptor_;
+  metadata.reflection = PBValuationRisk_reflection_;
+  return metadata;
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// PBValuationRisk
+
+// optional .Micro.Future.Message.DataHeader header = 1;
+bool PBValuationRisk::has_header() const {
+  return !_is_default_instance_ && header_ != NULL;
+}
+void PBValuationRisk::clear_header() {
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
+}
+const ::Micro::Future::Message::DataHeader& PBValuationRisk::header() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBValuationRisk.header)
+  return header_ != NULL ? *header_ : *default_instance_->header_;
+}
+::Micro::Future::Message::DataHeader* PBValuationRisk::mutable_header() {
+  
+  if (header_ == NULL) {
+    header_ = new ::Micro::Future::Message::DataHeader;
+  }
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBValuationRisk.header)
+  return header_;
+}
+::Micro::Future::Message::DataHeader* PBValuationRisk::release_header() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBValuationRisk.header)
+  
+  ::Micro::Future::Message::DataHeader* temp = header_;
+  header_ = NULL;
+  return temp;
+}
+void PBValuationRisk::set_allocated_header(::Micro::Future::Message::DataHeader* header) {
+  delete header_;
+  header_ = header;
+  if (header) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBValuationRisk.header)
+}
+
+// repeated .Micro.Future.Message.Business.PBValuationContract contractValue = 2;
+int PBValuationRisk::contractvalue_size() const {
+  return contractvalue_.size();
+}
+void PBValuationRisk::clear_contractvalue() {
+  contractvalue_.Clear();
+}
+const ::Micro::Future::Message::Business::PBValuationContract& PBValuationRisk::contractvalue(int index) const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBValuationRisk.contractValue)
+  return contractvalue_.Get(index);
+}
+::Micro::Future::Message::Business::PBValuationContract* PBValuationRisk::mutable_contractvalue(int index) {
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBValuationRisk.contractValue)
+  return contractvalue_.Mutable(index);
+}
+::Micro::Future::Message::Business::PBValuationContract* PBValuationRisk::add_contractvalue() {
+  // @@protoc_insertion_point(field_add:Micro.Future.Message.Business.PBValuationRisk.contractValue)
+  return contractvalue_.Add();
+}
+::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBValuationContract >*
+PBValuationRisk::mutable_contractvalue() {
+  // @@protoc_insertion_point(field_mutable_list:Micro.Future.Message.Business.PBValuationRisk.contractValue)
+  return &contractvalue_;
+}
+const ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBValuationContract >&
+PBValuationRisk::contractvalue() const {
+  // @@protoc_insertion_point(field_list:Micro.Future.Message.Business.PBValuationRisk.contractValue)
+  return contractvalue_;
+}
+
+// optional int32 daysRemain = 3;
+void PBValuationRisk::clear_daysremain() {
+  daysremain_ = 0;
+}
+ ::google::protobuf::int32 PBValuationRisk::daysremain() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBValuationRisk.daysRemain)
+  return daysremain_;
+}
+ void PBValuationRisk::set_daysremain(::google::protobuf::int32 value) {
+  
+  daysremain_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBValuationRisk.daysRemain)
+}
+
+// optional double interest = 4;
+void PBValuationRisk::clear_interest() {
+  interest_ = 0;
+}
+ double PBValuationRisk::interest() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBValuationRisk.interest)
+  return interest_;
+}
+ void PBValuationRisk::set_interest(double value) {
+  
+  interest_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBValuationRisk.interest)
+}
+
+// optional string portfolio = 5;
+void PBValuationRisk::clear_portfolio() {
+  portfolio_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBValuationRisk::portfolio() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBValuationRisk.portfolio)
+  return portfolio_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBValuationRisk::set_portfolio(const ::std::string& value) {
+  
+  portfolio_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBValuationRisk.portfolio)
+}
+ void PBValuationRisk::set_portfolio(const char* value) {
+  
+  portfolio_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBValuationRisk.portfolio)
+}
+ void PBValuationRisk::set_portfolio(const char* value, size_t size) {
+  
+  portfolio_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBValuationRisk.portfolio)
+}
+ ::std::string* PBValuationRisk::mutable_portfolio() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBValuationRisk.portfolio)
+  return portfolio_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBValuationRisk::release_portfolio() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBValuationRisk.portfolio)
+  
+  return portfolio_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBValuationRisk::set_allocated_portfolio(::std::string* portfolio) {
+  if (portfolio != NULL) {
+    
+  } else {
+    
+  }
+  portfolio_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), portfolio);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBValuationRisk.portfolio)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

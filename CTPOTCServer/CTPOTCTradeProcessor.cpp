@@ -79,16 +79,9 @@ void CTPOTCTradeProcessor::AutoOrderWorker()
 		UserContractKey strategyKey;
 		if (_autoOrderQueue.pop(strategyKey))
 		{
-			int limitOrders = _userOrderCtx.GetLimitOrderCount(strategyKey.InstrumentID());
-
 			StrategyContractDO_Ptr strategy_ptr;
 			if (PricingDataContext()->GetStrategyMap()->find(strategyKey, strategy_ptr))
 			{
-				if (strategy_ptr->AutoOrderSettings.LimitOrderCounter < limitOrders)
-				{
-					strategy_ptr->AutoOrderSettings.LimitOrderCounter = limitOrders;
-				}
-
 				_autoOrderMgr.TradeByStrategy(*strategy_ptr);
 			}
 		}
@@ -181,7 +174,8 @@ OrderDO_Ptr CTPOTCTradeProcessor::CreateOrder(const OrderRequestDO& orderReq)
 
 	OrderPortfolioCache::Insert(orderReq.OrderID, orderReq);
 
-	if (_rawAPI->TdAPI->ReqOrderInsert(&req, 0) != 0)
+	auto tdApiProxy = _rawAPI->TdAPIProxy();
+	if (!tdApiProxy || tdApiProxy->get()->ReqOrderInsert(&req, 0) != 0)
 	{
 		OrderPortfolioCache::Remove(orderReq.OrderID);
 		return nullptr;
@@ -214,7 +208,8 @@ OrderDO_Ptr CTPOTCTradeProcessor::CancelOrder(const OrderRequestDO& orderReq)
 		std::snprintf(req.OrderRef, sizeof(req.OrderRef), FMT_ORDERREF, orderReq.OrderID);
 	}
 
-	if (_rawAPI->TdAPI->ReqOrderAction(&req, AppContext::GenNextSeq()) != 0)
+	auto tdApiProxy = _rawAPI->TdAPIProxy();
+	if (!tdApiProxy || tdApiProxy->get()->ReqOrderAction(&req, AppContext::GenNextSeq()) != 0)
 		return nullptr;
 
 	req.SessionID = orderReq.SessionID ? orderReq.SessionID : _systemUser.getSessionId();
@@ -268,6 +263,19 @@ void CTPOTCTradeProcessor::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrd
 		auto orderptr = CTPUtility::ParseRawOrder(pInputOrder, pRspInfo, _systemUser.getSessionId());
 		_autoOrderMgr.OnMarketOrderUpdated(*orderptr);
 		_hedgeOrderMgr.OnMarketOrderUpdated(*orderptr);
+
+		if (CTPUtility::HasError(pRspInfo))
+		{
+			StrategyContractDO_Ptr strategy_ptr;
+			_pricingCtx->GetStrategyMap()->find(*orderptr, strategy_ptr);
+			if (strategy_ptr)
+			{
+				strategy_ptr->AutoOrderSettings.LimitOrderCounter--;
+				DispatchUserMessage(MSG_ID_MODIFY_STRATEGY, 0, strategy_ptr->UserID(), strategy_ptr);
+			}
+
+			DispatchUserMessage(MSG_ID_ORDER_NEW, 0, orderptr->UserID(), orderptr);
+		}
 	}
 }
 
@@ -293,6 +301,17 @@ void CTPOTCTradeProcessor::OnErrRtnOrderInsert(CThostFtdcInputOrderField *pInput
 		{
 			_autoOrderMgr.OnMarketOrderUpdated(*orderptr);
 			_hedgeOrderMgr.OnMarketOrderUpdated(*orderptr);
+
+			StrategyContractDO_Ptr strategy_ptr;
+			_pricingCtx->GetStrategyMap()->find(*orderptr, strategy_ptr);
+			if (strategy_ptr)
+			{
+				strategy_ptr->AutoOrderSettings.LimitOrderCounter--;
+				DispatchUserMessage(MSG_ID_MODIFY_STRATEGY, 0, strategy_ptr->UserID(), strategy_ptr);
+			}
+
+
+			DispatchUserMessage(MSG_ID_ORDER_NEW, 0, orderptr->UserID(), orderptr);
 		}
 	}
 }
@@ -317,18 +336,46 @@ void CTPOTCTradeProcessor::OnRtnOrder(CThostFtdcOrderField *pOrder)
 {
 	if (pOrder)
 	{
+		bool sendNotification = false;
+
+		if (pOrder->TimeCondition != THOST_FTDC_TC_IOC)
+		{
+			if (int orderSysId = CTPUtility::ToUInt64(pOrder->OrderSysID))
+			{
+				sendNotification = !_userOrderCtx.FindOrder(orderSysId);
+			}
+		}
+
 		auto orderptr = RefineOrder(pOrder);
+
+		StrategyContractDO_Ptr strategy_ptr;
+
+		if (sendNotification)
+		{
+			int limitOrders = _userOrderCtx.GetLimitOrderCount(orderptr->InstrumentID());
+
+			if (_pricingCtx->GetStrategyMap()->find(*orderptr, strategy_ptr))
+			{
+				if (strategy_ptr->AutoOrderSettings.LimitOrderCounter < limitOrders)
+				{
+					strategy_ptr->AutoOrderSettings.LimitOrderCounter = limitOrders;
+				}
+			}
+		}
 
 		// update auto orders
 		int ret = _autoOrderMgr.OnMarketOrderUpdated(*orderptr);
 		if (ret != 0)
 		{
-			StrategyContractDO_Ptr strategy_ptr;
-			_pricingCtx->GetStrategyMap()->find(*orderptr, strategy_ptr);
+			if (!strategy_ptr)
+				_pricingCtx->GetStrategyMap()->find(*orderptr, strategy_ptr);
+
 			if (strategy_ptr)
 			{
 				if (ret > 0)
 				{
+					sendNotification = true;
+
 					if (orderptr->Direction == DirectionType::SELL)
 					{
 						strategy_ptr->AutoOrderSettings.AskCounter += ret;
@@ -338,11 +385,14 @@ void CTPOTCTradeProcessor::OnRtnOrder(CThostFtdcOrderField *pOrder)
 						strategy_ptr->AutoOrderSettings.BidCounter += ret;
 					}
 				}
-
-				DispatchUserMessage(MSG_ID_MODIFY_STRATEGY, 0, strategy_ptr->UserID(), strategy_ptr);
+				else if (ret < 0 && !orderptr->OrderSysID)
+				{
+					strategy_ptr->AutoOrderSettings.LimitOrderCounter--;
+				}
 			}
 
-			_autoOrderQueue.emplace(*orderptr);
+			if (ret >= -1)
+				_autoOrderQueue.emplace(*orderptr);
 		}
 
 		// update hedge orders
@@ -357,18 +407,25 @@ void CTPOTCTradeProcessor::OnRtnOrder(CThostFtdcOrderField *pOrder)
 				_hedgeOrderQueue.emplace(*orderptr);
 			}
 		}
+
+		if (sendNotification)
+		{
+			if (!strategy_ptr)
+				_pricingCtx->GetStrategyMap()->find(*orderptr, strategy_ptr);
+
+			if (strategy_ptr)
+				DispatchUserMessage(MSG_ID_MODIFY_STRATEGY, 0, strategy_ptr->UserID(), strategy_ptr);
+		}
 	}
 }
 
 void CTPOTCTradeProcessor::RegisterLoggedSession(const IMessageSession_Ptr& sessionPtr)
 {
-	if (sessionPtr->getLoginTimeStamp() && _isLogged)
-	{
-		auto& userInfo = sessionPtr->getUserInfo();
-		userInfo.setFrontId(_systemUser.getFrontId());
-		userInfo.setSessionId(_systemUser.getSessionId());
-		_userSessionCtn_Ptr->add(userInfo.getUserId(), sessionPtr);
-	}
+	auto& userInfo = sessionPtr->getUserInfo();
+	userInfo.setTradingDay(_systemUser.getTradingDay());
+	userInfo.setFrontId(_systemUser.getFrontId());
+	userInfo.setSessionId(_systemUser.getSessionId());
+	_userSessionCtn_Ptr->add(userInfo.getUserId(), sessionPtr);
 }
 
 void CTPOTCTradeProcessor::OnRtnTrade(CThostFtdcTradeField * pTrade)

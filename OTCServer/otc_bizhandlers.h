@@ -27,6 +27,7 @@
 #include "OTCQueryPosition.h"
 #include "OTCQueryRisk.h"
 #include "OTCRiskUpdated.h"
+#include "OTCQueryValuationRisk.h"
 #include "OTCUpdatePortfolio.h"
 #include "OTCUpdateHedgeContract.h"
 

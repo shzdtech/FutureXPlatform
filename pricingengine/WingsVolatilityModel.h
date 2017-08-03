@@ -77,7 +77,7 @@ public:
 	virtual dataobj_ptr Compute(
 		const void* pInputObject,
 		const StrategyContractDO& sdo,
-		IPricingDataContext& priceCtx,
+		const IPricingDataContext_Ptr& priceCtx_Ptr,
 		const param_vector* params);
 	static std::tuple<double, double, double, double, double, double, double>
 		ComputeVolatility(

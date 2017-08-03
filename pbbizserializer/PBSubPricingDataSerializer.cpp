@@ -6,7 +6,7 @@
  ***********************************************************************/
 
 #include "PBSubPricingDataSerializer.h"
-#include "../pbserializer/PBStringTableSerializer.h"
+#include "PBPricingDataSerializer.h"
 #include "../pbserializer/pbmacros.h"
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/MarketDataDO.h"
@@ -48,5 +48,16 @@ data_buffer PBSubPricingDataSerializer::Serialize(const dataobj_ptr& abstractDO)
 
 dataobj_ptr PBSubPricingDataSerializer::Deserialize(const data_buffer& rawdata)
 {
-	return PBStringTableSerializer::Instance()->Deserialize(rawdata);
+	Micro::Future::Message::Business::PBInstrumentList PB;
+	ParseWithReturn(PB, rawdata);
+
+	auto ret = std::make_shared<VectorDO<ContractKey>>();
+	FillDOHeader(ret, PB);
+
+	for (auto& hc : PB.instrument())
+	{
+		ret->push_back(std::move(ContractKey(hc.exchange(), hc.contract())));
+	}
+
+	return ret;
 }

@@ -46,7 +46,7 @@ const std::string & WingsVolatilityModel::Name(void) const
 dataobj_ptr WingsVolatilityModel::Compute(
 	const void* pInputObject,
 	const StrategyContractDO& sdo,
-	IPricingDataContext& priceCtx,
+	const IPricingDataContext_Ptr& priceCtx_Ptr,
 	const param_vector* params)
 {
 	if (!sdo.VolContracts || sdo.VolContracts->PricingContracts.empty())
@@ -62,6 +62,7 @@ dataobj_ptr WingsVolatilityModel::Compute(
 	auto& strContract = sdo.VolContracts->PricingContracts[0];
 
 	auto paramObj = (WingsParams*)sdo.VolModel->ParsedParams.get();
+
 	double f_atm;
 	if (pInputObject)
 	{
@@ -71,11 +72,9 @@ dataobj_ptr WingsVolatilityModel::Compute(
 	{
 		MarketDataDO mDO;
 		if (!sdo.VolContracts ||
-			!priceCtx.GetMarketDataMap()->find(strContract.InstrumentID(), mDO))
+			!priceCtx_Ptr->GetMarketDataMap()->find(strContract.InstrumentID(), mDO))
 			return nullptr;
 		f_atm = (mDO.Ask().Price + mDO.Bid().Price) / 2;
-		/*if (f_atm == 0)
-			return nullptr;*/
 	}
 
 	f_atm += strContract.Adjust;
@@ -91,12 +90,14 @@ dataobj_ptr WingsVolatilityModel::Compute(
 	if (days < 0)
 		return nullptr;
 
+	days++;
+
 	double midVol;
 	// synthetic forward price
 	double f_ref = paramObj->f_ref;
 	double ssr = paramObj->ssr;
 	double alpha = paramObj->alpha;
-	if (f_ref < 0.001) f_ref = f_atm;
+	// if (f_ref < 0.001) f_ref = f_atm;
 
 	auto ret = std::make_shared<WingsModelReturnDO>();
 

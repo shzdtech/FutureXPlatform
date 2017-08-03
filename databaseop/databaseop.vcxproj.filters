@@ -83,6 +83,12 @@
     <ClInclude Include="PositionDAO.h">
       <Filter>头文件\DAO</Filter>
     </ClInclude>
+    <ClInclude Include="AESCrypto.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MarketDataDAO.h">
+      <Filter>头文件\DAO</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AbstractConnectionManager.cpp">
@@ -125,6 +131,12 @@
       <Filter>源文件\DAO</Filter>
     </ClCompile>
     <ClCompile Include="PositionDAO.cpp">
+      <Filter>源文件\DAO</Filter>
+    </ClCompile>
+    <ClCompile Include="AESCrypto.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MarketDataDAO.cpp">
       <Filter>源文件\DAO</Filter>
     </ClCompile>
   </ItemGroup>

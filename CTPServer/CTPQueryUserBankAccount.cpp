@@ -80,7 +80,7 @@ dataobj_ptr CTPQueryUserBankAccount::HandleRequest(const uint32_t serialId, cons
 	req.SessionID = session->getUserInfo().getSessionId();
 	req.RequestID = serialId;
 
-	int iRet = ((CTPRawAPI*)rawAPI)->TdAPI->ReqQueryBankAccountMoneyByFuture(&req, serialId);
+	int iRet = ((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQueryBankAccountMoneyByFuture(&req, serialId);
 	CTPUtility::CheckReturnError(iRet);
 
 	return nullptr;

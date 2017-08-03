@@ -12,14 +12,14 @@
 #include <list>
 #include "CTPOTCTradeProcessor.h"
 #include "../ordermanager/OTCOrderManager.h"
-#include "../CTPServer/CTPMarketDataProcessor.h"
+#include "../CTPServer/CTPMarketDataSAProcessor.h"
 #include "../dataobject/TypedefDO.h"
 #include "../OTCServer/OTCWorkerProcessor.h"
 
 #include "../message/SessionContainer.h"
 #include "ctpotc_export.h"
 
-class CTP_OTC_CLASS_EXPORT CTPOTCWorkerProcessor : public OTCWorkerProcessor, public CTPMarketDataProcessor
+class CTP_OTC_CLASS_EXPORT CTPOTCWorkerProcessor : public OTCWorkerProcessor, public CTPMarketDataSAProcessor
 {
 public:
 	CTPOTCWorkerProcessor(IServerContext* pServerCtx, const std::shared_ptr<CTPOTCTradeProcessor>& ctpOtcTradeProcessorPtr);
@@ -33,12 +33,6 @@ public:
 	bool OnSessionClosing(void);
 
 	void Initialize(IServerContext* pServerCtx);
-
-	int LoginSystemUser(void);
-
-	int LoginSystemUserIfNeed(void);
-
-	int LoadDataAsync(void);
 
 	int SubscribeMarketData(const ContractKey & contractId);
 
@@ -70,14 +64,6 @@ public:
 
 	///当客户端与交易后台建立起通信连接时（还未登录前），该方法被调用。
 	virtual void OnFrontConnected();
-
-	///订阅行情应答
-	virtual void OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-
-	///取消订阅行情应答
-	virtual void OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-
-	virtual void OnRspUserLogin(CThostFtdcRspUserLoginField * pRspUserLogin, CThostFtdcRspInfoField * pRspInfo, int nRequestID, bool bIsLast);
 
 	///深度行情通知
 	virtual void OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData);

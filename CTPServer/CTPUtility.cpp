@@ -16,6 +16,7 @@
 #include "../utility/stringutility.h"
 #include "../ordermanager/OrderSeqGen.h"
 #include "../databaseop/ContractDAO.h"
+#include "../litelogger/LiteLogger.h"
 
 #include "../message/DefMessageID.h"
 
@@ -27,9 +28,9 @@
 
 void CTPUtility::CheckError(const void* pRspInfo)
 {
-	if (HasError(pRspInfo))
-	{
-		auto pRsp = (CThostFtdcRspInfoField*)pRspInfo;
+	auto pRsp = (CThostFtdcRspInfoField*)pRspInfo;
+	if (HasError(pRsp))
+	{	
 		throw ApiException(pRsp->ErrorID,
 			std::move(boost::locale::conv::to_utf<char>(pRsp->ErrorMsg, CHARSET_GB2312)));
 	}
@@ -51,14 +52,13 @@ void CTPUtility::CheckNotFound(const void * pRspData)
 	}
 }
 
-bool CTPUtility::HasError(const void* pRspInfo)
+bool CTPUtility::HasError(CThostFtdcRspInfoField* pRspInfo)
 {
 	bool ret = false;
 
 	if (pRspInfo)
 	{
-		auto pRsp = (CThostFtdcRspInfoField*)pRspInfo;
-		if (pRsp->ErrorID)
+		if (pRspInfo->ErrorID)
 		{
 			ret = true;
 		}
@@ -183,6 +183,34 @@ OrderStatusType CTPUtility::CheckOrderStatus(TThostFtdcOrderStatusType status, T
 	}
 
 	return ret;
+}
+
+void CTPUtility::LogFrontDisconnected(int nReseason, std::string& errMsg)
+{
+	///@param nReason 错误原因
+	///        0x1001 网络读失败
+	///        0x1002 网络写失败
+	///        0x2001 接收心跳超时
+	///        0x2002 发送心跳失败
+	///        0x2003 收到错误报文
+	switch (nReseason)
+	{
+	case 0x1001:
+		errMsg = "Network read failed";
+		break;
+	case 0x1002:
+		errMsg = "Network write failed";
+		break;
+	case 0x2001:
+		errMsg = "Timeout for heartbeat";
+		break;
+	case 0x2002:
+		errMsg = "Sending heartbeat failed";
+		break;
+	case 0x2003:
+		errMsg = "Wrong packet received";
+		break;
+	}
 }
 
 OrderDO_Ptr CTPUtility::ParseRawOrder(CThostFtdcOrderField *pOrder, OrderDO_Ptr baseOrder)

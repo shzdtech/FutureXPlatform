@@ -20,7 +20,7 @@
 
 
 CTPTradeWorkerSAProcessor::CTPTradeWorkerSAProcessor(IServerContext* pServerCtx, const IPricingDataContext_Ptr& pricingCtx)
-	: CTPTradeWorkerProcessor(pServerCtx, std::make_shared<PortfolioPositionContext>(pricingCtx))
+	: CTPTradeWorkerProcessor(pServerCtx, std::make_shared<PortfolioPositionContext>())
 {
 }
 

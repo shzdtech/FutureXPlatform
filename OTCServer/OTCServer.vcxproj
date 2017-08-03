@@ -171,6 +171,7 @@
     <ClCompile Include="OTCQueryPosition.cpp" />
     <ClCompile Include="OTCQueryRisk.cpp" />
     <ClCompile Include="OTCQueryTrade.cpp" />
+    <ClCompile Include="OTCQueryValuationRisk.cpp" />
     <ClCompile Include="OTCRiskUpdated.cpp" />
     <ClCompile Include="OTCSubTradingDeskData.cpp" />
     <ClCompile Include="OTCUnSubMarketData.cpp" />
@@ -205,6 +206,7 @@
     <ClInclude Include="OTCQueryPosition.h" />
     <ClInclude Include="OTCQueryRisk.h" />
     <ClInclude Include="OTCQueryTrade.h" />
+    <ClInclude Include="OTCQueryValuationRisk.h" />
     <ClInclude Include="OTCRiskUpdated.h" />
     <ClInclude Include="OTCSubTradingDeskData.h" />
     <ClInclude Include="OTCUnSubMarketData.h" />

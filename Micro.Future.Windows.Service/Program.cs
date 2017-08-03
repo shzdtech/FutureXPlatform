@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration.Install;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.ServiceProcess;
@@ -43,7 +44,16 @@ namespace Micro.Future.Windows.Service
                 new MFWinService()
                 };
 
-            MicroFurtureSystemClr.InitLogger(serverPath, true);
+            string logPath = Path.Combine(Path.GetDirectoryName(serverPath), "log");
+
+            if (!Directory.Exists(logPath))
+            {
+                Directory.CreateDirectory(logPath);
+            }
+
+            logPath = Path.Combine(logPath, "MicroFuturePlatform");
+
+            MicroFurtureSystemClr.InitLogger(logPath, true);
             ServiceBase.Run(ServicesToRun);
         }
     }

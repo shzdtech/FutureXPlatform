@@ -39,7 +39,7 @@ const std::string& BetaSumPricingAlgorithm::Name(void) const
 IPricingDO_Ptr BetaSumPricingAlgorithm::Compute(
 	const void* pInputObject,
 	const StrategyContractDO& sdo,
-	IPricingDataContext& priceCtx,
+	const IPricingDataContext_Ptr& priceCtx_Ptr,
 	const param_vector* params)
 {
 	if (!sdo.PricingModel->ParsedParams)
@@ -51,8 +51,8 @@ IPricingDO_Ptr BetaSumPricingAlgorithm::Compute(
 
 	IPricingDO_Ptr ret;
 
-	auto& mdDOMap = *(priceCtx.GetMarketDataMap());
-	auto& conDOMap = *(priceCtx.GetContractParamMap());
+	auto& mdDOMap = *(priceCtx_Ptr->GetMarketDataMap());
+	auto& conDOMap = *(priceCtx_Ptr->GetContractParamMap());
 
 	double BidPrice = 0;
 	double AskPrice = 0;
@@ -92,9 +92,9 @@ IPricingDO_Ptr BetaSumPricingAlgorithm::Compute(
 		BidPrice += paramObj->offset - paramObj->spread;
 		AskPrice += paramObj->offset + paramObj->spread;
 
-		BidPrice = std::floor(BidPrice / sdo.TickSize) * sdo.TickSize;
-
-		AskPrice = std::ceil(AskPrice / sdo.TickSize) * sdo.TickSize;
+		auto tickSize = sdo.EffectiveTickSize();
+		BidPrice = std::floor(BidPrice / tickSize) * tickSize;
+		AskPrice = std::ceil(AskPrice / tickSize) * tickSize;
 
 		if (!sdo.IsOTC())
 		{

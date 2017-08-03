@@ -7,6 +7,7 @@
 
 #include "MySqlConnectionManager.h"
 #include "../utility/TUtil.h"
+#include "AESCrypto.h"
 #include <cppconn/driver.h>
 #include "db_config.h"
 #include <thread>
@@ -30,9 +31,14 @@ bool MySqlConnectionManager::LoadDbConfig(const std::map<std::string, std::strin
 	_connConfig.DB_TYPE = DbType::MYSQL;
 	_connConfig.DB_URL = cfgMap.at("url");
 	_connConfig.DB_USER = cfgMap.at("user");
-	_connConfig.DB_PASSWORD = cfgMap.at("password");
+	std::string password = cfgMap.at("password");
 
 	std::string empty;
+	bool encrypt = false;
+	auto& enc = TUtil::FirstNamedEntry("encryption", cfgMap, empty);
+	if (!enc.empty())
+		encrypt = std::stoi(enc, nullptr, 0) != 0;
+
 	auto& autocommit = TUtil::FirstNamedEntry("autocommit", cfgMap, empty);
 	if (!autocommit.empty())
 		_connConfig.DB_AUTOCOMMIT = std::stoi(autocommit, nullptr, 0) != 0;
@@ -52,6 +58,16 @@ bool MySqlConnectionManager::LoadDbConfig(const std::map<std::string, std::strin
 	auto& shb = TUtil::FirstNamedEntry("heartbeat", cfgMap, empty);
 	if (!shb.empty())
 		_connConfig.DB_HEARTBEAT = std::stoi(shb, nullptr, 0);
+
+	if (encrypt)
+	{
+		AESCrypto d;
+		_connConfig.DB_PASSWORD = d.Descrypt(password);
+	}
+	else
+	{
+		_connConfig.DB_PASSWORD = password;
+	}
 
 	return true;
 }

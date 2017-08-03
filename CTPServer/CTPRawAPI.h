@@ -17,20 +17,44 @@
 class CTP_CLASS_EXPORT CTPRawAPI : public IRawAPI
 {
 public:
-	CTPRawAPI() = default;
+	class CTP_CLASS_EXPORT CThostFtdcMdApiProxy
+	{
+	public:
+		CThostFtdcMdApiProxy(const CThostFtdcMdApiProxy&) = delete;
+		CThostFtdcMdApiProxy(const char* path = nullptr);
+		~CThostFtdcMdApiProxy();
 
-	void CreateMdApi(const char* path);
-	void CreateTdApi(const char * path);
-	void ReleaseMdApi();
-	void ReleaseTdApi();
+		void CreateApi(const char* path);
 
-	~CTPRawAPI();
+		CThostFtdcMdApi* get();
+	private:
+		CThostFtdcMdApi* _api = nullptr;
+	};
 
-	CThostFtdcMdApi* MdAPI = nullptr;
-	CThostFtdcTraderApi* TdAPI = nullptr;
+	class CTP_CLASS_EXPORT CThostFtdcTdApiProxy
+	{
+	public:
+		CThostFtdcTdApiProxy(const CThostFtdcTdApiProxy&) = delete;
+		CThostFtdcTdApiProxy(const char* path = nullptr);
+		~CThostFtdcTdApiProxy();
 
+		void CreateApi(const char* path);
+
+		CThostFtdcTraderApi* get();
+
+	private:
+		CThostFtdcTraderApi* _api = nullptr;
+	};
+
+public:
+	std::shared_ptr<CThostFtdcMdApiProxy> MdAPIProxy();
+	std::shared_ptr<CThostFtdcTdApiProxy> TdAPIProxy();
+	void ResetMdAPIProxy(const std::shared_ptr<CThostFtdcMdApiProxy>& proxy);
+	void ResetTdAPIProxy(const std::shared_ptr<CThostFtdcTdApiProxy>& proxy);
 
 private:
+	std::shared_ptr<CThostFtdcMdApiProxy> _mdAPIProxy;
+	std::shared_ptr<CThostFtdcTdApiProxy> _tdAPIProxy;
 
 };
 

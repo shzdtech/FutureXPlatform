@@ -28,7 +28,7 @@ struct DateType
 	DateType(int yyyymmdd)
 	{
 		Year = yyyymmdd / 10000;
-		Month = (yyyymmdd % 100) / 100;
+		Month = yyyymmdd / 100 % 100;
 		Day = yyyymmdd % 100;
 	}
 
@@ -78,9 +78,9 @@ struct DateType
 		strDate = std::to_string(Year) + "-" + std::to_string(Month) + "-" + std::to_string(Day);
 	}
 
-	int Year;
-	int Month;
-	int Day;
+	int Year = 1970;
+	int Month = 1;
+	int Day = 1;
 };
 
 #endif

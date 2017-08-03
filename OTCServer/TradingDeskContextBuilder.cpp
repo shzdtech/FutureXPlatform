@@ -15,6 +15,7 @@
 
 #include "../common/Attribute_Key.h"
 #include "../message/message_macro.h"
+#include "../message/DefMessageID.h"
 #include "../message/MessageUtility.h"
 #include "../pricingengine/IPricingDataContext.h"
 #include "../pricingengine/PricingAlgorithmManager.h"
@@ -111,20 +112,27 @@ void TradingDeskContextBuilder::LoadContractParam(const IMessageProcessor_Ptr& m
 
 void TradingDeskContextBuilder::LoadStrategy(const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	auto strategySet_Ptr = std::make_shared<std::set<UserContractKey>>();
-	session->getContext()->setAttribute(STR_KEY_USER_STRATEGY, strategySet_Ptr);
+	/*auto strategySet_Ptr = std::make_shared<std::set<UserContractKey>>();
+	session->getContext()->setAttribute(STR_KEY_USER_STRATEGY, strategySet_Ptr);*/
 
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		auto& userid = session->getUserInfo().getUserId();
+		auto tradingDay = session->getUserInfo().getTradingDay();
+		auto& pricingCtx = pWorkerProc->PricingDataContext();
 
-		auto& strategyMap = pWorkerProc->PricingDataContext()->GetUserStrategyMap()->getorfill(userid);
+		auto pPricingDOMap = pricingCtx->GetPricingDataDOMap();
 
+		auto& strategyMap = pricingCtx->GetUserStrategyMap()->getorfill(userid);
 		for (auto& pairMap : strategyMap)
 		{
 			for (auto& pair : pairMap.second->lock_table())
 			{
 				auto& strategy_ptr = pair.second;
+
+				if(tradingDay > 1900)
+					strategy_ptr->TradingDay = DateType(tradingDay);
+
 				if (strategy_ptr->IVModel && !strategy_ptr->IVModel->ParsedParams)
 				{
 					if (auto model = ModelAlgorithmManager::Instance()->FindModel(strategy_ptr->IVModel->Model))
@@ -155,9 +163,16 @@ void TradingDeskContextBuilder::LoadStrategy(const IMessageProcessor_Ptr& msgPro
 					}
 				}
 
-				strategySet_Ptr->emplace(*strategy_ptr);
+				// strategySet_Ptr->emplace(*strategy_ptr);
 
 				pWorkerProc->SubscribeStrategy(*strategy_ptr);
+
+				if (!pPricingDOMap->contains(*strategy_ptr))
+				{
+					bool ret = true;
+					param_vector params{ strategy_ptr.get(), &pricingCtx, &ret };
+					msgProcessor->OnResponse(MSG_ID_RTN_TRADINGDESK_PRICING, 0, params);
+				}
 			}
 		}
 	}

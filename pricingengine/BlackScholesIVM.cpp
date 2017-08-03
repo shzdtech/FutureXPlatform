@@ -15,7 +15,7 @@
 #include "../dataobject/ContractParamDO.h"
 #include "../dataobject/TypedefDO.h"
 #include "../dataobject/TemplateDO.h"
-#include "../bizutility/GlobalSettings.h"
+#include "../systemsettings/GlobalSettings.h"
 
 #include "../message/BizError.h"
 
@@ -46,7 +46,7 @@ const std::string& BlackScholesIVM::Name(void) const
 dataobj_ptr BlackScholesIVM::Compute(
 	const void* pInputObject,
 	const StrategyContractDO& sdo,
-	IPricingDataContext& priceCtx,
+	const IPricingDataContext_Ptr& priceCtx_Ptr,
 	const param_vector* params)
 {
 	if (!sdo.IVMContracts || sdo.IVMContracts->PricingContracts.empty())
@@ -65,12 +65,12 @@ dataobj_ptr BlackScholesIVM::Compute(
 		return nullptr;
 
 	MarketDataDO mDO;
-	if (!priceCtx.GetMarketDataMap()->find(sdo.InstrumentID(), mDO) ||
+	if (!priceCtx_Ptr->GetMarketDataMap()->find(sdo.InstrumentID(), mDO) ||
 		mDO.Ask().Volume <= 0 && mDO.Bid().Volume <= 0)
 		return nullptr;
 
 	MarketDataDO mBaseDO;
-	if (!priceCtx.GetMarketDataMap()->find(sdo.IVMContracts->PricingContracts[0].InstrumentID(), mBaseDO))
+	if (!priceCtx_Ptr->GetMarketDataMap()->find(sdo.IVMContracts->PricingContracts[0].InstrumentID(), mBaseDO))
 		return nullptr;
 
 	if (mBaseDO.Ask().Price <= 0 || mBaseDO.Bid().Price <= 0)
@@ -92,6 +92,11 @@ dataobj_ptr BlackScholesIVM::Compute(
 			ret->Data.BidVolatility = CaclImpliedVolatility(mDO.Bid().Price, base_bidPrice, sdo.StrikePrice, paramObj->bidVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration);
 		else
 			ret->Data.BidVolatility = std::nan(nullptr);
+
+		if (ret->Data.BidVolatility < GlobalSettings::VolatilityEps())
+		{
+			ret->Data.BidVolatility = std::nan(nullptr);
+		}
 	}
 	catch (QuantLib::Error& e)
 	{
@@ -105,6 +110,11 @@ dataobj_ptr BlackScholesIVM::Compute(
 			ret->Data.AskVolatility = CaclImpliedVolatility(mDO.Ask().Price, base_askdPrice, sdo.StrikePrice, paramObj->askVolatility, paramObj->riskFreeRate, paramObj->dividend, sdo.ContractType, sdo.TradingDay, sdo.Expiration);
 		else
 			ret->Data.AskVolatility = std::nan(nullptr);
+
+		if (ret->Data.AskVolatility < GlobalSettings::VolatilityEps())
+		{
+			ret->Data.AskVolatility = std::nan(nullptr);
+		}
 	}
 	catch (QuantLib::Error& e)
 	{
@@ -148,6 +158,7 @@ double BlackScholesIVM::CaclImpliedVolatility(
 	DayCounter dayCounter = Actual365Fixed();
 
 	Date maturity((Day)maturityDate.Day, (Month)(maturityDate.Month), (Year)(maturityDate.Year));
+	maturity++; // Add 1 day
 
 	Date settlementDate((Day)tradingDate.Day, (Month)(tradingDate.Month), (Year)(tradingDate.Year));
 

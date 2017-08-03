@@ -1,35 +1,71 @@
 #include "CTPRawAPI.h"
 
-CTPRawAPI::~CTPRawAPI()
+CTPRawAPI::CThostFtdcMdApiProxy::CThostFtdcMdApiProxy(const char * path)
 {
-	ReleaseMdApi();
-	ReleaseTdApi();
+	CreateApi(path);
 }
 
-void CTPRawAPI::CreateMdApi(const char * path)
+CTPRawAPI::CThostFtdcMdApiProxy::~CThostFtdcMdApiProxy()
 {
-	MdAPI = CThostFtdcMdApi::CreateFtdcMdApi(path);
-}
-
-void CTPRawAPI::CreateTdApi(const char * path)
-{
-	TdAPI = CThostFtdcTraderApi::CreateFtdcTraderApi(path);
-}
-
-void CTPRawAPI::ReleaseMdApi()
-{
-	if (MdAPI)
+	if (_api)
 	{
-		MdAPI->Release();
-		MdAPI = nullptr;
+		_api->Release();
+		_api = nullptr;
 	}
 }
 
-void CTPRawAPI::ReleaseTdApi()
+void CTPRawAPI::CThostFtdcMdApiProxy::CreateApi(const char * path)
 {
-	if (TdAPI)
+	if(!_api)
+		_api = CThostFtdcMdApi::CreateFtdcMdApi(path);
+}
+
+CThostFtdcMdApi * CTPRawAPI::CThostFtdcMdApiProxy::get()
+{
+	return _api;
+}
+
+CTPRawAPI::CThostFtdcTdApiProxy::CThostFtdcTdApiProxy(const char * path)
+{
+	CreateApi(path);
+}
+
+CTPRawAPI::CThostFtdcTdApiProxy::~CThostFtdcTdApiProxy()
+{
+	if (_api)
 	{
-		TdAPI->Release();
-		TdAPI = nullptr;
+		_api->Release();
+		_api = nullptr;
 	}
+}
+
+void CTPRawAPI::CThostFtdcTdApiProxy::CreateApi(const char * path)
+{
+	if (!_api)
+		_api = CThostFtdcTraderApi::CreateFtdcTraderApi(path);
+}
+
+CThostFtdcTraderApi * CTPRawAPI::CThostFtdcTdApiProxy::get()
+{
+	return _api;
+}
+
+std::shared_ptr<CTPRawAPI::CThostFtdcMdApiProxy> CTPRawAPI::MdAPIProxy()
+{
+	return _mdAPIProxy;
+}
+
+std::shared_ptr<CTPRawAPI::CThostFtdcTdApiProxy> CTPRawAPI::TdAPIProxy()
+{
+	return _tdAPIProxy;
+}
+
+void CTPRawAPI::ResetMdAPIProxy(const std::shared_ptr<CThostFtdcMdApiProxy>& proxy)
+{
+	_mdAPIProxy = proxy;
+}
+
+void CTPRawAPI::ResetTdAPIProxy(const std::shared_ptr<CThostFtdcTdApiProxy>& proxy)
+{
+	_tdAPIProxy = proxy;
 }

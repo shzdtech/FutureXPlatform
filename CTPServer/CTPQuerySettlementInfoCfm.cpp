@@ -41,7 +41,7 @@ dataobj_ptr CTPQuerySettlementInfoCfm::HandleRequest(const uint32_t serialId, co
 	std::strncpy(req.ConfirmDate, cfmdate.data(), sizeof(req.ConfirmDate));
 	std::strncpy(req.ConfirmTime, cfmtime.data(), sizeof(req.ConfirmTime));
 
-	int iRet = ((CTPRawAPI*)rawAPI)->TdAPI->ReqSettlementInfoConfirm(&req, serialId);
+	int iRet = ((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqSettlementInfoConfirm(&req, serialId);
 	CTPUtility::CheckReturnError(iRet);
 
 	return nullptr;

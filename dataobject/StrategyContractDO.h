@@ -42,7 +42,6 @@ public:
 		mutable int LimitOrderCounter = 0;
 
 		bool CloseMode = false;
-		bool BidNotCross = true;
 
 		int MaxLimitOrder = 480;
 		OrderTIFType TIF = OrderTIFType::GFD;
@@ -74,6 +73,7 @@ public:
 	volatile bool BidEnabled = true;
 	volatile bool AskEnabled = true;
 	volatile bool Hedging = false;
+	volatile bool NotCross = true;
 
 	double TickSize = 1;
 	double Multiplier = 1;

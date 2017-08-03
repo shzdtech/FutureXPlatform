@@ -15,6 +15,7 @@
 #include "../utility/stringutility.h"
 #include "../litelogger/LiteLogger.h"
 #include "../dataobject/PricingContract.h"
+#include "../databaseop/AESCrypto.h"
 
 std::future<void> testTask;
 

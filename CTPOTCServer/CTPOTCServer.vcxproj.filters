@@ -63,6 +63,9 @@
     <ClCompile Include="CTPOTCQueryRisk.cpp">
       <Filter>源文件\OTC</Filter>
     </ClCompile>
+    <ClCompile Include="CTPOTCQueryValuationRisk.cpp">
+      <Filter>源文件\OTC</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ctpotc_bizhandlers.h">
@@ -99,6 +102,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="CTPOTCQueryRisk.h">
+      <Filter>头文件\OTC</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPOTCQueryValuationRisk.h">
       <Filter>头文件\OTC</Filter>
     </ClInclude>
   </ItemGroup>

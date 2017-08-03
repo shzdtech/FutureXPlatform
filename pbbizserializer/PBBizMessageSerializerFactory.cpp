@@ -75,6 +75,8 @@ PBBizMessageSerializerFactory::PBBizMessageSerializerFactory()
 
 	_serializer_map[MSG_ID_QUERY_RISK] = _serializer_map[MSG_ID_RISK_UPDATED] =
 		std::make_shared<PBCombineSerializer>(PBRiskSerializer::Instance(), PBStringMapSerializer::Instance());
+
+	_serializer_map[MSG_ID_QUERY_VALUATION_RISK] = PBValuationRiskSerializer::Instance();
 }
 
 ////////////////////////////////////////////////////////////////////////

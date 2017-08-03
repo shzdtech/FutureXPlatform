@@ -22,24 +22,24 @@ public:
 	static IPricingDO_Ptr Pricing(
 		const void* pInputObject,
 		const StrategyContractDO& strategy,
-		IPricingDataContext& priceCtx,
+		const IPricingDataContext_Ptr& priceCtx_Ptr,
 		const param_vector* params);
 
 	static IPricingDO_Ptr Pricing(
 		const void* pInputObject,
 		const StrategyContractDO& strategy,
-		IPricingDataContext& priceCtx);
+		const IPricingDataContext_Ptr& priceCtx_Ptr);
 
 	static IPricingDO_Ptr Pricing(
 		const void* pInputObject,
 		const UserContractKey& strategyKey,
-		IPricingDataContext& priceCtx,
+		const IPricingDataContext_Ptr& priceCtx_Ptr,
 		const param_vector* params);
 
 	static IPricingDO_Ptr Pricing(
 		const void* pInputObject,
 		const UserContractKey& strategyKey,
-		IPricingDataContext& priceCtx);
+		const IPricingDataContext_Ptr& priceCtx_Ptr);
 
 
 protected:

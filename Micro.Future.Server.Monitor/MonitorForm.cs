@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Resources;
@@ -162,7 +163,7 @@ namespace Micro.Future.Server.Monitor
                 notifyIconStatus.Visible = false;
             });
 
-            Close();
+            Process.GetCurrentProcess().Kill();
         }
 
         private void toolStripMenuItemExit_Click(object sender, EventArgs e)

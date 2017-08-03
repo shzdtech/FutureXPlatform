@@ -36,6 +36,7 @@
 dataobj_ptr CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
+	CheckAllowTrade(session);
 
 	auto pDO = (OrderRequestDO*)reqDO.get();
 
@@ -98,7 +99,7 @@ dataobj_ptr CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_pt
 		OrderPortfolioCache::Insert(pDO->OrderID, *pDO);
 	}
 
-	int iRet = ((CTPRawAPI*)rawAPI)->TdAPI->ReqOrderInsert(&req, serialId);
+	int iRet = ((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqOrderInsert(&req, serialId);
 
 	if (iRet != 0 && insertPortfolio)
 	{

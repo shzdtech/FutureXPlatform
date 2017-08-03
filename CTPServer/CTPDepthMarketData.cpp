@@ -40,16 +40,13 @@ dataobj_ptr CTPDepthMarketData::HandleResponse(const uint32_t serialId, const pa
 	mdo->LastPrice = pData->LastPrice;
 	mdo->Volume = pData->Volume;
 
-	if (pData->OpenPrice < 1e32)
-	{
-		mdo->OpenPrice = pData->OpenPrice;
-		mdo->SettlementPrice = pData->SettlementPrice;
-
-		mdo->HighestPrice = pData->HighestPrice;
-		mdo->LowestPrice = pData->LowestPrice;
-		mdo->Turnover = pData->Turnover;
-		mdo->AveragePrice = pData->AveragePrice;
-	}
+	mdo->OpenPrice = pData->OpenPrice < 1e32 ? pData->OpenPrice : NAN;
+	mdo->ClosePrice = pData->ClosePrice < 1e32 ? pData->ClosePrice : NAN;
+	mdo->HighestPrice = pData->HighestPrice < 1e32 ? pData->HighestPrice : NAN;
+	mdo->LowestPrice = pData->LowestPrice < 1e32 ? pData->LowestPrice : NAN;
+	mdo->Turnover = pData->Turnover < 1e32 ? pData->Turnover : NAN;
+	mdo->AveragePrice = pData->AveragePrice < 1e32 ? pData->AveragePrice : NAN;
+	mdo->SettlementPrice = pData->SettlementPrice < 1e32 ? pData->SettlementPrice : NAN;
 
 	if (pData->BidPrice1 < 1e32)
 	{

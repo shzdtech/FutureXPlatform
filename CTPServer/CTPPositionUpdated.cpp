@@ -39,7 +39,7 @@ dataobj_ptr CTPPositionUpdated::HandleResponse(const uint32_t serialId, const pa
 				ret = pWorkerProc->GetUserPositionContext()->UpsertPosition(session->getUserInfo().getUserId(), *ret, false, true);
 
 			auto pProcessor = (CTPProcessor*)msgProcessor.get();
-			if (!(pProcessor->DataLoadMask & CTPTradeProcessor::POSITION_DATA_LOADED) || ret->Position() < 0)
+			if (!(pProcessor->DataLoadMask & CTPProcessor::POSITION_DATA_LOADED) || ret->Position() < 0)
 				ret.reset();
 		}
 	}

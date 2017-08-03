@@ -27,7 +27,16 @@ namespace Micro.Future.Server.Monitor
                 return;
             }
 
-            MicroFurtureSystemClr.InitLogger(Application.ExecutablePath, true);
+            string logPath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "log");
+
+            if (!Directory.Exists(logPath))
+            {
+                Directory.CreateDirectory(logPath);
+            }
+
+            logPath = Path.Combine(logPath, "MicroFuturePlatform");
+
+            MicroFurtureSystemClr.InitLogger(logPath, true);
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

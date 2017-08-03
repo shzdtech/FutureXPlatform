@@ -65,6 +65,19 @@ public:
 		}
 	}
 
+	void forfirst(const K& key, std::function<void(const IMessageSession_Ptr&)> func)
+	{
+		//std::shared_lock<std::shared_mutex> read_lock(_mutex);
+		_sessionMap.update_fn(key, [&func](std::unordered_set<IMessageSession_Ptr>& sessionSet)
+		{
+			auto it = sessionSet.begin();
+			if (it != sessionSet.end())
+			{
+				func(*it);
+			}
+		});
+	}
+
 	int add(const K& key, const IMessageSession_Ptr& sessionPtr)
 	{
 		int ret = -1;
