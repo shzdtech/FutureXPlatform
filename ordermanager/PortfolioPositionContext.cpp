@@ -46,24 +46,8 @@ UserPositionExDO_Ptr PortfolioPositionContext::UpsertPosition(const std::string&
 	//}
 
 	contractPosition.map()->upsert(std::pair<std::string, int>(newPosition_Ptr->InstrumentID(), newPosition_Ptr->Direction),
-		[&newPosition_Ptr, closeYdFirst, updateYdPosition](UserPositionExDO_Ptr& position_ptr)
+		[&positionDO, &newPosition_Ptr, closeYdFirst, updateYdPosition](UserPositionExDO_Ptr& position_ptr)
 	{
-		if (updateYdPosition)
-		{
-			position_ptr->YdCost = newPosition_Ptr->YdCost;
-			position_ptr->YdProfit = newPosition_Ptr->YdProfit;
-		}
-		else
-		{
-			position_ptr->PreSettlementPrice = newPosition_Ptr->PreSettlementPrice;
-			position_ptr->SettlementPrice = newPosition_Ptr->SettlementPrice;
-			position_ptr->CloseProfit = newPosition_Ptr->CloseProfit;
-			position_ptr->CashIn = newPosition_Ptr->CashIn;
-			position_ptr->UseMargin = newPosition_Ptr->UseMargin;
-			position_ptr->TdCost = newPosition_Ptr->TdCost;
-			position_ptr->TdProfit = newPosition_Ptr->TdProfit;
-		}
-
 		if (position_ptr->TradingDay == newPosition_Ptr->TradingDay &&
 			position_ptr->YdInitPosition != newPosition_Ptr->YdInitPosition &&
 			newPosition_Ptr->YdInitPosition > 0)
@@ -83,6 +67,30 @@ UserPositionExDO_Ptr PortfolioPositionContext::UpsertPosition(const std::string&
 					position_ptr->TdPosition = position_ptr->OpenVolume;
 				}
 			}
+		}
+
+		if (updateYdPosition)
+		{
+			double ydMeanCost = 0;
+			if (positionDO.YdPosition > 0)
+				ydMeanCost = positionDO.YdCost / positionDO.YdPosition;
+
+			position_ptr->YdCost = ydMeanCost * position_ptr->YdPosition;
+			position_ptr->YdProfit = newPosition_Ptr->YdProfit;
+		}
+		else
+		{
+			double tdMeanCost = 0;
+			if (positionDO.TdPosition > 0)
+				tdMeanCost = positionDO.TdCost / positionDO.TdPosition;
+
+			position_ptr->PreSettlementPrice = newPosition_Ptr->PreSettlementPrice;
+			position_ptr->SettlementPrice = newPosition_Ptr->SettlementPrice;
+			position_ptr->CloseProfit = newPosition_Ptr->CloseProfit;
+			position_ptr->CashIn = newPosition_Ptr->CashIn;
+			position_ptr->UseMargin = newPosition_Ptr->UseMargin;
+			position_ptr->TdCost = tdMeanCost * position_ptr->TdPosition;
+			position_ptr->TdProfit = newPosition_Ptr->TdProfit;
 		}
 
 		*newPosition_Ptr = *position_ptr;

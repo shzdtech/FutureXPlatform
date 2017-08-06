@@ -8,6 +8,7 @@
 #include "CTPTradeWorkerProcessor.h"
 #include "CTPUtility.h"
 #include "CTPConstant.h"
+
 #include "../dataobject/TradeRecordDO.h"
 #include "../common/Attribute_Key.h"
 #include "../systemsettings/AppContext.h"
@@ -589,7 +590,16 @@ void CTPTradeWorkerProcessor::OnRtnTrade(CThostFtdcTradeField * pTrade)
 		{
 			DispatchUserMessage(MSG_ID_TRADE_RTN, 0, trdDO_Ptr->UserID(), trdDO_Ptr);
 
-			UpdatePosition(trdDO_Ptr);
+			if (auto position_ptr = UpdatePosition(trdDO_Ptr))
+			{
+				DispatchUserMessage(MSG_ID_POSITION_UPDATED, 0, trdDO_Ptr->UserID(), position_ptr);
+			}
+
+			// Try update position
+			if (!_exiting && !_updateFlag.test_and_set(std::memory_order::memory_order_acquire))
+			{
+				_updateTask = std::async(std::launch::async, &CTPTradeProcessor::QueryPositionAsync, this);
+			}
 		}
 	}
 }
@@ -678,8 +688,10 @@ TradeRecordDO_Ptr CTPTradeWorkerProcessor::RefineTrade(CThostFtdcTradeField * pT
 	return trdDO_Ptr;
 }
 
-void CTPTradeWorkerProcessor::UpdatePosition(const TradeRecordDO_Ptr& trdDO_Ptr)
+UserPositionExDO_Ptr CTPTradeWorkerProcessor::UpdatePosition(const TradeRecordDO_Ptr& trdDO_Ptr)
 {
+	UserPositionExDO_Ptr ret;
+
 	if (GetUserTradeContext().InsertTrade(trdDO_Ptr))
 	{
 		int multiplier = 1;
@@ -697,8 +709,10 @@ void CTPTradeWorkerProcessor::UpdatePosition(const TradeRecordDO_Ptr& trdDO_Ptr)
 			}
 		}
 
-		auto position_ptr = GetUserPositionContext()->UpsertPosition(trdDO_Ptr->UserID(), trdDO_Ptr, multiplier, trdDO_Ptr->ExchangeID() != EXCHANGE_SHFE);
+		ret = GetUserPositionContext()->UpsertPosition(trdDO_Ptr->UserID(), trdDO_Ptr, multiplier, trdDO_Ptr->ExchangeID() != EXCHANGE_SHFE);
 	}
+
+	return ret;
 }
 
 bool CTPTradeWorkerProcessor::IsLoadPositionFromDB()

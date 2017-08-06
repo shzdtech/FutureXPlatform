@@ -57,8 +57,8 @@ TradingDeskContextBuilder::~TradingDeskContextBuilder()
 void TradingDeskContextBuilder::BuildContext(const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	LoadPortfolio(msgProcessor, session);
-	LoadStrategy(msgProcessor, session);
 	LoadContractParam(msgProcessor, session);
+	LoadStrategy(msgProcessor, session);
 }
 
 void TradingDeskContextBuilder::LoadPortfolio(const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
@@ -169,9 +169,7 @@ void TradingDeskContextBuilder::LoadStrategy(const IMessageProcessor_Ptr& msgPro
 
 				if (!pPricingDOMap->contains(*strategy_ptr))
 				{
-					bool ret = true;
-					param_vector params{ strategy_ptr.get(), &pricingCtx, &ret };
-					msgProcessor->OnResponse(MSG_ID_RTN_TRADINGDESK_PRICING, 0, params);
+					pWorkerProc->TriggerTradingDeskParams(*strategy_ptr);
 				}
 			}
 		}

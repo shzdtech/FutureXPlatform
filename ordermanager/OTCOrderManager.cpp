@@ -215,8 +215,7 @@ int OTCOrderManager::Reset()
 {
 	std::lock_guard<std::mutex> scopelock(_mutex);
 
-	auto lt = _contractOrderCtx.GetAllOrder().lock_table();
-	for (auto& it : lt)
+	for (auto& it : _contractOrderCtx.GetAllOrder().lock_table())
 	{
 		RejectOrder(*(it.second));
 	}

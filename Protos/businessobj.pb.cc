@@ -256,12 +256,13 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBHedgeContract, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBHedgeContract, _is_default_instance_));
   PBPortfolio_descriptor_ = file->message_type(5);
-  static const int PBPortfolio_offsets_[6] = {
+  static const int PBPortfolio_offsets_[7] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPortfolio, header_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPortfolio, name_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPortfolio, hedgedelay_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPortfolio, threshold_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPortfolio, hedging_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPortfolio, hedgevolume_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPortfolio, hedgecontracts_),
   };
   PBPortfolio_reflection_ =
@@ -1266,221 +1267,221 @@ void protobuf_AddDesc_businessobj_2eproto() {
     "tData\030\002 \003(\0132+.Micro.Future.Message.Busin"
     "ess.PBMarketData\"I\n\017PBHedgeContract\022\020\n\010e"
     "xchange\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022\022\n\nunder"
-    "lying\030\003 \001(\t\"\315\001\n\013PBPortfolio\0220\n\006header\030\001 "
+    "lying\030\003 \001(\t\"\342\001\n\013PBPortfolio\0220\n\006header\030\001 "
     "\001(\0132 .Micro.Future.Message.DataHeader\022\014\n"
     "\004name\030\002 \001(\t\022\022\n\nhedgeDelay\030\003 \001(\005\022\021\n\tthres"
-    "hold\030\004 \001(\001\022\017\n\007hedging\030\005 \001(\010\022F\n\016hedgeCont"
-    "racts\030\006 \003(\0132..Micro.Future.Message.Busin"
-    "ess.PBHedgeContract\"\202\001\n\017PBPortfolioList\022"
-    "0\n\006header\030\001 \001(\0132 .Micro.Future.Message.D"
-    "ataHeader\022=\n\tportfolio\030\002 \003(\0132*.Micro.Fut"
-    "ure.Message.Business.PBPortfolio\"\253\001\n\rPBP"
-    "ricingData\0220\n\006header\030\001 \001(\0132 .Micro.Futur"
-    "e.Message.DataHeader\022\020\n\010exchange\030\002 \001(\t\022\020"
-    "\n\010contract\030\003 \001(\t\022\020\n\010askPrice\030\004 \001(\001\022\020\n\010bi"
-    "dPrice\030\005 \001(\001\022\017\n\007askSize\030\006 \001(\005\022\017\n\007bidSize"
-    "\030\007 \001(\005\"\210\001\n\021PBPricingDataList\022A\n\013pricingD"
-    "ata\030\001 \003(\0132,.Micro.Future.Message.Busines"
-    "s.PBPricingData\0220\n\006header\030\002 \001(\0132 .Micro."
-    "Future.Message.DataHeader\"Z\n\022PBOptionMar"
-    "ketData\022\020\n\010askPrice\030\001 \001(\001\022\020\n\010bidPrice\030\002 "
-    "\001(\001\022\017\n\007askSize\030\003 \001(\005\022\017\n\007bidSize\030\004 \001(\005\"C\n"
-    "\023PBImpliedVolatility\022\025\n\raskVolatility\030\001 "
-    "\001(\001\022\025\n\rbidVolatility\030\002 \001(\001\"\341\001\n\014PBOptionD"
-    "ata\022\020\n\010askPrice\030\001 \001(\001\022\020\n\010bidPrice\030\002 \001(\001\022"
-    "\017\n\007askSize\030\003 \001(\005\022\017\n\007bidSize\030\004 \001(\005\022\025\n\rask"
-    "Volatility\030\005 \001(\001\022\025\n\rbidVolatility\030\006 \001(\001\022"
-    "\025\n\rmidVolatility\030\007 \001(\001\022\r\n\005delta\030\010 \001(\001\022\r\n"
-    "\005theta\030\t \001(\001\022\r\n\005gamma\030\n \001(\001\022\014\n\004vega\030\013 \001("
-    "\001\022\013\n\003rho\030\014 \001(\001\"\313\001\n\022PBWingsModelReturn\022\r\n"
-    "\005f_atm\030\001 \001(\001\022\r\n\005f_ref\030\002 \001(\001\022\r\n\005f_syn\030\003 \001"
-    "(\001\022\020\n\010vol_curr\030\005 \001(\001\022\027\n\017vol_curr_offset\030"
-    "\006 \001(\001\022\022\n\nslope_curr\030\007 \001(\001\022\031\n\021slope_curr_"
-    "offset\030\010 \001(\001\022\n\n\002x0\030\t \001(\001\022\n\n\002x1\030\013 \001(\001\022\n\n\002"
-    "x2\030\r \001(\001\022\n\n\002x3\030\017 \001(\001\"\312\003\n\031PBTradingDeskOp"
-    "tionParams\0220\n\006header\030\001 \001(\0132 .Micro.Futur"
-    "e.Message.DataHeader\022\020\n\010exchange\030\002 \001(\t\022\020"
-    "\n\010contract\030\003 \001(\t\022E\n\nmarketData\030\004 \001(\01321.M"
-    "icro.Future.Message.Business.PBOptionMar"
-    "ketData\022F\n\nimpliedVol\030\005 \001(\01322.Micro.Futu"
-    "re.Message.Business.PBImpliedVolatility\022"
-    "=\n\010theoData\030\006 \001(\0132+.Micro.Future.Message"
-    ".Business.PBOptionData\022F\n\013wingsReturn\030\007 "
-    "\001(\01321.Micro.Future.Message.Business.PBWi"
-    "ngsModelReturn\022A\n\014theoDataTemp\030\010 \001(\0132+.M"
-    "icro.Future.Message.Business.PBOptionDat"
-    "a\"W\n\021PBPricingContract\022\020\n\010exchange\030\001 \001(\t"
-    "\022\020\n\010contract\030\002 \001(\t\022\016\n\006weight\030\003 \001(\001\022\016\n\006ad"
-    "just\030\004 \001(\001\"\365\005\n\nPBStrategy\0220\n\006header\030\001 \001("
-    "\0132 .Micro.Future.Message.DataHeader\022\020\n\010e"
-    "xchange\030\002 \001(\t\022\020\n\010contract\030\003 \001(\t\022\022\n\nunder"
-    "lying\030\004 \001(\t\022\016\n\006symbol\030\005 \001(\t\022\017\n\007hedging\030\006"
-    " \001(\010\022\022\n\nbidEnabled\030\007 \001(\010\022\022\n\naskEnabled\030\010"
-    " \001(\010\022\r\n\005bidQV\030\t \001(\005\022\r\n\005askQV\030\n \001(\005\022\r\n\005de"
-    "pth\030\013 \001(\005\022J\n\020pricingContracts\030\014 \003(\01320.Mi"
-    "cro.Future.Message.Business.PBPricingCon"
-    "tract\022\024\n\014pricingModel\030\r \001(\t\022F\n\014ivmContra"
-    "cts\030\016 \003(\01320.Micro.Future.Message.Busines"
-    "s.PBPricingContract\022\017\n\007ivModel\030\017 \001(\t\022F\n\014"
-    "volContracts\030\020 \003(\01320.Micro.Future.Messag"
-    "e.Business.PBPricingContract\022\020\n\010volModel"
-    "\030\021 \001(\t\022\024\n\014baseExchange\030\022 \001(\t\022\024\n\014baseCont"
-    "ract\030\023 \001(\t\022\021\n\tportfolio\030\024 \001(\t\022\024\n\014maxAuto"
-    "Trade\030\025 \001(\005\022\022\n\nbidCounter\030\026 \001(\005\022\022\n\naskCo"
-    "unter\030\027 \001(\005\022\023\n\013bidNotCross\030\030 \001(\010\022\021\n\tclos"
-    "eMode\030\031 \001(\010\022\031\n\021limitOrderCounter\030\032 \001(\005\022\013"
-    "\n\003tif\030\033 \001(\005\022\017\n\007volCond\030\034 \001(\005\022\024\n\014tickSize"
-    "Mult\030\035 \001(\005\"\177\n\016PBStrategyList\0220\n\006header\030\001"
-    " \001(\0132 .Micro.Future.Message.DataHeader\022;"
-    "\n\010strategy\030\002 \003(\0132).Micro.Future.Message."
-    "Business.PBStrategy\"\333\001\n\006PBRisk\0220\n\006header"
-    "\030\001 \001(\0132 .Micro.Future.Message.DataHeader"
-    "\022\020\n\010exchange\030\002 \001(\t\022\020\n\010contract\030\003 \001(\t\022\022\n\n"
-    "underlying\030\004 \001(\t\022\020\n\010position\030\005 \001(\005\022\r\n\005de"
-    "lta\030\006 \001(\001\022\r\n\005theta\030\007 \001(\001\022\r\n\005gamma\030\010 \001(\001\022"
-    "\014\n\004vega\030\t \001(\001\022\013\n\003rho\030\n \001(\001\022\r\n\005price\030\013 \001("
-    "\001\"s\n\nPBRiskList\0220\n\006header\030\001 \001(\0132 .Micro."
-    "Future.Message.DataHeader\0223\n\004risk\030\002 \003(\0132"
-    "%.Micro.Future.Message.Business.PBRisk\"V"
-    "\n\017PBContractParam\022\020\n\010exchange\030\001 \001(\t\022\020\n\010c"
-    "ontract\030\002 \001(\t\022\020\n\010depthVol\030\003 \001(\005\022\r\n\005gamma"
-    "\030\004 \001(\001\"\207\001\n\023PBContractParamList\0220\n\006header"
-    "\030\001 \001(\0132 .Micro.Future.Message.DataHeader"
-    "\022>\n\006params\030\002 \003(\0132..Micro.Future.Message."
-    "Business.PBContractParam\"F\n\016PBOTCUserPar"
-    "am\022\020\n\010exchange\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022\020"
-    "\n\010quantity\030\003 \001(\001\"\205\001\n\022PBOTCUserParamList\022"
-    "0\n\006header\030\001 \001(\0132 .Micro.Future.Message.D"
-    "ataHeader\022=\n\006params\030\002 \003(\0132-.Micro.Future"
-    ".Message.Business.PBOTCUserParam\"\230\002\n\016PBO"
-    "rderRequest\0220\n\006header\030\001 \001(\0132 .Micro.Futu"
-    "re.Message.DataHeader\022\017\n\007orderID\030\002 \001(\004\022\022"
-    "\n\norderSysID\030\003 \001(\004\022\020\n\010exchange\030\004 \001(\t\022\020\n\010"
-    "contract\030\005 \001(\t\022\022\n\nlimitPrice\030\006 \001(\001\022\016\n\006vo"
-    "lume\030\007 \001(\005\022\020\n\010execType\030\010 \001(\005\022\013\n\003tif\030\t \001("
-    "\005\022\021\n\tdirection\030\n \001(\005\022\021\n\topenclose\030\013 \001(\005\022"
-    "\021\n\tportfolio\030\014 \001(\t\022\017\n\007volCond\030\r \001(\005\"\327\004\n\013"
-    "PBOrderInfo\0220\n\006header\030\001 \001(\0132 .Micro.Futu"
-    "re.Message.DataHeader\022\017\n\007orderID\030\002 \001(\004\022\022"
-    "\n\norderSysID\030\003 \001(\004\022\020\n\010brokerID\030\004 \001(\t\022\022\n\n"
-    "investorID\030\005 \001(\t\022\020\n\010exchange\030\006 \001(\t\022\020\n\010co"
-    "ntract\030\007 \001(\t\022\020\n\010execType\030\010 \001(\005\022\013\n\003tif\030\t "
-    "\001(\005\022\023\n\013tradingType\030\n \001(\005\022\021\n\tdirection\030\013 "
-    "\001(\005\022\022\n\nlimitPrice\030\014 \001(\001\022\021\n\tstopPrice\030\r \001"
-    "(\001\022\023\n\013orderStatus\030\016 \001(\005\022\021\n\torderType\030\017 \001"
-    "(\005\022\016\n\006volume\030\020 \001(\005\022\022\n\ninsertTime\030\021 \001(\t\022\022"
-    "\n\nupdateTime\030\022 \001(\t\022\022\n\ncancelTime\030\023 \001(\t\022\024"
-    "\n\014volumeTraded\030\024 \001(\005\022\024\n\014volumeRemain\030\025 \001"
-    "(\005\022\027\n\017volumeCondition\030\026 \001(\005\022\022\n\ntradingDa"
-    "y\030\027 \001(\005\022\016\n\006active\030\030 \001(\010\022\021\n\topenclose\030\031 \001"
-    "(\005\022\017\n\007message\030\032 \001(\014\022\021\n\tsessionID\030\033 \001(\005\022\021"
-    "\n\tportfolio\030\034 \001(\t\022\022\n\ninsertDate\030\035 \001(\t\"\207\003"
-    "\n\013PBTradeInfo\0220\n\006header\030\001 \001(\0132 .Micro.Fu"
-    "ture.Message.DataHeader\022\017\n\007tradeID\030\002 \001(\004"
-    "\022\021\n\tdirection\030\003 \001(\005\022\021\n\topenclose\030\004 \001(\005\022\022"
-    "\n\norderSysID\030\005 \001(\004\022\017\n\007orderID\030\006 \001(\004\022\r\n\005p"
-    "rice\030\007 \001(\001\022\016\n\006volume\030\010 \001(\005\022\020\n\010brokerID\030\t"
-    " \001(\t\022\022\n\ninvestorID\030\n \001(\t\022\020\n\010exchange\030\013 \001"
-    "(\t\022\020\n\010contract\030\014 \001(\t\022\016\n\006userID\030\r \001(\t\022\021\n\t"
-    "tradeDate\030\016 \001(\t\022\021\n\ttradeTime\030\017 \001(\t\022\021\n\ttr"
-    "adeType\030\020 \001(\005\022\021\n\thedgeFlag\030\021 \001(\005\022\022\n\ncomm"
-    "ission\030\022 \001(\001\022\021\n\tportfolio\030\023 \001(\t\"\231\003\n\nPBPo"
-    "sition\0220\n\006header\030\001 \001(\0132 .Micro.Future.Me"
+    "hold\030\004 \001(\001\022\017\n\007hedging\030\005 \001(\010\022\023\n\013hedgeVolu"
+    "me\030\006 \001(\005\022F\n\016hedgeContracts\030\007 \003(\0132..Micro"
+    ".Future.Message.Business.PBHedgeContract"
+    "\"\202\001\n\017PBPortfolioList\0220\n\006header\030\001 \001(\0132 .M"
+    "icro.Future.Message.DataHeader\022=\n\tportfo"
+    "lio\030\002 \003(\0132*.Micro.Future.Message.Busines"
+    "s.PBPortfolio\"\253\001\n\rPBPricingData\0220\n\006heade"
+    "r\030\001 \001(\0132 .Micro.Future.Message.DataHeade"
+    "r\022\020\n\010exchange\030\002 \001(\t\022\020\n\010contract\030\003 \001(\t\022\020\n"
+    "\010askPrice\030\004 \001(\001\022\020\n\010bidPrice\030\005 \001(\001\022\017\n\007ask"
+    "Size\030\006 \001(\005\022\017\n\007bidSize\030\007 \001(\005\"\210\001\n\021PBPricin"
+    "gDataList\022A\n\013pricingData\030\001 \003(\0132,.Micro.F"
+    "uture.Message.Business.PBPricingData\0220\n\006"
+    "header\030\002 \001(\0132 .Micro.Future.Message.Data"
+    "Header\"Z\n\022PBOptionMarketData\022\020\n\010askPrice"
+    "\030\001 \001(\001\022\020\n\010bidPrice\030\002 \001(\001\022\017\n\007askSize\030\003 \001("
+    "\005\022\017\n\007bidSize\030\004 \001(\005\"C\n\023PBImpliedVolatilit"
+    "y\022\025\n\raskVolatility\030\001 \001(\001\022\025\n\rbidVolatilit"
+    "y\030\002 \001(\001\"\341\001\n\014PBOptionData\022\020\n\010askPrice\030\001 \001"
+    "(\001\022\020\n\010bidPrice\030\002 \001(\001\022\017\n\007askSize\030\003 \001(\005\022\017\n"
+    "\007bidSize\030\004 \001(\005\022\025\n\raskVolatility\030\005 \001(\001\022\025\n"
+    "\rbidVolatility\030\006 \001(\001\022\025\n\rmidVolatility\030\007 "
+    "\001(\001\022\r\n\005delta\030\010 \001(\001\022\r\n\005theta\030\t \001(\001\022\r\n\005gam"
+    "ma\030\n \001(\001\022\014\n\004vega\030\013 \001(\001\022\013\n\003rho\030\014 \001(\001\"\313\001\n\022"
+    "PBWingsModelReturn\022\r\n\005f_atm\030\001 \001(\001\022\r\n\005f_r"
+    "ef\030\002 \001(\001\022\r\n\005f_syn\030\003 \001(\001\022\020\n\010vol_curr\030\005 \001("
+    "\001\022\027\n\017vol_curr_offset\030\006 \001(\001\022\022\n\nslope_curr"
+    "\030\007 \001(\001\022\031\n\021slope_curr_offset\030\010 \001(\001\022\n\n\002x0\030"
+    "\t \001(\001\022\n\n\002x1\030\013 \001(\001\022\n\n\002x2\030\r \001(\001\022\n\n\002x3\030\017 \001("
+    "\001\"\312\003\n\031PBTradingDeskOptionParams\0220\n\006heade"
+    "r\030\001 \001(\0132 .Micro.Future.Message.DataHeade"
+    "r\022\020\n\010exchange\030\002 \001(\t\022\020\n\010contract\030\003 \001(\t\022E\n"
+    "\nmarketData\030\004 \001(\01321.Micro.Future.Message"
+    ".Business.PBOptionMarketData\022F\n\nimpliedV"
+    "ol\030\005 \001(\01322.Micro.Future.Message.Business"
+    ".PBImpliedVolatility\022=\n\010theoData\030\006 \001(\0132+"
+    ".Micro.Future.Message.Business.PBOptionD"
+    "ata\022F\n\013wingsReturn\030\007 \001(\01321.Micro.Future."
+    "Message.Business.PBWingsModelReturn\022A\n\014t"
+    "heoDataTemp\030\010 \001(\0132+.Micro.Future.Message"
+    ".Business.PBOptionData\"W\n\021PBPricingContr"
+    "act\022\020\n\010exchange\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022"
+    "\016\n\006weight\030\003 \001(\001\022\016\n\006adjust\030\004 \001(\001\"\365\005\n\nPBSt"
+    "rategy\0220\n\006header\030\001 \001(\0132 .Micro.Future.Me"
     "ssage.DataHeader\022\020\n\010exchange\030\002 \001(\t\022\020\n\010co"
-    "ntract\030\003 \001(\t\022\021\n\tdirection\030\004 \001(\005\022\020\n\010posit"
-    "ion\030\005 \001(\005\022\022\n\nydPosition\030\006 \001(\005\022\030\n\020positio"
-    "nDateFlag\030\007 \001(\005\022\022\n\nopenVolume\030\010 \001(\005\022\023\n\013c"
-    "loseVolume\030\t \001(\005\022\022\n\nopenAmount\030\n \001(\001\022\023\n\013"
-    "closeAmount\030\013 \001(\001\022\014\n\004cost\030\014 \001(\001\022\020\n\010openC"
-    "ost\030\r \001(\001\022\016\n\006profit\030\016 \001(\001\022\023\n\013closeProfit"
-    "\030\017 \001(\001\022\021\n\tuseMargin\030\020 \001(\001\022\021\n\thedgeFlag\030\021"
-    " \001(\005\022\022\n\ntdPosition\030\022 \001(\005\022\021\n\tportfolio\030\023 "
-    "\001(\t\"\275\005\n\rPBAccountInfo\022\020\n\010brokerID\030\002 \001(\t\022"
-    "\021\n\taccountID\030\003 \001(\t\022\023\n\013preMortgage\030\004 \001(\001\022"
-    "\021\n\tpreCredit\030\005 \001(\001\022\022\n\npreDeposit\030\006 \001(\001\022\022"
-    "\n\npreBalance\030\007 \001(\001\022\021\n\tpreMargin\030\010 \001(\001\022\024\n"
-    "\014interestBase\030\t \001(\001\022\020\n\010interest\030\n \001(\001\022\017\n"
-    "\007deposit\030\013 \001(\001\022\020\n\010withdraw\030\014 \001(\001\022\024\n\014froz"
-    "enMargin\030\r \001(\001\022\022\n\nfrozenCash\030\016 \001(\001\022\030\n\020fr"
-    "ozenCommission\030\017 \001(\001\022\022\n\ncurrMargin\030\020 \001(\001"
-    "\022\016\n\006cashIn\030\021 \001(\001\022\022\n\ncommission\030\022 \001(\001\022\023\n\013"
-    "closeProfit\030\023 \001(\001\022\026\n\016positionProfit\030\024 \001("
-    "\001\022\017\n\007balance\030\025 \001(\001\022\021\n\tavailable\030\026 \001(\001\022\025\n"
-    "\rwithdrawQuota\030\027 \001(\001\022\017\n\007reserve\030\030 \001(\001\022\022\n"
-    "\ntradingDay\030\031 \001(\005\022\024\n\014settlementID\030\032 \001(\005\022"
-    "\016\n\006credit\030\033 \001(\001\022\020\n\010mortgage\030\034 \001(\001\022\026\n\016exc"
-    "hangeMargin\030\035 \001(\001\022\026\n\016deliveryMargin\030\036 \001("
-    "\001\022\036\n\026exchangeDeliveryMargin\030\037 \001(\001\022\026\n\016res"
-    "erveBalance\030  \001(\001\0220\n\006header\030! \001(\0132 .Micr"
-    "o.Future.Message.DataHeader\"r\n\014PBMarketI"
-    "nfo\0220\n\006header\030\001 \001(\0132 .Micro.Future.Messa"
-    "ge.DataHeader\022\020\n\010exchange\030\002 \001(\t\022\014\n\004name\030"
-    "\003 \001(\014\022\020\n\010property\030\004 \001(\014\"\214\005\n\016PBContractIn"
-    "fo\022\020\n\010exchange\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022\014"
-    "\n\004name\030\003 \001(\014\022\021\n\tproductID\030\004 \001(\t\022\023\n\013produ"
-    "ctType\030\005 \001(\005\022\024\n\014deliveryYear\030\006 \001(\005\022\025\n\rde"
-    "liveryMonth\030\007 \001(\005\022\034\n\024maxMarketOrderVolum"
-    "e\030\010 \001(\005\022\034\n\024minMarketOrderVolume\030\t \001(\005\022\033\n"
-    "\023maxLimitOrderVolume\030\n \001(\005\022\033\n\023minLimitOr"
-    "derVolume\030\013 \001(\005\022\026\n\016volumeMultiple\030\014 \001(\005\022"
-    "\021\n\tpriceTick\030\r \001(\001\022\022\n\ncreateDate\030\016 \001(\t\022\020"
-    "\n\010openDate\030\017 \001(\t\022\022\n\nexpireDate\030\020 \001(\t\022\026\n\016"
-    "startDelivDate\030\021 \001(\t\022\024\n\014endDelivDate\030\022 \001"
-    "(\t\022\021\n\tlifePhase\030\023 \001(\005\022\021\n\tisTrading\030\024 \001(\010"
-    "\022\024\n\014positionType\030\025 \001(\005\022\030\n\020positionDateTy"
-    "pe\030\026 \001(\005\022\027\n\017longMarginRatio\030\027 \001(\001\022\030\n\020sho"
-    "rtMarginRatio\030\030 \001(\001\022\032\n\022underlyingExchang"
-    "e\030\031 \001(\t\022\032\n\022underlyingContract\030\032 \001(\t\022\024\n\014c"
-    "ontractType\030\033 \001(\005\022\023\n\013strikePrice\030\034 \001(\001\"\213"
-    "\001\n\022PBContractInfoList\0220\n\006header\030\001 \001(\0132 ."
-    "Micro.Future.Message.DataHeader\022C\n\014contr"
-    "actInfo\030\002 \003(\0132-.Micro.Future.Message.Bus"
-    "iness.PBContractInfo\"\214\002\n\017PBBankOpRequest"
-    "\0220\n\006header\030\001 \001(\0132 .Micro.Future.Message."
-    "DataHeader\022\016\n\006bankID\030\002 \001(\t\022\024\n\014bankBranch"
-    "ID\030\003 \001(\t\022\024\n\014bankPassword\030\004 \001(\t\022\023\n\013bankAc"
-    "count\030\005 \001(\t\022\020\n\010brokerID\030\006 \001(\t\022\026\n\016brokerB"
-    "ranchID\030\007 \001(\t\022\021\n\taccountID\030\010 \001(\t\022\020\n\010pass"
-    "word\030\t \001(\t\022\022\n\ncurrencyID\030\n \001(\t\022\023\n\013tradeA"
-    "mount\030\013 \001(\001\"\210\004\n\016PBBankOpResult\0220\n\006header"
-    "\030\001 \001(\0132 .Micro.Future.Message.DataHeader"
-    "\022\016\n\006bankID\030\002 \001(\t\022\024\n\014bankBranchID\030\003 \001(\t\022\024"
-    "\n\014bankPassword\030\004 \001(\t\022\023\n\013bankAccount\030\005 \001("
-    "\t\022\020\n\010brokerID\030\006 \001(\t\022\026\n\016brokerBranchID\030\007 "
-    "\001(\t\022\021\n\taccountID\030\010 \001(\t\022\020\n\010password\030\t \001(\t"
-    "\022\022\n\ncurrencyID\030\n \001(\t\022\023\n\013tradeAmount\030\013 \001("
-    "\001\022\021\n\tserialNum\030\014 \001(\t\022\022\n\ntradingDay\030\r \001(\005"
-    "\022\021\n\ttradeDate\030\016 \001(\t\022\021\n\ttradeTime\030\017 \001(\t\022\021"
-    "\n\ttradeCode\030\020 \001(\t\022\022\n\nbankSerial\030\021 \001(\t\022\025\n"
-    "\rfutureAccType\030\022 \001(\005\022\023\n\013bankAccType\030\023 \001("
-    "\005\022\024\n\014futureSerial\030\024 \001(\t\022\017\n\007custFee\030\025 \001(\001"
-    "\022\021\n\tbrokerFee\030\026 \001(\001\022\017\n\007errorID\030\027 \001(\005\022\020\n\010"
-    "errorMsg\030\030 \001(\014\"n\n\nPBBankInfo\0220\n\006header\030\001"
-    " \001(\0132 .Micro.Future.Message.DataHeader\022\016"
-    "\n\006bankID\030\002 \001(\t\022\020\n\010branchID\030\003 \001(\t\022\014\n\004name"
-    "\030\004 \001(\014\"\320\002\n\021PBUserAccountInfo\0220\n\006header\030\001"
-    " \001(\0132 .Micro.Future.Message.DataHeader\022\016"
-    "\n\006bankID\030\002 \001(\t\022\024\n\014bankBranchID\030\003 \001(\t\022\023\n\013"
-    "bankAccount\030\004 \001(\t\022\020\n\010brokerID\030\005 \001(\t\022\026\n\016b"
-    "rokerBranchID\030\006 \001(\t\022\021\n\taccountID\030\007 \001(\t\022\020"
-    "\n\010idCardNo\030\010 \001(\t\022\024\n\014customerName\030\t \001(\014\022\022"
-    "\n\ncurrencyID\030\n \001(\t\022\020\n\010custType\030\013 \001(\005\022\023\n\013"
-    "bankAccType\030\014 \001(\005\022\025\n\rbankUseAmount\030\r \001(\001"
-    "\022\027\n\017bankFetchAmount\030\016 \001(\001\"a\n\021PBPositionC"
-    "ompare\022\020\n\010contract\030\001 \001(\t\022\021\n\tdirection\030\002 "
-    "\001(\005\022\022\n\ndbPosition\030\003 \001(\005\022\023\n\013sysPosition\030\004"
-    " \001(\005\"\216\001\n\025PBPositionCompareList\0220\n\006header"
-    "\030\001 \001(\0132 .Micro.Future.Message.DataHeader"
-    "\022C\n\tpositions\030\002 \003(\01320.Micro.Future.Messa"
-    "ge.Business.PBPositionCompare\"\\\n\023PBValua"
-    "tionContract\022\020\n\010exchange\030\001 \001(\t\022\020\n\010contra"
-    "ct\030\002 \001(\t\022\r\n\005price\030\003 \001(\001\022\022\n\nvolatility\030\004 "
-    "\001(\001\"\307\001\n\017PBValuationRisk\0220\n\006header\030\001 \001(\0132"
-    " .Micro.Future.Message.DataHeader\022I\n\rcon"
-    "tractValue\030\002 \003(\01322.Micro.Future.Message."
-    "Business.PBValuationContract\022\022\n\ndaysRema"
-    "in\030\003 \001(\005\022\020\n\010interest\030\004 \001(\001\022\021\n\tportfolio\030"
-    "\005 \001(\tb\006proto3", 9573);
+    "ntract\030\003 \001(\t\022\022\n\nunderlying\030\004 \001(\t\022\016\n\006symb"
+    "ol\030\005 \001(\t\022\017\n\007hedging\030\006 \001(\010\022\022\n\nbidEnabled\030"
+    "\007 \001(\010\022\022\n\naskEnabled\030\010 \001(\010\022\r\n\005bidQV\030\t \001(\005"
+    "\022\r\n\005askQV\030\n \001(\005\022\r\n\005depth\030\013 \001(\005\022J\n\020pricin"
+    "gContracts\030\014 \003(\01320.Micro.Future.Message."
+    "Business.PBPricingContract\022\024\n\014pricingMod"
+    "el\030\r \001(\t\022F\n\014ivmContracts\030\016 \003(\01320.Micro.F"
+    "uture.Message.Business.PBPricingContract"
+    "\022\017\n\007ivModel\030\017 \001(\t\022F\n\014volContracts\030\020 \003(\0132"
+    "0.Micro.Future.Message.Business.PBPricin"
+    "gContract\022\020\n\010volModel\030\021 \001(\t\022\024\n\014baseExcha"
+    "nge\030\022 \001(\t\022\024\n\014baseContract\030\023 \001(\t\022\021\n\tportf"
+    "olio\030\024 \001(\t\022\024\n\014maxAutoTrade\030\025 \001(\005\022\022\n\nbidC"
+    "ounter\030\026 \001(\005\022\022\n\naskCounter\030\027 \001(\005\022\023\n\013bidN"
+    "otCross\030\030 \001(\010\022\021\n\tcloseMode\030\031 \001(\010\022\031\n\021limi"
+    "tOrderCounter\030\032 \001(\005\022\013\n\003tif\030\033 \001(\005\022\017\n\007volC"
+    "ond\030\034 \001(\005\022\024\n\014tickSizeMult\030\035 \001(\005\"\177\n\016PBStr"
+    "ategyList\0220\n\006header\030\001 \001(\0132 .Micro.Future"
+    ".Message.DataHeader\022;\n\010strategy\030\002 \003(\0132)."
+    "Micro.Future.Message.Business.PBStrategy"
+    "\"\333\001\n\006PBRisk\0220\n\006header\030\001 \001(\0132 .Micro.Futu"
+    "re.Message.DataHeader\022\020\n\010exchange\030\002 \001(\t\022"
+    "\020\n\010contract\030\003 \001(\t\022\022\n\nunderlying\030\004 \001(\t\022\020\n"
+    "\010position\030\005 \001(\005\022\r\n\005delta\030\006 \001(\001\022\r\n\005theta\030"
+    "\007 \001(\001\022\r\n\005gamma\030\010 \001(\001\022\014\n\004vega\030\t \001(\001\022\013\n\003rh"
+    "o\030\n \001(\001\022\r\n\005price\030\013 \001(\001\"s\n\nPBRiskList\0220\n\006"
+    "header\030\001 \001(\0132 .Micro.Future.Message.Data"
+    "Header\0223\n\004risk\030\002 \003(\0132%.Micro.Future.Mess"
+    "age.Business.PBRisk\"V\n\017PBContractParam\022\020"
+    "\n\010exchange\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022\020\n\010de"
+    "pthVol\030\003 \001(\005\022\r\n\005gamma\030\004 \001(\001\"\207\001\n\023PBContra"
+    "ctParamList\0220\n\006header\030\001 \001(\0132 .Micro.Futu"
+    "re.Message.DataHeader\022>\n\006params\030\002 \003(\0132.."
+    "Micro.Future.Message.Business.PBContract"
+    "Param\"F\n\016PBOTCUserParam\022\020\n\010exchange\030\001 \001("
+    "\t\022\020\n\010contract\030\002 \001(\t\022\020\n\010quantity\030\003 \001(\001\"\205\001"
+    "\n\022PBOTCUserParamList\0220\n\006header\030\001 \001(\0132 .M"
+    "icro.Future.Message.DataHeader\022=\n\006params"
+    "\030\002 \003(\0132-.Micro.Future.Message.Business.P"
+    "BOTCUserParam\"\230\002\n\016PBOrderRequest\0220\n\006head"
+    "er\030\001 \001(\0132 .Micro.Future.Message.DataHead"
+    "er\022\017\n\007orderID\030\002 \001(\004\022\022\n\norderSysID\030\003 \001(\004\022"
+    "\020\n\010exchange\030\004 \001(\t\022\020\n\010contract\030\005 \001(\t\022\022\n\nl"
+    "imitPrice\030\006 \001(\001\022\016\n\006volume\030\007 \001(\005\022\020\n\010execT"
+    "ype\030\010 \001(\005\022\013\n\003tif\030\t \001(\005\022\021\n\tdirection\030\n \001("
+    "\005\022\021\n\topenclose\030\013 \001(\005\022\021\n\tportfolio\030\014 \001(\t\022"
+    "\017\n\007volCond\030\r \001(\005\"\327\004\n\013PBOrderInfo\0220\n\006head"
+    "er\030\001 \001(\0132 .Micro.Future.Message.DataHead"
+    "er\022\017\n\007orderID\030\002 \001(\004\022\022\n\norderSysID\030\003 \001(\004\022"
+    "\020\n\010brokerID\030\004 \001(\t\022\022\n\ninvestorID\030\005 \001(\t\022\020\n"
+    "\010exchange\030\006 \001(\t\022\020\n\010contract\030\007 \001(\t\022\020\n\010exe"
+    "cType\030\010 \001(\005\022\013\n\003tif\030\t \001(\005\022\023\n\013tradingType\030"
+    "\n \001(\005\022\021\n\tdirection\030\013 \001(\005\022\022\n\nlimitPrice\030\014"
+    " \001(\001\022\021\n\tstopPrice\030\r \001(\001\022\023\n\013orderStatus\030\016"
+    " \001(\005\022\021\n\torderType\030\017 \001(\005\022\016\n\006volume\030\020 \001(\005\022"
+    "\022\n\ninsertTime\030\021 \001(\t\022\022\n\nupdateTime\030\022 \001(\t\022"
+    "\022\n\ncancelTime\030\023 \001(\t\022\024\n\014volumeTraded\030\024 \001("
+    "\005\022\024\n\014volumeRemain\030\025 \001(\005\022\027\n\017volumeConditi"
+    "on\030\026 \001(\005\022\022\n\ntradingDay\030\027 \001(\005\022\016\n\006active\030\030"
+    " \001(\010\022\021\n\topenclose\030\031 \001(\005\022\017\n\007message\030\032 \001(\014"
+    "\022\021\n\tsessionID\030\033 \001(\005\022\021\n\tportfolio\030\034 \001(\t\022\022"
+    "\n\ninsertDate\030\035 \001(\t\"\207\003\n\013PBTradeInfo\0220\n\006he"
+    "ader\030\001 \001(\0132 .Micro.Future.Message.DataHe"
+    "ader\022\017\n\007tradeID\030\002 \001(\004\022\021\n\tdirection\030\003 \001(\005"
+    "\022\021\n\topenclose\030\004 \001(\005\022\022\n\norderSysID\030\005 \001(\004\022"
+    "\017\n\007orderID\030\006 \001(\004\022\r\n\005price\030\007 \001(\001\022\016\n\006volum"
+    "e\030\010 \001(\005\022\020\n\010brokerID\030\t \001(\t\022\022\n\ninvestorID\030"
+    "\n \001(\t\022\020\n\010exchange\030\013 \001(\t\022\020\n\010contract\030\014 \001("
+    "\t\022\016\n\006userID\030\r \001(\t\022\021\n\ttradeDate\030\016 \001(\t\022\021\n\t"
+    "tradeTime\030\017 \001(\t\022\021\n\ttradeType\030\020 \001(\005\022\021\n\the"
+    "dgeFlag\030\021 \001(\005\022\022\n\ncommission\030\022 \001(\001\022\021\n\tpor"
+    "tfolio\030\023 \001(\t\"\231\003\n\nPBPosition\0220\n\006header\030\001 "
+    "\001(\0132 .Micro.Future.Message.DataHeader\022\020\n"
+    "\010exchange\030\002 \001(\t\022\020\n\010contract\030\003 \001(\t\022\021\n\tdir"
+    "ection\030\004 \001(\005\022\020\n\010position\030\005 \001(\005\022\022\n\nydPosi"
+    "tion\030\006 \001(\005\022\030\n\020positionDateFlag\030\007 \001(\005\022\022\n\n"
+    "openVolume\030\010 \001(\005\022\023\n\013closeVolume\030\t \001(\005\022\022\n"
+    "\nopenAmount\030\n \001(\001\022\023\n\013closeAmount\030\013 \001(\001\022\014"
+    "\n\004cost\030\014 \001(\001\022\020\n\010openCost\030\r \001(\001\022\016\n\006profit"
+    "\030\016 \001(\001\022\023\n\013closeProfit\030\017 \001(\001\022\021\n\tuseMargin"
+    "\030\020 \001(\001\022\021\n\thedgeFlag\030\021 \001(\005\022\022\n\ntdPosition\030"
+    "\022 \001(\005\022\021\n\tportfolio\030\023 \001(\t\"\275\005\n\rPBAccountIn"
+    "fo\022\020\n\010brokerID\030\002 \001(\t\022\021\n\taccountID\030\003 \001(\t\022"
+    "\023\n\013preMortgage\030\004 \001(\001\022\021\n\tpreCredit\030\005 \001(\001\022"
+    "\022\n\npreDeposit\030\006 \001(\001\022\022\n\npreBalance\030\007 \001(\001\022"
+    "\021\n\tpreMargin\030\010 \001(\001\022\024\n\014interestBase\030\t \001(\001"
+    "\022\020\n\010interest\030\n \001(\001\022\017\n\007deposit\030\013 \001(\001\022\020\n\010w"
+    "ithdraw\030\014 \001(\001\022\024\n\014frozenMargin\030\r \001(\001\022\022\n\nf"
+    "rozenCash\030\016 \001(\001\022\030\n\020frozenCommission\030\017 \001("
+    "\001\022\022\n\ncurrMargin\030\020 \001(\001\022\016\n\006cashIn\030\021 \001(\001\022\022\n"
+    "\ncommission\030\022 \001(\001\022\023\n\013closeProfit\030\023 \001(\001\022\026"
+    "\n\016positionProfit\030\024 \001(\001\022\017\n\007balance\030\025 \001(\001\022"
+    "\021\n\tavailable\030\026 \001(\001\022\025\n\rwithdrawQuota\030\027 \001("
+    "\001\022\017\n\007reserve\030\030 \001(\001\022\022\n\ntradingDay\030\031 \001(\005\022\024"
+    "\n\014settlementID\030\032 \001(\005\022\016\n\006credit\030\033 \001(\001\022\020\n\010"
+    "mortgage\030\034 \001(\001\022\026\n\016exchangeMargin\030\035 \001(\001\022\026"
+    "\n\016deliveryMargin\030\036 \001(\001\022\036\n\026exchangeDelive"
+    "ryMargin\030\037 \001(\001\022\026\n\016reserveBalance\030  \001(\001\0220"
+    "\n\006header\030! \001(\0132 .Micro.Future.Message.Da"
+    "taHeader\"r\n\014PBMarketInfo\0220\n\006header\030\001 \001(\013"
+    "2 .Micro.Future.Message.DataHeader\022\020\n\010ex"
+    "change\030\002 \001(\t\022\014\n\004name\030\003 \001(\014\022\020\n\010property\030\004"
+    " \001(\014\"\214\005\n\016PBContractInfo\022\020\n\010exchange\030\001 \001("
+    "\t\022\020\n\010contract\030\002 \001(\t\022\014\n\004name\030\003 \001(\014\022\021\n\tpro"
+    "ductID\030\004 \001(\t\022\023\n\013productType\030\005 \001(\005\022\024\n\014del"
+    "iveryYear\030\006 \001(\005\022\025\n\rdeliveryMonth\030\007 \001(\005\022\034"
+    "\n\024maxMarketOrderVolume\030\010 \001(\005\022\034\n\024minMarke"
+    "tOrderVolume\030\t \001(\005\022\033\n\023maxLimitOrderVolum"
+    "e\030\n \001(\005\022\033\n\023minLimitOrderVolume\030\013 \001(\005\022\026\n\016"
+    "volumeMultiple\030\014 \001(\005\022\021\n\tpriceTick\030\r \001(\001\022"
+    "\022\n\ncreateDate\030\016 \001(\t\022\020\n\010openDate\030\017 \001(\t\022\022\n"
+    "\nexpireDate\030\020 \001(\t\022\026\n\016startDelivDate\030\021 \001("
+    "\t\022\024\n\014endDelivDate\030\022 \001(\t\022\021\n\tlifePhase\030\023 \001"
+    "(\005\022\021\n\tisTrading\030\024 \001(\010\022\024\n\014positionType\030\025 "
+    "\001(\005\022\030\n\020positionDateType\030\026 \001(\005\022\027\n\017longMar"
+    "ginRatio\030\027 \001(\001\022\030\n\020shortMarginRatio\030\030 \001(\001"
+    "\022\032\n\022underlyingExchange\030\031 \001(\t\022\032\n\022underlyi"
+    "ngContract\030\032 \001(\t\022\024\n\014contractType\030\033 \001(\005\022\023"
+    "\n\013strikePrice\030\034 \001(\001\"\213\001\n\022PBContractInfoLi"
+    "st\0220\n\006header\030\001 \001(\0132 .Micro.Future.Messag"
+    "e.DataHeader\022C\n\014contractInfo\030\002 \003(\0132-.Mic"
+    "ro.Future.Message.Business.PBContractInf"
+    "o\"\214\002\n\017PBBankOpRequest\0220\n\006header\030\001 \001(\0132 ."
+    "Micro.Future.Message.DataHeader\022\016\n\006bankI"
+    "D\030\002 \001(\t\022\024\n\014bankBranchID\030\003 \001(\t\022\024\n\014bankPas"
+    "sword\030\004 \001(\t\022\023\n\013bankAccount\030\005 \001(\t\022\020\n\010brok"
+    "erID\030\006 \001(\t\022\026\n\016brokerBranchID\030\007 \001(\t\022\021\n\tac"
+    "countID\030\010 \001(\t\022\020\n\010password\030\t \001(\t\022\022\n\ncurre"
+    "ncyID\030\n \001(\t\022\023\n\013tradeAmount\030\013 \001(\001\"\210\004\n\016PBB"
+    "ankOpResult\0220\n\006header\030\001 \001(\0132 .Micro.Futu"
+    "re.Message.DataHeader\022\016\n\006bankID\030\002 \001(\t\022\024\n"
+    "\014bankBranchID\030\003 \001(\t\022\024\n\014bankPassword\030\004 \001("
+    "\t\022\023\n\013bankAccount\030\005 \001(\t\022\020\n\010brokerID\030\006 \001(\t"
+    "\022\026\n\016brokerBranchID\030\007 \001(\t\022\021\n\taccountID\030\010 "
+    "\001(\t\022\020\n\010password\030\t \001(\t\022\022\n\ncurrencyID\030\n \001("
+    "\t\022\023\n\013tradeAmount\030\013 \001(\001\022\021\n\tserialNum\030\014 \001("
+    "\t\022\022\n\ntradingDay\030\r \001(\005\022\021\n\ttradeDate\030\016 \001(\t"
+    "\022\021\n\ttradeTime\030\017 \001(\t\022\021\n\ttradeCode\030\020 \001(\t\022\022"
+    "\n\nbankSerial\030\021 \001(\t\022\025\n\rfutureAccType\030\022 \001("
+    "\005\022\023\n\013bankAccType\030\023 \001(\005\022\024\n\014futureSerial\030\024"
+    " \001(\t\022\017\n\007custFee\030\025 \001(\001\022\021\n\tbrokerFee\030\026 \001(\001"
+    "\022\017\n\007errorID\030\027 \001(\005\022\020\n\010errorMsg\030\030 \001(\014\"n\n\nP"
+    "BBankInfo\0220\n\006header\030\001 \001(\0132 .Micro.Future"
+    ".Message.DataHeader\022\016\n\006bankID\030\002 \001(\t\022\020\n\010b"
+    "ranchID\030\003 \001(\t\022\014\n\004name\030\004 \001(\014\"\320\002\n\021PBUserAc"
+    "countInfo\0220\n\006header\030\001 \001(\0132 .Micro.Future"
+    ".Message.DataHeader\022\016\n\006bankID\030\002 \001(\t\022\024\n\014b"
+    "ankBranchID\030\003 \001(\t\022\023\n\013bankAccount\030\004 \001(\t\022\020"
+    "\n\010brokerID\030\005 \001(\t\022\026\n\016brokerBranchID\030\006 \001(\t"
+    "\022\021\n\taccountID\030\007 \001(\t\022\020\n\010idCardNo\030\010 \001(\t\022\024\n"
+    "\014customerName\030\t \001(\014\022\022\n\ncurrencyID\030\n \001(\t\022"
+    "\020\n\010custType\030\013 \001(\005\022\023\n\013bankAccType\030\014 \001(\005\022\025"
+    "\n\rbankUseAmount\030\r \001(\001\022\027\n\017bankFetchAmount"
+    "\030\016 \001(\001\"a\n\021PBPositionCompare\022\020\n\010contract\030"
+    "\001 \001(\t\022\021\n\tdirection\030\002 \001(\005\022\022\n\ndbPosition\030\003"
+    " \001(\005\022\023\n\013sysPosition\030\004 \001(\005\"\216\001\n\025PBPosition"
+    "CompareList\0220\n\006header\030\001 \001(\0132 .Micro.Futu"
+    "re.Message.DataHeader\022C\n\tpositions\030\002 \003(\013"
+    "20.Micro.Future.Message.Business.PBPosit"
+    "ionCompare\"\\\n\023PBValuationContract\022\020\n\010exc"
+    "hange\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022\r\n\005price\030\003"
+    " \001(\001\022\022\n\nvolatility\030\004 \001(\001\"\307\001\n\017PBValuation"
+    "Risk\0220\n\006header\030\001 \001(\0132 .Micro.Future.Mess"
+    "age.DataHeader\022I\n\rcontractValue\030\002 \003(\01322."
+    "Micro.Future.Message.Business.PBValuatio"
+    "nContract\022\022\n\ndaysRemain\030\003 \001(\005\022\020\n\010interes"
+    "t\030\004 \001(\001\022\021\n\tportfolio\030\005 \001(\tb\006proto3", 9594);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "businessobj.proto", &protobuf_RegisterTypes);
   PBInstrument::default_instance_ = new PBInstrument();
@@ -4871,6 +4872,7 @@ const int PBPortfolio::kNameFieldNumber;
 const int PBPortfolio::kHedgeDelayFieldNumber;
 const int PBPortfolio::kThresholdFieldNumber;
 const int PBPortfolio::kHedgingFieldNumber;
+const int PBPortfolio::kHedgeVolumeFieldNumber;
 const int PBPortfolio::kHedgeContractsFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
@@ -4902,6 +4904,7 @@ void PBPortfolio::SharedCtor() {
   hedgedelay_ = 0;
   threshold_ = 0;
   hedging_ = false;
+  hedgevolume_ = 0;
 }
 
 PBPortfolio::~PBPortfolio() {
@@ -4963,6 +4966,7 @@ void PBPortfolio::Clear() {
   if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
   header_ = NULL;
   name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  hedgevolume_ = 0;
 
 #undef ZR_HELPER_
 #undef ZR_
@@ -5050,13 +5054,28 @@ bool PBPortfolio::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(50)) goto parse_hedgeContracts;
+        if (input->ExpectTag(48)) goto parse_hedgeVolume;
         break;
       }
 
-      // repeated .Micro.Future.Message.Business.PBHedgeContract hedgeContracts = 6;
+      // optional int32 hedgeVolume = 6;
       case 6: {
-        if (tag == 50) {
+        if (tag == 48) {
+         parse_hedgeVolume:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &hedgevolume_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(58)) goto parse_hedgeContracts;
+        break;
+      }
+
+      // repeated .Micro.Future.Message.Business.PBHedgeContract hedgeContracts = 7;
+      case 7: {
+        if (tag == 58) {
          parse_hedgeContracts:
           DO_(input->IncrementRecursionDepth());
          parse_loop_hedgeContracts:
@@ -5065,7 +5084,7 @@ bool PBPortfolio::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(50)) goto parse_loop_hedgeContracts;
+        if (input->ExpectTag(58)) goto parse_loop_hedgeContracts;
         input->UnsafeDecrementRecursionDepth();
         if (input->ExpectAtEnd()) goto success;
         break;
@@ -5126,10 +5145,15 @@ void PBPortfolio::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteBool(5, this->hedging(), output);
   }
 
-  // repeated .Micro.Future.Message.Business.PBHedgeContract hedgeContracts = 6;
+  // optional int32 hedgeVolume = 6;
+  if (this->hedgevolume() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(6, this->hedgevolume(), output);
+  }
+
+  // repeated .Micro.Future.Message.Business.PBHedgeContract hedgeContracts = 7;
   for (unsigned int i = 0, n = this->hedgecontracts_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      6, this->hedgecontracts(i), output);
+      7, this->hedgecontracts(i), output);
   }
 
   // @@protoc_insertion_point(serialize_end:Micro.Future.Message.Business.PBPortfolio)
@@ -5171,11 +5195,16 @@ void PBPortfolio::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(5, this->hedging(), target);
   }
 
-  // repeated .Micro.Future.Message.Business.PBHedgeContract hedgeContracts = 6;
+  // optional int32 hedgeVolume = 6;
+  if (this->hedgevolume() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(6, this->hedgevolume(), target);
+  }
+
+  // repeated .Micro.Future.Message.Business.PBHedgeContract hedgeContracts = 7;
   for (unsigned int i = 0, n = this->hedgecontracts_size(); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        6, this->hedgecontracts(i), target);
+        7, this->hedgecontracts(i), target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.Business.PBPortfolio)
@@ -5217,7 +5246,14 @@ int PBPortfolio::ByteSize() const {
     total_size += 1 + 1;
   }
 
-  // repeated .Micro.Future.Message.Business.PBHedgeContract hedgeContracts = 6;
+  // optional int32 hedgeVolume = 6;
+  if (this->hedgevolume() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->hedgevolume());
+  }
+
+  // repeated .Micro.Future.Message.Business.PBHedgeContract hedgeContracts = 7;
   total_size += 1 * this->hedgecontracts_size();
   for (int i = 0; i < this->hedgecontracts_size(); i++) {
     total_size +=
@@ -5266,6 +5302,9 @@ void PBPortfolio::MergeFrom(const PBPortfolio& from) {
   if (from.hedging() != 0) {
     set_hedging(from.hedging());
   }
+  if (from.hedgevolume() != 0) {
+    set_hedgevolume(from.hedgevolume());
+  }
 }
 
 void PBPortfolio::CopyFrom(const ::google::protobuf::Message& from) {
@@ -5297,6 +5336,7 @@ void PBPortfolio::InternalSwap(PBPortfolio* other) {
   std::swap(hedgedelay_, other->hedgedelay_);
   std::swap(threshold_, other->threshold_);
   std::swap(hedging_, other->hedging_);
+  std::swap(hedgevolume_, other->hedgevolume_);
   hedgecontracts_.UnsafeArenaSwap(&other->hedgecontracts_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
@@ -5437,7 +5477,21 @@ void PBPortfolio::clear_hedging() {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPortfolio.hedging)
 }
 
-// repeated .Micro.Future.Message.Business.PBHedgeContract hedgeContracts = 6;
+// optional int32 hedgeVolume = 6;
+void PBPortfolio::clear_hedgevolume() {
+  hedgevolume_ = 0;
+}
+ ::google::protobuf::int32 PBPortfolio::hedgevolume() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPortfolio.hedgeVolume)
+  return hedgevolume_;
+}
+ void PBPortfolio::set_hedgevolume(::google::protobuf::int32 value) {
+  
+  hedgevolume_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPortfolio.hedgeVolume)
+}
+
+// repeated .Micro.Future.Message.Business.PBHedgeContract hedgeContracts = 7;
 int PBPortfolio::hedgecontracts_size() const {
   return hedgecontracts_.size();
 }

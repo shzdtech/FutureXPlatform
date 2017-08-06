@@ -20,11 +20,20 @@
 class ORDERMGR_CLASS_EXPORT HedgeOrderManager : public AutoOrderManager
 {
 public:
+	enum HedgeStatus
+	{
+		HedgingOff = 0,
+		UnderDelta,
+		Hedging,
+		Waiting,
+		Hedgded,
+	};
+
 	HedgeOrderManager(IOrderAPI* pOrderAPI, 
 		const IPricingDataContext_Ptr& pricingCtx,
 		const IUserPositionContext_Ptr& exchangePositionCtx);
 
-	void Hedge(const PortfolioKey& portfolioKey);
+	HedgeStatus Hedge(const PortfolioKey& portfolioKey);
 
 	OrderDO_Ptr CancelOrder(OrderRequestDO & orderReq);
 

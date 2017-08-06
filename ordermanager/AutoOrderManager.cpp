@@ -407,8 +407,7 @@ int AutoOrderManager::Reset()
 {
 	auto& orderMap = _contractOrderCtx.GetAllOrder();
 	{
-		auto lt = orderMap.lock_table();
-		for (auto& it : lt)
+		for (auto& it : orderMap.lock_table())
 		{
 			CancelOrder(*(it.second));
 		}

@@ -3,9 +3,7 @@
     "servercfg": [
       "service.ctp_md",
       "service.ctp_trade",
-      "service.ctp_option",
       "service.otc_option",
-      "service.otc",
       "service.admin"
     ],
     "admin": {

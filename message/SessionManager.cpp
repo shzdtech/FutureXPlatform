@@ -93,6 +93,6 @@ void SessionManager::AddSession(const IMessageSession_Ptr& sessionPtr)
 {
 	if (auto processor_ptr = sessionPtr->LockMessageProcessor())
 	{
-		_sessionSet.insert(processor_ptr);
+		_sessionSet.insert(processor_ptr, true);
 	}
 }

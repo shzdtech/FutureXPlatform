@@ -107,11 +107,9 @@ vector_ptr<OrderDO_Ptr> UserOrderContext::GetOrdersByUser(const std::string & us
 	OrderContractInnerMapType orderMap;
 	if (_userContractOrderMap.find(userID, orderMap))
 	{
-		auto lt = orderMap.map()->lock_table();
-		for (auto& uc : lt)
+		for (auto& uc : orderMap.map()->lock_table())
 		{
-			auto ltlt = uc.second.map()->lock_table();
-			for (auto& c : ltlt)
+			for (auto& c : uc.second.map()->lock_table())
 			{
 				ret->push_back(c.second);
 			}

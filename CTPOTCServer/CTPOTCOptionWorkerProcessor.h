@@ -28,7 +28,7 @@ public:
 
 	virtual InstrumentCache & GetInstrumentCache();
 
-	virtual bool TriggerTadingDeskParams(const StrategyContractDO & strategyDO);
+	virtual bool TriggerTradingDeskParams(const StrategyContractDO & strategyDO);
 
 	// CTP API
 	virtual void OnRtnDepthMarketData(CThostFtdcDepthMarketDataField * pDepthMarketData);

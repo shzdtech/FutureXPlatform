@@ -80,6 +80,8 @@ int ASIOTCPSession::WriteMessage(const uint msgId, const data_buffer& msg)
 		asyn_send_queue(std::static_pointer_cast<ASIOTCPSession>(shared_from_this()));
 	}
 
+	LOG_DEBUG << "Writing message: Id: " << msgId << " Size: " << contentSz;
+
 	return package_sz;
 }
 
@@ -238,7 +240,7 @@ void ASIOTCPSession::asyn_read_body(const ASIOTCPSession_Ptr& this_ptr, uint msg
 			if (CTRLCHAR::ETX == exinfo[0] && CTRLCHAR::ETB == exinfo[EXINFO_LAST])
 			{
 				uint msgId = (exinfo[1] | exinfo[2] << 8 | exinfo[3] << 16 | exinfo[4] << 24);
-				LOG_DEBUG << "Receiving message: Id: " << msgId << " Size:" << bufSz;
+				LOG_DEBUG << "Receiving message: Id: " << msgId << " Size: " << bufSz;
 				msgbuf.resize(bufSz);
 				if (auto processor_ptr = this_ins->LockMessageProcessor())
 				{

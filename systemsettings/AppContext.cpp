@@ -39,7 +39,7 @@ std::shared_ptr<void> AppContext::GetData(const std::string& key)
 
 void AppContext::SetData(const std::string& key, std::shared_ptr<void> data)
 {
-	_data[key] = data;
+	_data.insert_or_assign(key, data);
 }
 
 std::shared_ptr<void> AppContext::RemoveData(const std::string & key)
@@ -77,7 +77,7 @@ std::weak_ptr<void> AppContext::GetWeakRef(const std::string& key)
 
 void AppContext::SetWeakRef(const std::string& key, std::weak_ptr<void> weakRef)
 {
-	_weakref[key] = weakRef;
+	_weakref.insert_or_assign(key, weakRef);
 }
 
 std::weak_ptr<void> AppContext::RemoveWeakRef(const std::string & key)

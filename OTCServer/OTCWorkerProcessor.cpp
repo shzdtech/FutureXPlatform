@@ -12,6 +12,8 @@
 
 #include "../common/Attribute_Key.h"
 
+#include "../utility/scopeunlock.h"
+
 #include "../message/DefMessageID.h"
 #include "../message/message_macro.h"
 #include "../systemsettings/AppContext.h"
@@ -40,7 +42,7 @@ OTCWorkerProcessor::OTCWorkerProcessor(const IPricingDataContext_Ptr& pricingCtx
 	_pricingNotifers(SessionContainer<ContractKey, ContractKeyHash>::NewInstancePtr()),
 	_tradingDeskNotifers(SessionContainer<UserContractKey, UserContractKeyHash>::NewInstancePtr()),
 	_otcOrderNotifers(SessionContainer<uint64_t>::NewInstancePtr()),
-	_pricingCtx(pricingCtx), _baseContractStrategyMap(1024)
+	_pricingCtx(pricingCtx), _baseContractStrategyMap(128)
 	// _exchangeStrategyMap(1024), _otcStrategySet(1024)
 {
 }
@@ -190,12 +192,12 @@ void OTCWorkerProcessor::AddMarketDataStrategyTrigger(const ContractKey& marketC
 {
 	if (!_baseContractStrategyMap.contains(marketContract))
 	{
-		cuckoohashmap_wrapper<UserContractKey, bool, UserContractKeyHash> cw(true, 16);
-		_baseContractStrategyMap.insert(marketContract, std::move(cw));
+		_baseContractStrategyMap.insert(marketContract, std::make_shared<lockfree_set<UserContractKey, UserContractKeyHash>>());
 	}
 
-	auto md2stMap = _baseContractStrategyMap.find(marketContract);
-	md2stMap.map()->insert(strategyKey, false);
+	std::shared_ptr<lockfree_set<UserContractKey, UserContractKeyHash>> md2stSet;
+	if (_baseContractStrategyMap.find(marketContract, md2stSet))
+		md2stSet->emplace(strategyKey);
 }
 
 
@@ -205,9 +207,9 @@ int OTCWorkerProcessor::UnsubscribePricingContracts(const UserContractKey& strat
 	{
 		if (!bsContract.IsOTC())
 		{
-			cuckoohashmap_wrapper<UserContractKey, bool, UserContractKeyHash> strategyMap;
-			if (_baseContractStrategyMap.find(bsContract, strategyMap))
-				strategyMap.map()->erase(strategyKey);
+			std::shared_ptr<lockfree_set<UserContractKey, UserContractKeyHash>> md2stSet;
+			if (_baseContractStrategyMap.find(bsContract, md2stSet))
+				md2stSet->erase(strategyKey);
 		}
 	}
 
@@ -320,30 +322,31 @@ void OTCWorkerProcessor::TriggerOTCPricing(const StrategyContractDO& strategyDO,
 	}
 }
 
-bool OTCWorkerProcessor::TriggerTadingDeskParams(const StrategyContractDO & strategyDO)
+bool OTCWorkerProcessor::TriggerTradingDeskParams(const StrategyContractDO & strategyDO)
 {
 	return false;
 }
 
 void OTCWorkerProcessor::TriggerUpdateByMarketData(const MarketDataDO& mdDO)
 {
-	cuckoohashmap_wrapper<UserContractKey, bool, UserContractKeyHash> strategyMap;
-	if (_baseContractStrategyMap.find(mdDO, strategyMap))
+	std::shared_ptr<lockfree_set<UserContractKey, UserContractKeyHash>> md2stSet;
+	if (_baseContractStrategyMap.find(mdDO, md2stSet))
 	{
 		auto pStrategyMap = PricingDataContext()->GetStrategyMap();
-		auto it = strategyMap.map()->lock_table();
-		for (auto& pair : it)
+
+		scopeunlock<lockfree_set<UserContractKey, UserContractKeyHash>> sc(md2stSet.get());
+		for (auto& key : md2stSet->rawset())
 		{
 			StrategyContractDO_Ptr strategy_ptr;
-			if (auto pStrategyDO = pStrategyMap->find(pair.first, strategy_ptr))
+			if (auto pStrategyDO = pStrategyMap->find(key, strategy_ptr))
 			{
 				TriggerPricingByStrategy(*strategy_ptr);
 			}
 		}
-		for (auto& pair : it)
+		for (auto& key : md2stSet->rawset())
 		{
 			StrategyContractDO_Ptr strategy_ptr;
-			if (auto pStrategyDO = pStrategyMap->find(pair.first, strategy_ptr))
+			if (auto pStrategyDO = pStrategyMap->find(key, strategy_ptr))
 			{
 				TriggerOTCTradingByStrategy(*strategy_ptr);
 			}
@@ -362,7 +365,7 @@ void OTCWorkerProcessor::TriggerOTCTradingByStrategy(const StrategyContractDO & 
 
 void OTCWorkerProcessor::TriggerPricingByStrategy(const StrategyContractDO & strategyDO)
 {
-	bool cached = TriggerTadingDeskParams(strategyDO);
+	bool cached = TriggerTradingDeskParams(strategyDO);
 
 	TriggerOTCPricing(strategyDO, cached);
 }

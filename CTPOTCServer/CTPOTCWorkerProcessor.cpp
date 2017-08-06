@@ -204,8 +204,7 @@ int CTPOTCWorkerProcessor::ResubMarketData(void)
 
 	if (auto mdMap = PricingDataContext()->GetMarketDataMap())
 	{
-		auto table = mdMap->lock_table();
-		for (auto it : table)
+		for (auto it : mdMap->lock_table())
 		{
 			if (SubscribeMarketData(it.first) == 0)
 			{

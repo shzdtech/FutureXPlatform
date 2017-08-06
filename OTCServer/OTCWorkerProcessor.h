@@ -12,6 +12,7 @@
 #include <list>
 #include <future>
 #include "../utility/cuckoohashmap_wrapper.h"
+#include "../utility/lockfree_set.h"
 #include "../ordermanager/OTCOrderManager.h"
 #include "../dataobject/TypedefDO.h"
 #include "../bizutility/ContractCache.h"
@@ -48,7 +49,7 @@ public:
 
 	virtual void TriggerPricingByStrategy(const StrategyContractDO & strategyDO);
 
-	virtual bool TriggerTadingDeskParams(const StrategyContractDO& strategyDO);
+	virtual bool TriggerTradingDeskParams(const StrategyContractDO& strategyDO);
 
 	virtual void TriggerOTCPricing(const StrategyContractDO& strategyDO, bool findInCache);
 
@@ -73,7 +74,7 @@ public:
 	IPricingDataContext_Ptr& PricingDataContext();
 
 protected:
-	cuckoohash_map<ContractKey, cuckoohashmap_wrapper<UserContractKey, bool, UserContractKeyHash>, ContractKeyHash> _baseContractStrategyMap;
+	cuckoohash_map<ContractKey, std::shared_ptr<lockfree_set<UserContractKey, UserContractKeyHash>>, ContractKeyHash> _baseContractStrategyMap;
 	SessionContainer_Ptr<ContractKey, ContractKeyHash> _pricingNotifers;
 	SessionContainer_Ptr<UserContractKey, UserContractKeyHash> _tradingDeskNotifers;
 	SessionContainer_Ptr<uint64_t> _otcOrderNotifers;

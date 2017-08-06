@@ -15,7 +15,7 @@
 #include "IMessageSession.h"
 
 
-template <typename K, class Hash = DefaultHasher<K>, class Pred = std::equal_to<K>>
+template <typename K, class Hash = std::hash<K>, class Pred = std::equal_to<K>>
 class SessionContainer : public IMessageSessionEvent, public std::enable_shared_from_this<SessionContainer<K, Hash, Pred>>
 {
 private:
@@ -58,8 +58,7 @@ public:
 	void forall(std::function<void(const IMessageSession_Ptr&)> func)
 	{
 		// std::shared_lock<std::shared_mutex> read_lock(_mutex);
-		auto table = _sessionMap.lock_table();
-		for (auto& pair : table)
+		for (auto& pair : _sessionMap.lock_table();)
 		{
 			foreach(pair.first, func);
 		}
@@ -187,8 +186,7 @@ public:
 		if (sessionPtr)
 		{
 			//std::unique_lock<std::shared_mutex> write_lock(_mutex);
-			auto table = _sessionMap.lock_table();
-			for (auto& pair : table)
+			for (auto& pair : _sessionMap.lock_table())
 			{
 				pair.second.erase(sessionPtr);
 			}
@@ -209,7 +207,7 @@ private:
 	// std::shared_mutex _mutex;
 };
 
-template <typename K, class Hash = DefaultHasher<K>, class Pred = std::equal_to<K>>
+template <typename K, class Hash = std::hash<K>, class Pred = std::equal_to<K>>
 using SessionContainer_Ptr = typename std::shared_ptr<SessionContainer<K, Hash, Pred>>;
 
 #endif

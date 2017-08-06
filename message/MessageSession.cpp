@@ -149,7 +149,7 @@ bool MessageSession::NotifyClosing(void)
 
 void MessageSession::addListener(const IMessageSessionEvent_WkPtr& listener)
 {
-	_sessionHub.insert(listener);
+	_sessionHub.insert(listener, true);
 }
 
 ////////////////////////////////////////////////////////////////////////

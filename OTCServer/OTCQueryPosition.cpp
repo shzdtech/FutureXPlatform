@@ -35,20 +35,26 @@ dataobj_ptr OTCQueryPosition::HandleRequest(const uint32_t serialId, const datao
 
 		auto locktb = positionMap.map()->lock_table();
 		auto endit = locktb.end();
-		for (auto it = locktb.begin(); it != endit; it++)
+		for (auto it = locktb.begin(); it != endit;)
 		{
 			if (!it->second.empty())
 			{
 				auto clock = it->second.map()->lock_table();
+				++it;
+
 				auto cendit = clock.end();
-				for (auto cit = clock.begin(); cit != cendit; cit++)
+				for (auto cit = clock.begin(); cit != cendit;)
 				{
 					auto positionDO_Ptr = std::make_shared<UserPositionExDO>(*cit->second);
-					positionDO_Ptr->HasMore = std::next(it) != endit && std::next(cit) != cendit;
+					positionDO_Ptr->HasMore = ++cit != cendit && it != endit;
 					OnResponseProcMacro(msgProcessor, MSG_ID_QUERY_POSITION, reqDO->SerialId, &positionDO_Ptr);
 
 					found = true;
 				}
+			}
+			else
+			{
+				++it;
 			}
 		}
 

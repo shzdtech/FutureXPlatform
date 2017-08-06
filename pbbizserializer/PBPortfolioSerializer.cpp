@@ -15,6 +15,7 @@ data_buffer PBPortfolioSerializer::Serialize(const dataobj_ptr & abstractDO)
 	PB.set_hedging(pDO->Hedging);
 	PB.set_hedgedelay(pDO->HedgeDelay);
 	PB.set_threshold(pDO->Threshold);
+	PB.set_hedgevolume(pDO->HedgeVolume);
 
 	for (auto pair : pDO->HedgeContracts)
 	{
@@ -38,6 +39,7 @@ dataobj_ptr PBPortfolioSerializer::Deserialize(const data_buffer & rawdata)
 	ret->Hedging = PB.hedging();
 	ret->HedgeDelay = PB.hedgedelay();
 	ret->Threshold = PB.threshold();
+	ret->HedgeVolume = PB.hedgevolume();
 
 	for (auto& hc : PB.hedgecontracts())
 	{

@@ -32,6 +32,7 @@ dataobj_ptr OTCUpdatePortfolio::HandleRequest(const uint32_t serialId, const dat
 			{
 				pPortfolio->Hedging = pPortfolioDO->Hedging;
 				pPortfolio->HedingFlag = false;
+				pPortfolio->HedgeVolume = pPortfolioDO->HedgeVolume;
 				pPortfolio->LastHedge = std::chrono::steady_clock::now();
 
 				if (!pPortfolio->Hedging)

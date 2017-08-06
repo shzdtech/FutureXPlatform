@@ -64,14 +64,13 @@ dataobj_ptr OTCUpdateTempModelParam::HandleRequest(const uint32_t serialId, cons
 			{
 				if (auto stMap_ptr = pairMap.second)
 				{
-					auto it = stMap_ptr->lock_table();
-					for (auto& pair : it)
+					for (auto& pair : stMap_ptr->lock_table())
 					{
 						auto& strategyDO = pair.second;
 						auto volModel_Ptr = strategyDO->VolModel;
 						if (volModel_Ptr && volModel_Ptr->operator==(*modelParam_ptr))
 						{
-							pWorkerProc->TriggerTadingDeskParams(*strategyDO);
+							pWorkerProc->TriggerTradingDeskParams(*strategyDO);
 						}
 					}
 				}

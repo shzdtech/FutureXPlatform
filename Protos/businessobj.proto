@@ -74,7 +74,8 @@ message PBPortfolio
 	int32 hedgeDelay = 3;
 	double threshold = 4;
 	bool hedging = 5;
-	repeated PBHedgeContract hedgeContracts = 6;
+	int32 hedgeVolume = 6;
+	repeated PBHedgeContract hedgeContracts = 7;
 }
 
 message PBPortfolioList

@@ -51,10 +51,10 @@ dataobj_ptr TestingQueryTrade::HandleRequest(const uint32_t serialId, const data
 
 		auto lockTb = userTrades.map()->lock_table();
 		auto endit = lockTb.end();
-		for (auto it = lockTb.begin(); it != endit; it++)
+		for (auto it = lockTb.begin(); it != endit;)
 		{
 			auto tradeptr = std::make_shared<TradeRecordDO>(*it->second);
-			tradeptr->HasMore = std::next(it) != endit;
+			tradeptr->HasMore = ++it != endit;
 			pWorkerProc->SendDataObject(session, MSG_ID_QUERY_TRADE, serialId, tradeptr);
 		}
 	}

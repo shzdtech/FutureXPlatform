@@ -99,11 +99,15 @@ void CTPOTCTradeProcessor::HedgeOrderWorker()
 		PortfolioKey portfolioKey;
 		if (_hedgeOrderQueue.pop(portfolioKey))
 		{
-			_hedgeOrderMgr.Hedge(portfolioKey);
+			auto status = _hedgeOrderMgr.Hedge(portfolioKey);
+			if (status == HedgeOrderManager::Waiting)
+			{
+				_hedgeOrderQueue.emplace(portfolioKey);
+			}
 		}
 		else
 		{
-			std::this_thread::sleep_for(std::chrono::milliseconds(100));
+			std::this_thread::sleep_for(std::chrono::milliseconds(200));
 		}
 	}
 }
@@ -404,7 +408,7 @@ void CTPOTCTradeProcessor::OnRtnOrder(CThostFtdcOrderField *pOrder)
 				orderStatus == OrderStatusType::ALL_TRADED ||
 				orderStatus == OrderStatusType::CANCELED)
 			{
-				_hedgeOrderQueue.emplace(*orderptr);
+				TriggerHedgeOrderUpdating(*orderptr);
 			}
 		}
 

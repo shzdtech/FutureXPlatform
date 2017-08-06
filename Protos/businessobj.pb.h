@@ -853,10 +853,16 @@ class PBPortfolio : public ::google::protobuf::Message {
   bool hedging() const;
   void set_hedging(bool value);
 
-  // repeated .Micro.Future.Message.Business.PBHedgeContract hedgeContracts = 6;
+  // optional int32 hedgeVolume = 6;
+  void clear_hedgevolume();
+  static const int kHedgeVolumeFieldNumber = 6;
+  ::google::protobuf::int32 hedgevolume() const;
+  void set_hedgevolume(::google::protobuf::int32 value);
+
+  // repeated .Micro.Future.Message.Business.PBHedgeContract hedgeContracts = 7;
   int hedgecontracts_size() const;
   void clear_hedgecontracts();
-  static const int kHedgeContractsFieldNumber = 6;
+  static const int kHedgeContractsFieldNumber = 7;
   const ::Micro::Future::Message::Business::PBHedgeContract& hedgecontracts(int index) const;
   ::Micro::Future::Message::Business::PBHedgeContract* mutable_hedgecontracts(int index);
   ::Micro::Future::Message::Business::PBHedgeContract* add_hedgecontracts();
@@ -876,6 +882,7 @@ class PBPortfolio : public ::google::protobuf::Message {
   ::google::protobuf::int32 hedgedelay_;
   bool hedging_;
   ::google::protobuf::RepeatedPtrField< ::Micro::Future::Message::Business::PBHedgeContract > hedgecontracts_;
+  ::google::protobuf::int32 hedgevolume_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
@@ -7156,7 +7163,21 @@ inline void PBPortfolio::set_hedging(bool value) {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPortfolio.hedging)
 }
 
-// repeated .Micro.Future.Message.Business.PBHedgeContract hedgeContracts = 6;
+// optional int32 hedgeVolume = 6;
+inline void PBPortfolio::clear_hedgevolume() {
+  hedgevolume_ = 0;
+}
+inline ::google::protobuf::int32 PBPortfolio::hedgevolume() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPortfolio.hedgeVolume)
+  return hedgevolume_;
+}
+inline void PBPortfolio::set_hedgevolume(::google::protobuf::int32 value) {
+  
+  hedgevolume_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPortfolio.hedgeVolume)
+}
+
+// repeated .Micro.Future.Message.Business.PBHedgeContract hedgeContracts = 7;
 inline int PBPortfolio::hedgecontracts_size() const {
   return hedgecontracts_.size();
 }

@@ -38,8 +38,10 @@ void HedgeOrderManager::TradeByStrategy(
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-void HedgeOrderManager::Hedge(const PortfolioKey& portfolioKey)
+HedgeOrderManager::HedgeStatus HedgeOrderManager::Hedge(const PortfolioKey& portfolioKey)
 {
+	HedgeOrderManager::HedgeStatus ret = HedgingOff;
+
 	PortfolioDO* pPortfolio = nullptr;
 	if (auto pPortfolioMap = _pricingCtx->GetPortfolioMap())
 	{
@@ -50,11 +52,11 @@ void HedgeOrderManager::Hedge(const PortfolioKey& portfolioKey)
 	}
 
 	if (!pPortfolio || !pPortfolio->Hedging)
-		return;
+		return ret;
 
 	_updatingPortfolioLock.upsert(*pPortfolio, [](bool& lock) { lock = true; }, true);
 
-	_updatingPortfolioLock.update_fn(*pPortfolio, [this, pPortfolio](bool& lock)
+	_updatingPortfolioLock.update_fn(*pPortfolio, [this, &ret, pPortfolio](bool& lock)
 	{
 		UnderlyingRiskMap portfolioMap;
 		_exchangePositionCtx->GetRiskByPortfolio(_pricingCtx, pPortfolio->UserID(), pPortfolio->PortfolioID(), portfolioMap);
@@ -66,6 +68,10 @@ void HedgeOrderManager::Hedge(const PortfolioKey& portfolioKey)
 		if (std::chrono::duration_cast<std::chrono::seconds>(duration).count() > pPortfolio->HedgeDelay)
 		{
 			pPortfolio->HedingFlag = true;
+		}
+		else
+		{
+			ret = Waiting;
 		}
 
 		for (auto pair : portfolioMap)
@@ -101,9 +107,14 @@ void HedgeOrderManager::Hedge(const PortfolioKey& portfolioKey)
 			}
 
 			if (std::abs(totalDelta) < std::abs(hedgeDelta))
+			{
+				ret = UnderDelta;
 				continue;
+			}
 
 			needHedge = true;
+
+			ret = Hedging;
 
 			cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr> orders;
 
@@ -203,6 +214,11 @@ void HedgeOrderManager::Hedge(const PortfolioKey& portfolioKey)
 				remainVol = std::min(pInstumentInfo->MaxLimitOrderVolume, remainVol);
 			}
 
+			if (pPortfolio->HedgeVolume > 0)
+			{
+				remainVol = std::min(pPortfolio->HedgeVolume, remainVol);
+			}
+
 			// Make new orders
 			OrderRequestDO newOrder(0, hedgeContract->ExchangeID(), hedgeContract->InstrumentID(), pPortfolio->UserID(), pPortfolio->PortfolioID());
 			newOrder.TIF = OrderTIFType::IOC;
@@ -294,12 +310,16 @@ void HedgeOrderManager::Hedge(const PortfolioKey& portfolioKey)
 
 		if (pPortfolio->HedingFlag && !needHedge)
 		{
+			ret = Hedgded;
 			pPortfolio->HedingFlag = false;
-			pPortfolio->LastHedge = std::chrono::steady_clock::now();
 		}
+
+		pPortfolio->LastHedge = std::chrono::steady_clock::now();
 
 		lock = true;
 	});
+
+	return ret;
 }
 
 OrderDO_Ptr HedgeOrderManager::CancelOrder(OrderRequestDO& orderReq)

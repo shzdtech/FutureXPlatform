@@ -169,6 +169,7 @@
   <ItemGroup>
     <ClInclude Include="atomicutil.h" />
     <ClInclude Include="autofillmap.h" />
+    <ClInclude Include="scopeunlock.h" />
     <ClInclude Include="commonconst.h" />
     <ClInclude Include="cuckoohashmap_wrapper.h" />
     <ClInclude Include="entrywisemutex.h" />

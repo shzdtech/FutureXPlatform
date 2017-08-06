@@ -52,7 +52,7 @@ InstrumentCache & CTPOTCOptionWorkerProcessor::GetInstrumentCache()
 	return cache;
 }
 
-bool CTPOTCOptionWorkerProcessor::TriggerTadingDeskParams(const StrategyContractDO & strategyDO)
+bool CTPOTCOptionWorkerProcessor::TriggerTradingDeskParams(const StrategyContractDO & strategyDO)
 {
 	auto pricingCtx = PricingDataContext();
 

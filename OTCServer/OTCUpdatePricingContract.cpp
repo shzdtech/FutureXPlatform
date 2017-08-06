@@ -38,8 +38,7 @@ dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, con
 		if (pStrategyDO->PricingContracts)
 		{
 			std::vector<StrategyContractDO_Ptr> updateVec;
-			auto it = pUserStrategyMap_ptr->get()->lock_table();
-			for (auto& pair : it)
+			for (auto& pair : pUserStrategyMap_ptr->get()->lock_table())
 			{
 				StrategyContractDO_Ptr scDO_ptr = std::make_shared<StrategyContractDO>(*pair.second);
 				scDO_ptr->PricingContracts = std::make_shared<StrategyPricingContract>(*pair.second->PricingContracts);
@@ -55,7 +54,6 @@ dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, con
 				pWorkerProc->SubscribePricingContracts(*scDO_ptr, *scDO_ptr->PricingContracts);
 				updateVec.push_back(std::move(scDO_ptr));
 			}
-			it.release();
 
 			for (auto& st_ptr : updateVec)
 			{
@@ -69,8 +67,7 @@ dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, con
 		{
 			std::vector<StrategyContractDO_Ptr> updateVec;
 
-			auto it = pUserStrategyMap_ptr->get()->lock_table();
-			for (auto& pair : it)
+			for (auto& pair : pUserStrategyMap_ptr->get()->lock_table())
 			{
 				StrategyContractDO_Ptr scDO_ptr = std::make_shared<StrategyContractDO>(*pair.second);
 				scDO_ptr->IVMContracts = std::make_shared<StrategyPricingContract>(*pair.second->IVMContracts);
@@ -86,7 +83,6 @@ dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, con
 				pWorkerProc->SubscribePricingContracts(*scDO_ptr, *scDO_ptr->IVMContracts);
 				updateVec.push_back(std::move(scDO_ptr));
 			}
-			it.release();
 
 			for (auto& st_ptr : updateVec)
 			{
@@ -100,8 +96,7 @@ dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, con
 		{
 			std::vector<StrategyContractDO_Ptr> updateVec;
 
-			auto it = pUserStrategyMap_ptr->get()->lock_table();
-			for (auto& pair : it)
+			for (auto& pair : pUserStrategyMap_ptr->get()->lock_table())
 			{
 				StrategyContractDO_Ptr scDO_ptr = std::make_shared<StrategyContractDO>(*pair.second);
 				scDO_ptr->VolContracts = std::make_shared<StrategyPricingContract>(*pair.second->VolContracts);
@@ -117,7 +112,6 @@ dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, con
 				pWorkerProc->SubscribePricingContracts(*scDO_ptr, *scDO_ptr->VolContracts);
 				updateVec.push_back(std::move(scDO_ptr));
 			}
-			it.release();
 
 			for (auto& st_ptr : updateVec)
 			{
@@ -141,8 +135,7 @@ dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, con
 				updated = true;
 				std::vector<StrategyContractDO_Ptr> updateVec;
 
-				auto it = pUserStrategyMap_ptr->get()->lock_table();
-				for (auto& pair : it)
+				for (auto& pair : pUserStrategyMap_ptr->get()->lock_table())
 				{
 					StrategyContractDO_Ptr scDO_ptr = std::make_shared<StrategyContractDO>(*pair.second);
 					if (scDO_ptr->PricingModel)
@@ -151,7 +144,6 @@ dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, con
 						updateVec.push_back(std::move(scDO_ptr));
 					}
 				}
-				it.release();
 
 				for (auto& st_ptr : updateVec)
 				{
@@ -174,8 +166,7 @@ dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, con
 				updated = true;
 				std::vector<StrategyContractDO_Ptr> updateVec;
 
-				auto it = pUserStrategyMap_ptr->get()->lock_table();
-				for (auto& pair : it)
+				for (auto& pair : pUserStrategyMap_ptr->get()->lock_table())
 				{
 					StrategyContractDO_Ptr scDO_ptr = std::make_shared<StrategyContractDO>(*pair.second);
 					if (scDO_ptr->IVModel)
@@ -184,7 +175,6 @@ dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, con
 						updateVec.push_back(std::move(scDO_ptr));
 					}
 				}
-				it.release();
 
 				for (auto& st_ptr : updateVec)
 				{
@@ -207,8 +197,7 @@ dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, con
 				updated = true;
 				std::vector<StrategyContractDO_Ptr> updateVec;
 
-				auto it = pUserStrategyMap_ptr->get()->lock_table();
-				for (auto& pair : it)
+				for (auto& pair : pUserStrategyMap_ptr->get()->lock_table())
 				{
 					StrategyContractDO_Ptr scDO_ptr = std::make_shared<StrategyContractDO>(*pair.second);
 					if (scDO_ptr->VolModel)
@@ -217,7 +206,6 @@ dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, con
 						updateVec.push_back(std::move(scDO_ptr));
 					}
 				}
-				it.release();
 
 				for (auto& st_ptr : updateVec)
 				{
@@ -232,8 +220,7 @@ dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, con
 			StrategyContractDAO::UpdateStrategyModel(*pStrategyDO);
 		}
 
-		auto it = pUserStrategyMap_ptr->get()->lock_table();
-		for (auto& pair : it)
+		for (auto& pair : pUserStrategyMap_ptr->get()->lock_table())
 		{
 			pWorkerProc->TriggerPricingByStrategy(*pair.second);
 			ret->push_back(*pair.second);

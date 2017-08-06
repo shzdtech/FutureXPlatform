@@ -88,6 +88,8 @@ public:
 	bool Hedging = false;
 	double Threshold = 1;
 	long HedgeDelay = 0;
+	int HedgeVolume = 0;
+
 	std::chrono::steady_clock::time_point LastHedge;
 
 	volatile bool HedingFlag = false;

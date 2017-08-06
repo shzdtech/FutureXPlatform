@@ -49,7 +49,7 @@ public:
 
 	virtual TradeRecordDO_Ptr RefineTrade(CThostFtdcTradeField * pTrade);
 
-	virtual void UpdatePosition(const TradeRecordDO_Ptr& trdDO_Ptr);
+	virtual UserPositionExDO_Ptr UpdatePosition(const TradeRecordDO_Ptr& trdDO_Ptr);
 
 	virtual OrderDO_Ptr CTPTradeWorkerProcessor::RefineOrder(CThostFtdcOrderField *pOrder);
 

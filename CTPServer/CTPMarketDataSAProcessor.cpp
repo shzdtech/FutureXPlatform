@@ -41,8 +41,8 @@ CTPMarketDataSAProcessor::CTPMarketDataSAProcessor(IServerContext* pServerCtx)
 	std::string userid;
 	if (!_serverCtx->getConfigVal(CTP_MD_USERID, userid))
 		userid = SysParam::Get(CTP_MD_USERID);
-	_systemUser.setInvestorId(userid);
 	_systemUser.setUserId(userid);
+	_systemUser.setInvestorId(userid);
 
 	std::string pwd;
 	if (!_serverCtx->getConfigVal(CTP_MD_PASSWORD, pwd))
@@ -98,7 +98,7 @@ int CTPMarketDataSAProcessor::LoginSystemUser(void)
 {
 	CThostFtdcReqUserLoginField req{};
 	std::strncpy(req.BrokerID, _systemUser.getBrokerId().data(), sizeof(req.BrokerID));
-	std::strncpy(req.UserID, _systemUser.getInvestorId().data(), sizeof(req.UserID));
+	std::strncpy(req.UserID, _systemUser.getUserId().data(), sizeof(req.UserID));
 	std::strncpy(req.Password, _systemUser.getPassword().data(), sizeof(req.Password));
 	return _rawAPI->MdAPIProxy()->get()->ReqUserLogin(&req, 0);
 }
@@ -112,25 +112,25 @@ int CTPMarketDataSAProcessor::LoginSystemUserIfNeed(void)
 	if (!_isLogged || !_isConnected)
 	{
 		std::string address(_systemUser.getServer());
-		CreateCTPAPI(_systemUser.getInvestorId(), address);
+		CreateCTPAPI(_systemUser.getUserId(), address);
 		ret = LoginSystemUser();
 		if (ret == -1)
 		{
 			if (ExchangeRouterTable::TryFind(_systemUser.getBrokerId() + ':' + ExchangeRouterTable::TARGET_MD_AM, address))
 			{
-				CreateCTPAPI(_systemUser.getInvestorId(), address);
+				CreateCTPAPI(_systemUser.getUserId(), address);
 				ret = LoginSystemUser();
 			}
 		}
 
 		if (ret == 0)
 		{
-			LOG_INFO << getServerContext()->getServerUri() << ": System user " << _systemUser.getInvestorId()
+			LOG_INFO << getServerContext()->getServerUri() << ": System user " << _systemUser.getUserId()
 				<< " has connected to market data server at: " << address;
 		}
 		else
 		{
-			LOG_WARN << getServerContext()->getServerUri() << ": System user " << _systemUser.getInvestorId()
+			LOG_WARN << getServerContext()->getServerUri() << ": System user " << _systemUser.getUserId()
 				<< " cannot connect to market data server at: " << address;
 		}
 	}
@@ -208,7 +208,7 @@ void CTPMarketDataSAProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspU
 			auto& userInfo = session->getUserInfo();
 			userInfo.setUserId(_systemUser.getUserId());
 			userInfo.setBrokerId(_systemUser.getBrokerId());
-			userInfo.setInvestorId(_systemUser.getInvestorId());
+			userInfo.setInvestorId(_systemUser.getUserId());
 			userInfo.setPermission(ALLOW_TRADING);
 			userInfo.setFrontId(_systemUser.getFrontId());
 			userInfo.setSessionId(_systemUser.getSessionId());
