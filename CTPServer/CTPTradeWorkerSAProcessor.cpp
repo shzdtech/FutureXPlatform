@@ -19,8 +19,10 @@
 #include "../litelogger/LiteLogger.h"
 
 
-CTPTradeWorkerSAProcessor::CTPTradeWorkerSAProcessor(IServerContext* pServerCtx, const IPricingDataContext_Ptr& pricingCtx)
-	: CTPTradeWorkerProcessor(pServerCtx, std::make_shared<PortfolioPositionContext>())
+CTPTradeWorkerSAProcessor::CTPTradeWorkerSAProcessor(IServerContext* pServerCtx, 
+	const IPricingDataContext_Ptr& pricingCtx,
+	const IUserPositionContext_Ptr& positionCtx)
+	: CTPTradeWorkerProcessor(pServerCtx, positionCtx)
 {
 }
 
@@ -88,7 +90,16 @@ void CTPTradeWorkerSAProcessor::OnRtnTrade(CThostFtdcTradeField * pTrade)
 
 			DispatchUserMessage(MSG_ID_TRADE_RTN, 0, trdDO_Ptr->UserID(), trdDO_Ptr);
 
-			UpdatePosition(trdDO_Ptr);
+			if (auto position_ptr = UpdatePosition(trdDO_Ptr))
+			{
+				DispatchUserMessage(MSG_ID_POSITION_UPDATED, 0, trdDO_Ptr->UserID(), position_ptr);
+			}
+
+			// Try update position
+			if (!_exiting && !_updateFlag.test_and_set(std::memory_order::memory_order_acquire))
+			{
+				_updateTask = std::async(std::launch::async, &CTPTradeProcessor::QueryPositionAsync, this);
+			}
 		}
 	}
 }

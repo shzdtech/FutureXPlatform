@@ -29,9 +29,10 @@
 
 CTPOTCTradeProcessor::CTPOTCTradeProcessor(
 	IServerContext* pServerCtx,
-	const IPricingDataContext_Ptr& pricingDataCtx)
+	const IPricingDataContext_Ptr& pricingDataCtx,
+	const IUserPositionContext_Ptr& positionCtx)
 	: OTCTradeProcessor(pricingDataCtx),
-	CTPTradeWorkerSAProcessor(pServerCtx, pricingDataCtx),
+	CTPTradeWorkerSAProcessor(pServerCtx, pricingDataCtx, positionCtx),
 	_otcOrderMgr(this, pricingDataCtx, this),
 	_autoOrderMgr(this, pricingDataCtx, _userPositionCtx_Ptr),
 	_hedgeOrderMgr(this, pricingDataCtx, _userPositionCtx_Ptr)
@@ -444,4 +445,9 @@ void CTPOTCTradeProcessor::OnRtnTrade(CThostFtdcTradeField * pTrade)
 			UpdatePosition(trdDO_Ptr);
 		}
 	}
+}
+
+void CTPOTCTradeProcessor::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+
 }

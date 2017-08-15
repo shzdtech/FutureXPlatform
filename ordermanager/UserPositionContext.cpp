@@ -133,6 +133,11 @@ bool UserPositionContext::RemovePosition(const std::string & userID, const std::
 	return ret;
 }
 
+bool UserPositionContext::RemoveUserPosition(const std::string & userID)
+{
+	return _userPositionMap.erase(userID);
+}
+
 UserPositionExDO_Ptr UserPositionContext::UpsertPosition(const std::string& userid, const TradeRecordDO_Ptr& tradeDO,
 	int multiplier, bool closeYdFirst)
 {

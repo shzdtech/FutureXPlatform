@@ -2,7 +2,7 @@
 #define	__CTPMAPPING_H
 #include <map>
 #include "../dataobject/OrderDO.h"
-#include "tradeapi/ThostFtdcUserApiDataType.h"
+#include "CTPAPISwitch.h"
 
 static const std::map<OrderExecType, TThostFtdcOrderPriceTypeType> CTPExecPriceMapping =
 {

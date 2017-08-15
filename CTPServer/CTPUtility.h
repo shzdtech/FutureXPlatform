@@ -15,7 +15,7 @@
 #include "../dataobject/BankOpResultDO.h"
 #include "../dataobject/UserAccountRegisterDO.h"
 #include "../dataobject/UserPositionDO.h"
-#include "tradeapi/ThostFtdcUserApiStruct.h"
+#include "CTPAPISwitch.h"
 #include "ctpexport.h"
 
 class CTP_CLASS_EXPORT CTPUtility

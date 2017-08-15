@@ -18,6 +18,7 @@
 
 #include "../pricingengine/PricingDataContext.h"
 #include "../dataserializer/AbstractDataSerializerFactory.h"
+#include "../ordermanager/PortfolioPositionContext.h"
 
  ////////////////////////////////////////////////////////////////////////
  // Name:       CTPTradeServiceSAFactory::CreateMessageHandlers()
@@ -33,6 +34,7 @@ std::map<uint, IMessageHandler_Ptr> CTPTradeServiceSAFactory::CreateMessageHandl
 	msg_hdl_map[MSG_ID_LOGIN] = std::make_shared<CTPTDLoginSA>();
 	msg_hdl_map[MSG_ID_QUERY_POSITION] = std::make_shared<CTPQueryPositionSA>();
 	msg_hdl_map[MSG_ID_QUERY_POSITION_DIFFER] = std::make_shared<CTPQueryPositionDiffer>();
+	msg_hdl_map[MSG_ID_SYNC_POSITION] = std::make_shared<CTPSyncPositionDiffer>();
 
 	return msg_hdl_map;
 }
@@ -72,7 +74,9 @@ IMessageProcessor_Ptr CTPTradeServiceSAFactory::CreateWorkerProcessor(IServerCon
 {
 	if (!serverCtx->getWorkerProcessor())
 	{
-		auto worker_ptr = std::make_shared<CTPTradeWorkerSAProcessor>(serverCtx, std::make_shared<PricingDataContext>());
+		auto worker_ptr = std::make_shared<CTPTradeWorkerSAProcessor>(serverCtx, 
+			std::make_shared<PricingDataContext>(),
+			std::make_shared<PortfolioPositionContext>());
 		worker_ptr->Initialize(serverCtx);
 		serverCtx->setWorkerProcessor(worker_ptr);
 		serverCtx->setSubTypeWorkerPtr(static_cast<CTPTradeWorkerSAProcessor*>(worker_ptr.get()));

@@ -26,7 +26,8 @@
 #include "../dataserializer/AbstractDataSerializerFactory.h"
 
 #include "../pricingengine/PricingDataContext.h"
-
+#include "../ordermanager/PortfolioPositionContext.h"
+#include "../systemsettings/AppContext.h"
 
  ////////////////////////////////////////////////////////////////////////
  // Name:       CTPOTCServiceFactory::CreateMessageHandlers()
@@ -53,8 +54,15 @@ IMessageProcessor_Ptr CTPOTCOptionServiceFactory::CreateWorkerProcessor(IServerC
 {
 	if (!serverCtx->getWorkerProcessor())
 	{
+		auto positionCtx = std::static_pointer_cast<IUserPositionContext>(AppContext::GetData(STR_KEY_USER_POSITION));
+		if (!positionCtx)
+		{
+			positionCtx = std::make_shared<PortfolioPositionContext>();
+			AppContext::SetData(STR_KEY_USER_POSITION, positionCtx);
+		}
+
 		auto pricingCtx = std::static_pointer_cast<IPricingDataContext>(serverCtx->getAttribute(STR_KEY_SERVER_PRICING_DATACONTEXT));
-		std::shared_ptr<CTPOTCTradeProcessor> tradeProcessor(new CTPOTCTradeProcessor(serverCtx, pricingCtx));
+		std::shared_ptr<CTPOTCTradeProcessor> tradeProcessor(new CTPOTCTradeProcessor(serverCtx, pricingCtx, positionCtx));
 		tradeProcessor->Initialize(serverCtx);
 		std::shared_ptr<CTPOTCWorkerProcessor> worker_ptr(new CTPOTCOptionWorkerProcessor(serverCtx, tradeProcessor));
 		worker_ptr->Initialize(serverCtx);

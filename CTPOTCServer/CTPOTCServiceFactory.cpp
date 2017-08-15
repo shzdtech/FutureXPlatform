@@ -25,6 +25,8 @@
 #include "../dataserializer/AbstractDataSerializerFactory.h"
 
 #include "../pricingengine/PricingDataContext.h"
+#include "../ordermanager/PortfolioPositionContext.h"
+#include "../systemsettings/AppContext.h"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPOTCServiceFactory::CreateMessageHandlers()
@@ -100,6 +102,8 @@ std::map<uint, IMessageHandler_Ptr> CTPOTCServiceFactory::CreateMessageHandlers(
 
 	msg_hdl_map[MSG_ID_QUERY_VALUATION_RISK] = std::make_shared<CTPOTCQueryValuationRisk>();
 
+	msg_hdl_map[MSG_ID_SYNC_POSITION] = std::make_shared<CTPSyncPositionDiffer>();
+
 	// For simulation
 	msg_hdl_map[MSG_ID_RET_MARKETDATA] = std::make_shared<CTPSimMarketData>();
 
@@ -143,8 +147,15 @@ IMessageProcessor_Ptr CTPOTCServiceFactory::CreateWorkerProcessor(IServerContext
 {
 	if (!serverCtx->getWorkerProcessor())
 	{
+		auto positionCtx = std::static_pointer_cast<IUserPositionContext>(AppContext::GetData(STR_KEY_USER_POSITION));
+		if (!positionCtx)
+		{
+			positionCtx = std::make_shared<PortfolioPositionContext>();
+			AppContext::SetData(STR_KEY_USER_POSITION, positionCtx);
+		}
+
 		auto pricingCtx = std::static_pointer_cast<IPricingDataContext>(serverCtx->getAttribute(STR_KEY_SERVER_PRICING_DATACONTEXT));
-		std::shared_ptr<CTPOTCTradeProcessor> tradeProcessor(new CTPOTCTradeProcessor(serverCtx, pricingCtx));
+		std::shared_ptr<CTPOTCTradeProcessor> tradeProcessor(new CTPOTCTradeProcessor(serverCtx, pricingCtx, positionCtx));
 		std::shared_ptr<CTPOTCWorkerProcessor> worker_ptr(new CTPOTCWorkerProcessor(serverCtx, tradeProcessor));
 		worker_ptr->Initialize(serverCtx);
 		tradeProcessor->Initialize(serverCtx);
@@ -158,5 +169,12 @@ IMessageProcessor_Ptr CTPOTCServiceFactory::CreateWorkerProcessor(IServerContext
 void CTPOTCServiceFactory::SetServerContext(IServerContext * serverCtx)
 {
 	CTPMDServiceFactory::SetServerContext(serverCtx);
-	serverCtx->setAttribute(STR_KEY_SERVER_PRICING_DATACONTEXT, std::make_shared<PricingDataContext>());
+	auto pricingCtx = AppContext::GetData(STR_KEY_SERVER_PRICING_DATACONTEXT);
+	if (!pricingCtx)
+	{
+		pricingCtx = std::make_shared<PricingDataContext>();
+		AppContext::SetData(STR_KEY_SERVER_PRICING_DATACONTEXT, pricingCtx);
+	}
+
+	serverCtx->setAttribute(STR_KEY_SERVER_PRICING_DATACONTEXT, pricingCtx);
 }

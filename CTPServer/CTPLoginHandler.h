@@ -11,7 +11,7 @@
 #include "../message/LoginHandler.h"
 #include "../common/typedefs.h"
 #include "../bizutility/ExchangeRouterTable.h"
-#include "tradeapi/ThostFtdcUserApiStruct.h"
+#include "CTPAPISwitch.h"
 #include "ctpexport.h"
 
 class CTP_CLASS_EXPORT CTPLoginHandler : public LoginHandler

@@ -104,10 +104,14 @@ enum ProductType
 	PRODUCT_EFP = 4,
 	///现货期权
 	PRODUCT_SPOTOPTION = 5,
+	///个股期权
+	PRODUCT_ETFOPTION = 6,
+	///证券
+	PRODUCT_STOCK = 7,
 	///OTC合约
-	PRODUCT_OTC = 6,
+	PRODUCT_OTC = 8,
 	///OTC期权
-	PRODUCT_OTC_OPTION = 7,
+	PRODUCT_OTC_OPTION = 9,
 	///
 	PRODUCT_UPPERBOUND,
 };

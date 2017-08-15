@@ -7,7 +7,7 @@
 
 #include "CTPUtility.h"
 #include "CTPConstant.h"
-#include "tradeapi/ThostFtdcUserApiStruct.h"
+#include "CTPAPISwitch.h"
 #include "../message/BizError.h"
 #include <boost/locale/encoding.hpp>
 #include "../utility/commonconst.h"
@@ -287,7 +287,20 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(
 	{
 		const char* pExchange = "";
 		if (auto pInstument = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(pOrderInput->InstrumentID))
+		{
 			pExchange = pInstument->ExchangeID().data();
+		}
+		else
+		{
+			InstrumentDO instDO;
+			if (ContractDAO::FindExchangeContractById(pOrderInput->InstrumentID, instDO))
+			{
+				ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).Add(instDO);
+
+				if (auto pInstument = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(pOrderInput->InstrumentID))
+					pExchange = pInstument->ExchangeID().data();
+			}
+		}
 
 		baseOrder.reset(new OrderDO(ToUInt64(pOrderInput->OrderRef),
 			pExchange, pOrderInput->InstrumentID, pOrderInput->UserID));

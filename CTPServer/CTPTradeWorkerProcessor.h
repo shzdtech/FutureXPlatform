@@ -47,6 +47,8 @@ public:
 
 	int ComparePosition(autofillmap<std::pair<std::string, PositionDirectionType>, std::pair<int, int>>& positions);
 
+	int SyncPosition(const std::string& userId);
+
 	virtual TradeRecordDO_Ptr RefineTrade(CThostFtdcTradeField * pTrade);
 
 	virtual UserPositionExDO_Ptr UpdatePosition(const TradeRecordDO_Ptr& trdDO_Ptr);
@@ -60,6 +62,9 @@ public:
 	int RetryInterval = 30000;
 
 protected:
+	std::string _authCode;
+	std::string _productInfo;
+
 	std::mutex _loginMutex;
 	autofillmap<std::string, autofillmap<std::string, AccountInfoDO>> _accountInfoMap;
 	std::set<ExchangeDO> _exchangeInfo_Set;
@@ -74,7 +79,7 @@ protected:
 	bool _loadPositionFromDB;
 
 	autofillmap<std::pair<std::string, PositionDirectionType>, int> _ydDBPositions;
-	autofillmap<std::pair<std::string, PositionDirectionType>, int> _ydSysPositions;
+	autofillmap<std::pair<std::string, PositionDirectionType>, UserPositionExDO_Ptr> _ydSysPositions;
 
 public:
 	virtual void OnFrontConnected();
@@ -86,6 +91,8 @@ public:
 	///        0x2002 发送心跳失败
 	///        0x2003 收到错误报文
 	virtual void OnFrontDisconnected(int nReason);
+	///客户端认证响应
+	virtual void OnRspAuthenticate(CThostFtdcRspAuthenticateField *pRspAuthenticateField, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	///登录请求响应
 	virtual void OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 	///请求查询合约响应

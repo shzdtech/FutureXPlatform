@@ -23,7 +23,7 @@
 class CTP_OTC_CLASS_EXPORT CTPOTCTradeProcessor : public CTPTradeWorkerSAProcessor, public OTCTradeProcessor
 {
 public:
-	CTPOTCTradeProcessor(IServerContext* pServerCtx, const IPricingDataContext_Ptr& pricingDataCtx);
+	CTPOTCTradeProcessor(IServerContext* pServerCtx, const IPricingDataContext_Ptr& pricingDataCtx, const IUserPositionContext_Ptr& positionCtx);
 	~CTPOTCTradeProcessor();
 	virtual bool Dispose(void);
 
@@ -79,6 +79,9 @@ public:
 	void OnRtnOrder(CThostFtdcOrderField *pOrder);
 
 	void OnRtnTrade(CThostFtdcTradeField * pTrade);
+
+	///请求查询投资者持仓响应
+	void OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 };
 
 #endif

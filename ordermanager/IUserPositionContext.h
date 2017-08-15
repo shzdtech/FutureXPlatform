@@ -31,6 +31,8 @@ public:
 
 	virtual UserPositionExDO_Ptr GetPosition(const std::string& userID, const std::string& instumentID, PositionDirectionType direction, const std::string& portfolio = "") = 0;
 
+	virtual bool RemoveUserPosition(const std::string & userID) = 0;
+
 	virtual bool RemovePosition(const std::string & userID, const std::string & instumentID, PositionDirectionType direction, const std::string& portfolio = "") = 0;
 
 	virtual bool AllPosition(std::vector<UserPositionExDO_Ptr>& positions) = 0;

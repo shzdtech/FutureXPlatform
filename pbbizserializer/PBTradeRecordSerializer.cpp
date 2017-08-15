@@ -57,5 +57,18 @@ data_buffer PBTradeRecordSerializer::Serialize(const dataobj_ptr& abstractDO)
 
 dataobj_ptr PBTradeRecordSerializer::Deserialize(const data_buffer& rawdata)
 {
-	return PBStringMapSerializer::Instance()->Deserialize(rawdata);
+	Micro::Future::Message::Business::PBTradeInfo PB;
+	ParseWithReturn(PB, rawdata);
+
+	auto trade = std::make_shared<TradeRecordDO>(PB.exchange(), PB.contract(), "", PB.portfolio());
+	FillDOHeader(trade, PB);
+
+	trade->Direction = PB.direction() == DirectionType::SELL ? DirectionType::SELL : DirectionType::BUY;
+	trade->OpenClose = (OrderOpenCloseType)PB.openclose();
+	trade->Price = PB.price();
+	trade->Volume = PB.volume();
+	trade->HedgeFlag = (HedgeType)PB.hedgeflag();
+	trade->TradeType = (OrderTradingType)PB.tradetype();
+	
+	return trade;
 }

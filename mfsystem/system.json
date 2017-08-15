@@ -4,6 +4,7 @@
     "service": {
       "config": "service.json"
     },
+    "libpath": "./ctpapi/etf",
     "databases": {
       "configs": [ "mysql" ],
       "mysql": {

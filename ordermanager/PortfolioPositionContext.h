@@ -34,6 +34,8 @@ public:
 
 	virtual bool RemovePosition(const std::string & userID, const std::string & instumentID, PositionDirectionType direction, const std::string& portfolio = "");
 
+	virtual bool RemoveUserPosition(const std::string & userID);
+
 	virtual bool AllPosition(std::vector<UserPositionExDO_Ptr>& positions);
 
 	virtual bool GetRiskByPortfolio(const IPricingDataContext_Ptr& pricingCtx, const std::string& userID, const std::string& portfolio, UnderlyingRiskMap& risks);

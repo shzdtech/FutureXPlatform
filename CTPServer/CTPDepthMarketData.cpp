@@ -6,7 +6,7 @@
  ***********************************************************************/
 
 #include "CTPDepthMarketData.h"
-#include "tradeapi/ThostFtdcMdApi.h"
+#include "CTPAPISwitch.h"
 #include "../dataobject/MarketDataDO.h"
 #include "../dataobject/TemplateDO.h"
 #include "../message/BizError.h"

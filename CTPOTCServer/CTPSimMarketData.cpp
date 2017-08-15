@@ -6,7 +6,7 @@
  ***********************************************************************/
 
 #include "CTPSimMarketData.h"
-#include "../CTPServer/tradeapi/ThostFtdcMdApi.h"
+#include "../CTPServer/CTPAPISwitch.h"
 #include "../dataobject/MarketDataDO.h"
 #include "../dataobject/TemplateDO.h"
 #include "../message/MessageUtility.h"

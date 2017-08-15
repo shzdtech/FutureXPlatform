@@ -88,3 +88,15 @@ VectorDO_Ptr<UserPositionExDO> PositionDAO::QueryOTCLastDayPosition(const std::s
 
 	return ret;
 }
+
+
+bool PositionDAO::SyncPosition(const std::string & userid, const std::string & tradingDay, const std::map<std::pair<ContractKey, PositionDirectionType>, int>& positions)
+{
+	bool ret = false;
+
+	static const std::string sql_proc_queryOTCPosition("CALL Position_OTC_Lastday(?,?)");
+
+	
+
+	return ret;
+}

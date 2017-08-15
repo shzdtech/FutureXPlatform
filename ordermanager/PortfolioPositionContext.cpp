@@ -12,6 +12,7 @@
 #include "../dataobject/TradingDeskOptionParams.h"
 #include "../bizutility/ContractCache.h"
 #include "../litelogger/LiteLogger.h"
+#include "../databaseop/ContractDAO.h"
 
 
 UserPositionExDO_Ptr PortfolioPositionContext::UpsertPosition(const std::string& userid, const UserPositionExDO& positionDO, bool updateYdPosition, bool closeYdFirst)
@@ -36,21 +37,12 @@ UserPositionExDO_Ptr PortfolioPositionContext::UpsertPosition(const std::string&
 	newPosition_Ptr->CloseAmount = 0;
 	newPosition_Ptr->CloseVolume = 0;
 
-	//if (newPosition_Ptr->PortfolioID().empty())
-	//{
-	//	StrategyContractDO_Ptr sto;
-	//	if (_pricingCtx->GetStrategyMap()->find(positionDO, sto))
-	//	{
-	//		newPosition_Ptr->SetPortfolioID(sto->PortfolioID());
-	//	}
-	//}
-
 	contractPosition.map()->upsert(std::pair<std::string, int>(newPosition_Ptr->InstrumentID(), newPosition_Ptr->Direction),
 		[&positionDO, &newPosition_Ptr, closeYdFirst, updateYdPosition](UserPositionExDO_Ptr& position_ptr)
 	{
 		if (position_ptr->TradingDay == newPosition_Ptr->TradingDay &&
 			position_ptr->YdInitPosition != newPosition_Ptr->YdInitPosition &&
-			newPosition_Ptr->YdInitPosition > 0)
+			newPosition_Ptr->YdInitPosition >= 0)
 		{
 			position_ptr->YdInitPosition = newPosition_Ptr->YdInitPosition;
 
@@ -162,6 +154,11 @@ bool PortfolioPositionContext::RemovePosition(const std::string & userID,
 	}
 
 	return ret;
+}
+
+bool PortfolioPositionContext::RemoveUserPosition(const std::string & userID)
+{
+	return _userPositionMap.erase(userID);
 }
 
 bool PortfolioPositionContext::AllPosition(std::vector<UserPositionExDO_Ptr>& positions)
@@ -281,19 +278,41 @@ bool PortfolioPositionContext::GetRiskByPortfolio(const IPricingDataContext_Ptr&
 					}
 				}
 
+				auto& contractCache = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE);
 				InstrumentDO* pInstument = nullptr;
 				if (baseContract_Ptr)
 				{
-					pInstument = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(baseContract_Ptr->InstrumentID());
+					pInstument = contractCache.QueryInstrumentById(baseContract_Ptr->InstrumentID());
+					if (!pInstument)
+					{
+						InstrumentDO ido;
+						if (ContractDAO::FindExchangeContractById(baseContract_Ptr->InstrumentID(), ido))
+						{
+							ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).Add(ido);
+							pInstument = contractCache.QueryInstrumentById(baseContract_Ptr->InstrumentID());
+						}
+					}						
 				}
 				else
 				{
-					if (pInstument = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(userPosition_Ptr->InstrumentID()))
+					pInstument = contractCache.QueryInstrumentById(userPosition_Ptr->InstrumentID());
+					if (!pInstument)
 					{
-						if (pInstument->ContractType == ContractType::CONTRACTTYPE_FUTURE)
+						InstrumentDO ido;
+						if (ContractDAO::FindExchangeContractById(userPosition_Ptr->InstrumentID(), ido))
 						{
-							delta = 1;
+							ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).Add(ido);
+							pInstument = contractCache.QueryInstrumentById(userPosition_Ptr->InstrumentID());
 						}
+					}
+
+					if (pInstument && pInstument->ContractType == ContractType::CONTRACTTYPE_FUTURE)
+					{
+						delta = 1;
+					}
+					else
+					{
+						continue;
 					}
 				}
 
@@ -400,12 +419,11 @@ bool PortfolioPositionContext::GetValuationRiskByPortfolio(const IPricingDataCon
 									param.midVolatility = wresult->Volatility;
 									param.bidVolatility = wresult->TBid().Volatility;
 									param.askVolatility = wresult->TAsk().Volatility;
-									param.riskFreeRate = std::max(valuationRisk.Interest, DBL_EPSILON);
 
 									if (auto pParams = (OptionParams*)strategy->PricingModel->ParsedParams.get())
 									{
 										param.dividend = pParams->dividend;
-										param.riskFreeRate = valuationRisk.Interest >= 0 ? valuationRisk.Interest : pParams->riskFreeRate;
+										param.riskFreeRate = pParams->riskFreeRate + valuationRisk.Interest;
 									}
 
 									param_vector params{ &param };

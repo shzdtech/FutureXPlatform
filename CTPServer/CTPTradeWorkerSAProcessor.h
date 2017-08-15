@@ -9,7 +9,7 @@
 class CTP_CLASS_EXPORT CTPTradeWorkerSAProcessor : public CTPTradeWorkerProcessor
 {
 public:
-	CTPTradeWorkerSAProcessor(IServerContext* pServerCtx, const IPricingDataContext_Ptr& pricingCtx);
+	CTPTradeWorkerSAProcessor(IServerContext* pServerCtx, const IPricingDataContext_Ptr& pricingCtx, const IUserPositionContext_Ptr& positionCtx);
 	~CTPTradeWorkerSAProcessor();
 
 	virtual void Initialize(IServerContext* pServerCtx);

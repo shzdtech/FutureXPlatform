@@ -72,6 +72,16 @@ bool MicroFurtureSystem::Load(const std::string& config)
 
 		LOG_INFO << "  Loading system config: " << config;
 
+		auto libpath = cfgReader->getValue("system.libpath");
+
+		std::string path = std::getenv("PATH");
+
+		path += ";" + libpath;
+
+		path = "PATH=" + path;
+
+		_putenv(path.data());
+
 		std::vector<std::string> section_vec;
 		// Initialize Databases
 		cfgReader->getVector("system.databases.configs", section_vec);

@@ -27,7 +27,7 @@
 #include "CTPPositionUpdated.h"
 #include "CTPQueryPositionSA.h"
 #include "CTPQueryPositionDiffer.h"
-
+#include "CTPSyncPositionDiffer.h"
 
 //Transfer
 #include "CTPFromBankToFuture.h"

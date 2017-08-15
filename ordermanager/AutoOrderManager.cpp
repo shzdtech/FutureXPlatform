@@ -91,30 +91,52 @@ void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 			}
 
 			bool closeMode = strategyDO.AutoOrderSettings.CloseMode;
-			int depth = closeMode ? 1 : strategyDO.Depth;
+			bool fakMode = strategyDO.AutoOrderSettings.TIF == OrderTIFType::IOC;
+			bool notCross = strategyDO.NotCross;
+
 			double tickSize = strategyDO.EffectiveTickSize();
 			bool askEnable = strategyDO.AskEnabled && strategyDO.AutoOrderSettings.AskCounter < strategyDO.AutoOrderSettings.MaxAutoTrade;
 			bool bidEnable = strategyDO.BidEnabled && strategyDO.AutoOrderSettings.BidCounter < strategyDO.AutoOrderSettings.MaxAutoTrade;
 
-			double pricingBidMax = strategyDO.NotCross ? std::min(pricingDO_ptr->Bid().Price, mdo.Bid().Price) : pricingDO_ptr->Bid().Price;
-			pricingBidMax = std::floor(pricingBidMax / tickSize) * tickSize;
-			double pricingBidMin = pricingBidMax - (depth - 1)*tickSize;
-
-			double pricingAskMin = strategyDO.NotCross ? std::max(pricingDO_ptr->Ask().Price, mdo.Ask().Price) : pricingDO_ptr->Ask().Price;
-			pricingAskMin = std::ceil(pricingAskMin / tickSize) * tickSize;
-			double pricingAskMax = pricingAskMin + (depth - 1)*tickSize;
-
 			autofillmap<epsdouble, int> bidPriceOrders;
 			autofillmap<epsdouble, int> askPriceOrders;
 
-			epsdouble askPrice(pricingAskMin);
-			epsdouble bidPrice(pricingBidMax);
-			for (int i = 0; i < depth; i++)
+			if (fakMode)
 			{
-				bidPriceOrders.emplace(bidPrice, 0);
-				askPriceOrders.emplace(askPrice, 0);
-				askPrice += tickSize;
-				bidPrice -= tickSize;
+				if (pricingDO_ptr->Bid().Price >= mdo.Ask().Price)
+				{
+					bidPriceOrders.emplace(mdo.Ask().Price, 0);
+				}
+				else if (pricingDO_ptr->Ask().Price <= mdo.Bid().Price)
+				{
+					askPriceOrders.emplace(mdo.Bid().Price, 0);
+				}
+				else
+				{
+					return;
+				}
+			}
+			else
+			{
+				int depth = closeMode ? 1 : strategyDO.Depth;
+
+				double pricingBidMax = notCross ? std::min(pricingDO_ptr->Bid().Price, mdo.Bid().Price) : pricingDO_ptr->Bid().Price;
+				pricingBidMax = std::floor(pricingBidMax / tickSize) * tickSize;
+				double pricingBidMin = pricingBidMax - (depth - 1)*tickSize;
+
+				double pricingAskMin = notCross ? std::max(pricingDO_ptr->Ask().Price, mdo.Ask().Price) : pricingDO_ptr->Ask().Price;
+				pricingAskMin = std::ceil(pricingAskMin / tickSize) * tickSize;
+				double pricingAskMax = pricingAskMin + (depth - 1)*tickSize;
+
+				epsdouble askPrice(pricingAskMin);
+				epsdouble bidPrice(pricingBidMax);
+				for (int i = 0; i < depth; i++)
+				{
+					bidPriceOrders.emplace(bidPrice, 0);
+					askPriceOrders.emplace(askPrice, 0);
+					askPrice += tickSize;
+					bidPrice -= tickSize;
+				}
 			}
 
 			for (auto& pair : orders.map()->lock_table())
@@ -219,8 +241,7 @@ void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 							newOrder.Direction = DirectionType::SELL;
 							newOrder.LimitPrice = askPrice.value();
 
-							if (strategyDO.AutoOrderSettings.LimitOrderCounter < strategyDO.AutoOrderSettings.MaxLimitOrder ||
-								strategyDO.AutoOrderSettings.TIF == OrderTIFType::IOC)
+							if (strategyDO.AutoOrderSettings.LimitOrderCounter < strategyDO.AutoOrderSettings.MaxLimitOrder || fakMode)
 							{
 								newOrder.TIF = strategyDO.AutoOrderSettings.TIF;
 								newOrder.VolCondition = strategyDO.AutoOrderSettings.VolCondition;
@@ -276,8 +297,7 @@ void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 							newOrder.Direction = DirectionType::BUY;
 							newOrder.LimitPrice = bidPrice.value();
 
-							if (strategyDO.AutoOrderSettings.LimitOrderCounter < strategyDO.AutoOrderSettings.MaxLimitOrder ||
-								strategyDO.AutoOrderSettings.TIF == OrderTIFType::IOC)
+							if (strategyDO.AutoOrderSettings.LimitOrderCounter < strategyDO.AutoOrderSettings.MaxLimitOrder || fakMode)
 							{
 								newOrder.TIF = strategyDO.AutoOrderSettings.TIF;
 								newOrder.VolCondition = strategyDO.AutoOrderSettings.VolCondition;

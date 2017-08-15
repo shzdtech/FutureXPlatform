@@ -62,7 +62,7 @@ IPricingDO_Ptr BlackScholesPricingAlgorithm::Compute(
 		return nullptr;
 
 	double askPrice, bidPrice;
-	double riskFreeRate = paramObj->riskFreeRate;
+	double riskFreeRate = std::max(paramObj->riskFreeRate, 0.0);
 	double askVolatility = std::max(paramObj->askVolatility, DBL_EPSILON);
 	double bidVolatility = std::max(paramObj->bidVolatility, DBL_EPSILON);
 	double midVolatility = std::max(paramObj->midVolatility, DBL_EPSILON);
@@ -84,9 +84,6 @@ IPricingDO_Ptr BlackScholesPricingAlgorithm::Compute(
 		askVolatility = std::max(askVolatility + deltaVol, DBL_EPSILON);
 		bidVolatility = std::max(bidVolatility + deltaVol, DBL_EPSILON);
 		midVolatility = std::max(midVolatility + deltaVol, DBL_EPSILON);
-
-		if(pValuationDO->Interest >= 0)
-			riskFreeRate = pValuationDO->Interest;
 
 		if (pValuationDO->DaysRemain > 0)
 			settlementDate = settlementDate + pValuationDO->DaysRemain;

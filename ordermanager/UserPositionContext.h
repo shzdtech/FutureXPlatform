@@ -34,6 +34,8 @@ public:
 
 	virtual bool RemovePosition(const std::string & userID, const std::string & instumentID, PositionDirectionType direction, const std::string& portfolio = "");
 
+	virtual bool RemoveUserPosition(const std::string & userID);
+
 	bool FreezePosition(const OrderRequestDO & orderRequestDO, int& todayVol, int& ydVol);
 
 	virtual bool GetRiskByPortfolio(const IPricingDataContext_Ptr& pricingCtx_Ptr, const std::string& userID, const std::string& portfolio, UnderlyingRiskMap& risks);

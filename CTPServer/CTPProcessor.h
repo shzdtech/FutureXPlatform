@@ -11,8 +11,7 @@
 #include "CTPRawAPI.h"
 #include "../message/TemplateMessageProcessor.h"
 #include "../message/IMessageSession.h"
-#include "tradeapi/ThostFtdcMdApi.h"
-#include "tradeapi/ThostFtdcTraderApi.h"
+#include "CTPAPISwitch.h"
 #include <chrono>
 
 #include "ctpexport.h"

@@ -21,6 +21,9 @@ static const std::string CTP_TRADER_USERID = "CTP.TRADER.LOGIN.USERID";
 static const std::string CTP_TRADER_PASSWORD = "CTP.TRADER.LOGIN.PASSWORD";
 static const std::string CTP_TRADER_SERVER = "CTP.TRADER.SERVER";
 
+static const std::string CTP_AUTH_CODE = "CTP.AUTH.CODE";
+static const std::string CTP_PRODUCT_INFO = "CTP.PRODUCT.INFO";
+
 static const std::string SYNC_POSITION_FROMDB = "SYNC.POSITION.FROMDB";
 
 static const char* UUID_MICROFUTURE_CTP = "M.F.0.1";

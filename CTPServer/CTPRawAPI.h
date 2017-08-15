@@ -10,8 +10,7 @@
 
 #include <memory>
 #include "../message/IRawAPI.h"
-#include "tradeapi/ThostFtdcMdApi.h"
-#include "tradeapi/ThostFtdcTraderApi.h"
+#include "CTPAPISwitch.h"
 #include "ctpexport.h"
 
 class CTP_CLASS_EXPORT CTPRawAPI : public IRawAPI

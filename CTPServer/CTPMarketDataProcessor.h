@@ -10,7 +10,7 @@
 
 #include "CTPProcessor.h"
 #include "ctpexport.h"
-#include "tradeapi/ThostFtdcMdApi.h"
+#include "CTPAPISwitch.h"
 #include "../utility/lockfree_set.h"
 
 class CTP_CLASS_EXPORT CTPMarketDataProcessor : public CTPProcessor, public CThostFtdcMdSpi {

@@ -54,6 +54,8 @@ HedgeOrderManager::HedgeStatus HedgeOrderManager::Hedge(const PortfolioKey& port
 	if (!pPortfolio || !pPortfolio->Hedging)
 		return ret;
 
+	ret = Waiting;
+
 	_updatingPortfolioLock.upsert(*pPortfolio, [](bool& lock) { lock = true; }, true);
 
 	_updatingPortfolioLock.update_fn(*pPortfolio, [this, &ret, pPortfolio](bool& lock)
@@ -68,10 +70,6 @@ HedgeOrderManager::HedgeStatus HedgeOrderManager::Hedge(const PortfolioKey& port
 		if (std::chrono::duration_cast<std::chrono::seconds>(duration).count() > pPortfolio->HedgeDelay)
 		{
 			pPortfolio->HedingFlag = true;
-		}
-		else
-		{
-			ret = Waiting;
 		}
 
 		for (auto pair : portfolioMap)
@@ -108,13 +106,10 @@ HedgeOrderManager::HedgeStatus HedgeOrderManager::Hedge(const PortfolioKey& port
 
 			if (std::abs(totalDelta) < std::abs(hedgeDelta))
 			{
-				ret = UnderDelta;
 				continue;
 			}
 
 			needHedge = true;
-
-			ret = Hedging;
 
 			cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr> orders;
 

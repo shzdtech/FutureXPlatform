@@ -8,7 +8,7 @@
 
 #include "../dataobject/OrderDO.h"
 #include "../message/DefMessageID.h"
-#include "tradeapi/ThostFtdcTraderApi.h"
+#include "CTPAPISwitch.h"
 
 dataobj_ptr CTPOrderUpdated::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
