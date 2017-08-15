@@ -4,15 +4,15 @@
     "service": {
       "config": "service.json"
     },
-    "libpath": "./ctpapi/etf",
+    "libpath": "./lib;",
     "databases": {
       "configs": [ "mysql" ],
       "mysql": {
         "key": "default",
         "dbtype": "mysql",
-        "url": "tcp://rm-uf61c095vt8jo2589o.mysql.rds.aliyuncs.com/futurexdb",
+        "url": "tcp://rm-bp1n7owr2i5d2bvm6.mysql.rds.aliyuncs.com/futurexdb",
         "user": "zhuyi",
-        "password": "854A98B9678772AAAD9A",
+        "password": "9D559FB73ABF79ECC9C5",
         "encryption": "1",
         "autocommit": "1",
         "poolsize": "5",
