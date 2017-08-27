@@ -1,0 +1,9 @@
+LIBRARY etfthostmduserapi
+EXPORTS
+??0CThostFtdcMdApi@@QEAA@AEBV0@@Z
+??0CThostFtdcMdApi@@QEAA@XZ
+??1CThostFtdcMdApi@@IEAA@XZ
+??4CThostFtdcMdApi@@QEAAAEAV0@AEBV0@@Z
+??_7CThostFtdcMdApi@@6B@
+?CreateFtdcMdApi@CThostFtdcMdApi@@SAPEAV1@PEBD_N1@Z
+?GetApiVersion@CThostFtdcMdApi@@SAPEBDXZ

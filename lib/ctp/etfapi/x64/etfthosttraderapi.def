@@ -1,0 +1,9 @@
+LIBRARY etfthosttraderapi
+EXPORTS
+??0CThostFtdcTraderApi@@QEAA@AEBV0@@Z
+??0CThostFtdcTraderApi@@QEAA@XZ
+??1CThostFtdcTraderApi@@IEAA@XZ
+??4CThostFtdcTraderApi@@QEAAAEAV0@AEBV0@@Z
+??_7CThostFtdcTraderApi@@6B@
+?CreateFtdcTraderApi@CThostFtdcTraderApi@@SAPEAV1@PEBD@Z
+?GetApiVersion@CThostFtdcTraderApi@@SAPEBDXZ
