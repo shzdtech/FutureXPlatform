@@ -40,8 +40,8 @@
             // serviceInstaller
             // 
             this.serviceInstaller.Description = "Micro Future Platform Windows Service";
-            this.serviceInstaller.DisplayName = "Micro Future ETF Platform";
-            this.serviceInstaller.ServiceName = "MFETFWinService";
+            this.serviceInstaller.DisplayName = "Micro Future Platform";
+            this.serviceInstaller.ServiceName = "MFWinService";
             this.serviceInstaller.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
             // ProjectInstaller

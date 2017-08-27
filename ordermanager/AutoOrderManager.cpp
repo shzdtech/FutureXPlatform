@@ -105,11 +105,11 @@ void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 			{
 				if (pricingDO_ptr->Bid().Price >= mdo.Ask().Price)
 				{
-					bidPriceOrders.emplace(mdo.Ask().Price, 0);
+					bidPriceOrders.emplace(pricingDO_ptr->Bid().Price, 0);
 				}
 				else if (pricingDO_ptr->Ask().Price <= mdo.Bid().Price)
 				{
-					askPriceOrders.emplace(mdo.Bid().Price, 0);
+					askPriceOrders.emplace(pricingDO_ptr->Ask().Price, 0);
 				}
 				else
 				{

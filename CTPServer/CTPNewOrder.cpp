@@ -92,7 +92,7 @@ dataobj_ptr CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_pt
 
 	req.RequestID = serialId;
 
-	bool insertPortfolio = userInfo.getRole() == ROLE_TRADINGDESK && !pDO->PortfolioID().empty();
+	bool insertPortfolio = !pDO->PortfolioID().empty();
 
 	if (insertPortfolio)
 	{

@@ -23,7 +23,7 @@ data_buffer PBUserPositionSerializer::Serialize(const dataobj_ptr& abstractDO)
 {
 	using namespace Micro::Future::Message::Business;
 	PBPosition PB;
-	auto pDO = (UserPositionDO*)abstractDO.get();
+	auto pDO = (UserPositionExDO*)abstractDO.get();
 	FillPBHeader(PB, pDO);
 
 	PB.set_exchange(pDO->ExchangeID().data());
@@ -34,22 +34,22 @@ data_buffer PBUserPositionSerializer::Serialize(const dataobj_ptr& abstractDO)
 	PB.set_positiondateflag(pDO->PositionDateFlag);
 	PB.set_ydposition(pDO->LastPosition());
 	PB.set_tdposition(pDO->TdPosition);
-	PB.set_position(pDO->Position());
 	PB.set_openvolume(pDO->OpenVolume);
 	PB.set_closevolume(pDO->CloseVolume);
 	PB.set_openamount(pDO->OpenAmount);
 	PB.set_closeamount(pDO->CloseAmount);
-	PB.set_cost(pDO->Cost());
+	PB.set_tdcost(pDO->TdCost);
+	PB.set_ydcost(pDO->YdCost);
 	PB.set_usemargin(pDO->UseMargin);
 	PB.set_closeprofit(pDO->CloseProfit);
 	PB.set_profit(pDO->Profit());
 	PB.set_opencost(pDO->OpenCost);
 	PB.set_portfolio(pDO->PortfolioID());
-	/*PB.set_longfrozen(pDO->LongFrozen);
-	PB.set_shortfrozen(pDO->ShortFrozen);
+	PB.set_longfrozenvolume(pDO->LongFrozenVolume);
+	PB.set_shortfrozenvolume(pDO->ShortFrozenVolume);
 	PB.set_longfrozenamount(pDO->LongFrozenAmount);
 	PB.set_shortfrozenamount(pDO->ShortFrozenAmount);
-	PB.set_premargin(pDO->PreMargin);
+	/*PB.set_premargin(pDO->PreMargin);
 	PB.set_frozenmargin(pDO->FrozenMargin);
 	PB.set_frozencash(pDO->FrozenCash);
 	PB.set_frozencommission(pDO->FrozenCommission);

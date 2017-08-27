@@ -37,6 +37,7 @@ public:
 	virtual void OnDataLoaded(void);
 
 	virtual void DispatchUserMessage(int msgId, int serialId, const std::string& userId, const dataobj_ptr& dataobj_ptr);
+	virtual void DispatchMessageForAll(int msgId, int serialId, const dataobj_ptr & dataobj_ptr);
 	virtual autofillmap<std::string, AccountInfoDO>& GetAccountInfo(const std::string userId);
 	virtual std::set<ExchangeDO>& GetExchangeInfo();
 	virtual IUserPositionContext_Ptr& GetUserPositionContext();

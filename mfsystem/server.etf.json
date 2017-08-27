@@ -1,0 +1,50 @@
+{
+  "server": {
+    "etf": {
+      "option": {
+        "marketdata": {
+          "port": "31010",
+          "workerthread": "2",
+          "timeout": "120",
+          "max_msg_size": "0x10000"
+        },
+        "trade": {
+          "port": "31011",
+          "workerthread": "2",
+          "timeout": "120",
+          "max_msg_size": "0x10000"
+        }
+      },
+      "stock": {
+        "marketdata": {
+          "port": "31012",
+          "workerthread": "2",
+          "timeout": "120",
+          "max_msg_size": "0x10000"
+        },
+        "trade": {
+          "port": "31013",
+          "workerthread": "2",
+          "timeout": "120",
+          "max_msg_size": "0x10000"
+        }
+      }
+    },
+    "otc": {
+      "etf": {
+        "option": {
+          "port": "31014",
+          "workerthread": "1",
+          "timeout": "120",
+          "max_msg_size": "0x10000"
+        },
+        "stock": {
+          "port": "31015",
+          "workerthread": "1",
+          "timeout": "120",
+          "max_msg_size": "0x10000"
+        }
+      }
+    }
+  }
+}

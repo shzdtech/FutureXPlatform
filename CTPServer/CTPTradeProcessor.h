@@ -20,6 +20,8 @@ public:
 	virtual ~CTPTradeProcessor();
 	virtual bool CreateCTPAPI(const std::string& flowId, const std::string& serverAddr);
 	bool OnSessionClosing(void);
+
+	void QueryUserPositionAsyncIfNeed();
 	void QueryPositionAsync(void);
 
 protected:

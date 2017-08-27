@@ -37,7 +37,9 @@ enum PositionDateFlagType
 	///今日持仓
 	PSD_TODAY = 0,
 	///历史持仓
-	PSD_HISTORY = 1
+	PSD_HISTORY = 1,
+	///
+	PSD_TODAY_HISTORY = 2
 };
 
 enum OrderTradingType

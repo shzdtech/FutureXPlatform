@@ -90,4 +90,15 @@
       <Filter>config\json</Filter>
     </CustomBuild>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="factory.etf.json">
+      <Filter>config\json</Filter>
+    </None>
+    <None Include="server.etf.json">
+      <Filter>config\json</Filter>
+    </None>
+    <None Include="service.etf.json">
+      <Filter>config\json</Filter>
+    </None>
+  </ItemGroup>
 </Project>

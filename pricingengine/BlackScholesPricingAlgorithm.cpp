@@ -143,7 +143,8 @@ IPricingDO_Ptr BlackScholesPricingAlgorithm::Compute(
 			= ComputeOptionPrice(askPrice, sdo.StrikePrice, askVolatility, riskFreeRate, paramObj->dividend, sdo.ContractType, settlementDate, maturityDate);
 		double priceAsk = askOption->NPV();
 
-		if (sdo.NotCross)
+
+		if (sdo.NotCross && sdo.AutoOrderSettings.TIF != OrderTIFType::IOC)
 		{
 			MarketDataDO mdo;
 			priceCtx_Ptr->GetMarketDataMap()->find(sdo.InstrumentID(), mdo);

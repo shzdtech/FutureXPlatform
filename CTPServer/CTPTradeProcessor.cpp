@@ -51,6 +51,10 @@ CTPTradeProcessor::CTPTradeProcessor(const CTPRawAPI_Ptr& rawAPI)
 CTPTradeProcessor::~CTPTradeProcessor()
 {
 	LOG_DEBUG << __FUNCTION__;
+
+	_exiting = true;
+	if (_updateTask.valid())
+		_updateTask.wait_for(std::chrono::seconds(3));
 }
 
 
@@ -93,7 +97,7 @@ bool CTPTradeProcessor::OnSessionClosing(void)
 {
 	_exiting = true;
 	if (_updateTask.valid())
-		_updateTask.wait_for(std::chrono::seconds(10));
+		_updateTask.wait_for(std::chrono::seconds(3));
 
 	if (auto sessionptr = getMessageSession())
 	{
@@ -300,6 +304,11 @@ void CTPTradeProcessor::OnRtnTrade(CThostFtdcTradeField *pTrade)
 
 	OnResponseMacro(MSG_ID_TRADE_RTN, 0, pTrade);
 
+	QueryUserPositionAsyncIfNeed();
+}
+
+void CTPTradeProcessor::QueryUserPositionAsyncIfNeed()
+{
 	// Try update position
 	if (!_exiting && !_updateFlag.test_and_set(std::memory_order::memory_order_acquire))
 	{

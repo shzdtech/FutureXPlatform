@@ -43,8 +43,14 @@ void CTPTradeWorkerSAProcessor::Initialize(IServerContext* pServerCtx)
 
 void CTPTradeWorkerSAProcessor::LogTrade()
 {
+	std::vector<TradeRecordDO_Ptr> retryList;
 	while (!_closing)
 	{
+		for (auto trade : retryList)
+		{
+			_tradeQueue.push(trade);
+		}
+
 		bool hasError = false;
 		TradeRecordDO_Ptr trade_ptr;
 		if (_tradeQueue.pop(trade_ptr))
@@ -67,7 +73,7 @@ void CTPTradeWorkerSAProcessor::LogTrade()
 
 				if (hasError)
 				{
-					_tradeQueue.push(trade_ptr);
+					retryList.push_back(trade_ptr);
 				}
 			}
 		}

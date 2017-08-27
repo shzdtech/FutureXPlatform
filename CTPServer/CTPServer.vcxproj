@@ -73,15 +73,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -159,6 +163,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Attribute_Key.h" />
+    <ClInclude Include="CTPAddManualTrade.h" />
     <ClInclude Include="CTPAPISwitch.h" />
     <ClInclude Include="CTPSyncPositionDiffer.h" />
     <ClInclude Include="CTPTDLoginSA.h" />
@@ -216,6 +221,7 @@
     <ClInclude Include="tradeapi\ThostFtdcUserApiStruct.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CTPAddManualTrade.cpp" />
     <ClCompile Include="CTPSyncPositionDiffer.cpp" />
     <ClCompile Include="CTPTDLoginSA.cpp" />
     <ClCompile Include="CTPQueryPositionSA.cpp" />

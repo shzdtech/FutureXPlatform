@@ -2,7 +2,7 @@
   "system": {
     "version": "0.98-2017.08.06-00.00",
     "service": {
-      "config": "service.json"
+      "configs": [ "service.json" ]
     },
     "libpath": "./lib;",
     "databases": {

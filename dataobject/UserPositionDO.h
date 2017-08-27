@@ -42,12 +42,12 @@ public:
 	double CloseProfit = 0;
 	double UseMargin = 0;
 	
-	PositionDateFlagType PositionDateFlag;
+	PositionDateFlagType PositionDateFlag = PSD_TODAY_HISTORY;
 
-	int Position() { return YdInitPosition + YdPosition + TdPosition; }
-	int LastPosition() { return YdInitPosition + YdPosition; }
-	double Cost() { return YdCost + TdCost; }
-	double Profit() { return YdProfit + TdProfit; }
+	int Position() const { return YdInitPosition + YdPosition + TdPosition; }
+	int LastPosition() const { return YdInitPosition + YdPosition; }
+	double Cost() const { return YdCost + TdCost; }
+	double Profit() const { return YdProfit + TdProfit; }
 
 protected:
 
@@ -65,8 +65,10 @@ public:
 	UserPositionExDO() = default;
 
 	int SettlementID = 0;
-	int FrozenVolume = 0;
-	double FrozenAmount = 0;
+	int LongFrozenVolume = 0;
+	int ShortFrozenVolume = 0;
+	double LongFrozenAmount = 0;
+	double ShortFrozenAmount = 0;
 	double SettlementPrice = 0;
 	double PreSettlementPrice = 0;
 	double ExchangeMargin = 0;

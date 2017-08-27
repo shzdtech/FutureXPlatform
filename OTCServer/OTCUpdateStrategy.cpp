@@ -58,7 +58,6 @@ dataobj_ptr OTCUpdateStrategy::HandleRequest(const uint32_t serialId, const data
 			strategy_ptr->AutoOrderSettings.AskQV = pStrategyDO->AutoOrderSettings.AskQV;
 			strategy_ptr->AutoOrderSettings.MaxAutoTrade = pStrategyDO->AutoOrderSettings.MaxAutoTrade;
 			strategy_ptr->AutoOrderSettings.CloseMode = pStrategyDO->AutoOrderSettings.CloseMode;
-			strategy_ptr->AutoOrderSettings.TIF = pStrategyDO->AutoOrderSettings.TIF;
 			strategy_ptr->AutoOrderSettings.VolCondition = pStrategyDO->AutoOrderSettings.VolCondition;
 			
 			int limitOrderCnt = pWorkerProc->GetOTCTradeProcessor()->GetExchangeOrderContext().GetLimitOrderCount(strategy_ptr->InstrumentID());
@@ -87,10 +86,12 @@ dataobj_ptr OTCUpdateStrategy::HandleRequest(const uint32_t serialId, const data
 			}
 
 			if (strategy_ptr->TickSizeMult != pStrategyDO->TickSizeMult ||
-				strategy_ptr->NotCross != pStrategyDO->NotCross)
+				strategy_ptr->NotCross != pStrategyDO->NotCross ||
+				strategy_ptr->AutoOrderSettings.TIF != pStrategyDO->AutoOrderSettings.TIF)
 			{
 				strategy_ptr->TickSizeMult = pStrategyDO->TickSizeMult;
 				strategy_ptr->NotCross = pStrategyDO->NotCross;
+				strategy_ptr->AutoOrderSettings.TIF = pStrategyDO->AutoOrderSettings.TIF;
 				pWorkerProc->TriggerPricingByStrategy(*strategy_ptr);
 			}
 			

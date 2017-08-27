@@ -54,16 +54,14 @@ HedgeOrderManager::HedgeStatus HedgeOrderManager::Hedge(const PortfolioKey& port
 	if (!pPortfolio || !pPortfolio->Hedging)
 		return ret;
 
-	ret = Waiting;
-
 	_updatingPortfolioLock.upsert(*pPortfolio, [](bool& lock) { lock = true; }, true);
 
 	_updatingPortfolioLock.update_fn(*pPortfolio, [this, &ret, pPortfolio](bool& lock)
 	{
-		UnderlyingRiskMap portfolioMap;
-		_exchangePositionCtx->GetRiskByPortfolio(_pricingCtx, pPortfolio->UserID(), pPortfolio->PortfolioID(), portfolioMap);
+		ret = Waiting;
 
-		bool needHedge = false;
+		UnderlyingRiskMap underlyingRiskMap;
+		_exchangePositionCtx->GetRiskByPortfolio(_pricingCtx, pPortfolio->UserID(), pPortfolio->PortfolioID(), underlyingRiskMap);
 
 		auto duration = std::chrono::steady_clock::now() - pPortfolio->LastHedge;
 
@@ -71,8 +69,12 @@ HedgeOrderManager::HedgeStatus HedgeOrderManager::Hedge(const PortfolioKey& port
 		{
 			pPortfolio->HedingFlag = true;
 		}
+		else
+		{
+			pPortfolio->HedingFlag = false;
+		}
 
-		for (auto pair : portfolioMap)
+		for (auto pair : underlyingRiskMap)
 		{
 			auto& riskDOMap = pair.second;
 
@@ -83,8 +85,11 @@ HedgeOrderManager::HedgeStatus HedgeOrderManager::Hedge(const PortfolioKey& port
 				totalDelta += risk.second.Delta;
 			}
 
-			if (!pPortfolio->HedingFlag && std::abs(totalDelta) <= pPortfolio->Threshold)
+			if (std::abs(totalDelta) <= pPortfolio->Threshold)
+			{
+				pPortfolio->HedingFlag = false;
 				continue;
+			}
 
 			pPortfolio->HedingFlag = true;
 
@@ -108,8 +113,6 @@ HedgeOrderManager::HedgeStatus HedgeOrderManager::Hedge(const PortfolioKey& port
 			{
 				continue;
 			}
-
-			needHedge = true;
 
 			cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr> orders;
 
@@ -303,11 +306,11 @@ HedgeOrderManager::HedgeStatus HedgeOrderManager::Hedge(const PortfolioKey& port
 			}
 		}
 
-		if (pPortfolio->HedingFlag && !needHedge)
-		{
-			ret = Hedgded;
-			pPortfolio->HedingFlag = false;
-		}
+		//if (pPortfolio->HedingFlag)
+		//{
+		//	ret = Hedgded;
+		//	pPortfolio->HedingFlag = false;
+		//}
 
 		pPortfolio->LastHedge = std::chrono::steady_clock::now();
 

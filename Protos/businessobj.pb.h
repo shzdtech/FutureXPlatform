@@ -3910,11 +3910,11 @@ class PBPosition : public ::google::protobuf::Message {
   ::google::protobuf::int32 direction() const;
   void set_direction(::google::protobuf::int32 value);
 
-  // optional int32 position = 5;
-  void clear_position();
-  static const int kPositionFieldNumber = 5;
-  ::google::protobuf::int32 position() const;
-  void set_position(::google::protobuf::int32 value);
+  // optional int32 tdPosition = 5;
+  void clear_tdposition();
+  static const int kTdPositionFieldNumber = 5;
+  ::google::protobuf::int32 tdposition() const;
+  void set_tdposition(::google::protobuf::int32 value);
 
   // optional int32 ydPosition = 6;
   void clear_ydposition();
@@ -3952,23 +3952,23 @@ class PBPosition : public ::google::protobuf::Message {
   double closeamount() const;
   void set_closeamount(double value);
 
-  // optional double cost = 12;
-  void clear_cost();
-  static const int kCostFieldNumber = 12;
-  double cost() const;
-  void set_cost(double value);
+  // optional double tdCost = 12;
+  void clear_tdcost();
+  static const int kTdCostFieldNumber = 12;
+  double tdcost() const;
+  void set_tdcost(double value);
 
-  // optional double openCost = 13;
+  // optional double ydCost = 13;
+  void clear_ydcost();
+  static const int kYdCostFieldNumber = 13;
+  double ydcost() const;
+  void set_ydcost(double value);
+
+  // optional double openCost = 14;
   void clear_opencost();
-  static const int kOpenCostFieldNumber = 13;
+  static const int kOpenCostFieldNumber = 14;
   double opencost() const;
   void set_opencost(double value);
-
-  // optional double profit = 14;
-  void clear_profit();
-  static const int kProfitFieldNumber = 14;
-  double profit() const;
-  void set_profit(double value);
 
   // optional double closeProfit = 15;
   void clear_closeprofit();
@@ -3988,12 +3988,6 @@ class PBPosition : public ::google::protobuf::Message {
   ::google::protobuf::int32 hedgeflag() const;
   void set_hedgeflag(::google::protobuf::int32 value);
 
-  // optional int32 tdPosition = 18;
-  void clear_tdposition();
-  static const int kTdPositionFieldNumber = 18;
-  ::google::protobuf::int32 tdposition() const;
-  void set_tdposition(::google::protobuf::int32 value);
-
   // optional string portfolio = 19;
   void clear_portfolio();
   static const int kPortfolioFieldNumber = 19;
@@ -4005,6 +3999,36 @@ class PBPosition : public ::google::protobuf::Message {
   ::std::string* release_portfolio();
   void set_allocated_portfolio(::std::string* portfolio);
 
+  // optional double profit = 20;
+  void clear_profit();
+  static const int kProfitFieldNumber = 20;
+  double profit() const;
+  void set_profit(double value);
+
+  // optional int32 longFrozenVolume = 21;
+  void clear_longfrozenvolume();
+  static const int kLongFrozenVolumeFieldNumber = 21;
+  ::google::protobuf::int32 longfrozenvolume() const;
+  void set_longfrozenvolume(::google::protobuf::int32 value);
+
+  // optional int32 shortFrozenVolume = 22;
+  void clear_shortfrozenvolume();
+  static const int kShortFrozenVolumeFieldNumber = 22;
+  ::google::protobuf::int32 shortfrozenvolume() const;
+  void set_shortfrozenvolume(::google::protobuf::int32 value);
+
+  // optional double longFrozenAmount = 23;
+  void clear_longfrozenamount();
+  static const int kLongFrozenAmountFieldNumber = 23;
+  double longfrozenamount() const;
+  void set_longfrozenamount(double value);
+
+  // optional double shortFrozenAmount = 24;
+  void clear_shortfrozenamount();
+  static const int kShortFrozenAmountFieldNumber = 24;
+  double shortfrozenamount() const;
+  void set_shortfrozenamount(double value);
+
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.PBPosition)
  private:
 
@@ -4014,21 +4038,25 @@ class PBPosition : public ::google::protobuf::Message {
   ::google::protobuf::internal::ArenaStringPtr exchange_;
   ::google::protobuf::internal::ArenaStringPtr contract_;
   ::google::protobuf::int32 direction_;
-  ::google::protobuf::int32 position_;
+  ::google::protobuf::int32 tdposition_;
   ::google::protobuf::int32 ydposition_;
   ::google::protobuf::int32 positiondateflag_;
   ::google::protobuf::int32 openvolume_;
   ::google::protobuf::int32 closevolume_;
   double openamount_;
   double closeamount_;
-  double cost_;
+  double tdcost_;
+  double ydcost_;
   double opencost_;
-  double profit_;
   double closeprofit_;
   double usemargin_;
-  ::google::protobuf::int32 hedgeflag_;
-  ::google::protobuf::int32 tdposition_;
   ::google::protobuf::internal::ArenaStringPtr portfolio_;
+  ::google::protobuf::int32 hedgeflag_;
+  ::google::protobuf::int32 longfrozenvolume_;
+  double profit_;
+  double longfrozenamount_;
+  double shortfrozenamount_;
+  ::google::protobuf::int32 shortfrozenvolume_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
@@ -11679,18 +11707,18 @@ inline void PBPosition::set_direction(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.direction)
 }
 
-// optional int32 position = 5;
-inline void PBPosition::clear_position() {
-  position_ = 0;
+// optional int32 tdPosition = 5;
+inline void PBPosition::clear_tdposition() {
+  tdposition_ = 0;
 }
-inline ::google::protobuf::int32 PBPosition::position() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.position)
-  return position_;
+inline ::google::protobuf::int32 PBPosition::tdposition() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.tdPosition)
+  return tdposition_;
 }
-inline void PBPosition::set_position(::google::protobuf::int32 value) {
+inline void PBPosition::set_tdposition(::google::protobuf::int32 value) {
   
-  position_ = value;
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.position)
+  tdposition_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.tdPosition)
 }
 
 // optional int32 ydPosition = 6;
@@ -11777,21 +11805,35 @@ inline void PBPosition::set_closeamount(double value) {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.closeAmount)
 }
 
-// optional double cost = 12;
-inline void PBPosition::clear_cost() {
-  cost_ = 0;
+// optional double tdCost = 12;
+inline void PBPosition::clear_tdcost() {
+  tdcost_ = 0;
 }
-inline double PBPosition::cost() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.cost)
-  return cost_;
+inline double PBPosition::tdcost() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.tdCost)
+  return tdcost_;
 }
-inline void PBPosition::set_cost(double value) {
+inline void PBPosition::set_tdcost(double value) {
   
-  cost_ = value;
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.cost)
+  tdcost_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.tdCost)
 }
 
-// optional double openCost = 13;
+// optional double ydCost = 13;
+inline void PBPosition::clear_ydcost() {
+  ydcost_ = 0;
+}
+inline double PBPosition::ydcost() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.ydCost)
+  return ydcost_;
+}
+inline void PBPosition::set_ydcost(double value) {
+  
+  ydcost_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.ydCost)
+}
+
+// optional double openCost = 14;
 inline void PBPosition::clear_opencost() {
   opencost_ = 0;
 }
@@ -11803,20 +11845,6 @@ inline void PBPosition::set_opencost(double value) {
   
   opencost_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.openCost)
-}
-
-// optional double profit = 14;
-inline void PBPosition::clear_profit() {
-  profit_ = 0;
-}
-inline double PBPosition::profit() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.profit)
-  return profit_;
-}
-inline void PBPosition::set_profit(double value) {
-  
-  profit_ = value;
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.profit)
 }
 
 // optional double closeProfit = 15;
@@ -11861,20 +11889,6 @@ inline void PBPosition::set_hedgeflag(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.hedgeFlag)
 }
 
-// optional int32 tdPosition = 18;
-inline void PBPosition::clear_tdposition() {
-  tdposition_ = 0;
-}
-inline ::google::protobuf::int32 PBPosition::tdposition() const {
-  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.tdPosition)
-  return tdposition_;
-}
-inline void PBPosition::set_tdposition(::google::protobuf::int32 value) {
-  
-  tdposition_ = value;
-  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.tdPosition)
-}
-
 // optional string portfolio = 19;
 inline void PBPosition::clear_portfolio() {
   portfolio_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
@@ -11917,6 +11931,76 @@ inline void PBPosition::set_allocated_portfolio(::std::string* portfolio) {
   }
   portfolio_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), portfolio);
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBPosition.portfolio)
+}
+
+// optional double profit = 20;
+inline void PBPosition::clear_profit() {
+  profit_ = 0;
+}
+inline double PBPosition::profit() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.profit)
+  return profit_;
+}
+inline void PBPosition::set_profit(double value) {
+  
+  profit_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.profit)
+}
+
+// optional int32 longFrozenVolume = 21;
+inline void PBPosition::clear_longfrozenvolume() {
+  longfrozenvolume_ = 0;
+}
+inline ::google::protobuf::int32 PBPosition::longfrozenvolume() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.longFrozenVolume)
+  return longfrozenvolume_;
+}
+inline void PBPosition::set_longfrozenvolume(::google::protobuf::int32 value) {
+  
+  longfrozenvolume_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.longFrozenVolume)
+}
+
+// optional int32 shortFrozenVolume = 22;
+inline void PBPosition::clear_shortfrozenvolume() {
+  shortfrozenvolume_ = 0;
+}
+inline ::google::protobuf::int32 PBPosition::shortfrozenvolume() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.shortFrozenVolume)
+  return shortfrozenvolume_;
+}
+inline void PBPosition::set_shortfrozenvolume(::google::protobuf::int32 value) {
+  
+  shortfrozenvolume_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.shortFrozenVolume)
+}
+
+// optional double longFrozenAmount = 23;
+inline void PBPosition::clear_longfrozenamount() {
+  longfrozenamount_ = 0;
+}
+inline double PBPosition::longfrozenamount() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.longFrozenAmount)
+  return longfrozenamount_;
+}
+inline void PBPosition::set_longfrozenamount(double value) {
+  
+  longfrozenamount_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.longFrozenAmount)
+}
+
+// optional double shortFrozenAmount = 24;
+inline void PBPosition::clear_shortfrozenamount() {
+  shortfrozenamount_ = 0;
+}
+inline double PBPosition::shortfrozenamount() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPosition.shortFrozenAmount)
+  return shortfrozenamount_;
+}
+inline void PBPosition::set_shortfrozenamount(double value) {
+  
+  shortfrozenamount_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPosition.shortFrozenAmount)
 }
 
 // -------------------------------------------------------------------

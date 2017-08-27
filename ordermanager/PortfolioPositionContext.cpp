@@ -65,9 +65,9 @@ UserPositionExDO_Ptr PortfolioPositionContext::UpsertPosition(const std::string&
 		{
 			double ydMeanCost = 0;
 			if (positionDO.YdPosition > 0)
-				ydMeanCost = positionDO.YdCost / positionDO.YdPosition;
+				ydMeanCost = positionDO.YdCost / positionDO.LastPosition();
 
-			position_ptr->YdCost = ydMeanCost * position_ptr->YdPosition;
+			position_ptr->YdCost = ydMeanCost * position_ptr->LastPosition();
 			position_ptr->YdProfit = newPosition_Ptr->YdProfit;
 		}
 		else

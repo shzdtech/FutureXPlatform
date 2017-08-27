@@ -58,9 +58,12 @@ public:
 	void forall(std::function<void(const IMessageSession_Ptr&)> func)
 	{
 		// std::shared_lock<std::shared_mutex> read_lock(_mutex);
-		for (auto& pair : _sessionMap.lock_table();)
+		for (auto& pair : _sessionMap.lock_table())
 		{
-			foreach(pair.first, func);
+			for (auto& sessionPtr : pair.second)
+			{
+				func(sessionPtr);
+			}
 		}
 	}
 

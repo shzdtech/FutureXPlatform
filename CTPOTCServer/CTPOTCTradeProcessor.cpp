@@ -103,12 +103,16 @@ void CTPOTCTradeProcessor::HedgeOrderWorker()
 			auto status = _hedgeOrderMgr.Hedge(portfolioKey);
 			if (status == HedgeOrderManager::Waiting)
 			{
-				_hedgeOrderQueue.emplace(portfolioKey);
+				_waitingHedgeQueue.emplace(portfolioKey);
 			}
 		}
 		else
 		{
-			std::this_thread::sleep_for(std::chrono::milliseconds(200));
+			std::this_thread::sleep_for(std::chrono::milliseconds(500));
+			while (_waitingHedgeQueue.pop(portfolioKey))
+			{
+				_hedgeOrderQueue.emplace(portfolioKey);
+			}
 		}
 	}
 }
@@ -273,9 +277,12 @@ void CTPOTCTradeProcessor::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrd
 		{
 			StrategyContractDO_Ptr strategy_ptr;
 			_pricingCtx->GetStrategyMap()->find(*orderptr, strategy_ptr);
-			if (strategy_ptr)
+			if (strategy_ptr && orderptr->TIF != OrderTIFType::IOC)
 			{
 				strategy_ptr->AutoOrderSettings.LimitOrderCounter--;
+				strategy_ptr->BidEnabled = false;
+				strategy_ptr->AskEnabled = false;
+				strategy_ptr->Hedging = false;
 				DispatchUserMessage(MSG_ID_MODIFY_STRATEGY, 0, strategy_ptr->UserID(), strategy_ptr);
 			}
 
@@ -309,9 +316,12 @@ void CTPOTCTradeProcessor::OnErrRtnOrderInsert(CThostFtdcInputOrderField *pInput
 
 			StrategyContractDO_Ptr strategy_ptr;
 			_pricingCtx->GetStrategyMap()->find(*orderptr, strategy_ptr);
-			if (strategy_ptr)
+			if (strategy_ptr && orderptr->TIF != OrderTIFType::IOC)
 			{
 				strategy_ptr->AutoOrderSettings.LimitOrderCounter--;
+				strategy_ptr->BidEnabled = false;
+				strategy_ptr->AskEnabled = false;
+				strategy_ptr->Hedging = false;
 				DispatchUserMessage(MSG_ID_MODIFY_STRATEGY, 0, strategy_ptr->UserID(), strategy_ptr);
 			}
 
@@ -390,7 +400,7 @@ void CTPOTCTradeProcessor::OnRtnOrder(CThostFtdcOrderField *pOrder)
 						strategy_ptr->AutoOrderSettings.BidCounter += ret;
 					}
 				}
-				else if (ret < 0 && !orderptr->OrderSysID)
+				else if (ret < 0 && orderptr->TIF != OrderTIFType::IOC && !orderptr->OrderSysID)
 				{
 					strategy_ptr->AutoOrderSettings.LimitOrderCounter--;
 				}
@@ -449,5 +459,6 @@ void CTPOTCTradeProcessor::OnRtnTrade(CThostFtdcTradeField * pTrade)
 
 void CTPOTCTradeProcessor::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-
+	if (bIsLast)
+		DataLoadMask |= CTPProcessor::POSITION_DATA_LOADED;
 }

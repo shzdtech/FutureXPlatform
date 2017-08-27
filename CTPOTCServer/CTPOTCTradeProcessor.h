@@ -51,6 +51,7 @@ protected:
 
 	lockfree_set<UserContractKey, UserContractKeyHash> _autoOrderQueue;
 	lockfree_set<PortfolioKey, PortfolioKeyHash> _hedgeOrderQueue;
+	lockfree_set<PortfolioKey, PortfolioKeyHash> _waitingHedgeQueue;
 
 	std::future<void> _autoOrderWorker;
 	std::future<void> _hedgeOrderWorker;

@@ -248,29 +248,29 @@ bool UserPositionContext::FreezePosition(const OrderRequestDO& orderRequestDO, i
 			ret = ret &&  positionMap.map()->update_fn(std::pair<std::string, int>(orderRequestDO.InstrumentID(), pd),
 				[&orderRequestDO, &ret, &todayVol, &ydVol](UserPositionExDO_Ptr& position_ptr)
 			{
-				if (position_ptr->Position() - position_ptr->FrozenVolume >= orderRequestDO.Volume)
-				{
-					int tdRemain = position_ptr->TdPosition - position_ptr->FrozenVolume;
-					if (tdRemain > 0)
-					{
-						int remain = tdRemain - orderRequestDO.Volume;
-						if (remain < 0)
-						{
-							todayVol = tdRemain;
-							ydVol = -remain;
-						}
-					}
-					else
-					{
-						ydVol = orderRequestDO.Volume;
-					}
+				//if (position_ptr->Position() - position_ptr->FrozenVolume >= orderRequestDO.Volume)
+				//{
+				//	int tdRemain = position_ptr->TdPosition - position_ptr->FrozenVolume;
+				//	if (tdRemain > 0)
+				//	{
+				//		int remain = tdRemain - orderRequestDO.Volume;
+				//		if (remain < 0)
+				//		{
+				//			todayVol = tdRemain;
+				//			ydVol = -remain;
+				//		}
+				//	}
+				//	else
+				//	{
+				//		ydVol = orderRequestDO.Volume;
+				//	}
 
-					position_ptr->FrozenVolume += orderRequestDO.Volume;
-				}
-				else
-				{
-					ret = false;
-				}
+				//	position_ptr->FrozenVolume += orderRequestDO.Volume;
+				//}
+				//else
+				//{
+				//	ret = false;
+				//}
 			});
 		});
 	}

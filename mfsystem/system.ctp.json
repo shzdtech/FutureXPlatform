@@ -2,7 +2,7 @@
   "system": {
     "version": "0.8-2016.12.08-00.00",
     "service": {
-      "config": "service.ctp.json"
+      "configs": [ "service.json" ]
     },
     "databases": {
       "configs": [ "mysql" ],

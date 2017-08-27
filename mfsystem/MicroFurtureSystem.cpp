@@ -74,13 +74,13 @@ bool MicroFurtureSystem::Load(const std::string& config)
 
 		auto libpath = cfgReader->getValue("system.libpath");
 
-		std::string path = std::getenv("PATH");
-
-		path += ";" + libpath;
-
-		path = "PATH=" + path;
-
-		_putenv(path.data());
+		if (!libpath.empty())
+		{
+			std::string path = std::getenv("PATH");
+			path += ";" + libpath;
+			path = "PATH=" + path;
+			_putenv(path.data());
+		}
 
 		std::vector<std::string> section_vec;
 		// Initialize Databases
@@ -139,60 +139,64 @@ bool MicroFurtureSystem::Load(const std::string& config)
 		LOG_INFO << "  DataSerializers have initialized.";
 
 		// Initialize Services
-		std::string serve_cfg = cfgReader->getValue("system.service.config");
-		if (cfgReader = AbstractConfigReaderFactory::OpenConfigReader(serve_cfg.data())) {
-			LOG_INFO << "  Initializing services (" << serve_cfg << ')';
-			std::vector<std::string> sections;
-			cfgReader->getVector("service.servercfg", sections);
+		std::vector<std::string> service_cfgs;
+		cfgReader->getVector("system.service.configs", service_cfgs);
+		for (auto& serve_cfg : service_cfgs)
+		{
+			if (cfgReader = AbstractConfigReaderFactory::OpenConfigReader(serve_cfg.data())) {
+				LOG_INFO << "  Initializing services (" << serve_cfg << ')';
+				std::vector<std::string> sections;
+				cfgReader->getVector("service.servercfg", sections);
 
-			ret = true;
-			for (auto& sec : sections) {
-				bool initserver = false;
-				// Initialize Handler Factory
-				std::map<std::string, std::string> cfgMap;
-				cfgReader->getMap(sec, cfgMap);
-				std::string facCfg = cfgMap["factory.config"];
-				std::string facCfgSec = cfgMap["factory.config.section"];
-				if (auto msgfac = ConfigBasedCreator::CreateInstance(facCfg.data(), facCfgSec.data())) {
-					auto msgsvcfactory = std::static_pointer_cast<IMessageServiceFactory>(msgfac);
-					std::string facParamsSec = facCfgSec + ".params";
-					if (msgsvcfactory->LoadParams(facCfg, facParamsSec)) {
+				ret = true;
+				for (auto& sec : sections) {
+					bool initserver = false;
+					// Initialize Handler Factory
+					std::map<std::string, std::string> cfgMap;
+					cfgReader->getMap(sec, cfgMap);
+					std::string facCfg = cfgMap["factory.config"];
+					std::string facCfgSec = cfgMap["factory.config.section"];
+					if (auto msgfac = ConfigBasedCreator::CreateInstance(facCfg.data(), facCfgSec.data())) {
+						auto msgsvcfactory = std::static_pointer_cast<IMessageServiceFactory>(msgfac);
+						std::string facParamsSec = facCfgSec + ".params";
+						if (msgsvcfactory->LoadParams(facCfg, facParamsSec)) {
 
-						std::string svrUUID = cfgMap["server.module.uuid"];
-						std::string svrModule = cfgMap["server.module.path"];
-						std::string svrClass = cfgMap["server.class.uuid"];
-						std::string svrCfg = cfgMap["server.config"];
-						std::string svrCfgSec = cfgMap["server.config.section"];
-						std::string svruri = cfgMap["server.uri"];
+							std::string svrUUID = cfgMap["server.module.uuid"];
+							std::string svrModule = cfgMap["server.module.path"];
+							std::string svrClass = cfgMap["server.class.uuid"];
+							std::string svrCfg = cfgMap["server.config"];
+							std::string svrCfgSec = cfgMap["server.config.section"];
+							std::string svruri = cfgMap["server.uri"];
 
-						// Initialize Server
-						if (auto srvPtr = ConfigBasedCreator::CreateInstance(svrUUID.data(), svrModule.data(), svrClass.data())) {
-							auto server = std::static_pointer_cast<IMessageServer>(srvPtr);
-							server->RegisterServiceFactory(msgsvcfactory);
-							if (server->Initialize(svruri, svrCfg, svrCfgSec)) {
-								this->_servers.push_back(server);
-								initserver = true;
-								LOG_INFO << "    " << svruri << " initialized.";
+							// Initialize Server
+							if (auto srvPtr = ConfigBasedCreator::CreateInstance(svrUUID.data(), svrModule.data(), svrClass.data())) {
+								auto server = std::static_pointer_cast<IMessageServer>(srvPtr);
+								server->RegisterServiceFactory(msgsvcfactory);
+								if (server->Initialize(svruri, svrCfg, svrCfgSec)) {
+									this->_servers.push_back(server);
+									initserver = true;
+									LOG_INFO << "    " << svruri << " initialized.";
+								}
+								else
+								{
+									LOG_ERROR <<
+										"    " << svruri << " failed to initialize.";
+								}
 							}
 							else
 							{
-								LOG_ERROR <<
-									"    " << svruri << " failed to initialize.";
+								LOG_ERROR << "  Failed to create server: " << svrUUID;
 							}
 						}
-						else
-						{
-							LOG_ERROR << "  Failed to create server: " << svrUUID;
-						}
 					}
-				}
-				else
-				{
-					LOG_ERROR << "  Failed to create service factory: " << facCfgSec
-						<< " from " << facCfg;
-				}
+					else
+					{
+						LOG_ERROR << "  Failed to create service factory: " << facCfgSec
+							<< " from " << facCfg;
+					}
 
-				ret = ret && initserver;
+					ret = ret && initserver;
+				}
 			}
 		}
 	}

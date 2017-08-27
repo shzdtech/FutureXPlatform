@@ -19,16 +19,16 @@
 
 namespace fs = std::experimental::filesystem;
 
- ////////////////////////////////////////////////////////////////////////
- // Name:       CTPMarketDataSAProcessor::CTPMarketDataSAProcessor(const std::map<std::string, std::string>& configMap)
- // Purpose:    Implementation of CTPMarketDataSAProcessor::CTPMarketDataSAProcessor()
- // Parameters:
- // - frontserver
- // Return:     
- ////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+// Name:       CTPMarketDataSAProcessor::CTPMarketDataSAProcessor(const std::map<std::string, std::string>& configMap)
+// Purpose:    Implementation of CTPMarketDataSAProcessor::CTPMarketDataSAProcessor()
+// Parameters:
+// - frontserver
+// Return:     
+////////////////////////////////////////////////////////////////////////
 
 CTPMarketDataSAProcessor::CTPMarketDataSAProcessor(IServerContext* pServerCtx)
-	: _marketDataMap(16), 
+	: _marketDataMap(16),
 	MarketDataNotifers(SessionContainer<std::string>::NewInstancePtr())
 {
 	setServerContext(pServerCtx);
@@ -116,6 +116,9 @@ int CTPMarketDataSAProcessor::LoginSystemUserIfNeed(void)
 		ret = LoginSystemUser();
 		if (ret == -1)
 		{
+			LOG_WARN << getServerContext()->getServerUri() << ": System user " << _systemUser.getUserId()
+				<< " cannot connect to post market data server at: " << address;
+
 			if (ExchangeRouterTable::TryFind(_systemUser.getBrokerId() + ':' + ExchangeRouterTable::TARGET_MD_AM, address))
 			{
 				CreateCTPAPI(_systemUser.getUserId(), address);
@@ -131,7 +134,7 @@ int CTPMarketDataSAProcessor::LoginSystemUserIfNeed(void)
 		else
 		{
 			LOG_WARN << getServerContext()->getServerUri() << ": System user " << _systemUser.getUserId()
-				<< " cannot connect to market data server at: " << address;
+				<< " cannot connect to post market data server at: " << address;
 		}
 	}
 
@@ -244,21 +247,14 @@ void CTPMarketDataSAProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketDataFie
 		mdo.OpenInterest = pDepthMarketData->OpenInterest;
 		mdo.LastPrice = pDepthMarketData->LastPrice;
 		mdo.Volume = pDepthMarketData->Volume;
-		mdo.TradingDay = _tradingDay;
 
-		if (pDepthMarketData->OpenPrice < 1e32)
-		{
-			mdo.OpenPrice = pDepthMarketData->OpenPrice;
-			mdo.HighestPrice = pDepthMarketData->HighestPrice;
-			mdo.LowestPrice = pDepthMarketData->LowestPrice;
-			mdo.Turnover = pDepthMarketData->Turnover;
-			mdo.AveragePrice = pDepthMarketData->AveragePrice;
-		}
-
-		if (pDepthMarketData->SettlementPrice < 1e32)
-		{
-			mdo.SettlementPrice = pDepthMarketData->SettlementPrice;
-		}
+		mdo.OpenPrice = pDepthMarketData->OpenPrice < 1e32 ? pDepthMarketData->OpenPrice : NAN;
+		mdo.ClosePrice = pDepthMarketData->ClosePrice < 1e32 ? pDepthMarketData->ClosePrice : NAN;
+		mdo.HighestPrice = pDepthMarketData->HighestPrice < 1e32 ? pDepthMarketData->HighestPrice : NAN;
+		mdo.LowestPrice = pDepthMarketData->LowestPrice < 1e32 ? pDepthMarketData->LowestPrice : NAN;
+		mdo.Turnover = pDepthMarketData->Turnover < 1e32 ? pDepthMarketData->Turnover : NAN;
+		mdo.AveragePrice = pDepthMarketData->AveragePrice < 1e32 ? pDepthMarketData->AveragePrice : NAN;
+		mdo.SettlementPrice = pDepthMarketData->SettlementPrice < 1e32 ? pDepthMarketData->SettlementPrice : NAN;
 
 		if (pDepthMarketData->BidPrice1 < 1e32)
 		{

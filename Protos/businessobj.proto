@@ -399,8 +399,8 @@ message PBPosition {
 	string	contract = 3;
 	///持仓多空方向
 	int32 direction = 4;
-	///持仓
-	int32 position = 5;
+	///今日持仓
+	int32 tdPosition = 5;
 	///上日持仓
 	int32 ydPosition = 6;
 	///持仓日期标识
@@ -413,22 +413,30 @@ message PBPosition {
 	double openAmount = 10;
 	///平仓金额
 	double closeAmount = 11;
-	///持仓成本
-	double cost = 12;
+	///今日持仓成本
+	double tdCost = 12;
+	///昨日持仓成本
+	double ydCost = 13;
 	///开仓成本
-	double openCost = 13;
-	///持仓盈亏
-	double profit = 14;
+	double openCost = 14;
 	///平仓盈亏
 	double	closeProfit = 15;
 	///占用的保证金
 	double	useMargin = 16;
 	///投机套保标志
 	int32 hedgeFlag = 17;
-	///今日持仓
-	int32 tdPosition = 18;
 	///Portfolio
 	string portfolio = 19;
+	///持仓盈亏
+	double profit = 20;
+
+	int32 longFrozenVolume = 21;
+
+	int32 shortFrozenVolume = 22;
+
+	double longFrozenAmount = 23;
+
+	double shortFrozenAmount = 24;
 }
 
 message PBAccountInfo {

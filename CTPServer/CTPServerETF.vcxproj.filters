@@ -210,6 +210,9 @@
     <ClInclude Include="CTPAPISwitch.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CTPAddManualTrade.h">
+      <Filter>头文件\CTPHandler\SharedAccount</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ctpexport.cpp">
@@ -345,6 +348,9 @@
       <Filter>源文件\CTPHandler\SharedAccount</Filter>
     </ClCompile>
     <ClCompile Include="CTPSyncPositionDiffer.cpp">
+      <Filter>源文件\CTPHandler\SharedAccount</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPAddManualTrade.cpp">
       <Filter>源文件\CTPHandler\SharedAccount</Filter>
     </ClCompile>
   </ItemGroup>

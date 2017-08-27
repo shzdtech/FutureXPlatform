@@ -246,6 +246,9 @@ int CTPTradeWorkerProcessor::LoginSystemUserIfNeed(void)
 		ret = LoginSystemUser();
 		if (ret == -1)
 		{
+			LOG_WARN << getServerContext()->getServerUri() << ": System user " << _systemUser.getInvestorId()
+				<< " cannot connect to trading server at: " << address;
+
 			if (ExchangeRouterTable::TryFind(_systemUser.getBrokerId() + ':' + ExchangeRouterTable::TARGET_TD_AM, address))
 			{
 				CreateCTPAPI(_systemUser.getInvestorId(), address);
@@ -546,7 +549,7 @@ void CTPTradeWorkerProcessor::OnRspOrderInsert(CThostFtdcInputOrderField *pInput
 					OrderPortfolioCache::Remove(orderId);
 				}
 			}
-			orderptr->HasMore = !bIsLast;
+			orderptr->HasMore = false;
 			DispatchUserMessage(MSG_ID_ORDER_NEW, nRequestID, orderptr->UserID(), orderptr);
 		}
 	}
@@ -612,6 +615,14 @@ OrderDO_Ptr CTPTradeWorkerProcessor::RefineOrder(CThostFtdcOrderField *pOrder)
 		}
 	}
 
+	if (orderptr->PortfolioID().empty())
+	{
+		if (auto pPortfolioKey = PositionPortfolioMap::FindPortfolio(orderptr->InstrumentID()))
+		{
+			orderptr->SetPortfolioID(pPortfolioKey->PortfolioID());
+		}
+	}
+
 	if (orderSysId)
 	{
 		_userOrderCtx.UpsertOrder(orderSysId, orderptr);
@@ -625,6 +636,8 @@ void CTPTradeWorkerProcessor::OnRtnTrade(CThostFtdcTradeField * pTrade)
 {
 	if (pTrade)
 	{
+		_tradeCnt++;
+
 		if (auto trdDO_Ptr = RefineTrade(pTrade))
 		{
 			DispatchUserMessage(MSG_ID_TRADE_RTN, 0, trdDO_Ptr->UserID(), trdDO_Ptr);
@@ -634,11 +647,7 @@ void CTPTradeWorkerProcessor::OnRtnTrade(CThostFtdcTradeField * pTrade)
 				DispatchUserMessage(MSG_ID_POSITION_UPDATED, 0, trdDO_Ptr->UserID(), position_ptr);
 			}
 
-			// Try update position
-			if (!_exiting && !_updateFlag.test_and_set(std::memory_order::memory_order_acquire))
-			{
-				_updateTask = std::async(std::launch::async, &CTPTradeProcessor::QueryPositionAsync, this);
-			}
+			QueryUserPositionAsyncIfNeed();
 		}
 	}
 }
@@ -652,16 +661,14 @@ void CTPTradeWorkerProcessor::OnRspQryInvestorPosition(CThostFtdcInvestorPositio
 	if (pInvestorPosition)
 	{
 		if (auto position_ptr = CTPUtility::ParseRawPosition(pInvestorPosition))
-
-			if (position_ptr->ExchangeID() == EXCHANGE_SHFE)
+		{
+			if (pInvestorPosition->PositionDate == THOST_FTDC_PSD_History)
 			{
-				if (pInvestorPosition->PositionDate == THOST_FTDC_PSD_History)
-				{
-					_ydSysPositions.emplace(std::make_pair(position_ptr->InstrumentID(), position_ptr->Direction), position_ptr);
-				}
-			}
-			else
 				_ydSysPositions.emplace(std::make_pair(position_ptr->InstrumentID(), position_ptr->Direction), position_ptr);
+			}
+
+			DispatchMessageForAll(MSG_ID_EXCHANGE_POSITION_UPDATED, 0, position_ptr);
+		}	
 	}
 }
 
@@ -796,6 +803,12 @@ void CTPTradeWorkerProcessor::DispatchUserMessage(int msgId, int serialId, const
 	{ SendDataObject(session_ptr, msgId, serialId, dataobj_ptr); });
 }
 
+void CTPTradeWorkerProcessor::DispatchMessageForAll(int msgId, int serialId, const dataobj_ptr& dataobj_ptr)
+{
+	_userSessionCtn_Ptr->forall([msgId, serialId, dataobj_ptr, this](const IMessageSession_Ptr& session_ptr)
+	{ SendDataObject(session_ptr, msgId, serialId, dataobj_ptr); });
+}
+
 int CTPTradeWorkerProcessor::ComparePosition(autofillmap<std::pair<std::string, PositionDirectionType>, std::pair<int, int>>& positions)
 {
 	for (auto pair : _ydDBPositions)
@@ -834,15 +847,18 @@ int CTPTradeWorkerProcessor::SyncPosition(const std::string & userId)
 
 		auto userTrades = GetUserTradeContext().GetTradesByUser(userId);
 		
-		for (auto pair : userTrades.map()->lock_table())
+		if (!userTrades.empty())
 		{
-			auto trdDO_Ptr = pair.second;
-			int multiplier = 1;
-			if (auto pContractInfo = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(trdDO_Ptr->InstrumentID()))
+			for (auto pair : userTrades.map()->lock_table())
 			{
-				multiplier = pContractInfo->VolumeMultiple;
+				auto trdDO_Ptr = pair.second;
+				int multiplier = 1;
+				if (auto pContractInfo = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(trdDO_Ptr->InstrumentID()))
+				{
+					multiplier = pContractInfo->VolumeMultiple;
+				}
+				pUserPosition->UpsertPosition(trdDO_Ptr->UserID(), trdDO_Ptr, multiplier, trdDO_Ptr->ExchangeID() != EXCHANGE_SHFE);
 			}
-			pUserPosition->UpsertPosition(trdDO_Ptr->UserID(), trdDO_Ptr, multiplier, trdDO_Ptr->ExchangeID() != EXCHANGE_SHFE);
 		}
 	}
 

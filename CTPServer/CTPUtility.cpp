@@ -551,16 +551,10 @@ UserPositionExDO_Ptr CTPUtility::ParseRawPosition(CThostFtdcInvestorPositionFiel
 		pDO->YdProfit = pRspPosition->PositionProfit;
 	}
 
-	if (pRspPosition->PosiDirection == THOST_FTDC_PD_Long)
-	{
-		pDO->FrozenVolume = pRspPosition->LongFrozen;
-		pDO->FrozenAmount = pRspPosition->LongFrozenAmount;
-	}
-	else
-	{
-		pDO->FrozenVolume = pRspPosition->ShortFrozen;
-		pDO->FrozenAmount = pRspPosition->ShortFrozenAmount;
-	}
+	pDO->LongFrozenVolume = pRspPosition->LongFrozen;
+	pDO->LongFrozenAmount = pRspPosition->LongFrozenAmount;
+	pDO->ShortFrozenVolume = pRspPosition->ShortFrozen;
+	pDO->ShortFrozenAmount = pRspPosition->ShortFrozenAmount;
 
 	pDO->OpenVolume = pRspPosition->OpenVolume;
 	pDO->CloseVolume = pRspPosition->CloseVolume;

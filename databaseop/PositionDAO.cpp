@@ -90,7 +90,8 @@ VectorDO_Ptr<UserPositionExDO> PositionDAO::QueryOTCLastDayPosition(const std::s
 }
 
 
-bool PositionDAO::SyncPosition(const std::string & userid, const std::string & tradingDay, const std::map<std::pair<ContractKey, PositionDirectionType>, int>& positions)
+bool PositionDAO::SyncPosition(const std::string & userid, const std::string& sysUserId, const std::string & tradingDay,
+	const std::map<std::pair<ContractKey, PositionDirectionType>, int>& positions)
 {
 	bool ret = false;
 

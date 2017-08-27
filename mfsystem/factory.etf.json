@@ -1,0 +1,112 @@
+{
+  "factory": {
+    "etf": {
+      "option": {
+        "marketdata": {
+          "module.uuid": "com.micro.future.ctp.etf.dll",
+          "module.path": "CTPETFServer.dll",
+          "class.uuid": "factory.singleaccount.ctp.marketdata.service",
+          "params": {
+            "product_type": "0;1;2;6;7",
+
+            "Nanhua": "",
+            "CTP.MD.SERVER": "tcp://115.238.106.252:41313",
+            "CTP.MD.LOGIN.BROKERID": "8050",
+            "CTP.MD.LOGIN.USERID": "90096254",
+            "CTP.MD.LOGIN.PASSWORD": "666666"
+          }
+        },
+        "trade": {
+          "module.uuid": "com.micro.future.ctp.etf.dll",
+          "module.path": "CTPETFServer.dll",
+          "class.uuid": "factory.singleaccount.ctp.trade.service",
+          "params": {
+            "product_type": "0;1;2;6;7",
+            "save_contract": "true",
+
+            "Nanhua": "",
+            "CTP.TRADER.SERVER": "tcp://115.238.106.252:41313",
+            "CTP.TRADER.LOGIN.BROKERID": "8050",
+            "CTP.TRADER.LOGIN.USERID": "90096254",
+            "CTP.TRADER.LOGIN.PASSWORD": "666666"
+          }
+        }
+      },
+      "stock": {
+        "marketdata": {
+          "module.uuid": "com.micro.future.ctp.etf.dll",
+          "module.path": "CTPETFServer.dll",
+          "class.uuid": "factory.singleaccount.ctp.marketdata.service",
+          "params": {
+            "product_type": "0;1;2;6;7",
+
+            "NanhuaStock": "",
+            "CTP.MD.SERVER": "tcp://115.238.106.253:41413",
+            "CTP.MD.LOGIN.BROKERID": "8050",
+            "CTP.MD.LOGIN.USERID": "0000001332",
+            "CTP.MD.LOGIN.PASSWORD": "666666"
+          }
+        },
+        "trade": {
+          "module.uuid": "com.micro.future.ctp.etf.dll",
+          "module.path": "CTPETFServer.dll",
+          "class.uuid": "factory.singleaccount.ctp.trade.service",
+          "params": {
+            "product_type": "0;1;2;6;7",
+            "save_contract": "true",
+
+            "NanhuaStock": "",
+            "CTP.TRADER.SERVER": "tcp://115.238.106.253:41405",
+            "CTP.TRADER.LOGIN.BROKERID": "8050",
+            "CTP.TRADER.LOGIN.USERID": "0000001332",
+            "CTP.TRADER.LOGIN.PASSWORD": "666666",
+            "CTP.AUTH.CODE": "MDRWZG7SRGX7H31R",
+            "CTP.PRODUCT.INFO": "90096254dy"
+          }
+        }
+      }
+    },
+
+
+    "otc": {
+      "etf": {
+        "option": {
+          "module.uuid": "com.micro.future.ctp.etf.otc.dll",
+          "module.path": "CTPETFOTCServer.dll",
+          "class.uuid": "factory.otc.option",
+          "params": {
+
+            "Nanhua": "",
+            "CTP.MD.SERVER": "tcp://115.238.106.252:41313",
+            "CTP.MD.LOGIN.BROKERID": "8050",
+            "CTP.MD.LOGIN.USERID": "90096254",
+            "CTP.MD.LOGIN.PASSWORD": "666666",
+            "CTP.TRADER.SERVER": "tcp://115.238.106.252:41313",
+            "CTP.TRADER.LOGIN.BROKERID": "8050",
+            "CTP.TRADER.LOGIN.USERID": "90096254",
+            "CTP.TRADER.LOGIN.PASSWORD": "666666"
+          }
+        },
+        "stock": {
+          "module.uuid": "com.micro.future.ctp.etf.otc.dll",
+          "module.path": "CTPETFOTCServer.dll",
+          "class.uuid": "factory.otc.option",
+          "params": {
+
+            "NANHUAStock": "",
+            "CTP.MD.SERVER": "tcp://115.238.106.253:41413",
+            "CTP.MD.LOGIN.BROKERID": "8050",
+            "CTP.MD.LOGIN.USERID": "0000001332",
+            "CTP.MD.LOGIN.PASSWORD": "756482",
+            "CTP.TRADER.SERVER": "tcp://115.238.106.253:41405",
+            "CTP.TRADER.LOGIN.BROKERID": "8050",
+            "CTP.TRADER.LOGIN.USERID": "0000001332",
+            "CTP.TRADER.LOGIN.PASSWORD": "666666",
+            "CTP.AUTH.CODE": "MDRWZG7SRGX7H31R",
+            "CTP.PRODUCT.INFO": "90096254dy"
+          }
+        }
+      }
+    }
+  }
+}

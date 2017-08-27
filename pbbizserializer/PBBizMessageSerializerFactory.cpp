@@ -34,6 +34,7 @@ PBBizMessageSerializerFactory::PBBizMessageSerializerFactory()
 	_serializer_map[MSG_ID_ORDER_UPDATE] = PBOrderSerializer::Instance();
 	_serializer_map[MSG_ID_QUERY_POSITION] = PBUserPositionSerializer::Instance();
 	_serializer_map[MSG_ID_POSITION_UPDATED] = PBUserPositionSerializer::Instance();
+	_serializer_map[MSG_ID_EXCHANGE_POSITION_UPDATED] = PBUserPositionSerializer::Instance();
 	_serializer_map[MSG_ID_QUERY_TRADE] = 
 		std::make_shared<PBCombineSerializer>(PBTradeRecordSerializer::Instance(), PBStringMapSerializer::Instance());
 	_serializer_map[MSG_ID_TRADE_RTN] = PBTradeRecordSerializer::Instance();
@@ -41,6 +42,7 @@ PBBizMessageSerializerFactory::PBBizMessageSerializerFactory()
 	_serializer_map[MSG_ID_QUERY_POSITION_DIFFER] = PBPositionDifferSerializer::Instance();
 	_serializer_map[MSG_ID_SYNC_POSITION] = std::make_shared<PBCombineSerializer>
 		(PBResultSerializer::Instance(), PBStringMapSerializer::Instance());
+	_serializer_map[MSG_ID_ADD_MANUAL_TRADE] = PBTradeRecordSerializer::Instance();
 
 	//Transfer
 	_serializer_map[MSG_ID_QUERY_TRANSFER_BANK] = PBBankSerializer::Instance();
