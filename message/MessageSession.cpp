@@ -9,6 +9,7 @@
 #include "MessageContext.h"
 #include "UserInfo.h"
 #include "../litelogger/LiteLogger.h"
+#include "../utility/scopeunlock.h"
 
 #include <atomic>
 
@@ -25,7 +26,7 @@ uint64_t MessageSession::Id()
 ////////////////////////////////////////////////////////////////////////
 
 MessageSession::MessageSession(const ISessionManager_Ptr& sessionMgr_Ptr)
-	: _sessionManager_ptr(sessionMgr_Ptr), _timeout(0), _loginTimeStamp(0), _sessionHub(2)
+	: _sessionManager_ptr(sessionMgr_Ptr), _timeout(0), _loginTimeStamp(0)
 {
 	static std::atomic_uint64_t idgen {};
 	_id = ++idgen;
@@ -127,9 +128,11 @@ bool MessageSession::NotifyClosing(void)
 	if (ret)
 	{
 		auto this_ptr = shared_from_this();
-		for (auto pair : _sessionHub.lock_table())
+		scopeunlock<lockfree_set<IMessageSessionEvent_WkPtr, WeakPtrHash<IMessageSessionEvent>, WeakPtrEqual<IMessageSessionEvent>>> lock(&_sessionHub);
+
+		for (auto session : _sessionHub.rawset())
 		{
-			if (auto event_ptr = pair.first.lock())
+			if (auto event_ptr = session.lock())
 			{
 				event_ptr->OnSessionClosing(this_ptr);
 			}
@@ -149,7 +152,7 @@ bool MessageSession::NotifyClosing(void)
 
 void MessageSession::addListener(const IMessageSessionEvent_WkPtr& listener)
 {
-	_sessionHub.insert(listener, true);
+	_sessionHub.emplace(listener);
 }
 
 ////////////////////////////////////////////////////////////////////////

@@ -101,11 +101,7 @@ void CTPTradeWorkerSAProcessor::OnRtnTrade(CThostFtdcTradeField * pTrade)
 				DispatchUserMessage(MSG_ID_POSITION_UPDATED, 0, trdDO_Ptr->UserID(), position_ptr);
 			}
 
-			// Try update position
-			if (!_exiting && !_updateFlag.test_and_set(std::memory_order::memory_order_acquire))
-			{
-				_updateTask = std::async(std::launch::async, &CTPTradeProcessor::QueryPositionAsync, this);
-			}
+			QueryUserPositionAsyncIfNeed();
 		}
 	}
 }

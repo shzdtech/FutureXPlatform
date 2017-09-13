@@ -46,34 +46,28 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const uint32_t serialId, const da
 	std::strncpy(req.InvestorID, investorid.data(), sizeof(req.InvestorID));
 
 	int iRet = ((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryTradingAccount(&req, serialId);
-	if (iRet != 0) // too frequent request
+
+	AccountInfoDO_Ptr ret;
+
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 	{
-		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+		ret = pWorkerProc->GetAccountInfo(session->getUserInfo().getUserId());
+
+		if (!ret)
 		{
-			auto& accountInfoMap = pWorkerProc->GetAccountInfo(session->getUserInfo().getUserId());
-
-			if (TUtil::IsNullOrEmpty(&accountInfoMap) && session->getUserInfo().getRole() >= ROLE_TRADINGDESK)
-			{
-				accountInfoMap = pWorkerProc->GetAccountInfo(pWorkerProc->getMessageSession()->getUserInfo().getUserId());
-			}
-
-			ThrowNotFoundExceptionIfEmpty(&accountInfoMap);
-
-			auto endit = accountInfoMap.end();
-			for (auto it = accountInfoMap.begin(); it != endit; it++)
-			{
-				auto accountptr = std::make_shared<AccountInfoDO>(it->second);
-				accountptr->HasMore = std::next(it) != endit;
-				pWorkerProc->SendDataObject(session, MSG_ID_QUERY_ACCOUNT_INFO, serialId, accountptr);
-			}
+			ret = pWorkerProc->GetAccountInfo(pWorkerProc->getMessageSession()->getUserInfo().getUserId());
 		}
-	}
-	else
-	{
-		CTPUtility::CheckReturnError(iRet);
+
+		/*auto endit = accountInfoMap.end();
+		for (auto it = accountInfoMap.begin(); it != endit; it++)
+		{
+			auto accountptr = std::make_shared<AccountInfoDO>(it->second);
+			accountptr->HasMore = std::next(it) != endit;
+			
+		}*/
 	}
 
-	return nullptr;
+	return ret;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -91,7 +85,7 @@ dataobj_ptr CTPQueryAccountInfo::HandleResponse(const uint32_t serialId, const p
 	CTPUtility::CheckNotFound(rawRespParams[0]);
 	CTPUtility::CheckError(rawRespParams[1]);
 
-	dataobj_ptr ret;
+	std::shared_ptr<AccountInfoDO> ret;
 
 	if (auto pData = (CThostFtdcTradingAccountField*)rawRespParams[0])
 	{
@@ -133,8 +127,7 @@ dataobj_ptr CTPQueryAccountInfo::HandleResponse(const uint32_t serialId, const p
 
 		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 		{
-			auto& accountInfo = pWorkerProc->GetAccountInfo(session->getUserInfo().getUserId()).getorfill(pDO->AccountID);
-			accountInfo = *pDO;
+			pWorkerProc->UpdateAccountInfo(session->getUserInfo().getUserId(), ret);
 		}
 	}
 

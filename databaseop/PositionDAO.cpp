@@ -90,14 +90,40 @@ VectorDO_Ptr<UserPositionExDO> PositionDAO::QueryOTCLastDayPosition(const std::s
 }
 
 
-bool PositionDAO::SyncPosition(const std::string & userid, const std::string& sysUserId, const std::string & tradingDay,
-	const std::map<std::pair<ContractKey, PositionDirectionType>, int>& positions)
+bool PositionDAO::SyncPosition(const std::string& sysUserId, const std::vector<UserPositionDO>& positions)
 {
 	bool ret = false;
 
-	static const std::string sql_proc_queryOTCPosition("CALL Position_OTC_Lastday(?,?)");
+	static const std::string sql_proc_updateYdPosition = 
+		"INSERT INTO exchange_position (accountid,sysuserid,tradingday,exchange,contract,is_buy,portfolio_symbol,position) "
+		"VALUES (?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE position = ?";
 
-	
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
+
+	try
+	{
+		AutoClosePreparedStmt_Ptr prestmt(
+			session->getConnection()->prepareStatement(sql_proc_updateYdPosition));
+
+		for (auto& pos : positions)
+		{
+			prestmt->setString(1, pos.UserID());
+			prestmt->setString(2, sysUserId);
+			prestmt->setInt(3, pos.TradingDay);
+			prestmt->setString(4, pos.ExchangeID());
+			prestmt->setString(5, pos.InstrumentID());
+			prestmt->setBoolean(6, pos.Direction == PositionDirectionType::PD_LONG);
+			prestmt->setString(7, pos.PortfolioID());
+			prestmt->setInt(8, pos.YdInitPosition);
+			prestmt->setInt(9, pos.YdInitPosition);
+			prestmt->executeUpdate();
+		}
+	}
+	catch (sql::SQLException& sqlEx)
+	{
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
+		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
+	}
 
 	return ret;
 }

@@ -160,6 +160,7 @@
     <ClInclude Include="ContractCache.h" />
     <ClInclude Include="ExchangeRouterTable.h" />
     <ClInclude Include="InstrumentCache.h" />
+    <ClInclude Include="ManualOpHub.h" />
     <ClInclude Include="PositionPortfolioMap.h" />
     <ClInclude Include="StrategyModelCache.h" />
     <ClInclude Include="resource.h" />
@@ -169,6 +170,7 @@
     <ClCompile Include="ContractCache.cpp" />
     <ClCompile Include="ExchangeRouterTable.cpp" />
     <ClCompile Include="InstrumentCache.cpp" />
+    <ClCompile Include="ManualOpHub.cpp" />
     <ClCompile Include="PositionPortfolioMap.cpp" />
     <ClCompile Include="StrategyModelCache.cpp" />
     <ClCompile Include="UnderlyingMap.cpp" />

@@ -78,6 +78,7 @@ IMessageProcessor_Ptr CTPTradeServiceSAFactory::CreateWorkerProcessor(IServerCon
 		auto worker_ptr = std::make_shared<CTPTradeWorkerSAProcessor>(serverCtx, 
 			std::make_shared<PricingDataContext>(),
 			std::make_shared<PortfolioPositionContext>());
+		ManualOpHub::Instance()->addListener(worker_ptr);
 		worker_ptr->Initialize(serverCtx);
 		serverCtx->setWorkerProcessor(worker_ptr);
 		serverCtx->setSubTypeWorkerPtr(static_cast<CTPTradeWorkerSAProcessor*>(worker_ptr.get()));

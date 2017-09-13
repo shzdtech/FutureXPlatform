@@ -41,6 +41,8 @@ public:
 	virtual HedgeOrderManager& GetHedgeOrderManager(void);
 	virtual UserOrderContext& GetExchangeOrderContext();
 
+	virtual void OnNewManualTrade(const TradeRecordDO & tradeDO);
+
 	virtual void TriggerHedgeOrderUpdating(const PortfolioKey & portfolioKey);
 	virtual void TriggerAutoOrderUpdating(const StrategyContractDO& strategyDO);
 

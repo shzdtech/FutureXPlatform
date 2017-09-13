@@ -993,8 +993,9 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserAccountInfo, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBUserAccountInfo, _is_default_instance_));
   PBPositionCompare_descriptor_ = file->message_type(35);
-  static const int PBPositionCompare_offsets_[4] = {
+  static const int PBPositionCompare_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPositionCompare, contract_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPositionCompare, portfolio_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPositionCompare, direction_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPositionCompare, dbposition_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPositionCompare, sysposition_),
@@ -1474,21 +1475,21 @@ void protobuf_AddDesc_businessobj_2eproto() {
     "\007 \001(\t\022\020\n\010idCardNo\030\010 \001(\t\022\024\n\014customerName\030"
     "\t \001(\014\022\022\n\ncurrencyID\030\n \001(\t\022\020\n\010custType\030\013 "
     "\001(\005\022\023\n\013bankAccType\030\014 \001(\005\022\025\n\rbankUseAmoun"
-    "t\030\r \001(\001\022\027\n\017bankFetchAmount\030\016 \001(\001\"a\n\021PBPo"
-    "sitionCompare\022\020\n\010contract\030\001 \001(\t\022\021\n\tdirec"
-    "tion\030\002 \001(\005\022\022\n\ndbPosition\030\003 \001(\005\022\023\n\013sysPos"
-    "ition\030\004 \001(\005\"\216\001\n\025PBPositionCompareList\0220\n"
-    "\006header\030\001 \001(\0132 .Micro.Future.Message.Dat"
-    "aHeader\022C\n\tpositions\030\002 \003(\01320.Micro.Futur"
-    "e.Message.Business.PBPositionCompare\"\\\n\023"
-    "PBValuationContract\022\020\n\010exchange\030\001 \001(\t\022\020\n"
-    "\010contract\030\002 \001(\t\022\r\n\005price\030\003 \001(\001\022\022\n\nvolati"
-    "lity\030\004 \001(\001\"\307\001\n\017PBValuationRisk\0220\n\006header"
-    "\030\001 \001(\0132 .Micro.Future.Message.DataHeader"
-    "\022I\n\rcontractValue\030\002 \003(\01322.Micro.Future.M"
-    "essage.Business.PBValuationContract\022\022\n\nd"
-    "aysRemain\030\003 \001(\005\022\020\n\010interest\030\004 \001(\001\022\021\n\tpor"
-    "tfolio\030\005 \001(\tb\006proto3", 9700);
+    "t\030\r \001(\001\022\027\n\017bankFetchAmount\030\016 \001(\001\"t\n\021PBPo"
+    "sitionCompare\022\020\n\010contract\030\001 \001(\t\022\021\n\tportf"
+    "olio\030\002 \001(\t\022\021\n\tdirection\030\003 \001(\005\022\022\n\ndbPosit"
+    "ion\030\004 \001(\005\022\023\n\013sysPosition\030\005 \001(\005\"\216\001\n\025PBPos"
+    "itionCompareList\0220\n\006header\030\001 \001(\0132 .Micro"
+    ".Future.Message.DataHeader\022C\n\tpositions\030"
+    "\002 \003(\01320.Micro.Future.Message.Business.PB"
+    "PositionCompare\"\\\n\023PBValuationContract\022\020"
+    "\n\010exchange\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022\r\n\005pr"
+    "ice\030\003 \001(\001\022\022\n\nvolatility\030\004 \001(\001\"\307\001\n\017PBValu"
+    "ationRisk\0220\n\006header\030\001 \001(\0132 .Micro.Future"
+    ".Message.DataHeader\022I\n\rcontractValue\030\002 \003"
+    "(\01322.Micro.Future.Message.Business.PBVal"
+    "uationContract\022\022\n\ndaysRemain\030\003 \001(\005\022\020\n\010in"
+    "terest\030\004 \001(\001\022\021\n\tportfolio\030\005 \001(\tb\006proto3", 9719);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "businessobj.proto", &protobuf_RegisterTypes);
   PBInstrument::default_instance_ = new PBInstrument();
@@ -32590,6 +32591,7 @@ void PBUserAccountInfo::clear_bankfetchamount() {
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int PBPositionCompare::kContractFieldNumber;
+const int PBPositionCompare::kPortfolioFieldNumber;
 const int PBPositionCompare::kDirectionFieldNumber;
 const int PBPositionCompare::kDbPositionFieldNumber;
 const int PBPositionCompare::kSysPositionFieldNumber;
@@ -32618,6 +32620,7 @@ void PBPositionCompare::SharedCtor() {
   ::google::protobuf::internal::GetEmptyString();
   _cached_size_ = 0;
   contract_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  portfolio_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   direction_ = 0;
   dbposition_ = 0;
   sysposition_ = 0;
@@ -32630,6 +32633,7 @@ PBPositionCompare::~PBPositionCompare() {
 
 void PBPositionCompare::SharedDtor() {
   contract_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  portfolio_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != default_instance_) {
   }
 }
@@ -32679,6 +32683,7 @@ void PBPositionCompare::Clear() {
 
   ZR_(direction_, sysposition_);
   contract_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  portfolio_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 
 #undef ZR_HELPER_
 #undef ZR_
@@ -32707,13 +32712,30 @@ bool PBPositionCompare::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(16)) goto parse_direction;
+        if (input->ExpectTag(18)) goto parse_portfolio;
         break;
       }
 
-      // optional int32 direction = 2;
+      // optional string portfolio = 2;
       case 2: {
-        if (tag == 16) {
+        if (tag == 18) {
+         parse_portfolio:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_portfolio()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->portfolio().data(), this->portfolio().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.Business.PBPositionCompare.portfolio"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(24)) goto parse_direction;
+        break;
+      }
+
+      // optional int32 direction = 3;
+      case 3: {
+        if (tag == 24) {
          parse_direction:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
@@ -32722,13 +32744,13 @@ bool PBPositionCompare::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(24)) goto parse_dbPosition;
+        if (input->ExpectTag(32)) goto parse_dbPosition;
         break;
       }
 
-      // optional int32 dbPosition = 3;
-      case 3: {
-        if (tag == 24) {
+      // optional int32 dbPosition = 4;
+      case 4: {
+        if (tag == 32) {
          parse_dbPosition:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
@@ -32737,13 +32759,13 @@ bool PBPositionCompare::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(32)) goto parse_sysPosition;
+        if (input->ExpectTag(40)) goto parse_sysPosition;
         break;
       }
 
-      // optional int32 sysPosition = 4;
-      case 4: {
-        if (tag == 32) {
+      // optional int32 sysPosition = 5;
+      case 5: {
+        if (tag == 40) {
          parse_sysPosition:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
@@ -32790,19 +32812,29 @@ void PBPositionCompare::SerializeWithCachedSizes(
       1, this->contract(), output);
   }
 
-  // optional int32 direction = 2;
+  // optional string portfolio = 2;
+  if (this->portfolio().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->portfolio().data(), this->portfolio().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBPositionCompare.portfolio");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->portfolio(), output);
+  }
+
+  // optional int32 direction = 3;
   if (this->direction() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->direction(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->direction(), output);
   }
 
-  // optional int32 dbPosition = 3;
+  // optional int32 dbPosition = 4;
   if (this->dbposition() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->dbposition(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->dbposition(), output);
   }
 
-  // optional int32 sysPosition = 4;
+  // optional int32 sysPosition = 5;
   if (this->sysposition() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->sysposition(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->sysposition(), output);
   }
 
   // @@protoc_insertion_point(serialize_end:Micro.Future.Message.Business.PBPositionCompare)
@@ -32822,19 +32854,30 @@ void PBPositionCompare::SerializeWithCachedSizes(
         1, this->contract(), target);
   }
 
-  // optional int32 direction = 2;
+  // optional string portfolio = 2;
+  if (this->portfolio().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->portfolio().data(), this->portfolio().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.Business.PBPositionCompare.portfolio");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->portfolio(), target);
+  }
+
+  // optional int32 direction = 3;
   if (this->direction() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->direction(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->direction(), target);
   }
 
-  // optional int32 dbPosition = 3;
+  // optional int32 dbPosition = 4;
   if (this->dbposition() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->dbposition(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->dbposition(), target);
   }
 
-  // optional int32 sysPosition = 4;
+  // optional int32 sysPosition = 5;
   if (this->sysposition() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->sysposition(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->sysposition(), target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.Business.PBPositionCompare)
@@ -32852,21 +32895,28 @@ int PBPositionCompare::ByteSize() const {
         this->contract());
   }
 
-  // optional int32 direction = 2;
+  // optional string portfolio = 2;
+  if (this->portfolio().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->portfolio());
+  }
+
+  // optional int32 direction = 3;
   if (this->direction() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->direction());
   }
 
-  // optional int32 dbPosition = 3;
+  // optional int32 dbPosition = 4;
   if (this->dbposition() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->dbposition());
   }
 
-  // optional int32 sysPosition = 4;
+  // optional int32 sysPosition = 5;
   if (this->sysposition() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
@@ -32900,6 +32950,10 @@ void PBPositionCompare::MergeFrom(const PBPositionCompare& from) {
   if (from.contract().size() > 0) {
 
     contract_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.contract_);
+  }
+  if (from.portfolio().size() > 0) {
+
+    portfolio_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.portfolio_);
   }
   if (from.direction() != 0) {
     set_direction(from.direction());
@@ -32937,6 +32991,7 @@ void PBPositionCompare::Swap(PBPositionCompare* other) {
 }
 void PBPositionCompare::InternalSwap(PBPositionCompare* other) {
   contract_.Swap(&other->contract_);
+  portfolio_.Swap(&other->portfolio_);
   std::swap(direction_, other->direction_);
   std::swap(dbposition_, other->dbposition_);
   std::swap(sysposition_, other->sysposition_);
@@ -32999,7 +33054,51 @@ void PBPositionCompare::clear_contract() {
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBPositionCompare.contract)
 }
 
-// optional int32 direction = 2;
+// optional string portfolio = 2;
+void PBPositionCompare::clear_portfolio() {
+  portfolio_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& PBPositionCompare::portfolio() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPositionCompare.portfolio)
+  return portfolio_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBPositionCompare::set_portfolio(const ::std::string& value) {
+  
+  portfolio_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPositionCompare.portfolio)
+}
+ void PBPositionCompare::set_portfolio(const char* value) {
+  
+  portfolio_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBPositionCompare.portfolio)
+}
+ void PBPositionCompare::set_portfolio(const char* value, size_t size) {
+  
+  portfolio_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBPositionCompare.portfolio)
+}
+ ::std::string* PBPositionCompare::mutable_portfolio() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBPositionCompare.portfolio)
+  return portfolio_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* PBPositionCompare::release_portfolio() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBPositionCompare.portfolio)
+  
+  return portfolio_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void PBPositionCompare::set_allocated_portfolio(::std::string* portfolio) {
+  if (portfolio != NULL) {
+    
+  } else {
+    
+  }
+  portfolio_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), portfolio);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBPositionCompare.portfolio)
+}
+
+// optional int32 direction = 3;
 void PBPositionCompare::clear_direction() {
   direction_ = 0;
 }
@@ -33013,7 +33112,7 @@ void PBPositionCompare::clear_direction() {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPositionCompare.direction)
 }
 
-// optional int32 dbPosition = 3;
+// optional int32 dbPosition = 4;
 void PBPositionCompare::clear_dbposition() {
   dbposition_ = 0;
 }
@@ -33027,7 +33126,7 @@ void PBPositionCompare::clear_dbposition() {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPositionCompare.dbPosition)
 }
 
-// optional int32 sysPosition = 4;
+// optional int32 sysPosition = 5;
 void PBPositionCompare::clear_sysposition() {
   sysposition_ = 0;
 }

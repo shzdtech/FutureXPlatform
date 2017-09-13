@@ -12,7 +12,7 @@
 #include "IMessageProcessor.h"
 #include "ISessionManager.h"
 #include "UserInfo.h"
-#include "libcuckoo/cuckoohash_map.hh"
+#include "../utility/lockfree_set.h"
 #include "../utility/weak_ptr_hash.h"
 
 #include <set>
@@ -51,7 +51,7 @@ protected:
 	uint64_t _id;
 	IMessageContext_Ptr _context_ptr;
 	IMessageProcessor_WkPtr _messageProcessor_wkptr;
-	cuckoohash_map<IMessageSessionEvent_WkPtr, bool, WeakPtrHash<IMessageSessionEvent>, WeakPtrEqual<IMessageSessionEvent>> _sessionHub;
+	lockfree_set<IMessageSessionEvent_WkPtr,WeakPtrHash<IMessageSessionEvent>, WeakPtrEqual<IMessageSessionEvent>> _sessionHub;
 	UserInfo _userInfo;
 	ISessionManager_Ptr _sessionManager_ptr;
 	long _timeout;

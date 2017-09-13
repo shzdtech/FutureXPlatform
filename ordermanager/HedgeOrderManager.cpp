@@ -207,7 +207,7 @@ HedgeOrderManager::HedgeStatus HedgeOrderManager::Hedge(const PortfolioKey& port
 			LOG_DEBUG << "Total Delta: " << totalDelta << ", RemainVol: " << remainVol;
 
 			// Check max order volume
-			if (auto pInstumentInfo = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(hedgeContract->InstrumentID()))
+			if (auto pInstumentInfo = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentOrAddById(hedgeContract->InstrumentID()))
 			{
 				remainVol = std::min(pInstumentInfo->MaxLimitOrderVolume, remainVol);
 			}

@@ -18,6 +18,8 @@ public:
 
 	InstrumentDO* QueryInstrumentById(const std::string& instrumentId);
 
+	InstrumentDO* QueryInstrumentOrAddById(const std::string & instrumentId);
+
 	VectorDO_Ptr<InstrumentDO> AllInstruments(void);
 
 	void Clear(void);

@@ -25,17 +25,9 @@ dataobj_ptr CTPTradeUpdated::HandleResponse(const uint32_t serialId, const param
 				if (pWorkerProc->GetUserTradeContext().InsertTrade(ret))
 				{
 					int multiplier = 1;
-					if (auto pContractInfo = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(ret->InstrumentID()))
+					if (auto pContractInfo = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentOrAddById(ret->InstrumentID()))
 					{
 						multiplier = pContractInfo->VolumeMultiple;
-					}
-					else
-					{
-						InstrumentDO instDO;
-						if (ContractDAO::FindContractById(*ret, instDO))
-						{
-							multiplier = instDO.VolumeMultiple;
-						}
 					}
 
 					auto position_ptr = pWorkerProc->GetUserPositionContext()->UpsertPosition(ret->UserID(), ret, multiplier, ret->ExchangeID() != EXCHANGE_SHFE);

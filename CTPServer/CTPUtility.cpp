@@ -286,20 +286,9 @@ OrderDO_Ptr CTPUtility::ParseRawOrder(
 	if (!baseOrder)
 	{
 		const char* pExchange = "";
-		if (auto pInstument = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(pOrderInput->InstrumentID))
+		if (auto pInstument = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentOrAddById(pOrderInput->InstrumentID))
 		{
 			pExchange = pInstument->ExchangeID().data();
-		}
-		else
-		{
-			InstrumentDO instDO;
-			if (ContractDAO::FindExchangeContractById(pOrderInput->InstrumentID, instDO))
-			{
-				ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).Add(instDO);
-
-				if (auto pInstument = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(pOrderInput->InstrumentID))
-					pExchange = pInstument->ExchangeID().data();
-			}
 		}
 
 		baseOrder.reset(new OrderDO(ToUInt64(pOrderInput->OrderRef),
@@ -515,18 +504,9 @@ BankOpResultDO_Ptr CTPUtility::ParseRawTransfer(CThostFtdcTransferSerialField * 
 UserPositionExDO_Ptr CTPUtility::ParseRawPosition(CThostFtdcInvestorPositionField * pRspPosition)
 {
 	std::string exchange;
-	if (auto pInstrumentDO = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(pRspPosition->InstrumentID))
+	if (auto pInstrumentDO = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentOrAddById(pRspPosition->InstrumentID))
 	{
 		exchange = pInstrumentDO->ExchangeID();
-	}
-	else
-	{
-		InstrumentDO instDO;
-		if (ContractDAO::FindExchangeContractById(pRspPosition->InstrumentID, instDO))
-		{
-			exchange = instDO.ExchangeID();
-			ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).Add(instDO);
-		}
 	}
 
 	auto pDO = new UserPositionExDO(exchange, pRspPosition->InstrumentID);

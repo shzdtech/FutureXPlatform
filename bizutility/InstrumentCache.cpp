@@ -1,5 +1,6 @@
 #include "InstrumentCache.h"
 #include <boolinq/boolinq.h>
+#include "../databaseop/ContractDAO.h"
 
 void InstrumentCache::Add(const InstrumentDO & instrumentDO)
 {
@@ -79,6 +80,24 @@ VectorDO_Ptr<InstrumentDO> InstrumentCache::QueryInstrumentByProductType(Product
 InstrumentDO * InstrumentCache::QueryInstrumentById(const std::string & instrumentId)
 {
 	return _instrumentDOMap.tryfind(instrumentId);
+}
+
+InstrumentDO * InstrumentCache::QueryInstrumentOrAddById(const std::string & instrumentId)
+{
+	auto ret = _instrumentDOMap.tryfind(instrumentId);
+
+	if (!ret)
+	{
+		InstrumentDO ido;
+		if (ContractDAO::FindExchangeContractById(instrumentId, ido))
+		{
+			Add(ido);
+		}
+
+		ret = _instrumentDOMap.tryfind(instrumentId);
+	}
+
+	return ret;
 }
 
 VectorDO_Ptr<InstrumentDO> InstrumentCache::AllInstruments(void)

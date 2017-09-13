@@ -21,14 +21,20 @@
 #include "../dataobject/TypedefDO.h"
 #include "../dataobject/OrderDO.h"
 #include "../dataobject/EnumTypes.h"
+#include "../bizutility/ManualOpHub.h"
 
 #include "ctpexport.h"
 
-class CTP_CLASS_EXPORT CTPTradeWorkerProcessor : public MessageWorkerProcessor, public CTPTradeProcessor
+class CTP_CLASS_EXPORT CTPTradeWorkerProcessor : public MessageWorkerProcessor, public CTPTradeProcessor, public IManualOp
 {
 public:
 	CTPTradeWorkerProcessor(IServerContext* pServerCtx, const IUserPositionContext_Ptr& positionCtx = nullptr);
 	~CTPTradeWorkerProcessor();
+
+	virtual void OnNewManualTrade(const TradeRecordDO& tradeDO);
+	virtual void OnUpdateManualPosition(const UserPositionExDO& positionDO);
+
+
 	virtual void Initialize(IServerContext* pServerCtx);
 	virtual int RequestData(void);
 	virtual int LoginSystemUser(void);
@@ -38,7 +44,8 @@ public:
 
 	virtual void DispatchUserMessage(int msgId, int serialId, const std::string& userId, const dataobj_ptr& dataobj_ptr);
 	virtual void DispatchMessageForAll(int msgId, int serialId, const dataobj_ptr & dataobj_ptr);
-	virtual autofillmap<std::string, AccountInfoDO>& GetAccountInfo(const std::string userId);
+	virtual AccountInfoDO_Ptr GetAccountInfo(const std::string& userId);
+	virtual void UpdateAccountInfo(const std::string& userId, const AccountInfoDO_Ptr& accoutInfo);
 	virtual std::set<ExchangeDO>& GetExchangeInfo();
 	virtual IUserPositionContext_Ptr& GetUserPositionContext();
 	virtual UserTradeContext& GetUserTradeContext();
@@ -46,9 +53,7 @@ public:
 	virtual std::set<ProductType>& GetProductTypeToLoad();
 	//virtual UserOrderContext& GetUserErrOrderContext(void);
 
-	int ComparePosition(autofillmap<std::pair<std::string, PositionDirectionType>, std::pair<int, int>>& positions);
-
-	int SyncPosition(const std::string& userId);
+	int ComparePosition(const std::string& userId, autofillmap<std::tuple<std::string, std::string, PositionDirectionType>, std::pair<int, int>>& positions);
 
 	virtual TradeRecordDO_Ptr RefineTrade(CThostFtdcTradeField * pTrade);
 
@@ -60,6 +65,10 @@ public:
 
 	void LoadPositonFromDatabase(const std::string& sysuserid, const std::string& tradingday);
 
+	UserPositionExDO_Ptr FindDBYdPostion(const std::string& userid, const std::string& contract, const std::string& portfolio, PositionDirectionType direction);
+
+	UserPositionExDO_Ptr FindSysYdPostion(const std::string& contract, const std::string& portfolio, PositionDirectionType direction);
+
 	int RetryInterval = 30000;
 
 protected:
@@ -67,7 +76,7 @@ protected:
 	std::string _productInfo;
 
 	std::mutex _loginMutex;
-	autofillmap<std::string, autofillmap<std::string, AccountInfoDO>> _accountInfoMap;
+	cuckoohash_map<std::string, AccountInfoDO_Ptr> _accountInfoMap;
 	std::set<ExchangeDO> _exchangeInfo_Set;
 	IUserPositionContext_Ptr _userPositionCtx_Ptr;
 	UserTradeContext _userTradeCtx;
@@ -79,8 +88,8 @@ protected:
 
 	bool _loadPositionFromDB;
 
-	autofillmap<std::pair<std::string, PositionDirectionType>, int> _ydDBPositions;
-	autofillmap<std::pair<std::string, PositionDirectionType>, UserPositionExDO_Ptr> _ydSysPositions;
+	autofillmap<std::string, autofillmap<std::tuple<std::string, std::string, PositionDirectionType>, UserPositionExDO_Ptr>> _ydDBPositions;
+	autofillmap<std::tuple<std::string, std::string, PositionDirectionType>, UserPositionExDO_Ptr> _ydSysPositions;
 
 public:
 	virtual void OnFrontConnected();

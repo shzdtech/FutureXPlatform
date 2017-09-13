@@ -131,7 +131,7 @@
       <AdditionalDependencies>thostmduserapi.lib;thosttraderapi.lib;</AdditionalDependencies>
     </Link>
     <ProjectReference>
-      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -218,6 +218,7 @@
     </ProjectReference>
     <ProjectReference Include="..\CTPServer\CTPServer.vcxproj">
       <Project>{5cd2baa7-91fe-4a63-80cf-7b25c5597c0f}</Project>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
     </ProjectReference>
     <ProjectReference Include="..\databaseop\databaseop.vcxproj">
       <Project>{dc2aae7b-2f79-42fc-94c2-bc3c9c1108c9}</Project>
@@ -239,6 +240,7 @@
     </ProjectReference>
     <ProjectReference Include="..\OTCServer\OTCServer.vcxproj">
       <Project>{5f50c5da-8183-40d3-a78b-6462ee958593}</Project>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
     </ProjectReference>
     <ProjectReference Include="..\pricingengine\pricingengine.vcxproj">
       <Project>{001a89a1-70d7-4a9b-a7b2-82d0be1ba07c}</Project>

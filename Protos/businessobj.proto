@@ -700,9 +700,10 @@ message PBUserAccountInfo {
 message PBPositionCompare
 {
 	string contract = 1;
-	int32 direction = 2;
-	int32 dbPosition = 3;
-	int32 sysPosition = 4;
+	string portfolio = 2;
+	int32 direction = 3;
+	int32 dbPosition = 4;
+	int32 sysPosition = 5;
 }
 
 message PBPositionCompareList

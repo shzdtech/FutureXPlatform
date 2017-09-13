@@ -25,14 +25,20 @@ data_buffer PBPositionDifferSerializer::Serialize(const dataobj_ptr& abstractDO)
 	using namespace Micro::Future::Message::Business;
 
 	PBPositionCompareList PB;
-	auto pDO = (MapDO<std::pair<std::string, PositionDirectionType>, std::pair<int, int>>*)abstractDO.get();
+	auto pDO = (MapDO<std::tuple<std::string, std::string, PositionDirectionType>, std::pair<int, int>>*)abstractDO.get();
 	FillPBHeader(PB, pDO);
 
 	for (auto& pair : *pDO)
 	{
 		auto pPosition = PB.add_positions();
-		pPosition->set_contract(pair.first.first);
-		pPosition->set_direction(pair.first.second);
+
+		std::string contract, portfolio;
+		PositionDirectionType direction;
+		std::tie(contract, portfolio, direction) = pair.first;
+
+		pPosition->set_contract(contract);
+		pPosition->set_portfolio(portfolio);
+		pPosition->set_direction(direction);
 		pPosition->set_dbposition(pair.second.first);
 		pPosition->set_sysposition(pair.second.second);
 	}
@@ -50,5 +56,17 @@ data_buffer PBPositionDifferSerializer::Serialize(const dataobj_ptr& abstractDO)
 
 dataobj_ptr PBPositionDifferSerializer::Deserialize(const data_buffer& rawdata)
 {
-	return PBStringMapSerializer::Instance()->Deserialize(rawdata);
+	using namespace Micro::Future::Message::Business;
+	PBPositionCompareList PB;
+	ParseWithReturn(PB, rawdata);
+
+	auto ret = std::make_shared<MapDO<std::tuple<std::string, std::string, PositionDirectionType>, std::pair<int, int>>>();
+	FillDOHeader(ret, PB);
+
+	for (auto& pos : PB.positions())
+	{
+		ret->emplace(std::make_tuple(pos.contract(), pos.portfolio(), (PositionDirectionType)pos.direction()), std::make_pair(pos.dbposition(), pos.sysposition()));
+	}
+
+	return ret;
 }

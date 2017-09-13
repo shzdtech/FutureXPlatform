@@ -11,6 +11,8 @@
 #include "IProcessorBase.h"
 #include "IMessageSession.h"
 #include "IRawAPI.h"
+#include "../dataobject/dataobjectbase.h"
+#include "../common/typedefs.h"
 
 class IMessageProcessor : public IProcessorBase
 {
@@ -21,6 +23,9 @@ public:
 	virtual bool OnSessionClosing(void) = 0;
 	virtual IRawAPI* getRawAPI(void) = 0;
 	virtual IMessageSession_Ptr& getMessageSession(void) = 0;
+
+	virtual dataobj_ptr ProcessRequest(const uint32_t msgId, const uint32_t serialId, const dataobj_ptr& reqDO, bool sendRsp) = 0;
+	virtual dataobj_ptr ProcessResponse(const uint32_t msgId, const uint32_t serialId, param_vector& rawRespParamsconst, bool sendRsp) = 0;
 
 protected:
 private:

@@ -11,6 +11,10 @@
 #include "../message/DefMessageID.h"
 #include "../message/MessageUtility.h"
 
+#include "../bizutility/ManualOpHub.h"
+
+#include <iomanip>
+
 dataobj_ptr CTPAddManualTrade::HandleRequest(const uint32_t serialId, const dataobj_ptr & reqDO, IRawAPI * rawAPI, const IMessageProcessor_Ptr & msgProcessor, const IMessageSession_Ptr & session)
 {
 	CheckLogin(session);
@@ -19,41 +23,33 @@ dataobj_ptr CTPAddManualTrade::HandleRequest(const uint32_t serialId, const data
 
 	auto tradeDO_Ptr = std::static_pointer_cast<TradeRecordDO>(reqDO);
 
+	auto now = std::chrono::system_clock::now();
+
 	tradeDO_Ptr->InvestorID = userInfo.getInvestorId();
 	tradeDO_Ptr->BrokerID = userInfo.getBrokerId();
 	tradeDO_Ptr->SetUserID(userInfo.getUserId());
 	tradeDO_Ptr->TradingDay = userInfo.getTradingDay();
-	tradeDO_Ptr->TradeTime = std::to_string(std::time(nullptr));
-	tradeDO_Ptr->TradeID = std::chrono::steady_clock::now().time_since_epoch().count();
+	tradeDO_Ptr->TradeID = now.time_since_epoch().count();
 	tradeDO_Ptr->HasMore = false;
+
+	auto time = std::chrono::system_clock::to_time_t(now);
+	auto ptm = std::localtime(&time);
+
+	char timestr[20];
+	std::strftime(timestr, sizeof(timestr), "%T", ptm);
+	tradeDO_Ptr->TradeTime = timestr;
+	std::strftime(timestr, sizeof(timestr), "%F", ptm);
+	tradeDO_Ptr->TradeDate = timestr;
+
+	if (tradeDO_Ptr->ExchangeID().empty())
+	{
+		if (auto pInstument = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentOrAddById(tradeDO_Ptr->InstrumentID()))
+			tradeDO_Ptr->setExchangeID(pInstument->ExchangeID());
+	}
 
 	TradeDAO::SaveExchangeTrade(*tradeDO_Ptr);
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
-	{
-		pWorkerProc->GetUserTradeContext().InsertTrade(tradeDO_Ptr);
-
-		pWorkerProc->DispatchUserMessage(MSG_ID_TRADE_RTN, 0, tradeDO_Ptr->UserID(), tradeDO_Ptr);
-
-		int multiplier = 1;
-		if (auto pContractInfo = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(tradeDO_Ptr->InstrumentID()))
-		{
-			multiplier = pContractInfo->VolumeMultiple;
-		}
-		else
-		{
-			InstrumentDO instDO;
-			if (ContractDAO::FindContractById(*tradeDO_Ptr, instDO))
-			{
-				multiplier = instDO.VolumeMultiple;
-			}
-		}
-		
-		if (auto userPosition_Ptr = pWorkerProc->GetUserPositionContext()->UpsertPosition(tradeDO_Ptr->UserID(), tradeDO_Ptr, multiplier))
-		{
-			pWorkerProc->DispatchUserMessage(MSG_ID_POSITION_UPDATED, 0, tradeDO_Ptr->UserID(), userPosition_Ptr);
-		}	
-	}
+	ManualOpHub::Instance()->NotifyNewManualTrade(*tradeDO_Ptr);
 
 	return nullptr;
 }

@@ -34,6 +34,7 @@
  ////////////////////////////////////////////////////////////////////////
 
 CTPTradeWorkerProcessor::CTPTradeWorkerProcessor(IServerContext* pServerCtx, const IUserPositionContext_Ptr& positionCtx)
+	: _accountInfoMap(4)
 {
 	_loadPositionFromDB = false;
 
@@ -93,6 +94,39 @@ CTPTradeWorkerProcessor::~CTPTradeWorkerProcessor()
 	}
 
 	LOG_DEBUG << __FUNCTION__;
+}
+
+void CTPTradeWorkerProcessor::OnNewManualTrade(const TradeRecordDO & tradeDO)
+{
+	GetUserTradeContext().InsertTrade(tradeDO);
+
+	auto tradeDO_Ptr = std::make_shared<TradeRecordDO>(tradeDO);
+
+	DispatchUserMessage(MSG_ID_TRADE_RTN, 0, tradeDO.UserID(), tradeDO_Ptr);
+
+	int multiplier = 1;
+	if (auto pContractInfo = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentOrAddById(tradeDO.InstrumentID()))
+	{
+		multiplier = pContractInfo->VolumeMultiple;
+	}
+
+	if (auto userPosition_Ptr = GetUserPositionContext()->UpsertPosition(tradeDO.UserID(), tradeDO_Ptr, multiplier))
+	{
+		DispatchUserMessage(MSG_ID_POSITION_UPDATED, 0, tradeDO_Ptr->UserID(), userPosition_Ptr);
+	}
+}
+
+void CTPTradeWorkerProcessor::OnUpdateManualPosition(const UserPositionExDO & positionDO)
+{
+	if (auto userPosition_Ptr = GetUserPositionContext()->UpsertPosition(positionDO.UserID(), positionDO, true, false))
+	{
+		if (auto position_ptr = FindDBYdPostion(positionDO.UserID(), positionDO.InstrumentID(), positionDO.PortfolioID(), positionDO.Direction))
+		{
+			position_ptr->YdInitPosition = positionDO.YdInitPosition;
+		}
+
+		DispatchUserMessage(MSG_ID_POSITION_UPDATED, 0, userPosition_Ptr->UserID(), userPosition_Ptr);
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -218,7 +252,7 @@ int CTPTradeWorkerProcessor::LoginSystemUser(void)
 		ret = _rawAPI->TdAPIProxy()->get()->ReqAuthenticate(&reqAuth, 0);
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
-	
+
 	if (ret == 0)
 	{
 		CThostFtdcReqUserLoginField req{};
@@ -437,7 +471,7 @@ void CTPTradeWorkerProcessor::LoadPositonFromDatabase(const std::string& sysuser
 			{
 				for (auto it : *positionVec_ptr)
 				{
-					_ydDBPositions.emplace(std::make_pair(it.InstrumentID(), it.Direction), it.YdInitPosition);
+					_ydDBPositions.getorfill(it.UserID()).emplace(std::make_tuple(it.InstrumentID(), it.PortfolioID(), it.Direction), std::make_shared<UserPositionExDO>(it));
 					if (it.ExchangeID() == EXCHANGE_SHFE)
 					{
 						GetUserPositionContext()->UpsertPosition(it.UserID(), it, true, false);
@@ -467,6 +501,26 @@ void CTPTradeWorkerProcessor::LoadPositonFromDatabase(const std::string& sysuser
 			LOG_ERROR << ex.what();
 		}
 	}
+}
+
+UserPositionExDO_Ptr CTPTradeWorkerProcessor::FindDBYdPostion(const std::string& userid, 
+	const std::string & contract, const std::string & portfolio, PositionDirectionType direction)
+{
+	UserPositionExDO_Ptr ret;
+	auto it = _ydDBPositions.find(userid);
+	if (it != _ydDBPositions.end())
+	{
+		it->second.tryfind(std::make_tuple(contract, portfolio, direction), ret);
+	}
+	return ret;
+}
+
+UserPositionExDO_Ptr CTPTradeWorkerProcessor::FindSysYdPostion(const std::string & contract, const std::string & portfolio, PositionDirectionType direction)
+{
+	UserPositionExDO_Ptr ret;
+	if (!_ydSysPositions.empty())
+		_ydSysPositions.tryfind(std::make_tuple(contract, portfolio, direction), ret);
+	return ret;
 }
 
 void CTPTradeWorkerProcessor::OnRspQryInstrument(CThostFtdcInstrumentField * pInstrument, CThostFtdcRspInfoField * pRspInfo, int nRequestID, bool bIsLast)
@@ -662,13 +716,31 @@ void CTPTradeWorkerProcessor::OnRspQryInvestorPosition(CThostFtdcInvestorPositio
 	{
 		if (auto position_ptr = CTPUtility::ParseRawPosition(pInvestorPosition))
 		{
-			if (pInvestorPosition->PositionDate == THOST_FTDC_PSD_History)
+			std::string portfolio;
+			if (position_ptr->ExchangeID() == EXCHANGE_SHFE)
 			{
-				_ydSysPositions.emplace(std::make_pair(position_ptr->InstrumentID(), position_ptr->Direction), position_ptr);
+				if (pInvestorPosition->PositionDate == THOST_FTDC_PSD_History)
+				{
+					if (auto pPortfolioKey = PositionPortfolioMap::FindPortfolio(position_ptr->InstrumentID()))
+					{
+						portfolio = pPortfolioKey->PortfolioID();
+					}
+
+					_ydSysPositions.emplace(std::make_tuple(position_ptr->InstrumentID(), portfolio, position_ptr->Direction), position_ptr);
+				}
+			}
+			else
+			{
+				if (auto pPortfolioKey = PositionPortfolioMap::FindPortfolio(position_ptr->InstrumentID()))
+				{
+					portfolio = pPortfolioKey->PortfolioID();
+				}
+
+				_ydSysPositions.emplace(std::make_tuple(position_ptr->InstrumentID(), portfolio, position_ptr->Direction), position_ptr);
 			}
 
 			DispatchMessageForAll(MSG_ID_EXCHANGE_POSITION_UPDATED, 0, position_ptr);
-		}	
+		}
 	}
 }
 
@@ -741,18 +813,9 @@ UserPositionExDO_Ptr CTPTradeWorkerProcessor::UpdatePosition(const TradeRecordDO
 	if (GetUserTradeContext().InsertTrade(trdDO_Ptr))
 	{
 		int multiplier = 1;
-		if (auto pContractInfo = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(trdDO_Ptr->InstrumentID()))
+		if (auto pContractInfo = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentOrAddById(trdDO_Ptr->InstrumentID()))
 		{
 			multiplier = pContractInfo->VolumeMultiple;
-		}
-		else
-		{
-			InstrumentDO instDO;
-			if (ContractDAO::FindContractById(*trdDO_Ptr, instDO))
-			{
-				multiplier = instDO.VolumeMultiple;
-				ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).Add(instDO);
-			}
 		}
 
 		ret = GetUserPositionContext()->UpsertPosition(trdDO_Ptr->UserID(), trdDO_Ptr, multiplier, trdDO_Ptr->ExchangeID() != EXCHANGE_SHFE);
@@ -766,9 +829,16 @@ bool CTPTradeWorkerProcessor::IsLoadPositionFromDB()
 	return _loadPositionFromDB;
 }
 
-autofillmap<std::string, AccountInfoDO>& CTPTradeWorkerProcessor::GetAccountInfo(const std::string userId)
+AccountInfoDO_Ptr CTPTradeWorkerProcessor::GetAccountInfo(const std::string& userId)
 {
-	return _accountInfoMap.getorfill(userId);
+	AccountInfoDO_Ptr ret;
+	_accountInfoMap.find(userId, ret);
+	return ret;
+}
+
+void CTPTradeWorkerProcessor::UpdateAccountInfo(const std::string& userId, const AccountInfoDO_Ptr & accoutInfo)
+{
+	_accountInfoMap.upsert(userId, [&accoutInfo](AccountInfoDO_Ptr & accoutInfo_ptr) {accoutInfo_ptr = accoutInfo; }, accoutInfo);
 }
 
 std::set<ExchangeDO>& CTPTradeWorkerProcessor::GetExchangeInfo()
@@ -809,58 +879,59 @@ void CTPTradeWorkerProcessor::DispatchMessageForAll(int msgId, int serialId, con
 	{ SendDataObject(session_ptr, msgId, serialId, dataobj_ptr); });
 }
 
-int CTPTradeWorkerProcessor::ComparePosition(autofillmap<std::pair<std::string, PositionDirectionType>, std::pair<int, int>>& positions)
+int CTPTradeWorkerProcessor::ComparePosition(const std::string& userId, autofillmap<std::tuple<std::string, std::string, PositionDirectionType>, std::pair<int, int>>& positions)
 {
-	for (auto pair : _ydDBPositions)
+	auto it = _ydDBPositions.find(userId);
+	if (it != _ydDBPositions.end())
 	{
-		auto& position = positions.getorfill(pair.first);
-		position.first = pair.second;
-		if (auto pSysPos = _ydSysPositions.tryfind(pair.first))
+		for (auto& pair : it->second)
 		{
-			position.second = (*pSysPos)->YdInitPosition;
+			positions.emplace(pair.first, std::make_pair(pair.second->YdInitPosition, 0));
 		}
 	}
 
-	for (auto pair : _ydSysPositions)
+	for (auto& pair : _ydSysPositions)
 	{
-		auto& position = positions.getorfill(pair.first);
-		position.second = pair.second->YdInitPosition;
-		if (auto pDbPos = _ydDBPositions.tryfind(pair.first))
+		if (auto pPosition = positions.tryfind(pair.first))
 		{
-			position.first = *pDbPos;
+			pPosition->second = pair.second->YdInitPosition;
 		}
-	}
-
-	return positions.size();
-}
-
-int CTPTradeWorkerProcessor::SyncPosition(const std::string & userId)
-{
-	if (auto pUserPosition = GetUserPositionContext())
-	{
-		pUserPosition->RemoveUserPosition(userId);
-
-		for (auto pair : _ydSysPositions)
+		else
 		{
-			pUserPosition->UpsertPosition(userId, *pair.second, true, false);
-		}
+			bool found = false;
 
-		auto userTrades = GetUserTradeContext().GetTradesByUser(userId);
-		
-		if (!userTrades.empty())
-		{
-			for (auto pair : userTrades.map()->lock_table())
+			std::string contract, portfolio;
+			PositionDirectionType direction;
+			std::tie(contract, portfolio, direction) = pair.first;
+			if (portfolio.empty())
 			{
-				auto trdDO_Ptr = pair.second;
-				int multiplier = 1;
-				if (auto pContractInfo = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(trdDO_Ptr->InstrumentID()))
+				if (it != _ydDBPositions.end())
 				{
-					multiplier = pContractInfo->VolumeMultiple;
+					for (auto dbpair : it->second)
+					{
+						std::string dbcontract, dbportfolio;
+						PositionDirectionType dbdirection;
+						std::tie(dbcontract, dbportfolio, dbdirection) = dbpair.first;
+
+						if (dbcontract == contract && dbdirection == direction)
+						{
+							if (auto pPosition = positions.tryfind(dbpair.first))
+							{
+								pPosition->second = pair.second->YdInitPosition;
+								found = true;
+								break;
+							}
+						}
+					}
 				}
-				pUserPosition->UpsertPosition(trdDO_Ptr->UserID(), trdDO_Ptr, multiplier, trdDO_Ptr->ExchangeID() != EXCHANGE_SHFE);
+
+				if (!found)
+				{
+					positions.emplace(pair.first, std::make_pair(0, pair.second->YdInitPosition));
+				}
 			}
 		}
 	}
 
-	return 0;
+	return positions.size();
 }

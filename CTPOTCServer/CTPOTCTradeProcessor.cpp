@@ -251,6 +251,21 @@ UserOrderContext& CTPOTCTradeProcessor::GetExchangeOrderContext()
 	return _userOrderCtx;
 }
 
+void CTPOTCTradeProcessor::OnNewManualTrade(const TradeRecordDO & tradeDO)
+{
+	GetUserTradeContext().InsertTrade(tradeDO);
+
+	auto tradeDO_Ptr = std::make_shared<TradeRecordDO>(tradeDO);
+
+	int multiplier = 1;
+	if (auto pContractInfo = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentOrAddById(tradeDO.InstrumentID()))
+	{
+		multiplier = pContractInfo->VolumeMultiple;
+	}
+
+	GetUserPositionContext()->UpsertPosition(tradeDO.UserID(), tradeDO_Ptr, multiplier);
+}
+
 
 //CTP API
 

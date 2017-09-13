@@ -81,6 +81,12 @@ void TradingDeskContextBuilder::LoadPortfolio(const IMessageProcessor_Ptr& msgPr
 						pWorkerProc->AddContractToMonitor(*contract.second);
 				}
 			}
+
+
+			if (it->second.find(EMPTY_STRING) == it->second.end())
+			{
+				it->second.emplace(EMPTY_STRING, PortfolioDO(EMPTY_STRING, userid));
+			}
 		}
 	}
 }

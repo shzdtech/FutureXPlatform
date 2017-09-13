@@ -58,7 +58,7 @@ dataobj_ptr CTPSubMarketDataSA::HandleRequest(const uint32_t serialId, const dat
 					else
 					{
 						InstrumentDO* pInstumentDO = nullptr;
-						if (pInstumentDO = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(inst))
+						if (pInstumentDO = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentOrAddById(inst))
 						{
 							MarketDataDO mdo(pInstumentDO->ExchangeID(), pInstumentDO->InstrumentID());
 							mdo.TradingDay = tradingDay;
@@ -67,20 +67,6 @@ dataobj_ptr CTPSubMarketDataSA::HandleRequest(const uint32_t serialId, const dat
 
 							subList.push_back(inst);
 							pWorkerProc->MarketDataNotifers->add(inst, session);
-						}
-						else
-						{
-							InstrumentDO ido;
-							if (ContractDAO::FindExchangeContractById(inst, ido))
-							{
-								MarketDataDO mdo(ido.ExchangeID(), ido.InstrumentID());
-								mdo.TradingDay = tradingDay;
-								ret->push_back(mdo);
-								mdMap.insert(inst, mdo);
-
-								subList.push_back(inst);
-								pWorkerProc->MarketDataNotifers->add(inst, session);
-							}
 						}
 					}
 				}
@@ -127,7 +113,7 @@ dataobj_ptr CTPSubMarketDataSA::HandleResponse(const uint32_t serialId, const pa
 	if (auto pRspInstr = (CThostFtdcSpecificInstrumentField*)rawRespParams[0])
 	{
 		std::string exchange;
-		if (auto pInstumentDO = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(pRspInstr->InstrumentID))
+		if (auto pInstumentDO = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentOrAddById(pRspInstr->InstrumentID))
 		{
 			exchange = pInstumentDO->ExchangeID();
 		}

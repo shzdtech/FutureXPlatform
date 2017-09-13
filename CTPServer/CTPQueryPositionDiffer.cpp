@@ -30,7 +30,7 @@
 dataobj_ptr CTPQueryPositionDiffer::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
-	auto ret = std::make_shared<MapDO<std::pair<std::string, PositionDirectionType>, std::pair<int, int>>>();
+	auto ret = std::make_shared<MapDO<std::tuple<std::string, std::string, PositionDirectionType>, std::pair<int, int>>>();
 
 	auto& userInfo = session->getUserInfo();
 	auto role = userInfo.getRole();
@@ -39,15 +39,12 @@ dataobj_ptr CTPQueryPositionDiffer::HandleRequest(const uint32_t serialId, const
 	{
 		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 		{
-			autofillmap<std::pair<std::string, PositionDirectionType>, std::pair<int, int>> positions;
-			pWorkerProc->ComparePosition(positions);
+			autofillmap<std::tuple<std::string, std::string, PositionDirectionType>, std::pair<int, int>> positions;
+			pWorkerProc->ComparePosition(userInfo.getUserId(), positions);
 
 			for (auto& pair : positions)
 			{
-				if (pair.second.first != pair.second.second)
-				{
-					ret->emplace(pair.first, pair.second);
-				}
+				ret->emplace(pair.first, pair.second);
 			}
 		}
 	}

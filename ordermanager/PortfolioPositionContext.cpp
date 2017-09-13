@@ -282,29 +282,11 @@ bool PortfolioPositionContext::GetRiskByPortfolio(const IPricingDataContext_Ptr&
 				InstrumentDO* pInstument = nullptr;
 				if (baseContract_Ptr)
 				{
-					pInstument = contractCache.QueryInstrumentById(baseContract_Ptr->InstrumentID());
-					if (!pInstument)
-					{
-						InstrumentDO ido;
-						if (ContractDAO::FindExchangeContractById(baseContract_Ptr->InstrumentID(), ido))
-						{
-							ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).Add(ido);
-							pInstument = contractCache.QueryInstrumentById(baseContract_Ptr->InstrumentID());
-						}
-					}						
+					pInstument = contractCache.QueryInstrumentOrAddById(baseContract_Ptr->InstrumentID());						
 				}
 				else
 				{
-					pInstument = contractCache.QueryInstrumentById(userPosition_Ptr->InstrumentID());
-					if (!pInstument)
-					{
-						InstrumentDO ido;
-						if (ContractDAO::FindExchangeContractById(userPosition_Ptr->InstrumentID(), ido))
-						{
-							ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).Add(ido);
-							pInstument = contractCache.QueryInstrumentById(userPosition_Ptr->InstrumentID());
-						}
-					}
+					pInstument = contractCache.QueryInstrumentOrAddById(userPosition_Ptr->InstrumentID());
 
 					if (pInstument && pInstument->ContractType == ContractType::CONTRACTTYPE_FUTURE)
 					{
@@ -514,11 +496,11 @@ bool PortfolioPositionContext::GetValuationRiskByPortfolio(const IPricingDataCon
 				InstrumentDO* pInstument = nullptr;
 				if (baseContract_Ptr)
 				{
-					pInstument = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(baseContract_Ptr->InstrumentID());
+					pInstument = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentOrAddById(baseContract_Ptr->InstrumentID());
 				}
 				else
 				{
-					if (pInstument = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(userPosition_Ptr->InstrumentID()))
+					if (pInstument = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentOrAddById(userPosition_Ptr->InstrumentID()))
 					{
 						if (pInstument->ContractType == ContractType::CONTRACTTYPE_FUTURE)
 						{

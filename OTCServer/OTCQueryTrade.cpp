@@ -44,7 +44,7 @@ dataobj_ptr OTCQueryTrade::HandleRequest(const uint32_t serialId, const dataobj_
 
 	char today[20];
 	auto time = session->getUserInfo().getLoginTime();
-	std::strftime(today, 20, "%Y-%m-%d", std::localtime(&time));
+	std::strftime(today, sizeof(today), "%F", std::localtime(&time));
 	auto& tmstart = stdo->TryFind(STR_TIME_START, today);
 	auto& tmend = stdo->TryFind(STR_TIME_END, today);
 

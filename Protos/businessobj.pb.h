@@ -5827,21 +5827,32 @@ class PBPositionCompare : public ::google::protobuf::Message {
   ::std::string* release_contract();
   void set_allocated_contract(::std::string* contract);
 
-  // optional int32 direction = 2;
+  // optional string portfolio = 2;
+  void clear_portfolio();
+  static const int kPortfolioFieldNumber = 2;
+  const ::std::string& portfolio() const;
+  void set_portfolio(const ::std::string& value);
+  void set_portfolio(const char* value);
+  void set_portfolio(const char* value, size_t size);
+  ::std::string* mutable_portfolio();
+  ::std::string* release_portfolio();
+  void set_allocated_portfolio(::std::string* portfolio);
+
+  // optional int32 direction = 3;
   void clear_direction();
-  static const int kDirectionFieldNumber = 2;
+  static const int kDirectionFieldNumber = 3;
   ::google::protobuf::int32 direction() const;
   void set_direction(::google::protobuf::int32 value);
 
-  // optional int32 dbPosition = 3;
+  // optional int32 dbPosition = 4;
   void clear_dbposition();
-  static const int kDbPositionFieldNumber = 3;
+  static const int kDbPositionFieldNumber = 4;
   ::google::protobuf::int32 dbposition() const;
   void set_dbposition(::google::protobuf::int32 value);
 
-  // optional int32 sysPosition = 4;
+  // optional int32 sysPosition = 5;
   void clear_sysposition();
-  static const int kSysPositionFieldNumber = 4;
+  static const int kSysPositionFieldNumber = 5;
   ::google::protobuf::int32 sysposition() const;
   void set_sysposition(::google::protobuf::int32 value);
 
@@ -5851,6 +5862,7 @@ class PBPositionCompare : public ::google::protobuf::Message {
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr contract_;
+  ::google::protobuf::internal::ArenaStringPtr portfolio_;
   ::google::protobuf::int32 direction_;
   ::google::protobuf::int32 dbposition_;
   ::google::protobuf::int32 sysposition_;
@@ -15523,7 +15535,51 @@ inline void PBPositionCompare::set_allocated_contract(::std::string* contract) {
   // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBPositionCompare.contract)
 }
 
-// optional int32 direction = 2;
+// optional string portfolio = 2;
+inline void PBPositionCompare::clear_portfolio() {
+  portfolio_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& PBPositionCompare::portfolio() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBPositionCompare.portfolio)
+  return portfolio_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void PBPositionCompare::set_portfolio(const ::std::string& value) {
+  
+  portfolio_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPositionCompare.portfolio)
+}
+inline void PBPositionCompare::set_portfolio(const char* value) {
+  
+  portfolio_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.Business.PBPositionCompare.portfolio)
+}
+inline void PBPositionCompare::set_portfolio(const char* value, size_t size) {
+  
+  portfolio_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.Business.PBPositionCompare.portfolio)
+}
+inline ::std::string* PBPositionCompare::mutable_portfolio() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.Business.PBPositionCompare.portfolio)
+  return portfolio_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* PBPositionCompare::release_portfolio() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.Business.PBPositionCompare.portfolio)
+  
+  return portfolio_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void PBPositionCompare::set_allocated_portfolio(::std::string* portfolio) {
+  if (portfolio != NULL) {
+    
+  } else {
+    
+  }
+  portfolio_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), portfolio);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.Business.PBPositionCompare.portfolio)
+}
+
+// optional int32 direction = 3;
 inline void PBPositionCompare::clear_direction() {
   direction_ = 0;
 }
@@ -15537,7 +15593,7 @@ inline void PBPositionCompare::set_direction(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPositionCompare.direction)
 }
 
-// optional int32 dbPosition = 3;
+// optional int32 dbPosition = 4;
 inline void PBPositionCompare::clear_dbposition() {
   dbposition_ = 0;
 }
@@ -15551,7 +15607,7 @@ inline void PBPositionCompare::set_dbposition(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBPositionCompare.dbPosition)
 }
 
-// optional int32 sysPosition = 4;
+// optional int32 sysPosition = 5;
 inline void PBPositionCompare::clear_sysposition() {
   sysposition_ = 0;
 }

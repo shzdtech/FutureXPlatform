@@ -45,23 +45,22 @@ dataobj_ptr CTPSubMarketData::HandleRequest(const uint32_t serialId, const datao
 			for (auto& inst : instList)
 			{
 				ppInstrments[i] = const_cast<char*>(inst.data());
-				if (auto pInstumentDO = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(inst))
+				if (auto pInstumentDO = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentOrAddById(inst))
 				{
 					ppInstrments[i] = const_cast<char*>(pInstumentDO->InstrumentID().data());
 					MarketDataDO mdo(pInstumentDO->ExchangeID(), pInstumentDO->InstrumentID());
 					mdo.TradingDay = tradingDay;
 					ret->push_back(std::move(mdo));
-
-					i++;
 				}
 				else
 				{
 					MarketDataDO mdo("", inst);
 					mdo.TradingDay = tradingDay;
 					ret->push_back(std::move(mdo));
-
-					i++;
 				}
+
+
+				i++;
 			}
 
 			if (auto mdApiProxy = ((CTPRawAPI*)rawAPI)->MdAPIProxy())
@@ -96,7 +95,7 @@ dataobj_ptr CTPSubMarketData::HandleResponse(const uint32_t serialId, const para
 	if (auto pRspInstr = (CThostFtdcSpecificInstrumentField*)rawRespParams[0])
 	{
 		std::string exchange;
-		if (auto pInstumentDO = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(pRspInstr->InstrumentID))
+		if (auto pInstumentDO = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentOrAddById(pRspInstr->InstrumentID))
 		{
 			exchange = pInstumentDO->ExchangeID();
 		}
