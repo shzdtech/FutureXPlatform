@@ -20,16 +20,14 @@ dataobj_ptr CTPOTCQueryValuationRisk::HandleRequest(const uint32_t serialId, con
 
 	auto ret = std::make_shared<VectorDO<RiskDO>>();
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCWorkerProcessor>(msgProcessor))
+	if (auto pOTCTradeProc = MessageUtility::WorkerProcessorPtr<CTPOTCTradeWorkerProcessor>(msgProcessor))
 	{
 		UnderlyingRiskMap riskMap;
 
-		auto pOTCTradeProc = (CTPOTCTradeProcessor*)pWorkerProc->GetOTCTradeProcessor();
-
-		pOTCTradeProc->GetUserPositionContext()->GetValuationRiskByPortfolio(pWorkerProc->PricingDataContext(), session->getUserInfo().getUserId(),*pValuationDO, riskMap);
+		pOTCTradeProc->GetUserPositionContext()->GetValuationRiskByPortfolio(pOTCTradeProc->PricingDataContext(), session->getUserInfo().getUserId(),*pValuationDO, riskMap);
 
 		pOTCTradeProc->GetOTCOrderManager().GetPositionContext()
-			.GetValuationRiskByPortfolio(pWorkerProc->PricingDataContext(), session->getUserInfo().getUserId(), *pValuationDO, riskMap);
+			.GetValuationRiskByPortfolio(pOTCTradeProc->PricingDataContext(), session->getUserInfo().getUserId(), *pValuationDO, riskMap);
 
 		for (auto it : riskMap)
 		{

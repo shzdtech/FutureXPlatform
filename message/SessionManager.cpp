@@ -22,7 +22,7 @@
  ////////////////////////////////////////////////////////////////////////
 
 SessionManager::SessionManager(IMessageServer* server)
-	: _sessionSet(2048), _server(server)
+	: _processorSet(256), _server(server)
 {
 }
 
@@ -57,16 +57,29 @@ void SessionManager::OnServerStarting(void)
 
 void SessionManager::OnServerClosing(void)
 {
-	for (auto pair : _sessionSet.lock_table())
+	for (auto pair : _processorSet.lock_table())
 	{
-		if(auto msgSession = pair.first->getMessageSession())
-			msgSession->NotifyClosing();
+		if (auto session = pair.first->getMessageSession())
+		{
+			session->NotifyClosing();
+		}
+		else
+		{
+			pair.first->OnSessionClosing();
+		}
 	}
-	_sessionSet.clear();
+	_processorSet.clear();
 
-	if (_workerSession)
+	if (auto workProcPtr = _server->getContext()->getWorkerProcessor())
 	{
-		_workerSession->NotifyClosing();
+		if (auto session = workProcPtr->getMessageSession())
+		{
+			session->NotifyClosing();
+		}
+		else
+		{
+			workProcPtr->OnSessionClosing();
+		}
 	}
 
 	_server->getContext()->Reset();
@@ -76,7 +89,8 @@ bool SessionManager::CloseSession(const IMessageSession_Ptr & sessionPtr)
 {
 	try
 	{
-		_sessionSet.erase(sessionPtr->LockMessageProcessor());
+		if (auto processor = sessionPtr->LockMessageProcessor())
+			_processorSet.erase(processor);
 	}
 	catch (std::exception& ex)
 	{
@@ -91,8 +105,6 @@ bool SessionManager::CloseSession(const IMessageSession_Ptr & sessionPtr)
 
 void SessionManager::AddSession(const IMessageSession_Ptr& sessionPtr)
 {
-	if (auto processor_ptr = sessionPtr->LockMessageProcessor())
-	{
-		_sessionSet.insert(processor_ptr, true);
-	}
+	if (auto processor = sessionPtr->LockMessageProcessor())
+		_processorSet.insert(processor, true);
 }

@@ -13,4 +13,14 @@ public:
 	}
 };
 
+template <typename F, typename S, typename H>
+class pairhash_first
+{
+public:
+	std::size_t operator()(const std::pair<F, S>& pair) const {
+		static H f_hasher;
+		return f_hasher(pair.first);
+	}
+};
+
 #endif

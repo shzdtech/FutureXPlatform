@@ -20,12 +20,6 @@
         "workerthread": "2",
         "timeout": "120",
         "max_msg_size": "0x10000"
-      },
-      "option": {
-        "port": "31006",
-        "workerthread": "2",
-        "timeout": "120",
-        "max_msg_size": "0x10000"
       }
     },
     "otc": {
@@ -38,6 +32,12 @@
       "option": {
         "port": "31003",
         "workerthread": "1",
+        "timeout": "120",
+        "max_msg_size": "0x10000"
+      },
+      "option_trade": {
+        "port": "31006",
+        "workerthread": "2",
         "timeout": "120",
         "max_msg_size": "0x10000"
       }

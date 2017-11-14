@@ -20,11 +20,11 @@ dataobj_ptr OTCQueryPosition::HandleRequest(const uint32_t serialId, const datao
 {
 	CheckLogin(session);
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::AbstractWorkerProcessorPtr<OTCTradeWorkerProcessor>(msgProcessor))
 	{
 		auto& userid = session->getUserInfo().getUserId();
 
-		auto positionMap = pWorkerProc->GetOTCTradeProcessor()->GetOTCOrderManager().GetPositionContext().GetPortfolioPositionsByUser(userid);
+		auto positionMap = pWorkerProc->GetOTCOrderManager().GetPositionContext().GetPortfolioPositionsByUser(userid);
 
 		if (positionMap.empty())
 		{

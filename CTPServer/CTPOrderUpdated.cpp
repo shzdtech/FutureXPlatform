@@ -27,7 +27,7 @@ dataobj_ptr CTPOrderUpdated::HandleResponse(const uint32_t serialId, const param
 			}
 			else
 			{
-				orderPtr = CTPUtility::ParseRawOrder(pOrder);
+				orderPtr = pWorkerProc->RefineOrder(pOrder);
 				if (orderPtr && orderPtr->OrderSysID)
 				{
 					if (orderPtr->IsSystemUserId())

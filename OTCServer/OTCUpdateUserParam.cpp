@@ -41,7 +41,7 @@ dataobj_ptr OTCUpdateUserParam::HandleRequest(const uint32_t serialId, const dat
 	auto vecUserConDO_Ptr = (VectorDO<UserContractParamDO>*)reqDO.get();
 
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::AbstractWorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		auto& userInfo = session->getUserInfo();
 

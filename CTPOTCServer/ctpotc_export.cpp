@@ -9,6 +9,7 @@
 
 #include "ctpotc_export.h"
 #include "CTPOTCServiceFactory.h"
+#include "CTPOTCTradeServiceFactory.h"
 #include "CTPOTCOptionServiceFactory.h"
 
 extern "C" CTP_OTC_CLASS_EXPORT void* CreateInstance(const char* classUUID) {
@@ -17,6 +18,10 @@ extern "C" CTP_OTC_CLASS_EXPORT void* CreateInstance(const char* classUUID) {
 		instance = new CTPOTCServiceFactory();
 	else if (std::strcmp(UUID_OTC_OPTION_FACTORY, classUUID) == 0)
 		instance = new CTPOTCOptionServiceFactory();
+	else if (std::strcmp(UUID_OTC_TRADE_FACTORY, classUUID) == 0)
+		instance = new CTPOTCTradeServiceFactory();
+	else if (std::strcmp(UUID_OTC_OPTION_TRADE_FACTORY, classUUID) == 0)
+		instance = new CTPOTCTradeServiceFactory();
 
 	return instance;
 }

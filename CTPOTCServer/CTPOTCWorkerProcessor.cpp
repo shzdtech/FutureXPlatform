@@ -41,10 +41,10 @@
  ////////////////////////////////////////////////////////////////////////
 
 CTPOTCWorkerProcessor::CTPOTCWorkerProcessor(IServerContext* pServerCtx,
-	const std::shared_ptr<CTPOTCTradeProcessor>& otcTradeProcessorPtr) :
+	const std::shared_ptr<CTPOTCTradeWorkerProcessor>& otcTradeProcessorPtr) :
 	CTPMarketDataSAProcessor(pServerCtx),
 	OTCWorkerProcessor(otcTradeProcessorPtr->PricingDataContext()),
-	_ctpOtcTradeProcessorPtr(otcTradeProcessorPtr)
+	_CTPOTCTradeWorkerProcessorPtr(otcTradeProcessorPtr)
 {
 }
 
@@ -62,13 +62,13 @@ CTPOTCWorkerProcessor::~CTPOTCWorkerProcessor()
 void CTPOTCWorkerProcessor::setMessageSession(const IMessageSession_Ptr& msgSession_ptr)
 {
 	CTPMarketDataSAProcessor::setMessageSession(msgSession_ptr);
-	((CTPOTCTradeProcessor*)GetOTCTradeProcessor())->setMessageSession(msgSession_ptr);
+	((CTPOTCTradeWorkerProcessor*)GetOTCTradeWorkerProcessor())->setMessageSession(msgSession_ptr);
 }
 
 void CTPOTCWorkerProcessor::setServiceLocator(const IMessageServiceLocator_Ptr& svcLct_Ptr)
 {
 	CTPMarketDataSAProcessor::setServiceLocator(svcLct_Ptr);
-	((CTPOTCTradeProcessor*)GetOTCTradeProcessor())->setServiceLocator(svcLct_Ptr);
+	((CTPOTCTradeWorkerProcessor*)GetOTCTradeWorkerProcessor())->setServiceLocator(svcLct_Ptr);
 }
 
 bool CTPOTCWorkerProcessor::OnSessionClosing(void)
@@ -78,7 +78,7 @@ bool CTPOTCWorkerProcessor::OnSessionClosing(void)
 	if (_initializer.valid())
 		_initializer.wait();
 
-	GetOTCTradeProcessor()->Dispose();
+	GetOTCTradeWorkerProcessor()->Dispose();
 
 	return true;
 }
@@ -86,6 +86,20 @@ bool CTPOTCWorkerProcessor::OnSessionClosing(void)
 
 void CTPOTCWorkerProcessor::Initialize(IServerContext* serverCtx)
 {
+	std::string productTypes;
+	if (getServerContext()->getConfigVal("strategy_producttype", productTypes))
+	{
+		std::vector<std::string> productVec;
+		stringutility::split(productTypes, productVec);
+
+		for (auto& strProductType : productVec)
+			_strategyProductTypes.emplace((ProductType)std::stoi(strProductType));
+	}
+	else
+	{
+		_strategyProductTypes.emplace(ProductType::PRODUCT_OTC);
+	}
+
 	OTCWorkerProcessor::Initialize();
 
 	CTPMarketDataSAProcessor::Initialize(serverCtx);
@@ -97,20 +111,19 @@ int CTPOTCWorkerProcessor::SubscribeMarketData(const ContractKey& contractId)
 	int ret = -1;
 	char* contract[] = { const_cast<char*>(contractId.InstrumentID().data()) };
 	auto mdApiProxy = _rawAPI->MdAPIProxy();
-	if(mdApiProxy)
+	if (mdApiProxy)
 		ret = mdApiProxy->get()->SubscribeMarketData(contract, 1);
 	return ret;
 }
 
 void CTPOTCWorkerProcessor::RegisterLoggedSession(const IMessageSession_Ptr& sessionPtr)
 {
-	((CTPOTCTradeProcessor*)GetOTCTradeProcessor())->RegisterLoggedSession(sessionPtr);
-
-	if (!sessionPtr->getUserInfo().getTradingDay())
+	auto& userInfo = sessionPtr->getUserInfo();
+	if (!userInfo.getTradingDay())
 	{
-		auto& userInfo = sessionPtr->getUserInfo();
 		userInfo.setTradingDay(_systemUser.getTradingDay());
 	}
+	_userSessionCtn_Ptr->add(userInfo.getUserId(), sessionPtr);
 }
 
 ProductType CTPOTCWorkerProcessor::GetContractProductType() const
@@ -118,23 +131,74 @@ ProductType CTPOTCWorkerProcessor::GetContractProductType() const
 	return ProductType::PRODUCT_OTC;
 }
 
-const std::vector<ProductType>& CTPOTCWorkerProcessor::GetStrategyProductTypes() const
+
+OTCTradeWorkerProcessor * CTPOTCWorkerProcessor::GetOTCTradeWorkerProcessor()
 {
-	static const std::vector<ProductType> productTypes = { ProductType::PRODUCT_OTC };
-	return productTypes;
+	return _CTPOTCTradeWorkerProcessorPtr.get();
 }
 
-
-OTCTradeProcessor * CTPOTCWorkerProcessor::GetOTCTradeProcessor()
+CTPOTCTradeWorkerProcessor * CTPOTCWorkerProcessor::GetCTPOTCTradeWorkerProcessor()
 {
-	return _ctpOtcTradeProcessorPtr.get();
+	return _CTPOTCTradeWorkerProcessorPtr.get();
 }
 
-CTPOTCTradeProcessor * CTPOTCWorkerProcessor::GetCTPOTCTradeProcessor()
+int CTPOTCWorkerProcessor::ResubMarketData()
 {
-	return _ctpOtcTradeProcessorPtr.get();
-}
+	for (auto pair : PricingDataContext()->GetStrategyMap()->lock_table())
+	{
+		auto& strategyDO = *pair.second;
 
+		if (!strategyDO.IsOTC())
+		{
+			AddContractToMonitor(strategyDO);
+		}
+
+		if (strategyDO.BaseContract)
+		{
+			if (!strategyDO.BaseContract->IsOTC())
+			{
+				AddContractToMonitor(*strategyDO.BaseContract);
+			}
+		}
+
+		//subscribe market data from CTP
+		if (strategyDO.PricingContracts)
+		{
+			for (auto& bsContract : strategyDO.PricingContracts->PricingContracts)
+			{
+				if (!bsContract.IsOTC())
+				{
+					AddContractToMonitor(bsContract);
+				}
+			}
+		}
+
+		if (strategyDO.IVMContracts)
+		{
+			for (auto& bsContract : strategyDO.IVMContracts->PricingContracts)
+			{
+				if (!bsContract.IsOTC())
+				{
+					AddContractToMonitor(bsContract);
+				}
+			}
+		}
+
+
+		if (strategyDO.VolContracts)
+		{
+			for (auto& bsContract : strategyDO.VolContracts->PricingContracts)
+			{
+				if (!bsContract.IsOTC())
+				{
+					AddContractToMonitor(bsContract);
+				}
+			}
+		}
+	}
+
+	return 0;
+}
 
 
 
@@ -196,22 +260,4 @@ void CTPOTCWorkerProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField 
 			TriggerUpdateByMarketData(mdo);
 		}
 	}
-}
-
-int CTPOTCWorkerProcessor::ResubMarketData(void)
-{
-	int ret = 0;
-
-	if (auto mdMap = PricingDataContext()->GetMarketDataMap())
-	{
-		for (auto it : mdMap->lock_table())
-		{
-			if (SubscribeMarketData(it.first) == 0)
-			{
-				ret++;
-			}
-		}
-	}
-
-	return ret;
 }

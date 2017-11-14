@@ -60,7 +60,7 @@ dataobj_ptr OTCUpdateModelParams::HandleRequest(const uint32_t serialId, const d
 			}
 			ModelParamsDAO::SaveModelParams(*pModelParam);
 
-			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+			if (auto pWorkerProc = MessageUtility::AbstractWorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 			{
 				if (auto pStrategyMap = pWorkerProc->PricingDataContext()->GetUserStrategyMap()->tryfind(pModelParam->UserID()))
 				{

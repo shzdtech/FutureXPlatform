@@ -22,7 +22,7 @@ dataobj_ptr OTCQueryPortfolio::HandleRequest(const uint32_t serialId, const data
 
 	auto ret = std::make_shared<VectorDO<PortfolioDO>>();
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::AbstractWorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		auto pPortfoliorMap = pWorkerProc->PricingDataContext()->GetPortfolioMap();
 

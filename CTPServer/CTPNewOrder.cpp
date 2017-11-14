@@ -123,21 +123,24 @@ dataobj_ptr CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_pt
 
 dataobj_ptr CTPNewOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	CTPUtility::CheckError(rawRespParams[1]);
-
 	OrderDO_Ptr ret;
 
 	if (auto pData = (CThostFtdcInputOrderField*)rawRespParams[0])
 	{
 		auto pRsp = (CThostFtdcRspInfoField*)rawRespParams[1];
-		CTPUtility::CheckError(pRsp);
 		if (ret = CTPUtility::ParseRawOrder(pData, pRsp, session->getUserInfo().getSessionId()))
+		{
 			if (ret->IsSystemUserId())
 			{
 				ret->SetUserID(CTPUtility::MakeUserID(ret->BrokerID, ret->InvestorID));
 			}
+		}
 
 		ret->HasMore = false;
+	}
+	else
+	{
+		CTPUtility::CheckError(rawRespParams[1]);
 	}
 
 	return ret;

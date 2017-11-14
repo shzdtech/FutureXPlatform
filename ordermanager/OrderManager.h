@@ -10,7 +10,7 @@
 
 #include "IOrderManager.h"
 #include "IOrderAPI.h"
-#include "ContractOrderContext.h"
+#include "UserOrderContext.h"
 #include "IUserPositionContext.h"
 #include "../pricingengine/IPricingDataContext.h"
 
@@ -19,15 +19,14 @@
 class ORDERMGR_CLASS_EXPORT OrderManager : public IOrderManager
 {
 public:
-   OrderManager(IOrderAPI* pOrderAPI, const IPricingDataContext_Ptr& pricingCtx, IOrderUpdatedEvent* listener = nullptr);
+   OrderManager(const IPricingDataContext_Ptr& pricingCtx, IOrderUpdatedEvent* listener = nullptr);
    ~OrderManager();
 
    OrderDO_Ptr FindOrder(uint64_t orderID);
 
 protected:
-   IOrderAPI* _pOrderAPI;
    IPricingDataContext_Ptr _pricingCtx;
-   ContractOrderContext _contractOrderCtx;
+   UserOrderContext _userOrderCtx;
 
 private:
 

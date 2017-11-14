@@ -10,7 +10,7 @@
 
 #include <set>
 #include <list>
-#include "CTPOTCTradeProcessor.h"
+#include "CTPOTCTradeWorkerProcessor.h"
 #include "../ordermanager/OTCOrderManager.h"
 #include "../CTPServer/CTPMarketDataSAProcessor.h"
 #include "../dataobject/TypedefDO.h"
@@ -22,7 +22,7 @@
 class CTP_OTC_CLASS_EXPORT CTPOTCWorkerProcessor : public OTCWorkerProcessor, public CTPMarketDataSAProcessor
 {
 public:
-	CTPOTCWorkerProcessor(IServerContext* pServerCtx, const std::shared_ptr<CTPOTCTradeProcessor>& ctpOtcTradeProcessorPtr);
+	CTPOTCWorkerProcessor(IServerContext* pServerCtx, const std::shared_ptr<CTPOTCTradeWorkerProcessor>& CTPOTCTradeWorkerProcessorPtr);
 
 	~CTPOTCWorkerProcessor();
 
@@ -40,16 +40,14 @@ public:
 
 	ProductType GetContractProductType() const;
 
-	const std::vector<ProductType>& GetStrategyProductTypes() const;
+	OTCTradeWorkerProcessor* GetOTCTradeWorkerProcessor();
 
-	OTCTradeProcessor* GetOTCTradeProcessor();
-
-	CTPOTCTradeProcessor* GetCTPOTCTradeProcessor();
+	CTPOTCTradeWorkerProcessor* GetCTPOTCTradeWorkerProcessor();
 
 	int ResubMarketData(void);
 
 protected:
-	std::shared_ptr<CTPOTCTradeProcessor> _ctpOtcTradeProcessorPtr;
+	std::shared_ptr<CTPOTCTradeWorkerProcessor> _CTPOTCTradeWorkerProcessorPtr;
 	std::future<void> _initializer;
 	UserInfo _systemUser;
 	int RetryInterval = 60000;

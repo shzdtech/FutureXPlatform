@@ -2266,6 +2266,12 @@ class PBStrategy : public ::google::protobuf::Message {
   ::google::protobuf::int32 ticksizemult() const;
   void set_ticksizemult(::google::protobuf::int32 value);
 
+  // optional int32 maxLimitOrder = 30;
+  void clear_maxlimitorder();
+  static const int kMaxLimitOrderFieldNumber = 30;
+  ::google::protobuf::int32 maxlimitorder() const;
+  void set_maxlimitorder(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.PBStrategy)
  private:
 
@@ -2300,6 +2306,7 @@ class PBStrategy : public ::google::protobuf::Message {
   ::google::protobuf::int32 tif_;
   ::google::protobuf::int32 volcond_;
   ::google::protobuf::int32 ticksizemult_;
+  ::google::protobuf::int32 maxlimitorder_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
@@ -9219,6 +9226,20 @@ inline void PBStrategy::set_ticksizemult(::google::protobuf::int32 value) {
   
   ticksizemult_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.tickSizeMult)
+}
+
+// optional int32 maxLimitOrder = 30;
+inline void PBStrategy::clear_maxlimitorder() {
+  maxlimitorder_ = 0;
+}
+inline ::google::protobuf::int32 PBStrategy::maxlimitorder() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBStrategy.maxLimitOrder)
+  return maxlimitorder_;
+}
+inline void PBStrategy::set_maxlimitorder(::google::protobuf::int32 value) {
+  
+  maxlimitorder_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBStrategy.maxLimitOrder)
 }
 
 // -------------------------------------------------------------------

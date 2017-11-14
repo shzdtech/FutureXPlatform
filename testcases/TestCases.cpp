@@ -9,6 +9,7 @@
 #include <atomic>
 #include <iostream>
 #include <future>
+#include "../include/libcuckoo/cuckoohash_map.hh"
 #include "../message/SessionContainer.h"
 #include "../utility/autofillmap.h"
 #include "../utility/epsdouble.h"
@@ -125,10 +126,22 @@ void testTasks()
 	testTask = std::async(std::launch::async, sleepTask);
 }
 
+void testMap()
+{
+	cuckoohash_map<int, int> testm;
+	testm.insert(1, 1);
+	testm.insert(2, 2);
+	auto lt = testm.lock_table();
+	testm.clear();
+	lt.unlock();
+	std::cout << "Remain: "<< testm.size();
+}
+
 int _tmain(int argc, _TCHAR* argv[])
 {
 	try
 	{
+		testMap();
 		testTasks();
 		test_stringutility();
 		testCollection();

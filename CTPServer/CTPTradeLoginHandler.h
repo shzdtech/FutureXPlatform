@@ -9,8 +9,9 @@
 #define __CTP_CTPTradeLoginHandler_h
 
 #include "CTPLoginHandler.h"
+#include "ctpexport.h"
 
-class CTPTradeLoginHandler : public CTPLoginHandler
+class CTP_CLASS_EXPORT CTPTradeLoginHandler : public CTPLoginHandler
 {
 public:
 	int LoginFunction(const IMessageProcessor_Ptr& msgProcessor, CThostFtdcReqUserLoginField* loginInfo, uint requestId, const std::string& serverName);

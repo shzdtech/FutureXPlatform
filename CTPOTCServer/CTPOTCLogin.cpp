@@ -53,7 +53,7 @@ dataobj_ptr CTPOTCLogin::HandleRequest(const uint32_t serialId, const dataobj_pt
 	{
 		//if (role == ROLE_TRADINGDESK)
 		//{
-		//	pWorkerProc->GetCTPOTCTradeProcessor()->getMessageSession()
+		//	pWorkerProc->GetCTPOTCTradeWorkerProcessor()->getMessageSession()
 		//		->getUserInfo().setUserId(userInfo.getUserId());
 		//}
 
@@ -69,16 +69,19 @@ dataobj_ptr CTPOTCLogin::HandleRequest(const uint32_t serialId, const dataobj_pt
 			if (role >= ROLE_TRADINGDESK)
 			{
 				pWorkerProc->LoginSystemUserIfNeed();
-				std::this_thread::sleep_for(std::chrono::seconds(1));
-			}
+				// std::this_thread::sleep_for(std::chrono::seconds(1));
 
-			if (!pWorkerProc->HasLogged())
-				throw SystemException(STATUS_NOT_LOGIN, pWorkerProc->getServerContext()->getServerUri() + " market server has not logged!");
+				//if (!pWorkerProc->HasLogged())
+				//{
+				//	auto& server_uri = pWorkerProc->getServerContext()->getServerUri();
+				//	throw SystemException(STATUS_NOT_LOGIN, server_uri + " market server has not logged!");
+				//}
+			}
 		}
 
 		OTCUserContextBuilder::Instance()->BuildContext(msgProcessor, session);
 
-		auto pTradeProcessor = (CTPOTCTradeProcessor*)pWorkerProc->GetOTCTradeProcessor();
+		auto pTradeProcessor = (CTPOTCTradeWorkerProcessor*)pWorkerProc->GetOTCTradeWorkerProcessor();
 		connected = pTradeProcessor->ConnectedToServer();
 		logged = pTradeProcessor->HasLogged();
 
@@ -87,11 +90,12 @@ dataobj_ptr CTPOTCLogin::HandleRequest(const uint32_t serialId, const dataobj_pt
 			if (role >= ROLE_TRADINGDESK)
 			{
 				pTradeProcessor->LoginSystemUserIfNeed();
-				std::this_thread::sleep_for(std::chrono::seconds(1));
-			}
 
-			/*if (!pTradeProcessor->HasLogged())
-				throw SystemException(STATUS_NOT_LOGIN, pTradeProcessor->getServerContext()->getServerUri() + " trade server has not logged!");*/
+				//std::this_thread::sleep_for(std::chrono::seconds(1));
+
+				/*if (!pTradeProcessor->HasLogged())
+					throw SystemException(STATUS_NOT_LOGIN, pTradeProcessor->getServerContext()->getServerUri() + " trade server has not logged!");*/
+			}
 		}
 
 		if (pTradeProcessor->HasLogged())
@@ -103,7 +107,7 @@ dataobj_ptr CTPOTCLogin::HandleRequest(const uint32_t serialId, const dataobj_pt
 			userInfo.setTradingDay(sysuser.getTradingDay());
 		}
 
-		LoadOTCUserPosition(pWorkerProc->GetOTCTradeProcessor()->GetOTCOrderManager().GetPositionContext(), userInfo);
+		LoadOTCUserPosition(pWorkerProc->GetOTCTradeWorkerProcessor()->GetOTCOrderManager().GetPositionContext(), userInfo);
 	}
 
 	return ret;

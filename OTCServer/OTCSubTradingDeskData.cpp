@@ -43,7 +43,7 @@ dataobj_ptr OTCSubTradingDeskData::HandleRequest(const uint32_t serialId, const 
 
 	auto pInstList = (ContractList*)reqDO.get();
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::AbstractWorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		auto& userInfo = session->getUserInfo();
 

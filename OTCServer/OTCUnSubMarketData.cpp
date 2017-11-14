@@ -38,7 +38,7 @@ dataobj_ptr OTCUnSubMarketData::HandleRequest(const uint32_t serialId, const dat
 		auto nInstrument = instList.size();
 
 		if (nInstrument > 0)
-			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+			if (auto pWorkerProc = MessageUtility::AbstractWorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 			{
 				for (auto& inst : instList)
 				{

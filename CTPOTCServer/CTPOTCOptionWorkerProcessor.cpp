@@ -23,7 +23,7 @@
 
 CTPOTCOptionWorkerProcessor::CTPOTCOptionWorkerProcessor(
 	IServerContext* pServerCtx,
-	const std::shared_ptr<CTPOTCTradeProcessor>& otcTradeProcessorPtr) :
+	const std::shared_ptr<CTPOTCTradeWorkerProcessor>& otcTradeProcessorPtr) :
 	CTPOTCWorkerProcessor(pServerCtx, otcTradeProcessorPtr)
 {
 
@@ -39,17 +39,9 @@ ProductType CTPOTCOptionWorkerProcessor::GetContractProductType() const
 	return ProductType::PRODUCT_OTC_OPTION;
 }
 
-const std::vector<ProductType>& CTPOTCOptionWorkerProcessor::GetStrategyProductTypes() const
-{
-	static const std::vector<ProductType> productTypes = { ProductType::PRODUCT_OTC_OPTION, ProductType::PRODUCT_OPTIONS };
-	return productTypes;
-}
-
-
 InstrumentCache & CTPOTCOptionWorkerProcessor::GetInstrumentCache()
 {
-	static InstrumentCache& cache = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_OTC_OPTION);
-	return cache;
+	return ContractCache::Get(ProductCacheType::PRODUCT_CACHE_OTC_OPTION);
 }
 
 bool CTPOTCOptionWorkerProcessor::TriggerTradingDeskParams(const StrategyContractDO & strategyDO)

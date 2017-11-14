@@ -42,7 +42,7 @@ dataobj_ptr OTCReturnPricingData::HandleResponse(const uint32_t serialId, const 
 
 	IPricingDO_Ptr ret;
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::AbstractWorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		auto userContractMap = std::static_pointer_cast<UserContractParamDOMap>
 			(session->getContext()->getAttribute(STR_KEY_USER_CONTRACTS));

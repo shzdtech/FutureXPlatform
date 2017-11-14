@@ -74,6 +74,12 @@ std::map<uint, IMessageHandler_Ptr> CTPTradeServiceFactory::CreateMessageHandler
 
 	msg_hdl_map[MSG_ID_QUERY_USER_BANKACCOUNT] = std::make_shared<CTPQueryUserBankAccount>();
 
+	msg_hdl_map[MSG_ID_QUERY_POSITION_DIFFER] = std::make_shared<CTPQueryPositionDiffer>();
+
+	msg_hdl_map[MSG_ID_SYNC_POSITION] = std::make_shared<CTPSyncPositionDiffer>();
+
+	msg_hdl_map[MSG_ID_ADD_MANUAL_TRADE] = std::make_shared<CTPAddManualTrade>();
+
 	return msg_hdl_map;
 }
 
@@ -109,8 +115,10 @@ IMessageProcessor_Ptr CTPTradeServiceFactory::CreateWorkerProcessor(IServerConte
 	if (!serverCtx->getWorkerProcessor())
 	{
 		auto worker_ptr = std::make_shared<CTPTradeWorkerProcessor>(serverCtx);
+		ManualOpHub::Instance()->addListener(worker_ptr);
 		worker_ptr->Initialize(serverCtx);
 		serverCtx->setWorkerProcessor(worker_ptr);
+		serverCtx->setSubTypeWorkerPtr(worker_ptr.get());
 	}
 
 	return serverCtx->getWorkerProcessor();

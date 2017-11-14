@@ -38,7 +38,7 @@ dataobj_ptr OTCUpdateStrategy::HandleRequest(const uint32_t serialId, const data
 
 	StrategyContractDO_Ptr strategy_ptr;
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::AbstractWorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		auto pStrategyMap = pWorkerProc->PricingDataContext()->GetStrategyMap();
 
@@ -60,7 +60,7 @@ dataobj_ptr OTCUpdateStrategy::HandleRequest(const uint32_t serialId, const data
 			strategy_ptr->AutoOrderSettings.CloseMode = pStrategyDO->AutoOrderSettings.CloseMode;
 			strategy_ptr->AutoOrderSettings.VolCondition = pStrategyDO->AutoOrderSettings.VolCondition;
 			
-			int limitOrderCnt = pWorkerProc->GetOTCTradeProcessor()->GetExchangeOrderContext().GetLimitOrderCount(strategy_ptr->InstrumentID());
+			int limitOrderCnt = pWorkerProc->GetOTCTradeWorkerProcessor()->GetExchangeOrderContext().GetLimitOrderCount(strategy_ptr->InstrumentID());
 			if (strategy_ptr->AutoOrderSettings.LimitOrderCounter < limitOrderCnt)
 				strategy_ptr->AutoOrderSettings.LimitOrderCounter = limitOrderCnt;
 
@@ -100,7 +100,7 @@ dataobj_ptr OTCUpdateStrategy::HandleRequest(const uint32_t serialId, const data
 			{
 				if (CheckAllowTrade(session, false))
 				{
-					pWorkerProc->GetOTCTradeProcessor()->TriggerAutoOrderUpdating(*strategy_ptr);
+					pWorkerProc->GetOTCTradeWorkerProcessor()->TriggerAutoOrderUpdating(*strategy_ptr);
 				}
 				else
 				{
@@ -109,7 +109,7 @@ dataobj_ptr OTCUpdateStrategy::HandleRequest(const uint32_t serialId, const data
 			}
 			else
 			{
-				pWorkerProc->GetOTCTradeProcessor()->CancelAutoOrder(*strategy_ptr);
+				pWorkerProc->GetOTCTradeWorkerProcessor()->CancelAutoOrder(*strategy_ptr);
 			}
 		}
 	}

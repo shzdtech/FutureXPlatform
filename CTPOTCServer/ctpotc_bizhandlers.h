@@ -3,6 +3,7 @@
 
 //OTC
 #include "CTPOTCLogin.h"
+#include "CTPOTCTradeLoginHandler.h"
 #include "CTPSimMarketData.h"
 #include "CTPOTCQueryRisk.h"
 #include "CTPOTCQueryValuationRisk.h"

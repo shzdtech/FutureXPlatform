@@ -1,9 +1,12 @@
 #include "ExchangeRouterDAO.h"
 #include "MySqlConnectionManager.h"
 
-void ExchangeRouterDAO::FindAllExchangeRouters(std::map<std::string, std::string>& routerMap)
+void ExchangeRouterDAO::FindAllExchangeRouters(std::map<std::string, ExchangeRouterDO>& routerMap)
 {
-	static const std::string sql_findallrouters("SELECT name,address FROM exchange_router");
+	static const std::string sql_findallrouters(
+		"SELECT name,address,brokerId,user_name,password,"
+		"product_info,auth_code "
+		"FROM exchange_router");
 
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
@@ -13,7 +16,16 @@ void ExchangeRouterDAO::FindAllExchangeRouters(std::map<std::string, std::string
 
 		while (rs->next())
 		{
-			routerMap[rs->getString(1)] = rs->getString(2);
+			ExchangeRouterDO exDO;
+			exDO.Name = rs->getString(1);
+			exDO.Address = rs->getString(2);
+			exDO.BrokeID = rs->getString(3);
+			exDO.UserID = rs->getString(4);
+			exDO.Password = rs->getString(5);
+			exDO.ProductInfo = rs->getString(6);
+			exDO.AuthCode = rs->getString(7);
+
+			routerMap[exDO.Name] = exDO;
 		}
 	}
 	catch (sql::SQLException& sqlEx)

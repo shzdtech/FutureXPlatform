@@ -29,17 +29,16 @@ public:
 		Hedgded,
 	};
 
-	HedgeOrderManager(IOrderAPI* pOrderAPI, 
-		const IPricingDataContext_Ptr& pricingCtx,
+	HedgeOrderManager(const IPricingDataContext_Ptr& pricingCtx,
 		const IUserPositionContext_Ptr& exchangePositionCtx);
 
-	HedgeStatus Hedge(const PortfolioKey& portfolioKey);
+	HedgeStatus Hedge(const PortfolioKey& portfolioKey, IOrderAPI* orderAPI);
 
-	OrderDO_Ptr CancelOrder(OrderRequestDO & orderReq);
+	OrderDO_Ptr CancelOrder(OrderRequestDO & orderReq, IOrderAPI* orderAPI);
 
-	int OnMarketOrderUpdated(OrderDO & orderInfo);
+	void TradeByStrategy(const StrategyContractDO& strategyDO, IOrderAPI* orderAPI);
 
-	void TradeByStrategy(const StrategyContractDO& strategyDO);
+	int OnMarketOrderUpdated(OrderDO & orderInfo, IOrderAPI* orderAPI);
 
 protected:
 

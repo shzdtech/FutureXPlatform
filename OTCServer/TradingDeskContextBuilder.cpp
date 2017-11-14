@@ -63,7 +63,7 @@ void TradingDeskContextBuilder::BuildContext(const IMessageProcessor_Ptr& msgPro
 
 void TradingDeskContextBuilder::LoadPortfolio(const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::AbstractWorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		auto pPortfoliorMap = pWorkerProc->PricingDataContext()->GetPortfolioMap();
 
@@ -96,7 +96,7 @@ void TradingDeskContextBuilder::LoadContractParam(const IMessageProcessor_Ptr& m
 	auto conParamVec_Ptr = std::make_shared<std::vector<ContractKey>>();
 	session->getContext()->setAttribute(STR_KEY_USER_CONTRACT_PARAM, conParamVec_Ptr);
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::AbstractWorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		auto productType = pWorkerProc->GetContractProductType();
 		if (auto contractVec_Ptr = StrategyContractDAO::RetrieveContractParamByUser(session->getUserInfo().getUserId(), productType))
@@ -121,7 +121,7 @@ void TradingDeskContextBuilder::LoadStrategy(const IMessageProcessor_Ptr& msgPro
 	/*auto strategySet_Ptr = std::make_shared<std::set<UserContractKey>>();
 	session->getContext()->setAttribute(STR_KEY_USER_STRATEGY, strategySet_Ptr);*/
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::AbstractWorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		auto& userid = session->getUserInfo().getUserId();
 		auto tradingDay = session->getUserInfo().getTradingDay();

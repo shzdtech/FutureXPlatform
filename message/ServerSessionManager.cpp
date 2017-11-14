@@ -82,7 +82,7 @@ void ServerSessionManager::AssembleSession(const IMessageSession_Ptr& msgSession
 //	}
 //	processors.release();
 //	_sessionSet.clear();
-//	_server->getContext()->Reset();
+//	_server->getContext()->CancelUserOrders();
 //}
 
 ////////////////////////////////////////////////////////////////////////
@@ -97,9 +97,9 @@ void ServerSessionManager::OnServerStarting(void)
 
 	if (auto workProcPtr = _server->getContext()->getWorkerProcessor())
 	{
-		_workerSession = std::make_shared<MessageSession>(shared_from_this());
-		workProcPtr->setMessageSession(_workerSession);
+		auto workerSession = std::make_shared<MessageSession>(shared_from_this());
+		workProcPtr->setMessageSession(workerSession);
 		workProcPtr->setServiceLocator(_msgsvclocator);
-		_workerSession->RegisterProcessor(workProcPtr);
+		workerSession->RegisterProcessor(workProcPtr);
 	}
 }

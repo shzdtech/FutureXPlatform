@@ -14,6 +14,7 @@
 #include "../dataobject/TradeRecordDO.h"
 #include "../dataobject/TemplateDO.h"
 #include "IUserPositionContext.h"
+#include "IOrderAPI.h"
 #include <functional>
 
 class IOrderUpdatedEvent
@@ -26,15 +27,15 @@ class IOrderManager
 {
 public:
 	IOrderManager(IOrderUpdatedEvent* listener = nullptr) : _listener(listener){}
-	virtual int Reset() = 0;
+	virtual int CancelUserOrders(const std::string& userId, IOrderAPI* orderAPI) = 0;
 	virtual OrderDO_Ptr FindOrder(uint64_t orderID) = 0;
-	virtual OrderDO_Ptr CreateOrder(OrderRequestDO& orderInfo) = 0;
-	virtual OrderDO_Ptr CancelOrder(OrderRequestDO& orderInfo) = 0;
-	virtual OrderDO_Ptr RejectOrder(OrderRequestDO& orderInfo) = 0;
-	virtual void TradeByStrategy(const StrategyContractDO& strategyDO) = 0;
+	virtual OrderDO_Ptr CreateOrder(OrderRequestDO& orderInfo, IOrderAPI* orderAPI) = 0;
+	virtual OrderDO_Ptr CancelOrder(OrderRequestDO& orderInfo, IOrderAPI* orderAPI) = 0;
+	virtual OrderDO_Ptr RejectOrder(OrderRequestDO& orderInfo, IOrderAPI* orderAPI) = 0;
+	virtual void TradeByStrategy(const StrategyContractDO& strategyDO, IOrderAPI* orderAPI) = 0;
 
 public:
-	virtual int OnMarketOrderUpdated(OrderDO& orderInfo) = 0;
+	virtual int OnMarketOrderUpdated(OrderDO& orderInfo, IOrderAPI* orderAPI) = 0;
 
 protected:
 	IOrderUpdatedEvent* _listener;

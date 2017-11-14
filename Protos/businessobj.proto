@@ -203,6 +203,7 @@ message PBStrategy
 	int32 tif = 27;
 	int32 volCond = 28;
 	int32 tickSizeMult = 29;
+	int32 maxLimitOrder = 30;
 }
 
 message PBStrategyList

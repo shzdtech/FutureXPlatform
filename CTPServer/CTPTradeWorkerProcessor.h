@@ -15,6 +15,7 @@
 #include "../ordermanager/UserTradeContext.h"
 #include "../ordermanager/UserPositionContext.h"
 #include "../utility/autofillmap.h"
+#include "../utility/hash_tuple.h"
 #include "../dataobject/AccountInfoDO.h"
 #include "../dataobject/ExchangeDO.h"
 #include "../dataobject/TradeRecordDO.h"
@@ -22,6 +23,7 @@
 #include "../dataobject/OrderDO.h"
 #include "../dataobject/EnumTypes.h"
 #include "../bizutility/ManualOpHub.h"
+#include "../utility/lockfree_queue.h"
 
 #include "ctpexport.h"
 
@@ -39,6 +41,7 @@ public:
 	virtual int RequestData(void);
 	virtual int LoginSystemUser(void);
 	virtual int LoginSystemUserIfNeed(void);
+	virtual int LoadContractFromDB(void);
 	virtual int LoadDataAsync(void);
 	virtual void OnDataLoaded(void);
 
@@ -61,22 +64,30 @@ public:
 
 	virtual OrderDO_Ptr CTPTradeWorkerProcessor::RefineOrder(CThostFtdcOrderField *pOrder);
 
-	bool IsLoadPositionFromDB();
+	void LoadYdPositonFromDatabase(const std::string & sysuserid, const std::string & tradingday);
 
 	void LoadPositonFromDatabase(const std::string& sysuserid, const std::string& tradingday);
 
 	UserPositionExDO_Ptr FindDBYdPostion(const std::string& userid, const std::string& contract, const std::string& portfolio, PositionDirectionType direction);
 
-	UserPositionExDO_Ptr FindSysYdPostion(const std::string& contract, const std::string& portfolio, PositionDirectionType direction);
+	UserPositionExDO_Ptr FindSysYdPostion(const std::string& userid, const std::string& contract, const std::string& portfolio, PositionDirectionType direction);
+
+	void PushToLogQueue(const TradeRecordDO_Ptr& tradeDO_Ptr);
+
+	void LogTrade();
+
+	bool IsLoadPositionFromDB();
+
+	bool IsSaveTrade();
 
 	int RetryInterval = 30000;
+	int RetryTimes = 10;
 
 protected:
 	std::string _authCode;
 	std::string _productInfo;
 
 	std::mutex _loginMutex;
-	cuckoohash_map<std::string, AccountInfoDO_Ptr> _accountInfoMap;
 	std::set<ExchangeDO> _exchangeInfo_Set;
 	IUserPositionContext_Ptr _userPositionCtx_Ptr;
 	UserTradeContext _userTradeCtx;
@@ -86,10 +97,18 @@ protected:
 
 	std::future<void> _initializer;
 
-	bool _loadPositionFromDB;
+	cuckoohash_map<std::string, AccountInfoDO_Ptr> _accountInfoMap;
 
-	autofillmap<std::string, autofillmap<std::tuple<std::string, std::string, PositionDirectionType>, UserPositionExDO_Ptr>> _ydDBPositions;
-	autofillmap<std::tuple<std::string, std::string, PositionDirectionType>, UserPositionExDO_Ptr> _ydSysPositions;
+	typedef cuckoohashmap_wrapper<std::tuple<std::string, std::string, PositionDirectionType>, UserPositionExDO_Ptr, 
+		std::hash<std::tuple<std::string, std::string, PositionDirectionType>>> Position_HashMap;
+
+	cuckoohash_map<std::string, Position_HashMap> _ydDBPositions;
+	cuckoohash_map<std::string, Position_HashMap> _ydSysPositions;
+
+	bool _loadPositionFromDB = false;
+	bool _logTrades = false;
+	std::thread _tradeDBSerializer;
+	lockfree_queue<TradeRecordDO_Ptr> _tradeQueue;
 
 public:
 	virtual void OnFrontConnected();
@@ -123,6 +142,7 @@ public:
 
 	///请求查询投资者持仓响应
 	virtual void OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+	virtual void UpdateYdPosition(const std::string & userId, const UserPositionExDO_Ptr & position_ptr);
 };
 
 #endif

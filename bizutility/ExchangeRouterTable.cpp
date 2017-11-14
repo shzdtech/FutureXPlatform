@@ -1,23 +1,26 @@
 #include "ExchangeRouterTable.h"
-#include "libcuckoo/cuckoohash_map.hh"
+#include "../utility/autofillmap.h"
 #include "../databaseop/ExchangeRouterDAO.h"
 
-static cuckoohash_map<std::string, std::string> routerTable(128);
-const std::string ExchangeRouterTable::TARGET_MD("md");
-const std::string ExchangeRouterTable::TARGET_TD("td");
-const std::string ExchangeRouterTable::TARGET_MD_AM("md:am");
-const std::string ExchangeRouterTable::TARGET_TD_AM("td:am");
+static std::map<std::string, ExchangeRouterDO> routerTable;
+const std::string ExchangeRouterTable::TARGET_MD("TARGET.MD.CFG");
+const std::string ExchangeRouterTable::TARGET_TD("TARGET.TD.CFG");
+const std::string ExchangeRouterTable::TARGET_MD_AM("TARGET.MDAM.CFG");
+const std::string ExchangeRouterTable::TARGET_TD_AM("TARGET.TDAM.CFG");
 ExchangeRouterTable::static_initializer ExchangeRouterTable::_static_init;
 
 ExchangeRouterTable::static_initializer::static_initializer()
 {
-	std::map<std::string, std::string> exchangeTable;
-	ExchangeRouterDAO::FindAllExchangeRouters(exchangeTable);
-	for (auto& pair : exchangeTable)
-		routerTable.insert(pair.first, pair.second);
+	ExchangeRouterDAO::FindAllExchangeRouters(routerTable);
 }
 
-bool ExchangeRouterTable::TryFind(const std::string& name, std::string& address)
+bool ExchangeRouterTable::TryFind(const std::string& name, ExchangeRouterDO& address)
 {
-	return routerTable.find(name, address);
+	auto it = routerTable.find(name);
+	if (it == routerTable.end())
+		return false;
+
+	address = it->second;
+
+	return true;
 }

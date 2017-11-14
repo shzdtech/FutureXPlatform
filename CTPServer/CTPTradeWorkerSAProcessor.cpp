@@ -19,7 +19,7 @@
 #include "../litelogger/LiteLogger.h"
 
 
-CTPTradeWorkerSAProcessor::CTPTradeWorkerSAProcessor(IServerContext* pServerCtx, 
+CTPTradeWorkerSAProcessor::CTPTradeWorkerSAProcessor(IServerContext* pServerCtx,
 	const IPricingDataContext_Ptr& pricingCtx,
 	const IUserPositionContext_Ptr& positionCtx)
 	: CTPTradeWorkerProcessor(pServerCtx, positionCtx)
@@ -29,61 +29,13 @@ CTPTradeWorkerSAProcessor::CTPTradeWorkerSAProcessor(IServerContext* pServerCtx,
 CTPTradeWorkerSAProcessor::~CTPTradeWorkerSAProcessor()
 {
 	_closing = true;
-	if (_tradeDBSerializer.joinable())
-		_tradeDBSerializer.join();
 }
 
 void CTPTradeWorkerSAProcessor::Initialize(IServerContext* pServerCtx)
 {
-	if (_logTrades)
-		_tradeDBSerializer = std::move(std::thread(&CTPTradeWorkerSAProcessor::LogTrade, this));
-
 	CTPTradeWorkerProcessor::Initialize(pServerCtx);
 }
 
-void CTPTradeWorkerSAProcessor::LogTrade()
-{
-	std::vector<TradeRecordDO_Ptr> retryList;
-	while (!_closing)
-	{
-		for (auto trade : retryList)
-		{
-			_tradeQueue.push(trade);
-		}
-
-		bool hasError = false;
-		TradeRecordDO_Ptr trade_ptr;
-		if (_tradeQueue.pop(trade_ptr))
-		{
-			if (trade_ptr)
-			{
-				try
-				{
-					TradeDAO::SaveExchangeTrade(*trade_ptr);
-				}
-				catch (std::exception& ex)
-				{
-					hasError = true;
-					LOG_ERROR << ex.what();
-				}
-				catch (...)
-				{
-					hasError = true;
-				}
-
-				if (hasError)
-				{
-					retryList.push_back(trade_ptr);
-				}
-			}
-		}
-
-		if (hasError || _tradeQueue.empty())
-		{
-			std::this_thread::sleep_for(std::chrono::milliseconds(500));
-		}
-	}
-}
 
 void CTPTradeWorkerSAProcessor::OnRtnTrade(CThostFtdcTradeField * pTrade)
 {
@@ -91,8 +43,7 @@ void CTPTradeWorkerSAProcessor::OnRtnTrade(CThostFtdcTradeField * pTrade)
 	{
 		if (auto trdDO_Ptr = RefineTrade(pTrade))
 		{
-			if (_logTrades)
-				_tradeQueue.push(trdDO_Ptr);
+			PushToLogQueue(trdDO_Ptr);
 
 			DispatchUserMessage(MSG_ID_TRADE_RTN, 0, trdDO_Ptr->UserID(), trdDO_Ptr);
 
@@ -101,7 +52,8 @@ void CTPTradeWorkerSAProcessor::OnRtnTrade(CThostFtdcTradeField * pTrade)
 				DispatchUserMessage(MSG_ID_POSITION_UPDATED, 0, trdDO_Ptr->UserID(), position_ptr);
 			}
 
-			QueryUserPositionAsyncIfNeed();
+			if (!_loadPositionFromDB)
+				QueryUserPositionAsyncIfNeed();
 		}
 	}
 }

@@ -22,7 +22,7 @@ dataobj_ptr OTCUpdatePortfolio::HandleRequest(const uint32_t serialId, const dat
 
 	auto pPortfolioDO = (PortfolioDO*)reqDO.get();
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::AbstractWorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		auto& userid = session->getUserInfo().getUserId();
 		auto pPortfolioMap = pWorkerProc->PricingDataContext()->GetPortfolioMap();
@@ -36,7 +36,7 @@ dataobj_ptr OTCUpdatePortfolio::HandleRequest(const uint32_t serialId, const dat
 				pPortfolio->LastHedge = std::chrono::steady_clock::now();
 
 				if (!pPortfolio->Hedging)
-					pWorkerProc->GetOTCTradeProcessor()->CancelHedgeOrder(*pPortfolio);
+					pWorkerProc->GetOTCTradeWorkerProcessor()->CancelHedgeOrder(*pPortfolio);
 
 				if (pPortfolio->HedgeDelay != pPortfolioDO->HedgeDelay ||
 					pPortfolio->Threshold != pPortfolioDO->Threshold)
@@ -48,7 +48,7 @@ dataobj_ptr OTCUpdatePortfolio::HandleRequest(const uint32_t serialId, const dat
 				}
 
 				if (pPortfolio->Hedging && CheckAllowTrade(session, false))
-					pWorkerProc->GetOTCTradeProcessor()->TriggerHedgeOrderUpdating(*pPortfolio);
+					pWorkerProc->GetOTCTradeWorkerProcessor()->TriggerHedgeOrderUpdating(*pPortfolio);
 				else
 					pPortfolioDO->Hedging = false;
 			}

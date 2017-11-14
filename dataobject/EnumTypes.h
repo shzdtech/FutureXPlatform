@@ -114,6 +114,10 @@ enum ProductType
 	PRODUCT_OTC = 8,
 	///OTC期权
 	PRODUCT_OTC_OPTION = 9,
+	///OTC个股期权
+	PRODUCT_OTC_ETFOPTION = 10,
+	///OTC证券
+	PRODUCT_OTC_STOCK = 11,
 	///
 	PRODUCT_UPPERBOUND,
 };

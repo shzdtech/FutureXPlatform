@@ -18,13 +18,11 @@ class CTP_OTC_CLASS_EXPORT CTPOTCOptionWorkerProcessor : public CTPOTCWorkerProc
 {
 public:
 	CTPOTCOptionWorkerProcessor(IServerContext* pServerCtx,
-		const std::shared_ptr<CTPOTCTradeProcessor>& ctpOtcTradeProcessorPtr);
+		const std::shared_ptr<CTPOTCTradeWorkerProcessor>& CTPOTCTradeWorkerProcessorPtr);
 
 	~CTPOTCOptionWorkerProcessor();
 
 	virtual ProductType GetContractProductType() const;
-
-	virtual const std::vector<ProductType>& GetStrategyProductTypes() const;
 
 	virtual InstrumentCache & GetInstrumentCache();
 

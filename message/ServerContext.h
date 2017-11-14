@@ -27,6 +27,8 @@ public:
 	IMessageProcessor_Ptr& getWorkerProcessor(void);
 	void setSubTypeWorkerPtr(void* pProcess);
 	void* getSubTypeWorkerPtr(void);
+	void setAbstractSubTypeWorkerPtr(void* pProcess);
+	void* getAbstractSubTypeWorkerPtr(void);
 	const std::string& getServerUri(void);
 	void setServerUri(const std::string& serverUri);
 	void Reset(void);
@@ -39,6 +41,7 @@ private:
 	std::unordered_map<std::string, std::string> _configs;
 	IMessageProcessor_Ptr _workerProcessor_Ptr;
 	void* _pSubWorkProc;
+	void* _pAbstractSubWorkProc;
 	int _serverType = 0;
 };
 

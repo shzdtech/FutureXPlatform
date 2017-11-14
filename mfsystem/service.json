@@ -4,6 +4,7 @@
       "service.ctp_md",
       "service.ctp_trade",
       "service.otc_option",
+      "service.otc_option_trade",
       "service.admin"
     ],
     "admin": {
@@ -65,6 +66,16 @@
       "server.config.section": "server.otc.option",
       "factory.config": "factory.json",
       "factory.config.section": "factory.otc.option"
+    },
+    "otc_option_trade": {
+      "server.uri": "otc.option_trade",
+      "server.module.uuid": "com.micro.future.asio.dll",
+      "server.module.path": "communication.dll",
+      "server.class.uuid": "server.asiotcp.lite",
+      "server.config": "server.json",
+      "server.config.section": "server.otc.option_trade",
+      "factory.config": "factory.json",
+      "factory.config.section": "factory.otc.option_trade"
     },
     "cts": {
       "server.uri": "cts.client",

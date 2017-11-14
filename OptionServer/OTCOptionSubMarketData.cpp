@@ -44,7 +44,7 @@ dataobj_ptr OTCOptionSubMarketData::HandleRequest(const uint32_t serialId, const
 	auto stdo = (StringTableDO*)reqDO.get();
 
 	if (auto pWorkerProc =
-		MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+		MessageUtility::AbstractWorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		auto& userInfo = session->getUserInfo();
 

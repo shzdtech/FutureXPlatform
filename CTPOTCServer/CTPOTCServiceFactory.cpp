@@ -56,14 +56,6 @@ std::map<uint, IMessageHandler_Ptr> CTPOTCServiceFactory::CreateMessageHandlers(
 
 	msg_hdl_map[MSG_ID_QUERY_TRADINGDESK] = std::make_shared<OTCQueryTradingDesks>();
 
-	msg_hdl_map[MSG_ID_ORDER_NEW] = std::make_shared<OTCNewOrder>();
-
-	msg_hdl_map[MSG_ID_ORDER_CANCEL] = std::make_shared<OTCCancelOrder>();
-
-	msg_hdl_map[MSG_ID_QUERY_ORDER] = std::make_shared<OTCQueryOrder>();
-
-	msg_hdl_map[MSG_ID_ORDER_UPDATE] = msg_hdl_map[MSG_ID_QUERY_ORDER];
-
 	msg_hdl_map[MSG_ID_QUERY_STRATEGY] = std::make_shared<OTCQueryStrategy>();
 
 	msg_hdl_map[MSG_ID_QUERY_CONTRACT_PARAM] = std::make_shared<OTCQueryContractParam>();
@@ -73,8 +65,6 @@ std::map<uint, IMessageHandler_Ptr> CTPOTCServiceFactory::CreateMessageHandlers(
 	msg_hdl_map[MSG_ID_MODIFY_STRATEGY] = std::make_shared<OTCUpdateStrategy>();
 
 	msg_hdl_map[MSG_ID_QUERY_INSTRUMENT] = std::make_shared<OTCQueryInstrument>();
-
-	msg_hdl_map[MSG_ID_QUERY_TRADE] = std::make_shared<OTCQueryTrade>();
 
 	msg_hdl_map[MSG_ID_QUERY_PORTFOLIO] = std::make_shared<OTCQueryPortfolio>();
 
@@ -93,18 +83,6 @@ std::map<uint, IMessageHandler_Ptr> CTPOTCServiceFactory::CreateMessageHandlers(
 	msg_hdl_map[MSG_ID_UPDATE_TEMPMODELPARAMS] = std::make_shared<OTCUpdateTempModelParam>();
 
 	msg_hdl_map[MSG_ID_MODIFY_PRICING_CONTRACT] = std::make_shared<OTCUpdatePricingContract>();
-
-	msg_hdl_map[MSG_ID_QUERY_POSITION] = std::make_shared<OTCQueryPosition>();
-
-	msg_hdl_map[MSG_ID_QUERY_RISK] = std::make_shared<CTPOTCQueryRisk>();
-
-	msg_hdl_map[MSG_ID_RISK_UPDATED] = std::make_shared<OTCRiskUpdated>();
-
-	msg_hdl_map[MSG_ID_QUERY_VALUATION_RISK] = std::make_shared<CTPOTCQueryValuationRisk>();
-
-	msg_hdl_map[MSG_ID_SYNC_POSITION] = std::make_shared<CTPSyncPositionDiffer>();
-
-	msg_hdl_map[MSG_ID_ADD_MANUAL_TRADE] = std::make_shared<CTPAddManualTrade>();
 
 	// For simulation
 	msg_hdl_map[MSG_ID_RET_MARKETDATA] = std::make_shared<CTPSimMarketData>();
@@ -149,22 +127,16 @@ IMessageProcessor_Ptr CTPOTCServiceFactory::CreateWorkerProcessor(IServerContext
 {
 	if (!serverCtx->getWorkerProcessor())
 	{
-		auto positionCtx = std::static_pointer_cast<IUserPositionContext>(AppContext::GetData(STR_KEY_USER_POSITION));
-		if (!positionCtx)
-		{
-			positionCtx = std::make_shared<PortfolioPositionContext>();
-			AppContext::SetData(STR_KEY_USER_POSITION, positionCtx);
-		}
+		std::string tradeWorker;
+		serverCtx->getConfigVal("tradeworker", tradeWorker);
 
-		auto pricingCtx = std::static_pointer_cast<IPricingDataContext>(serverCtx->getAttribute(STR_KEY_SERVER_PRICING_DATACONTEXT));
-		std::shared_ptr<CTPOTCTradeProcessor> tradeProcessor(new CTPOTCTradeProcessor(serverCtx, pricingCtx, positionCtx));
-		ManualOpHub::Instance()->addListener(tradeProcessor);
+		auto tradeProcessor = std::static_pointer_cast<CTPOTCTradeWorkerProcessor>(GlobalProcessorRegistry::FindProcessor(tradeWorker));
 
 		std::shared_ptr<CTPOTCWorkerProcessor> worker_ptr(new CTPOTCWorkerProcessor(serverCtx, tradeProcessor));
 		worker_ptr->Initialize(serverCtx);
-		tradeProcessor->Initialize(serverCtx);
 		serverCtx->setWorkerProcessor(worker_ptr);
-		serverCtx->setSubTypeWorkerPtr(static_cast<OTCWorkerProcessor*>(worker_ptr.get()));
+		serverCtx->setSubTypeWorkerPtr(static_cast<CTPOTCWorkerProcessor*>(worker_ptr.get()));
+		serverCtx->setAbstractSubTypeWorkerPtr(static_cast<OTCWorkerProcessor*>(worker_ptr.get()));
 	}
 
 	return serverCtx->getWorkerProcessor();
@@ -173,7 +145,7 @@ IMessageProcessor_Ptr CTPOTCServiceFactory::CreateWorkerProcessor(IServerContext
 void CTPOTCServiceFactory::SetServerContext(IServerContext * serverCtx)
 {
 	CTPMDServiceFactory::SetServerContext(serverCtx);
-	auto pricingCtx = AppContext::GetData(STR_KEY_SERVER_PRICING_DATACONTEXT);
+	auto pricingCtx = std::static_pointer_cast<IPricingDataContext>(AppContext::GetData(STR_KEY_SERVER_PRICING_DATACONTEXT));
 	if (!pricingCtx)
 	{
 		pricingCtx = std::make_shared<PricingDataContext>();
@@ -181,4 +153,23 @@ void CTPOTCServiceFactory::SetServerContext(IServerContext * serverCtx)
 	}
 
 	serverCtx->setAttribute(STR_KEY_SERVER_PRICING_DATACONTEXT, pricingCtx);
+
+	auto positionCtx = std::static_pointer_cast<IUserPositionContext>(AppContext::GetData(STR_KEY_USER_POSITION));
+	if (!positionCtx)
+	{
+		positionCtx = std::make_shared<PortfolioPositionContext>();
+		AppContext::SetData(STR_KEY_USER_POSITION, positionCtx);
+	}
+
+	std::string tradeWorker;
+	serverCtx->getConfigVal("tradeworker", tradeWorker);
+
+	if (!GlobalProcessorRegistry::FindProcessor(tradeWorker))
+	{
+		std::shared_ptr<CTPOTCTradeWorkerProcessor> tradeProcessor(new CTPOTCTradeWorkerProcessor(serverCtx, pricingCtx, positionCtx));
+		ManualOpHub::Instance()->addListener(tradeProcessor);
+		tradeProcessor->Initialize(serverCtx);
+
+		GlobalProcessorRegistry::RegisterProcessor(tradeWorker, tradeProcessor);
+	}
 }

@@ -56,7 +56,7 @@ dataobj_ptr OTCUpdateTempModelParam::HandleRequest(const uint32_t serialId, cons
 		}
 	}
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::AbstractWorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		if (auto pStrategyMap = pWorkerProc->PricingDataContext()->GetUserStrategyMap()->tryfind(modelParam_ptr->UserID()))
 		{

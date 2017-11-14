@@ -22,7 +22,7 @@ dataobj_ptr OTCUpdateHedgeContract::HandleRequest(const uint32_t serialId, const
 
 	auto pPortfolioDO = (PortfolioDO*)reqDO.get();
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::AbstractWorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		auto& userid = session->getUserInfo().getUserId();
 		pPortfolioDO->SetUserID(userid);

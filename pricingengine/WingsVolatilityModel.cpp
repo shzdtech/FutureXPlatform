@@ -94,10 +94,9 @@ dataobj_ptr WingsVolatilityModel::Compute(
 
 	double midVol;
 	// synthetic forward price
-	double f_ref = paramObj->f_ref;
+	double f_ref = std::max(paramObj->f_ref, 0.0001);
 	double ssr = paramObj->ssr;
 	double alpha = paramObj->alpha;
-	// if (f_ref < 0.001) f_ref = f_atm;
 
 	auto ret = std::make_shared<WingsModelReturnDO>();
 

@@ -28,9 +28,9 @@ dataobj_ptr OTCCancelOrder::HandleRequest(const uint32_t serialId, const dataobj
 
 	auto& orderDO = *((OrderRequestDO*)reqDO.get());
 	
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::AbstractWorkerProcessorPtr<OTCTradeWorkerProcessor>(msgProcessor))
 	{
-		pWorkerProc->GetOTCTradeProcessor()->OTCCancelOrder(orderDO);
+		pWorkerProc->OTCCancelOrder(orderDO);
 	}
 
 	return reqDO;

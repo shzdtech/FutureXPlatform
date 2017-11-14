@@ -39,13 +39,13 @@ dataobj_ptr OTCQueryStrategy::HandleRequest(const uint32_t serialId, const datao
 
 	auto sDOVec_Ptr = std::make_shared<VectorDO<StrategyContractDO>>();
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::AbstractWorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		auto pUserStrategyMap = pWorkerProc->PricingDataContext()->GetUserStrategyMap();
 		auto it = pUserStrategyMap->find(session->getUserInfo().getUserId());
 		if (it != pUserStrategyMap->end())
 		{
-			auto& userOrderCtx = pWorkerProc->GetOTCTradeProcessor()->GetExchangeOrderContext();
+			auto& userOrderCtx = pWorkerProc->GetOTCTradeWorkerProcessor()->GetExchangeOrderContext();
 			for (auto& strategyMap : it->second)
 			{
 				for (auto& pair : strategyMap.second->lock_table())

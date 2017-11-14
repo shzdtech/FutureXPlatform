@@ -27,8 +27,7 @@ public:
 	bool CloseSession(const IMessageSession_Ptr& sessionPtr);
 
 protected:
-	cuckoohash_map<IMessageProcessor_Ptr, bool> _sessionSet;
-	IMessageSession_Ptr _workerSession;
+	cuckoohash_map<IMessageProcessor_Ptr, bool> _processorSet;
 	IMessageServer* _server;
 
 private:

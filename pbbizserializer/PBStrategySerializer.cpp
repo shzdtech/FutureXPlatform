@@ -44,6 +44,7 @@ data_buffer PBStrategySerializer::Serialize(const dataobj_ptr& abstractDO)
 	PB.set_tif(pDO->AutoOrderSettings.TIF);
 	PB.set_volcond(pDO->AutoOrderSettings.VolCondition);
 	PB.set_limitordercounter(pDO->AutoOrderSettings.LimitOrderCounter);
+	PB.set_maxlimitorder(pDO->AutoOrderSettings.MaxLimitOrder);
 	
 
 	SerializeWithReturn(PB);

@@ -32,12 +32,8 @@ VectorDO_Ptr<StrategyContractDO_Ptr> StrategyContractDAO::LoadStrategyContractBy
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
 	{
-		int maxLimitOrder = 480;
-		std::string value;
-		if (SysParamsDAO::FindSysParamValue("LIMITORDER.MAXCOUNT", value))
-		{
-			maxLimitOrder = std::stoi(value, nullptr, 0);
-		}
+		const int maxLimitOrder = 400;
+		auto map_ptr = SysParamsDAO::FindSysParams("LIMITORDER.MAXCOUNT%");
 
 		autofillmap<UserStrategyName, autofillmap<ContractKey, StrategyPricingContract_Ptr>> pmPricingContractMap;
 		RetrievePricingContractsByProductType(productType, PM, pmPricingContractMap);
@@ -64,8 +60,12 @@ VectorDO_Ptr<StrategyContractDO_Ptr> StrategyContractDAO::LoadStrategyContractBy
 		{
 			std::string portfolio;
 			if (!rs->isNull(14)) portfolio = rs->getString(14);
-			auto stcdo_ptr = std::make_shared<StrategyContractDO>(rs->getString(1), rs->getString(2), rs->getString(10), portfolio);
-			stcdo_ptr->AutoOrderSettings.MaxLimitOrder = maxLimitOrder;
+
+			auto exchangeID = rs->getString(1);
+			auto stcdo_ptr = std::make_shared<StrategyContractDO>(exchangeID, rs->getString(2), rs->getString(10), portfolio);
+
+			auto it = map_ptr->find("LIMITORDER.MAXCOUNT." + exchangeID);
+			stcdo_ptr->AutoOrderSettings.MaxLimitOrder = it == map_ptr->end() ? maxLimitOrder : std::stoi(it->second, nullptr, 0);
 
 			stcdo_ptr->TradingDay.Year = pTM->tm_year + 1900;
 			stcdo_ptr->TradingDay.Month = pTM->tm_mon + 1;

@@ -33,7 +33,7 @@ dataobj_ptr OTCUnSubTradingDeskData::HandleRequest(const uint32_t serialId, cons
 
 	auto pInstList = (ContractList*)reqDO.get();
 	
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::AbstractWorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		for (auto& inst : *pInstList)
 		{

@@ -10,7 +10,7 @@
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/FieldName.h"
 #include "../dataobject/UserInfoDO.h"
-
+#include "../databaseop/UserInfoDAO.h"
 #include "../message/BizError.h"
 #include "../message/UserInfo.h"
 
@@ -36,45 +36,61 @@
 
 dataobj_ptr CTPLoginHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	if (!session->getLoginTimeStamp())
+	auto pProcessor = (CTPProcessor*)msgProcessor.get();;
+
+	auto stdo = (StringMapDO<std::string>*)reqDO.get();
+
+	std::string server;
+	msgProcessor->getServerContext()->getConfigVal(ExchangeRouterTable::TARGET_TD, server);
+	ExchangeRouterDO exDO;
+	if (!ExchangeRouterTable::TryFind(server, exDO))
 	{
-		auto pProcessor = (CTPProcessor*)msgProcessor.get();;
-
-		auto stdo = (StringMapDO<std::string>*)reqDO.get();
-
-		auto& brokeid = stdo->TryFind(STR_BROKER_ID, EMPTY_STRING);
-		auto& userid = stdo->TryFind(STR_USER_NAME, EMPTY_STRING);
-		auto& password = stdo->TryFind(STR_PASSWORD, EMPTY_STRING);
-		auto& routername = stdo->TryFind(STR_ROUTER_NAME, EMPTY_STRING);
-
-		CThostFtdcReqUserLoginField req{};
-
-		std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID));
-		std::strncpy(req.UserID, userid.data(), sizeof(req.UserID));
-		std::strncpy(req.Password, password.data(), sizeof(req.Password));
-		// std::strcpy(req.UserProductInfo, UUID_MICROFUTURE_CTP);
-
-		pProcessor->LoginSerialId = serialId;
-		int ret = LoginFunction(msgProcessor, &req, pProcessor->LoginSerialId, routername);
-		CTPUtility::CheckReturnError(ret);
-		//int ret = ((CThostFtdcMdApi*)rawAPI)->ReqUserLogin(&req, 1);
-
-		auto& userInfo = session->getUserInfo();
-		userInfo.setInvestorId(req.UserID);
-		userInfo.setBrokerId(req.BrokerID);
-		userInfo.setName(userid);
-		userInfo.setPassword(password);
-
-		userInfo.setUserId(CTPUtility::MakeUserID(req.BrokerID, req.UserID));
-		userInfo.setRole(ROLE_CLIENT);
-		userInfo.setPermission(ALLOW_TRADING);
-
-		LOG_DEBUG << "Login: " << req.BrokerID << ":" << userid << ":" << password;
+		msgProcessor->getServerContext()->getConfigVal(ExchangeRouterTable::TARGET_MD, server);
+		ExchangeRouterTable::TryFind(server, exDO);
 	}
 
-	auto userInfoDO_Ptr = std::static_pointer_cast<UserInfoDO>(session->getUserInfo().getExtInfo());
+	// auto& brokeid = stdo->TryFind(STR_BROKER_ID, EMPTY_STRING);
+	auto& userid = stdo->TryFind(STR_USER_NAME, EMPTY_STRING);
+	auto& password = stdo->TryFind(STR_PASSWORD, EMPTY_STRING);
+	auto& routername = stdo->TryFind(STR_ROUTER_NAME, EMPTY_STRING);
 
-	return userInfoDO_Ptr;
+	auto& userInfo = session->getUserInfo();
+	userInfo.setInvestorId(userid);
+	userInfo.setBrokerId(exDO.BrokeID);
+	userInfo.setPassword(password);
+
+	if (auto userInfo_Ptr = UserInfoDAO::FindUser(CTPUtility::MakeUserID(exDO.BrokeID, userid)))
+	{
+		userInfo.setUserId(userInfo_Ptr->UserId);
+		userInfo.setName(userInfo_Ptr->UserName);
+		userInfo.setRole(userInfo_Ptr->Role);
+		userInfo.setPermission(userInfo_Ptr->Permission);
+	}
+	else
+	{
+		throw UserException(USERID_NOT_EXITS, "UserId: " + exDO.BrokeID + userid + " not exists.");
+
+		/*userInfo.setUserId(CTPUtility::MakeUserID(req.BrokerID, req.UserID));
+		userInfo.setName(userid);
+		userInfo.setRole(ROLE_CLIENT);
+		userInfo.setPermission(ALLOW_TRADING);*/
+	}
+
+	CThostFtdcReqUserLoginField req{};
+
+	std::strncpy(req.BrokerID, exDO.BrokeID.data(), sizeof(req.BrokerID));
+	std::strncpy(req.UserID, userid.data(), sizeof(req.UserID));
+	std::strncpy(req.Password, password.data(), sizeof(req.Password));
+	// std::strcpy(req.UserProductInfo, UUID_MICROFUTURE_CTP);
+
+	pProcessor->LoginSerialId = serialId;
+	int ret = LoginFunction(msgProcessor, &req, pProcessor->LoginSerialId, routername);
+	CTPUtility::CheckReturnError(ret);
+	//int ret = ((CThostFtdcMdApi*)rawAPI)->ReqUserLogin(&req, 1);
+
+	LOG_DEBUG << "Login: " << req.BrokerID << ":" << userid << ":" << password;
+
+	return nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////

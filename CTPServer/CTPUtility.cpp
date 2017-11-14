@@ -13,6 +13,7 @@
 #include "../utility/commonconst.h"
 #include "../common/BizErrorIDs.h"
 #include "../bizutility/ContractCache.h"
+#include "../bizutility/PositionPortfolioMap.h"
 #include "../utility/stringutility.h"
 #include "../ordermanager/OrderSeqGen.h"
 #include "../databaseop/ContractDAO.h"
@@ -509,7 +510,13 @@ UserPositionExDO_Ptr CTPUtility::ParseRawPosition(CThostFtdcInvestorPositionFiel
 		exchange = pInstrumentDO->ExchangeID();
 	}
 
-	auto pDO = new UserPositionExDO(exchange, pRspPosition->InstrumentID);
+	std::string portfolio;
+	if (auto pPortfolioKey = PositionPortfolioMap::FindPortfolio(pRspPosition->InstrumentID))
+	{
+		portfolio = pPortfolioKey->PortfolioID();
+	}
+
+	auto pDO = new UserPositionExDO(exchange, pRspPosition->InstrumentID, portfolio, "");
 	UserPositionExDO_Ptr ret(pDO);
 
 	pDO->Direction = (PositionDirectionType)(pRspPosition->PosiDirection - THOST_FTDC_PD_Net);

@@ -14,17 +14,18 @@ UserTradeContext::UserTradeContext()
 
 bool UserTradeContext::InsertTrade(const TradeRecordDO_Ptr & tradeDO_Ptr)
 {
-	bool ret = _tradeIdMap.insert(tradeDO_Ptr->TradeID128(), tradeDO_Ptr);
+	auto tradeID = tradeDO_Ptr->TradeID128();
+	bool ret = _tradeIdMap.insert(tradeID, tradeDO_Ptr);
 	if (ret)
 	{
 		if (!_userTradeMap.contains(tradeDO_Ptr->UserID()))
 			_userTradeMap.insert(tradeDO_Ptr->UserID(), std::move(UserTradeMapType(true)));
 
-		_userTradeMap.update_fn(tradeDO_Ptr->UserID(), [this, &tradeDO_Ptr](UserTradeMapType& tradeMap)
+		_userTradeMap.update_fn(tradeDO_Ptr->UserID(), [this, tradeID](UserTradeMapType& tradeMap)
 		{
-			if (auto instoreptr = FindTrade(tradeDO_Ptr->TradeID128()))
+			if (auto instoreptr = FindTrade(tradeID))
 			{
-				tradeMap.map()->insert(tradeDO_Ptr->TradeID128(), instoreptr);
+				tradeMap.map()->insert(tradeID, instoreptr);
 			}
 		});
 	}

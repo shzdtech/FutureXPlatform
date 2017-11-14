@@ -17,7 +17,7 @@
 #include "../dataobject/TypedefDO.h"
 #include "../bizutility/ContractCache.h"
 #include "../message/SessionContainer.h"
-#include "OTCTradeProcessor.h"
+#include "OTCTradeWorkerProcessor.h"
 
 #include "otcserver_export.h"
 
@@ -62,18 +62,20 @@ public:
 	virtual void UnregisterTradingDeskListener(const UserContractKey & userContractId, const IMessageSession_Ptr& sessionPtr);
 
 	virtual InstrumentCache& GetInstrumentCache();
+	virtual const std::set<ProductType>& GetStrategyProductTypes() const;
 
 	virtual int SubscribeMarketData(const ContractKey& contractId) = 0;
-
 	virtual ProductType GetContractProductType() const = 0;
 
-	virtual const std::vector<ProductType>& GetStrategyProductTypes() const = 0;
+	
 
-	virtual OTCTradeProcessor* GetOTCTradeProcessor() = 0;
+	virtual OTCTradeWorkerProcessor* GetOTCTradeWorkerProcessor() = 0;
 
 	IPricingDataContext_Ptr& PricingDataContext();
 
 protected:
+	std::set<ProductType> _strategyProductTypes;
+
 	cuckoohash_map<ContractKey, std::shared_ptr<lockfree_set<UserContractKey, UserContractKeyHash>>, ContractKeyHash> _baseContractStrategyMap;
 	SessionContainer_Ptr<ContractKey, ContractKeyHash> _pricingNotifers;
 	SessionContainer_Ptr<UserContractKey, UserContractKeyHash> _tradingDeskNotifers;

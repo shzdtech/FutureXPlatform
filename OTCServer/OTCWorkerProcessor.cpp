@@ -166,12 +166,9 @@ void OTCWorkerProcessor::Initialize()
 void OTCWorkerProcessor::AddContractToMonitor(const ContractKey& contractId)
 {
 	auto pMdMap = PricingDataContext()->GetMarketDataMap();
-	if (!pMdMap->contains(contractId.InstrumentID()))
-	{
-		MarketDataDO mdo(contractId.ExchangeID(), contractId.InstrumentID());
-		pMdMap->insert(contractId.InstrumentID(), std::move(mdo));
-		SubscribeMarketData(contractId);
-	}
+	MarketDataDO mdo(contractId.ExchangeID(), contractId.InstrumentID());
+	pMdMap->insert(contractId.InstrumentID(), std::move(mdo));
+	SubscribeMarketData(contractId);
 }
 
 int OTCWorkerProcessor::SubscribePricingContracts(const UserContractKey& strategyKey, const StrategyPricingContract& strategyContract)
@@ -268,8 +265,12 @@ void OTCWorkerProcessor::UnregisterTradingDeskListener(const UserContractKey & u
 
 InstrumentCache & OTCWorkerProcessor::GetInstrumentCache()
 {
-	static InstrumentCache& cache = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_OTC_CONTRACT);
-	return cache;
+	return ContractCache::Get(ProductCacheType::PRODUCT_CACHE_OTC_CONTRACT);
+}
+
+const std::set<ProductType>& OTCWorkerProcessor::GetStrategyProductTypes() const
+{
+	return _strategyProductTypes;
 }
 
 IPricingDataContext_Ptr& OTCWorkerProcessor::PricingDataContext()
@@ -298,7 +299,7 @@ void OTCWorkerProcessor::TriggerOTCPricing(const StrategyContractDO& strategyDO,
 			catch (std::exception& e)
 			{
 				LOG_ERROR << e.what();
-			}	
+			}
 		}
 	}
 
@@ -356,11 +357,11 @@ void OTCWorkerProcessor::TriggerUpdateByMarketData(const MarketDataDO& mdDO)
 
 void OTCWorkerProcessor::TriggerOTCTradingByStrategy(const StrategyContractDO & strategyDO)
 {
-	GetOTCTradeProcessor()->TriggerOTCOrderUpdating(strategyDO);
+	GetOTCTradeWorkerProcessor()->TriggerOTCOrderUpdating(strategyDO);
 
-	GetOTCTradeProcessor()->TriggerAutoOrderUpdating(strategyDO);
+	GetOTCTradeWorkerProcessor()->TriggerAutoOrderUpdating(strategyDO);
 
-	GetOTCTradeProcessor()->TriggerHedgeOrderUpdating(strategyDO);
+	GetOTCTradeWorkerProcessor()->TriggerHedgeOrderUpdating(strategyDO);
 }
 
 void OTCWorkerProcessor::TriggerPricingByStrategy(const StrategyContractDO & strategyDO)

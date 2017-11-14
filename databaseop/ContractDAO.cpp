@@ -9,13 +9,13 @@
 #include "MySqlConnectionManager.h"
 
 
-////////////////////////////////////////////////////////////////////////
-// Name:       ContractDAO::FindBaseContractByCompany(const std::string& company)
-// Purpose:    Implementation of ContractDAO::FindBaseContractByCompany()
-// Parameters:
-// - company
-// Return:     std::shared_ptr<std::vector<ContractKey>>
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       ContractDAO::FindBaseContractByCompany(const std::string& company)
+ // Purpose:    Implementation of ContractDAO::FindBaseContractByCompany()
+ // Parameters:
+ // - company
+ // Return:     std::shared_ptr<std::vector<ContractKey>>
+ ////////////////////////////////////////////////////////////////////////
 
 VectorDO_Ptr<InstrumentDO> ContractDAO::FindContractByProductType(int productType, int lifePhase)
 {
@@ -181,21 +181,21 @@ bool ContractDAO::UpsertContracts(const std::vector<InstrumentDO>& instuments)
 	bool ret = false;
 	static const std::string sql_updatecontract(
 		"INSERT INTO contractinfo (exchange_symbol,contract_symbol,name,contract_type,underlying_symbol,expiration,"
-			"strikeprice,underlying_exchange,underlying_contract,product_type,lifephase) "
-			"VALUES(?,?,?,?,?,?,?,?,?,?,?) "
-			"ON DUPLICATE KEY UPDATE name=?,lifephase=?,expiration=?");
+		"strikeprice,underlying_exchange,underlying_contract,product_type,lifephase) "
+		"VALUES(?,?,?,?,?,?,?,?,?,?,?) "
+		"ON DUPLICATE KEY UPDATE name=?,lifephase=?,expiration=?");
 
-	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	//const InstrumentDO* lastContract;
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
+
 	try
 	{
-		AutoClosePreparedStmt_Ptr prestmt(
-			session->getConnection()->prepareStatement(sql_updatecontract));
+		AutoClosePreparedStmt_Ptr prestmt(session->getConnection()->prepareStatement(sql_updatecontract));
 
 		for (auto& contract : instuments)
 		{
 			//lastContract = &contract;
-			if(!contract.InstrumentID().empty() && !contract.ProductID.empty());
+			if (!contract.InstrumentID().empty() && !contract.ProductID.empty());
 			{
 				prestmt->setString(1, contract.ExchangeID());
 				prestmt->setString(2, contract.InstrumentID());

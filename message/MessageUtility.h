@@ -15,9 +15,27 @@ public:
 	}
 
 	template <typename T>
+	static T* WorkerProcessorPtr(IMessageProcessor* pMsgProcessor)
+	{
+		return (T*)(pMsgProcessor->getServerContext()->getSubTypeWorkerPtr());
+	}
+
+	template <typename T>
 	static T* WorkerProcessorPtr(const IMessageProcessor_Ptr& msgProcessor)
 	{
 		return (T*)(msgProcessor->getServerContext()->getSubTypeWorkerPtr());
+	}
+
+	template <typename T>
+	static T* AbstractWorkerProcessorPtr(IMessageProcessor* pMsgProcessor)
+	{
+		return (T*)(pMsgProcessor->getServerContext()->getAbstractSubTypeWorkerPtr());
+	}
+
+	template <typename T>
+	static T* AbstractWorkerProcessorPtr(const IMessageProcessor_Ptr& msgProcessor)
+	{
+		return (T*)(msgProcessor->getServerContext()->getAbstractSubTypeWorkerPtr());
 	}
 };
 

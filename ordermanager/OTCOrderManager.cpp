@@ -10,8 +10,8 @@
 #include "../databaseop/OTCOrderDAO.h"
 
 
-OTCOrderManager::OTCOrderManager(IOrderAPI* pOrderAPI, const IPricingDataContext_Ptr& pricingCtx, IOrderUpdatedEvent* listener)
-	: OrderManager(pOrderAPI, pricingCtx, listener),
+OTCOrderManager::OTCOrderManager(const IPricingDataContext_Ptr& pricingCtx, IOrderUpdatedEvent* listener)
+	: OrderManager(pricingCtx, listener),
 	_updatinglock(2048)
 { }
 
@@ -23,7 +23,7 @@ OTCOrderManager::OTCOrderManager(IOrderAPI* pOrderAPI, const IPricingDataContext
 // Return:     OrderDO_Ptr
 ////////////////////////////////////////////////////////////////////////
 
-OrderDO_Ptr OTCOrderManager::CreateOrder(OrderRequestDO& orderInfo)
+OrderDO_Ptr OTCOrderManager::CreateOrder(OrderRequestDO& orderInfo, IOrderAPI* orderAPI)
 {
 	OrderDO_Ptr ret;
 
@@ -63,7 +63,7 @@ OrderDO_Ptr OTCOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 				{
 					if (ret->OrderStatus == OrderStatusType::OPENED)
 					{
-						_contractOrderCtx.UpsertOrder(ret->OrderID, *ret);
+						_userOrderCtx.UpsertOrder(ret->OrderID, *ret);
 					}
 				}
 			}
@@ -81,7 +81,7 @@ OrderDO_Ptr OTCOrderManager::CreateOrder(OrderRequestDO& orderInfo)
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-void OTCOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
+void OTCOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO, IOrderAPI* orderAPI)
 {
 	if (!strategyDO.IsOTC())
 		return;
@@ -90,13 +90,19 @@ void OTCOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 
 	_updatinglock.update_fn(strategyDO, [this, &strategyDO](bool& lock)
 	{
-		cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr> orders;
+		OrderContractInnerMapType userOrderMap;
 
-		if (!_contractOrderCtx.ContractOrderMap().find(strategyDO.InstrumentID(), orders))
+		if (!_userOrderCtx.UserOrderMap().find(strategyDO.UserID(), userOrderMap))
 		{
-			_contractOrderCtx.ContractOrderMap().insert(strategyDO.InstrumentID(), cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>(true, 128));
-			_contractOrderCtx.ContractOrderMap().find(strategyDO.InstrumentID(), orders);
+			_userOrderCtx.UserOrderMap().insert(strategyDO.UserID(), OrderContractInnerMapType(true, 16));
+
+			_userOrderCtx.UserOrderMap().find(strategyDO.UserID(), userOrderMap);
+
+			userOrderMap.map()->insert(strategyDO.InstrumentID(), OrderIDInnerMapType(true, strategyDO.Depth * 2));
 		}
+
+		OrderIDInnerMapType orders;
+		userOrderMap.map()->find(strategyDO.InstrumentID(), orders);
 
 		IPricingDO_Ptr pricingDO_ptr;
 		if (_pricingCtx->GetPricingDataDOMap()->find(strategyDO, pricingDO_ptr))
@@ -130,7 +136,7 @@ void OTCOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 					auto tradeID = OTCOrderDAO::AcceptOrder(orderDO, currStatus);
 					if (tradeID > 0)
 					{
-						_contractOrderCtx.RemoveOrder(orderDO.OrderID);
+						_userOrderCtx.RemoveOrder(orderDO.OrderID);
 						orderDO.OrderStatus = currStatus;
 						orderDO.VolumeTraded = orderDO.Volume;
 						TradeRecordDO_Ptr trade(new TradeRecordDO(orderDO.ExchangeID(), orderDO.InstrumentID(), orderDO.PortfolioID(), orderDO.UserID()));
@@ -166,7 +172,7 @@ OTCUserPositionContext& OTCOrderManager::GetPositionContext()
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-int OTCOrderManager::OnMarketOrderUpdated(OrderDO& orderInfo)
+int OTCOrderManager::OnMarketOrderUpdated(OrderDO& orderInfo, IOrderAPI* orderAPI)
 {
 	return -1;
 }
@@ -180,13 +186,13 @@ int OTCOrderManager::OnMarketOrderUpdated(OrderDO& orderInfo)
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-OrderDO_Ptr OTCOrderManager::CancelOrder(OrderRequestDO& orderInfo)
+OrderDO_Ptr OTCOrderManager::CancelOrder(OrderRequestDO& orderInfo, IOrderAPI* orderAPI)
 {
 	if (!orderInfo.IsOTC()) orderInfo.ConvertToOTC();
 
 	OrderStatusType currStatus;
 	OTCOrderDAO::CancelOrder(orderInfo, currStatus);
-	OrderDO_Ptr ret = _contractOrderCtx.RemoveOrder(orderInfo.OrderID);
+	OrderDO_Ptr ret = _userOrderCtx.RemoveOrder(orderInfo.OrderID);
 	if (ret) ret->OrderStatus = OrderStatusType::CANCELED;
 
 	return ret;
@@ -200,24 +206,29 @@ OrderDO_Ptr OTCOrderManager::CancelOrder(OrderRequestDO& orderInfo)
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-OrderDO_Ptr OTCOrderManager::RejectOrder(OrderRequestDO& orderInfo)
+OrderDO_Ptr OTCOrderManager::RejectOrder(OrderRequestDO& orderInfo, IOrderAPI* orderAPI)
 {
 	OrderStatusType currStatus;
 	OTCOrderDAO::RejectOrder(orderInfo, currStatus);
-	OrderDO_Ptr ret = _contractOrderCtx.RemoveOrder(orderInfo.OrderID);
+	OrderDO_Ptr ret = _userOrderCtx.RemoveOrder(orderInfo.OrderID);
 	if (ret)	ret->OrderStatus = OrderStatusType::REJECTED;
 
 	return ret;
 }
 
 
-int OTCOrderManager::Reset()
+int OTCOrderManager::CancelUserOrders(const std::string& userId, IOrderAPI* orderAPI)
 {
 	std::lock_guard<std::mutex> scopelock(_mutex);
 
-	for (auto& it : _contractOrderCtx.GetAllOrder().lock_table())
+	OrderContractInnerMapType orderMap;
+	if (_userOrderCtx.UserOrderMap().find(userId, orderMap))
 	{
-		RejectOrder(*(it.second));
+		for (auto& it : orderMap.map()->lock_table())
+		{
+			for (auto& pair : it.second.map()->lock_table())
+				RejectOrder(*(pair.second), orderAPI);
+		}
 	}
 
 	//for (auto& it : _hedgeMgr)

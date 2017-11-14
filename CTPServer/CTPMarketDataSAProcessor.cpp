@@ -33,29 +33,17 @@ CTPMarketDataSAProcessor::CTPMarketDataSAProcessor(IServerContext* pServerCtx)
 {
 	setServerContext(pServerCtx);
 
-	std::string brokerid;
-	if (!_serverCtx->getConfigVal(CTP_MD_BROKERID, brokerid))
-		brokerid = SysParam::Get(CTP_MD_BROKERID);
-	_systemUser.setBrokerId(brokerid);
-
-	std::string userid;
-	if (!_serverCtx->getConfigVal(CTP_MD_USERID, userid))
-		userid = SysParam::Get(CTP_MD_USERID);
-	_systemUser.setUserId(userid);
-	_systemUser.setInvestorId(userid);
-
-	std::string pwd;
-	if (!_serverCtx->getConfigVal(CTP_MD_PASSWORD, pwd))
-		pwd = SysParam::Get(CTP_MD_PASSWORD);
-	_systemUser.setPassword(pwd);
-
-	std::string address;
-	if (!_serverCtx->getConfigVal(CTP_MD_SERVER, address))
+	std::string defaultCfg;
+	_serverCtx->getConfigVal(ExchangeRouterTable::TARGET_MD, defaultCfg);
+	ExchangeRouterDO exDO;
+	if (ExchangeRouterTable::TryFind(defaultCfg, exDO))
 	{
-		ExchangeRouterTable::TryFind(_systemUser.getBrokerId() + ':' + ExchangeRouterTable::TARGET_MD, address);
+		_systemUser.setBrokerId(exDO.BrokeID);
+		_systemUser.setUserId(exDO.UserID);
+		_systemUser.setInvestorId(exDO.UserID);
+		_systemUser.setPassword(exDO.Password);
+		_systemUser.setServer(exDO.Address);
 	}
-
-	_systemUser.setServer(address);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -85,7 +73,7 @@ void CTPMarketDataSAProcessor::Initialize(IServerContext* pServerCtx)
 			if (!CTPUtility::HasReturnError(LoginSystemUserIfNeed()))
 				break;
 
-			for (int cum_ms = 0; cum_ms < RetryInterval; cum_ms += millsec.count())
+			for (int cum_ms = 0; cum_ms < RetryInterval && !_closing; cum_ms += millsec.count())
 			{
 				std::this_thread::sleep_for(millsec);
 			}
@@ -117,24 +105,32 @@ int CTPMarketDataSAProcessor::LoginSystemUserIfNeed(void)
 		if (ret == -1)
 		{
 			LOG_WARN << getServerContext()->getServerUri() << ": System user " << _systemUser.getUserId()
-				<< " cannot connect to post market data server at: " << address;
+				<< " cannot connect to market data server at: " << address;
 
-			if (ExchangeRouterTable::TryFind(_systemUser.getBrokerId() + ':' + ExchangeRouterTable::TARGET_MD_AM, address))
+			std::string defaultCfg;
+			_serverCtx->getConfigVal(ExchangeRouterTable::TARGET_MD_AM, defaultCfg);
+			ExchangeRouterDO exDO;
+			if (ExchangeRouterTable::TryFind(defaultCfg, exDO))
 			{
-				CreateCTPAPI(_systemUser.getUserId(), address);
+				CreateCTPAPI(_systemUser.getUserId(), exDO.Address);
 				ret = LoginSystemUser();
 			}
-		}
 
-		if (ret == 0)
-		{
-			LOG_INFO << getServerContext()->getServerUri() << ": System user " << _systemUser.getUserId()
-				<< " has connected to market data server at: " << address;
+			if (ret == 0)
+			{
+				LOG_INFO << getServerContext()->getServerUri() << ": System user " << _systemUser.getUserId()
+					<< " has connected to post market data server at: " << address;
+			}
+			else
+			{
+				LOG_WARN << getServerContext()->getServerUri() << ": System user " << _systemUser.getUserId()
+					<< " cannot connect to post market data server at: " << address;
+			}
 		}
 		else
 		{
-			LOG_WARN << getServerContext()->getServerUri() << ": System user " << _systemUser.getUserId()
-				<< " cannot connect to post market data server at: " << address;
+			LOG_INFO << getServerContext()->getServerUri() << ": System user " << _systemUser.getUserId()
+				<< " has connected to market data server at: " << address;
 		}
 	}
 

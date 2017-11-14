@@ -14,55 +14,25 @@
 
 bool OTCTradeProcessor::Dispose(void)
 {
-	GetOTCOrderManager().Reset();
-	GetAutoOrderManager().Reset();
-	GetHedgeOrderManager().Reset();
-
 	return true;
-}
-
-
-OTCTradeProcessor::OTCTradeProcessor(const IPricingDataContext_Ptr& pricingCtx) :
-	_pricingCtx(pricingCtx)
-{
-}
-
-void OTCTradeProcessor::TriggerHedgeOrderUpdating(const PortfolioKey& portfolioKey)
-{
-	GetHedgeOrderManager().Hedge(portfolioKey);
-}
-
-void OTCTradeProcessor::TriggerAutoOrderUpdating(const StrategyContractDO& strategyDO)
-{
-	GetAutoOrderManager().TradeByStrategy(strategyDO);
-}
-
-void OTCTradeProcessor::TriggerOTCOrderUpdating(const StrategyContractDO& strategyDO)
-{
-	GetOTCOrderManager().TradeByStrategy(strategyDO);
 }
 
 OrderDO_Ptr OTCTradeProcessor::OTCNewOrder(OrderRequestDO& orderReq)
 {
-	return GetOTCOrderManager().CreateOrder(orderReq);
+	return GetOTCOrderManager().CreateOrder(orderReq, this);
 }
 
 OrderDO_Ptr OTCTradeProcessor::OTCCancelOrder(OrderRequestDO& orderReq)
 {
-	return GetOTCOrderManager().CancelOrder(orderReq);
+	return GetOTCOrderManager().CancelOrder(orderReq, this);
 }
 
 OrderDO_Ptr OTCTradeProcessor::CancelAutoOrder(const UserContractKey& userContractKey)
 {
-	return GetAutoOrderManager().CancelOrder(OrderRequestDO(userContractKey, ""));
+	return GetAutoOrderManager().CancelOrder(OrderRequestDO(userContractKey, ""), this);
 }
 
 OrderDO_Ptr OTCTradeProcessor::CancelHedgeOrder(const PortfolioKey& portfolioKey)
 {
-	return GetHedgeOrderManager().CancelOrder(OrderRequestDO(0, "", "", portfolioKey.UserID(), portfolioKey.PortfolioID()));
-}
-
-IPricingDataContext_Ptr& OTCTradeProcessor::PricingDataContext(void)
-{
-	return _pricingCtx;
+	return GetHedgeOrderManager().CancelOrder(OrderRequestDO(0, "", "", portfolioKey.UserID(), portfolioKey.PortfolioID()), this);
 }

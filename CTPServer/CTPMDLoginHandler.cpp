@@ -9,6 +9,7 @@
 #include "CTPRawAPI.h"
 #include "CTPConstant.h"
 #include "CTPMarketDataProcessor.h"
+#include "../bizutility/ExchangeRouterTable.h"
 #include "../utility/TUtil.h"
 
  ////////////////////////////////////////////////////////////////////////
@@ -21,53 +22,29 @@ int CTPMDLoginHandler::LoginFunction(const IMessageProcessor_Ptr& msgProcessor, 
 {
 	auto pProcessor = (CTPProcessor*)msgProcessor.get();
 
-	std::string brokerId(loginInfo->BrokerID);
-	if (brokerId.empty())
-	{
-		if (!msgProcessor->getServerContext()->getConfigVal(CTP_MD_BROKERID, brokerId))
-		{
-			SysParam::TryGet(CTP_MD_BROKERID, brokerId);
-		}
-		std::strncpy(loginInfo->BrokerID, brokerId.data(), sizeof(loginInfo->BrokerID));
-	}
-
-	std::string userId(loginInfo->UserID);
-	if (userId.empty())
-	{
-		if (!msgProcessor->getServerContext()->getConfigVal(CTP_MD_USERID, userId))
-		{
-			SysParam::TryGet(CTP_MD_USERID, userId);
-		}
-		std::strncpy(loginInfo->UserID, userId.data(), sizeof(loginInfo->UserID));
-	}
-	
-	std::string pwd(loginInfo->Password);
-	if (pwd.empty())
-	{
-		if (!msgProcessor->getServerContext()->getConfigVal(CTP_MD_PASSWORD, pwd))
-		{
-			SysParam::TryGet(CTP_MD_PASSWORD, pwd);
-		}
-		std::strncpy(loginInfo->Password, pwd.data(), sizeof(loginInfo->Password));
-	}
-
-	std::string address;
-	if (!msgProcessor->getServerContext()->getConfigVal(CTP_MD_SERVER, address))
+	/*if (!msgProcessor->getServerContext()->getConfigVal(CTP_MD_SERVER, address))
 	{
 		std::string server = serverName.empty() ? brokerId + ':' + ExchangeRouterTable::TARGET_MD : serverName;
 		ExchangeRouterTable::TryFind(server, address);
-	}
+	}*/
 
-	pProcessor->CreateCTPAPI(userId, address);
+	std::string server = serverName;
+	if (server.empty())
+		msgProcessor->getServerContext()->getConfigVal(ExchangeRouterTable::TARGET_MD, server);
+
+	ExchangeRouterDO exDO;
+	ExchangeRouterTable::TryFind(server, exDO);
+
+	pProcessor->CreateCTPAPI(exDO.UserID, exDO.Address);
 	int ret = pProcessor->RawAPI_Ptr()->MdAPIProxy()->get()->ReqUserLogin(loginInfo, requestId);
 
 	// try after market server
-	if (ret == -1 && serverName.empty())
+	if (ret == -1)
 	{
-		std::string server = brokerId + ':' + ExchangeRouterTable::TARGET_MD_AM;
-		if (ExchangeRouterTable::TryFind(server, address))
+		msgProcessor->getServerContext()->getConfigVal(ExchangeRouterTable::TARGET_MD_AM, server);
+		if (ExchangeRouterTable::TryFind(server, exDO))
 		{
-			pProcessor->CreateCTPAPI(userId, address);
+			pProcessor->CreateCTPAPI(exDO.UserID, exDO.Address);
 			ret = pProcessor->RawAPI_Ptr()->MdAPIProxy()->get()->ReqUserLogin(loginInfo, requestId);
 		}
 	}

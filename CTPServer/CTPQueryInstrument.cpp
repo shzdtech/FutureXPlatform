@@ -126,8 +126,8 @@ dataobj_ptr CTPQueryInstrument::HandleResponse(const uint32_t serialId, const pa
 		InstrumentDO insDO(pData->ExchangeID, pData->InstrumentID);
 
 		insDO.Name = boost::locale::conv::to_utf<char>(pData->InstrumentName, CHARSET_GB2312);
-		UnderlyingMap::TryFind(pData->ProductID, insDO.ProductID);
 		insDO.ProductType = (ProductType)(pData->ProductClass - THOST_FTDC_PC_Futures);
+		insDO.ProductID = pData->ProductID;
 		insDO.ContractType = ContractType::CONTRACTTYPE_FUTURE;
 		insDO.DeliveryYear = pData->DeliveryYear;
 		insDO.DeliveryMonth = pData->DeliveryMonth;
@@ -168,6 +168,8 @@ dataobj_ptr CTPQueryInstrument::HandleResponse(const uint32_t serialId, const pa
 				break;
 			}
 		}
+
+		UnderlyingMap::TryMap(insDO, insDO.ProductID);
 
 		if (!ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(pData->InstrumentID))
 		{

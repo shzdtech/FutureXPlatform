@@ -57,9 +57,6 @@
     <ClCompile Include="OTCQueryOrder.cpp">
       <Filter>源文件\TradeHandler</Filter>
     </ClCompile>
-    <ClCompile Include="OTCQueryInstrument.cpp">
-      <Filter>源文件\TradeHandler</Filter>
-    </ClCompile>
     <ClCompile Include="OTCQueryContractParam.cpp">
       <Filter>源文件\TradingDesk</Filter>
     </ClCompile>
@@ -132,6 +129,12 @@
     <ClCompile Include="OTCQueryValuationRisk.cpp">
       <Filter>源文件\TradingDesk</Filter>
     </ClCompile>
+    <ClCompile Include="OTCTradeWorkerProcessor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="OTCQueryInstrument.cpp">
+      <Filter>源文件\MarketDataHandler</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="otcserver_export.h">
@@ -168,9 +171,6 @@
       <Filter>头文件\TradeHandler</Filter>
     </ClInclude>
     <ClInclude Include="OTCCancelOrder.h">
-      <Filter>头文件\TradeHandler</Filter>
-    </ClInclude>
-    <ClInclude Include="OTCQueryInstrument.h">
       <Filter>头文件\TradeHandler</Filter>
     </ClInclude>
     <ClInclude Include="OTCUpdateUserParam.h">
@@ -238,6 +238,12 @@
     </ClInclude>
     <ClInclude Include="OTCQueryValuationRisk.h">
       <Filter>头文件\TradingDesk</Filter>
+    </ClInclude>
+    <ClInclude Include="OTCTradeWorkerProcessor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="OTCQueryInstrument.h">
+      <Filter>头文件\MarketDataHandler</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

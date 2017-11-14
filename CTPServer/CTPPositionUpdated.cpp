@@ -24,19 +24,23 @@ dataobj_ptr CTPPositionUpdated::HandleResponse(const uint32_t serialId, const pa
 
 			LOG_DEBUG << pData->InstrumentID << ',' << pData->PositionDate << ',' << pData->PosiDirection;
 
+			auto& userId = session->getUserInfo().getUserId();
+
+			pWorkerProc->UpdateYdPosition(userId, ret);
+
 			if (ret->ExchangeID() == EXCHANGE_SHFE)
 			{
 				if (pData->PositionDate == THOST_FTDC_PSD_Today)
 				{
-					ret = pWorkerProc->GetUserPositionContext()->UpsertPosition(session->getUserInfo().getUserId(), *ret, false, false);
+					ret = pWorkerProc->GetUserPositionContext()->UpsertPosition(userId, *ret, false, false);
 				}
 				else
 				{
-					ret = pWorkerProc->GetUserPositionContext()->UpsertPosition(session->getUserInfo().getUserId(), *ret, true, false);
+					ret = pWorkerProc->GetUserPositionContext()->UpsertPosition(userId, *ret, true, false);
 				}
 			}
 			else
-				ret = pWorkerProc->GetUserPositionContext()->UpsertPosition(session->getUserInfo().getUserId(), *ret, false, true);
+				ret = pWorkerProc->GetUserPositionContext()->UpsertPosition(userId, *ret, false, true);
 
 			auto pProcessor = (CTPProcessor*)msgProcessor.get();
 			if (!(pProcessor->DataLoadMask & CTPProcessor::POSITION_DATA_LOADED) || ret->Position() < 0)

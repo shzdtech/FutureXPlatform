@@ -7,7 +7,7 @@
 
 #include "CTPOTCOptionServiceFactory.h"
 #include "CTPOTCSessionProcessor.h"
-#include "CTPOTCTradeProcessor.h"
+#include "CTPOTCTradeWorkerProcessor.h"
 #include "CTPOTCOptionWorkerProcessor.h"
 
 #include "../CTPServer/CTPWorkerProcessorID.h"
@@ -54,22 +54,16 @@ IMessageProcessor_Ptr CTPOTCOptionServiceFactory::CreateWorkerProcessor(IServerC
 {
 	if (!serverCtx->getWorkerProcessor())
 	{
-		auto positionCtx = std::static_pointer_cast<IUserPositionContext>(AppContext::GetData(STR_KEY_USER_POSITION));
-		if (!positionCtx)
-		{
-			positionCtx = std::make_shared<PortfolioPositionContext>();
-			AppContext::SetData(STR_KEY_USER_POSITION, positionCtx);
-		}
+		std::string tradeWorker;
+		serverCtx->getConfigVal("tradeworker", tradeWorker);
 
-		auto pricingCtx = std::static_pointer_cast<IPricingDataContext>(serverCtx->getAttribute(STR_KEY_SERVER_PRICING_DATACONTEXT));
-		std::shared_ptr<CTPOTCTradeProcessor> tradeProcessor(new CTPOTCTradeProcessor(serverCtx, pricingCtx, positionCtx));
-		ManualOpHub::Instance()->addListener(tradeProcessor);
+		auto tradeProcessor = std::static_pointer_cast<CTPOTCTradeWorkerProcessor>(GlobalProcessorRegistry::FindProcessor(tradeWorker));
 
-		tradeProcessor->Initialize(serverCtx);
-		std::shared_ptr<CTPOTCWorkerProcessor> worker_ptr(new CTPOTCOptionWorkerProcessor(serverCtx, tradeProcessor));
+		std::shared_ptr<CTPOTCOptionWorkerProcessor> worker_ptr(new CTPOTCOptionWorkerProcessor(serverCtx, tradeProcessor));
 		worker_ptr->Initialize(serverCtx);
 		serverCtx->setWorkerProcessor(worker_ptr);
-		serverCtx->setSubTypeWorkerPtr(static_cast<OTCWorkerProcessor*>(worker_ptr.get()));
+		serverCtx->setSubTypeWorkerPtr(static_cast<CTPOTCOptionWorkerProcessor*>(worker_ptr.get()));
+		serverCtx->setAbstractSubTypeWorkerPtr(static_cast<OTCWorkerProcessor*>(worker_ptr.get()));
 	}
 
 	return serverCtx->getWorkerProcessor();

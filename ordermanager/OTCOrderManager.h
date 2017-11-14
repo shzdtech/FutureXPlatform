@@ -16,15 +16,15 @@
 class ORDERMGR_CLASS_EXPORT OTCOrderManager : public OrderManager
 {
 public:
-	OTCOrderManager(IOrderAPI* pOrderAPI, const IPricingDataContext_Ptr& pricingCtx, IOrderUpdatedEvent* listener);
+	OTCOrderManager(const IPricingDataContext_Ptr& pricingCtx, IOrderUpdatedEvent* listener);
 
-	int Reset();
-	OrderDO_Ptr CreateOrder(OrderRequestDO& orderInfo);
-	OrderDO_Ptr CancelOrder(OrderRequestDO& orderInfo);
-	OrderDO_Ptr RejectOrder(OrderRequestDO& orderInfo);
-	int OnMarketOrderUpdated(OrderDO& orderInfo);
+	int CancelUserOrders(const std::string& userId, IOrderAPI* orderAPI);
+	OrderDO_Ptr CreateOrder(OrderRequestDO& orderInfo, IOrderAPI* orderAPI);
+	OrderDO_Ptr CancelOrder(OrderRequestDO& orderInfo, IOrderAPI* orderAPI);
+	OrderDO_Ptr RejectOrder(OrderRequestDO& orderInfo, IOrderAPI* orderAPI);
+	int OnMarketOrderUpdated(OrderDO& orderInfo, IOrderAPI* orderAPI);
 
-	void TradeByStrategy(const StrategyContractDO& strategyDO);
+	void TradeByStrategy(const StrategyContractDO& strategyDO, IOrderAPI* orderAPI);
 
 	OTCUserPositionContext& GetPositionContext();
 

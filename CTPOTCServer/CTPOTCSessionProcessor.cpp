@@ -54,9 +54,9 @@ bool CTPOTCSessionProcessor::OnSessionClosing(void)
 	{
 		if (auto sessionPtr = getMessageSession())
 			if (sessionPtr->getUserInfo().getRole() == ROLE_TRADINGDESK)
-				if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(shared_from_this()))
+				if (auto pWorkerProc = MessageUtility::AbstractWorkerProcessorPtr<OTCWorkerProcessor>(this))
 				{
-					if (auto pWorkerTrader = pWorkerProc->GetOTCTradeProcessor())
+					if (auto pWorkerTrader = pWorkerProc->GetOTCTradeWorkerProcessor())
 					{
 						// Dispose auto order
 						auto pUserStrategyMap = pWorkerProc->PricingDataContext()->GetUserStrategyMap();

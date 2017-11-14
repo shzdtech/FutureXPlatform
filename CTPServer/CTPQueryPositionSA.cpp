@@ -113,7 +113,8 @@ dataobj_ptr CTPQueryPositionSA::HandleRequest(const uint32_t serialId, const dat
 		if (!found)
 			throw NotFoundException();
 
-		pWorkerProc->QueryUserPositionAsyncIfNeed();
+		if (!pWorkerProc->IsLoadPositionFromDB())
+			pWorkerProc->QueryUserPositionAsyncIfNeed();
 	}
 
 	return nullptr;

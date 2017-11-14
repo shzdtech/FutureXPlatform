@@ -51,7 +51,7 @@ dataobj_ptr CTPSyncPositionDiffer::HandleRequest(const uint32_t serialId, const 
 				std::string contract, portfolio;
 				PositionDirectionType direction;
 				std::tie(contract, portfolio, direction) = pair.first;
-				position_ptr = pWorkerProc->FindSysYdPostion(contract, portfolio, direction);
+				position_ptr = pWorkerProc->FindSysYdPostion(userInfo.getUserId(), contract, portfolio, direction);
 				if (!position_ptr)
 				{
 					if (position_ptr = pWorkerProc->FindDBYdPostion(userInfo.getUserId(), contract, portfolio, direction))
@@ -60,7 +60,7 @@ dataobj_ptr CTPSyncPositionDiffer::HandleRequest(const uint32_t serialId, const 
 					}
 					else
 					{
-						if (position_ptr = pWorkerProc->FindSysYdPostion(contract, EMPTY_STRING, direction))
+						if (position_ptr = pWorkerProc->FindSysYdPostion(userInfo.getUserId(), contract, EMPTY_STRING, direction))
 						{
 							if (!portfolio.empty())
 							{

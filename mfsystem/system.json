@@ -2,7 +2,7 @@
   "system": {
     "version": "0.98-2017.08.06-00.00",
     "service": {
-      "configs": [ "service.json" ]
+      "configs": [ "service.json", "service.etf.json"]
     },
     "libpath": "./lib;",
     "databases": {
@@ -12,10 +12,11 @@
         "dbtype": "mysql",
         "url": "tcp://rm-bp1n7owr2i5d2bvm6.mysql.rds.aliyuncs.com/futurexdb",
         "user": "zhuyi",
-        "password": "9D559FB73ABF79ECC9C5",
-        "encryption": "1",
+        "password": "Bwrw4x9qTn",
+        "passwordback": "9D559FB73ABF79ECC9C5",
+        "encryption": "0",
         "autocommit": "1",
-        "poolsize": "5",
+        "poolsize": "15",
         "heartbeat": "60000",
         "checksql": "select 1"
       }

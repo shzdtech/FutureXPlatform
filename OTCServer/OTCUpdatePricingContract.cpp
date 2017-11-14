@@ -22,7 +22,7 @@ dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, con
 
 	auto ret = std::make_shared<VectorDO<StrategyContractDO>>();
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::AbstractWorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		auto pStrategyDO = (StrategyContractDO*)reqDO.get();
 		pStrategyDO->SetUserID(session->getUserInfo().getUserId());

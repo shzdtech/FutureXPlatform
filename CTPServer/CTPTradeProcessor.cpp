@@ -13,6 +13,8 @@
 #include "../message/DefMessageID.h"
 #include "../message/message_macro.h"
 #include "../bizutility/ContractCache.h"
+#include "../message/MessageUtility.h"
+#include "CTPTradeWorkerProcessor.h"
 
 #include <filesystem>
 
@@ -31,6 +33,8 @@ CTPTradeProcessor::CTPTradeProcessor()
 	_exiting = false;
 	_tradeCnt = 0;
 	_updateFlag.clear(std::memory_order_release);
+
+
 }
 
 CTPTradeProcessor::CTPTradeProcessor(const CTPRawAPI_Ptr& rawAPI)
@@ -101,10 +105,13 @@ bool CTPTradeProcessor::OnSessionClosing(void)
 
 	if (auto sessionptr = getMessageSession())
 	{
-		CThostFtdcUserLogoutField logout{};
-		std::strncpy(logout.BrokerID, sessionptr->getUserInfo().getBrokerId().data(), sizeof(logout.BrokerID));
-		std::strncpy(logout.UserID, sessionptr->getUserInfo().getUserId().data(), sizeof(logout.UserID));
-		_rawAPI->TdAPIProxy()->get()->ReqUserLogout(&logout, 0);
+		if (auto tdProxy = _rawAPI->TdAPIProxy())
+		{
+			CThostFtdcUserLogoutField logout{};
+			std::strncpy(logout.BrokerID, sessionptr->getUserInfo().getBrokerId().data(), sizeof(logout.BrokerID));
+			std::strncpy(logout.UserID, sessionptr->getUserInfo().getUserId().data(), sizeof(logout.UserID));
+			tdProxy->get()->ReqUserLogout(&logout, 0);
+		}
 	}
 
 	return true;
@@ -304,7 +311,10 @@ void CTPTradeProcessor::OnRtnTrade(CThostFtdcTradeField *pTrade)
 
 	OnResponseMacro(MSG_ID_TRADE_RTN, 0, pTrade);
 
-	QueryUserPositionAsyncIfNeed();
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(this))
+	{
+		QueryUserPositionAsyncIfNeed();
+	}
 }
 
 void CTPTradeProcessor::QueryUserPositionAsyncIfNeed()
@@ -324,14 +334,18 @@ void CTPTradeProcessor::QueryPositionAsync(void)
 		std::this_thread::sleep_for(std::chrono::seconds(2));
 		if (!_exiting && currentCnt == _tradeCnt)
 		{
-			CThostFtdcQryInvestorPositionField req{};
-			_updateFlag.clear(std::memory_order::memory_order_release);
-			int iRet = _rawAPI->TdAPIProxy()->get()->ReqQryInvestorPosition(&req, -1);
-			if (iRet == 0 || _updateFlag.test_and_set(std::memory_order::memory_order_acquire)) // check if lock
-				break;
+			if (auto tdProxy = _rawAPI->TdAPIProxy())
+			{
+				CThostFtdcQryInvestorPositionField req{};
+				_updateFlag.clear(std::memory_order::memory_order_release);
+				int iRet = tdProxy->get()->ReqQryInvestorPosition(&req, -1);
+				if (iRet == 0 || _updateFlag.test_and_set(std::memory_order::memory_order_acquire)) // check if lock
+					break;
+			}
 		}
 	}
 }
+
 
 ///报单录入错误回报
 void CTPTradeProcessor::OnErrRtnOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo)

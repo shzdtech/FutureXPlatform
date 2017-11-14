@@ -1,16 +1,31 @@
 #include "UnderlyingMap.h"
 #include <map>
 
-static std::map<std::string, std::string> _underlyingMap = 
-{
-	{"SRC", "SR_O"},{ "SRP", "SR_O" }
-};
 
-bool UnderlyingMap::TryFind(const std::string & underlying, std::string & mapped)
-{
-	auto it = _underlyingMap.find(underlying);
-	auto found = it != _underlyingMap.end();
-	mapped = found ? it->second : underlying;
 
-	return found;
+bool UnderlyingMap::TryMap(const InstrumentDO& instDO, std::string & mapped)
+{
+	if (instDO.ProductID == "SRC" || instDO.ProductID == "SRP")
+	{
+		mapped = "SR_O";
+		return true;
+	}
+
+	if (instDO.ProductType == ProductType::PRODUCT_ETFOPTION || instDO.ProductType == ProductType::PRODUCT_STOCK)
+	{
+		if (instDO.UnderlyingContract.InstrumentID().empty())
+		{
+			mapped = instDO.InstrumentID();
+		}
+		else
+		{
+			mapped = instDO.UnderlyingContract.InstrumentID() + "_O";
+		}
+
+		return true;
+	}
+
+	mapped = instDO.ProductID;
+
+	return false;
 }

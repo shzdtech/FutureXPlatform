@@ -43,7 +43,7 @@ dataobj_ptr OTCSubMarketData::HandleRequest(const uint32_t serialId, const datao
 
 	auto stdo = (VectorDO<ContractKey>*)reqDO.get();
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::AbstractWorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		if (!stdo->empty())
 		{

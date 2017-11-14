@@ -19,7 +19,11 @@
 #endif
 
 static const char* UUID_OTC_CONTRACT_FACTORY = "factory.otc.contract";
+static const char* UUID_OTC_TRADE_FACTORY = "factory.otc.trade";
+
 static const char* UUID_OTC_OPTION_FACTORY = "factory.otc.option";
+static const char* UUID_OTC_OPTION_TRADE_FACTORY = "factory.otc.option.trade";
+
 
 #endif	/* CTPEXPORT_H */
 

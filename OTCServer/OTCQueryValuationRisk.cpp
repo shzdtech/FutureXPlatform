@@ -21,10 +21,10 @@ dataobj_ptr OTCQueryValuationRisk::HandleRequest(const uint32_t serialId, const 
 
 	auto ret = std::make_shared<VectorDO<RiskDO>>();
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::AbstractWorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		UnderlyingRiskMap riskMap;
-		pWorkerProc->GetOTCTradeProcessor()->GetOTCOrderManager().
+		pWorkerProc->GetOTCTradeWorkerProcessor()->GetOTCOrderManager().
 			GetPositionContext().GetValuationRiskByPortfolio(pWorkerProc->PricingDataContext(), session->getUserInfo().getUserId(), *pValuationDO, riskMap);
 
 		for (auto it : riskMap)

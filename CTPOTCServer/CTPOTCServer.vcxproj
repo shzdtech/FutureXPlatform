@@ -187,7 +187,10 @@
     <ClCompile Include="CTPOTCOptionWorkerProcessor.cpp" />
     <ClCompile Include="CTPOTCQueryRisk.cpp" />
     <ClCompile Include="CTPOTCQueryValuationRisk.cpp" />
+    <ClCompile Include="CTPOTCTradeLoginHandler.cpp" />
     <ClCompile Include="CTPOTCTradeProcessor.cpp" />
+    <ClCompile Include="CTPOTCTradeServiceFactory.cpp" />
+    <ClCompile Include="CTPOTCTradeWorkerProcessor.cpp" />
     <ClCompile Include="CTPOTCSessionProcessor.cpp" />
     <ClCompile Include="CTPOTCServiceFactory.cpp" />
     <ClCompile Include="CTPOTCWorkerProcessor.cpp" />
@@ -200,7 +203,10 @@
     <ClInclude Include="CTPOTCOptionWorkerProcessor.h" />
     <ClInclude Include="CTPOTCQueryRisk.h" />
     <ClInclude Include="CTPOTCQueryValuationRisk.h" />
+    <ClInclude Include="CTPOTCTradeLoginHandler.h" />
     <ClInclude Include="CTPOTCTradeProcessor.h" />
+    <ClInclude Include="CTPOTCTradeServiceFactory.h" />
+    <ClInclude Include="CTPOTCTradeWorkerProcessor.h" />
     <ClInclude Include="CTPOTCSessionProcessor.h" />
     <ClInclude Include="CTPOTCServiceFactory.h" />
     <ClInclude Include="CTPOTCWorkerProcessor.h" />

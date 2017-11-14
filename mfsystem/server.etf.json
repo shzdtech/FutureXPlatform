@@ -38,8 +38,20 @@
           "timeout": "120",
           "max_msg_size": "0x10000"
         },
+        "option_trade": {
+          "port": "31016",
+          "workerthread": "1",
+          "timeout": "120",
+          "max_msg_size": "0x10000"
+        },
         "stock": {
           "port": "31015",
+          "workerthread": "1",
+          "timeout": "120",
+          "max_msg_size": "0x10000"
+        },
+        "stock_trade": {
+          "port": "31017",
           "workerthread": "1",
           "timeout": "120",
           "max_msg_size": "0x10000"

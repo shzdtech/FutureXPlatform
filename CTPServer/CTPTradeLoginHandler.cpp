@@ -29,58 +29,45 @@ int CTPTradeLoginHandler::LoginFunction(const IMessageProcessor_Ptr& msgProcesso
 {
 	auto pProcessor = (CTPProcessor*)msgProcessor.get();
 
-	std::string brokerId(loginInfo->BrokerID);
-	std::string userId(loginInfo->UserID);
-	std::string pwd(loginInfo->Password);
+	int ret = 0;
 
-	//bool hasPermission = CheckRolePermission(msgProcessor->getMessageSession(), UserRoleType::ROLE_TRADINGDESK, false);
-	//if (hasPermission)
-	//{
-	//	if (brokerId.empty())
-	//	{
-	//		if (!msgProcessor->getServerContext()->getConfigVal(CTP_TRADER_BROKERID, brokerId))
-	//		{
-	//			SysParam::TryGet(CTP_TRADER_BROKERID, brokerId);
-	//		}
-	//		std::strncpy(loginInfo->BrokerID, brokerId.data(), sizeof(loginInfo->BrokerID));
-	//	}
+	std::string server = serverName;
+	if (server.empty())
+		msgProcessor->getServerContext()->getConfigVal(ExchangeRouterTable::TARGET_TD, server);
 
-	//	if (userId.empty())
-	//	{
-	//		if (!msgProcessor->getServerContext()->getConfigVal(CTP_TRADER_USERID, userId))
-	//		{
-	//			SysParam::TryGet(CTP_TRADER_USERID, userId);
-	//		}
-	//		std::strncpy(loginInfo->UserID, userId.data(), sizeof(loginInfo->UserID));
-	//	}
+	ExchangeRouterDO exDO;
+	ExchangeRouterTable::TryFind(server, exDO);
 
-	//	if (pwd.empty())
-	//	{
-	//		if (!msgProcessor->getServerContext()->getConfigVal(CTP_TRADER_PASSWORD, pwd))
-	//		{
-	//			SysParam::TryGet(CTP_TRADER_PASSWORD, pwd);
-	//		}
-	//		std::strncpy(loginInfo->Password, pwd.data(), sizeof(loginInfo->Password));
-	//	}
-	//}
+	pProcessor->CreateCTPAPI(loginInfo->UserID, exDO.Address);
 
-	std::string address;
-	if (!msgProcessor->getServerContext()->getConfigVal(CTP_TRADER_SERVER, address))
+	CThostFtdcReqAuthenticateField reqAuth{};
+
+	if (!exDO.AuthCode.empty())
 	{
-		std::string server = serverName.empty() ? brokerId + ':' + ExchangeRouterTable::TARGET_TD : serverName;
-		ExchangeRouterTable::TryFind(server, address);
+		std::strncpy(reqAuth.BrokerID, exDO.BrokeID.data(), sizeof(reqAuth.BrokerID));
+		std::strncpy(reqAuth.UserID, loginInfo->UserID, sizeof(reqAuth.UserID));
+		std::strncpy(reqAuth.AuthCode, exDO.AuthCode.data(), sizeof(reqAuth.AuthCode));
+		std::strncpy(reqAuth.UserProductInfo, exDO.ProductInfo.data(), sizeof(reqAuth.UserProductInfo));
+
+		ret = pProcessor->RawAPI_Ptr()->TdAPIProxy()->get()->ReqAuthenticate(&reqAuth, 0);
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
 
-	pProcessor->CreateCTPAPI(userId, address);
-	int ret = pProcessor->RawAPI_Ptr()->TdAPIProxy()->get()->ReqUserLogin(loginInfo, requestId);
+	if(ret == 0)
+		ret = pProcessor->RawAPI_Ptr()->TdAPIProxy()->get()->ReqUserLogin(loginInfo, requestId);
 
 	// try after market server
-	if (ret == -1 && serverName.empty())
+	if (ret == -1)
 	{
-		std::string server = brokerId + ':' + ExchangeRouterTable::TARGET_TD_AM;
-		if (ExchangeRouterTable::TryFind(server, address))
+		msgProcessor->getServerContext()->getConfigVal(ExchangeRouterTable::TARGET_TD_AM, server);
+		if (ExchangeRouterTable::TryFind(server, exDO))
 		{
-			pProcessor->CreateCTPAPI(userId, address);
+			pProcessor->CreateCTPAPI(loginInfo->UserID, exDO.Address);
+			if (exDO.AuthCode.empty())
+			{
+				ret = pProcessor->RawAPI_Ptr()->TdAPIProxy()->get()->ReqAuthenticate(&reqAuth, 0);
+				std::this_thread::sleep_for(std::chrono::seconds(1));
+			}
 			ret = pProcessor->RawAPI_Ptr()->TdAPIProxy()->get()->ReqUserLogin(loginInfo, requestId);
 		}
 	}
@@ -97,9 +84,21 @@ dataobj_ptr CTPTradeLoginHandler::HandleResponse(const uint32_t serialId, const 
 	std::strncpy(reqsettle.InvestorID, session->getUserInfo().getInvestorId().data(), sizeof(reqsettle.InvestorID));
 	((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqSettlementInfoConfirm(&reqsettle, 0);
 
-	CThostFtdcQryInvestorPositionField req{};
-	((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryInvestorPosition(&req, -1);
-	std::this_thread::sleep_for(std::chrono::seconds(1));
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+	{
+		pWorkerProc->RegisterLoggedSession(session);
+		
+		if (pWorkerProc->IsLoadPositionFromDB())
+		{
+			pWorkerProc->LoadPositonFromDatabase(session->getUserInfo().getUserId(), std::to_string(session->getUserInfo().getTradingDay()));
+		}
+		else
+		{
+			CThostFtdcQryInvestorPositionField req{};
+			((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryInvestorPosition(&req, -1);
+			std::this_thread::sleep_for(std::chrono::seconds(1));
+		}
+	}
 
 	return ret;
 }

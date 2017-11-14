@@ -43,7 +43,7 @@ dataobj_ptr OTCQueryContractParam::HandleRequest(const uint32_t serialId, const 
 
 	auto contractVec_Ptr = std::make_shared<VectorDO<ContractParamDO>>();
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::AbstractWorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		auto contractMap = pWorkerProc->PricingDataContext()->GetContractParamMap();
 

@@ -198,35 +198,37 @@ void MySqlConnectionManager::CheckStatus()
 
 		for (int i = 0; i < _connConfig.DB_POOL_SIZE; i++)
 		{
-			auto mgdsession = _connpool_ptr->lease_at(i);
-			if (auto connptr = mgdsession->getConnection())
+			if (auto mgdsession = _connpool_ptr->lease_at_nowait(i))
 			{
-				bool hasErr = false;
-				try
+				if (auto connptr = mgdsession->getConnection())
 				{
-					AutoCloseStatement_Ptr checkStmt(connptr->createStatement());
-					AutoCloseResultSet_Ptr rs(checkStmt->executeQuery(checkSql));
-				}
-				catch (std::exception& ex)
-				{
-					hasErr = true;
-					LOG_ERROR << "Error occurs when checking DB alive: " << ex.what();
-				}
-				catch (...)
-				{
-					hasErr = true;
-				}
-
-				if (hasErr)
-				{
+					bool hasErr = false;
 					try
 					{
-						connptr->reconnect();
+						AutoCloseStatement_Ptr checkStmt(connptr->createStatement());
+						AutoCloseResultSet_Ptr rs(checkStmt->executeQuery(checkSql));
 					}
-					catch (...) {
+					catch (std::exception& ex)
+					{
+						hasErr = true;
+						LOG_ERROR << "Error occurs when checking DB alive: " << ex.what();
 					}
-				}
-			};
+					catch (...)
+					{
+						hasErr = true;
+					}
+
+					if (hasErr)
+					{
+						try
+						{
+							connptr->reconnect();
+						}
+						catch (...) {
+						}
+					}
+				};
+			}
 		}
 	}
 

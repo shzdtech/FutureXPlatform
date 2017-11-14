@@ -22,15 +22,13 @@ dataobj_ptr CTPOTCQueryRisk::HandleRequest(const uint32_t serialId, const dataob
 
 	if (!stdo->empty())
 	{
-		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCWorkerProcessor>(msgProcessor))
+		if (auto pOTCTradeProc = MessageUtility::WorkerProcessorPtr<CTPOTCTradeWorkerProcessor>(msgProcessor))
 		{
 			UnderlyingRiskMap riskMap;
 
-			auto pOTCTradeProc = (CTPOTCTradeProcessor*)pWorkerProc->GetOTCTradeProcessor();
-
-			pOTCTradeProc->GetUserPositionContext()->GetRiskByPortfolio(pWorkerProc->PricingDataContext(), session->getUserInfo().getUserId(), stdo->begin()->second, riskMap);
+			pOTCTradeProc->GetUserPositionContext()->GetRiskByPortfolio(pOTCTradeProc->PricingDataContext(), session->getUserInfo().getUserId(), stdo->begin()->second, riskMap);
 			
-			pOTCTradeProc->GetOTCOrderManager().GetPositionContext().GetRiskByPortfolio(pWorkerProc->PricingDataContext(), session->getUserInfo().getUserId(), stdo->begin()->second, riskMap);
+			pOTCTradeProc->GetOTCOrderManager().GetPositionContext().GetRiskByPortfolio(pOTCTradeProc->PricingDataContext(), session->getUserInfo().getUserId(), stdo->begin()->second, riskMap);
 
 			for (auto it : riskMap)
 			{

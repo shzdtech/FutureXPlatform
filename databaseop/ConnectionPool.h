@@ -9,7 +9,7 @@
 //#include <glog/logging.h>
 #include "../utility/semaphore.h"
 
-static const std::chrono::milliseconds INFINITE_TIMEOUT(0);
+static const std::chrono::milliseconds INFINITE_TIMEOUT(_LLONG_MAX);
 
 template<typename CONNTYPE>
 class managedsession
@@ -57,13 +57,14 @@ public:
 		{
 			if (pool)
 				_conn = pool->try_lease(_pos, millisec);
-
 		}
 
-		managedsession4pool(connection_pool* pool, int pos) : _pool(pool), _pos(pos)
+		managedsession4pool(connection_pool* pool, int pos) : _pool(pool)
 		{
 			if (_conn = pool->try_lease_at(pos))
 				_pos = pos;
+			else
+				_pos = -1;
 		}
 
 	public:
@@ -78,7 +79,7 @@ public:
 
 	private:
 		connection_pool* _pool;
-		int _pos = -1;
+		int _pos;
 	};
 
 	typedef std::shared_ptr<managedsession<CONNTYPE>> managedsession_ptr;
@@ -120,7 +121,7 @@ public:
 		return managedsession_ptr(new managedsession4pool(this, millisecs));
 	}
 
-	managedsession_ptr lease_at(int pos)
+	managedsession_ptr lease_at_nowait(int pos)
 	{
 		return managedsession_ptr(new managedsession4pool(this, pos));
 	}
@@ -145,44 +146,20 @@ public:
 		std::chrono::milliseconds millisecs = INFINITE_TIMEOUT)
 	{
 		pos = -1;
-		int i = 0;
 		std::shared_ptr<CONNTYPE> conn;
-		if (millisecs == INFINITE_TIMEOUT)
+
+		for (long long m = 0; m < millisecs.count(); m++)
 		{
-			for (; ;)
+			for (int i = 0; i < _poolsize; i++)
 			{
 				if (conn = try_lease_at(i))
 				{
 					pos = i;
 					return conn;
 				}
-
-				if (++i >= _poolsize)
-				{
-					i = 0;
-				}
 			}
-		}
-		else
-		{
-			for (long long m = 0; m < millisecs.count(); m++)
-			{
-				for (;;)
-				{
-					if (conn = try_lease_at(i))
-					{
-						pos = i;
-						return conn;
-					}
 
-					if (++i >= _poolsize)
-					{
-						i = 0;
-					}
-				}
-
-				std::this_thread::sleep_for(std::chrono::milliseconds(1));
-			}
+			std::this_thread::sleep_for(std::chrono::milliseconds(1));
 		}
 
 		return conn;

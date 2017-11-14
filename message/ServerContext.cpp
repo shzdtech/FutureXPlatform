@@ -18,6 +18,7 @@
 ServerContext::ServerContext()
 {
 	_pSubWorkProc = nullptr;
+	_pAbstractSubWorkProc = nullptr;
 }
 
 attribute_ptr ServerContext::getAttribute(const std::string& key)
@@ -90,6 +91,16 @@ void ServerContext::setSubTypeWorkerPtr(void* pProcess)
 void* ServerContext::getSubTypeWorkerPtr(void)
 {
 	return _pSubWorkProc;
+}
+
+void ServerContext::setAbstractSubTypeWorkerPtr(void * pProcess)
+{
+	_pAbstractSubWorkProc = pProcess;
+}
+
+void * ServerContext::getAbstractSubTypeWorkerPtr(void)
+{
+	return _pAbstractSubWorkProc;
 }
 
 const std::string & ServerContext::getServerUri(void)

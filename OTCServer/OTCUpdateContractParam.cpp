@@ -39,7 +39,7 @@ dataobj_ptr OTCUpdateContractParam::HandleRequest(const uint32_t serialId, const
 
 	auto vecConDO_Ptr = (VectorDO<ContractParamDO>*)reqDO.get();
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::AbstractWorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 
 		auto mdMap = pWorkerProc->PricingDataContext()->GetMarketDataMap();

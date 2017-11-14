@@ -19,22 +19,14 @@
 class OTCSERVER_CLASS_EXPORT OTCTradeProcessor : public IOrderAPI, public IOrderUpdatedEvent
 {
 public:
-	OTCTradeProcessor(const IPricingDataContext_Ptr& pricingCtx);
-
-	virtual void TriggerHedgeOrderUpdating(const PortfolioKey& portfolioKey);
-	virtual void TriggerAutoOrderUpdating(const StrategyContractDO& strategyDO);
-	virtual void TriggerOTCOrderUpdating(const StrategyContractDO& strategyDO);
-
 	virtual OrderDO_Ptr OTCNewOrder(OrderRequestDO& orderReq);
 	virtual OrderDO_Ptr OTCCancelOrder(OrderRequestDO& orderReq);
 	virtual OrderDO_Ptr CancelAutoOrder(const UserContractKey& userContractKey);
 	virtual OrderDO_Ptr CancelHedgeOrder(const PortfolioKey& portfolioKey);
 
-	virtual IPricingDataContext_Ptr& PricingDataContext(void);
 	virtual OTCOrderManager& GetOTCOrderManager(void) = 0;
 	virtual AutoOrderManager& GetAutoOrderManager(void) = 0;
 	virtual HedgeOrderManager& GetHedgeOrderManager(void) = 0;
-	virtual UserOrderContext& GetExchangeOrderContext(void) = 0;
 
 	virtual bool Dispose(void);
 
@@ -46,4 +38,5 @@ private:
 
 };
 
+typedef std::shared_ptr<OTCTradeProcessor> OTCTradeProcessor_Ptr;
 #endif

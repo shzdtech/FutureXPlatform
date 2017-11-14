@@ -15,10 +15,10 @@
 #include "../pricingengine/PricingUtility.h"
 
 
-AutoOrderManager::AutoOrderManager(IOrderAPI* pOrderAPI,
+AutoOrderManager::AutoOrderManager(
 	const IPricingDataContext_Ptr& pricingCtx,
 	const IUserPositionContext_Ptr& exchangePositionCtx)
-	: OrderManager(pOrderAPI, pricingCtx),
+	: OrderManager(pricingCtx),
 	_updatinglock(2048),
 	_exchangePositionCtx(exchangePositionCtx)
 {
@@ -32,19 +32,19 @@ AutoOrderManager::AutoOrderManager(IOrderAPI* pOrderAPI,
 // Return:     OrderDO_Ptr
 ////////////////////////////////////////////////////////////////////////
 
-OrderDO_Ptr AutoOrderManager::CreateOrder(OrderRequestDO& orderReq)
+OrderDO_Ptr AutoOrderManager::CreateOrder(OrderRequestDO& orderReq, IOrderAPI* orderAPI)
 {
 	OrderDO_Ptr ret;
 
-	if (orderReq.OrderID == 0 || !FindOrder(ParseOrderID(orderReq.OrderID, 0)))
+	if (orderReq.OrderID == 0 || !FindOrder(ParseOrderID(orderReq.OrderID, 0, orderAPI)))
 	{
-		orderReq.SessionID = _pOrderAPI->GetSessionId();
-		orderReq.OrderID = OrderSeqGen::GenOrderID(_pOrderAPI->GetSessionId());
-		_contractOrderCtx.UpsertOrder(orderReq.OrderID, orderReq);
-		ret = _pOrderAPI->CreateOrder(orderReq);
+		orderReq.SessionID = orderAPI->GetSessionId();
+		orderReq.OrderID = OrderSeqGen::GenOrderID(orderAPI->GetSessionId());
+		_userOrderCtx.UpsertOrder(orderReq.OrderID, orderReq);
+		ret = orderAPI->CreateOrder(orderReq);
 		if (!ret)
 		{
-			_contractOrderCtx.RemoveOrder(orderReq.OrderID);
+			_userOrderCtx.RemoveOrder(orderReq.OrderID);
 		}
 	}
 
@@ -60,22 +60,28 @@ OrderDO_Ptr AutoOrderManager::CreateOrder(OrderRequestDO& orderReq)
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
+void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO, IOrderAPI* orderAPI)
 {
 	if (!strategyDO.Hedging || strategyDO.IsOTC())
 		return;
 
 	_updatinglock.upsert(strategyDO, [](bool& lock) { lock = true; }, true);
 
-	_updatinglock.update_fn(strategyDO, [this, &strategyDO](bool& lock)
+	_updatinglock.update_fn(strategyDO, [this, &strategyDO, orderAPI](bool& lock)
 	{
-		cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr> orders;
+		OrderContractInnerMapType userOrderMap;
 
-		if (!_contractOrderCtx.ContractOrderMap().find(strategyDO.InstrumentID(), orders))
+		if (!_userOrderCtx.UserOrderMap().find(strategyDO.UserID(), userOrderMap))
 		{
-			_contractOrderCtx.ContractOrderMap().insert(strategyDO.InstrumentID(), cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr>(true, strategyDO.Depth * 2));
-			_contractOrderCtx.ContractOrderMap().find(strategyDO.InstrumentID(), orders);
+			_userOrderCtx.UserOrderMap().insert(strategyDO.UserID(), OrderContractInnerMapType(true, 16));
+
+			_userOrderCtx.UserOrderMap().find(strategyDO.UserID(), userOrderMap);
+
+			userOrderMap.map()->insert(strategyDO.InstrumentID(), OrderIDInnerMapType(true, strategyDO.Depth * 2));
 		}
+
+		OrderIDInnerMapType orders;
+		userOrderMap.map()->find(strategyDO.InstrumentID(), orders);
 
 		IPricingDO_Ptr pricingDO_ptr;
 		if (_pricingCtx->GetPricingDataDOMap()->find(strategyDO, pricingDO_ptr))
@@ -153,13 +159,13 @@ void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 					{
 						int remain = order->VolumeRemain();
 						if ((*pTotalVol + remain) > strategyDO.AutoOrderSettings.AskQV)
-							_pOrderAPI->CancelOrder(*order);
+							orderAPI->CancelOrder(*order);
 						else
 							*pTotalVol += remain;
 					}
 					else
 					{
-						_pOrderAPI->CancelOrder(*order);
+						orderAPI->CancelOrder(*order);
 					}
 				}
 				else
@@ -171,13 +177,13 @@ void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 					{
 						int remain = order->VolumeRemain();
 						if ((*pTotalVol + remain) > strategyDO.AutoOrderSettings.BidQV)
-							_pOrderAPI->CancelOrder(*order);
+							orderAPI->CancelOrder(*order);
 						else
 							*pTotalVol += remain;
 					}
 					else
 					{
-						_pOrderAPI->CancelOrder(*order);
+						orderAPI->CancelOrder(*order);
 					}
 				}
 			}
@@ -246,7 +252,7 @@ void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 								newOrder.TIF = strategyDO.AutoOrderSettings.TIF;
 								newOrder.VolCondition = strategyDO.AutoOrderSettings.VolCondition;
 
-								if (CreateOrder(newOrder) && newOrder.TIF != OrderTIFType::IOC)
+								if (CreateOrder(newOrder, orderAPI) && newOrder.TIF != OrderTIFType::IOC)
 								{
 									strategyDO.AutoOrderSettings.LimitOrderCounter++;
 								}
@@ -302,7 +308,7 @@ void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 								newOrder.TIF = strategyDO.AutoOrderSettings.TIF;
 								newOrder.VolCondition = strategyDO.AutoOrderSettings.VolCondition;
 
-								if (CreateOrder(newOrder) && newOrder.TIF != OrderTIFType::IOC)
+								if (CreateOrder(newOrder, orderAPI) && newOrder.TIF != OrderTIFType::IOC)
 								{
 									strategyDO.AutoOrderSettings.LimitOrderCounter++;
 								}
@@ -325,11 +331,11 @@ void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO)
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-int AutoOrderManager::OnMarketOrderUpdated(OrderDO& orderInfo)
+int AutoOrderManager::OnMarketOrderUpdated(OrderDO& orderInfo, IOrderAPI* orderAPI)
 {
 	int ret = 0;
 
-	auto orderId = ParseOrderID(orderInfo.OrderID, orderInfo.SessionID);
+	auto orderId = ParseOrderID(orderInfo.OrderID, orderInfo.SessionID, orderAPI);
 
 	if (auto order_ptr = FindOrder(orderId))
 	{
@@ -356,17 +362,17 @@ int AutoOrderManager::OnMarketOrderUpdated(OrderDO& orderInfo)
 
 		if (!orderInfo.Active)
 		{
-			_contractOrderCtx.RemoveOrder(orderId);
+			_userOrderCtx.RemoveOrder(orderId);
 		}
 	}
 
 	return ret;
 }
 
-uint64_t AutoOrderManager::ParseOrderID(uint64_t rawOrderId, uint64_t sessionId)
+uint64_t AutoOrderManager::ParseOrderID(uint64_t rawOrderId, uint64_t sessionId, IOrderAPI* orderAPI)
 {
 	if (!sessionId)
-		sessionId = _pOrderAPI->GetSessionId();
+		sessionId = orderAPI->GetSessionId();
 
 	return sessionId << 32 | rawOrderId;
 }
@@ -379,31 +385,34 @@ uint64_t AutoOrderManager::ParseOrderID(uint64_t rawOrderId, uint64_t sessionId)
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-OrderDO_Ptr AutoOrderManager::CancelOrder(OrderRequestDO& orderReq)
+OrderDO_Ptr AutoOrderManager::CancelOrder(OrderRequestDO& orderReq, IOrderAPI* orderAPI)
 {
 	OrderDO_Ptr ret;
 	if (orderReq.OrderID != 0)
 	{
 		if (ret = FindOrder(orderReq.OrderID))
 		{
-			ret = _pOrderAPI->CancelOrder(orderReq);
-			// _contractOrderCtx.RemoveOrder(orderReq.OrderID);
+			ret = orderAPI->CancelOrder(orderReq);
+			// _userOrderCtx.RemoveOrder(orderReq.OrderID);
 		}
 	}
 	else
 	{
-		cuckoohashmap_wrapper<uint64_t, OrderDO_Ptr> orders;
-		if (_contractOrderCtx.ContractOrderMap().find(orderReq.InstrumentID(), orders))
+		OrderContractInnerMapType userOrderMap;
+		if (_userOrderCtx.UserOrderMap().find(orderReq.UserID(), userOrderMap))
 		{
-			std::vector<uint64_t> orderCancelList;
-			for (auto& pair : orders.map()->lock_table())
-			{
-				_pOrderAPI->CancelOrder(*pair.second);
-				// orderCancelList.push_back(pair.first);
-			}
+			OrderIDInnerMapType orders;
+			if (userOrderMap.map()->find(orderReq.InstrumentID(), orders))
+			{// std::vector<uint64_t> orderCancelList;
+				for (auto& pair : orders.map()->lock_table())
+				{
+					orderAPI->CancelOrder(*pair.second);
+					// orderCancelList.push_back(pair.first);
+				}
 
-			/*for (auto orderId : orderCancelList)
-			_contractOrderCtx.RemoveOrder(orderId);*/
+				/*for (auto orderId : orderCancelList)
+				_userOrderCtx.RemoveOrder(orderId);*/
+			}
 		}
 	}
 
@@ -418,20 +427,23 @@ OrderDO_Ptr AutoOrderManager::CancelOrder(OrderRequestDO& orderReq)
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-OrderDO_Ptr AutoOrderManager::RejectOrder(OrderRequestDO& orderReq)
+OrderDO_Ptr AutoOrderManager::RejectOrder(OrderRequestDO& orderReq, IOrderAPI* orderAPI)
 {
-	return CancelOrder(orderReq);
+	return CancelOrder(orderReq, orderAPI);
 }
 
-int AutoOrderManager::Reset()
+int AutoOrderManager::CancelUserOrders(const std::string& userId, IOrderAPI* orderAPI)
 {
-	auto& orderMap = _contractOrderCtx.GetAllOrder();
+	OrderContractInnerMapType orderMap;
+	if(_userOrderCtx.UserOrderMap().find(userId, orderMap))
 	{
-		for (auto& it : orderMap.lock_table())
+		for (auto& it : orderMap.map()->lock_table())
 		{
-			CancelOrder(*(it.second));
+			for(auto& pair : it.second.map()->lock_table())
+				CancelOrder(*(pair.second), orderAPI);
 		}
+		orderMap.map()->clear();
 	}
-	_contractOrderCtx.Clear();
+
 	return 0;
 }

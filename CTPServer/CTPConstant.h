@@ -25,6 +25,7 @@ static const std::string CTP_AUTH_CODE = "CTP.AUTH.CODE";
 static const std::string CTP_PRODUCT_INFO = "CTP.PRODUCT.INFO";
 
 static const std::string SYNC_POSITION_FROMDB = "SYNC.POSITION.FROMDB";
+static const std::string SAVE_TRADE = "SAVE.TRADE";
 
 static const char* UUID_MICROFUTURE_CTP = "M.F.0.1";
 static const char* FMT_ORDERREF = "%u";

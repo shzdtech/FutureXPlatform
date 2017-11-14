@@ -39,9 +39,6 @@
     <ClCompile Include="CTPOTCLogin.cpp">
       <Filter>源文件\OTC</Filter>
     </ClCompile>
-    <ClCompile Include="CTPOTCTradeProcessor.cpp">
-      <Filter>源文件\OTC</Filter>
-    </ClCompile>
     <ClCompile Include="CTPOTCWorkerProcessor.cpp">
       <Filter>源文件\OTC</Filter>
     </ClCompile>
@@ -66,6 +63,18 @@
     <ClCompile Include="CTPOTCQueryValuationRisk.cpp">
       <Filter>源文件\OTC</Filter>
     </ClCompile>
+    <ClCompile Include="CTPOTCTradeWorkerProcessor.cpp">
+      <Filter>源文件\OTC</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPOTCTradeProcessor.cpp">
+      <Filter>源文件\OTC</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPOTCTradeLoginHandler.cpp">
+      <Filter>源文件\OTC</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPOTCTradeServiceFactory.cpp">
+      <Filter>源文件\OTC</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ctpotc_bizhandlers.h">
@@ -78,9 +87,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="CTPOTCLogin.h">
-      <Filter>头文件\OTC</Filter>
-    </ClInclude>
-    <ClInclude Include="CTPOTCTradeProcessor.h">
       <Filter>头文件\OTC</Filter>
     </ClInclude>
     <ClInclude Include="CTPOTCWorkerProcessor.h">
@@ -105,6 +111,18 @@
       <Filter>头文件\OTC</Filter>
     </ClInclude>
     <ClInclude Include="CTPOTCQueryValuationRisk.h">
+      <Filter>头文件\OTC</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPOTCTradeWorkerProcessor.h">
+      <Filter>头文件\OTC</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPOTCTradeProcessor.h">
+      <Filter>头文件\OTC</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPOTCTradeLoginHandler.h">
+      <Filter>头文件\OTC</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPOTCTradeServiceFactory.h">
       <Filter>头文件\OTC</Filter>
     </ClInclude>
   </ItemGroup>

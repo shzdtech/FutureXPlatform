@@ -30,7 +30,7 @@ protected:
 	std::atomic_flag _updateFlag;
 	volatile uint _tradeCnt;
 	volatile bool _exiting;
-	
+
 private:
 
 
