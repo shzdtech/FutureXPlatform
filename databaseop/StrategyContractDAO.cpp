@@ -18,14 +18,14 @@
  // Return:     std::shared_ptr<std::vector<StrategyContractDO>>
  ////////////////////////////////////////////////////////////////////////
 
-VectorDO_Ptr<StrategyContractDO_Ptr> StrategyContractDAO::LoadStrategyContractByProductType(int productType)
+VectorDO_Ptr<StrategyContractDO_Ptr> StrategyContractDAO::LoadStrategyContractByProductType(const std::string& userId)
 {
 	static const std::string sql_findstrategy(
 		"SELECT exchange_symbol, contract_symbol, underlying_symbol, tick_size, multiplier, "
 		"strategy_symbol, contract_type, strikeprice, expiration, accountid, "
 		"product_type, bid_allowed, ask_allowed, portfolio_symbol, underlying_exchange, underlying_contract "
 		"FROM vw_strategy_contract_info "
-		"WHERE product_type = ?");
+		"WHERE accountid like ?");
 
 	auto ret = std::make_shared<VectorDO<StrategyContractDO_Ptr>>();
 
@@ -36,20 +36,21 @@ VectorDO_Ptr<StrategyContractDO_Ptr> StrategyContractDAO::LoadStrategyContractBy
 		auto map_ptr = SysParamsDAO::FindSysParams("LIMITORDER.MAXCOUNT%");
 
 		autofillmap<UserStrategyName, autofillmap<ContractKey, StrategyPricingContract_Ptr>> pmPricingContractMap;
-		RetrievePricingContractsByProductType(productType, PM, pmPricingContractMap);
+		RetrievePricingContractsByProductType(PM, userId, pmPricingContractMap);
 
 		autofillmap<UserStrategyName, autofillmap<ContractKey, StrategyPricingContract_Ptr>> ivmPricingContractMap;
-		RetrievePricingContractsByProductType(productType, IVM, ivmPricingContractMap);
+		RetrievePricingContractsByProductType(IVM, userId, ivmPricingContractMap);
 
 		autofillmap<UserStrategyName, autofillmap<ContractKey, StrategyPricingContract_Ptr>> vmPricingContractMap;
-		RetrievePricingContractsByProductType(productType, VM, vmPricingContractMap);
+		RetrievePricingContractsByProductType(VM, userId, vmPricingContractMap);
 
 		autofillmap<UserStrategyName, autofillmap<std::string, std::string>> strategyDOMap;
-		RetrieveStrategyModels(strategyDOMap);
+		RetrieveStrategyModels(userId, strategyDOMap);
 
 		AutoClosePreparedStmt_Ptr prestmt(
 			session->getConnection()->prepareStatement(sql_findstrategy));
-		prestmt->setInt(1, productType);
+		// prestmt->setInt(1, productType);
+		prestmt->setString(1, userId.empty() ? "%" : userId);
 
 		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
 
@@ -128,22 +129,23 @@ VectorDO_Ptr<StrategyContractDO_Ptr> StrategyContractDAO::LoadStrategyContractBy
 }
 
 
-void StrategyContractDAO::RetrievePricingContractsByProductType(int productType, const std::string& modelaim,
+void StrategyContractDAO::RetrievePricingContractsByProductType(const std::string& modelaim, const std::string& userId,
 	autofillmap<UserStrategyName, autofillmap<ContractKey, StrategyPricingContract_Ptr>>& pricingContractMap)
 {
 	static const std::string sql_retrieve_pricingcontracts(
 		"SELECT accountid, strategy_symbol, strategy_exchange, strategy_contract, "
 		"pricing_exchange, pricing_contract, underlying_symbol, weight, adjust "
 		"FROM vw_pricing_contract_property "
-		"WHERE strategy_product_type = ? and modelaim = ?");
+		"WHERE modelaim = ? and accountid like ?");
 
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
 			session->getConnection()->prepareStatement(sql_retrieve_pricingcontracts));
-		prestmt->setInt(1, productType);
-		prestmt->setString(2, modelaim);
+		// prestmt->setInt(1, productType);
+		prestmt->setString(1, modelaim);
+		prestmt->setString(2, userId.empty() ? "%" : userId);
 
 		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
 
@@ -169,16 +171,19 @@ void StrategyContractDAO::RetrievePricingContractsByProductType(int productType,
 	}
 }
 
-void StrategyContractDAO::RetrieveStrategyModels(autofillmap<UserStrategyName, autofillmap<std::string, std::string>>& strategyDOMap)
+void StrategyContractDAO::RetrieveStrategyModels(const std::string& userId, 
+	autofillmap<UserStrategyName, autofillmap<std::string, std::string>>& strategyDOMap)
 {
 	static const std::string sql_findstrategymodel(
-		"SELECT accountid, strategy_symbol, modelaim, modelinstance FROM strategy_model ");
+		"SELECT accountid, strategy_symbol, modelaim, modelinstance FROM strategy_model WHERE accountid like ?");
 
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
 			session->getConnection()->prepareStatement(sql_findstrategymodel));
+
+		prestmt->setString(1, userId.empty() ? "%" : userId);
 
 		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
 

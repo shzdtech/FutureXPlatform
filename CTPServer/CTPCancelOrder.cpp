@@ -83,7 +83,7 @@ dataobj_ptr CTPCancelOrder::HandleResponse(const uint32_t serialId, const param_
 			{
 				if (ret->IsSystemUserId())
 				{
-					ret->SetUserID(CTPUtility::MakeUserID(ret->BrokerID, ret->InvestorID));
+					ret->SetUserID(session->getUserInfo().getUserId());;
 				}
 			}
 	}
@@ -94,7 +94,7 @@ dataobj_ptr CTPCancelOrder::HandleResponse(const uint32_t serialId, const param_
 			{
 				if (ret->IsSystemUserId())
 				{
-					ret->SetUserID(CTPUtility::MakeUserID(ret->BrokerID, ret->InvestorID));
+					ret->SetUserID(session->getUserInfo().getUserId());;
 				}
 			}
 	}

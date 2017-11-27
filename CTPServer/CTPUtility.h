@@ -41,7 +41,7 @@ public:
 	static BankOpResultDO_Ptr ParseRawTransfer(CThostFtdcRspTransferField *pRspTransfer, CThostFtdcRspInfoField *pRsp = nullptr);
 	static BankOpResultDO_Ptr ParseRawTransfer(CThostFtdcTransferSerialField *pRspTransfer);
 
-	static UserPositionExDO_Ptr ParseRawPosition(CThostFtdcInvestorPositionField* pRspPosition);
+	static UserPositionExDO_Ptr ParseRawPosition(CThostFtdcInvestorPositionField* pRspPosition, const std::string& userId);
 
 	static UserAccountRegisterDO_Ptr ParseUserBankAccout(CThostFtdcAccountregisterField *pAccount, CThostFtdcRspInfoField *pRsp = nullptr);
 	static UserAccountRegisterDO_Ptr ParseUserBankAccout(CThostFtdcReqQueryAccountField *pAccount, CThostFtdcRspInfoField *pRsp = nullptr);

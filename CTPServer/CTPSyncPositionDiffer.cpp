@@ -47,50 +47,27 @@ dataobj_ptr CTPSyncPositionDiffer::HandleRequest(const uint32_t serialId, const 
 
 			for (auto pair : *pPositionMap)
 			{
-				UserPositionExDO_Ptr position_ptr;
 				std::string contract, portfolio;
 				PositionDirectionType direction;
 				std::tie(contract, portfolio, direction) = pair.first;
-				position_ptr = pWorkerProc->FindSysYdPostion(userInfo.getUserId(), contract, portfolio, direction);
-				if (!position_ptr)
+
+				std::string exchange;
+				if (auto pInstrumentDO = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentOrAddById(contract))
 				{
-					if (position_ptr = pWorkerProc->FindDBYdPostion(userInfo.getUserId(), contract, portfolio, direction))
-					{
-						position_ptr->YdInitPosition = pair.second.second;
-					}
-					else
-					{
-						if (position_ptr = pWorkerProc->FindSysYdPostion(userInfo.getUserId(), contract, EMPTY_STRING, direction))
-						{
-							if (!portfolio.empty())
-							{
-								if (auto dbPosition = pWorkerProc->FindDBYdPostion(userInfo.getUserId(), contract, EMPTY_STRING, direction))
-								{
-									dbPosition->YdInitPosition = 0;
-									dbPosition = std::make_shared<UserPositionExDO>(*dbPosition);
-									dbPosition->SetUserID(userInfo.getUserId());
-									dbPosition->SetPortfolioID(EMPTY_STRING);
-									userPosition.push_back(*dbPosition);
-									ManualOpHub::Instance()->NotifyUpdateManualPosition(*dbPosition);
-								}
-							}
-						}
-					}
+					exchange = pInstrumentDO->ExchangeID();
 				}
 
-				if (position_ptr)
-				{
-					position_ptr = std::make_shared<UserPositionExDO>(*position_ptr);
-					position_ptr->SetUserID(userInfo.getUserId());
-					position_ptr->SetPortfolioID(portfolio);
-					userPosition.push_back(*position_ptr);
-					ManualOpHub::Instance()->NotifyUpdateManualPosition(*position_ptr);
-				}
+				auto position_ptr = std::make_shared<UserPositionExDO>(exchange, contract, portfolio, userInfo.getUserId());
+				position_ptr->Direction = direction;
+				position_ptr->YdInitPosition = pair.second.second;
+				position_ptr->TradingDay = userInfo.getTradingDay();
+				userPosition.push_back(*position_ptr);
+				ManualOpHub::Instance()->NotifyUpdateManualPosition(*position_ptr);
 			}
 
-			if (!userPosition.empty())
+			if (pWorkerProc->IsLoadPositionFromDB() && !userPosition.empty())
 			{
-				PositionDAO::SyncPosition(pWorkerProc->GetSystemUser().getInvestorId(), userPosition);
+				PositionDAO::SyncPosition(userInfo.getInvestorId(), userPosition);
 			}
 		}
 	}

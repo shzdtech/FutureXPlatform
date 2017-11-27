@@ -19,26 +19,20 @@
 #include "../litelogger/LiteLogger.h"
 
 
-dataobj_ptr CTPOTCTradeLoginHandler::HandleResponse(const uint32_t serialId, const param_vector & rawRespParams, IRawAPI * rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
+bool CTPOTCTradeLoginHandler::LoginFromDB(const IMessageProcessor_Ptr& msgProcessor)
 {
-	dataobj_ptr ret = CTPLoginHandler::HandleResponse(serialId, rawRespParams, rawAPI, msgProcessor, session);
-
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCTradeWorkerProcessor>(msgProcessor))
 	{
+		auto session = msgProcessor->getMessageSession();
+
 		pWorkerProc->RegisterLoggedSession(session);
+
+		if (pWorkerProc->IsLoadPositionFromDB())
+		{
+			pWorkerProc->LoadPositonFromDatabase(session->getUserInfo().getUserId(),
+				session->getUserInfo().getInvestorId(), std::to_string(session->getUserInfo().getTradingDay()));
+
+			((CTPProcessor*)msgProcessor.get())->DataLoadMask |= CTPProcessor::POSITION_DATA_LOADED;
+		}
 	}
-
-	if (auto tdAPI = ((CTPRawAPI*)rawAPI)->TdAPIProxy())
-	{
-		CThostFtdcSettlementInfoConfirmField reqsettle{};
-		std::strncpy(reqsettle.BrokerID, session->getUserInfo().getBrokerId().data(), sizeof(reqsettle.BrokerID));
-		std::strncpy(reqsettle.InvestorID, session->getUserInfo().getInvestorId().data(), sizeof(reqsettle.InvestorID));
-		tdAPI->get()->ReqSettlementInfoConfirm(&reqsettle, 0);
-
-		CThostFtdcQryInvestorPositionField req{};
-		tdAPI->get()->ReqQryInvestorPosition(&req, -1);
-		std::this_thread::sleep_for(std::chrono::seconds(1));
-	}
-
-	return ret;
 }

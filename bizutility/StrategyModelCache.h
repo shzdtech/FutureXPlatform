@@ -15,8 +15,6 @@ public:
 
 	static ModelParamsDO_Ptr FindOrRetrieveModel(const ModelKey & key);
 
-	static const std::map<ModelKey, ModelParamsDO_Ptr>& ModelCache();
-
 	static vector_ptr<ModelParamsDO_Ptr> FindModelsByUser(const std::string& userId);
 
 	static void Remove(const ModelKey& key);
@@ -24,14 +22,6 @@ public:
 	static bool RemoveTempModel(const ModelKey& key);
 
 	static void Clear(void);
-
-private:
-	class static_initializer
-	{
-	public:
-		static_initializer();
-	};
-
-	static static_initializer _static_init;
+	static void Load(const std::string & userId);
 };
 

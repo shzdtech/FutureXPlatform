@@ -31,6 +31,9 @@ CTPMarketDataSAProcessor::CTPMarketDataSAProcessor(IServerContext* pServerCtx)
 	: _marketDataMap(16),
 	MarketDataNotifers(SessionContainer<std::string>::NewInstancePtr())
 {
+	_isLogged = false;
+	_isConnected = false;
+
 	setServerContext(pServerCtx);
 
 	std::string defaultCfg;
@@ -84,11 +87,17 @@ void CTPMarketDataSAProcessor::Initialize(IServerContext* pServerCtx)
 
 int CTPMarketDataSAProcessor::LoginSystemUser(void)
 {
-	CThostFtdcReqUserLoginField req{};
-	std::strncpy(req.BrokerID, _systemUser.getBrokerId().data(), sizeof(req.BrokerID));
-	std::strncpy(req.UserID, _systemUser.getUserId().data(), sizeof(req.UserID));
-	std::strncpy(req.Password, _systemUser.getPassword().data(), sizeof(req.Password));
-	return _rawAPI->MdAPIProxy()->get()->ReqUserLogin(&req, 0);
+	int ret = -1;
+	if (auto mdAPI = _rawAPI->MdAPIProxy())
+	{
+		CThostFtdcReqUserLoginField req{};
+		std::strncpy(req.BrokerID, _systemUser.getBrokerId().data(), sizeof(req.BrokerID));
+		std::strncpy(req.UserID, _systemUser.getUserId().data(), sizeof(req.UserID));
+		std::strncpy(req.Password, _systemUser.getPassword().data(), sizeof(req.Password));
+		ret = mdAPI->get()->ReqUserLogin(&req, 0);
+	}
+
+	return ret;
 }
 
 int CTPMarketDataSAProcessor::LoginSystemUserIfNeed(void)
@@ -214,11 +223,11 @@ void CTPMarketDataSAProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspU
 			userInfo.setTradingDay(_systemUser.getTradingDay());
 		}
 
-		_isLogged = true;
-
 		ResubMarketData();
 
-		LOG_INFO << getServerContext()->getServerUri() << ": System user " << _systemUser.getUserId() << " has logged on market data server..";
+		_isLogged = true;
+
+		LOG_INFO << getServerContext()->getServerUri() << ": System user " << _systemUser.getUserId() << " has logged on market data server.";
 		LOG_FLUSH;
 	}
 }

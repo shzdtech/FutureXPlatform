@@ -6,6 +6,7 @@
  ***********************************************************************/
 
 #include "WinDynamicLoader.h"
+#include <iostream>
 
 #if defined(_WIN32) || defined(_WINDOWS)
 
@@ -27,7 +28,14 @@ void* WinDynamicLoader::FindFunction(const void* module, const char* funcName)
 
 void * WinDynamicLoader::LoadModule(const char* modulePath)
 {
-	return ::LoadLibraryA(modulePath);
+	auto pModule = ::LoadLibraryA(modulePath);
+	if (!pModule)
+	{
+		auto errCode = ::GetLastError();
+		std::cerr << "Load " << modulePath << " failed, error code: " << errCode << std::endl;
+	}
+
+	return pModule;
 }
 
 bool WinDynamicLoader::UnloadModule(const void * module)

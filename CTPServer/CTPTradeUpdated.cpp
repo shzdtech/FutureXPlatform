@@ -19,7 +19,7 @@ dataobj_ptr CTPTradeUpdated::HandleResponse(const uint32_t serialId, const param
 			{
 				if (ret->IsSystemUserId())
 				{
-					ret->SetUserID(CTPUtility::MakeUserID(ret->BrokerID, ret->InvestorID));
+					ret->SetUserID(session->getUserInfo().getUserId());
 				}
 
 				if (pWorkerProc->GetUserTradeContext().InsertTrade(ret))

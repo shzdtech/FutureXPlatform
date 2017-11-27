@@ -109,10 +109,20 @@ void CTPOTCWorkerProcessor::Initialize(IServerContext* serverCtx)
 int CTPOTCWorkerProcessor::SubscribeMarketData(const ContractKey& contractId)
 {
 	int ret = -1;
-	char* contract[] = { const_cast<char*>(contractId.InstrumentID().data()) };
-	auto mdApiProxy = _rawAPI->MdAPIProxy();
-	if (mdApiProxy)
-		ret = mdApiProxy->get()->SubscribeMarketData(contract, 1);
+	if (_isLogged && _subedContracts.find(contractId) == _subedContracts.end())
+	{
+		char* contract[] = { const_cast<char*>(contractId.InstrumentID().data()) };
+		if (auto mdApiProxy = _rawAPI->MdAPIProxy())
+		{
+			ret = mdApiProxy->get()->SubscribeMarketData(contract, 1);
+		}
+
+		if (ret == 0)
+		{
+			_subedContracts.emplace(contractId);
+		}
+	}
+
 	return ret;
 }
 
@@ -144,57 +154,9 @@ CTPOTCTradeWorkerProcessor * CTPOTCWorkerProcessor::GetCTPOTCTradeWorkerProcesso
 
 int CTPOTCWorkerProcessor::ResubMarketData()
 {
-	for (auto pair : PricingDataContext()->GetStrategyMap()->lock_table())
+	for (auto contract : _subedContracts)
 	{
-		auto& strategyDO = *pair.second;
-
-		if (!strategyDO.IsOTC())
-		{
-			AddContractToMonitor(strategyDO);
-		}
-
-		if (strategyDO.BaseContract)
-		{
-			if (!strategyDO.BaseContract->IsOTC())
-			{
-				AddContractToMonitor(*strategyDO.BaseContract);
-			}
-		}
-
-		//subscribe market data from CTP
-		if (strategyDO.PricingContracts)
-		{
-			for (auto& bsContract : strategyDO.PricingContracts->PricingContracts)
-			{
-				if (!bsContract.IsOTC())
-				{
-					AddContractToMonitor(bsContract);
-				}
-			}
-		}
-
-		if (strategyDO.IVMContracts)
-		{
-			for (auto& bsContract : strategyDO.IVMContracts->PricingContracts)
-			{
-				if (!bsContract.IsOTC())
-				{
-					AddContractToMonitor(bsContract);
-				}
-			}
-		}
-
-
-		if (strategyDO.VolContracts)
-		{
-			for (auto& bsContract : strategyDO.VolContracts->PricingContracts)
-			{
-				if (!bsContract.IsOTC())
-				{
-					AddContractToMonitor(bsContract);
-				}
-			}
-		}
+		SubscribeMarketData(contract);
 	}
 
 	return 0;

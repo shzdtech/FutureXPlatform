@@ -39,7 +39,6 @@ public:
 	virtual HedgeOrderManager& GetHedgeOrderManager(void);
 
 
-
 	std::shared_ptr<CTPOTCTradeProcessor> Shared_This();
 
 protected:

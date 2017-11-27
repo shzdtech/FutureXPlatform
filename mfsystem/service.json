@@ -1,10 +1,10 @@
 {
   "service": {
     "servercfg": [
-      "service.ctp_md",
       "service.ctp_trade",
-      "service.otc_option",
+      "service.ctp_md",
       "service.otc_option_trade",
+      "service.otc_option",
       "service.admin"
     ],
     "admin": {

@@ -502,7 +502,7 @@ BankOpResultDO_Ptr CTPUtility::ParseRawTransfer(CThostFtdcTransferSerialField * 
 	return ret;
 }
 
-UserPositionExDO_Ptr CTPUtility::ParseRawPosition(CThostFtdcInvestorPositionField * pRspPosition)
+UserPositionExDO_Ptr CTPUtility::ParseRawPosition(CThostFtdcInvestorPositionField * pRspPosition, const std::string& userId)
 {
 	std::string exchange;
 	if (auto pInstrumentDO = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentOrAddById(pRspPosition->InstrumentID))
@@ -516,7 +516,7 @@ UserPositionExDO_Ptr CTPUtility::ParseRawPosition(CThostFtdcInvestorPositionFiel
 		portfolio = pPortfolioKey->PortfolioID();
 	}
 
-	auto pDO = new UserPositionExDO(exchange, pRspPosition->InstrumentID, portfolio, "");
+	auto pDO = new UserPositionExDO(exchange, pRspPosition->InstrumentID, portfolio, userId);
 	UserPositionExDO_Ptr ret(pDO);
 
 	pDO->Direction = (PositionDirectionType)(pRspPosition->PosiDirection - THOST_FTDC_PD_Net);

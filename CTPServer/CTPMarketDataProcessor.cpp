@@ -57,12 +57,11 @@ bool CTPMarketDataProcessor::CreateCTPAPI(const std::string& flowId, const std::
 
 	auto mdAPI = std::make_shared<CTPRawAPI::CThostFtdcMdApiProxy>(localpath.string().data());
 	mdAPI->get()->RegisterSpi(this);
-	_rawAPI->ResetMdAPIProxy(mdAPI);
-
 	mdAPI->get()->RegisterFront(const_cast<char*> (server_addr.data()));
 	mdAPI->get()->Init();
-
 	std::this_thread::sleep_for(std::chrono::seconds(1));
+
+	_rawAPI->ResetMdAPIProxy(mdAPI);
 
 	return (bool)_rawAPI;
 }

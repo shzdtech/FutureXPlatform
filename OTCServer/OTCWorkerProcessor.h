@@ -31,9 +31,9 @@ public:
 
 	virtual int LoadContractToCache(ProductType productType);
 
-	virtual int LoadStrategyToCache(ProductType productType);
+	virtual int LoadStrategyToCache(const std::string& userId = "");
 
-	virtual void LoadPortfolios();
+	virtual void LoadPortfolios(const std::string& userId = "");
 
 	virtual int SubscribeStrategy(const StrategyContractDO& strategyDO);
 

@@ -14,39 +14,40 @@
 
 dataobj_ptr CTPPositionUpdated::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	UserPositionExDO_Ptr ret;
-
 	if (auto pData = (CThostFtdcInvestorPositionField*)rawRespParams[0])
 	{
 		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 		{
-			ret = CTPUtility::ParseRawPosition(pData);
+			auto& userId = session->getUserInfo().getUserId();
+
+			auto position_ptr = CTPUtility::ParseRawPosition(pData, userId);
 
 			LOG_DEBUG << pData->InstrumentID << ',' << pData->PositionDate << ',' << pData->PosiDirection;
 
-			auto& userId = session->getUserInfo().getUserId();
+			pWorkerProc->UpdateSysYdPosition(userId, position_ptr);
 
-			pWorkerProc->UpdateYdPosition(userId, ret);
-
-			if (ret->ExchangeID() == EXCHANGE_SHFE)
+			if (!pWorkerProc->IsLoadPositionFromDB())
 			{
-				if (pData->PositionDate == THOST_FTDC_PSD_Today)
+				if (position_ptr->ExchangeID() == EXCHANGE_SHFE)
 				{
-					ret = pWorkerProc->GetUserPositionContext()->UpsertPosition(userId, *ret, false, false);
+					if (pData->PositionDate == THOST_FTDC_PSD_Today)
+					{
+						position_ptr = pWorkerProc->GetUserPositionContext()->UpsertPosition(userId, *position_ptr, false, false);
+					}
+					else
+					{
+						position_ptr = pWorkerProc->GetUserPositionContext()->UpsertPosition(userId, *position_ptr, true, false);
+					}
 				}
 				else
 				{
-					ret = pWorkerProc->GetUserPositionContext()->UpsertPosition(userId, *ret, true, false);
+					position_ptr = pWorkerProc->GetUserPositionContext()->UpsertPosition(userId, *position_ptr, false, true);
 				}
-			}
-			else
-				ret = pWorkerProc->GetUserPositionContext()->UpsertPosition(userId, *ret, false, true);
 
-			auto pProcessor = (CTPProcessor*)msgProcessor.get();
-			if (!(pProcessor->DataLoadMask & CTPProcessor::POSITION_DATA_LOADED) || ret->Position() < 0)
-				ret.reset();
+				pWorkerProc->DispatchUserMessage(MSG_ID_EXCHANGE_POSITION_UPDATED, 0, userId, position_ptr);
+			}
 		}
 	}
 
-	return ret;
+	return nullptr;
 }

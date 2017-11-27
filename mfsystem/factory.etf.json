@@ -20,7 +20,6 @@
           "params": {
             "product_type": "0;1;2;6;7",
             "save_contract": "true",
-            "SYNC.POSITION.FROMDB": "false",
             "SAVE.TRADE": "true",
 
             "TARGET.TD.CFG": "eo:8050:sim:pri:td",
@@ -47,7 +46,6 @@
           "params": {
             "product_type": "0;1;2;6;7",
             "save_contract": "true",
-            "SYNC.POSITION.FROMDB": "false",
             "SAVE.TRADE": "true",
 
             "TARGET.TD.CFG": "e:8050:sim:pri:td",
@@ -80,7 +78,6 @@
           "class.uuid": "factory.otc.option.trade",
           "params": {
             "tradeworker": "ctp.otc.etf.tradeworker",
-            "SYNC.POSITION.FROMDB": "false",
 
             "TARGET.TD.CFG": "eo:8050:sim:pri:td",
             "TARGET.TDAM.CFG": "eo:8050:sim:pri:td"
@@ -106,7 +103,6 @@
           "class.uuid": "factory.otc.option.trade",
           "params": {
             "tradeworker": "ctp.otc.stock.tradeworker",
-            "SYNC.POSITION.FROMDB": "false",
 
             "TARGET.TD.CFG": "e:8050:sim:pri:td",
             "TARGET.TDAM.CFG": "e:8050:sim:pri:td"

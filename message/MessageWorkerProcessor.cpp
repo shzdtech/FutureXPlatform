@@ -31,10 +31,10 @@ void MessageWorkerProcessor::RegisterLoggedSession(const IMessageSession_Ptr& se
 	if (sessionPtr->getLoginTimeStamp() && _isLogged)
 	{
 		auto& userInfo = sessionPtr->getUserInfo();
-		userInfo.setBrokerId(_systemUser.getBrokerId());
-		userInfo.setInvestorId(_systemUser.getInvestorId());
-		userInfo.setFrontId(_systemUser.getFrontId());
-		userInfo.setSessionId(_systemUser.getSessionId());
+		//userInfo.setBrokerId(_systemUser.getBrokerId());
+		//userInfo.setInvestorId(_systemUser.getInvestorId());
+		//userInfo.setFrontId(_systemUser.getFrontId());
+		//userInfo.setSessionId(_systemUser.getSessionId());
 		_userSessionCtn_Ptr->add(userInfo.getUserId(), sessionPtr);
 	}
 }

@@ -30,9 +30,6 @@ public:
 
 	virtual bool Dispose(void);
 
-protected:
-	IPricingDataContext_Ptr _pricingCtx;
-
 private:
 
 

@@ -24,15 +24,15 @@
 
 #include "../common/Attribute_Key.h"
 
-////////////////////////////////////////////////////////////////////////
-// Name:       CTPLoginHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, IMessageProcessor_Ptr session)
-// Purpose:    Implementation of CTPLoginHandler::HandleRequest()
-// Parameters:
-// - reqDO
-// - rawAPI
-// - session
-// Return:     void
-////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////
+ // Name:       CTPLoginHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, IMessageProcessor_Ptr session)
+ // Purpose:    Implementation of CTPLoginHandler::HandleRequest()
+ // Parameters:
+ // - reqDO
+ // - rawAPI
+ // - session
+ // Return:     void
+ ////////////////////////////////////////////////////////////////////////
 
 dataobj_ptr CTPLoginHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
@@ -59,38 +59,35 @@ dataobj_ptr CTPLoginHandler::HandleRequest(const uint32_t serialId, const dataob
 	userInfo.setBrokerId(exDO.BrokeID);
 	userInfo.setPassword(password);
 
-	if (auto userInfo_Ptr = UserInfoDAO::FindUser(CTPUtility::MakeUserID(exDO.BrokeID, userid)))
+	std::shared_ptr<UserInfoDO> userInfo_Ptr;
+	if (userInfo_Ptr = UserInfoDAO::FindUser(userid))
 	{
-		userInfo.setUserId(userInfo_Ptr->UserId);
-		userInfo.setName(userInfo_Ptr->UserName);
-		userInfo.setRole(userInfo_Ptr->Role);
-		userInfo.setPermission(userInfo_Ptr->Permission);
+		if (!userInfo_Ptr->Password.empty())
+		{
+			userInfo.setInvestorId(exDO.UserID);
+			userInfo.setBrokerId(exDO.BrokeID);
+			userInfo_Ptr->LoadFromDB = true;
+		}
 	}
 	else
 	{
-		throw UserException(USERID_NOT_EXITS, "UserId: " + exDO.BrokeID + userid + " not exists.");
-
-		/*userInfo.setUserId(CTPUtility::MakeUserID(req.BrokerID, req.UserID));
-		userInfo.setName(userid);
-		userInfo.setRole(ROLE_CLIENT);
-		userInfo.setPermission(ALLOW_TRADING);*/
+		userInfo_Ptr = UserInfoDAO::FindUser(CTPUtility::MakeUserID(exDO.BrokeID, userid));
+		if (!userInfo_Ptr)
+			throw UserException(USERID_NOT_EXITS, "UserId: " + exDO.BrokeID + userid + " not exists.");
 	}
 
-	CThostFtdcReqUserLoginField req{};
+	userInfo.setUserId(userInfo_Ptr->UserId);
+	userInfo.setName(userInfo_Ptr->UserName);
+	userInfo.setRole(userInfo_Ptr->Role);
+	userInfo.setPermission(userInfo_Ptr->Permission);
 
-	std::strncpy(req.BrokerID, exDO.BrokeID.data(), sizeof(req.BrokerID));
-	std::strncpy(req.UserID, userid.data(), sizeof(req.UserID));
-	std::strncpy(req.Password, password.data(), sizeof(req.Password));
-	// std::strcpy(req.UserProductInfo, UUID_MICROFUTURE_CTP);
 
 	pProcessor->LoginSerialId = serialId;
-	int ret = LoginFunction(msgProcessor, &req, pProcessor->LoginSerialId, routername);
-	CTPUtility::CheckReturnError(ret);
-	//int ret = ((CThostFtdcMdApi*)rawAPI)->ReqUserLogin(&req, 1);
+	auto ret = LoginFromServer(msgProcessor, userInfo_Ptr, pProcessor->LoginSerialId, routername);
 
-	LOG_DEBUG << "Login: " << req.BrokerID << ":" << userid << ":" << password;
+	LOG_DEBUG << "Login: " << userInfo.getBrokerId() << ":" << userid << ":" << password;
 
-	return nullptr;
+	return ret;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -108,7 +105,7 @@ dataobj_ptr CTPLoginHandler::HandleResponse(const uint32_t serialId, const param
 	CTPUtility::CheckError(rawRespParams[1]);
 
 	auto pData = (CThostFtdcRspUserLoginField*)rawRespParams[0];
-	
+
 	auto pDO = new UserInfoDO;
 	dataobj_ptr ret(pDO);
 

@@ -37,6 +37,7 @@ public:
 	GenderType Gender;
 	int Role;
 	int Permission;
+	bool LoadFromDB = false;
 
 protected:
 

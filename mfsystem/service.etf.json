@@ -1,14 +1,14 @@
 {
   "service": {
     "servercfg": [
-      "service.etf_option_md",
       "service.etf_option_trade",
-      "service.etf_stock_md",
+      "service.etf_option_md",
       "service.etf_stock_trade",
-      "service.otc_etf_option",
+      "service.etf_stock_md",
       "service.otc_etf_option_trade",
-      "service.otc_etf_stock",
-      "service.otc_etf_stock_trade"
+      "service.otc_etf_option",
+      "service.otc_etf_stock_trade",
+      "service.otc_etf_stock"
     ],
     "admin": {
       "server.uri": "admin.manage",

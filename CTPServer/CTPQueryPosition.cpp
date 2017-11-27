@@ -49,9 +49,13 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const uint32_t serialId, const datao
 		auto pProcessor = (CTPProcessor*)msgProcessor.get();
 		if (!(pProcessor->DataLoadMask & CTPProcessor::POSITION_DATA_LOADED))
 		{
-			CThostFtdcQryInvestorPositionField req{};
-			int iRet = ((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryInvestorPosition(&req, serialId);
-			CTPUtility::CheckReturnError(iRet);
+			if (!pWorkerProc->IsLoadPositionFromDB())
+			{
+				CThostFtdcQryInvestorPositionField req{};
+				int iRet = ((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryInvestorPosition(&req, serialId);
+				CTPUtility::CheckReturnError(iRet);
+			}
+
 			std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
 		}
 
@@ -156,27 +160,34 @@ dataobj_ptr CTPQueryPosition::HandleResponse(const uint32_t serialId, const para
 
 	auto pData = (CThostFtdcInvestorPositionField*)rawRespParams[0];
 
-	auto ret = CTPUtility::ParseRawPosition(pData);
-
-	ret->HasMore = !*(bool*)rawRespParams[3];
+	// position_ptr->HasMore = !*(bool*)rawRespParams[3];
 
 	LOG_DEBUG << pData->InstrumentID << ',' << pData->PositionDate << ',' << pData->PosiDirection;
 
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 	{
-		if (ret->ExchangeID() == EXCHANGE_SHFE)
+		auto& userId = session->getUserInfo().getUserId();
+
+		auto position_ptr = CTPUtility::ParseRawPosition(pData, userId);
+
+		pWorkerProc->UpdateSysYdPosition(userId, position_ptr);
+
+		if (!pWorkerProc->IsLoadPositionFromDB())
 		{
-			if (pData->PositionDate == THOST_FTDC_PSD_Today)
+			if (position_ptr->ExchangeID() == EXCHANGE_SHFE)
 			{
-				ret = pWorkerProc->GetUserPositionContext()->UpsertPosition(session->getUserInfo().getUserId(), *ret, false, false);
+				if (pData->PositionDate == THOST_FTDC_PSD_Today)
+				{
+					position_ptr = pWorkerProc->GetUserPositionContext()->UpsertPosition(userId, *position_ptr, false, false);
+				}
+				else
+				{
+					position_ptr = pWorkerProc->GetUserPositionContext()->UpsertPosition(userId, *position_ptr, true, false);
+				}
 			}
 			else
-			{
-				ret = pWorkerProc->GetUserPositionContext()->UpsertPosition(session->getUserInfo().getUserId(), *ret, true, false);
-			}
+				position_ptr = pWorkerProc->GetUserPositionContext()->UpsertPosition(userId, *position_ptr, false, true);
 		}
-		else
-			ret = pWorkerProc->GetUserPositionContext()->UpsertPosition(session->getUserInfo().getUserId(), *ret, false, true);
 	}
 
 	return nullptr;

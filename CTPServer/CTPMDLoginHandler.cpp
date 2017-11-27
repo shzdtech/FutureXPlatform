@@ -9,16 +9,18 @@
 #include "CTPRawAPI.h"
 #include "CTPConstant.h"
 #include "CTPMarketDataProcessor.h"
+#include "CTPUtility.h"
 #include "../bizutility/ExchangeRouterTable.h"
 #include "../utility/TUtil.h"
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       CTPMDLoginHandler::LoginFunction()
- // Purpose:    Implementation of CTPMDLoginHandler::LoginFunction()
+ // Name:       CTPMDLoginHandler::LoginFromServer()
+ // Purpose:    Implementation of CTPMDLoginHandler::LoginFromServer()
  // Return:     int
  ////////////////////////////////////////////////////////////////////////
 
-int CTPMDLoginHandler::LoginFunction(const IMessageProcessor_Ptr& msgProcessor, CThostFtdcReqUserLoginField* loginInfo, uint requestId, const std::string& serverName)
+std::shared_ptr<UserInfoDO> CTPMDLoginHandler::LoginFromServer(const IMessageProcessor_Ptr& msgProcessor, const std::shared_ptr<UserInfoDO>& userInfo_Ptr,
+	uint requestId, const std::string& serverName)
 {
 	auto pProcessor = (CTPProcessor*)msgProcessor.get();
 
@@ -36,7 +38,15 @@ int CTPMDLoginHandler::LoginFunction(const IMessageProcessor_Ptr& msgProcessor, 
 	ExchangeRouterTable::TryFind(server, exDO);
 
 	pProcessor->CreateCTPAPI(exDO.UserID, exDO.Address);
-	int ret = pProcessor->RawAPI_Ptr()->MdAPIProxy()->get()->ReqUserLogin(loginInfo, requestId);
+
+	auto& userInfo = pProcessor->getMessageSession()->getUserInfo();
+
+	CThostFtdcReqUserLoginField req{};
+	std::strncpy(req.BrokerID, exDO.BrokeID.data(), sizeof(req.BrokerID));
+	std::strncpy(req.UserID, userInfo.getInvestorId().data(), sizeof(req.UserID));
+	std::strncpy(req.Password, userInfo.getPassword().data(), sizeof(req.Password));
+	// std::strcpy(req.UserProductInfo, UUID_MICROFUTURE_CTP)
+	int ret = pProcessor->RawAPI_Ptr()->MdAPIProxy()->get()->ReqUserLogin(&req, requestId);
 
 	// try after market server
 	if (ret == -1)
@@ -45,9 +55,11 @@ int CTPMDLoginHandler::LoginFunction(const IMessageProcessor_Ptr& msgProcessor, 
 		if (ExchangeRouterTable::TryFind(server, exDO))
 		{
 			pProcessor->CreateCTPAPI(exDO.UserID, exDO.Address);
-			ret = pProcessor->RawAPI_Ptr()->MdAPIProxy()->get()->ReqUserLogin(loginInfo, requestId);
+			ret = pProcessor->RawAPI_Ptr()->MdAPIProxy()->get()->ReqUserLogin(&req, requestId);
 		}
 	}
 
-	return ret;
+	CTPUtility::CheckReturnError(ret);
+
+	return nullptr;
 }

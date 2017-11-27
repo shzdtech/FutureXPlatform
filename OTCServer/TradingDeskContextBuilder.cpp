@@ -71,6 +71,13 @@ void TradingDeskContextBuilder::LoadPortfolio(const IMessageProcessor_Ptr& msgPr
 
 		auto it = pPortfoliorMap->find(userid);
 
+		if (it == pPortfoliorMap->end())
+		{
+			pWorkerProc->LoadPortfolios(userid);
+
+			it = pPortfoliorMap->find(userid);
+		}
+
 		if (it != pPortfoliorMap->end())
 		{
 			for (auto pair : it->second)
@@ -129,6 +136,13 @@ void TradingDeskContextBuilder::LoadStrategy(const IMessageProcessor_Ptr& msgPro
 
 		auto pPricingDOMap = pricingCtx->GetPricingDataDOMap();
 
+		auto pStrategyMap = pricingCtx->GetUserStrategyMap()->tryfind(userid);
+
+		if (!pStrategyMap)
+		{
+			pWorkerProc->LoadStrategyToCache(userid);
+		}
+
 		auto& strategyMap = pricingCtx->GetUserStrategyMap()->getorfill(userid);
 		for (auto& pairMap : strategyMap)
 		{
@@ -136,7 +150,7 @@ void TradingDeskContextBuilder::LoadStrategy(const IMessageProcessor_Ptr& msgPro
 			{
 				auto& strategy_ptr = pair.second;
 
-				if(tradingDay > 1900)
+				if (tradingDay > 1900)
 					strategy_ptr->TradingDay = DateType(tradingDay);
 
 				if (strategy_ptr->IVModel && !strategy_ptr->IVModel->ParsedParams)

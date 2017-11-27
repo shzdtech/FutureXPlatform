@@ -13,7 +13,7 @@
 #include "../ordermanager/IOrderAPI.h"
 #include "../ordermanager/UserOrderContext.h"
 #include "../ordermanager/UserTradeContext.h"
-#include "../ordermanager/UserPositionContext.h"
+#include "../ordermanager/PortfolioPositionContext.h"
 #include "../utility/autofillmap.h"
 #include "../utility/hash_tuple.h"
 #include "../dataobject/AccountInfoDO.h"
@@ -64,13 +64,15 @@ public:
 
 	virtual OrderDO_Ptr CTPTradeWorkerProcessor::RefineOrder(CThostFtdcOrderField *pOrder);
 
-	void LoadYdPositonFromDatabase(const std::string & sysuserid, const std::string & tradingday);
+	void LoadYdPositonFromDatabase(const std::string & userId, const std::string& sysuserid, const std::string& tradingday);
 
-	void LoadPositonFromDatabase(const std::string& sysuserid, const std::string& tradingday);
+	void LoadPositonFromDatabase(const std::string & userId, const std::string& sysuserid, const std::string& tradingday);
+
+	void UpdateSysYdPosition(const std::string & userId, const UserPositionExDO_Ptr & position_ptr);
 
 	UserPositionExDO_Ptr FindDBYdPostion(const std::string& userid, const std::string& contract, const std::string& portfolio, PositionDirectionType direction);
 
-	UserPositionExDO_Ptr FindSysYdPostion(const std::string& userid, const std::string& contract, const std::string& portfolio, PositionDirectionType direction);
+	UserPositionExDO_Ptr FindSysYdPostion(const std::string& userid, const std::string& contract, PositionDirectionType direction);
 
 	void PushToLogQueue(const TradeRecordDO_Ptr& tradeDO_Ptr);
 
@@ -102,8 +104,11 @@ protected:
 	typedef cuckoohashmap_wrapper<std::tuple<std::string, std::string, PositionDirectionType>, UserPositionExDO_Ptr, 
 		std::hash<std::tuple<std::string, std::string, PositionDirectionType>>> Position_HashMap;
 
+	typedef cuckoohashmap_wrapper<std::pair<std::string, PositionDirectionType>, UserPositionExDO_Ptr,
+		pairhash<std::string, PositionDirectionType>> SysPosition_HashMap;
+
 	cuckoohash_map<std::string, Position_HashMap> _ydDBPositions;
-	cuckoohash_map<std::string, Position_HashMap> _ydSysPositions;
+	cuckoohash_map<std::string, SysPosition_HashMap> _ydSysPositions;
 
 	bool _loadPositionFromDB = false;
 	bool _logTrades = false;
@@ -142,7 +147,6 @@ public:
 
 	///请求查询投资者持仓响应
 	virtual void OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-	virtual void UpdateYdPosition(const std::string & userId, const UserPositionExDO_Ptr & position_ptr);
 };
 
 #endif

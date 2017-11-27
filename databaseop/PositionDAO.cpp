@@ -3,7 +3,7 @@
 
 #include "../dataobject/DateType.h"
 
-VectorDO_Ptr<UserPositionExDO> PositionDAO::QueryLastDayPosition(const std::string & sysuserid, const std::string & tradingDay)
+VectorDO_Ptr<UserPositionExDO> PositionDAO::QueryLastDayPosition(const std::string & accountId, const std::string & sysuserId, const std::string & tradingDay)
 {
 	static const std::string sql_proc_queryExchangePosition("CALL Position_Exchange_Lastday(?,?)");
 
@@ -15,12 +15,12 @@ VectorDO_Ptr<UserPositionExDO> PositionDAO::QueryLastDayPosition(const std::stri
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
 			session->getConnection()->prepareStatement(sql_proc_queryExchangePosition));
-		prestmt->setString(1, sysuserid);
+		prestmt->setString(1, sysuserId);
 		prestmt->setDateTime(2, tradingDay);
 
 		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
 
-		/* SELECT accountid, exchange, contract, portfolio_symbol, is_buy, lastday,`position`
+		/* SELECT exchange, contract, portfolio_symbol, is_buy, lastday,`position`
 			FROM exchange_position
 			WHERE accountid = userid;*/
 
@@ -29,10 +29,10 @@ VectorDO_Ptr<UserPositionExDO> PositionDAO::QueryLastDayPosition(const std::stri
 			if (!ret)
 				ret = std::make_shared<VectorDO<UserPositionExDO>>();
 
-			UserPositionExDO positionDO(rs->getString(2), rs->getString(3), rs->getString(4), rs->getString(1));
-			positionDO.Direction = rs->getBoolean(5) ? PositionDirectionType::PD_LONG : PositionDirectionType::PD_SHORT;
-			positionDO.TradingDay = DateType(rs->getString(6)).YYYYMMDD();
-			positionDO.YdInitPosition = rs->getInt(7);
+			UserPositionExDO positionDO(rs->getString(1), rs->getString(2), rs->getString(3), accountId);
+			positionDO.Direction = rs->getBoolean(4) ? PositionDirectionType::PD_LONG : PositionDirectionType::PD_SHORT;
+			positionDO.TradingDay = DateType(rs->getString(5)).YYYYMMDD();
+			positionDO.YdInitPosition = rs->getInt(6);
 
 			ret->push_back(std::move(positionDO));
 		}
@@ -47,7 +47,7 @@ VectorDO_Ptr<UserPositionExDO> PositionDAO::QueryLastDayPosition(const std::stri
 }
 
 
-VectorDO_Ptr<UserPositionExDO> PositionDAO::QueryOTCLastDayPosition(const std::string & userid, const std::string & tradingDay)
+VectorDO_Ptr<UserPositionExDO> PositionDAO::QueryOTCLastDayPosition(const std::string & accountId, const std::string & tradingDay)
 {
 	static const std::string sql_proc_queryOTCPosition("CALL Position_OTC_Lastday(?,?)");
 
@@ -59,7 +59,7 @@ VectorDO_Ptr<UserPositionExDO> PositionDAO::QueryOTCLastDayPosition(const std::s
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
 			session->getConnection()->prepareStatement(sql_proc_queryOTCPosition));
-		prestmt->setString(1, userid);
+		prestmt->setString(1, accountId);
 		prestmt->setDateTime(2, tradingDay);
 
 		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
@@ -95,8 +95,7 @@ bool PositionDAO::SyncPosition(const std::string& sysUserId, const std::vector<U
 	bool ret = false;
 
 	static const std::string sql_proc_updateYdPosition = 
-		"INSERT INTO exchange_position (accountid,sysuserid,tradingday,exchange,contract,is_buy,portfolio_symbol,position) "
-		"VALUES (?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE position = ?";
+		"CALL Position_SyncSys(?,?,?,?,?,?,?)";
 
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 
@@ -107,15 +106,13 @@ bool PositionDAO::SyncPosition(const std::string& sysUserId, const std::vector<U
 
 		for (auto& pos : positions)
 		{
-			prestmt->setString(1, pos.UserID());
-			prestmt->setString(2, sysUserId);
-			prestmt->setInt(3, pos.TradingDay);
-			prestmt->setString(4, pos.ExchangeID());
-			prestmt->setString(5, pos.InstrumentID());
-			prestmt->setBoolean(6, pos.Direction == PositionDirectionType::PD_LONG);
-			prestmt->setString(7, pos.PortfolioID());
-			prestmt->setInt(8, pos.YdInitPosition);
-			prestmt->setInt(9, pos.YdInitPosition);
+			prestmt->setString(1, sysUserId);
+			prestmt->setInt(2, pos.TradingDay);
+			prestmt->setString(3, pos.ExchangeID());
+			prestmt->setString(4, pos.InstrumentID());
+			prestmt->setBoolean(5, pos.Direction == PositionDirectionType::PD_LONG);
+			prestmt->setString(6, pos.PortfolioID());
+			prestmt->setInt(7, pos.YdInitPosition);
 			prestmt->executeUpdate();
 		}
 	}

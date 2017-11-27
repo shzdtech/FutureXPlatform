@@ -118,15 +118,20 @@ HedgeOrderManager::HedgeStatus HedgeOrderManager::Hedge(const PortfolioKey& port
 
 			if (!_userOrderCtx.UserOrderMap().find(pPortfolio->UserID(), userOrderMap))
 			{
-				_userOrderCtx.UserOrderMap().insert(pPortfolio->UserID(), OrderContractInnerMapType(true, 16));
+				_userOrderCtx.UserOrderMap().insert(pPortfolio->UserID(), 
+					std::move(OrderContractInnerMapType(true, 16)));
 
 				_userOrderCtx.UserOrderMap().find(pPortfolio->UserID(), userOrderMap);
-
-				userOrderMap.map()->insert(hedgeContract->InstrumentID(), OrderIDInnerMapType(true, 4));
 			}
 
 			OrderIDInnerMapType orders;
-			userOrderMap.map()->find(hedgeContract->InstrumentID(), orders);
+			if (!userOrderMap.map()->find(hedgeContract->InstrumentID(), orders))
+			{
+				userOrderMap.map()->insert(hedgeContract->InstrumentID(),
+					std::move(OrderIDInnerMapType(true, 4)));
+
+				userOrderMap.map()->find(hedgeContract->InstrumentID(), orders);
+			}
 
 			MarketDataDO mdo;
 			_pricingCtx->GetMarketDataMap()->find(hedgeContract->InstrumentID(), mdo);

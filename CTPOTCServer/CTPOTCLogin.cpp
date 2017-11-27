@@ -46,6 +46,7 @@
 dataobj_ptr CTPOTCLogin::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	auto ret = Login(reqDO, rawAPI, msgProcessor, session);
+
 	auto& userInfo = session->getUserInfo();
 	auto role = userInfo.getRole();
 
@@ -98,14 +99,14 @@ dataobj_ptr CTPOTCLogin::HandleRequest(const uint32_t serialId, const dataobj_pt
 			}
 		}
 
-		if (pTradeProcessor->HasLogged())
-		{
-			auto& sysuser = pTradeProcessor->GetSystemUser();
+		//if (pTradeProcessor->HasLogged())
+		//{
+		//	auto& sysuser = pTradeProcessor->GetSystemUser();
 
-			userInfo.setInvestorId(sysuser.getInvestorId());
-			userInfo.setBrokerId(sysuser.getBrokerId());
-			userInfo.setTradingDay(sysuser.getTradingDay());
-		}
+		//	userInfo.setInvestorId(sysuser.getInvestorId());
+		//	userInfo.setBrokerId(sysuser.getBrokerId());
+		//	userInfo.setTradingDay(sysuser.getTradingDay());
+		//}
 
 		LoadOTCUserPosition(pWorkerProc->GetOTCTradeWorkerProcessor()->GetOTCOrderManager().GetPositionContext(), userInfo);
 	}

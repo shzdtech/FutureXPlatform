@@ -16,10 +16,10 @@
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-VectorDO_Ptr<PortfolioDO> PortfolioDAO::FindAllPortfolios()
+VectorDO_Ptr<PortfolioDO> PortfolioDAO::FindPortfolios(const std::string userId)
 {
 	static const std::string sql_findportfolio(
-		"SELECT accountid, portfolio_symbol, hedge_delay, hedge_threshold FROM portfolio ");
+		"SELECT accountid, portfolio_symbol, hedge_delay, hedge_threshold FROM portfolio WHERE accountid like ?");
 
 	std::map<PortfolioKey, std::pair<std::string, ContractKey>> pricingContractMap;
 	RetrieveHedgeContracts(pricingContractMap);
@@ -30,6 +30,8 @@ VectorDO_Ptr<PortfolioDO> PortfolioDAO::FindAllPortfolios()
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
 			session->getConnection()->prepareStatement(sql_findportfolio));
+
+		prestmt->setString(1, userId.empty() ? "%" : userId);
 
 		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
 

@@ -19,10 +19,11 @@
 class DATABASEOP_CLASS_EXPORTS StrategyContractDAO
 {
 public:
-	static VectorDO_Ptr<StrategyContractDO_Ptr> LoadStrategyContractByProductType(int productType);
-	static void RetrievePricingContractsByProductType(int productType, const std::string& modelaim, 
+	static VectorDO_Ptr<StrategyContractDO_Ptr> LoadStrategyContractByProductType(const std::string& userId = "");
+	static void RetrievePricingContractsByProductType(const std::string& modelaim, const std::string& userId,
 		autofillmap<UserStrategyName, autofillmap<ContractKey, StrategyPricingContract_Ptr>>& pricingContractMap);
-	static void RetrieveStrategyModels(autofillmap<UserStrategyName, autofillmap<std::string, std::string>>& strategyDOMap);
+	static void RetrieveStrategyModels(const std::string& userId,
+		autofillmap<UserStrategyName, autofillmap<std::string, std::string>>& strategyDOMap);
 	static bool FindStrategyModelByAim(const std::string& strategySym, const std::string& aim, const std::string& userid, std::string& modelinstance);
 	static void UpdateStrategy(const StrategyContractDO& strategyDO);
 	static void UpdateStrategyModel(const StrategyContractDO & strategyDO);

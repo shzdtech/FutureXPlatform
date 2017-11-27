@@ -70,18 +70,22 @@ void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO, IOr
 	_updatinglock.update_fn(strategyDO, [this, &strategyDO, orderAPI](bool& lock)
 	{
 		OrderContractInnerMapType userOrderMap;
-
 		if (!_userOrderCtx.UserOrderMap().find(strategyDO.UserID(), userOrderMap))
 		{
-			_userOrderCtx.UserOrderMap().insert(strategyDO.UserID(), OrderContractInnerMapType(true, 16));
+			_userOrderCtx.UserOrderMap().insert(strategyDO.UserID(), 
+				std::move(OrderContractInnerMapType(true, 16)));
 
 			_userOrderCtx.UserOrderMap().find(strategyDO.UserID(), userOrderMap);
-
-			userOrderMap.map()->insert(strategyDO.InstrumentID(), OrderIDInnerMapType(true, strategyDO.Depth * 2));
 		}
 
 		OrderIDInnerMapType orders;
-		userOrderMap.map()->find(strategyDO.InstrumentID(), orders);
+		if (!userOrderMap.map()->find(strategyDO.InstrumentID(), orders))
+		{
+			userOrderMap.map()->insert(strategyDO.InstrumentID(),
+				std::move(OrderIDInnerMapType(true, std::max(strategyDO.Depth * 2, 2))));
+
+			userOrderMap.map()->find(strategyDO.InstrumentID(), orders);
+		}
 
 		IPricingDO_Ptr pricingDO_ptr;
 		if (_pricingCtx->GetPricingDataDOMap()->find(strategyDO, pricingDO_ptr))
@@ -435,11 +439,11 @@ OrderDO_Ptr AutoOrderManager::RejectOrder(OrderRequestDO& orderReq, IOrderAPI* o
 int AutoOrderManager::CancelUserOrders(const std::string& userId, IOrderAPI* orderAPI)
 {
 	OrderContractInnerMapType orderMap;
-	if(_userOrderCtx.UserOrderMap().find(userId, orderMap))
+	if (_userOrderCtx.UserOrderMap().find(userId, orderMap))
 	{
 		for (auto& it : orderMap.map()->lock_table())
 		{
-			for(auto& pair : it.second.map()->lock_table())
+			for (auto& pair : it.second.map()->lock_table())
 				CancelOrder(*(pair.second), orderAPI);
 		}
 		orderMap.map()->clear();

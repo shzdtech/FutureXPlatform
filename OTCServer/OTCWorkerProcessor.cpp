@@ -72,9 +72,11 @@ int OTCWorkerProcessor::LoadContractToCache(ProductType productType)
 	return 0;
 }
 
-int OTCWorkerProcessor::LoadStrategyToCache(ProductType productType)
+int OTCWorkerProcessor::LoadStrategyToCache(const std::string& userId)
 {
-	auto allStrategy = StrategyContractDAO::LoadStrategyContractByProductType(productType);
+	StrategyModelCache::Load(userId);
+
+	auto allStrategy = StrategyContractDAO::LoadStrategyContractByProductType(userId);
 	auto strategyMap = PricingDataContext()->GetStrategyMap();
 	auto userStrategyMap = PricingDataContext()->GetUserStrategyMap();
 	for (auto& strategy_ptr : *allStrategy)
@@ -141,9 +143,9 @@ int OTCWorkerProcessor::LoadStrategyToCache(ProductType productType)
 	return allStrategy->size();
 }
 
-void OTCWorkerProcessor::LoadPortfolios()
+void OTCWorkerProcessor::LoadPortfolios(const std::string& userId)
 {
-	if (auto vect_portfolio = PortfolioDAO::FindAllPortfolios())
+	if (auto vect_portfolio = PortfolioDAO::FindPortfolios(userId))
 	{
 		auto portfolioMap = PricingDataContext()->GetPortfolioMap();
 
@@ -157,9 +159,9 @@ void OTCWorkerProcessor::LoadPortfolios()
 void OTCWorkerProcessor::Initialize()
 {
 	LoadContractToCache(GetContractProductType());
-	LoadPortfolios();
+	/*LoadPortfolios();
 	for (auto productType : GetStrategyProductTypes())
-		LoadStrategyToCache(productType);
+		LoadStrategyToCache(productType);*/
 }
 
 

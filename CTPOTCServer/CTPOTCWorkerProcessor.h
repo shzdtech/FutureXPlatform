@@ -49,6 +49,7 @@ public:
 protected:
 	std::shared_ptr<CTPOTCTradeWorkerProcessor> _CTPOTCTradeWorkerProcessorPtr;
 	std::future<void> _initializer;
+	std::set<ContractKey> _subedContracts;
 	UserInfo _systemUser;
 	int RetryInterval = 60000;
 	volatile bool _closing = false;

@@ -89,16 +89,14 @@
     <CustomBuild Include="system.ctp.json">
       <Filter>config\json</Filter>
     </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="factory.etf.json">
+    <CustomBuild Include="factory.etf.json">
       <Filter>config\json</Filter>
-    </None>
-    <None Include="server.etf.json">
+    </CustomBuild>
+    <CustomBuild Include="server.etf.json">
       <Filter>config\json</Filter>
-    </None>
-    <None Include="service.etf.json">
+    </CustomBuild>
+    <CustomBuild Include="service.etf.json">
       <Filter>config\json</Filter>
-    </None>
+    </CustomBuild>
   </ItemGroup>
 </Project>

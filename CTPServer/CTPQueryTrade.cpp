@@ -118,7 +118,7 @@ dataobj_ptr CTPQueryTrade::HandleResponse(const uint32_t serialId, const param_v
 	{
 		if (ret->IsSystemUserId())
 		{
-			ret->SetUserID(CTPUtility::MakeUserID(ret->BrokerID, ret->InvestorID));
+			ret->SetUserID(session->getUserInfo().getUserId());
 		}
 
 		ret->HasMore = !*(bool*)rawRespParams[3];

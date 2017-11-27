@@ -118,7 +118,7 @@ dataobj_ptr CTPQueryOrder::HandleResponse(const uint32_t serialId, const param_v
 					ret = CTPUtility::ParseRawOrder(pData);
 					if (ret->IsSystemUserId())
 					{
-						ret->SetUserID(CTPUtility::MakeUserID(ret->BrokerID, ret->InvestorID));
+						ret->SetUserID(session->getUserInfo().getUserId());
 					}
 
 					pWorkerProc->GetUserOrderContext().UpsertOrder(orderid, ret);
@@ -131,7 +131,7 @@ dataobj_ptr CTPQueryOrder::HandleResponse(const uint32_t serialId, const param_v
 			ret = CTPUtility::ParseRawOrder(pData);
 			if (ret->IsSystemUserId())
 			{
-				ret->SetUserID(CTPUtility::MakeUserID(ret->BrokerID, ret->InvestorID));
+				ret->SetUserID(session->getUserInfo().getUserId());
 			}
 
 			ret->HasMore = !*(bool*)rawRespParams[3];

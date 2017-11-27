@@ -3,14 +3,14 @@
 #include "../include/libcuckoo/cuckoohash_map.hh"
 #include "../databaseop/ModelParamsDAO.h"
 
-static autofillmap<ModelKey, ModelParamsDO_Ptr> _modelCache;
+static cuckoohash_map<ModelKey, ModelParamsDO_Ptr, ModelKeyHash> _modelCache(256);
+static cuckoohash_map<std::string, vector_ptr<ModelParamsDO_Ptr>> _userModelCache(256);
 static cuckoohash_map<ModelKey, ModelParamsDO_Ptr, ModelKeyHash> _modelCacheTemp(4);
-StrategyModelCache::static_initializer StrategyModelCache::_static_init;
 
 ModelParamsDO_Ptr StrategyModelCache::FindModel(const ModelKey & key)
 {
 	ModelParamsDO_Ptr ret;
-	_modelCache.tryfind(key, ret);
+	_modelCache.find(key, ret);
 	return ret;
 }
 
@@ -35,38 +35,43 @@ ModelParamsDO_Ptr StrategyModelCache::FindOrRetrieveModel(const ModelKey & key)
 		if (ret = ModelParamsDAO::FindUserModel(key.UserID(), key.InstanceName))
 		{
 			ret = std::make_shared<ModelParamsDO>(std::move(*ret));
-			_modelCache.emplace(key, ret);
+			if (_modelCache.insert(key, ret))
+			{
+				vector_ptr<ModelParamsDO_Ptr> model_vec;
+				if (_userModelCache.find(key.UserID(), model_vec))
+					model_vec->push_back(ret);
+			}
 		}
 	}
 
 	return ret;
 }
 
-const std::map<ModelKey, ModelParamsDO_Ptr>& StrategyModelCache::ModelCache()
-{
-	return _modelCache;
-}
-
 vector_ptr<ModelParamsDO_Ptr> StrategyModelCache::FindModelsByUser(const std::string& userId)
 {
-	vector_ptr<ModelParamsDO_Ptr> ret = std::make_shared<std::vector<ModelParamsDO_Ptr>>();
+	vector_ptr<ModelParamsDO_Ptr> ret;
 
-	for (auto it = _modelCache.begin(); ; it++)
-	{
-		it = std::find_if(it, _modelCache.end(),
-			[&userId](std::pair<const ModelKey, ModelParamsDO_Ptr>& pair) { return pair.first.UserID() == userId; });
-		if (it == _modelCache.end())
-			break;
-
-		ret->push_back(it->second);
-	}
+	_userModelCache.find(userId, ret);
 
 	return ret;
 }
 
 void StrategyModelCache::Remove(const ModelKey & key)
 {
-	_modelCache.erase(key);
+	if (_modelCache.erase(key))
+	{
+		vector_ptr<ModelParamsDO_Ptr> model_vec;
+		if (_userModelCache.find(key.UserID(), model_vec))
+		{
+			for (auto it = model_vec->begin(); it != model_vec->end();)
+			{
+				if (it->get()->InstanceName == key.InstanceName)
+					it = model_vec->erase(it);
+				else
+					it++;
+			}
+		}
+	}
 }
 
 bool StrategyModelCache::RemoveTempModel(const ModelKey & key)
@@ -78,15 +83,23 @@ void StrategyModelCache::Clear(void)
 {
 	_modelCache.clear();
 	_modelCacheTemp.clear();
+	_userModelCache.clear();
 }
 
-StrategyModelCache::static_initializer::static_initializer()
+void StrategyModelCache::Load(const std::string& userId)
 {
-	autofillmap<ModelKey, ModelParamsDO_Ptr> modelMap;
-	ModelParamsDAO::FindAllModels(modelMap);
-
-	for (auto& pair : modelMap)
+	if (!_userModelCache.contains(userId))
 	{
-		_modelCache.emplace(pair.first, std::make_shared<ModelParamsDO>(std::move(*pair.second)));
+		autofillmap<ModelKey, ModelParamsDO_Ptr> modelMap;
+		ModelParamsDAO::FindAllModels(userId, modelMap);
+
+		auto model_vec = std::make_shared<std::vector<ModelParamsDO_Ptr>>();
+		for (auto& pair : modelMap)
+		{
+			auto model_ptr = std::make_shared<ModelParamsDO>(std::move(*pair.second));
+			_modelCache.insert(pair.first, model_ptr);
+			model_vec->push_back(model_ptr);
+		}
+		_userModelCache.insert(userId, model_vec);
 	}
 }

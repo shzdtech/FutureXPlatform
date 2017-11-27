@@ -13,21 +13,23 @@
 #include "../bizutility/ContractCache.h"
 #include "../litelogger/LiteLogger.h"
 #include "../databaseop/ContractDAO.h"
-
+#include "../litelogger/LiteLogger.h"
 
 UserPositionExDO_Ptr PortfolioPositionContext::UpsertPosition(const std::string& userid, const UserPositionExDO& positionDO, bool updateYdPosition, bool closeYdFirst)
 {
-	if (!_userPositionMap.contains(userid))
-		_userPositionMap.insert(userid, std::move(PortfolioPosition(true, 2)));
-
 	PortfolioPosition portfolioPosition;
-	_userPositionMap.find(userid, portfolioPosition);
-
-	if (!portfolioPosition.map()->contains(positionDO.PortfolioID()))
-		portfolioPosition.map()->insert(positionDO.PortfolioID(), std::move(ContractPosition(true, 16)));
+	if (!_userPositionMap.find(userid, portfolioPosition))
+	{
+		_userPositionMap.insert(userid, std::move(PortfolioPosition(true, 2)));
+		_userPositionMap.find(userid, portfolioPosition);
+	}
 
 	ContractPosition contractPosition;
-	portfolioPosition.map()->find(positionDO.PortfolioID(), contractPosition);
+	if (!portfolioPosition.map()->find(positionDO.PortfolioID(), contractPosition))
+	{
+		portfolioPosition.map()->insert(positionDO.PortfolioID(), std::move(ContractPosition(true, 16)));
+		portfolioPosition.map()->find(positionDO.PortfolioID(), contractPosition);
+	}
 
 	auto newPosition_Ptr = std::make_shared<UserPositionExDO>(positionDO);
 	newPosition_Ptr->TdPosition = 0;
@@ -199,6 +201,8 @@ bool PortfolioPositionContext::GetRiskByPortfolio(const IPricingDataContext_Ptr&
 
 			if (position > 0)
 			{
+				LOG_DEBUG << userPosition_Ptr->InstrumentID() << ":" << userPosition_Ptr->Direction << ": " << position;
+
 				double delta = 0;
 				double gamma = 0;
 				double theta = 0;
@@ -574,17 +578,19 @@ bool PortfolioPositionContext::GetValuationRiskByPortfolio(const IPricingDataCon
 UserPositionExDO_Ptr PortfolioPositionContext::UpsertPosition(const std::string& userid,
 	const TradeRecordDO_Ptr& tradeDO, int multiplier, bool closeYdFirst)
 {
-	if (!_userPositionMap.contains(userid))
-		_userPositionMap.insert(userid, std::move(PortfolioPosition(true, 2)));
-
 	PortfolioPosition portfolioPosition;
-	_userPositionMap.find(userid, portfolioPosition);
-
-	if (!portfolioPosition.map()->contains(tradeDO->PortfolioID()))
-		portfolioPosition.map()->insert(tradeDO->PortfolioID(), std::move(ContractPosition(true, 16)));
+	if (!_userPositionMap.find(userid, portfolioPosition))
+	{
+		_userPositionMap.insert(userid, std::move(PortfolioPosition(true, 2)));
+		_userPositionMap.find(userid, portfolioPosition);
+	}
 
 	ContractPosition contractPosition;
-	portfolioPosition.map()->find(tradeDO->PortfolioID(), contractPosition);
+	if (!portfolioPosition.map()->find(tradeDO->PortfolioID(), contractPosition))
+	{
+		portfolioPosition.map()->insert(tradeDO->PortfolioID(), std::move(ContractPosition(true, 16)));
+		portfolioPosition.map()->find(tradeDO->PortfolioID(), contractPosition);
+	}
 
 	// cost
 	double cost = tradeDO->Price * tradeDO->Volume;

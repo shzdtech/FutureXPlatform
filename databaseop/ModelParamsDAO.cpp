@@ -40,10 +40,11 @@ ModelParamsDO_Ptr ModelParamsDAO::FindUserModel(const std::string& userid, const
 }
 
 
-void ModelParamsDAO::FindAllModels(autofillmap<ModelKey, ModelParamsDO_Ptr>& modelMap)
+void ModelParamsDAO::FindAllModels(const std::string& userId, autofillmap<ModelKey, ModelParamsDO_Ptr>& modelMap)
 {
 	static const std::string sql_findstrategyparam(
-		"SELECT accountid,modelinstance,model,modelaim,paramname,paramvalue FROM vm_usermodel_params");
+		"SELECT accountid,modelinstance,model,modelaim,paramname,paramvalue FROM vm_usermodel_params "
+		"WHERE accountid like ?");
 
 	VectorDO_Ptr<ModelParamsDO_Ptr> ret = std::make_shared<VectorDO<ModelParamsDO_Ptr>>();
 
@@ -51,6 +52,8 @@ void ModelParamsDAO::FindAllModels(autofillmap<ModelKey, ModelParamsDO_Ptr>& mod
 	try
 	{
 		AutoClosePreparedStmt_Ptr prestmt(session->getConnection()->prepareStatement(sql_findstrategyparam));
+
+		prestmt->setString(1, userId.empty() ? "%" : userId);
 
 		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
 

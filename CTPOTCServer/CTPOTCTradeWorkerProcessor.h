@@ -44,8 +44,8 @@ public:
 
 	virtual void OnNewManualTrade(const TradeRecordDO & tradeDO);
 
-	virtual void TriggerHedgeOrderUpdating(const PortfolioKey & portfolioKey);
-	virtual void TriggerAutoOrderUpdating(const StrategyContractDO& strategyDO);
+	virtual void TriggerHedgeOrderUpdating(const PortfolioKey & portfolioKey, const OTCTradeProcessor_Ptr& processor_ptr);
+	virtual void TriggerAutoOrderUpdating(const UserContractKey& strategyKey, const OTCTradeProcessor_Ptr& processor_ptr);
 
 protected:
 	OTCOrderManager _otcOrderMgr;
@@ -62,32 +62,12 @@ protected:
 	void AutoOrderWorker();
 	void HedgeOrderWorker();
 
-	int ResubMarketData();
-private:
-
-public:
-
-	///CTP API Wrapper;
-	///登录请求响应
-	void OnRtnOrder(const OTCTradeProcessor_Ptr& tradeProcessor, CThostFtdcOrderField *pOrder);
 
 public:
 
 	///CTP API;
 	///登录请求响应
 	void OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-
-	void OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-
-	void OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-
-	void OnErrRtnOrderInsert(CThostFtdcInputOrderField * pInputOrder, CThostFtdcRspInfoField * pRspInfo);
-
-	void OnErrRtnOrderAction(CThostFtdcOrderActionField * pOrderAction, CThostFtdcRspInfoField * pRspInfo);
-
-	void OnRtnOrder(CThostFtdcOrderField *pOrder);
-
-	void OnRtnTrade(CThostFtdcTradeField * pTrade);
 
 	///请求查询投资者持仓响应
 	void OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);

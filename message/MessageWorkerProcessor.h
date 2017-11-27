@@ -23,8 +23,8 @@ public:
 	virtual void RegisterLoggedSession(const IMessageSession_Ptr& sessionPtr);
 
 protected:
-	bool _isLogged;
-	bool _isConnected;
+	bool _isLogged = false;
+	bool _isConnected = false;
 	UserInfo _systemUser;
 	volatile bool _closing = false;
 	SessionContainer_Ptr<std::string> _userSessionCtn_Ptr;

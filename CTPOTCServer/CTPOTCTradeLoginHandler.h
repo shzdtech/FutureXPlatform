@@ -14,7 +14,7 @@
 class CTP_OTC_CLASS_EXPORT CTPOTCTradeLoginHandler : public CTPTradeLoginHandler
 {
 public:
-	dataobj_ptr HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session);
+	bool LoginFromDB(const IMessageProcessor_Ptr& msgProcessor);
 
 protected:
 private:

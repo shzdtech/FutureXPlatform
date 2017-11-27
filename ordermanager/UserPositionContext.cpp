@@ -43,7 +43,7 @@ UserPositionExDO_Ptr UserPositionContext::UpsertPosition(const std::string& user
 
 			if (position_ptr->TradingDay == newPosition_Ptr->TradingDay &&
 				position_ptr->YdInitPosition != newPosition_Ptr->YdInitPosition &&
-				newPosition_Ptr->YdInitPosition > 0)
+				newPosition_Ptr->YdInitPosition >= 0)
 			{
 				position_ptr->YdInitPosition = newPosition_Ptr->YdInitPosition;
 

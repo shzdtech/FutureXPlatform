@@ -14,7 +14,9 @@
 class CTP_CLASS_EXPORT CTPTradeLoginHandler : public CTPLoginHandler
 {
 public:
-	int LoginFunction(const IMessageProcessor_Ptr& msgProcessor, CThostFtdcReqUserLoginField* loginInfo, uint requestId, const std::string& serverName);
+	virtual std::shared_ptr<UserInfoDO> LoginFromServer(const IMessageProcessor_Ptr& msgProcessor, const std::shared_ptr<UserInfoDO>& userInfo_Ptr, 
+		uint requestId, const std::string& serverName);
+	virtual bool LoginFromDB(const IMessageProcessor_Ptr& msgProcessor);
 	dataobj_ptr HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session);
 
 protected:

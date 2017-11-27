@@ -176,43 +176,185 @@ uint32_t CTPOTCTradeProcessor::GetSessionId(void)
 ///报单录入请求响应
 void CTPOTCTradeProcessor::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCTradeWorkerProcessor>(this))
+	if (pInputOrder)
 	{
-		pWorkerProc->OnRspOrderInsert(pInputOrder, pRspInfo, nRequestID, bIsLast);
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCTradeWorkerProcessor>(this))
+		{
+			auto orderptr = CTPUtility::ParseRawOrder(pInputOrder, pRspInfo, getMessageSession()->getUserInfo().getSessionId());
+			pWorkerProc->GetAutoOrderManager().OnMarketOrderUpdated(*orderptr, this);
+			pWorkerProc->GetHedgeOrderManager().OnMarketOrderUpdated(*orderptr, this);
+
+			if (CTPUtility::HasError(pRspInfo))
+			{
+				StrategyContractDO_Ptr strategy_ptr;
+				pWorkerProc->PricingDataContext()->GetStrategyMap()->find(*orderptr, strategy_ptr);
+				if (strategy_ptr && orderptr->TIF != OrderTIFType::IOC)
+				{
+					strategy_ptr->AutoOrderSettings.LimitOrderCounter--;
+					strategy_ptr->BidEnabled = false;
+					strategy_ptr->AskEnabled = false;
+					strategy_ptr->Hedging = false;
+					pWorkerProc->DispatchUserMessage(MSG_ID_MODIFY_STRATEGY, 0, strategy_ptr->UserID(), strategy_ptr);
+				}
+
+				pWorkerProc->DispatchUserMessage(MSG_ID_ORDER_NEW, 0, orderptr->UserID(), orderptr);
+			}
+		}
 	}
 }
 
 void CTPOTCTradeProcessor::OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCTradeWorkerProcessor>(this))
+	if (pInputOrderAction)
 	{
-		pWorkerProc->OnRspOrderAction(pInputOrderAction, pRspInfo, nRequestID, bIsLast);
+		if (pInputOrderAction->ActionFlag == THOST_FTDC_AF_Delete)
+		{
+			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCTradeWorkerProcessor>(this))
+			{
+				auto orderptr = CTPUtility::ParseRawOrder(pInputOrderAction, pRspInfo);
+				pWorkerProc->GetAutoOrderManager().OnMarketOrderUpdated(*orderptr, this);
+				pWorkerProc->GetHedgeOrderManager().OnMarketOrderUpdated(*orderptr, this);
+			}
+		}
 	}
 }
 
 ///报单录入错误回报
 void CTPOTCTradeProcessor::OnErrRtnOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo)
 {
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCTradeWorkerProcessor>(this))
+	if (pInputOrder)
 	{
-		pWorkerProc->OnErrRtnOrderInsert(pInputOrder, pRspInfo);
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCTradeWorkerProcessor>(this))
+		{
+			if (auto orderptr = CTPUtility::ParseRawOrder(pInputOrder, pRspInfo, getMessageSession()->getUserInfo().getSessionId()))
+			{
+				pWorkerProc->GetAutoOrderManager().OnMarketOrderUpdated(*orderptr, this);
+				pWorkerProc->GetHedgeOrderManager().OnMarketOrderUpdated(*orderptr, this);
+
+				StrategyContractDO_Ptr strategy_ptr;
+				pWorkerProc->PricingDataContext()->GetStrategyMap()->find(*orderptr, strategy_ptr);
+				if (strategy_ptr && orderptr->TIF != OrderTIFType::IOC)
+				{
+					strategy_ptr->AutoOrderSettings.LimitOrderCounter--;
+					strategy_ptr->BidEnabled = false;
+					strategy_ptr->AskEnabled = false;
+					strategy_ptr->Hedging = false;
+					pWorkerProc->DispatchUserMessage(MSG_ID_MODIFY_STRATEGY, 0, strategy_ptr->UserID(), strategy_ptr);
+				}
+
+
+				pWorkerProc->DispatchUserMessage(MSG_ID_ORDER_NEW, 0, orderptr->UserID(), orderptr);
+			}
+		}
 	}
 }
 
 ///报单操作错误回报
 void CTPOTCTradeProcessor::OnErrRtnOrderAction(CThostFtdcOrderActionField *pOrderAction, CThostFtdcRspInfoField *pRspInfo)
 {
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCTradeWorkerProcessor>(this))
+	if (pOrderAction)
 	{
-		pWorkerProc->OnErrRtnOrderAction(pOrderAction, pRspInfo);
+		if (pOrderAction->ActionFlag == THOST_FTDC_AF_Delete)
+		{
+			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCTradeWorkerProcessor>(this))
+			{
+				if (auto orderptr = CTPUtility::ParseRawOrder(pOrderAction, pRspInfo))
+				{
+					pWorkerProc->GetAutoOrderManager().OnMarketOrderUpdated(*orderptr, this);
+					pWorkerProc->GetHedgeOrderManager().OnMarketOrderUpdated(*orderptr, this);
+				}
+			}
+		}
 	}
 }
 
 void CTPOTCTradeProcessor::OnRtnOrder(CThostFtdcOrderField *pOrder)
 {
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCTradeWorkerProcessor>(this))
+	if (pOrder)
 	{
-		pWorkerProc->OnRtnOrder(Shared_This(), pOrder);
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCTradeWorkerProcessor>(this))
+		{
+			bool sendNotification = false;
+
+			if (pOrder->TimeCondition != THOST_FTDC_TC_IOC)
+			{
+				if (int orderSysId = CTPUtility::ToUInt64(pOrder->OrderSysID))
+				{
+					sendNotification = !pWorkerProc->GetUserOrderContext().FindOrder(orderSysId);
+				}
+			}
+
+			auto orderptr = pWorkerProc->RefineOrder(pOrder);
+
+			StrategyContractDO_Ptr strategy_ptr;
+
+			if (sendNotification)
+			{
+				int limitOrders = pWorkerProc->GetUserOrderContext().GetLimitOrderCount(orderptr->InstrumentID());
+
+				if (pWorkerProc->PricingDataContext()->GetStrategyMap()->find(*orderptr, strategy_ptr))
+				{
+					if (strategy_ptr->AutoOrderSettings.LimitOrderCounter < limitOrders)
+					{
+						strategy_ptr->AutoOrderSettings.LimitOrderCounter = limitOrders;
+					}
+				}
+			}
+
+			// update auto orders
+			int ret = pWorkerProc->GetAutoOrderManager().OnMarketOrderUpdated(*orderptr, this);
+			if (ret != 0)
+			{
+				if (!strategy_ptr)
+					pWorkerProc->PricingDataContext()->GetStrategyMap()->find(*orderptr, strategy_ptr);
+
+				if (strategy_ptr)
+				{
+					if (ret > 0)
+					{
+						sendNotification = true;
+
+						if (orderptr->Direction == DirectionType::SELL)
+						{
+							strategy_ptr->AutoOrderSettings.AskCounter += ret;
+						}
+						else
+						{
+							strategy_ptr->AutoOrderSettings.BidCounter += ret;
+						}
+					}
+					else if (ret < 0 && orderptr->TIF != OrderTIFType::IOC && !orderptr->OrderSysID)
+					{
+						strategy_ptr->AutoOrderSettings.LimitOrderCounter--;
+					}
+				}
+
+				if (ret >= -1)
+					pWorkerProc->TriggerAutoOrderUpdating(*orderptr, Shared_This());
+			}
+
+			// update hedge orders
+			ret = pWorkerProc->GetHedgeOrderManager().OnMarketOrderUpdated(*orderptr, this);
+			if (!orderptr->PortfolioID().empty())
+			{
+				auto orderStatus = orderptr->OrderStatus;
+				if (orderStatus == OrderStatusType::PARTIAL_TRADING ||
+					orderStatus == OrderStatusType::ALL_TRADED ||
+					orderStatus == OrderStatusType::CANCELED)
+				{
+					pWorkerProc->TriggerHedgeOrderUpdating(*orderptr, Shared_This());
+				}
+			}
+
+			if (sendNotification)
+			{
+				if (!strategy_ptr)
+					pWorkerProc->PricingDataContext()->GetStrategyMap()->find(*orderptr, strategy_ptr);
+
+				if (strategy_ptr)
+					pWorkerProc->DispatchUserMessage(MSG_ID_MODIFY_STRATEGY, 0, strategy_ptr->UserID(), strategy_ptr);
+			}
+		}
 	}
 }
 
@@ -249,9 +391,21 @@ std::shared_ptr<CTPOTCTradeProcessor> CTPOTCTradeProcessor::Shared_This()
 
 void CTPOTCTradeProcessor::OnRtnTrade(CThostFtdcTradeField * pTrade)
 {
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCTradeWorkerProcessor>(this))
+	if (pTrade)
 	{
-		pWorkerProc->OnRtnTrade(pTrade);
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCTradeWorkerProcessor>(this))
+		{
+			if (auto trdDO_Ptr = pWorkerProc->RefineTrade(pTrade))
+			{
+				if (trdDO_Ptr->IsSystemUserId())
+				{
+					trdDO_Ptr->SetUserID(getMessageSession()->getUserInfo().getUserId());
+				}
+
+				pWorkerProc->PushToLogQueue(trdDO_Ptr);
+				pWorkerProc->UpdatePosition(trdDO_Ptr);
+			}
+		}
 	}
 }
 
@@ -259,4 +413,33 @@ void CTPOTCTradeProcessor::OnRspQryInvestorPosition(CThostFtdcInvestorPositionFi
 {
 	if (bIsLast)
 		DataLoadMask |= CTPProcessor::POSITION_DATA_LOADED;
+
+	if (pInvestorPosition)
+	{
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCTradeWorkerProcessor>(this))
+		{
+			auto& userId = getMessageSession()->getUserInfo().getUserId();
+
+			auto position = CTPUtility::ParseRawPosition(pInvestorPosition, userId);
+
+			pWorkerProc->UpdateSysYdPosition(userId, position);
+
+			if (!pWorkerProc->IsLoadPositionFromDB())
+			{
+				if (position->ExchangeID() == EXCHANGE_SHFE)
+				{
+					if (pInvestorPosition->PositionDate == THOST_FTDC_PSD_Today)
+					{
+						position = pWorkerProc->GetUserPositionContext()->UpsertPosition(userId, *position, false, false);
+					}
+					else
+					{
+						position = pWorkerProc->GetUserPositionContext()->UpsertPosition(userId, *position, true, false);
+					}
+				}
+				else
+					position = pWorkerProc->GetUserPositionContext()->UpsertPosition(userId, *position, false, true);
+			}
+		}
+	}
 }

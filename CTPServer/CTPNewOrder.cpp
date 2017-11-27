@@ -132,7 +132,7 @@ dataobj_ptr CTPNewOrder::HandleResponse(const uint32_t serialId, const param_vec
 		{
 			if (ret->IsSystemUserId())
 			{
-				ret->SetUserID(CTPUtility::MakeUserID(ret->BrokerID, ret->InvestorID));
+				ret->SetUserID(session->getUserInfo().getUserId());
 			}
 		}
 
