@@ -30,6 +30,7 @@ dataobj_ptr CTPAddManualTrade::HandleRequest(const uint32_t serialId, const data
 	tradeDO_Ptr->SetUserID(userInfo.getUserId());
 	tradeDO_Ptr->TradingDay = userInfo.getTradingDay();
 	tradeDO_Ptr->TradeID = now.time_since_epoch().count();
+	tradeDO_Ptr->OrderSysID = 0;
 	tradeDO_Ptr->HasMore = false;
 
 	auto time = std::chrono::system_clock::to_time_t(now);

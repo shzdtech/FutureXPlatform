@@ -37,6 +37,7 @@ dataobj_ptr CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_pt
 {
 	CheckLogin(session);
 	CheckAllowTrade(session);
+	CTPUtility::CheckTradeInit((CTPRawAPI*)rawAPI);
 
 	auto pDO = (OrderRequestDO*)reqDO.get();
 
@@ -127,16 +128,15 @@ dataobj_ptr CTPNewOrder::HandleResponse(const uint32_t serialId, const param_vec
 
 	if (auto pData = (CThostFtdcInputOrderField*)rawRespParams[0])
 	{
-		auto pRsp = (CThostFtdcRspInfoField*)rawRespParams[1];
-		if (ret = CTPUtility::ParseRawOrder(pData, pRsp, session->getUserInfo().getSessionId()))
+		if (session->getUserInfo().getUserId() == pData->UserID)
 		{
-			if (ret->IsSystemUserId())
-			{
-				ret->SetUserID(session->getUserInfo().getUserId());
-			}
-		}
+			auto pRsp = (CThostFtdcRspInfoField*)rawRespParams[1];
 
-		ret->HasMore = false;
+			if (ret = CTPUtility::ParseRawOrder(pData, pRsp, session->getUserInfo().getSessionId()))
+			{
+				ret->HasMore = false;
+			}
+		}	
 	}
 	else
 	{

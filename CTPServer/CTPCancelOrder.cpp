@@ -29,6 +29,7 @@
 dataobj_ptr CTPCancelOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
+	CTPUtility::CheckTradeInit((CTPRawAPI*)rawAPI);
 
 	auto pDO = (OrderRequestDO*)reqDO.get();
 
@@ -79,23 +80,19 @@ dataobj_ptr CTPCancelOrder::HandleResponse(const uint32_t serialId, const param_
 	if (rawRespParams.size() > 2)
 	{
 		if (auto pData = (CThostFtdcInputOrderActionField*)rawRespParams[0])
-			if (ret = CTPUtility::ParseRawOrder(pData, pRsp))
+		{
+			if (session->getUserInfo().getUserId() == pData->UserID)
 			{
-				if (ret->IsSystemUserId())
-				{
-					ret->SetUserID(session->getUserInfo().getUserId());;
-				}
+				ret = CTPUtility::ParseRawOrder(pData, pRsp);
 			}
+		}
 	}
 	else
 	{
 		if (auto pData = (CThostFtdcOrderActionField*)rawRespParams[0])
-			if (ret = CTPUtility::ParseRawOrder(pData, pRsp))
+			if (session->getUserInfo().getUserId() == pData->UserID)
 			{
-				if (ret->IsSystemUserId())
-				{
-					ret->SetUserID(session->getUserInfo().getUserId());;
-				}
+				ret = CTPUtility::ParseRawOrder(pData, pRsp);
 			}
 	}
 

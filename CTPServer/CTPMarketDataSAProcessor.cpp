@@ -11,6 +11,7 @@
 #include "../message/DefMessageID.h"
 #include "../message/message_macro.h"
 #include "../bizutility/ExchangeRouterTable.h"
+#include "../common/Attribute_Key.h"
 
 #include "CTPConstant.h"
 

@@ -44,6 +44,8 @@ PBBizMessageSerializerFactory::PBBizMessageSerializerFactory()
 	_serializer_map[MSG_ID_SYNC_POSITION] = std::make_shared<PBCombineSerializer>
 		(PBResultSerializer::Instance(), PBPositionDifferSerializer::Instance());
 	_serializer_map[MSG_ID_ADD_MANUAL_TRADE] = PBTradeRecordSerializer::Instance();
+	_serializer_map[MSG_ID_QUERY_TRADE_DIFFER] = PBTradeRecordSerializer::Instance();
+	_serializer_map[MSG_ID_SYNC_TRADE] = PBTradeRecordSerializer::Instance();
 
 	//Transfer
 	_serializer_map[MSG_ID_QUERY_TRANSFER_BANK] = PBBankSerializer::Instance();

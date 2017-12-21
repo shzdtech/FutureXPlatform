@@ -16,7 +16,7 @@
 #include "../message/message_macro.h"
 #include "../bizutility/ExchangeRouterTable.h"
 #include "../bizutility/PositionPortfolioMap.h"
-
+#include "../databaseop/SysParamsDAO.h"
 #include "../databaseop/VersionDAO.h"
 #include "../databaseop/ContractDAO.h"
 #include "../databaseop/TradeDAO.h"
@@ -147,21 +147,24 @@ bool CTPTradeWorkerProcessor::IsSaveTrade()
 
 void CTPTradeWorkerProcessor::OnNewManualTrade(const TradeRecordDO & tradeDO)
 {
-	GetUserTradeContext().InsertTrade(tradeDO);
+	GetUserTradeContext().InsertTrade(tradeDO.UserID(), tradeDO);
 
 	auto tradeDO_Ptr = std::make_shared<TradeRecordDO>(tradeDO);
 
 	DispatchUserMessage(MSG_ID_TRADE_RTN, 0, tradeDO.UserID(), tradeDO_Ptr);
 
-	int multiplier = 1;
-	if (auto pContractInfo = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentOrAddById(tradeDO.InstrumentID()))
+	if (!GetUserPositionContext()->ContainsTrade(tradeDO.TradeID128()))
 	{
-		multiplier = pContractInfo->VolumeMultiple;
-	}
+		int multiplier = 1;
+		if (auto pContractInfo = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentOrAddById(tradeDO.InstrumentID()))
+		{
+			multiplier = pContractInfo->VolumeMultiple;
+		}
 
-	if (auto userPosition_Ptr = GetUserPositionContext()->UpsertPosition(tradeDO.UserID(), tradeDO_Ptr, multiplier))
-	{
-		DispatchUserMessage(MSG_ID_POSITION_UPDATED, 0, tradeDO_Ptr->UserID(), userPosition_Ptr);
+		if (auto userPosition_Ptr = GetUserPositionContext()->UpsertPosition(tradeDO.UserID(), tradeDO_Ptr, multiplier))
+		{
+			DispatchUserMessage(MSG_ID_POSITION_UPDATED, 0, tradeDO_Ptr->UserID(), userPosition_Ptr);
+		}
 	}
 }
 
@@ -585,6 +588,15 @@ void CTPTradeWorkerProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUs
 			userInfo.setTradingDay(_systemUser.getTradingDay());
 		}
 
+		std::string tradingDay;
+		SysParam::TryGet(STR_KEY_APP_TRADINGDAY, tradingDay);
+		if (tradingDay != pRspUserLogin->TradingDay)
+		{
+			tradingDay = pRspUserLogin->TradingDay;
+			SysParam::Update(STR_KEY_APP_TRADINGDAY, tradingDay);
+			SysParamsDAO::UpsertSysParamValue(STR_KEY_APP_TRADINGDAY, tradingDay);
+		}
+
 		/*if (_loadPositionFromDB)
 			LoadPositonFromDatabase(_systemUser.getUserId(), _systemUser.getInvestorId(),
 				std::to_string(_systemUser.getTradingDay()));*/
@@ -601,28 +613,11 @@ void CTPTradeWorkerProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUs
 	}
 }
 
-void CTPTradeWorkerProcessor::LoadYdPositonFromDatabase(const std::string & userId, const std::string& sysuserid, const std::string& tradingday)
-{
-	if (auto positionVec_ptr = PositionDAO::QueryLastDayPosition(userId, sysuserid, tradingday))
-	{
-		for (auto it : *positionVec_ptr)
-		{
-			Position_HashMap posMap;
-			if (!_ydDBPositions.find(it.UserID(), posMap))
-			{
-				_ydDBPositions.insert(it.UserID(), std::move(Position_HashMap(4)));
-				_ydDBPositions.find(it.UserID(), posMap);
-			}
-			posMap.map()->insert_or_assign(std::make_tuple(it.InstrumentID(), it.PortfolioID(), it.Direction), std::make_shared<UserPositionExDO>(it));
-		}
-	}
-}
-
-void CTPTradeWorkerProcessor::LoadPositonFromDatabase(const std::string & userId, const std::string& sysuserid, const std::string& tradingday)
+void CTPTradeWorkerProcessor::LoadPositonFromDatabase(const std::string & userId, const std::string& tradingday)
 {
 	try
 	{
-		if (auto positionVec_ptr = PositionDAO::QueryLastDayPosition(userId, sysuserid, tradingday))
+		if (auto positionVec_ptr = PositionDAO::QueryLastDayPosition(userId, tradingday))
 		{
 			for (auto it : *positionVec_ptr)
 			{
@@ -637,16 +632,18 @@ void CTPTradeWorkerProcessor::LoadPositonFromDatabase(const std::string & userId
 			}
 		}
 
-		if (auto trades = TradeDAO::QueryExchangeTrade(sysuserid, "", tradingday, "9999-01-01"))
+		if (auto trades = TradeDAO::QueryExchangeTrade(userId, "", tradingday, tradingday))
 		{
 			for (auto& trade : *trades)
 			{
-				trade.SetUserID(userId);
-
 				if (!trade.PortfolioID().empty())
 					OrderPortfolioCache::Insert(trade.OrderSysID, trade);
 
-				UpdatePosition(std::make_shared<TradeRecordDO>(trade));
+				auto tradePtr = std::make_shared<TradeRecordDO>(trade);
+
+				GetUserTradeContext().InsertTrade(tradePtr->UserID(), tradePtr);
+
+				UpdatePosition(tradePtr);
 			}
 		}
 	}
@@ -816,25 +813,17 @@ OrderDO_Ptr CTPTradeWorkerProcessor::RefineOrder(CThostFtdcOrderField *pOrder)
 		PortfolioKey portfolio;
 		if (OrderPortfolioCache::Find(OrderSeqGen::GetOrderID(orderptr->OrderID, orderptr->SessionID), portfolio))
 		{
-			if (orderptr->IsSystemUserId())
-			{
-				orderptr->SetUserID(portfolio.UserID());
-			}
 			orderptr->SetPortfolioID(portfolio.PortfolioID());
 		}
 		else if (orderSysId && OrderPortfolioCache::Find(orderSysId, portfolio))
 		{
-			if (orderptr->IsSystemUserId())
-			{
-				orderptr->SetUserID(portfolio.UserID());
-			}
 			orderptr->SetPortfolioID(portfolio.PortfolioID());
 		}
 	}
 
 	if (orderptr->PortfolioID().empty())
 	{
-		if (auto pPortfolioKey = PositionPortfolioMap::FindPortfolio(orderptr->InstrumentID()))
+		if (auto pPortfolioKey = PositionPortfolioMap::FindPortfolio(orderptr->UserID(), orderptr->InstrumentID()))
 		{
 			orderptr->SetPortfolioID(pPortfolioKey->PortfolioID());
 		}
@@ -913,52 +902,30 @@ TradeRecordDO_Ptr CTPTradeWorkerProcessor::RefineTrade(CThostFtdcTradeField * pT
 		PortfolioKey portfolio;
 		if (OrderPortfolioCache::Find(trdDO_Ptr->OrderSysID, portfolio))
 		{
-			if (trdDO_Ptr->IsSystemUserId())
-			{
-				trdDO_Ptr->SetUserID(portfolio.UserID());
-			}
 			trdDO_Ptr->SetPortfolioID(portfolio.PortfolioID());
 		}
 		else if (auto order_ptr = _userOrderCtx.FindOrder(trdDO_Ptr->OrderSysID))
 		{
 			if (!order_ptr->PortfolioID().empty())
 			{
-				if (trdDO_Ptr->IsSystemUserId())
-				{
-					trdDO_Ptr->SetUserID(order_ptr->UserID());
-				}
 				trdDO_Ptr->SetPortfolioID(order_ptr->PortfolioID());
 			}
 			else if (OrderPortfolioCache::Find(OrderSeqGen::GetOrderID(order_ptr->OrderID, order_ptr->SessionID), portfolio))
 			{
-				if (trdDO_Ptr->IsSystemUserId())
-				{
-					trdDO_Ptr->SetUserID(portfolio.UserID());
-				}
 				trdDO_Ptr->SetPortfolioID(portfolio.PortfolioID());
 			}
 		}
 		else if (OrderPortfolioCache::Find(OrderSeqGen::GetOrderID(trdDO_Ptr->OrderID, _systemUser.getSessionId()), portfolio))
 		{
-			if (trdDO_Ptr->IsSystemUserId())
-			{
-				trdDO_Ptr->SetUserID(portfolio.UserID());
-			}
 			trdDO_Ptr->SetPortfolioID(portfolio.PortfolioID());
 		}
 
 		if (trdDO_Ptr->PortfolioID().empty())
 		{
-			if (auto pPortfolioKey = PositionPortfolioMap::FindPortfolio(trdDO_Ptr->InstrumentID()))
+			if (auto pPortfolioKey = PositionPortfolioMap::FindPortfolio(trdDO_Ptr->UserID(), trdDO_Ptr->InstrumentID()))
 			{
-				trdDO_Ptr->SetUserID(pPortfolioKey->UserID());
 				trdDO_Ptr->SetPortfolioID(pPortfolioKey->PortfolioID());
 			}
-		}
-
-		if (trdDO_Ptr->IsSystemUserId())
-		{
-			trdDO_Ptr->SetUserID(_systemUser.getUserId());
 		}
 	}
 
@@ -969,7 +936,7 @@ UserPositionExDO_Ptr CTPTradeWorkerProcessor::UpdatePosition(const TradeRecordDO
 {
 	UserPositionExDO_Ptr ret;
 
-	if (GetUserTradeContext().InsertTrade(trdDO_Ptr))
+	if (!GetUserPositionContext()->ContainsTrade(trdDO_Ptr->TradeID128()))
 	{
 		int multiplier = 1;
 		if (auto pContractInfo = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentOrAddById(trdDO_Ptr->InstrumentID()))

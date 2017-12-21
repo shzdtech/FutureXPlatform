@@ -7,7 +7,9 @@
 class BIZUTILITY_CLASS_EXPORT PositionPortfolioMap
 {
 public:
-	static PortfolioKey* FindPortfolio(const std::string& instumentId);
+	static PortfolioKey* FindPortfolio(const std::string & userId,
+		const std::string& instumentId);
 
+	static bool LoadUserPortfolio(const std::string & userId);
 };
 

@@ -26,7 +26,7 @@ public:
 
 	static void RetrieveHedgeContracts(std::map<PortfolioKey, std::pair<std::string, ContractKey>>& pricingContractMap);
 
-	static bool QueryDefaultPortfolio(std::map<std::string, PortfolioKey>& portfolios);
+	static bool QueryDefaultPortfolio(const std::string& userid, std::map<std::string, PortfolioKey>& portfolios);
 
 protected:
 private:

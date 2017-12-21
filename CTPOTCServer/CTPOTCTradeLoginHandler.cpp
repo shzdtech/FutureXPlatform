@@ -19,20 +19,13 @@
 #include "../litelogger/LiteLogger.h"
 
 
-bool CTPOTCTradeLoginHandler::LoginFromDB(const IMessageProcessor_Ptr& msgProcessor)
+CTPTradeProcessor* CTPOTCTradeLoginHandler::GetTradeProcessor(const IMessageProcessor_Ptr& msgProcessor)
 {
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCTradeWorkerProcessor>(msgProcessor))
-	{
-		auto session = msgProcessor->getMessageSession();
+	return (CTPOTCTradeProcessor*)msgProcessor.get();
+}
 
-		pWorkerProc->RegisterLoggedSession(session);
 
-		if (pWorkerProc->IsLoadPositionFromDB())
-		{
-			pWorkerProc->LoadPositonFromDatabase(session->getUserInfo().getUserId(),
-				session->getUserInfo().getInvestorId(), std::to_string(session->getUserInfo().getTradingDay()));
-
-			((CTPProcessor*)msgProcessor.get())->DataLoadMask |= CTPProcessor::POSITION_DATA_LOADED;
-		}
-	}
+CTPTradeWorkerProcessor* CTPOTCTradeLoginHandler::GetWorkerProcessor(const IMessageProcessor_Ptr& msgProcessor)
+{
+	return MessageUtility::WorkerProcessorPtr<CTPOTCTradeWorkerProcessor>(msgProcessor);
 }

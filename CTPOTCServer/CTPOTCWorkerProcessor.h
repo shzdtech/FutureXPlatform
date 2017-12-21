@@ -36,8 +36,6 @@ public:
 
 	int SubscribeMarketData(const ContractKey & contractId);
 
-	void RegisterLoggedSession(const IMessageSession_Ptr& sessionPtr);
-
 	ProductType GetContractProductType() const;
 
 	OTCTradeWorkerProcessor* GetOTCTradeWorkerProcessor();

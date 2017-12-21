@@ -71,17 +71,18 @@ dataobj_ptr OTCUpdateModelParams::HandleRequest(const uint32_t serialId, const d
 							auto it = stMap_ptr->lock_table();
 							for (auto& pair : it)
 							{
-								auto& strategyDO = pair.second;
-								auto ivmModel_Ptr = strategyDO->IVModel;
-								auto volModel_Ptr = strategyDO->VolModel;
-								auto pmModel_Ptr = strategyDO->PricingModel;
+								auto& strategy_ptr = pair.second;
+								auto ivmModel_Ptr = strategy_ptr->IVModel;
+								auto volModel_Ptr = strategy_ptr->VolModel;
+								auto pmModel_Ptr = strategy_ptr->PricingModel;
 								if (
 									(volModel_Ptr && volModel_Ptr->operator==(*pModelParam)) ||
 									(pmModel_Ptr && pmModel_Ptr->operator==(*pModelParam)) ||
 									(ivmModel_Ptr && ivmModel_Ptr->operator==(*pModelParam))
 									)
 								{
-									pWorkerProc->TriggerPricingByStrategy(*strategyDO);
+									pWorkerProc->TriggerPricingByStrategy(*strategy_ptr);
+									pWorkerProc->GetOTCTradeWorkerProcessor()->TriggerAutoOrderUpdating(*strategy_ptr);
 								}
 							}
 						}

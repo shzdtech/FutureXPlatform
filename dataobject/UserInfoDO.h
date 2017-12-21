@@ -34,10 +34,11 @@ public:
 	std::string IdentityNum;
 	std::string Address;
 	std::string ZipCode;
+	std::string ExchangeUser;
+	std::string ExchangePassword;
 	GenderType Gender;
 	int Role;
 	int Permission;
-	bool LoadFromDB = false;
 
 protected:
 

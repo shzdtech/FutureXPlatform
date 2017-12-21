@@ -41,44 +41,49 @@ dataobj_ptr OTCOptionSubMarketData::HandleRequest(const uint32_t serialId, const
 
 	auto ret = std::make_shared<VectorDO<PricingDO>>();
 
-	auto stdo = (StringTableDO*)reqDO.get();
+	auto stdo = (VectorDO<ContractKey>*)reqDO.get();
 
 	if (auto pWorkerProc =
 		MessageUtility::AbstractWorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 	{
 		auto& userInfo = session->getUserInfo();
 
-		if (!stdo->Data.empty())
+		if (!stdo->empty())
 		{
-			auto& instList = stdo->Data.begin()->second;
 			auto sessionPtr = msgProcessor->getMessageSession();
 
 			if (session->getUserInfo().getRole() == ROLE_TRADINGDESK)
 			{
 				auto pStrategyMap = pWorkerProc->PricingDataContext()->GetStrategyMap();
-				for (auto& inst : instList)
+				for (auto& inst : *stdo)
 				{
-					if (auto pContract = pWorkerProc->GetInstrumentCache().QueryInstrumentById(inst))
+					if (inst.ExchangeID().empty())
 					{
-						UserContractKey uck(pContract->ExchangeID(), pContract->InstrumentID(), userInfo.getUserId());
-						if (pStrategyMap->contains(uck))
-						{
-							PricingDO mdo(pContract->ExchangeID(), pContract->InstrumentID());
-							ret->push_back(std::move(mdo));
-						}
+						if (auto pContract = pWorkerProc->GetInstrumentCache().QueryInstrumentById(inst.InstrumentID()))
+							inst.setExchangeID(pContract->ExchangeID());
+					}
+
+					UserContractKey uck(inst.ExchangeID(), inst.InstrumentID(), userInfo.getUserId());
+					if (pStrategyMap->contains(uck))
+					{
+						PricingDO mdo(inst.ExchangeID(), inst.InstrumentID());
+						ret->push_back(std::move(mdo));
 					}
 				}
 			}
 			else
 			{
-				for (auto& inst : instList)
+				for (auto& inst : *stdo)
 				{
-					if (auto pContract = pWorkerProc->GetInstrumentCache().QueryInstrumentById(inst))
+					if (inst.ExchangeID().empty())
 					{
-						PricingDO mdo(pContract->ExchangeID(), pContract->InstrumentID());
-						pWorkerProc->RegisterPricingListener(mdo, sessionPtr);
-						ret->push_back(std::move(mdo));
+						if (auto pContract = pWorkerProc->GetInstrumentCache().QueryInstrumentById(inst.InstrumentID()))
+							inst.setExchangeID(pContract->ExchangeID());
 					}
+
+					PricingDO mdo(inst.ExchangeID(), inst.InstrumentID());
+					pWorkerProc->RegisterPricingListener(mdo, sessionPtr);
+					ret->push_back(std::move(mdo));
 				}
 			}
 		}

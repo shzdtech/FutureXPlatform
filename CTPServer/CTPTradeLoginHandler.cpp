@@ -6,7 +6,7 @@
  ***********************************************************************/
 
 #include "CTPTradeLoginHandler.h"
-#include "CTPProcessor.h"
+#include "CTPTradeProcessor.h"
 #include "CTPRawAPI.h"
 #include "CTPConstant.h"
 #include "CTPTradeWorkerProcessor.h"
@@ -18,6 +18,7 @@
 #include "../common/Attribute_Key.h"
 #include "../dataobject/TypedefDO.h"
 #include "../litelogger/LiteLogger.h"
+#include "../bizutility/PositionPortfolioMap.h"
 
  ////////////////////////////////////////////////////////////////////////
  // Name:       CTPTradeLoginHandler::LoginFromServer()
@@ -25,29 +26,36 @@
  // Return:     int
  ////////////////////////////////////////////////////////////////////////
 
-std::shared_ptr<UserInfoDO> CTPTradeLoginHandler::LoginFromServer(const IMessageProcessor_Ptr& msgProcessor, const std::shared_ptr<UserInfoDO>& userInfo_Ptr,
-	uint requestId, const std::string& serverName)
+std::shared_ptr<UserInfoDO> CTPTradeLoginHandler::LoginFromServer(const IMessageProcessor_Ptr& msgProcessor, 
+	const std::shared_ptr<UserInfoDO> & userInfoDO_Ptr, uint requestId, const std::string& serverName)
 {
-	auto pProcessor = (CTPProcessor*)msgProcessor.get();
+	auto& session = msgProcessor->getMessageSession();
+	auto& userInfo = session->getUserInfo();
 
-	if (userInfo_Ptr->LoadFromDB)
+	auto pProcessor = GetTradeProcessor(msgProcessor);
+
+	PositionPortfolioMap::LoadUserPortfolio(userInfo.getUserId());
+
+	if (auto pWorkerProc = GetWorkerProcessor(msgProcessor))
 	{
-		LoginFromDB(msgProcessor);
-		pProcessor->getMessageSession()->getUserInfo().setExtInfo(userInfo_Ptr);
+		pWorkerProc->RegisterLoggedSession(session);
+	}
+
+	LoginFromDB(msgProcessor);
+		
+	if (userInfoDO_Ptr->ExchangeUser.empty())
+	{
 		pProcessor->getMessageSession()->setLoginTimeStamp();
-		return userInfo_Ptr;
+		return userInfoDO_Ptr;
 	}
 
 	int ret = 0;
-
 	std::string server = serverName;
 	if (server.empty())
 		msgProcessor->getServerContext()->getConfigVal(ExchangeRouterTable::TARGET_TD, server);
 
 	ExchangeRouterDO exDO;
 	ExchangeRouterTable::TryFind(server, exDO);
-
-	auto& userInfo = msgProcessor->getMessageSession()->getUserInfo();
 
 	CThostFtdcReqUserLoginField req{};
 	std::strncpy(req.BrokerID, userInfo.getBrokerId().data(), sizeof(req.BrokerID));
@@ -93,20 +101,26 @@ std::shared_ptr<UserInfoDO> CTPTradeLoginHandler::LoginFromServer(const IMessage
 	return nullptr;
 }
 
+CTPTradeProcessor* CTPTradeLoginHandler::GetTradeProcessor(const IMessageProcessor_Ptr& msgProcessor)
+{
+	return (CTPTradeProcessor*)msgProcessor.get();
+}
+
+CTPTradeWorkerProcessor* CTPTradeLoginHandler::GetWorkerProcessor(const IMessageProcessor_Ptr& msgProcessor)
+{
+	return MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor);
+}
+
 bool CTPTradeLoginHandler::LoginFromDB(const IMessageProcessor_Ptr& msgProcessor)
 {
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = GetWorkerProcessor(msgProcessor))
 	{
 		auto session = msgProcessor->getMessageSession();
-
-		pWorkerProc->RegisterLoggedSession(session);
 
 		if (pWorkerProc->IsLoadPositionFromDB())
 		{
 			pWorkerProc->LoadPositonFromDatabase(session->getUserInfo().getUserId(),
-				session->getUserInfo().getInvestorId(), std::to_string(session->getUserInfo().getTradingDay()));
-
-			((CTPProcessor*)msgProcessor.get())->DataLoadMask |= CTPProcessor::POSITION_DATA_LOADED;
+				std::to_string(session->getUserInfo().getTradingDay()));
 		}
 	}
 
@@ -124,9 +138,7 @@ dataobj_ptr CTPTradeLoginHandler::HandleResponse(const uint32_t serialId, const 
 
 	LoginFromDB(msgProcessor);
 
-	CThostFtdcQryInvestorPositionField req{};
-	((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryInvestorPosition(&req, -1);
-	std::this_thread::sleep_for(std::chrono::seconds(1));
+	((CTPTradeProcessor*)msgProcessor.get())->QueryUserPositionAsyncIfNeed();
 
 	return ret;
 }

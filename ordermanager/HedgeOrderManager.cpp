@@ -390,6 +390,7 @@ int HedgeOrderManager::OnMarketOrderUpdated(OrderDO& orderInfo, IOrderAPI* order
 		case OrderStatusType::ALL_TRADED:
 		case OrderStatusType::PARTIAL_TRADING:
 			ret = orderInfo.VolumeTraded - order_ptr->VolumeTraded;
+			order_ptr->VolumeTraded = orderInfo.VolumeTraded;
 			break;
 		case OrderStatusType::CANCELED:
 			ret = -1;
@@ -400,8 +401,11 @@ int HedgeOrderManager::OnMarketOrderUpdated(OrderDO& orderInfo, IOrderAPI* order
 		}
 
 		order_ptr->Active = orderInfo.Active;
-		order_ptr->VolumeTraded = orderInfo.VolumeTraded;
 		order_ptr->OrderStatus = orderInfo.OrderStatus;
+
+		StrategyContractDO_Ptr strategy_ptr;
+		if (_pricingCtx->GetStrategyMap()->find(orderInfo, strategy_ptr))
+			TradeByStrategy(*strategy_ptr, orderAPI);
 	}
 
 	return ret;

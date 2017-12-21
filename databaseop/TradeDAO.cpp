@@ -51,14 +51,14 @@ VectorDO_Ptr<TradeRecordDO> TradeDAO::QueryOTCUserTrades(const std::string& user
 	return ret;
 }
 
-VectorDO_Ptr<TradeRecordDO> TradeDAO::QueryExchangeTrade(const std::string & sysuserid, const std::string& contract, 
+VectorDO_Ptr<TradeRecordDO> TradeDAO::QueryExchangeTrade(const std::string & userid, const std::string& contract,
 	const std::string & startDt, const std::string & endDt)
 {
 	static const std::string sql_proc_queryExchangeTrade
 	("SELECT tradeid,ordersysid,exchange,contract,quantity, "
-		"price,tradingday,portfolio_symbol,is_buy,openclose,accountid, "
+		"price,tradingday,portfolio_symbol,is_buy,openclose,sysuserid, "
 		"DATE_FORMAT(insert_time, '%Y%m%d') AS tradeDate, DATE_FORMAT(insert_time, '%H:%i:%s') AS tradeTime "
-		"FROM exchange_trade WHERE sysuserid=? AND contract like ? AND tradingday >= ? AND tradingday <= ?");
+		"FROM exchange_trade WHERE accountid=? AND contract like ? AND tradingday >= ? AND tradingday <= ?");
 
 	auto ret = std::make_shared<VectorDO<TradeRecordDO>>();
 
@@ -68,7 +68,7 @@ VectorDO_Ptr<TradeRecordDO> TradeDAO::QueryExchangeTrade(const std::string & sys
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
 			session->getConnection()->prepareStatement(sql_proc_queryExchangeTrade));
-		prestmt->setString(1, sysuserid);
+		prestmt->setString(1, userid);
 		prestmt->setString(2, contract.empty() ? "%" : contract);
 		prestmt->setDateTime(3, startDt);
 		prestmt->setDateTime(4, endDt);
@@ -81,7 +81,7 @@ VectorDO_Ptr<TradeRecordDO> TradeDAO::QueryExchangeTrade(const std::string & sys
 
 		while (rs->next())
 		{
-			TradeRecordDO tradeDO(rs->getString(3), rs->getString(4), rs->getString(11), rs->getString(8));
+			TradeRecordDO tradeDO(rs->getString(3), rs->getString(4), userid, rs->getString(8));
 			tradeDO.TradeID = rs->getUInt64(1);
 			tradeDO.OrderSysID = rs->getDouble(2);
 			tradeDO.Volume = rs->getInt(5);
@@ -89,10 +89,9 @@ VectorDO_Ptr<TradeRecordDO> TradeDAO::QueryExchangeTrade(const std::string & sys
 			tradeDO.TradingDay = DateType(rs->getString(7)).YYYYMMDD();
 			tradeDO.Direction = rs->getBoolean(9) ? DirectionType::BUY : DirectionType::SELL;
 			tradeDO.OpenClose = (OrderOpenCloseType)rs->getInt(10);
+			tradeDO.InvestorID = rs->getString(11);
 			tradeDO.TradeDate = rs->getString(12);
 			tradeDO.TradeTime = rs->getString(13);
-
-			tradeDO.InvestorID = sysuserid;
 
 			ret->push_back(std::move(tradeDO));
 		}

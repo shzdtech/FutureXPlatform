@@ -50,42 +50,40 @@ dataobj_ptr CTPLoginHandler::HandleRequest(const uint32_t serialId, const dataob
 	}
 
 	// auto& brokeid = stdo->TryFind(STR_BROKER_ID, EMPTY_STRING);
-	auto& userid = stdo->TryFind(STR_USER_NAME, EMPTY_STRING);
+	auto& username = stdo->TryFind(STR_USER_NAME, EMPTY_STRING);
 	auto& password = stdo->TryFind(STR_PASSWORD, EMPTY_STRING);
 	auto& routername = stdo->TryFind(STR_ROUTER_NAME, EMPTY_STRING);
+	auto& exchangeUser = stdo->TryFind(STR_EXCHANGE_USER, EMPTY_STRING);
+	auto& exchangePwd = stdo->TryFind(STR_EXCHANGE_PASSWORD, EMPTY_STRING);
 
 	auto& userInfo = session->getUserInfo();
-	userInfo.setInvestorId(userid);
-	userInfo.setBrokerId(exDO.BrokeID);
-	userInfo.setPassword(password);
 
 	std::shared_ptr<UserInfoDO> userInfo_Ptr;
-	if (userInfo_Ptr = UserInfoDAO::FindUser(userid))
+	if (userInfo_Ptr = UserInfoDAO::FindUser(username))
 	{
-		if (!userInfo_Ptr->Password.empty())
-		{
-			userInfo.setInvestorId(exDO.UserID);
-			userInfo.setBrokerId(exDO.BrokeID);
-			userInfo_Ptr->LoadFromDB = true;
-		}
+		userInfo.setUserId(userInfo_Ptr->UserId);
+		userInfo.setName(userInfo_Ptr->UserName);
+		userInfo.setRole(userInfo_Ptr->Role);
+		userInfo.setPermission(userInfo_Ptr->Permission);
+		std::string tradingDay;
+		if (SysParam::TryGet(STR_KEY_APP_TRADINGDAY, tradingDay))
+			userInfo.setTradingDay(std::stoi(tradingDay));
+
+		session->getUserInfo().setExtInfo(userInfo_Ptr);
 	}
 	else
-	{
-		userInfo_Ptr = UserInfoDAO::FindUser(CTPUtility::MakeUserID(exDO.BrokeID, userid));
-		if (!userInfo_Ptr)
-			throw UserException(USERID_NOT_EXITS, "UserId: " + exDO.BrokeID + userid + " not exists.");
-	}
+		throw UserException("User: " + username + " cannot login.");
 
-	userInfo.setUserId(userInfo_Ptr->UserId);
-	userInfo.setName(userInfo_Ptr->UserName);
-	userInfo.setRole(userInfo_Ptr->Role);
-	userInfo.setPermission(userInfo_Ptr->Permission);
+	userInfo_Ptr->ExchangeUser = exchangeUser;
+	userInfo_Ptr->ExchangePassword = exchangePwd;
+	userInfo.setInvestorId(exchangeUser);
 
-
+	userInfo.setBrokerId(exDO.BrokeID);
+	userInfo.setPassword(exchangePwd);
 	pProcessor->LoginSerialId = serialId;
-	auto ret = LoginFromServer(msgProcessor, userInfo_Ptr, pProcessor->LoginSerialId, routername);
+	auto ret = LoginFromServer(msgProcessor, userInfo_Ptr, serialId, routername);
 
-	LOG_DEBUG << "Login: " << userInfo.getBrokerId() << ":" << userid << ":" << password;
+	LOG_DEBUG << "Login: " << userInfo.getBrokerId() << ":" << username << ":" << password;
 
 	return ret;
 }
@@ -117,15 +115,6 @@ dataobj_ptr CTPLoginHandler::HandleResponse(const uint32_t serialId, const param
 	userInfo.setSessionId(pData->SessionID);
 	userInfo.setTradingDay(std::atoi(pData->TradingDay));
 
-	pDO->BrokerId = userInfo.getBrokerId();
-	pDO->Company = userInfo.getBrokerId();
-	pDO->UserName = userInfo.getName();
-	//pDO->Password = userInfo.getPassword();
-	pDO->Permission = userInfo.getPermission();
-	pDO->Role = userInfo.getRole();
-	pDO->UserId = userInfo.getUserId();
-
-	session->getUserInfo().setExtInfo(ret);
 	session->setLoginTimeStamp();
 
 	LOG_DEBUG << pDO->UserId << " login successful.";

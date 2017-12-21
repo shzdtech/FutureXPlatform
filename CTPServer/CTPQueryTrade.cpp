@@ -61,17 +61,29 @@ dataobj_ptr CTPQueryTrade::HandleRequest(const uint32_t serialId, const dataobj_
 		if (userTrades.empty())
 			throw NotFoundException();
 
-		auto lockTb = userTrades.map()->lock_table();
-		auto endit = lockTb.end();
-		for (auto it = lockTb.begin(); it != endit;)
+		std::vector<TradeRecordDO_Ptr> sendList;
+
+		for (auto pair : userTrades.map()->lock_table())
 		{
-			auto tradeptr = std::make_shared<TradeRecordDO>(*it->second);
-			tradeptr->HasMore = ++it != endit;
-			pWorkerProc->SendDataObject(session, MSG_ID_QUERY_TRADE, serialId, tradeptr);
+			if (pair.second->UserID() == userid && pair.second)
+				sendList.push_back(std::make_shared<TradeRecordDO>(*pair.second));
+		}
+
+		
+		if (sendList.empty())
+			throw NotFoundException();
+
+		int size = sendList.size() - 1;
+		for(int i=0; i<=size; i++)
+		{
+			sendList[i]->HasMore = i<size;
+			pWorkerProc->SendDataObject(session, MSG_ID_QUERY_TRADE, serialId, sendList[i]);
 		}
 	}
 	else
 	{
+		CTPUtility::CheckTradeInit((CTPRawAPI*)rawAPI);
+
 		auto stdo = (StringMapDO<std::string>*)reqDO.get();
 		auto& brokeid = session->getUserInfo().getBrokerId();
 		auto& investorid = session->getUserInfo().getInvestorId();
@@ -116,21 +128,18 @@ dataobj_ptr CTPQueryTrade::HandleResponse(const uint32_t serialId, const param_v
 	TradeRecordDO_Ptr ret;
 	if (ret = CTPUtility::ParseRawTrade(pTradeInfo))
 	{
-		if (ret->IsSystemUserId())
-		{
-			ret->SetUserID(session->getUserInfo().getUserId());
-		}
-
+		auto userID = session->getUserInfo().getUserId();
 		ret->HasMore = !*(bool*)rawRespParams[3];
 
 		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 		{
 			if (auto order_ptr = pWorkerProc->GetUserOrderContext().FindOrder(ret->OrderSysID))
 			{
+				userID = order_ptr->UserID();
 				ret->SetPortfolioID(order_ptr->PortfolioID());
 			}
 
-			pWorkerProc->GetUserTradeContext().InsertTrade(ret);
+			pWorkerProc->GetUserTradeContext().InsertTrade(userID, ret);
 		}
 	}
 

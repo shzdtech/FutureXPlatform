@@ -53,17 +53,14 @@ bool SysParam::TryGet(const std::string& key, std::string& value)
 	return ret;
 }
 
-////////////////////////////////////////////////////////////////////////
-// Name:       SysParam::Load(std::map<std::string,std::string>& paramMap)
-// Purpose:    Implementation of SysParam::Load()
-// Parameters:
-// - paramMap
-// Return:     void
-////////////////////////////////////////////////////////////////////////
-
-void SysParam::Update(const std::map<std::string,std::string>& paramMap)
+void SysParam::Update(const std::string& key, const std::string& value)
 {
-	for(auto it : paramMap)
+	sysparamdata[key] = value;
+}
+
+void SysParam::Update(const std::map<std::string, std::string>& paramMap)
+{
+	for (auto it : paramMap)
 		sysparamdata[it.first] = it.second;
 }
 

@@ -1,25 +1,37 @@
 #include "PositionPortfolioMap.h"
 #include "../dataobject/TemplateDO.h"
 #include "../databaseop/PortfolioDAO.h"
+#include "../include/libcuckoo/cuckoohash_map.hh"
 
-static bool _initialized = false;
 
-static std::map<std::string, PortfolioKey> _portfolios;
+static cuckoohash_map<std::string, map_ptr<std::string, PortfolioKey>> _portfolios;
 
-PortfolioKey * PositionPortfolioMap::FindPortfolio(const std::string & instumentId)
+PortfolioKey * PositionPortfolioMap::FindPortfolio(const std::string & userId, const std::string & instumentId)
 {
 	PortfolioKey * ret = nullptr;
 
-	if (!_initialized)
+	map_ptr<std::string, PortfolioKey> userProfileMap;
+	if (_portfolios.find(userId, userProfileMap))
 	{
-		PortfolioDAO::QueryDefaultPortfolio(_portfolios);
-		_initialized = true;
+		auto it = userProfileMap->find(instumentId);
+
+		if (it != userProfileMap->end())
+			ret = &it->second;
 	}
 
-	auto it = _portfolios.find(instumentId);
+	return ret;
+}
 
-	if (it != _portfolios.end())
-		ret = &it->second;
+bool PositionPortfolioMap::LoadUserPortfolio(const std::string & userId)
+{
+	bool ret = true;
+
+	if (!_portfolios.contains(userId))
+	{
+		auto userProfileMap = std::make_shared<std::map<std::string, PortfolioKey>>();
+		if (ret = PortfolioDAO::QueryDefaultPortfolio(userId, *userProfileMap))
+			_portfolios.insert(userId, userProfileMap);
+	}
 
 	return ret;
 }

@@ -43,8 +43,12 @@ public:
 	virtual bool GetValuationRiskByPortfolio(const IPricingDataContext_Ptr& pricingCtx_Ptr,
 		const std::string & userID, const ValuationRiskDO& valuationRisk, UnderlyingRiskMap& risks);
 
+	virtual bool ContainsTrade(uint128 tradeID);
+
 private:
 	UserPortfolioPosition _userPositionMap;
+	PositionTradeIDMapType _positionTradeIDMap;
+
 };
 
 #endif

@@ -47,6 +47,7 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const uint32_t serialId, const datao
 		auto& exchangeInfo = pWorkerProc->GetExchangeInfo();
 		if (exchangeInfo.empty())
 		{
+			CTPUtility::CheckTradeInit((CTPRawAPI*)rawAPI);
 			CThostFtdcQryExchangeField req{};
 			int iRet = ((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryExchange(&req, serialId);
 			CTPUtility::CheckReturnError(iRet);
@@ -87,6 +88,7 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const uint32_t serialId, const datao
 	}
 	else
 	{
+		CTPUtility::CheckTradeInit((CTPRawAPI*)rawAPI);
 		CThostFtdcQryExchangeField req{};
 		int iRet = ((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryExchange(&req, serialId);
 		CTPUtility::CheckReturnError(iRet);

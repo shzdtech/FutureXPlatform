@@ -21,6 +21,8 @@
 
 #include "ctpotc_export.h"
 
+class CTPOTCWorkerProcessor;
+
 class CTP_OTC_CLASS_EXPORT CTPOTCTradeWorkerProcessor : public CTPTradeWorkerSAProcessor, public OTCTradeWorkerProcessor
 {
 public:
@@ -33,9 +35,10 @@ public:
 
 	virtual OrderDO_Ptr CreateOrder(const OrderRequestDO& orderReq);
 	virtual OrderDO_Ptr CancelOrder(const OrderRequestDO& orderReq);
+	virtual OrderDO_Ptr CancelAutoOrder(const UserContractKey & userContractKey);
+	virtual OrderDO_Ptr CancelHedgeOrder(const PortfolioKey & portfolioKey);
 	virtual uint32_t GetSessionId(void);
 
-	virtual void RegisterLoggedSession(const IMessageSession_Ptr& sessionPtr);
 
 	virtual OTCOrderManager& GetOTCOrderManager(void);
 	virtual AutoOrderManager& GetAutoOrderManager(void);
@@ -47,7 +50,12 @@ public:
 	virtual void TriggerHedgeOrderUpdating(const PortfolioKey & portfolioKey, const OTCTradeProcessor_Ptr& processor_ptr);
 	virtual void TriggerAutoOrderUpdating(const UserContractKey& strategyKey, const OTCTradeProcessor_Ptr& processor_ptr);
 
+	std::shared_ptr<CTPOTCWorkerProcessor> GetMDWorkerProcessor();
+	void SetMDWorkerProcessor(const std::shared_ptr<CTPOTCWorkerProcessor>& workerProcessor);
+
 protected:
+	std::shared_ptr<CTPOTCWorkerProcessor> _mdWorkerProcessor;
+
 	OTCOrderManager _otcOrderMgr;
 	AutoOrderManager _autoOrderMgr;
 	HedgeOrderManager _hedgeOrderMgr;
@@ -69,6 +77,17 @@ public:
 	///登录请求响应
 	void OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
+	void OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+
+	void OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+
+	void OnErrRtnOrderInsert(CThostFtdcInputOrderField * pInputOrder, CThostFtdcRspInfoField * pRspInfo);
+
+	void OnErrRtnOrderAction(CThostFtdcOrderActionField * pOrderAction, CThostFtdcRspInfoField * pRspInfo);
+
+	void OnRtnOrder(CThostFtdcOrderField *pOrder);
+
+	void OnRtnTrade(CThostFtdcTradeField * pTrade);
 	///请求查询投资者持仓响应
 	void OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
  };

@@ -12,16 +12,16 @@ UserTradeContext::UserTradeContext()
 {
 }
 
-bool UserTradeContext::InsertTrade(const TradeRecordDO_Ptr & tradeDO_Ptr)
+bool UserTradeContext::InsertTrade(const std::string& userID, const TradeRecordDO_Ptr & tradeDO_Ptr)
 {
 	auto tradeID = tradeDO_Ptr->TradeID128();
 	bool ret = _tradeIdMap.insert(tradeID, tradeDO_Ptr);
 	if (ret)
 	{
-		if (!_userTradeMap.contains(tradeDO_Ptr->UserID()))
-			_userTradeMap.insert(tradeDO_Ptr->UserID(), std::move(UserTradeMapType(true)));
+		if (!_userTradeMap.contains(userID))
+			_userTradeMap.insert(userID, std::move(UserTradeMapType(true)));
 
-		_userTradeMap.update_fn(tradeDO_Ptr->UserID(), [this, tradeID](UserTradeMapType& tradeMap)
+		_userTradeMap.update_fn(userID, [this, tradeID](UserTradeMapType& tradeMap)
 		{
 			if (auto instoreptr = FindTrade(tradeID))
 			{
@@ -33,9 +33,9 @@ bool UserTradeContext::InsertTrade(const TradeRecordDO_Ptr & tradeDO_Ptr)
 	return ret;
 }
 
-bool UserTradeContext::InsertTrade(const TradeRecordDO& tradeDO)
+bool UserTradeContext::InsertTrade(const std::string& userID, const TradeRecordDO& tradeDO)
 {
-	return InsertTrade(std::make_shared<TradeRecordDO>(tradeDO));
+	return InsertTrade(userID, std::make_shared<TradeRecordDO>(tradeDO));
 }
 
 void UserTradeContext::Clear(void)

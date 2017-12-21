@@ -87,7 +87,10 @@ int TemplateMessageProcessor::SendDataObject(const ISession_Ptr& session,
 		{
 			dataobj->SerialId = serialId;
 			if (data_buffer db = msgSerilzer->Serialize(dataobj))
-				ret = session->WriteMessage(msgId, db);
+			{
+				if (session)
+					ret = session->WriteMessage(msgId, db);
+			}
 		}
 	}
 

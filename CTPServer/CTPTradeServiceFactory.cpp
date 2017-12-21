@@ -80,6 +80,10 @@ std::map<uint, IMessageHandler_Ptr> CTPTradeServiceFactory::CreateMessageHandler
 
 	msg_hdl_map[MSG_ID_ADD_MANUAL_TRADE] = std::make_shared<CTPAddManualTrade>();
 
+	msg_hdl_map[MSG_ID_QUERY_TRADE_DIFFER] = std::make_shared<CTPQueryTradeDiff>();
+
+	msg_hdl_map[MSG_ID_SYNC_TRADE] = std::make_shared<CTPSyncTrade>();
+
 	return msg_hdl_map;
 }
 

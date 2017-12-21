@@ -14,7 +14,8 @@
 class CTP_OTC_CLASS_EXPORT CTPOTCTradeLoginHandler : public CTPTradeLoginHandler
 {
 public:
-	bool LoginFromDB(const IMessageProcessor_Ptr& msgProcessor);
+	CTPTradeProcessor * GetTradeProcessor(const IMessageProcessor_Ptr & msgProcessor);
+	CTPTradeWorkerProcessor * GetWorkerProcessor(const IMessageProcessor_Ptr & msgProcessor);
 
 protected:
 private:

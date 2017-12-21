@@ -41,12 +41,12 @@ public:
 	std::string TradeDate;
 	std::string TradeTime;
 
-	bool IsSystemUserId()
+	bool IsSystemUserId() const
 	{
 		return UserID().empty() || UserID() == InvestorID;
 	}
 
-	uint128 TradeID128()
+	uint128 TradeID128() const
 	{
 		return uint128(TradeID, OrderSysID);
 	}

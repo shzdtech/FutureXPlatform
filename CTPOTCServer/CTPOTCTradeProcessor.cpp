@@ -28,6 +28,7 @@
 #include "../bizutility/ContractCache.h"
 #include "../litelogger/LiteLogger.h"
 #include "../message/MessageUtility.h"
+#include "CTPOTCWorkerProcessor.h"
 
 
  ////////////////////////////////////////////////////////////////////////
@@ -194,10 +195,11 @@ void CTPOTCTradeProcessor::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrd
 					strategy_ptr->BidEnabled = false;
 					strategy_ptr->AskEnabled = false;
 					strategy_ptr->Hedging = false;
-					pWorkerProc->DispatchUserMessage(MSG_ID_MODIFY_STRATEGY, 0, strategy_ptr->UserID(), strategy_ptr);
+					if (auto mdWorker = pWorkerProc->GetMDWorkerProcessor())
+						mdWorker->DispatchUserMessage(MSG_ID_MODIFY_STRATEGY, 0, strategy_ptr->UserID(), strategy_ptr);
 				}
 
-				pWorkerProc->DispatchUserMessage(MSG_ID_ORDER_NEW, 0, orderptr->UserID(), orderptr);
+				SendDataObject(getMessageSession(), MSG_ID_ORDER_NEW, 0, orderptr);
 			}
 		}
 	}
@@ -239,11 +241,11 @@ void CTPOTCTradeProcessor::OnErrRtnOrderInsert(CThostFtdcInputOrderField *pInput
 					strategy_ptr->BidEnabled = false;
 					strategy_ptr->AskEnabled = false;
 					strategy_ptr->Hedging = false;
-					pWorkerProc->DispatchUserMessage(MSG_ID_MODIFY_STRATEGY, 0, strategy_ptr->UserID(), strategy_ptr);
+					if(auto mdWorker = pWorkerProc->GetMDWorkerProcessor())
+						mdWorker->DispatchUserMessage(MSG_ID_MODIFY_STRATEGY, 0, strategy_ptr->UserID(), strategy_ptr);
 				}
 
-
-				pWorkerProc->DispatchUserMessage(MSG_ID_ORDER_NEW, 0, orderptr->UserID(), orderptr);
+				SendDataObject(getMessageSession(), MSG_ID_ORDER_NEW, 0, orderptr);
 			}
 		}
 	}
@@ -328,23 +330,10 @@ void CTPOTCTradeProcessor::OnRtnOrder(CThostFtdcOrderField *pOrder)
 						strategy_ptr->AutoOrderSettings.LimitOrderCounter--;
 					}
 				}
-
-				if (ret >= -1)
-					pWorkerProc->TriggerAutoOrderUpdating(*orderptr, Shared_This());
 			}
 
 			// update hedge orders
 			ret = pWorkerProc->GetHedgeOrderManager().OnMarketOrderUpdated(*orderptr, this);
-			if (!orderptr->PortfolioID().empty())
-			{
-				auto orderStatus = orderptr->OrderStatus;
-				if (orderStatus == OrderStatusType::PARTIAL_TRADING ||
-					orderStatus == OrderStatusType::ALL_TRADED ||
-					orderStatus == OrderStatusType::CANCELED)
-				{
-					pWorkerProc->TriggerHedgeOrderUpdating(*orderptr, Shared_This());
-				}
-			}
 
 			if (sendNotification)
 			{
@@ -352,19 +341,13 @@ void CTPOTCTradeProcessor::OnRtnOrder(CThostFtdcOrderField *pOrder)
 					pWorkerProc->PricingDataContext()->GetStrategyMap()->find(*orderptr, strategy_ptr);
 
 				if (strategy_ptr)
-					pWorkerProc->DispatchUserMessage(MSG_ID_MODIFY_STRATEGY, 0, strategy_ptr->UserID(), strategy_ptr);
+					if (auto mdWorker = pWorkerProc->GetMDWorkerProcessor())
+						mdWorker->DispatchUserMessage(MSG_ID_MODIFY_STRATEGY, 0, strategy_ptr->UserID(), strategy_ptr);
 			}
 		}
 	}
 }
 
-void CTPOTCTradeProcessor::RegisterLoggedSession(const IMessageSession_Ptr& sessionPtr)
-{
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCTradeWorkerProcessor>(this))
-	{
-		pWorkerProc->RegisterLoggedSession(sessionPtr);
-	}
-}
 
 OTCOrderManager & CTPOTCTradeProcessor::GetOTCOrderManager(void)
 {
@@ -393,17 +376,15 @@ void CTPOTCTradeProcessor::OnRtnTrade(CThostFtdcTradeField * pTrade)
 {
 	if (pTrade)
 	{
-		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCTradeWorkerProcessor>(this))
+		if (getMessageSession()->getUserInfo().getUserId() == pTrade->UserID)
 		{
-			if (auto trdDO_Ptr = pWorkerProc->RefineTrade(pTrade))
+			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCTradeWorkerProcessor>(this))
 			{
-				if (trdDO_Ptr->IsSystemUserId())
+				if (auto trdDO_Ptr = pWorkerProc->RefineTrade(pTrade))
 				{
-					trdDO_Ptr->SetUserID(getMessageSession()->getUserInfo().getUserId());
+					pWorkerProc->PushToLogQueue(trdDO_Ptr);
+					pWorkerProc->UpdatePosition(trdDO_Ptr);
 				}
-
-				pWorkerProc->PushToLogQueue(trdDO_Ptr);
-				pWorkerProc->UpdatePosition(trdDO_Ptr);
 			}
 		}
 	}

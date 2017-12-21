@@ -311,10 +311,7 @@ void CTPTradeProcessor::OnRtnTrade(CThostFtdcTradeField *pTrade)
 
 	OnResponseMacro(MSG_ID_TRADE_RTN, 0, pTrade);
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(this))
-	{
-		QueryUserPositionAsyncIfNeed();
-	}
+	QueryUserPositionAsyncIfNeed();
 }
 
 void CTPTradeProcessor::QueryUserPositionAsyncIfNeed()

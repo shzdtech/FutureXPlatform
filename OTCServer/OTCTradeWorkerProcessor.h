@@ -22,12 +22,13 @@ class OTCSERVER_CLASS_EXPORT OTCTradeWorkerProcessor : public OTCTradeProcessor
 public:
 	OTCTradeWorkerProcessor(const IPricingDataContext_Ptr& pricingCtx);
 
-	virtual void TriggerHedgeOrderUpdating(const PortfolioKey& portfolioKey);
-	virtual void TriggerAutoOrderUpdating(const StrategyContractDO& strategyDO);
+	virtual void TriggerHedgeOrderUpdating(const PortfolioKey& portfolioKey, const OTCTradeProcessor_Ptr& processor_ptr = nullptr) = 0;
+	virtual void TriggerAutoOrderUpdating(const UserContractKey& strategyKey, const OTCTradeProcessor_Ptr& processor_ptr = nullptr) = 0;
+
 	virtual void TriggerOTCOrderUpdating(const StrategyContractDO& strategyDO);
 
-	virtual IPricingDataContext_Ptr& PricingDataContext(void);
 	virtual UserOrderContext& GetExchangeOrderContext(void) = 0;
+	virtual IPricingDataContext_Ptr& PricingDataContext(void);
 
 protected:
 	IPricingDataContext_Ptr _pricingCtx;

@@ -18,16 +18,6 @@ OTCTradeWorkerProcessor::OTCTradeWorkerProcessor(const IPricingDataContext_Ptr& 
 {
 }
 
-void OTCTradeWorkerProcessor::TriggerHedgeOrderUpdating(const PortfolioKey& portfolioKey)
-{
-	GetHedgeOrderManager().Hedge(portfolioKey, this);
-}
-
-void OTCTradeWorkerProcessor::TriggerAutoOrderUpdating(const StrategyContractDO& strategyDO)
-{
-	GetAutoOrderManager().TradeByStrategy(strategyDO, this);
-}
-
 void OTCTradeWorkerProcessor::TriggerOTCOrderUpdating(const StrategyContractDO& strategyDO)
 {
 	GetOTCOrderManager().TradeByStrategy(strategyDO, this);

@@ -24,6 +24,8 @@ static const std::string STR_BANK_ID = "BankID";
 static const std::string STR_BRANCH_ID = "BranchID";
 static const std::string STR_ACCOUNT_ID = "AccountID";
 static const std::string STR_PORTFOLIO_ID = "PortfolioID";
+static const std::string STR_EXCHANGE_USER = "ExchangeUser";
+static const std::string STR_EXCHANGE_PASSWORD = "ExchangePasword";
 
 
 static const std::string STR_DATE = "Date";

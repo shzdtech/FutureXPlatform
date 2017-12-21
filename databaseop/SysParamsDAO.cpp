@@ -74,3 +74,32 @@ bool SysParamsDAO::FindSysParamValue(const std::string & key, std::string & valu
 
 	return ret;
 }
+
+bool SysParamsDAO::UpsertSysParamValue(const std::string & key, std::string & value)
+{
+	bool ret = false;
+
+	const static std::string sql_findparams(
+		"INSERT INTO sys_param (keycode, val) VALUES (?,?) ON DUPLICATE KEY UPDATE val = ?");
+
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
+	try
+	{
+		AutoClosePreparedStmt_Ptr prestmt(
+			session->getConnection()->prepareStatement(sql_findparams));
+		prestmt->setString(1, key);
+		prestmt->setString(2, value);
+		prestmt->setString(3, value);
+		
+		prestmt->executeUpdate();
+
+		ret = true;
+	}
+	catch (sql::SQLException& sqlEx)
+	{
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
+		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
+	}
+
+	return ret;
+}

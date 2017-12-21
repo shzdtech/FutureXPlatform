@@ -41,13 +41,21 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const uint32_t serialId, const da
 	auto& brokeid = session->getUserInfo().getBrokerId();
 	auto& investorid = session->getUserInfo().getInvestorId();
 
-	CThostFtdcQryTradingAccountField req{};
-	std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID));
-	std::strncpy(req.InvestorID, investorid.data(), sizeof(req.InvestorID));
-
-	int iRet = ((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryTradingAccount(&req, serialId);
-
 	AccountInfoDO_Ptr ret;
+	if (CTPUtility::HasTradeInit((CTPRawAPI*)rawAPI))
+	{
+		CThostFtdcQryTradingAccountField req{};
+		std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID));
+		std::strncpy(req.InvestorID, investorid.data(), sizeof(req.InvestorID));
+
+		int iRet = ((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryTradingAccount(&req, serialId);
+	}
+	else
+	{
+		ret = std::make_shared<AccountInfoDO>();
+	}
+
+	/*AccountInfoDO_Ptr ret;
 
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 	{
@@ -58,14 +66,14 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const uint32_t serialId, const da
 			ret = pWorkerProc->GetAccountInfo(pWorkerProc->getMessageSession()->getUserInfo().getUserId());
 		}
 
-		/*auto endit = accountInfoMap.end();
+		auto endit = accountInfoMap.end();
 		for (auto it = accountInfoMap.begin(); it != endit; it++)
 		{
 			auto accountptr = std::make_shared<AccountInfoDO>(it->second);
 			accountptr->HasMore = std::next(it) != endit;
 			
-		}*/
-	}
+		}
+	}*/
 
 	return ret;
 }

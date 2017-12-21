@@ -45,6 +45,19 @@ void CTPUtility::CheckError(const void* pRspInfo)
 // Return:     bool
 ////////////////////////////////////////////////////////////////////////
 
+void CTPUtility::CheckTradeInit(CTPRawAPI * pCtpAPI)
+{
+	if (!pCtpAPI || !pCtpAPI->TdAPIProxy())
+	{
+		throw UserException("Not login to CTP trade server ...");
+	}
+}
+
+bool CTPUtility::HasTradeInit(CTPRawAPI * pCtpAPI)
+{
+	return pCtpAPI && pCtpAPI->TdAPIProxy();
+}
+
 void CTPUtility::CheckNotFound(const void * pRspData)
 {
 	if (!pRspData)
@@ -511,7 +524,7 @@ UserPositionExDO_Ptr CTPUtility::ParseRawPosition(CThostFtdcInvestorPositionFiel
 	}
 
 	std::string portfolio;
-	if (auto pPortfolioKey = PositionPortfolioMap::FindPortfolio(pRspPosition->InstrumentID))
+	if (auto pPortfolioKey = PositionPortfolioMap::FindPortfolio(userId, pRspPosition->InstrumentID))
 	{
 		portfolio = pPortfolioKey->PortfolioID();
 	}

@@ -63,6 +63,9 @@ dataobj_ptr PBTradeRecordSerializer::Deserialize(const data_buffer& rawdata)
 	auto trade = std::make_shared<TradeRecordDO>(PB.exchange(), PB.contract(), "", PB.portfolio());
 	FillDOHeader(trade, PB);
 
+	trade->TradeID = PB.tradeid();
+	trade->OrderID = PB.orderid();
+	trade->OrderSysID = PB.ordersysid();
 	trade->Direction = PB.direction() == DirectionType::SELL ? DirectionType::SELL : DirectionType::BUY;
 	trade->OpenClose = (OrderOpenCloseType)PB.openclose();
 	trade->Price = PB.price();

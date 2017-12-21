@@ -25,8 +25,8 @@ class ORDERMGR_CLASS_EXPORT UserTradeContext
 public:
 	UserTradeContext();
 
-	bool InsertTrade(const TradeRecordDO_Ptr& tradeDO_Ptr);
-	bool InsertTrade(const TradeRecordDO& tradeDO);
+	bool InsertTrade(const std::string& userID, const TradeRecordDO_Ptr& tradeDO_Ptr);
+	bool InsertTrade(const std::string& userID, const TradeRecordDO& tradeDO);
 	void Clear(void);
 	TradeRecordDO_Ptr RemoveTrade(uint128 tradeID);
 	TradeIDMapType& GetAllTrade();

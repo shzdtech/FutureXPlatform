@@ -11,7 +11,7 @@ public:
 	static VectorDO_Ptr<TradeRecordDO> QueryOTCUserTrades(const std::string& userid, const ContractKey & contractKey,
 		const std::string& startDt, const std::string& endDt);
 
-	static VectorDO_Ptr<TradeRecordDO> QueryExchangeTrade(const std::string& sysuserid, const std::string& contract,
+	static VectorDO_Ptr<TradeRecordDO> QueryExchangeTrade(const std::string& userid, const std::string& contract,
 		const std::string& startDt, const std::string& endDt);
 
 	static VectorDO_Ptr<TradeRecordDO> QueryAllExchangeTrades(const std::string & startDt, const std::string & endDt);

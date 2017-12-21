@@ -100,6 +100,8 @@ void CTPOTCWorkerProcessor::Initialize(IServerContext* serverCtx)
 		_strategyProductTypes.emplace(ProductType::PRODUCT_OTC);
 	}
 
+	_CTPOTCTradeWorkerProcessorPtr->SetMDWorkerProcessor(std::static_pointer_cast<CTPOTCWorkerProcessor>(shared_from_this()));
+
 	OTCWorkerProcessor::Initialize();
 
 	CTPMarketDataSAProcessor::Initialize(serverCtx);
@@ -126,15 +128,6 @@ int CTPOTCWorkerProcessor::SubscribeMarketData(const ContractKey& contractId)
 	return ret;
 }
 
-void CTPOTCWorkerProcessor::RegisterLoggedSession(const IMessageSession_Ptr& sessionPtr)
-{
-	auto& userInfo = sessionPtr->getUserInfo();
-	if (!userInfo.getTradingDay())
-	{
-		userInfo.setTradingDay(_systemUser.getTradingDay());
-	}
-	_userSessionCtn_Ptr->add(userInfo.getUserId(), sessionPtr);
-}
 
 ProductType CTPOTCWorkerProcessor::GetContractProductType() const
 {

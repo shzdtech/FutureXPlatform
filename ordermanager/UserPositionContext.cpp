@@ -141,95 +141,100 @@ bool UserPositionContext::RemoveUserPosition(const std::string & userID)
 UserPositionExDO_Ptr UserPositionContext::UpsertPosition(const std::string& userid, const TradeRecordDO_Ptr& tradeDO,
 	int multiplier, bool closeYdFirst)
 {
-	if (!_userPositionMap.contains(userid))
-		_userPositionMap.insert(userid, std::move(ContractPosition(true, 2)));
-
-	// cost
-	double cost = tradeDO->Price * tradeDO->Volume;
-	cost *= multiplier;
-
-	// construct position
-	UserPositionExDO_Ptr positionDO_Ptr(new UserPositionExDO(tradeDO->ExchangeID(), tradeDO->InstrumentID(), tradeDO->PortfolioID(), tradeDO->UserID()));
-	positionDO_Ptr->TradingDay = tradeDO->TradingDay;
-	positionDO_Ptr->Direction =
-		(tradeDO->Direction == DirectionType::SELL && tradeDO->OpenClose == OrderOpenCloseType::OPEN) ||
-		(tradeDO->Direction != DirectionType::SELL && tradeDO->OpenClose != OrderOpenCloseType::OPEN) ?
-		PositionDirectionType::PD_SHORT : PositionDirectionType::PD_LONG;
-	positionDO_Ptr->HedgeFlag = tradeDO->HedgeFlag;
-
-	if (tradeDO->OpenClose == OrderOpenCloseType::OPEN)
+	UserPositionExDO_Ptr positionDO_Ptr;
+	if (userid == tradeDO->UserID() &&
+		_positionTradeIDMap.insert(tradeDO->TradeID128()))
 	{
-		positionDO_Ptr->TdPosition = positionDO_Ptr->OpenVolume = tradeDO->Volume;
-		positionDO_Ptr->OpenAmount = positionDO_Ptr->OpenCost = positionDO_Ptr->TdCost = cost;
-	}
-	else
-	{
-		positionDO_Ptr->CloseVolume = tradeDO->Volume;
-		positionDO_Ptr->CloseAmount = cost;
+		if (!_userPositionMap.contains(userid))
+			_userPositionMap.insert(userid, std::move(ContractPosition(true, 2)));
 
-		if (tradeDO->OpenClose == OrderOpenCloseType::CLOSETODAY)
+		// cost
+		double cost = tradeDO->Price * tradeDO->Volume;
+		cost *= multiplier;
+
+		// construct position
+		positionDO_Ptr.reset(new UserPositionExDO(tradeDO->ExchangeID(), tradeDO->InstrumentID(), tradeDO->PortfolioID(), tradeDO->UserID()));
+		positionDO_Ptr->TradingDay = tradeDO->TradingDay;
+		positionDO_Ptr->Direction =
+			(tradeDO->Direction == DirectionType::SELL && tradeDO->OpenClose == OrderOpenCloseType::OPEN) ||
+			(tradeDO->Direction != DirectionType::SELL && tradeDO->OpenClose != OrderOpenCloseType::OPEN) ?
+			PositionDirectionType::PD_SHORT : PositionDirectionType::PD_LONG;
+		positionDO_Ptr->HedgeFlag = tradeDO->HedgeFlag;
+
+		if (tradeDO->OpenClose == OrderOpenCloseType::OPEN)
 		{
-			positionDO_Ptr->TdPosition = -tradeDO->Volume;
+			positionDO_Ptr->TdPosition = positionDO_Ptr->OpenVolume = tradeDO->Volume;
+			positionDO_Ptr->OpenAmount = positionDO_Ptr->OpenCost = positionDO_Ptr->TdCost = cost;
 		}
 		else
 		{
-			positionDO_Ptr->YdPosition = -tradeDO->Volume;
-		}
-	}
+			positionDO_Ptr->CloseVolume = tradeDO->Volume;
+			positionDO_Ptr->CloseAmount = cost;
 
-	_userPositionMap.update_fn(userid, [&tradeDO, &positionDO_Ptr, multiplier, closeYdFirst](ContractPosition& positionMap)
-	{
-		positionMap.map()->upsert(std::pair<std::string, int>(tradeDO->InstrumentID(), positionDO_Ptr->Direction),
-			[&tradeDO, &positionDO_Ptr, multiplier, closeYdFirst](UserPositionExDO_Ptr& position_ptr)
-		{
-			if (tradeDO->OpenClose == OrderOpenCloseType::OPEN)
+			if (tradeDO->OpenClose == OrderOpenCloseType::CLOSETODAY)
 			{
-				position_ptr->TdPosition += positionDO_Ptr->OpenVolume;
-				position_ptr->OpenVolume += positionDO_Ptr->OpenVolume;
-				position_ptr->OpenAmount += positionDO_Ptr->OpenAmount;
-				position_ptr->OpenCost += positionDO_Ptr->OpenAmount;
-				position_ptr->TdCost += positionDO_Ptr->OpenAmount;
+				positionDO_Ptr->TdPosition = -tradeDO->Volume;
 			}
 			else
 			{
-				position_ptr->CloseVolume += positionDO_Ptr->CloseVolume;
-				position_ptr->CloseAmount += positionDO_Ptr->CloseAmount;
+				positionDO_Ptr->YdPosition = -tradeDO->Volume;
+			}
+		}
 
-				if (closeYdFirst)
+		_userPositionMap.update_fn(userid, [&tradeDO, &positionDO_Ptr, multiplier, closeYdFirst](ContractPosition& positionMap)
+		{
+			positionMap.map()->upsert(std::pair<std::string, int>(tradeDO->InstrumentID(), positionDO_Ptr->Direction),
+				[&tradeDO, &positionDO_Ptr, multiplier, closeYdFirst](UserPositionExDO_Ptr& position_ptr)
+			{
+				if (tradeDO->OpenClose == OrderOpenCloseType::OPEN)
 				{
-					if (position_ptr->CloseVolume > position_ptr->YdInitPosition)
-					{
-						position_ptr->YdPosition = -position_ptr->YdInitPosition;
-						position_ptr->TdPosition = position_ptr->OpenVolume - (position_ptr->CloseVolume - position_ptr->YdInitPosition);
-					}
-					else
-					{
-						position_ptr->YdPosition = -position_ptr->CloseVolume;
-						position_ptr->TdPosition = position_ptr->OpenVolume;
-					}
+					position_ptr->TdPosition += positionDO_Ptr->OpenVolume;
+					position_ptr->OpenVolume += positionDO_Ptr->OpenVolume;
+					position_ptr->OpenAmount += positionDO_Ptr->OpenAmount;
+					position_ptr->OpenCost += positionDO_Ptr->OpenAmount;
+					position_ptr->TdCost += positionDO_Ptr->OpenAmount;
 				}
 				else
 				{
-					if (tradeDO->OpenClose == OrderOpenCloseType::CLOSETODAY)
+					position_ptr->CloseVolume += positionDO_Ptr->CloseVolume;
+					position_ptr->CloseAmount += positionDO_Ptr->CloseAmount;
+
+					if (closeYdFirst)
 					{
-						position_ptr->TdPosition -= positionDO_Ptr->CloseVolume;
+						if (position_ptr->CloseVolume > position_ptr->YdInitPosition)
+						{
+							position_ptr->YdPosition = -position_ptr->YdInitPosition;
+							position_ptr->TdPosition = position_ptr->OpenVolume - (position_ptr->CloseVolume - position_ptr->YdInitPosition);
+						}
+						else
+						{
+							position_ptr->YdPosition = -position_ptr->CloseVolume;
+							position_ptr->TdPosition = position_ptr->OpenVolume;
+						}
 					}
 					else
 					{
-						position_ptr->YdPosition -= positionDO_Ptr->CloseVolume;
+						if (tradeDO->OpenClose == OrderOpenCloseType::CLOSETODAY)
+						{
+							position_ptr->TdPosition -= positionDO_Ptr->CloseVolume;
+						}
+						else
+						{
+							position_ptr->YdPosition -= positionDO_Ptr->CloseVolume;
+						}
 					}
+
+					double tdmean = position_ptr->OpenVolume ? position_ptr->OpenAmount / position_ptr->OpenVolume : 0;
+					position_ptr->TdCost = tdmean * position_ptr->TdPosition;
+					position_ptr->YdCost = position_ptr->PreSettlementPrice * position_ptr->LastPosition();
+					position_ptr->YdCost *= multiplier;
 				}
 
-				double tdmean = position_ptr->OpenVolume ? position_ptr->OpenAmount / position_ptr->OpenVolume : 0;
-				position_ptr->TdCost = tdmean * position_ptr->TdPosition;
-				position_ptr->YdCost = position_ptr->PreSettlementPrice * position_ptr->LastPosition();
-				position_ptr->YdCost *= multiplier;
-			}
+				*positionDO_Ptr = *position_ptr;
 
-			*positionDO_Ptr = *position_ptr;
-
-		}, positionDO_Ptr);
-	});
+			}, positionDO_Ptr);
+		});
+	}
 
 	return positionDO_Ptr;
 }
@@ -288,4 +293,9 @@ bool UserPositionContext::GetValuationRiskByPortfolio(const IPricingDataContext_
 	const std::string & userID, const ValuationRiskDO& valuationRisk, UnderlyingRiskMap& risks)
 {
 	return false;
+}
+
+bool UserPositionContext::ContainsTrade(uint128 tradeID)
+{
+	return _positionTradeIDMap.contains(tradeID);
 }

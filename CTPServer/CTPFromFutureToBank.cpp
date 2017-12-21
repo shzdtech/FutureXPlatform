@@ -11,6 +11,8 @@
 
 dataobj_ptr CTPFromFutureToBank::HandleRequest(const uint32_t serialId, const dataobj_ptr & reqDO, IRawAPI * rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
+	CTPUtility::CheckTradeInit((CTPRawAPI*)rawAPI);
+
 	auto pDO = (BankOpRequestDO*)reqDO.get();
 
 	auto& investorId = session->getUserInfo().getInvestorId();

@@ -16,11 +16,14 @@
 #include "../dataobject/UserAccountRegisterDO.h"
 #include "../dataobject/UserPositionDO.h"
 #include "CTPAPISwitch.h"
+#include "CTPRawAPI.h"
 #include "ctpexport.h"
 
 class CTP_CLASS_EXPORT CTPUtility
 {
 public:
+	static void CheckTradeInit(CTPRawAPI* pCtpAPI);
+	static bool HasTradeInit(CTPRawAPI * pCtpAPI);
 	static void CheckNotFound(const void* pRspData);
 	static bool HasError(CThostFtdcRspInfoField* pRspInfo);
 	static void CheckError(const void* pRspInfo);

@@ -15,6 +15,7 @@
 typedef cuckoohashmap_wrapper<std::pair<std::string, int>, UserPositionExDO_Ptr, pairhash<std::string, int>> ContractPosition;
 typedef cuckoohashmap_wrapper<std::string, ContractPosition> PortfolioPosition;
 typedef autofillmap<std::string, autofillmap<ContractKey, RiskDO>> UnderlyingRiskMap;
+typedef cuckoohash_map<uint128, bool, UINT128Hash> PositionTradeIDMapType;
 
 class IUserPositionContext
 {
@@ -41,6 +42,8 @@ public:
 
 	virtual bool GetValuationRiskByPortfolio(const IPricingDataContext_Ptr& pricingCtx_Ptr,
 		const std::string & userID, const ValuationRiskDO& valuationRisk, UnderlyingRiskMap& risks) = 0;
+
+	virtual bool ContainsTrade(uint128 tradeID) = 0;
 };
 
 typedef std::shared_ptr<IUserPositionContext> IUserPositionContext_Ptr;

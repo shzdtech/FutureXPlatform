@@ -33,7 +33,6 @@ public:
 	virtual OrderDO_Ptr CancelOrder(const OrderRequestDO& orderReq);
 	virtual uint32_t GetSessionId(void);
 
-	virtual void RegisterLoggedSession(const IMessageSession_Ptr& sessionPtr);
 	virtual OTCOrderManager& GetOTCOrderManager(void);
 	virtual AutoOrderManager& GetAutoOrderManager(void);
 	virtual HedgeOrderManager& GetHedgeOrderManager(void);

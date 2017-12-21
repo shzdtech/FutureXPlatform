@@ -64,9 +64,7 @@ public:
 
 	virtual OrderDO_Ptr CTPTradeWorkerProcessor::RefineOrder(CThostFtdcOrderField *pOrder);
 
-	void LoadYdPositonFromDatabase(const std::string & userId, const std::string& sysuserid, const std::string& tradingday);
-
-	void LoadPositonFromDatabase(const std::string & userId, const std::string& sysuserid, const std::string& tradingday);
+	void LoadPositonFromDatabase(const std::string & userId, const std::string& tradingday);
 
 	void UpdateSysYdPosition(const std::string & userId, const UserPositionExDO_Ptr & position_ptr);
 

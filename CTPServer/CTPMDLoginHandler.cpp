@@ -19,8 +19,8 @@
  // Return:     int
  ////////////////////////////////////////////////////////////////////////
 
-std::shared_ptr<UserInfoDO> CTPMDLoginHandler::LoginFromServer(const IMessageProcessor_Ptr& msgProcessor, const std::shared_ptr<UserInfoDO>& userInfo_Ptr,
-	uint requestId, const std::string& serverName)
+std::shared_ptr<UserInfoDO> CTPMDLoginHandler::LoginFromServer(const IMessageProcessor_Ptr& msgProcessor,
+	const std::shared_ptr<UserInfoDO> & userInfoDO_Ptr, uint requestId, const std::string& serverName)
 {
 	auto pProcessor = (CTPProcessor*)msgProcessor.get();
 

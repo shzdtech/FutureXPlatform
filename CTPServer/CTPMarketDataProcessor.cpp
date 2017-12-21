@@ -59,9 +59,10 @@ bool CTPMarketDataProcessor::CreateCTPAPI(const std::string& flowId, const std::
 	mdAPI->get()->RegisterSpi(this);
 	mdAPI->get()->RegisterFront(const_cast<char*> (server_addr.data()));
 	mdAPI->get()->Init();
-	std::this_thread::sleep_for(std::chrono::seconds(1));
 
 	_rawAPI->ResetMdAPIProxy(mdAPI);
+
+	std::this_thread::sleep_for(std::chrono::seconds(2));
 
 	return (bool)_rawAPI;
 }

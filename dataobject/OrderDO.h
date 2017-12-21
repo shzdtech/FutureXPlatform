@@ -113,12 +113,12 @@ public:
 	std::string CancelTime;
 	std::string Message;
 
-	bool IsSystemUserId()
+	bool IsSystemUserId() const
 	{
 		return UserID().empty() || UserID() == InvestorID;
 	}
 
-	int VolumeRemain()
+	int VolumeRemain() const
 	{
 		return Volume - VolumeTraded;
 	}

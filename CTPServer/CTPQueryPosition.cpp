@@ -49,14 +49,12 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const uint32_t serialId, const datao
 		auto pProcessor = (CTPProcessor*)msgProcessor.get();
 		if (!(pProcessor->DataLoadMask & CTPProcessor::POSITION_DATA_LOADED))
 		{
-			if (!pWorkerProc->IsLoadPositionFromDB())
+			if (CTPUtility::HasTradeInit((CTPRawAPI*)rawAPI))
 			{
 				CThostFtdcQryInvestorPositionField req{};
 				int iRet = ((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryInvestorPosition(&req, serialId);
-				CTPUtility::CheckReturnError(iRet);
+				std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
 			}
-
-			std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
 		}
 
 		auto& userId = session->getUserInfo().getUserId();
@@ -128,6 +126,8 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const uint32_t serialId, const datao
 	}
 	else
 	{
+		CTPUtility::CheckTradeInit((CTPRawAPI*)rawAPI);
+
 		auto& brokeid = session->getUserInfo().getBrokerId();
 		auto& investorid = session->getUserInfo().getInvestorId();
 

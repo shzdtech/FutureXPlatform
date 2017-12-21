@@ -3,7 +3,7 @@
 
 #include "../dataobject/DateType.h"
 
-VectorDO_Ptr<UserPositionExDO> PositionDAO::QueryLastDayPosition(const std::string & accountId, const std::string & sysuserId, const std::string & tradingDay)
+VectorDO_Ptr<UserPositionExDO> PositionDAO::QueryLastDayPosition(const std::string & userid, const std::string & tradingDay)
 {
 	static const std::string sql_proc_queryExchangePosition("CALL Position_Exchange_Lastday(?,?)");
 
@@ -15,7 +15,7 @@ VectorDO_Ptr<UserPositionExDO> PositionDAO::QueryLastDayPosition(const std::stri
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
 			session->getConnection()->prepareStatement(sql_proc_queryExchangePosition));
-		prestmt->setString(1, sysuserId);
+		prestmt->setString(1, userid);
 		prestmt->setDateTime(2, tradingDay);
 
 		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
@@ -29,7 +29,7 @@ VectorDO_Ptr<UserPositionExDO> PositionDAO::QueryLastDayPosition(const std::stri
 			if (!ret)
 				ret = std::make_shared<VectorDO<UserPositionExDO>>();
 
-			UserPositionExDO positionDO(rs->getString(1), rs->getString(2), rs->getString(3), accountId);
+			UserPositionExDO positionDO(rs->getString(1), rs->getString(2), rs->getString(3), userid);
 			positionDO.Direction = rs->getBoolean(4) ? PositionDirectionType::PD_LONG : PositionDirectionType::PD_SHORT;
 			positionDO.TradingDay = DateType(rs->getString(5)).YYYYMMDD();
 			positionDO.YdInitPosition = rs->getInt(6);
@@ -47,7 +47,7 @@ VectorDO_Ptr<UserPositionExDO> PositionDAO::QueryLastDayPosition(const std::stri
 }
 
 
-VectorDO_Ptr<UserPositionExDO> PositionDAO::QueryOTCLastDayPosition(const std::string & accountId, const std::string & tradingDay)
+VectorDO_Ptr<UserPositionExDO> PositionDAO::QueryOTCLastDayPosition(const std::string & userid, const std::string & tradingDay)
 {
 	static const std::string sql_proc_queryOTCPosition("CALL Position_OTC_Lastday(?,?)");
 
@@ -59,7 +59,7 @@ VectorDO_Ptr<UserPositionExDO> PositionDAO::QueryOTCLastDayPosition(const std::s
 	{
 		AutoClosePreparedStmt_Ptr prestmt(
 			session->getConnection()->prepareStatement(sql_proc_queryOTCPosition));
-		prestmt->setString(1, accountId);
+		prestmt->setString(1, userid);
 		prestmt->setDateTime(2, tradingDay);
 
 		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
@@ -90,12 +90,12 @@ VectorDO_Ptr<UserPositionExDO> PositionDAO::QueryOTCLastDayPosition(const std::s
 }
 
 
-bool PositionDAO::SyncPosition(const std::string& sysUserId, const std::vector<UserPositionDO>& positions)
+bool PositionDAO::SyncPosition(const std::string & userid, const std::string& sysUserId, const std::vector<UserPositionDO>& positions)
 {
 	bool ret = false;
 
 	static const std::string sql_proc_updateYdPosition = 
-		"CALL Position_SyncSys(?,?,?,?,?,?,?)";
+		"CALL Position_SyncSys(?,?,?,?,?,?,?,?)";
 
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 
@@ -106,13 +106,14 @@ bool PositionDAO::SyncPosition(const std::string& sysUserId, const std::vector<U
 
 		for (auto& pos : positions)
 		{
-			prestmt->setString(1, sysUserId);
-			prestmt->setInt(2, pos.TradingDay);
-			prestmt->setString(3, pos.ExchangeID());
-			prestmt->setString(4, pos.InstrumentID());
-			prestmt->setBoolean(5, pos.Direction == PositionDirectionType::PD_LONG);
-			prestmt->setString(6, pos.PortfolioID());
-			prestmt->setInt(7, pos.YdInitPosition);
+			prestmt->setString(1, userid);
+			prestmt->setString(2, sysUserId);
+			prestmt->setInt(3, pos.TradingDay);
+			prestmt->setString(4, pos.ExchangeID());
+			prestmt->setString(5, pos.InstrumentID());
+			prestmt->setBoolean(6, pos.Direction == PositionDirectionType::PD_LONG);
+			prestmt->setString(7, pos.PortfolioID());
+			prestmt->setInt(8, pos.YdInitPosition);
 			prestmt->executeUpdate();
 		}
 	}

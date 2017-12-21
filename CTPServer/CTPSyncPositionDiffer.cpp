@@ -67,7 +67,7 @@ dataobj_ptr CTPSyncPositionDiffer::HandleRequest(const uint32_t serialId, const 
 
 			if (pWorkerProc->IsLoadPositionFromDB() && !userPosition.empty())
 			{
-				PositionDAO::SyncPosition(userInfo.getInvestorId(), userPosition);
+				PositionDAO::SyncPosition(userInfo.getUserId(), userInfo.getInvestorId(), userPosition);
 			}
 		}
 	}

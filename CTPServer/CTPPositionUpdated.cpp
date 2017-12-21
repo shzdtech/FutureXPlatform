@@ -44,7 +44,8 @@ dataobj_ptr CTPPositionUpdated::HandleResponse(const uint32_t serialId, const pa
 					position_ptr = pWorkerProc->GetUserPositionContext()->UpsertPosition(userId, *position_ptr, false, true);
 				}
 
-				pWorkerProc->DispatchUserMessage(MSG_ID_EXCHANGE_POSITION_UPDATED, 0, userId, position_ptr);
+				if (position_ptr)
+					pWorkerProc->DispatchUserMessage(MSG_ID_POSITION_UPDATED, 0, userId, position_ptr);
 			}
 		}
 	}

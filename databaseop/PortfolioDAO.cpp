@@ -162,13 +162,14 @@ void PortfolioDAO::RetrieveHedgeContracts(std::map<PortfolioKey, std::pair<std::
 	}
 }
 
-bool PortfolioDAO::QueryDefaultPortfolio(std::map<std::string, PortfolioKey>& portfolios)
+bool PortfolioDAO::QueryDefaultPortfolio(const std::string& userid,
+	std::map<std::string, PortfolioKey>& portfolios)
 {
 	bool ret = false;
 
 	static const std::string sql_findPortfolios(
-		"SELECT exchange_symbol, contract_symbol, portfolio_symbol, accountid "
-		"FROM vw_portfolio_contract ");
+		"SELECT exchange_symbol, contract_symbol, portfolio_symbol "
+		"FROM vw_portfolio_contract where accountid=?");
 
 	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
 	try
@@ -176,11 +177,12 @@ bool PortfolioDAO::QueryDefaultPortfolio(std::map<std::string, PortfolioKey>& po
 		AutoClosePreparedStmt_Ptr prestmt(
 			session->getConnection()->prepareStatement(sql_findPortfolios));
 
+		prestmt->setString(1, userid);
 		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
 
 		while (rs->next())
 		{
-			portfolios.emplace(rs->getString(2), PortfolioKey(rs->getString(3), rs->getString(4)));
+			portfolios.emplace(rs->getString(2), PortfolioKey(rs->getString(3), userid));
 		}
 
 		ret = true;
