@@ -62,7 +62,7 @@ OrderDO_Ptr AutoOrderManager::CreateOrder(OrderRequestDO& orderReq, IOrderAPI* o
 
 void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO, IOrderAPI* orderAPI)
 {
-	if (!strategyDO.Hedging || strategyDO.IsOTC())
+	if (!strategyDO.AutoOrderEnabled || strategyDO.IsOTC())
 		return;
 
 	_updatinglock.upsert(strategyDO, [](bool& lock) { lock = true; }, true);
@@ -72,7 +72,7 @@ void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO, IOr
 		OrderContractInnerMapType userOrderMap;
 		if (!_userOrderCtx.UserOrderMap().find(strategyDO.UserID(), userOrderMap))
 		{
-			_userOrderCtx.UserOrderMap().insert(strategyDO.UserID(), 
+			_userOrderCtx.UserOrderMap().insert(strategyDO.UserID(),
 				std::move(OrderContractInnerMapType(true, 16)));
 
 			_userOrderCtx.UserOrderMap().find(strategyDO.UserID(), userOrderMap);
@@ -149,11 +149,14 @@ void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO, IOr
 				}
 			}
 
-			int finishedVol = 0;
+			std::vector<OrderDO_Ptr> cancelList;
+			int closeVol = 0;
 			for (auto& pair : orders.map()->lock_table())
 			{
 				auto& order = pair.second;
 				bool closeType = order->OpenClose != OrderOpenCloseType::OPEN;
+				if (closeType)
+					closeVol += order->Volume;
 
 				if (order->Direction == DirectionType::SELL)
 				{
@@ -167,23 +170,21 @@ void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO, IOr
 								if (*pTotalVol > strategyDO.AutoOrderSettings.AskQV)
 									orderAPI->CancelOrder(*order);
 							}
-							else
-								finishedVol += order->Volume;
 						}
-						else
+						else if (order->Active)
 						{
-							orderAPI->CancelOrder(*order);
+							cancelList.push_back(order);
 						}
 					}
-					else
+					else if (order->Active)
 					{
-						orderAPI->CancelOrder(*order);
+						cancelList.push_back(order);
 					}
 				}
 				else
 				{
 					if (auto pTotalVol = bidPriceOrders.tryfind(order->LimitPrice))
-					{	
+					{
 						if (bidEnable && closeMode == closeType)
 						{
 							if (order->Active)
@@ -192,24 +193,25 @@ void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO, IOr
 								if (*pTotalVol > strategyDO.AutoOrderSettings.BidQV)
 									orderAPI->CancelOrder(*order);
 							}
-							else
-							{
-								finishedVol += order->Volume;
-							}
 						}
-						else
+						else if (order->Active)
 						{
-							orderAPI->CancelOrder(*order);
+							cancelList.push_back(order);
 						}
 					}
-					else
+					else if (order->Active)
 					{
-						orderAPI->CancelOrder(*order);
+						cancelList.push_back(order);
 					}
 				}
 			}
 
-			if (askEnable || bidEnable)
+			for (auto order_ptr : cancelList)
+			{
+				orderAPI->CancelOrder(*order_ptr);
+			}
+
+			if (cancelList.empty() && (askEnable || bidEnable))
 			{
 				// Make new orders
 				OrderRequestDO newOrder(strategyDO, strategyDO.PortfolioID());
@@ -243,7 +245,7 @@ void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO, IOr
 							}
 							else
 							{
-								int availableYD = longPos_Ptr->LastPosition() - finishedVol - orderVol;
+								int availableYD = longPos_Ptr->LastPosition() - closeVol - orderVol;
 								if (isSHFE && availableYD > 0)
 								{
 									newOrder.OpenClose = OrderOpenCloseType::CLOSEYESTERDAY;
@@ -251,7 +253,7 @@ void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO, IOr
 								}
 								else
 								{
-									availableYD = longPos_Ptr->Position() - finishedVol - orderVol;
+									availableYD = longPos_Ptr->Position() - closeVol - orderVol;
 									newOrder.Volume = std::min(newOrder.Volume, availableYD);
 								}
 							}
@@ -298,7 +300,7 @@ void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO, IOr
 							}
 							else
 							{
-								int availableYD = shortPos_Ptr->LastPosition() - finishedVol - orderVol;
+								int availableYD = shortPos_Ptr->LastPosition() - closeVol - orderVol;
 								if (isSHFE && shortPos_Ptr->LastPosition() > 0)
 								{
 									newOrder.OpenClose = OrderOpenCloseType::CLOSEYESTERDAY;
@@ -306,7 +308,7 @@ void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO, IOr
 								}
 								else
 								{
-									availableYD = shortPos_Ptr->Position() - finishedVol - orderVol;
+									availableYD = shortPos_Ptr->Position() - closeVol - orderVol;
 									newOrder.Volume = std::min(newOrder.Volume, availableYD);
 								}
 							}
@@ -356,6 +358,7 @@ int AutoOrderManager::OnMarketOrderUpdated(OrderDO& orderInfo, IOrderAPI* orderA
 
 	auto orderId = ParseOrderID(orderInfo.OrderID, orderInfo.SessionID, orderAPI);
 
+	bool trigger = false;
 	if (auto order_ptr = FindOrder(orderId))
 	{
 		switch (orderInfo.OrderStatus)
@@ -364,9 +367,11 @@ int AutoOrderManager::OnMarketOrderUpdated(OrderDO& orderInfo, IOrderAPI* orderA
 		case OrderStatusType::PARTIAL_TRADING:
 			ret = orderInfo.VolumeTraded - order_ptr->VolumeTraded;
 			order_ptr->VolumeTraded = orderInfo.VolumeTraded;
+			trigger = true;
 			break;
 		case OrderStatusType::CANCELED:
 			ret = -1;
+			trigger = true;
 			break;
 		case OrderStatusType::OPEN_REJECTED:
 			ret = -2;
@@ -379,14 +384,23 @@ int AutoOrderManager::OnMarketOrderUpdated(OrderDO& orderInfo, IOrderAPI* orderA
 		order_ptr->Active = orderInfo.Active;
 		order_ptr->OrderStatus = orderInfo.OrderStatus;
 
-		StrategyContractDO_Ptr strategy_ptr;
-		if (_pricingCtx->GetStrategyMap()->find(orderInfo, strategy_ptr))
-			TradeByStrategy(*strategy_ptr, orderAPI);
-
-		if (!orderInfo.Active)
+		if (ret <=0 && !orderInfo.Active)
 		{
 			_userOrderCtx.RemoveOrder(orderId);
 		}
+
+		if (trigger)
+		{
+			StrategyContractDO_Ptr strategy_ptr;
+			if (_pricingCtx->GetStrategyMap()->find(orderInfo, strategy_ptr))
+				TradeByStrategy(*strategy_ptr, orderAPI);
+		}
+
+		if (ret > 0 && !orderInfo.Active)
+		{
+			_userOrderCtx.RemoveOrder(orderId);
+		}
+		
 	}
 
 	return ret;

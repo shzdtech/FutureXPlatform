@@ -34,7 +34,7 @@
  ////////////////////////////////////////////////////////////////////////
 
 CTPTradeWorkerProcessor::CTPTradeWorkerProcessor(IServerContext* pServerCtx, const IUserPositionContext_Ptr& positionCtx)
-	: _accountInfoMap(4), _ydDBPositions(4), _ydSysPositions(4), _logTrades(false), _loadPositionFromDB(false)
+	: _accountInfoMap(4), _ydDBPositions(4), _ydSysPositions(4), _logTrades(false), _loadPositionFromDB(false), _pMktDataMap(nullptr)
 {
 	_serverCtx = pServerCtx;
 
@@ -223,10 +223,24 @@ void CTPTradeWorkerProcessor::OnUpdateManualPosition(const UserPositionExDO & po
 					{
 						pospair.second->YdInitPosition = positionDO.YdInitPosition;
 						found = true;
+						if (auto positionPnL_ptr = GetUserPositionContext()->GetPositionPnL(positionDO.UserID(), positionDO.InstrumentID(), portfolio))
+						{
+							if (positionDO.Direction == PositionDirectionType::PD_LONG)
+								positionPnL_ptr->YdBuyVolume = positionDO.YdInitPosition;
+							else if (positionDO.Direction == PositionDirectionType::PD_SHORT)
+								positionPnL_ptr->YdSellVolume = positionDO.YdInitPosition;
+						}
 					}
 					else
 					{
 						pospair.second->YdInitPosition = 0;
+						if (auto positionPnL_ptr = GetUserPositionContext()->GetPositionPnL(positionDO.UserID(), positionDO.InstrumentID(), portfolio))
+						{
+							if (positionDO.Direction == PositionDirectionType::PD_LONG)
+								positionPnL_ptr->YdBuyVolume = 0;
+							else if (positionDO.Direction == PositionDirectionType::PD_SHORT)
+								positionPnL_ptr->YdSellVolume = 0;
+						}
 					}
 					
 					DispatchUserMessage(MSG_ID_POSITION_UPDATED, 0, positionDO.UserID(), pospair.second);
@@ -243,6 +257,15 @@ void CTPTradeWorkerProcessor::OnUpdateManualPosition(const UserPositionExDO & po
 		}
 	}
 }
+
+void CTPTradeWorkerProcessor::OnUpdateMarketData(const MarketDataDO & mdDO)
+{
+	_userSessionCtn_Ptr->forall([this, &mdDO](const IMessageSession_Ptr& msgSession)
+	{
+		GetUserPositionContext()->UpdatePnL(msgSession->getUserInfo().getUserId(), mdDO);
+	});
+}
+
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPTradeWorkerProcessor::OnInit()
@@ -617,10 +640,25 @@ void CTPTradeWorkerProcessor::LoadPositonFromDatabase(const std::string & userId
 {
 	try
 	{
+		auto mktDataMap = std::static_pointer_cast<MarketDataDOMap>(AppContext::GetData(STR_KEY_APP_MARKETDATA));
 		if (auto positionVec_ptr = PositionDAO::QueryLastDayPosition(userId, tradingday))
 		{
 			for (auto it : *positionVec_ptr)
 			{
+				if (mktDataMap)
+				{
+					MarketDataDO mdo;
+					if (mktDataMap->find(mdo.InstrumentID(), mdo))
+					{
+						it.LastPrice = mdo.LastPrice;
+						it.PreSettlementPrice = mdo.PreSettlementPrice;
+					}
+
+					if (auto pContractInfo = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentOrAddById(it.InstrumentID()))
+					{
+						it.Multiplier = pContractInfo->VolumeMultiple;
+					}
+				}
 				Position_HashMap posMap;
 				if (!_ydDBPositions.find(userId, posMap))
 				{
@@ -675,6 +713,19 @@ UserPositionExDO_Ptr CTPTradeWorkerProcessor::FindSysYdPostion(const std::string
 		posMap.map()->find(std::make_pair(contract, direction), ret);
 	}
 	return ret;
+}
+
+MarketDataDOMap * CTPTradeWorkerProcessor::GetMarketDataDOMap()
+{
+	if (!_pMktDataMap)
+	{
+		if (auto mktDataMap = std::static_pointer_cast<MarketDataDOMap>(AppContext::GetData(STR_KEY_APP_MARKETDATA)))
+		{
+			_pMktDataMap = mktDataMap.get();
+		}
+	}
+
+	return _pMktDataMap;
 }
 
 void CTPTradeWorkerProcessor::PushToLogQueue(const TradeRecordDO_Ptr & tradeDO_Ptr)
@@ -944,7 +995,19 @@ UserPositionExDO_Ptr CTPTradeWorkerProcessor::UpdatePosition(const TradeRecordDO
 			multiplier = pContractInfo->VolumeMultiple;
 		}
 
-		ret = GetUserPositionContext()->UpsertPosition(trdDO_Ptr->UserID(), trdDO_Ptr, multiplier, trdDO_Ptr->ExchangeID() != EXCHANGE_SHFE);
+		if (ret = GetUserPositionContext()->UpsertPosition(trdDO_Ptr->UserID(), trdDO_Ptr, multiplier, trdDO_Ptr->ExchangeID() != EXCHANGE_SHFE))
+		{
+			if (auto pMktDataMap = GetMarketDataDOMap())
+			{
+				MarketDataDO mdo;
+				if (pMktDataMap->find(ret->InstrumentID(), mdo))
+				{
+					ret->LastPrice = mdo.LastPrice;
+					ret->PreSettlementPrice = mdo.PreSettlementPrice;
+				}
+			}
+		}
+
 	}
 
 	return ret;

@@ -27,6 +27,13 @@ const ::google::protobuf::Descriptor* ModelParams_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   ModelParams_reflection_ = NULL;
 const ::google::protobuf::Descriptor* ModelParams_ParamsEntry_descriptor_ = NULL;
+const ::google::protobuf::Descriptor* ModelDef_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  ModelDef_reflection_ = NULL;
+const ::google::protobuf::Descriptor* ModelParamDef_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  ModelParamDef_reflection_ = NULL;
+const ::google::protobuf::Descriptor* ModelParamDef_ParamsEntry_descriptor_ = NULL;
 
 }  // namespace
 
@@ -57,6 +64,47 @@ void protobuf_AssignDesc_modelalgorithm_2eproto() {
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelParams, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelParams, _is_default_instance_));
   ModelParams_ParamsEntry_descriptor_ = ModelParams_descriptor_->nested_type(0);
+  ModelDef_descriptor_ = file->message_type(1);
+  static const int ModelDef_offsets_[9] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelDef, defaultval_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelDef, minval_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelDef, maxval_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelDef, stringval_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelDef, step_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelDef, digits_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelDef, datatype_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelDef, visible_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelDef, enable_),
+  };
+  ModelDef_reflection_ =
+    ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
+      ModelDef_descriptor_,
+      ModelDef::default_instance_,
+      ModelDef_offsets_,
+      -1,
+      -1,
+      -1,
+      sizeof(ModelDef),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelDef, _internal_metadata_),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelDef, _is_default_instance_));
+  ModelParamDef_descriptor_ = file->message_type(2);
+  static const int ModelParamDef_offsets_[3] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelParamDef, header_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelParamDef, modelname_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelParamDef, params_),
+  };
+  ModelParamDef_reflection_ =
+    ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
+      ModelParamDef_descriptor_,
+      ModelParamDef::default_instance_,
+      ModelParamDef_offsets_,
+      -1,
+      -1,
+      -1,
+      sizeof(ModelParamDef),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelParamDef, _internal_metadata_),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelParamDef, _is_default_instance_));
+  ModelParamDef_ParamsEntry_descriptor_ = ModelParamDef_descriptor_->nested_type(0);
 }
 
 namespace {
@@ -80,6 +128,19 @@ void protobuf_RegisterTypes(const ::std::string&) {
             ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE,
             0>::CreateDefaultInstance(
                 ModelParams_ParamsEntry_descriptor_));
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+      ModelDef_descriptor_, &ModelDef::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+      ModelParamDef_descriptor_, &ModelParamDef::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+        ModelParamDef_ParamsEntry_descriptor_,
+        ::google::protobuf::internal::MapEntry<
+            ::std::string,
+            ::Micro::Future::Message::ModelDef,
+            ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
+            ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE,
+            0>::CreateDefaultInstance(
+                ModelParamDef_ParamsEntry_descriptor_));
 }
 
 }  // namespace
@@ -87,6 +148,10 @@ void protobuf_RegisterTypes(const ::std::string&) {
 void protobuf_ShutdownFile_modelalgorithm_2eproto() {
   delete ModelParams::default_instance_;
   delete ModelParams_reflection_;
+  delete ModelDef::default_instance_;
+  delete ModelDef_reflection_;
+  delete ModelParamDef::default_instance_;
+  delete ModelParamDef_reflection_;
 }
 
 void protobuf_AddDesc_modelalgorithm_2eproto() {
@@ -104,11 +169,25 @@ void protobuf_AddDesc_modelalgorithm_2eproto() {
     "l\030\003 \001(\t\022\020\n\010modelAim\030\004 \001(\t\022=\n\006params\030\005 \003("
     "\0132-.Micro.Future.Message.ModelParams.Par"
     "amsEntry\032-\n\013ParamsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005"
-    "value\030\002 \001(\001:\0028\001b\006proto3", 303);
+    "value\030\002 \001(\001:\0028\001\"\242\001\n\010ModelDef\022\022\n\ndefaultV"
+    "al\030\001 \001(\001\022\016\n\006minVal\030\002 \001(\001\022\016\n\006maxVal\030\003 \001(\001"
+    "\022\021\n\tstringVal\030\004 \001(\t\022\014\n\004step\030\005 \001(\001\022\016\n\006dig"
+    "its\030\006 \001(\005\022\020\n\010dataType\030\007 \001(\005\022\017\n\007visible\030\010"
+    " \001(\010\022\016\n\006enable\030\t \001(\010\"\344\001\n\rModelParamDef\0220"
+    "\n\006header\030\001 \001(\0132 .Micro.Future.Message.Da"
+    "taHeader\022\021\n\tmodelName\030\002 \001(\t\022\?\n\006params\030\003 "
+    "\003(\0132/.Micro.Future.Message.ModelParamDef"
+    ".ParamsEntry\032M\n\013ParamsEntry\022\013\n\003key\030\001 \001(\t"
+    "\022-\n\005value\030\002 \001(\0132\036.Micro.Future.Message.M"
+    "odelDef:\0028\001b\006proto3", 699);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "modelalgorithm.proto", &protobuf_RegisterTypes);
   ModelParams::default_instance_ = new ModelParams();
+  ModelDef::default_instance_ = new ModelDef();
+  ModelParamDef::default_instance_ = new ModelParamDef();
   ModelParams::default_instance_->InitAsDefaultInstance();
+  ModelDef::default_instance_->InitAsDefaultInstance();
+  ModelParamDef::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_modelalgorithm_2eproto);
 }
 
@@ -776,6 +855,1169 @@ ModelParams::params() const {
  ::google::protobuf::Map< ::std::string, double >*
 ModelParams::mutable_params() {
   // @@protoc_insertion_point(field_mutable_map:Micro.Future.Message.ModelParams.params)
+  return params_.MutableMap();
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int ModelDef::kDefaultValFieldNumber;
+const int ModelDef::kMinValFieldNumber;
+const int ModelDef::kMaxValFieldNumber;
+const int ModelDef::kStringValFieldNumber;
+const int ModelDef::kStepFieldNumber;
+const int ModelDef::kDigitsFieldNumber;
+const int ModelDef::kDataTypeFieldNumber;
+const int ModelDef::kVisibleFieldNumber;
+const int ModelDef::kEnableFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+ModelDef::ModelDef()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:Micro.Future.Message.ModelDef)
+}
+
+void ModelDef::InitAsDefaultInstance() {
+  _is_default_instance_ = true;
+}
+
+ModelDef::ModelDef(const ModelDef& from)
+  : ::google::protobuf::Message(),
+    _internal_metadata_(NULL) {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:Micro.Future.Message.ModelDef)
+}
+
+void ModelDef::SharedCtor() {
+    _is_default_instance_ = false;
+  ::google::protobuf::internal::GetEmptyString();
+  _cached_size_ = 0;
+  defaultval_ = 0;
+  minval_ = 0;
+  maxval_ = 0;
+  stringval_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  step_ = 0;
+  digits_ = 0;
+  datatype_ = 0;
+  visible_ = false;
+  enable_ = false;
+}
+
+ModelDef::~ModelDef() {
+  // @@protoc_insertion_point(destructor:Micro.Future.Message.ModelDef)
+  SharedDtor();
+}
+
+void ModelDef::SharedDtor() {
+  stringval_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (this != default_instance_) {
+  }
+}
+
+void ModelDef::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* ModelDef::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return ModelDef_descriptor_;
+}
+
+const ModelDef& ModelDef::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_modelalgorithm_2eproto();
+  return *default_instance_;
+}
+
+ModelDef* ModelDef::default_instance_ = NULL;
+
+ModelDef* ModelDef::New(::google::protobuf::Arena* arena) const {
+  ModelDef* n = new ModelDef;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void ModelDef::Clear() {
+// @@protoc_insertion_point(message_clear_start:Micro.Future.Message.ModelDef)
+#if defined(__clang__)
+#define ZR_HELPER_(f) \
+  _Pragma("clang diagnostic push") \
+  _Pragma("clang diagnostic ignored \"-Winvalid-offsetof\"") \
+  __builtin_offsetof(ModelDef, f) \
+  _Pragma("clang diagnostic pop")
+#else
+#define ZR_HELPER_(f) reinterpret_cast<char*>(\
+  &reinterpret_cast<ModelDef*>(16)->f)
+#endif
+
+#define ZR_(first, last) do {\
+  ::memset(&first, 0,\
+           ZR_HELPER_(last) - ZR_HELPER_(first) + sizeof(last));\
+} while (0)
+
+  ZR_(defaultval_, maxval_);
+  ZR_(step_, visible_);
+  stringval_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  enable_ = false;
+
+#undef ZR_HELPER_
+#undef ZR_
+
+}
+
+bool ModelDef::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:Micro.Future.Message.ModelDef)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional double defaultVal = 1;
+      case 1: {
+        if (tag == 9) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &defaultval_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(17)) goto parse_minVal;
+        break;
+      }
+
+      // optional double minVal = 2;
+      case 2: {
+        if (tag == 17) {
+         parse_minVal:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &minval_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(25)) goto parse_maxVal;
+        break;
+      }
+
+      // optional double maxVal = 3;
+      case 3: {
+        if (tag == 25) {
+         parse_maxVal:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &maxval_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(34)) goto parse_stringVal;
+        break;
+      }
+
+      // optional string stringVal = 4;
+      case 4: {
+        if (tag == 34) {
+         parse_stringVal:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_stringval()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->stringval().data(), this->stringval().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.ModelDef.stringVal"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(41)) goto parse_step;
+        break;
+      }
+
+      // optional double step = 5;
+      case 5: {
+        if (tag == 41) {
+         parse_step:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &step_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(48)) goto parse_digits;
+        break;
+      }
+
+      // optional int32 digits = 6;
+      case 6: {
+        if (tag == 48) {
+         parse_digits:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &digits_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(56)) goto parse_dataType;
+        break;
+      }
+
+      // optional int32 dataType = 7;
+      case 7: {
+        if (tag == 56) {
+         parse_dataType:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &datatype_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(64)) goto parse_visible;
+        break;
+      }
+
+      // optional bool visible = 8;
+      case 8: {
+        if (tag == 64) {
+         parse_visible:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &visible_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(72)) goto parse_enable;
+        break;
+      }
+
+      // optional bool enable = 9;
+      case 9: {
+        if (tag == 72) {
+         parse_enable:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &enable_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:Micro.Future.Message.ModelDef)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:Micro.Future.Message.ModelDef)
+  return false;
+#undef DO_
+}
+
+void ModelDef::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:Micro.Future.Message.ModelDef)
+  // optional double defaultVal = 1;
+  if (this->defaultval() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(1, this->defaultval(), output);
+  }
+
+  // optional double minVal = 2;
+  if (this->minval() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(2, this->minval(), output);
+  }
+
+  // optional double maxVal = 3;
+  if (this->maxval() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(3, this->maxval(), output);
+  }
+
+  // optional string stringVal = 4;
+  if (this->stringval().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->stringval().data(), this->stringval().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.ModelDef.stringVal");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      4, this->stringval(), output);
+  }
+
+  // optional double step = 5;
+  if (this->step() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(5, this->step(), output);
+  }
+
+  // optional int32 digits = 6;
+  if (this->digits() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(6, this->digits(), output);
+  }
+
+  // optional int32 dataType = 7;
+  if (this->datatype() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(7, this->datatype(), output);
+  }
+
+  // optional bool visible = 8;
+  if (this->visible() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(8, this->visible(), output);
+  }
+
+  // optional bool enable = 9;
+  if (this->enable() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(9, this->enable(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:Micro.Future.Message.ModelDef)
+}
+
+::google::protobuf::uint8* ModelDef::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:Micro.Future.Message.ModelDef)
+  // optional double defaultVal = 1;
+  if (this->defaultval() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(1, this->defaultval(), target);
+  }
+
+  // optional double minVal = 2;
+  if (this->minval() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(2, this->minval(), target);
+  }
+
+  // optional double maxVal = 3;
+  if (this->maxval() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(3, this->maxval(), target);
+  }
+
+  // optional string stringVal = 4;
+  if (this->stringval().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->stringval().data(), this->stringval().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.ModelDef.stringVal");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        4, this->stringval(), target);
+  }
+
+  // optional double step = 5;
+  if (this->step() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(5, this->step(), target);
+  }
+
+  // optional int32 digits = 6;
+  if (this->digits() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(6, this->digits(), target);
+  }
+
+  // optional int32 dataType = 7;
+  if (this->datatype() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(7, this->datatype(), target);
+  }
+
+  // optional bool visible = 8;
+  if (this->visible() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(8, this->visible(), target);
+  }
+
+  // optional bool enable = 9;
+  if (this->enable() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(9, this->enable(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.ModelDef)
+  return target;
+}
+
+int ModelDef::ByteSize() const {
+// @@protoc_insertion_point(message_byte_size_start:Micro.Future.Message.ModelDef)
+  int total_size = 0;
+
+  // optional double defaultVal = 1;
+  if (this->defaultval() != 0) {
+    total_size += 1 + 8;
+  }
+
+  // optional double minVal = 2;
+  if (this->minval() != 0) {
+    total_size += 1 + 8;
+  }
+
+  // optional double maxVal = 3;
+  if (this->maxval() != 0) {
+    total_size += 1 + 8;
+  }
+
+  // optional string stringVal = 4;
+  if (this->stringval().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->stringval());
+  }
+
+  // optional double step = 5;
+  if (this->step() != 0) {
+    total_size += 1 + 8;
+  }
+
+  // optional int32 digits = 6;
+  if (this->digits() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->digits());
+  }
+
+  // optional int32 dataType = 7;
+  if (this->datatype() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->datatype());
+  }
+
+  // optional bool visible = 8;
+  if (this->visible() != 0) {
+    total_size += 1 + 1;
+  }
+
+  // optional bool enable = 9;
+  if (this->enable() != 0) {
+    total_size += 1 + 1;
+  }
+
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ModelDef::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Micro.Future.Message.ModelDef)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  const ModelDef* source = 
+      ::google::protobuf::internal::DynamicCastToGenerated<const ModelDef>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Micro.Future.Message.ModelDef)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Micro.Future.Message.ModelDef)
+    MergeFrom(*source);
+  }
+}
+
+void ModelDef::MergeFrom(const ModelDef& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Micro.Future.Message.ModelDef)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (from.defaultval() != 0) {
+    set_defaultval(from.defaultval());
+  }
+  if (from.minval() != 0) {
+    set_minval(from.minval());
+  }
+  if (from.maxval() != 0) {
+    set_maxval(from.maxval());
+  }
+  if (from.stringval().size() > 0) {
+
+    stringval_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.stringval_);
+  }
+  if (from.step() != 0) {
+    set_step(from.step());
+  }
+  if (from.digits() != 0) {
+    set_digits(from.digits());
+  }
+  if (from.datatype() != 0) {
+    set_datatype(from.datatype());
+  }
+  if (from.visible() != 0) {
+    set_visible(from.visible());
+  }
+  if (from.enable() != 0) {
+    set_enable(from.enable());
+  }
+}
+
+void ModelDef::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Micro.Future.Message.ModelDef)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ModelDef::CopyFrom(const ModelDef& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Micro.Future.Message.ModelDef)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ModelDef::IsInitialized() const {
+
+  return true;
+}
+
+void ModelDef::Swap(ModelDef* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void ModelDef::InternalSwap(ModelDef* other) {
+  std::swap(defaultval_, other->defaultval_);
+  std::swap(minval_, other->minval_);
+  std::swap(maxval_, other->maxval_);
+  stringval_.Swap(&other->stringval_);
+  std::swap(step_, other->step_);
+  std::swap(digits_, other->digits_);
+  std::swap(datatype_, other->datatype_);
+  std::swap(visible_, other->visible_);
+  std::swap(enable_, other->enable_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata ModelDef::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = ModelDef_descriptor_;
+  metadata.reflection = ModelDef_reflection_;
+  return metadata;
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// ModelDef
+
+// optional double defaultVal = 1;
+void ModelDef::clear_defaultval() {
+  defaultval_ = 0;
+}
+ double ModelDef::defaultval() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.ModelDef.defaultVal)
+  return defaultval_;
+}
+ void ModelDef::set_defaultval(double value) {
+  
+  defaultval_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.ModelDef.defaultVal)
+}
+
+// optional double minVal = 2;
+void ModelDef::clear_minval() {
+  minval_ = 0;
+}
+ double ModelDef::minval() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.ModelDef.minVal)
+  return minval_;
+}
+ void ModelDef::set_minval(double value) {
+  
+  minval_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.ModelDef.minVal)
+}
+
+// optional double maxVal = 3;
+void ModelDef::clear_maxval() {
+  maxval_ = 0;
+}
+ double ModelDef::maxval() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.ModelDef.maxVal)
+  return maxval_;
+}
+ void ModelDef::set_maxval(double value) {
+  
+  maxval_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.ModelDef.maxVal)
+}
+
+// optional string stringVal = 4;
+void ModelDef::clear_stringval() {
+  stringval_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& ModelDef::stringval() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.ModelDef.stringVal)
+  return stringval_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void ModelDef::set_stringval(const ::std::string& value) {
+  
+  stringval_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.ModelDef.stringVal)
+}
+ void ModelDef::set_stringval(const char* value) {
+  
+  stringval_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.ModelDef.stringVal)
+}
+ void ModelDef::set_stringval(const char* value, size_t size) {
+  
+  stringval_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.ModelDef.stringVal)
+}
+ ::std::string* ModelDef::mutable_stringval() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.ModelDef.stringVal)
+  return stringval_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* ModelDef::release_stringval() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.ModelDef.stringVal)
+  
+  return stringval_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void ModelDef::set_allocated_stringval(::std::string* stringval) {
+  if (stringval != NULL) {
+    
+  } else {
+    
+  }
+  stringval_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), stringval);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.ModelDef.stringVal)
+}
+
+// optional double step = 5;
+void ModelDef::clear_step() {
+  step_ = 0;
+}
+ double ModelDef::step() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.ModelDef.step)
+  return step_;
+}
+ void ModelDef::set_step(double value) {
+  
+  step_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.ModelDef.step)
+}
+
+// optional int32 digits = 6;
+void ModelDef::clear_digits() {
+  digits_ = 0;
+}
+ ::google::protobuf::int32 ModelDef::digits() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.ModelDef.digits)
+  return digits_;
+}
+ void ModelDef::set_digits(::google::protobuf::int32 value) {
+  
+  digits_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.ModelDef.digits)
+}
+
+// optional int32 dataType = 7;
+void ModelDef::clear_datatype() {
+  datatype_ = 0;
+}
+ ::google::protobuf::int32 ModelDef::datatype() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.ModelDef.dataType)
+  return datatype_;
+}
+ void ModelDef::set_datatype(::google::protobuf::int32 value) {
+  
+  datatype_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.ModelDef.dataType)
+}
+
+// optional bool visible = 8;
+void ModelDef::clear_visible() {
+  visible_ = false;
+}
+ bool ModelDef::visible() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.ModelDef.visible)
+  return visible_;
+}
+ void ModelDef::set_visible(bool value) {
+  
+  visible_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.ModelDef.visible)
+}
+
+// optional bool enable = 9;
+void ModelDef::clear_enable() {
+  enable_ = false;
+}
+ bool ModelDef::enable() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.ModelDef.enable)
+  return enable_;
+}
+ void ModelDef::set_enable(bool value) {
+  
+  enable_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.ModelDef.enable)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int ModelParamDef::kHeaderFieldNumber;
+const int ModelParamDef::kModelNameFieldNumber;
+const int ModelParamDef::kParamsFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+ModelParamDef::ModelParamDef()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:Micro.Future.Message.ModelParamDef)
+}
+
+void ModelParamDef::InitAsDefaultInstance() {
+  _is_default_instance_ = true;
+  header_ = const_cast< ::Micro::Future::Message::DataHeader*>(&::Micro::Future::Message::DataHeader::default_instance());
+}
+
+ModelParamDef::ModelParamDef(const ModelParamDef& from)
+  : ::google::protobuf::Message(),
+    _internal_metadata_(NULL) {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:Micro.Future.Message.ModelParamDef)
+}
+
+void ModelParamDef::SharedCtor() {
+    _is_default_instance_ = false;
+  ::google::protobuf::internal::GetEmptyString();
+  _cached_size_ = 0;
+  header_ = NULL;
+  modelname_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  params_.SetAssignDescriptorCallback(
+      protobuf_AssignDescriptorsOnce);
+  params_.SetEntryDescriptor(
+      &::Micro::Future::Message::ModelParamDef_ParamsEntry_descriptor_);
+}
+
+ModelParamDef::~ModelParamDef() {
+  // @@protoc_insertion_point(destructor:Micro.Future.Message.ModelParamDef)
+  SharedDtor();
+}
+
+void ModelParamDef::SharedDtor() {
+  modelname_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (this != default_instance_) {
+    delete header_;
+  }
+}
+
+void ModelParamDef::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* ModelParamDef::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return ModelParamDef_descriptor_;
+}
+
+const ModelParamDef& ModelParamDef::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_modelalgorithm_2eproto();
+  return *default_instance_;
+}
+
+ModelParamDef* ModelParamDef::default_instance_ = NULL;
+
+ModelParamDef* ModelParamDef::New(::google::protobuf::Arena* arena) const {
+  ModelParamDef* n = new ModelParamDef;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void ModelParamDef::Clear() {
+// @@protoc_insertion_point(message_clear_start:Micro.Future.Message.ModelParamDef)
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
+  modelname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  params_.Clear();
+}
+
+bool ModelParamDef::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:Micro.Future.Message.ModelParamDef)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional .Micro.Future.Message.DataHeader header = 1;
+      case 1: {
+        if (tag == 10) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_header()));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(18)) goto parse_modelName;
+        break;
+      }
+
+      // optional string modelName = 2;
+      case 2: {
+        if (tag == 18) {
+         parse_modelName:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_modelname()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->modelname().data(), this->modelname().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.ModelParamDef.modelName"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(26)) goto parse_params;
+        break;
+      }
+
+      // map<string, .Micro.Future.Message.ModelDef> params = 3;
+      case 3: {
+        if (tag == 26) {
+         parse_params:
+          DO_(input->IncrementRecursionDepth());
+         parse_loop_params:
+          ::google::protobuf::scoped_ptr<ModelParamDef_ParamsEntry> entry(params_.NewEntry());
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+              input, entry.get()));
+          (*mutable_params())[entry->key()].Swap(entry->mutable_value());
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            entry->key().data(), entry->key().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.ModelParamDef.ParamsEntry.key"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(26)) goto parse_loop_params;
+        input->UnsafeDecrementRecursionDepth();
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:Micro.Future.Message.ModelParamDef)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:Micro.Future.Message.ModelParamDef)
+  return false;
+#undef DO_
+}
+
+void ModelParamDef::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:Micro.Future.Message.ModelParamDef)
+  // optional .Micro.Future.Message.DataHeader header = 1;
+  if (this->has_header()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, *this->header_, output);
+  }
+
+  // optional string modelName = 2;
+  if (this->modelname().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->modelname().data(), this->modelname().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.ModelParamDef.modelName");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->modelname(), output);
+  }
+
+  // map<string, .Micro.Future.Message.ModelDef> params = 3;
+  {
+    ::google::protobuf::scoped_ptr<ModelParamDef_ParamsEntry> entry;
+    for (::google::protobuf::Map< ::std::string, ::Micro::Future::Message::ModelDef >::const_iterator
+        it = this->params().begin();
+        it != this->params().end(); ++it) {
+      entry.reset(params_.NewEntryWrapper(it->first, it->second));
+      ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+          3, *entry, output);
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        it->first.data(), it->first.length(),
+        ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+        "Micro.Future.Message.ModelParamDef.ParamsEntry.key");
+    }
+  }
+
+  // @@protoc_insertion_point(serialize_end:Micro.Future.Message.ModelParamDef)
+}
+
+::google::protobuf::uint8* ModelParamDef::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:Micro.Future.Message.ModelParamDef)
+  // optional .Micro.Future.Message.DataHeader header = 1;
+  if (this->has_header()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        1, *this->header_, target);
+  }
+
+  // optional string modelName = 2;
+  if (this->modelname().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->modelname().data(), this->modelname().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "Micro.Future.Message.ModelParamDef.modelName");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->modelname(), target);
+  }
+
+  // map<string, .Micro.Future.Message.ModelDef> params = 3;
+  {
+    ::google::protobuf::scoped_ptr<ModelParamDef_ParamsEntry> entry;
+    for (::google::protobuf::Map< ::std::string, ::Micro::Future::Message::ModelDef >::const_iterator
+        it = this->params().begin();
+        it != this->params().end(); ++it) {
+      entry.reset(params_.NewEntryWrapper(it->first, it->second));
+      target = ::google::protobuf::internal::WireFormatLite::
+          WriteMessageNoVirtualToArray(
+              3, *entry, target);
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        it->first.data(), it->first.length(),
+        ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+        "Micro.Future.Message.ModelParamDef.ParamsEntry.key");
+    }
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.ModelParamDef)
+  return target;
+}
+
+int ModelParamDef::ByteSize() const {
+// @@protoc_insertion_point(message_byte_size_start:Micro.Future.Message.ModelParamDef)
+  int total_size = 0;
+
+  // optional .Micro.Future.Message.DataHeader header = 1;
+  if (this->has_header()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->header_);
+  }
+
+  // optional string modelName = 2;
+  if (this->modelname().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->modelname());
+  }
+
+  // map<string, .Micro.Future.Message.ModelDef> params = 3;
+  total_size += 1 * this->params_size();
+  {
+    ::google::protobuf::scoped_ptr<ModelParamDef_ParamsEntry> entry;
+    for (::google::protobuf::Map< ::std::string, ::Micro::Future::Message::ModelDef >::const_iterator
+        it = this->params().begin();
+        it != this->params().end(); ++it) {
+      entry.reset(params_.NewEntryWrapper(it->first, it->second));
+      total_size += ::google::protobuf::internal::WireFormatLite::
+          MessageSizeNoVirtual(*entry);
+    }
+  }
+
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ModelParamDef::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Micro.Future.Message.ModelParamDef)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  const ModelParamDef* source = 
+      ::google::protobuf::internal::DynamicCastToGenerated<const ModelParamDef>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Micro.Future.Message.ModelParamDef)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Micro.Future.Message.ModelParamDef)
+    MergeFrom(*source);
+  }
+}
+
+void ModelParamDef::MergeFrom(const ModelParamDef& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Micro.Future.Message.ModelParamDef)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  params_.MergeFrom(from.params_);
+  if (from.has_header()) {
+    mutable_header()->::Micro::Future::Message::DataHeader::MergeFrom(from.header());
+  }
+  if (from.modelname().size() > 0) {
+
+    modelname_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.modelname_);
+  }
+}
+
+void ModelParamDef::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Micro.Future.Message.ModelParamDef)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ModelParamDef::CopyFrom(const ModelParamDef& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Micro.Future.Message.ModelParamDef)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ModelParamDef::IsInitialized() const {
+
+  return true;
+}
+
+void ModelParamDef::Swap(ModelParamDef* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void ModelParamDef::InternalSwap(ModelParamDef* other) {
+  std::swap(header_, other->header_);
+  modelname_.Swap(&other->modelname_);
+  params_.Swap(&other->params_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata ModelParamDef::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = ModelParamDef_descriptor_;
+  metadata.reflection = ModelParamDef_reflection_;
+  return metadata;
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// ModelParamDef
+
+// optional .Micro.Future.Message.DataHeader header = 1;
+bool ModelParamDef::has_header() const {
+  return !_is_default_instance_ && header_ != NULL;
+}
+void ModelParamDef::clear_header() {
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) delete header_;
+  header_ = NULL;
+}
+const ::Micro::Future::Message::DataHeader& ModelParamDef::header() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.ModelParamDef.header)
+  return header_ != NULL ? *header_ : *default_instance_->header_;
+}
+::Micro::Future::Message::DataHeader* ModelParamDef::mutable_header() {
+  
+  if (header_ == NULL) {
+    header_ = new ::Micro::Future::Message::DataHeader;
+  }
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.ModelParamDef.header)
+  return header_;
+}
+::Micro::Future::Message::DataHeader* ModelParamDef::release_header() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.ModelParamDef.header)
+  
+  ::Micro::Future::Message::DataHeader* temp = header_;
+  header_ = NULL;
+  return temp;
+}
+void ModelParamDef::set_allocated_header(::Micro::Future::Message::DataHeader* header) {
+  delete header_;
+  header_ = header;
+  if (header) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.ModelParamDef.header)
+}
+
+// optional string modelName = 2;
+void ModelParamDef::clear_modelname() {
+  modelname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& ModelParamDef::modelname() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.ModelParamDef.modelName)
+  return modelname_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void ModelParamDef::set_modelname(const ::std::string& value) {
+  
+  modelname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.ModelParamDef.modelName)
+}
+ void ModelParamDef::set_modelname(const char* value) {
+  
+  modelname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Micro.Future.Message.ModelParamDef.modelName)
+}
+ void ModelParamDef::set_modelname(const char* value, size_t size) {
+  
+  modelname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Micro.Future.Message.ModelParamDef.modelName)
+}
+ ::std::string* ModelParamDef::mutable_modelname() {
+  
+  // @@protoc_insertion_point(field_mutable:Micro.Future.Message.ModelParamDef.modelName)
+  return modelname_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* ModelParamDef::release_modelname() {
+  // @@protoc_insertion_point(field_release:Micro.Future.Message.ModelParamDef.modelName)
+  
+  return modelname_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void ModelParamDef::set_allocated_modelname(::std::string* modelname) {
+  if (modelname != NULL) {
+    
+  } else {
+    
+  }
+  modelname_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), modelname);
+  // @@protoc_insertion_point(field_set_allocated:Micro.Future.Message.ModelParamDef.modelName)
+}
+
+// map<string, .Micro.Future.Message.ModelDef> params = 3;
+int ModelParamDef::params_size() const {
+  return params_.size();
+}
+void ModelParamDef::clear_params() {
+  params_.Clear();
+}
+ const ::google::protobuf::Map< ::std::string, ::Micro::Future::Message::ModelDef >&
+ModelParamDef::params() const {
+  // @@protoc_insertion_point(field_map:Micro.Future.Message.ModelParamDef.params)
+  return params_.GetMap();
+}
+ ::google::protobuf::Map< ::std::string, ::Micro::Future::Message::ModelDef >*
+ModelParamDef::mutable_params() {
+  // @@protoc_insertion_point(field_mutable_map:Micro.Future.Message.ModelParamDef.params)
   return params_.MutableMap();
 }
 

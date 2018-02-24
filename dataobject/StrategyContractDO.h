@@ -72,7 +72,7 @@ public:
 
 	volatile bool BidEnabled = true;
 	volatile bool AskEnabled = true;
-	volatile bool Hedging = false;
+	volatile bool AutoOrderEnabled = false;
 	volatile bool NotCross = true;
 
 	double TickSize = 1;

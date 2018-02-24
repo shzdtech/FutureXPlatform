@@ -542,13 +542,13 @@ UserPositionExDO_Ptr CTPUtility::ParseRawPosition(CThostFtdcInvestorPositionFiel
 	{
 		// pDO->TdPosition = pRspPosition->Position;
 		pDO->TdCost = pRspPosition->PositionCost;
-		pDO->TdProfit = pRspPosition->PositionProfit;
+		// pDO->TdProfit = pRspPosition->PositionProfit;
 	}
 	else
 	{
 		// pDO->YdPosition = pRspPosition->Position - pRspPosition->YdPosition;
 		pDO->YdCost = pRspPosition->PositionCost;
-		pDO->YdProfit = pRspPosition->PositionProfit;
+		// pDO->YdProfit = pRspPosition->PositionProfit;
 	}
 
 	pDO->LongFrozenVolume = pRspPosition->LongFrozen;

@@ -7,7 +7,8 @@
 
 #include "UserPositionContext.h"
 
-UserPositionExDO_Ptr UserPositionContext::UpsertPosition(const std::string& userid, const UserPositionExDO& positionDO, bool updateYdPosition, bool closeYdFirst)
+UserPositionExDO_Ptr UserPositionContext::UpsertPosition(const std::string& userid, const UserPositionExDO& positionDO,
+	bool updateYdPosition, bool closeYdFirst, bool forceSync)
 {
 	if (!_userPositionMap.contains(userid))
 		_userPositionMap.insert(userid, std::move(ContractPosition(true, 2)));
@@ -20,15 +21,14 @@ UserPositionExDO_Ptr UserPositionContext::UpsertPosition(const std::string& user
 	newPosition_Ptr->CloseAmount = 0;
 	newPosition_Ptr->CloseVolume = 0;
 
-	_userPositionMap.update_fn(userid, [&newPosition_Ptr, closeYdFirst, updateYdPosition](ContractPosition& positionMap)
+	_userPositionMap.update_fn(userid, [&newPosition_Ptr, closeYdFirst, updateYdPosition, forceSync](ContractPosition& positionMap)
 	{
 		positionMap.map()->upsert(std::pair<std::string, int>(newPosition_Ptr->InstrumentID(), newPosition_Ptr->Direction),
-			[&newPosition_Ptr, closeYdFirst, updateYdPosition](UserPositionExDO_Ptr& position_ptr)
+			[&newPosition_Ptr, closeYdFirst, updateYdPosition, forceSync](UserPositionExDO_Ptr& position_ptr)
 		{
 			if (updateYdPosition)
 			{
 				position_ptr->YdCost = newPosition_Ptr->YdCost;
-				position_ptr->YdProfit = newPosition_Ptr->YdProfit;
 			}
 			else
 			{
@@ -37,8 +37,15 @@ UserPositionExDO_Ptr UserPositionContext::UpsertPosition(const std::string& user
 				position_ptr->CloseProfit = newPosition_Ptr->CloseProfit;
 				position_ptr->CashIn = newPosition_Ptr->CashIn;
 				position_ptr->UseMargin = newPosition_Ptr->UseMargin;
-				position_ptr->TdCost = newPosition_Ptr->TdCost;
-				position_ptr->TdProfit = newPosition_Ptr->TdProfit;
+				position_ptr->TdCost = newPosition_Ptr->AvgCost() * newPosition_Ptr->TdPosition;
+			}
+
+			if (forceSync)
+			{
+				position_ptr->OpenAmount = newPosition_Ptr->OpenAmount;
+				position_ptr->OpenVolume = newPosition_Ptr->OpenVolume;
+				position_ptr->CloseAmount = newPosition_Ptr->CloseAmount;
+				position_ptr->CloseVolume = newPosition_Ptr->CloseVolume;
 			}
 
 			if (position_ptr->TradingDay == newPosition_Ptr->TradingDay &&
@@ -90,6 +97,25 @@ bool UserPositionContext::AllPosition(std::vector<UserPositionExDO_Ptr>& positio
 	}
 
 	return true;
+}
+
+PortfolioPositionPnL UserPositionContext::GetPortfolioPositionsPnLByUser(const std::string & userID)
+{
+	PortfolioPositionPnL ret(true, 1);
+	ret.map()->insert("", GetPositionsPnLByUser(userID));
+	return ret;
+}
+
+ContractPositionPnL UserPositionContext::GetPositionsPnLByUser(const std::string & userID, const std::string & portfolio)
+{
+	ContractPositionPnL positionPnLMap;
+	_userPositionPnLMap.find(userID, positionPnLMap);
+	return positionPnLMap;
+}
+
+PositionPnLDO_Ptr UserPositionContext::GetPositionPnL(const std::string & userID, const std::string & instumentID, const std::string & portfolio)
+{
+	return PositionPnLDO_Ptr();
 }
 
 PortfolioPosition UserPositionContext::GetPortfolioPositionsByUser(const std::string & userID)
@@ -154,6 +180,7 @@ UserPositionExDO_Ptr UserPositionContext::UpsertPosition(const std::string& user
 
 		// construct position
 		positionDO_Ptr.reset(new UserPositionExDO(tradeDO->ExchangeID(), tradeDO->InstrumentID(), tradeDO->PortfolioID(), tradeDO->UserID()));
+		positionDO_Ptr->Multiplier = multiplier;
 		positionDO_Ptr->TradingDay = tradeDO->TradingDay;
 		positionDO_Ptr->Direction =
 			(tradeDO->Direction == DirectionType::SELL && tradeDO->OpenClose == OrderOpenCloseType::OPEN) ||
@@ -230,13 +257,31 @@ UserPositionExDO_Ptr UserPositionContext::UpsertPosition(const std::string& user
 					position_ptr->YdCost *= multiplier;
 				}
 
-				*positionDO_Ptr = *position_ptr;
+				positionDO_Ptr = position_ptr;
 
 			}, positionDO_Ptr);
 		});
 	}
 
 	return positionDO_Ptr;
+}
+
+int UserPositionContext::UpdatePnL(const std::string & userID, const MarketDataDO& mdDO)
+{
+	int ret = 0;
+	if (auto contractPosition = GetPositionsByUser(userID))
+	{
+		for (auto pair : contractPosition.map()->lock_table())
+		{
+			if (mdDO.InstrumentID() == pair.second->InstrumentID())
+			{
+				pair.second->LastPrice = mdDO.LastPrice;
+				pair.second->PreSettlementPrice = mdDO.PreSettlementPrice;
+			}
+		}
+	}
+
+	return ret;
 }
 
 bool UserPositionContext::FreezePosition(const OrderRequestDO& orderRequestDO, int& todayVol, int& ydVol)
@@ -283,7 +328,7 @@ bool UserPositionContext::FreezePosition(const OrderRequestDO& orderRequestDO, i
 	return ret;
 }
 
-bool UserPositionContext::GetRiskByPortfolio(const IPricingDataContext_Ptr& pricingCtx_Ptr, 
+bool UserPositionContext::GetRiskByPortfolio(const IPricingDataContext_Ptr& pricingCtx_Ptr,
 	const std::string & userID, const std::string & portfolio, UnderlyingRiskMap& risks)
 {
 	return false;

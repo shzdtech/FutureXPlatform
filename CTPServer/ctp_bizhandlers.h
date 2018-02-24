@@ -31,6 +31,7 @@
 #include "CTPAddManualTrade.h"
 #include "CTPQueryTradeDiff.h"
 #include "CTPSyncTrade.h"
+#include "CTPQueryPositionPnL.h"
 
 //Transfer
 #include "CTPFromBankToFuture.h"

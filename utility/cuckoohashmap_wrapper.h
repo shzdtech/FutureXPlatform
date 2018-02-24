@@ -39,7 +39,7 @@ public:
 
 	operator bool() const
 	{
-		return _innerMap->operator bool();
+		return bool(_innerMap);
 	}
 
 protected:

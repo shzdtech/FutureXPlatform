@@ -28,7 +28,7 @@ data_buffer PBStrategySerializer::Serialize(const dataobj_ptr& abstractDO)
 	PB.set_exchange(pDO->ExchangeID());
 	PB.set_contract(pDO->InstrumentID());
 
-	PB.set_hedging(pDO->Hedging);
+	PB.set_hedging(pDO->AutoOrderEnabled);
 	PB.set_depth(pDO->Depth);
 	PB.set_bidenabled(pDO->BidEnabled);
 	PB.set_askenabled(pDO->AskEnabled);
@@ -67,7 +67,7 @@ dataobj_ptr PBStrategySerializer::Deserialize(const data_buffer& rawdata)
 	FillDOHeader(sdo, pbstrtg);
 
 	sdo->Depth = pbstrtg.depth();
-	sdo->Hedging = pbstrtg.hedging();
+	sdo->AutoOrderEnabled = pbstrtg.hedging();
 	sdo->BidEnabled = pbstrtg.bidenabled();
 	sdo->AskEnabled = pbstrtg.askenabled();
 	sdo->NotCross = pbstrtg.bidnotcross();

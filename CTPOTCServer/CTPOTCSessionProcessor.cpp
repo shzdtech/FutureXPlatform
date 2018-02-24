@@ -70,7 +70,7 @@ bool CTPOTCSessionProcessor::OnSessionClosing(void)
 									if (auto strategy_ptr = pair.second)
 									{
 										strategy_ptr->AskEnabled = strategy_ptr->BidEnabled = false;
-										strategy_ptr->Hedging = false;
+										strategy_ptr->AutoOrderEnabled = false;
 										pWorkerTrader->CancelAutoOrder(*strategy_ptr);
 									}
 								}

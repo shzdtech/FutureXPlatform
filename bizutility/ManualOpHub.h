@@ -6,12 +6,14 @@
 #include "bizutility_exp.h"
 #include "../dataobject/TradeRecordDO.h"
 #include "../dataobject/UserPositionDO.h"
+#include "../dataobject/MarketDataDO.h"
 
 class IManualOp
 {
 public:
 	virtual void OnNewManualTrade(const TradeRecordDO& tradeDO) = 0;
 	virtual void OnUpdateManualPosition(const UserPositionExDO& positionDO) = 0;
+	virtual void OnUpdateMarketData(const MarketDataDO& mdDO) = 0;
 };
 
 typedef std::weak_ptr<IManualOp> IManualOp_WkPtr;
@@ -25,6 +27,7 @@ public:
 public:
 	void NotifyNewManualTrade(const TradeRecordDO& tradeDO);
 	void NotifyUpdateManualPosition(const UserPositionExDO& positionDO);
+	void NotifyUpdateMarketData(const MarketDataDO& mdDO);
 
 private:
 	lockfree_set<IManualOp_WkPtr, WeakPtrHash<IManualOp>, WeakPtrEqual<IManualOp>> _manualOpHub;

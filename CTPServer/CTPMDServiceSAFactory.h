@@ -20,6 +20,8 @@ public:
    IMessageProcessor_Ptr CreateMessageProcessor(IServerContext* serverCtx);
    IMessageProcessor_Ptr CreateWorkerProcessor(IServerContext* serverCtx);
 
+   void SetServerContext(IServerContext * serverCtx);
+
 protected:
 
 private:

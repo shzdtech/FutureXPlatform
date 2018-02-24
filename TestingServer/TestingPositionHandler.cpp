@@ -18,8 +18,8 @@ dataobj_ptr TestingPositionHandler::HandleRequest(const uint32_t serialId, const
 		position.HasMore = i < lastidx;
 		position.YdPosition = std::rand() % 10;
 		position.TdPosition = std::rand() % 10;
-		position.YdProfit = std::rand();
-		position.TdProfit = std::rand();
+		// position.YdProfit = std::rand();
+		// position.TdProfit = std::rand();
 		position.YdCost = std::rand();
 		position.TdCost = std::rand();
 		position.CloseAmount = std::rand();

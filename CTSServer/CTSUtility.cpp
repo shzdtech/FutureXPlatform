@@ -97,7 +97,7 @@ UserPositionExDO_Ptr CTSUtility::ParseRawPosition(T4::API::Position^ pPosition)
 	CTSConvertor::MarshalString(market->ExchangeID, exchangeID);
 	CTSConvertor::MarshalString(market->ContractID, instrumentID);
 	auto ret = std::make_shared<UserPositionExDO>(exchangeID, instrumentID);
-	ret->TdProfit = pPosition->PL;
+	// ret->TdProfit = pPosition->PL;
 	ret->UseMargin = pPosition->Margin;
 	ret->Commission = pPosition->FeesAndCommissions;
 	ret->TdCost = pPosition->Market->ConvertTicksToDecimal (Math::Abs(pPosition->TotalBuyFillTicks - pPosition->TotalSellFillTicks));

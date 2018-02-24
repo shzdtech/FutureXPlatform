@@ -24,6 +24,8 @@ public:
 
 	static int ResetPassword(const std::string& userId, const std::string& password);
 
+	static VectorDO_Ptr<UserInfoDO> FindTradingDesksByAdminId(const std::string adminID);
+
 protected:
 private:
 

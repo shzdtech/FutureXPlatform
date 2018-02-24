@@ -12,3 +12,23 @@ message ModelParams
 	string modelAim = 4;
 	map<string, double> params = 5;
 }
+
+message ModelDef
+{
+	double defaultVal = 1;
+	double minVal = 2;
+	double maxVal = 3;
+	string stringVal = 4;
+	double step = 5;
+	int32 digits = 6;
+	int32 dataType = 7;
+	bool visible = 8;
+	bool enable = 9;		
+}
+
+message ModelParamDef
+{
+	DataHeader header = 1;
+	string modelName = 2;
+	map<string, ModelDef> params = 3;
+}

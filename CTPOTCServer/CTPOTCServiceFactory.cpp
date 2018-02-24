@@ -78,6 +78,8 @@ std::map<uint, IMessageHandler_Ptr> CTPOTCServiceFactory::CreateMessageHandlers(
 
 	msg_hdl_map[MSG_ID_QUERY_MODELPARAMS] = std::make_shared<OTCQueryModelParams>();
 
+	msg_hdl_map[MSG_ID_QUERY_MODELPARAMDEF] = std::make_shared<OTCQueryModelParamDef>();
+
 	msg_hdl_map[MSG_ID_QUERY_SYSPARAMS] = std::make_shared<QuerySysParamHandler>();
 
 	msg_hdl_map[MSG_ID_UPDATE_TEMPMODELPARAMS] = std::make_shared<OTCUpdateTempModelParam>();

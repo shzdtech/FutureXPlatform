@@ -25,9 +25,10 @@
 #include "../databaseop/StrategyContractDAO.h"
 #include "../databaseop/ModelParamsDAO.h"
 #include "../pricingengine/ComplexAlgoirthmManager.h"
+#include "../bizutility/ManualOpHub.h"
 
 #include "../bizutility/ContractCache.h"
-#include "../bizutility/StrategyModelCache.h"
+#include "../bizutility/ModelParamsCache.h"
 
 #include "../ordermanager/OrderSeqGen.h"
  ////////////////////////////////////////////////////////////////////////
@@ -74,7 +75,7 @@ int OTCWorkerProcessor::LoadContractToCache(ProductType productType)
 
 int OTCWorkerProcessor::LoadStrategyToCache(const std::string& userId)
 {
-	StrategyModelCache::Load(userId);
+	ModelParamsCache::Load(userId);
 
 	auto allStrategy = StrategyContractDAO::LoadStrategyContractByProductType(userId);
 	auto strategyMap = PricingDataContext()->GetStrategyMap();
@@ -84,7 +85,7 @@ int OTCWorkerProcessor::LoadStrategyToCache(const std::string& userId)
 		if (strategy_ptr->PricingModel)
 		{
 			// Pricing Model Initialization
-			if (auto modelptr = StrategyModelCache::FindOrRetrieveModel(*strategy_ptr->PricingModel))
+			if (auto modelptr = ModelParamsCache::FindOrRetrieveModel(*strategy_ptr->PricingModel))
 			{
 				strategy_ptr->PricingModel = modelptr;
 			}
@@ -100,7 +101,7 @@ int OTCWorkerProcessor::LoadStrategyToCache(const std::string& userId)
 		// Implied Volatility Model Initialization
 		if (strategy_ptr->IVModel)
 		{
-			if (auto modelptr = StrategyModelCache::FindOrRetrieveModel(*strategy_ptr->IVModel))
+			if (auto modelptr = ModelParamsCache::FindOrRetrieveModel(*strategy_ptr->IVModel))
 			{
 				strategy_ptr->IVModel = modelptr;
 			}
@@ -117,7 +118,7 @@ int OTCWorkerProcessor::LoadStrategyToCache(const std::string& userId)
 		// Volatility Model Initialization
 		if (strategy_ptr->VolModel)
 		{
-			if (auto modelptr = StrategyModelCache::FindOrRetrieveModel(*strategy_ptr->VolModel))
+			if (auto modelptr = ModelParamsCache::FindOrRetrieveModel(*strategy_ptr->VolModel))
 			{
 				strategy_ptr->VolModel = modelptr;
 			}

@@ -44,11 +44,12 @@ data_buffer PBUserPositionSerializer::Serialize(const dataobj_ptr& abstractDO)
 	PB.set_closeprofit(pDO->CloseProfit);
 	PB.set_profit(pDO->Profit());
 	PB.set_opencost(pDO->OpenCost);
-	PB.set_portfolio(pDO->PortfolioID());
 	PB.set_longfrozenvolume(pDO->LongFrozenVolume);
 	PB.set_shortfrozenvolume(pDO->ShortFrozenVolume);
 	PB.set_longfrozenamount(pDO->LongFrozenAmount);
 	PB.set_shortfrozenamount(pDO->ShortFrozenAmount);
+	PB.set_avgprice(pDO->AvgPrice());
+	PB.set_lastprice(pDO->LastPrice);
 	/*PB.set_premargin(pDO->PreMargin);
 	PB.set_frozenmargin(pDO->FrozenMargin);
 	PB.set_frozencash(pDO->FrozenCash);

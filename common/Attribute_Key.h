@@ -12,6 +12,7 @@ static const std::string STR_KEY_SERVER_CONTRACT_DETAIL = "SERVER:CONTRACT.DETAI
 static const std::string STR_KEY_USER_INFO_DETAIL = "USER:USERINFO";
 static const std::string STR_KEY_APP_USER_DETAIL = "APPLICATION:USERINFO";
 static const std::string STR_KEY_APP_TRADINGDAY = "TRADINGDAY";
+static const std::string STR_KEY_APP_MARKETDATA= "SERVER:MARKETDATA";
 
 static const std::string STR_KEY_DEFAULT_CLIENT_SYMBOL = "DEFAULT.CLIENT.SYMBOL";
 

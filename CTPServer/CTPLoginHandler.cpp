@@ -40,6 +40,8 @@ dataobj_ptr CTPLoginHandler::HandleRequest(const uint32_t serialId, const dataob
 
 	auto stdo = (StringMapDO<std::string>*)reqDO.get();
 
+	auto& userInfo = session->getUserInfo();
+
 	std::string server;
 	msgProcessor->getServerContext()->getConfigVal(ExchangeRouterTable::TARGET_TD, server);
 	ExchangeRouterDO exDO;
@@ -56,14 +58,20 @@ dataobj_ptr CTPLoginHandler::HandleRequest(const uint32_t serialId, const dataob
 	auto& exchangeUser = stdo->TryFind(STR_EXCHANGE_USER, EMPTY_STRING);
 	auto& exchangePwd = stdo->TryFind(STR_EXCHANGE_PASSWORD, EMPTY_STRING);
 
-	auto& userInfo = session->getUserInfo();
-
 	std::shared_ptr<UserInfoDO> userInfo_Ptr;
 	if (userInfo_Ptr = UserInfoDAO::FindUser(username))
 	{
 		userInfo.setUserId(userInfo_Ptr->UserId);
 		userInfo.setName(userInfo_Ptr->UserName);
-		userInfo.setRole(userInfo_Ptr->Role);
+		if (userInfo.getRole() < ROLE_ADMIN)
+		{
+			if (password != userInfo_Ptr->Password)
+			{
+				throw UserException("Wrong password!");
+			}
+
+			userInfo.setRole(userInfo_Ptr->Role);
+		}
 		userInfo.setPermission(userInfo_Ptr->Permission);
 		std::string tradingDay;
 		if (SysParam::TryGet(STR_KEY_APP_TRADINGDAY, tradingDay))
@@ -79,7 +87,7 @@ dataobj_ptr CTPLoginHandler::HandleRequest(const uint32_t serialId, const dataob
 	userInfo.setInvestorId(exchangeUser);
 
 	userInfo.setBrokerId(exDO.BrokeID);
-	userInfo.setPassword(exchangePwd);
+	userInfo.setPassword(password);
 	pProcessor->LoginSerialId = serialId;
 	auto ret = LoginFromServer(msgProcessor, userInfo_Ptr, serialId, routername);
 

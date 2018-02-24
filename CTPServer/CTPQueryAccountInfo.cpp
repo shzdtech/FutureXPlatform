@@ -135,7 +135,29 @@ dataobj_ptr CTPQueryAccountInfo::HandleResponse(const uint32_t serialId, const p
 
 		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 		{
-			pWorkerProc->UpdateAccountInfo(session->getUserInfo().getUserId(), ret);
+			auto& userId = session->getUserInfo().getUserId();
+
+			if (auto positionCtx = pWorkerProc->GetUserPositionContext()->GetPortfolioPositionsPnLByUser(userId))
+			{
+				double userBalance = 0;
+				for (auto pair : positionCtx.map()->lock_table())
+				{
+					for (auto cpair : pair.second.map()->lock_table())
+					{
+						auto pnl = cpair.second.get();
+						auto sellBalance = (pnl->SellAvgPrice() - pnl->LastPrice) * pnl->SellPosition();
+						if (!std::isnan(sellBalance))
+							userBalance += sellBalance;
+						auto buyBalance = (pnl->LastPrice - pnl->BuyAvgPrice()) * pnl->BuyPosition();
+						if (!std::isnan(buyBalance))
+							userBalance += buyBalance;
+					}
+				}
+
+				pDO->UserBalance = userBalance;
+			}
+
+			pWorkerProc->UpdateAccountInfo(userId, ret);
 		}
 	}
 

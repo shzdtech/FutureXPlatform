@@ -165,6 +165,7 @@
     <ClInclude Include="Attribute_Key.h" />
     <ClInclude Include="CTPAddManualTrade.h" />
     <ClInclude Include="CTPAPISwitch.h" />
+    <ClInclude Include="CTPQueryPositionPnL.h" />
     <ClInclude Include="CTPQueryTradeDiff.h" />
     <ClInclude Include="CTPSyncPositionDiffer.h" />
     <ClInclude Include="CTPSyncTrade.h" />
@@ -224,6 +225,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CTPAddManualTrade.cpp" />
+    <ClCompile Include="CTPQueryPositionPnL.cpp" />
     <ClCompile Include="CTPQueryTradeDiff.cpp" />
     <ClCompile Include="CTPSyncPositionDiffer.cpp" />
     <ClCompile Include="CTPSyncTrade.cpp" />

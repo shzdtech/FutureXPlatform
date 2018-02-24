@@ -30,5 +30,6 @@
 #include "OTCQueryValuationRisk.h"
 #include "OTCUpdatePortfolio.h"
 #include "OTCUpdateHedgeContract.h"
+#include "OTCQueryModelParamDef.h"
 
 #endif

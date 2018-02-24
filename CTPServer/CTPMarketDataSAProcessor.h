@@ -16,7 +16,7 @@
 
 class CTP_CLASS_EXPORT CTPMarketDataSAProcessor : public MessageWorkerProcessor, public CTPMarketDataProcessor {
 public:
-	CTPMarketDataSAProcessor(IServerContext* pServerCtx);
+	CTPMarketDataSAProcessor(IServerContext* pServerCtx, MarketDataDOMap* pMktDataDOMap);
 	~CTPMarketDataSAProcessor();
 
 	void Initialize(IServerContext * pServerCtx);
@@ -37,7 +37,7 @@ protected:
 
 	int RetryInterval = 30000;
 
-	MarketDataDOMap _marketDataMap;
+	MarketDataDOMap* _pMarketDataMap;
 
 public:
 	virtual void OnRspError(CThostFtdcRspInfoField *pRspInfo,

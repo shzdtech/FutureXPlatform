@@ -166,6 +166,7 @@
   <ItemGroup>
     <ClCompile Include="OTCNewPortfolio.cpp" />
     <ClCompile Include="OTCQueryInstrument.cpp" />
+    <ClCompile Include="OTCQueryModelParamDef.cpp" />
     <ClCompile Include="OTCQueryModelParams.cpp" />
     <ClCompile Include="OTCQueryPortfolio.cpp" />
     <ClCompile Include="OTCQueryPosition.cpp" />
@@ -202,6 +203,7 @@
   <ItemGroup>
     <ClInclude Include="OTCNewPortfolio.h" />
     <ClInclude Include="OTCQueryInstrument.h" />
+    <ClInclude Include="OTCQueryModelParamDef.h" />
     <ClInclude Include="OTCQueryModelParams.h" />
     <ClInclude Include="OTCQueryPortfolio.h" />
     <ClInclude Include="OTCQueryPosition.h" />

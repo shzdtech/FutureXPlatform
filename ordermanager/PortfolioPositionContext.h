@@ -13,16 +13,24 @@
 
 #include "ordermgr_export.h"
 
-typedef cuckoohash_map<std::string, cuckoohashmap_wrapper<std::string, ContractPosition>> UserPortfolioPosition;
 
 class ORDERMGR_CLASS_EXPORT PortfolioPositionContext : public IUserPositionContext
 {
 public:
-	virtual UserPositionExDO_Ptr UpsertPosition(const std::string& userId, const UserPositionExDO& positionDO, bool updateYdPosition = false, bool closeYdFirst = false);
+	virtual UserPositionExDO_Ptr UpsertPosition(const std::string& userId, const UserPositionExDO& positionDO,
+		bool updateYdPosition = false, bool closeYdFirst = false, bool forceSync = false);
 
 	virtual UserPositionExDO_Ptr UpsertPosition(const std::string& userid, const TradeRecordDO_Ptr & tradeDO, int multiplier = 1, bool closeYdFirst = false);
 
+	virtual int UpdatePnL(const std::string& userID, const MarketDataDO& mdDO);
+
 	void Clear(void);
+
+	virtual PortfolioPositionPnL GetPortfolioPositionsPnLByUser(const std::string& userID);
+
+	virtual ContractPositionPnL GetPositionsPnLByUser(const std::string& userID, const std::string& portfolio = "");
+
+	virtual PositionPnLDO_Ptr GetPositionPnL(const std::string& userID, const std::string& instumentID, const std::string& portfolio = "");
 
 	virtual UserPortfolioPosition& AllUserPortfolioPosition();
 
@@ -47,6 +55,7 @@ public:
 
 private:
 	UserPortfolioPosition _userPositionMap;
+	UserPortfolioPositionPnL _userPositionPnLMap;
 	PositionTradeIDMapType _positionTradeIDMap;
 
 };

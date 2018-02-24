@@ -46,6 +46,8 @@ PBBizMessageSerializerFactory::PBBizMessageSerializerFactory()
 	_serializer_map[MSG_ID_ADD_MANUAL_TRADE] = PBTradeRecordSerializer::Instance();
 	_serializer_map[MSG_ID_QUERY_TRADE_DIFFER] = PBTradeRecordSerializer::Instance();
 	_serializer_map[MSG_ID_SYNC_TRADE] = PBTradeRecordSerializer::Instance();
+	_serializer_map[MSG_ID_QUERY_POSITIONPNL] = PBPositionPnLSerializer::Instance();
+	_serializer_map[MSG_ID_POSITIONPNL_UPDATED] = PBPositionPnLSerializer::Instance();
 
 	//Transfer
 	_serializer_map[MSG_ID_QUERY_TRANSFER_BANK] = PBBankSerializer::Instance();

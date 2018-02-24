@@ -12,7 +12,7 @@
 #include "../dataobject/UserContractParamDO.h"
 #include "../databaseop/StrategyContractDAO.h"
 
-#include "../bizutility/StrategyModelCache.h"
+#include "../bizutility/ModelParamsCache.h"
 #include "../pricingengine/ComplexAlgoirthmManager.h"
 
 dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, const dataobj_ptr & reqDO, IRawAPI * rawAPI, const IMessageProcessor_Ptr & msgProcessor, const IMessageSession_Ptr & session)
@@ -59,6 +59,12 @@ dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, con
 			{
 				pUserStrategyMap_ptr->get()->update(*st_ptr, st_ptr);
 				pStrategyContractMap->update(*st_ptr, st_ptr);
+				pWorkerProc->TriggerPricingByStrategy(*st_ptr);
+				pWorkerProc->GetOTCTradeWorkerProcessor()->TriggerAutoOrderUpdating(*st_ptr);
+			}
+
+			for (auto& st_ptr : updateVec)
+			{
 				StrategyContractDAO::UpdatePricingContract(*st_ptr, st_ptr->StrategyName, PM, *st_ptr->PricingContracts);
 			}
 		}
@@ -88,6 +94,12 @@ dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, con
 			{
 				pUserStrategyMap_ptr->get()->update(*st_ptr, st_ptr);
 				pStrategyContractMap->update(*st_ptr, st_ptr);
+				pWorkerProc->TriggerPricingByStrategy(*st_ptr);
+				pWorkerProc->GetOTCTradeWorkerProcessor()->TriggerAutoOrderUpdating(*st_ptr);
+			}
+
+			for (auto& st_ptr : updateVec)
+			{
 				StrategyContractDAO::UpdatePricingContract(*st_ptr, st_ptr->StrategyName, IVM, *st_ptr->IVMContracts);
 			}
 		}
@@ -117,6 +129,12 @@ dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, con
 			{
 				pUserStrategyMap_ptr->get()->update(*st_ptr, st_ptr);
 				pStrategyContractMap->update(*st_ptr, st_ptr);
+				pWorkerProc->TriggerPricingByStrategy(*st_ptr);
+				pWorkerProc->GetOTCTradeWorkerProcessor()->TriggerAutoOrderUpdating(*st_ptr);
+			}
+
+			for (auto& st_ptr : updateVec)
+			{
 				StrategyContractDAO::UpdatePricingContract(*st_ptr, st_ptr->StrategyName, VM, *st_ptr->VolContracts);
 			}
 		}
@@ -124,7 +142,7 @@ dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, con
 		bool updated = false;
 		if (pStrategyDO->PricingModel)
 		{
-			if (auto model_ptr = StrategyModelCache::FindModel(ModelKey(pStrategyDO->PricingModel->InstanceName, pStrategyDO->UserID())))
+			if (auto model_ptr = ModelParamsCache::FindModel(ModelKey(pStrategyDO->PricingModel->InstanceName, pStrategyDO->UserID())))
 			{
 				if (!model_ptr->ParsedParams)
 				{
@@ -149,13 +167,15 @@ dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, con
 				{
 					pUserStrategyMap_ptr->get()->update(*st_ptr, st_ptr);
 					pStrategyContractMap->update(*st_ptr, st_ptr);
+					pWorkerProc->TriggerPricingByStrategy(*st_ptr);
+					pWorkerProc->GetOTCTradeWorkerProcessor()->TriggerAutoOrderUpdating(*st_ptr);
 				}
 			}
 		}
 
 		if (pStrategyDO->IVModel)
 		{
-			if (auto model_ptr = StrategyModelCache::FindModel(ModelKey(pStrategyDO->IVModel->InstanceName, pStrategyDO->UserID())))
+			if (auto model_ptr = ModelParamsCache::FindModel(ModelKey(pStrategyDO->IVModel->InstanceName, pStrategyDO->UserID())))
 			{
 				if (!model_ptr->ParsedParams)
 				{
@@ -180,13 +200,15 @@ dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, con
 				{
 					pUserStrategyMap_ptr->get()->update(*st_ptr, st_ptr);
 					pStrategyContractMap->update(*st_ptr, st_ptr);
+					pWorkerProc->TriggerPricingByStrategy(*st_ptr);
+					pWorkerProc->GetOTCTradeWorkerProcessor()->TriggerAutoOrderUpdating(*st_ptr);
 				}
 			}
 		}
 
 		if (pStrategyDO->VolModel)
 		{
-			if (auto model_ptr = StrategyModelCache::FindModel(ModelKey(pStrategyDO->VolModel->InstanceName, pStrategyDO->UserID())))
+			if (auto model_ptr = ModelParamsCache::FindModel(ModelKey(pStrategyDO->VolModel->InstanceName, pStrategyDO->UserID())))
 			{
 				if (!model_ptr->ParsedParams)
 				{
@@ -211,6 +233,8 @@ dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, con
 				{
 					pUserStrategyMap_ptr->get()->update(*st_ptr, st_ptr);
 					pStrategyContractMap->update(*st_ptr, st_ptr);
+					pWorkerProc->TriggerPricingByStrategy(*st_ptr);
+					pWorkerProc->GetOTCTradeWorkerProcessor()->TriggerAutoOrderUpdating(*st_ptr);
 				}
 			}
 		}
@@ -218,12 +242,6 @@ dataobj_ptr OTCUpdatePricingContract::HandleRequest(const uint32_t serialId, con
 		if (updated)
 		{
 			StrategyContractDAO::UpdateStrategyModel(*pStrategyDO);
-		}
-
-		for (auto& pair : pUserStrategyMap_ptr->get()->lock_table())
-		{
-			pWorkerProc->TriggerPricingByStrategy(*pair.second);
-			ret->push_back(*pair.second);
 		}
 	}
 

@@ -28,7 +28,7 @@
 #include "../pricingengine/ModelAlgorithmManager.h"
 
 #include "../bizutility/ContractCache.h"
-#include "../bizutility/StrategyModelCache.h"
+#include "../bizutility/ModelParamsCache.h"
 #include "../bizutility/ExchangeRouterTable.h"
 
 #include "../ordermanager/OrderSeqGen.h"
@@ -40,9 +40,9 @@
  // Return:     
  ////////////////////////////////////////////////////////////////////////
 
-CTPOTCWorkerProcessor::CTPOTCWorkerProcessor(IServerContext* pServerCtx,
+CTPOTCWorkerProcessor::CTPOTCWorkerProcessor(IServerContext* pServerCtx, 
 	const std::shared_ptr<CTPOTCTradeWorkerProcessor>& otcTradeProcessorPtr) :
-	CTPMarketDataSAProcessor(pServerCtx),
+	CTPMarketDataSAProcessor(pServerCtx, otcTradeProcessorPtr->PricingDataContext()->GetMarketDataMap()),
 	OTCWorkerProcessor(otcTradeProcessorPtr->PricingDataContext()),
 	_CTPOTCTradeWorkerProcessorPtr(otcTradeProcessorPtr)
 {
@@ -178,9 +178,9 @@ void CTPOTCWorkerProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField 
 {
 	if (!_closing)
 	{
-		auto mdMap = PricingDataContext()->GetMarketDataMap();
+		auto mdMap = GetMarketDataMap();
 		bool updated = false;
-		mdMap->update_fn(pDepthMarketData->InstrumentID, [pDepthMarketData, &updated](MarketDataDO& mdo)
+		mdMap.update_fn(pDepthMarketData->InstrumentID, [pDepthMarketData, &updated](MarketDataDO& mdo)
 		{
 			if (mdo.Bid().Price != pDepthMarketData->BidPrice1 ||
 				mdo.Ask().Price != pDepthMarketData->AskPrice1 ||
@@ -210,7 +210,7 @@ void CTPOTCWorkerProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField 
 		if (updated)
 		{
 			MarketDataDO mdo;
-			mdMap->find(pDepthMarketData->InstrumentID, mdo);
+			mdMap.find(pDepthMarketData->InstrumentID, mdo);
 			// Start to trigger pricing
 			TriggerUpdateByMarketData(mdo);
 		}

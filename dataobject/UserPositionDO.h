@@ -36,18 +36,32 @@ public:
 	double CloseAmount = 0;
 	double TdCost = 0;
 	double YdCost = 0;
-	double TdProfit = 0;
-	double YdProfit = 0;
 	double OpenCost = 0;
 	double CloseProfit = 0;
 	double UseMargin = 0;
-	
+	double LastPrice;
+	double SettlementPrice = 0;
+	double PreSettlementPrice = 0;
+	int Multiplier = 1;
+
 	PositionDateFlagType PositionDateFlag = PSD_TODAY_HISTORY;
 
+	double TdProfit() const {
+		double deltaPrice = LastPrice - AvgOpenPrice();
+		return TdPosition * (Direction == PositionDirectionType::PD_LONG ? deltaPrice : -deltaPrice) * Multiplier;
+	}
+	double YdProfit() const {
+		double deltaPrice = LastPrice - PreSettlementPrice;
+		return LastPosition() * (Direction == PositionDirectionType::PD_LONG ? deltaPrice : -deltaPrice) * Multiplier;
+	}
+	double AvgPrice() const { return (TdPosition * AvgOpenPrice() + LastPosition() * PreSettlementPrice) / Position(); }
+
+	double AvgCost() const { return TdPosition ? TdCost / TdPosition : 0;  }
+	double AvgOpenPrice() const { return OpenVolume ? OpenAmount / OpenVolume : 0; }
 	int Position() const { return YdInitPosition + YdPosition + TdPosition; }
 	int LastPosition() const { return YdInitPosition + YdPosition; }
 	double Cost() const { return YdCost + TdCost; }
-	double Profit() const { return YdProfit + TdProfit; }
+	double Profit() const { return YdProfit() + TdProfit(); }
 
 protected:
 
@@ -69,8 +83,6 @@ public:
 	int ShortFrozenVolume = 0;
 	double LongFrozenAmount = 0;
 	double ShortFrozenAmount = 0;
-	double SettlementPrice = 0;
-	double PreSettlementPrice = 0;
 	double ExchangeMargin = 0;
 	double CashIn = 0;
 	double CombPosition = 0;
@@ -87,7 +99,59 @@ public:
 	double PreMargin = 0;
 };
 
+class PositionPnLDO : public UserContractKey, public PortfolioKey, public dataobjectbase
+{
+public:
+	PositionPnLDO(const std::string& exchangeID, const std::string& instrumentID, const std::string& portfolioID, const std::string& userID)
+		: UserKey(userID), UserContractKey(exchangeID, instrumentID, userID), PortfolioKey(portfolioID, userID) {}
+	PositionPnLDO(const std::string& exchangeID, const std::string& instrumentID)
+		: PositionPnLDO(exchangeID, instrumentID, "", "") {}
+	PositionPnLDO() = default;
+
+	int YdBuyVolume = 0;
+	int TdBuyVolume = 0;
+	double TdBuyAmount = 0;
+
+	int YdSellVolume = 0;
+	int TdSellVolume = 0;
+	double TdSellAmount = 0;
+
+	int Multiplier = 1;
+	double LastPrice;
+	double PreSettlementPrice = 0;
+
+	double TdBuyProfit() const {
+		double deltaPrice = LastPrice - BuyAvgPrice();
+		return TdSellVolume * deltaPrice * Multiplier;
+	}
+
+	double TdSellProfit() const {
+		double deltaPrice = SellAvgPrice() - LastPrice;
+		return TdSellVolume * deltaPrice * Multiplier;
+	}
+
+	double YdBuyProfit() const {
+		double deltaPrice = LastPrice - PreSettlementPrice;
+		return YdSellVolume * deltaPrice * Multiplier;
+	}
+
+	double YdSellProfit() const {
+		double deltaPrice = PreSettlementPrice - LastPrice;
+		return YdSellVolume * deltaPrice * Multiplier;
+	}
+
+	double BuyProfit() const { return YdBuyProfit() + TdBuyProfit(); }
+	double SellProfit() const { return YdSellProfit() + TdSellProfit(); }
+
+	int BuyPosition() const { return YdBuyVolume + TdBuyVolume; }
+	int SellPosition() const { return YdSellVolume + TdSellVolume; }
+
+	double BuyAvgPrice() const { return BuyPosition() > 0 ? ((TdBuyAmount / Multiplier + YdBuyVolume * PreSettlementPrice) / BuyPosition()) : 0; }
+	double SellAvgPrice() const { return SellPosition() > 0 ? ((TdSellAmount / Multiplier + YdSellVolume * PreSettlementPrice) / SellPosition()) : 0; }
+};
+
 typedef std::shared_ptr<UserPositionDO> UserPositionDO_Ptr;
 typedef std::shared_ptr<UserPositionExDO> UserPositionExDO_Ptr;
 
+typedef std::shared_ptr<PositionPnLDO> PositionPnLDO_Ptr;
 #endif

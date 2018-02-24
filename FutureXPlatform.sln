@@ -80,6 +80,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CTPETFOTCServer", "CTPOTCSe
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CTPETFServer", "CTPServer\CTPServerETF.vcxproj", "{5CD2BAA7-91FE-4A63-80CF-7B25C5597C10}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "riskmanager", "riskmanager\riskmanager.vcxproj", "{4117BC7E-4BFB-47A1-AF10-99EDF804FE09}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -410,6 +412,16 @@ Global
 		{5CD2BAA7-91FE-4A63-80CF-7B25C5597C10}.Release|x64.Build.0 = Release|x64
 		{5CD2BAA7-91FE-4A63-80CF-7B25C5597C10}.Release|x86.ActiveCfg = Release|Win32
 		{5CD2BAA7-91FE-4A63-80CF-7B25C5597C10}.Release|x86.Build.0 = Release|Win32
+		{4117BC7E-4BFB-47A1-AF10-99EDF804FE09}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{4117BC7E-4BFB-47A1-AF10-99EDF804FE09}.Debug|x64.ActiveCfg = Debug|x64
+		{4117BC7E-4BFB-47A1-AF10-99EDF804FE09}.Debug|x64.Build.0 = Debug|x64
+		{4117BC7E-4BFB-47A1-AF10-99EDF804FE09}.Debug|x86.ActiveCfg = Debug|Win32
+		{4117BC7E-4BFB-47A1-AF10-99EDF804FE09}.Debug|x86.Build.0 = Debug|Win32
+		{4117BC7E-4BFB-47A1-AF10-99EDF804FE09}.Release|Any CPU.ActiveCfg = Release|Win32
+		{4117BC7E-4BFB-47A1-AF10-99EDF804FE09}.Release|x64.ActiveCfg = Release|x64
+		{4117BC7E-4BFB-47A1-AF10-99EDF804FE09}.Release|x64.Build.0 = Release|x64
+		{4117BC7E-4BFB-47A1-AF10-99EDF804FE09}.Release|x86.ActiveCfg = Release|Win32
+		{4117BC7E-4BFB-47A1-AF10-99EDF804FE09}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

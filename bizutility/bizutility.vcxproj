@@ -161,8 +161,9 @@
     <ClInclude Include="ExchangeRouterTable.h" />
     <ClInclude Include="InstrumentCache.h" />
     <ClInclude Include="ManualOpHub.h" />
+    <ClInclude Include="ModelParamDefCache.h" />
     <ClInclude Include="PositionPortfolioMap.h" />
-    <ClInclude Include="StrategyModelCache.h" />
+    <ClInclude Include="ModelParamsCache.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="UnderlyingMap.h" />
   </ItemGroup>
@@ -171,8 +172,9 @@
     <ClCompile Include="ExchangeRouterTable.cpp" />
     <ClCompile Include="InstrumentCache.cpp" />
     <ClCompile Include="ManualOpHub.cpp" />
+    <ClCompile Include="ModelParamDefCache.cpp" />
     <ClCompile Include="PositionPortfolioMap.cpp" />
-    <ClCompile Include="StrategyModelCache.cpp" />
+    <ClCompile Include="ModelParamsCache.cpp" />
     <ClCompile Include="UnderlyingMap.cpp" />
   </ItemGroup>
   <ItemGroup>

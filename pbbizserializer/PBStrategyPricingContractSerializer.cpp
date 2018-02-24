@@ -21,7 +21,7 @@ data_buffer PBStrategyPricingContractSerializer::Serialize(const dataobj_ptr & a
 		pStrategy->set_symbol(sdo.StrategyName);
 		pStrategy->set_portfolio(sdo.PortfolioID());
 
-		pStrategy->set_hedging(sdo.Hedging);
+		pStrategy->set_hedging(sdo.AutoOrderEnabled);
 		pStrategy->set_depth(sdo.Depth);
 		pStrategy->set_bidenabled(sdo.BidEnabled);
 		pStrategy->set_askenabled(sdo.AskEnabled);

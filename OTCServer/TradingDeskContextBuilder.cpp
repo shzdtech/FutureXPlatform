@@ -21,7 +21,7 @@
 #include "../pricingengine/PricingAlgorithmManager.h"
 #include "../pricingengine/ModelAlgorithmManager.h"
 
-#include "../bizutility/StrategyModelCache.h"
+#include "../bizutility/ModelParamsCache.h"
 
 #include <algorithm>
 

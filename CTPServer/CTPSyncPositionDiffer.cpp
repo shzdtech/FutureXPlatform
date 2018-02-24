@@ -52,15 +52,29 @@ dataobj_ptr CTPSyncPositionDiffer::HandleRequest(const uint32_t serialId, const 
 				std::tie(contract, portfolio, direction) = pair.first;
 
 				std::string exchange;
+				int multiplier = 1;
 				if (auto pInstrumentDO = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentOrAddById(contract))
 				{
 					exchange = pInstrumentDO->ExchangeID();
+					multiplier = pInstrumentDO->VolumeMultiple;
 				}
 
 				auto position_ptr = std::make_shared<UserPositionExDO>(exchange, contract, portfolio, userInfo.getUserId());
 				position_ptr->Direction = direction;
 				position_ptr->YdInitPosition = pair.second.second;
 				position_ptr->TradingDay = userInfo.getTradingDay();
+				position_ptr->Multiplier = multiplier;
+
+				if (auto pMktDataMap = pWorkerProc->GetMarketDataDOMap())
+				{
+					MarketDataDO mdo;
+					if (pMktDataMap->find(contract, mdo))
+					{
+						position_ptr->LastPrice = mdo.LastPrice;
+						position_ptr->PreSettlementPrice = mdo.PreSettlementPrice;
+					}
+				}
+
 				userPosition.push_back(*position_ptr);
 				ManualOpHub::Instance()->NotifyUpdateManualPosition(*position_ptr);
 			}

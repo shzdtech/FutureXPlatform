@@ -15,7 +15,7 @@
 #include "../dataobject/ResultDO.h"
 
 #include "../databaseop/ModelParamsDAO.h"
-#include "../bizutility/StrategyModelCache.h"
+#include "../bizutility/ModelParamsCache.h"
 
 
 
@@ -32,12 +32,12 @@ dataobj_ptr OTCUpdateModelParams::HandleRequest(const uint32_t serialId, const d
 		if (!pModelParam->Model.empty() && !pModelParam->InstanceName.empty())
 		{
 			ModelParamsDAO::NewUserModel(*pModelParam);
-			StrategyModelCache::FindOrRetrieveModel(*pModelParam);
+			ModelParamsCache::FindOrRetrieveModel(*pModelParam);
 		}
 	}
 	else
 	{
-		if (auto modelptr = StrategyModelCache::FindOrRetrieveModel(*pModelParam))
+		if (auto modelptr = ModelParamsCache::FindOrRetrieveModel(*pModelParam))
 		{
 			if (auto modelAlg = ComplexAlgoirthmManager::Instance()->FindModel(modelptr->Model))
 			{
@@ -57,8 +57,7 @@ dataobj_ptr OTCUpdateModelParams::HandleRequest(const uint32_t serialId, const d
 					}
 				}
 				modelAlg->ParseParams(modelptr->Params, modelptr->ParsedParams);
-			}
-			ModelParamsDAO::SaveModelParams(*pModelParam);
+			}			
 
 			if (auto pWorkerProc = MessageUtility::AbstractWorkerProcessorPtr<OTCWorkerProcessor>(msgProcessor))
 			{
@@ -68,8 +67,7 @@ dataobj_ptr OTCUpdateModelParams::HandleRequest(const uint32_t serialId, const d
 					{
 						if (auto stMap_ptr = pairMap.second)
 						{
-							auto it = stMap_ptr->lock_table();
-							for (auto& pair : it)
+							for (auto& pair : stMap_ptr->lock_table())
 							{
 								auto& strategy_ptr = pair.second;
 								auto ivmModel_Ptr = strategy_ptr->IVModel;
@@ -89,6 +87,8 @@ dataobj_ptr OTCUpdateModelParams::HandleRequest(const uint32_t serialId, const d
 					}
 				}
 			}
+
+			ModelParamsDAO::SaveModelParams(*pModelParam);
 		}
 		else
 		{

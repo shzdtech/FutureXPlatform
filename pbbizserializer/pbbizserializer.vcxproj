@@ -212,6 +212,7 @@
     <ClCompile Include="PBPortfolioListSerializer.cpp" />
     <ClCompile Include="PBPortfolioSerializer.cpp" />
     <ClCompile Include="PBPositionDifferSerializer.cpp" />
+    <ClCompile Include="PBPositionPnLSerializer.cpp" />
     <ClCompile Include="PBStrategyPricingContractSerializer.cpp" />
     <ClCompile Include="PBPricingDataSerializer.cpp" />
     <ClCompile Include="PBRiskSerializer.cpp" />
@@ -244,6 +245,7 @@
     <ClInclude Include="PBPortfolioListSerializer.h" />
     <ClInclude Include="PBPortfolioSerializer.h" />
     <ClInclude Include="PBPositionDifferSerializer.h" />
+    <ClInclude Include="PBPositionPnLSerializer.h" />
     <ClInclude Include="PBStrategyPricingContractSerializer.h" />
     <ClInclude Include="PBPricingDataSerializer.h" />
     <ClInclude Include="PBRiskSerializer.h" />

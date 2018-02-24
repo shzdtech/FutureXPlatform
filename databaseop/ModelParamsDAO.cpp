@@ -39,7 +39,6 @@ ModelParamsDO_Ptr ModelParamsDAO::FindUserModel(const std::string& userid, const
 	return ret;
 }
 
-
 void ModelParamsDAO::FindAllModels(const std::string& userId, autofillmap<ModelKey, ModelParamsDO_Ptr>& modelMap)
 {
 	static const std::string sql_findstrategyparam(
@@ -78,8 +77,6 @@ void ModelParamsDAO::FindAllModels(const std::string& userId, autofillmap<ModelK
 		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
 	}
 }
-
-
 
 void ModelParamsDAO::SaveModelParams(const ModelParamsDO & modelParams)
 {
@@ -146,4 +143,46 @@ void ModelParamsDAO::NewUserModel(const ModelParamsDO & modelParams)
 		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
 		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
 	}
+}
+
+ModelParamDefDO_Ptr ModelParamsDAO::FindModelParamDef(const std::string& modelName)
+{
+	static const std::string sql_findmodeldef(
+		"SELECT paramname, defaultval, minval, maxval, stringval, step, digits, datatype, visible, enabled FROM modelparamdef "
+		"WHERE model = ?");
+
+	auto ret = std::make_shared<ModelParamDefDO>(modelName);
+
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
+	try
+	{
+		AutoClosePreparedStmt_Ptr prestmt(session->getConnection()->prepareStatement(sql_findmodeldef));
+
+		prestmt->setString(1, modelName);
+
+		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
+
+		while (rs->next())
+		{
+			ModelParamDef modelParamDef;
+			modelParamDef.DefaultVal = rs->getDouble(2);
+			if (!rs->isNull(3)) modelParamDef.MinVal = rs->getDouble(3);
+			if (!rs->isNull(4)) modelParamDef.MaxVal = rs->getDouble(4);
+			if (!rs->isNull(5)) modelParamDef.StringVal = rs->getString(5);
+			if (!rs->isNull(6)) modelParamDef.MaxVal = rs->getDouble(6);
+			if (!rs->isNull(7)) modelParamDef.Step = rs->getInt(7);
+			if (!rs->isNull(8)) modelParamDef.DataType = rs->getInt(8);
+			if (!rs->isNull(9)) modelParamDef.Visible = rs->getBoolean(9);
+			if (!rs->isNull(10)) modelParamDef.Enable = rs->getBoolean(10);
+
+			ret->ModelDefMap.emplace(rs->getString(1), std::move(modelParamDef));
+		}
+	}
+	catch (sql::SQLException& sqlEx)
+	{
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
+		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
+	}
+
+	return ret;
 }

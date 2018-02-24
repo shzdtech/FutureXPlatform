@@ -1,4 +1,4 @@
-#include "StrategyModelCache.h"
+#include "ModelParamsCache.h"
 #include "../utility/autofillmap.h"
 #include "../include/libcuckoo/cuckoohash_map.hh"
 #include "../databaseop/ModelParamsDAO.h"
@@ -7,26 +7,26 @@ static cuckoohash_map<ModelKey, ModelParamsDO_Ptr, ModelKeyHash> _modelCache(256
 static cuckoohash_map<std::string, vector_ptr<ModelParamsDO_Ptr>> _userModelCache(256);
 static cuckoohash_map<ModelKey, ModelParamsDO_Ptr, ModelKeyHash> _modelCacheTemp(4);
 
-ModelParamsDO_Ptr StrategyModelCache::FindModel(const ModelKey & key)
+ModelParamsDO_Ptr ModelParamsCache::FindModel(const ModelKey & key)
 {
 	ModelParamsDO_Ptr ret;
 	_modelCache.find(key, ret);
 	return ret;
 }
 
-ModelParamsDO_Ptr StrategyModelCache::FindTempModel(const ModelKey & key)
+ModelParamsDO_Ptr ModelParamsCache::FindTempModel(const ModelKey & key)
 {
 	ModelParamsDO_Ptr ret;
 	_modelCacheTemp.find(key, ret);
 	return ret;
 }
 
-bool StrategyModelCache::InsertTempModel(const ModelParamsDO_Ptr& model)
+bool ModelParamsCache::InsertTempModel(const ModelParamsDO_Ptr& model)
 {
 	return _modelCacheTemp.insert(*model, model);
 }
 
-ModelParamsDO_Ptr StrategyModelCache::FindOrRetrieveModel(const ModelKey & key)
+ModelParamsDO_Ptr ModelParamsCache::FindOrRetrieveModel(const ModelKey & key)
 {
 	ModelParamsDO_Ptr ret = FindModel(key);
 
@@ -47,7 +47,7 @@ ModelParamsDO_Ptr StrategyModelCache::FindOrRetrieveModel(const ModelKey & key)
 	return ret;
 }
 
-vector_ptr<ModelParamsDO_Ptr> StrategyModelCache::FindModelsByUser(const std::string& userId)
+vector_ptr<ModelParamsDO_Ptr> ModelParamsCache::FindModelsByUser(const std::string& userId)
 {
 	vector_ptr<ModelParamsDO_Ptr> ret;
 
@@ -56,7 +56,7 @@ vector_ptr<ModelParamsDO_Ptr> StrategyModelCache::FindModelsByUser(const std::st
 	return ret;
 }
 
-void StrategyModelCache::Remove(const ModelKey & key)
+void ModelParamsCache::Remove(const ModelKey & key)
 {
 	if (_modelCache.erase(key))
 	{
@@ -74,19 +74,19 @@ void StrategyModelCache::Remove(const ModelKey & key)
 	}
 }
 
-bool StrategyModelCache::RemoveTempModel(const ModelKey & key)
+bool ModelParamsCache::RemoveTempModel(const ModelKey & key)
 {
 	return _modelCacheTemp.erase(key);
 }
 
-void StrategyModelCache::Clear(void)
+void ModelParamsCache::Clear(void)
 {
 	_modelCache.clear();
 	_modelCacheTemp.clear();
 	_userModelCache.clear();
 }
 
-void StrategyModelCache::Load(const std::string& userId)
+void ModelParamsCache::Load(const std::string& userId)
 {
 	if (!_userModelCache.contains(userId))
 	{

@@ -21,7 +21,7 @@ dataobj_ptr OTCQueryTradingDesks::HandleRequest(const uint32_t serialId, const d
 {
 	CheckLogin(session);
 
-	auto userDOVec = UserInfoDAO::FindAllUserByRole(ROLE_TRADINGDESK);
+	auto userDOVec = UserInfoDAO::FindTradingDesksByAdminId(session->getUserInfo().getUserId());
 
 	ThrowNotFoundExceptionIfEmpty(userDOVec);
 

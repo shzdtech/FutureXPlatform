@@ -173,6 +173,7 @@
     <ClInclude Include="PBIntTableSerializer.h" />
     <ClInclude Include="pbmacros.h" />
     <ClInclude Include="PBMessageSerializerFactory.h" />
+    <ClInclude Include="PBModelParamDefSerializer.h" />
     <ClInclude Include="PBModelParamsSerializer.h" />
     <ClInclude Include="PBResultSerializer.h" />
     <ClInclude Include="pbserializers.h" />
@@ -196,6 +197,7 @@
     <ClCompile Include="PBEchoMessageSerializer.cpp" />
     <ClCompile Include="PBIntTableSerializer.cpp" />
     <ClCompile Include="PBMessageSerializerFactory.cpp" />
+    <ClCompile Include="PBModelParamDefSerializer.cpp" />
     <ClCompile Include="PBModelParamsSerializer.cpp" />
     <ClCompile Include="PBResultSerializer.cpp" />
     <ClCompile Include="pbserializer_exp.cpp" />

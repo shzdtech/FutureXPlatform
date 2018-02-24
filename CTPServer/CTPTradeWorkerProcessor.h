@@ -35,7 +35,7 @@ public:
 
 	virtual void OnNewManualTrade(const TradeRecordDO& tradeDO);
 	virtual void OnUpdateManualPosition(const UserPositionExDO& positionDO);
-
+	virtual void OnUpdateMarketData(const MarketDataDO& mdDO);
 
 	virtual void Initialize(IServerContext* pServerCtx);
 	virtual int RequestData(void);
@@ -72,6 +72,8 @@ public:
 
 	UserPositionExDO_Ptr FindSysYdPostion(const std::string& userid, const std::string& contract, PositionDirectionType direction);
 
+	MarketDataDOMap* GetMarketDataDOMap();
+
 	void PushToLogQueue(const TradeRecordDO_Ptr& tradeDO_Ptr);
 
 	void LogTrade();
@@ -92,6 +94,8 @@ protected:
 	IUserPositionContext_Ptr _userPositionCtx_Ptr;
 	UserTradeContext _userTradeCtx;
 	UserOrderContext _userOrderCtx;
+	MarketDataDOMap* _pMktDataMap;
+
 	//UserOrderContext _userErrOrderCtx;
 	std::set<ProductType> _productTypes;
 

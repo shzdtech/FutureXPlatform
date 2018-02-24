@@ -4,7 +4,7 @@
 #include "../common/typedefs.h"
 #include "bizutility_exp.h"
 
-class BIZUTILITY_CLASS_EXPORT StrategyModelCache
+class BIZUTILITY_CLASS_EXPORT ModelParamsCache
 {
 public:
 	static ModelParamsDO_Ptr FindModel(const ModelKey& key);

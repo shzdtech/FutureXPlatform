@@ -8,10 +8,12 @@
 #include "../litelogger/LiteLogger.h"
 #include "CTPMarketDataSAProcessor.h"
 #include "CTPUtility.h"
+#include "../databaseop/ContractDAO.h"
 #include "../message/DefMessageID.h"
 #include "../message/message_macro.h"
 #include "../bizutility/ExchangeRouterTable.h"
 #include "../common/Attribute_Key.h"
+#include "../bizutility/ManualOpHub.h"
 
 #include "CTPConstant.h"
 
@@ -28,9 +30,8 @@ namespace fs = std::experimental::filesystem;
 // Return:     
 ////////////////////////////////////////////////////////////////////////
 
-CTPMarketDataSAProcessor::CTPMarketDataSAProcessor(IServerContext* pServerCtx)
-	: _marketDataMap(16),
-	MarketDataNotifers(SessionContainer<std::string>::NewInstancePtr())
+CTPMarketDataSAProcessor::CTPMarketDataSAProcessor(IServerContext* pServerCtx, MarketDataDOMap* pMktDataDOMap)
+	: _pMarketDataMap(pMktDataDOMap), MarketDataNotifers(SessionContainer<std::string>::NewInstancePtr())
 {
 	_isLogged = false;
 	_isConnected = false;
@@ -69,6 +70,23 @@ CTPMarketDataSAProcessor::~CTPMarketDataSAProcessor() {
 
 void CTPMarketDataSAProcessor::Initialize(IServerContext* pServerCtx)
 {
+	std::string productTypes;
+	if (getServerContext()->getConfigVal("product_type", productTypes))
+	{
+		std::vector<std::string> productVec;
+		stringutility::split(productTypes, productVec);
+
+		for (auto& strProductType : productVec)
+		{
+			if (auto contracts = ContractDAO::FindContractByProductType(std::stoi(strProductType)))
+			{
+				for(auto contract : *contracts)
+					_pMarketDataMap->insert(contract.InstrumentID(), MarketDataDO(contract.ExchangeID(), contract.InstrumentID()));
+			}
+		}
+	}
+
+
 	_initializer = std::async(std::launch::async,
 		[this]() {
 		auto millsec = std::chrono::milliseconds(500);
@@ -155,7 +173,7 @@ void CTPMarketDataSAProcessor::DispatchUserMessage(int msgId, int serialId, cons
 
 MarketDataDOMap & CTPMarketDataSAProcessor::GetMarketDataMap()
 {
-	return _marketDataMap;
+	return *_pMarketDataMap;
 }
 
 
@@ -163,14 +181,14 @@ int CTPMarketDataSAProcessor::ResubMarketData()
 {
 	if (_isLogged)
 	{
-		for (auto pair : _marketDataMap.lock_table())
+		for (auto pair : _pMarketDataMap->lock_table())
 		{
 			char* contract[] = { const_cast<char*>(pair.first.data()) };
 			_rawAPI->MdAPIProxy()->get()->SubscribeMarketData(contract, 1);
 		}
 	}
 
-	return _marketDataMap.size();
+	return _pMarketDataMap->size();
 }
 
 void CTPMarketDataSAProcessor::OnRspError(CThostFtdcRspInfoField *pRspInfo,
@@ -224,9 +242,9 @@ void CTPMarketDataSAProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspU
 			userInfo.setTradingDay(_systemUser.getTradingDay());
 		}
 
-		ResubMarketData();
-
 		_isLogged = true;
+
+		ResubMarketData();
 
 		LOG_INFO << getServerContext()->getServerUri() << ": System user " << _systemUser.getUserId() << " has logged on market data server.";
 		LOG_FLUSH;
@@ -242,7 +260,7 @@ void CTPMarketDataSAProcessor::OnRspUnSubMarketData(CThostFtdcSpecificInstrument
 { }
 
 void CTPMarketDataSAProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData) {
-	_marketDataMap.update_fn(pDepthMarketData->InstrumentID, [this, pDepthMarketData](MarketDataDO& mdo)
+	_pMarketDataMap->update_fn(pDepthMarketData->InstrumentID, [this, pDepthMarketData](MarketDataDO& mdo)
 	{
 		mdo.PreClosePrice = pDepthMarketData->PreClosePrice;
 		mdo.UpperLimitPrice = pDepthMarketData->UpperLimitPrice;
@@ -280,6 +298,8 @@ void CTPMarketDataSAProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketDataFie
 			std::sscanf(pDepthMarketData->UpdateTime, "%d:%d:%d", &hour, &min, &sec);
 			mdo.UpdateTime = hour * 3600 + min * 60 + sec;
 		}
+
+		ManualOpHub::Instance()->NotifyUpdateMarketData(mdo);
 
 		MarketDataNotifers->foreach(mdo.InstrumentID(), [this, &mdo](const IMessageSession_Ptr& session_ptr)
 		{ SendDataObject(session_ptr, MSG_ID_RET_MARKETDATA, 0, std::make_shared<MarketDataDO>(mdo)); });

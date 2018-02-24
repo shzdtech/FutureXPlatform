@@ -36,3 +36,14 @@ void ManualOpHub::NotifyUpdateManualPosition(const UserPositionExDO & positionDO
 		}
 	}
 }
+
+void ManualOpHub::NotifyUpdateMarketData(const MarketDataDO & mdDO)
+{
+	for (auto mop : _manualOpHub.rawset())
+	{
+		if (auto mop_ptr = mop.lock())
+		{
+			mop_ptr->OnUpdateMarketData(mdDO);
+		}
+	}
+}

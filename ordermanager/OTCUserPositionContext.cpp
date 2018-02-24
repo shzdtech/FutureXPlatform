@@ -36,14 +36,14 @@ UserPositionExDO_Ptr OTCUserPositionContext::UpsertPosition(const std::string & 
 		[&newPosition_Ptr](UserPositionExDO_Ptr& position_ptr)
 	{
 		position_ptr->YdCost = newPosition_Ptr->YdCost;
-		position_ptr->YdProfit = newPosition_Ptr->YdProfit;
+	 	//position_ptr->YdProfit = newPosition_Ptr->YdProfit;
 		position_ptr->PreSettlementPrice = newPosition_Ptr->PreSettlementPrice;
 		position_ptr->SettlementPrice = newPosition_Ptr->SettlementPrice;
 		position_ptr->CloseProfit = newPosition_Ptr->CloseProfit;
 		position_ptr->CashIn = newPosition_Ptr->CashIn;
 		position_ptr->UseMargin = newPosition_Ptr->UseMargin;
 		position_ptr->TdCost = newPosition_Ptr->TdCost;
-		position_ptr->TdProfit = newPosition_Ptr->TdProfit;
+		// position_ptr->TdProfit = newPosition_Ptr->TdProfit;
 
 		if (position_ptr->TradingDay == newPosition_Ptr->TradingDay &&
 			position_ptr->YdInitPosition != newPosition_Ptr->YdInitPosition &&

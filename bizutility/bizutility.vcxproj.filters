@@ -30,9 +30,6 @@
     <ClInclude Include="UnderlyingMap.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="StrategyModelCache.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="ExchangeRouterTable.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -40,6 +37,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="ManualOpHub.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelParamDefCache.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelParamsCache.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -53,9 +56,6 @@
     <ClCompile Include="UnderlyingMap.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="StrategyModelCache.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="ExchangeRouterTable.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -63,6 +63,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ManualOpHub.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelParamDefCache.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelParamsCache.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

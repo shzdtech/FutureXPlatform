@@ -10,11 +10,11 @@
 #include "ctp_bizhandlers.h"
 
 #include "CTPTradeWorkerProcessor.h"
-
+#include "../systemsettings/AppContext.h"
 #include "../message/EchoMessageHandler.h"
 #include "../message/EchoMessageSerializer.h"
 #include "../message/DefMessageID.h"
-
+#include "../common/Attribute_Key.h"
 #include "../dataserializer/AbstractDataSerializerFactory.h"
 
 ////////////////////////////////////////////////////////////////////////
@@ -71,11 +71,22 @@ IMessageProcessor_Ptr CTPMDServiceSAFactory::CreateWorkerProcessor(IServerContex
 {
 	if (!serverCtx->getWorkerProcessor())
 	{
-		auto worker_ptr = std::make_shared<CTPMarketDataSAProcessor>(serverCtx);
+		auto mktDataMap = std::static_pointer_cast<MarketDataDOMap>(AppContext::GetData(STR_KEY_APP_MARKETDATA));
+		auto worker_ptr = std::make_shared<CTPMarketDataSAProcessor>(serverCtx, mktDataMap.get());
 		worker_ptr->Initialize(serverCtx);
 		serverCtx->setWorkerProcessor(worker_ptr);
 		serverCtx->setSubTypeWorkerPtr(static_cast<CTPMarketDataSAProcessor*>(worker_ptr.get()));
 	}
 
 	return serverCtx->getWorkerProcessor();
+}
+
+void CTPMDServiceSAFactory::SetServerContext(IServerContext * serverCtx)
+{
+	auto mktDataMap = AppContext::GetData(STR_KEY_APP_MARKETDATA);
+	if (!mktDataMap)
+	{
+		mktDataMap = std::make_shared<MarketDataDOMap>();
+		AppContext::SetData(STR_KEY_APP_MARKETDATA, mktDataMap);
+	}
 }

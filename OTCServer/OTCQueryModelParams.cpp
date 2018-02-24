@@ -15,7 +15,7 @@
 #include "../dataobject/ResultDO.h"
 
 #include "../databaseop/ModelParamsDAO.h"
-#include "../bizutility/StrategyModelCache.h"
+#include "../bizutility/ModelParamsCache.h"
 
 
 
@@ -30,7 +30,7 @@ dataobj_ptr OTCQueryModelParams::HandleRequest(const uint32_t serialId, const da
 	auto pModelParam = (ModelParamsDO*)reqDO.get();
 	if (pModelParam->InstanceName.empty())
 	{
-		auto models = StrategyModelCache::FindModelsByUser(userId);
+		auto models = ModelParamsCache::FindModelsByUser(userId);
 
 		ThrowNotFoundExceptionIfEmpty(models);
 
@@ -42,7 +42,7 @@ dataobj_ptr OTCQueryModelParams::HandleRequest(const uint32_t serialId, const da
 	else
 	{
 		pModelParam->SetUserID(userId);
-		ret = StrategyModelCache::FindOrRetrieveModel(*pModelParam);
+		ret = ModelParamsCache::FindOrRetrieveModel(*pModelParam);
 		if (!ret)
 		{
 			throw NotFoundException(pModelParam->InstanceName);

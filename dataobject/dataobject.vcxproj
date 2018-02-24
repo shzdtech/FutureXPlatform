@@ -162,6 +162,7 @@
     <ClInclude Include="ComplexTableDO.h" />
     <ClInclude Include="ContractParamDO.h" />
     <ClInclude Include="ContractKey.h" />
+    <ClInclude Include="ModelParamDefDO.h" />
     <ClInclude Include="ParamsBase.h" />
     <ClInclude Include="PositionTradeDO.h" />
     <ClInclude Include="Pricing.h" />

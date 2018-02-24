@@ -219,6 +219,9 @@
     <ClInclude Include="CTPSyncTrade.h">
       <Filter>头文件\CTPHandler\Trader</Filter>
     </ClInclude>
+    <ClInclude Include="CTPQueryPositionPnL.h">
+      <Filter>头文件\CTPHandler\Trader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ctpexport.cpp">
@@ -363,6 +366,9 @@
       <Filter>源文件\CTPHandler\Trader</Filter>
     </ClCompile>
     <ClCompile Include="CTPSyncTrade.cpp">
+      <Filter>源文件\CTPHandler\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPQueryPositionPnL.cpp">
       <Filter>源文件\CTPHandler\Trader</Filter>
     </ClCompile>
   </ItemGroup>

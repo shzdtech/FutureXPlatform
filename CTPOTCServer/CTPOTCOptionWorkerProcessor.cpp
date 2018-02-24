@@ -85,7 +85,7 @@ void CTPOTCOptionWorkerProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketData
 					askPrice = pDepthMarketData->PreSettlementPrice;
 			}
 
-			mDO.SettlementPrice = pDepthMarketData->SettlementPrice < 1e32 ? pDepthMarketData->SettlementPrice : 0;
+			mDO.SettlementPrice = pDepthMarketData->SettlementPrice < 1e32 ? pDepthMarketData->SettlementPrice : NAN;
 			mDO.Bid().Volume = pDepthMarketData->BidVolume1;
 			mDO.Ask().Volume = pDepthMarketData->AskVolume1;
 

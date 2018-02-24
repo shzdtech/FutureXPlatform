@@ -61,6 +61,7 @@ void CTPOTCTradeProcessor::OnTraded(const TradeRecordDO_Ptr& tradeDO)
 	}
 }
 
+
 OrderDO_Ptr CTPOTCTradeProcessor::CreateOrder(const OrderRequestDO& orderReq)
 {
 	OrderDO_Ptr ret;
@@ -191,10 +192,10 @@ void CTPOTCTradeProcessor::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrd
 				pWorkerProc->PricingDataContext()->GetStrategyMap()->find(*orderptr, strategy_ptr);
 				if (strategy_ptr && orderptr->TIF != OrderTIFType::IOC)
 				{
+					CancelAutoOrder(*orderptr);
 					strategy_ptr->AutoOrderSettings.LimitOrderCounter--;
 					strategy_ptr->BidEnabled = false;
 					strategy_ptr->AskEnabled = false;
-					strategy_ptr->Hedging = false;
 					if (auto mdWorker = pWorkerProc->GetMDWorkerProcessor())
 						mdWorker->DispatchUserMessage(MSG_ID_MODIFY_STRATEGY, 0, strategy_ptr->UserID(), strategy_ptr);
 				}
@@ -237,10 +238,10 @@ void CTPOTCTradeProcessor::OnErrRtnOrderInsert(CThostFtdcInputOrderField *pInput
 				pWorkerProc->PricingDataContext()->GetStrategyMap()->find(*orderptr, strategy_ptr);
 				if (strategy_ptr && orderptr->TIF != OrderTIFType::IOC)
 				{
+					CancelAutoOrder(*orderptr);
 					strategy_ptr->AutoOrderSettings.LimitOrderCounter--;
 					strategy_ptr->BidEnabled = false;
 					strategy_ptr->AskEnabled = false;
-					strategy_ptr->Hedging = false;
 					if(auto mdWorker = pWorkerProc->GetMDWorkerProcessor())
 						mdWorker->DispatchUserMessage(MSG_ID_MODIFY_STRATEGY, 0, strategy_ptr->UserID(), strategy_ptr);
 				}
@@ -384,6 +385,11 @@ void CTPOTCTradeProcessor::OnRtnTrade(CThostFtdcTradeField * pTrade)
 				{
 					pWorkerProc->PushToLogQueue(trdDO_Ptr);
 					pWorkerProc->UpdatePosition(trdDO_Ptr);
+					StrategyContractDO_Ptr strategy_ptr;
+					if (pWorkerProc->PricingDataContext()->GetStrategyMap()->find(*trdDO_Ptr, strategy_ptr))
+					{
+						pWorkerProc->TriggerAutoOrderUpdating(*strategy_ptr, Shared_This());
+					}
 				}
 			}
 		}

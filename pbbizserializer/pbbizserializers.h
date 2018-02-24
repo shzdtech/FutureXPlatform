@@ -40,4 +40,5 @@
 #include "PBPositionDifferSerializer.h"
 #include "PBValuationRiskSerializer.h"
 
+#include "PBPositionPnLSerializer.h"
 #endif

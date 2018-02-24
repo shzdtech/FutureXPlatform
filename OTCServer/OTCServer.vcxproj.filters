@@ -63,9 +63,6 @@
     <ClCompile Include="OTCQueryStrategy.cpp">
       <Filter>源文件\TradingDesk</Filter>
     </ClCompile>
-    <ClCompile Include="OTCQueryTradingDesks.cpp">
-      <Filter>源文件\MarketDataHandler</Filter>
-    </ClCompile>
     <ClCompile Include="OTCReturnPricingData.cpp">
       <Filter>源文件\MarketDataHandler</Filter>
     </ClCompile>
@@ -135,6 +132,12 @@
     <ClCompile Include="OTCQueryInstrument.cpp">
       <Filter>源文件\MarketDataHandler</Filter>
     </ClCompile>
+    <ClCompile Include="OTCQueryModelParamDef.cpp">
+      <Filter>源文件\TradingDesk</Filter>
+    </ClCompile>
+    <ClCompile Include="OTCQueryTradingDesks.cpp">
+      <Filter>源文件\TradingDesk</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="otcserver_export.h">
@@ -184,9 +187,6 @@
     </ClInclude>
     <ClInclude Include="OTCQueryContractParam.h">
       <Filter>头文件\TradingDesk</Filter>
-    </ClInclude>
-    <ClInclude Include="OTCQueryTradingDesks.h">
-      <Filter>头文件\MarketDataHandler</Filter>
     </ClInclude>
     <ClInclude Include="OTCQueryTrade.h">
       <Filter>头文件\TradeHandler</Filter>
@@ -244,6 +244,12 @@
     </ClInclude>
     <ClInclude Include="OTCQueryInstrument.h">
       <Filter>头文件\MarketDataHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="OTCQueryModelParamDef.h">
+      <Filter>头文件\TradingDesk</Filter>
+    </ClInclude>
+    <ClInclude Include="OTCQueryTradingDesks.h">
+      <Filter>头文件\TradingDesk</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

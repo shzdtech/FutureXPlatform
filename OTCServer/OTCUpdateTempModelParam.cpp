@@ -15,7 +15,7 @@
 #include "../dataobject/ResultDO.h"
 
 #include "../databaseop/ModelParamsDAO.h"
-#include "../bizutility/StrategyModelCache.h"
+#include "../bizutility/ModelParamsCache.h"
 
 
 dataobj_ptr OTCUpdateTempModelParam::HandleRequest(const uint32_t serialId, const dataobj_ptr & reqDO, IRawAPI * rawAPI, const IMessageProcessor_Ptr & msgProcessor, const IMessageSession_Ptr & session)
@@ -28,14 +28,14 @@ dataobj_ptr OTCUpdateTempModelParam::HandleRequest(const uint32_t serialId, cons
 
 	if (modelParam_ptr->Params.empty())
 	{
-		StrategyModelCache::RemoveTempModel(*modelParam_ptr);
+		ModelParamsCache::RemoveTempModel(*modelParam_ptr);
 	}
 	else
 	{
-		ModelParamsDO_Ptr modelptr = StrategyModelCache::FindTempModel(*modelParam_ptr);
+		ModelParamsDO_Ptr modelptr = ModelParamsCache::FindTempModel(*modelParam_ptr);
 		if (!modelptr)
 		{
-			if (modelptr = StrategyModelCache::FindOrRetrieveModel(*modelParam_ptr))
+			if (modelptr = ModelParamsCache::FindOrRetrieveModel(*modelParam_ptr))
 				modelptr = std::make_shared<ModelParamsDO>(*modelptr);
 			else
 				throw NotFoundException(modelParam_ptr->InstanceName);
@@ -52,7 +52,7 @@ dataobj_ptr OTCUpdateTempModelParam::HandleRequest(const uint32_t serialId, cons
 			}
 			modelAlg->ParseParams(modelptr->Params, modelptr->ParsedParams);
 
-			StrategyModelCache::InsertTempModel(modelptr);
+			ModelParamsCache::InsertTempModel(modelptr);
 		}
 	}
 

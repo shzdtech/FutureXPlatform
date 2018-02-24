@@ -175,3 +175,51 @@ int UserInfoDAO::ResetPassword(const std::string& userId, const std::string& pas
 
 	return ret;
 }
+
+
+VectorDO_Ptr<UserInfoDO> UserInfoDAO::FindTradingDesksByAdminId(const std::string adminID)
+{
+	static const std::string sql_findalluser(
+		"SELECT accountid,username,firstname,lastname,is_trading_allowed,"
+		"email,gender,contactnum,address,zipcode "
+		"roletype "
+		"FROM vw_tradingdesk_detail WHERE adminid = ?");
+
+	auto ret = std::make_shared<VectorDO<UserInfoDO>>();
+	auto session = MySqlConnectionManager::Instance()->LeaseOrCreate();
+	try
+	{
+		AutoClosePreparedStmt_Ptr prestmt(
+			session->getConnection()->prepareStatement(sql_findalluser));
+		prestmt->setString(1, adminID);
+
+		AutoCloseResultSet_Ptr rs(prestmt->executeQuery());
+
+		while (rs->next())
+		{
+			UserInfoDO userDO;
+			userDO.UserId = rs->getString(1);
+			userDO.UserName = rs->getString(2);
+			userDO.FirstName = rs->getString(3);
+			userDO.LastName = rs->getString(4);
+			//userDO.Company = rs->getString(5);
+			bool allowTrading = rs->getBoolean(5);
+			userDO.Permission = allowTrading ? ALLOW_TRADING : 0;
+			userDO.Email = rs->getString(6);
+			userDO.Gender = (GenderType)rs->getInt(7);
+			userDO.ContactNum = rs->getString(8);
+			userDO.Address = rs->getString(9);
+			userDO.ZipCode = rs->getString(10);
+			userDO.Role = rs->getInt(11);
+
+			ret->push_back(std::move(userDO));
+		}
+	}
+	catch (sql::SQLException& sqlEx)
+	{
+		LOG_ERROR << __FUNCTION__ << ": " << sqlEx.what();
+		throw DatabaseException(sqlEx.getErrorCode(), sqlEx.getSQLStateCStr());
+	}
+
+	return ret;
+}

@@ -19,7 +19,7 @@
 #include "../dataobject/UserContractParamDO.h"
 #include "../databaseop/StrategyContractDAO.h"
 
-#include "../bizutility/StrategyModelCache.h"
+#include "../bizutility/ModelParamsCache.h"
 
  ////////////////////////////////////////////////////////////////////////
  // Name:       OTCUpdateStrategy::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, IMessageProcessor* msgProcessor
@@ -52,7 +52,7 @@ dataobj_ptr OTCUpdateStrategy::HandleRequest(const uint32_t serialId, const data
 
 			strategy_ptr->Depth = pStrategyDO->Depth;
 			strategy_ptr->Multiplier = pStrategyDO->Multiplier;
-			strategy_ptr->Hedging = pStrategyDO->Hedging;
+			strategy_ptr->AutoOrderEnabled = pStrategyDO->AutoOrderEnabled;
 
 			strategy_ptr->AutoOrderSettings.BidQV = pStrategyDO->AutoOrderSettings.BidQV;
 			strategy_ptr->AutoOrderSettings.AskQV = pStrategyDO->AutoOrderSettings.AskQV;
@@ -96,7 +96,7 @@ dataobj_ptr OTCUpdateStrategy::HandleRequest(const uint32_t serialId, const data
 			}
 			
 
-			if (strategy_ptr->Hedging)
+			if (strategy_ptr->AutoOrderEnabled)
 			{
 				if (CheckAllowTrade(session, false))
 				{
@@ -104,7 +104,7 @@ dataobj_ptr OTCUpdateStrategy::HandleRequest(const uint32_t serialId, const data
 				}
 				else
 				{
-					strategy_ptr->Hedging = false;
+					strategy_ptr->AutoOrderEnabled = false;
 				}
 			}
 			else

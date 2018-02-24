@@ -1,5 +1,5 @@
 #include "OTCOptionPricingParams.h"
-#include "../bizutility/StrategyModelCache.h"
+#include "../bizutility/ModelParamsCache.h"
 #include "../dataobject/StrategyContractDO.h"
 #include "../dataobject/TradingDeskOptionParams.h"
 #include "../pricingengine/ComplexAlgoirthmManager.h"
@@ -60,7 +60,7 @@ dataobj_ptr OTCOptionPricingParams::GenerateTradingDeskData(const StrategyContra
 						}
 
 						// Temp Volatility Model
-						if (auto tempModel_Ptr = StrategyModelCache::FindTempModel(*sto.VolModel))
+						if (auto tempModel_Ptr = ModelParamsCache::FindTempModel(*sto.VolModel))
 						{
 							StrategyContractDO tempSto(sto);
 							tempSto.VolModel = tempModel_Ptr;

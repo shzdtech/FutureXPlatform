@@ -438,9 +438,14 @@ message PBPosition {
 	double longFrozenAmount = 23;
 
 	double shortFrozenAmount = 24;
+
+	double lastPrice = 25;
+
+	double avgPrice = 26;
 }
 
 message PBAccountInfo {
+	DataHeader header = 1;
 	///经纪公司代码
 	string	brokerID = 2;
 	///投资者帐号
@@ -503,8 +508,8 @@ message PBAccountInfo {
 	double	exchangeDeliveryMargin = 31;
 	///保底期货结算准备金
 	double	reserveBalance = 32;
-
-	DataHeader header = 33;
+	///客户权益
+	double userBalance = 33;
 }
 
 message PBMarketInfo {
@@ -728,4 +733,36 @@ message PBValuationRisk
 	int32 daysRemain = 3;
 	double interest = 4;
 	string portfolio = 5;
+}
+
+message PBPositionPnL {
+	DataHeader header = 1;
+	///交易所代码
+	string	exchange = 2;
+	///合约代码
+	string	contract = 3;
+	///Portfolio
+	string portfolio = 4;
+	///今日持仓
+	int32 tdBuyPosition = 5;
+	///上日持仓
+	int32 ydBuyPosition = 6;
+	///今日持仓
+	int32 tdSellPosition = 7;
+	///上日持仓
+	int32 ydSellPosition = 8;
+	///今日买入金额
+	double tdBuyAmount = 9;
+	///今日卖出金额
+	double tdSellAmount = 10;
+	///买入盈亏
+	double buyProfit = 11;
+	///卖出盈亏
+	double sellProfit = 12;
+	///最新价
+	double lastPrice = 13;
+	///买入均价
+	double avgBuyPrice = 14;
+	///卖出均价
+	double avgSellPrice = 15;
 }
