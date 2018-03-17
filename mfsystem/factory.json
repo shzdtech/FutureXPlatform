@@ -17,8 +17,8 @@
         "params": {
           "product_type": "0;1;2",
 
-          "TARGET.MD.CFG": "f:6090:sim:pri:md",
-          "TARGET.MDAM.CFG": "f:6090:sim:am:md"
+          "TARGET.MD.CFG": "f:9999:sim:pri:md",
+          "TARGET.MDAM.CFG": "f:9999:sim:am:md"
         }
       },
       "trade": {
@@ -30,8 +30,8 @@
           "save_contract": "true",
           "SAVE.TRADE": "true",
 
-          "TARGET.TD.CFG": "f:6090:sim:pri:td",
-          "TARGET.TDAM.CFG": "f:6090:sim:pri:td"
+          "TARGET.TD.CFG": "f:9999:sim:pri:td",
+          "TARGET.TDAM.CFG": "f:9999:sim:pri:td"
         }
       }
     },
@@ -44,10 +44,10 @@
           "tradeworker": "ctp.otc.option.tradeworker",
           "strategy_producttype": "0;1;9",
 
-          "TARGET.MD.CFG": "f:6090:sim:pri:md",
-          "TARGET.MDAM.CFG": "f:6090:sim:am:md",
-          "TARGET.TD.CFG": "f:6090:sim:pri:td",
-          "TARGET.TDAM.CFG": "f:6090:sim:pri:td"
+          "TARGET.MD.CFG": "f:9999:sim:pri:md",
+          "TARGET.MDAM.CFG": "f:9999:sim:am:md",
+          "TARGET.TD.CFG": "f:9999:sim:pri:td",
+          "TARGET.TDAM.CFG": "f:9999:sim:pri:td"
         }
       },
       "option_trade": {
@@ -58,8 +58,8 @@
           "product_type": "0;1;2",
           "tradeworker": "ctp.otc.option.tradeworker",
 
-          "TARGET.TD.CFG": "f:6090:sim:pri:td",
-          "TARGET.TDAM.CFG": "f:6090:sim:pri:td"
+          "TARGET.TD.CFG": "f:9999:sim:pri:td",
+          "TARGET.TDAM.CFG": "f:9999:sim:pri:td"
         }
       }
     },

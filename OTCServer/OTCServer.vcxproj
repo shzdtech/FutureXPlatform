@@ -258,6 +258,9 @@
     <ProjectReference Include="..\pricingengine\pricingengine.vcxproj">
       <Project>{001a89a1-70d7-4a9b-a7b2-82d0be1ba07c}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\riskmanager\riskmanager.vcxproj">
+      <Project>{4117bc7e-4bfb-47a1-af10-99edf804fe09}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OTCServer.rc" />

@@ -13,5 +13,6 @@
 #include "PBModelParamsSerializer.h"
 #include "PBUserInfoSerializer.h"
 #include "PBUserInfoListSerializer.h"
+#include "PBModelParamDefSerializer.h"
 
 #endif

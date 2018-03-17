@@ -34,9 +34,12 @@ dataobj_ptr OTCQueryModelParams::HandleRequest(const uint32_t serialId, const da
 
 		ThrowNotFoundExceptionIfEmpty(models);
 
-		for (auto& model : *models)
+		auto endit = models->end();
+		for (auto it = models->begin(); it != endit;)
 		{
-			OnResponseProcMacro(msgProcessor, MSG_ID_QUERY_MODELPARAMS, serialId, &model);
+			auto resp = std::make_shared<ModelParamsDO>(**it);
+			resp->HasMore = ++it != endit;
+			OnResponseProcMacro(msgProcessor, MSG_ID_QUERY_MODELPARAMS, serialId, &resp);
 		}
 	}
 	else

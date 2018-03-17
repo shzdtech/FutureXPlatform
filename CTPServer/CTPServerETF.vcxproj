@@ -299,6 +299,9 @@
     <ProjectReference Include="..\pricingengine\pricingengine.vcxproj">
       <Project>{001a89a1-70d7-4a9b-a7b2-82d0be1ba07c}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\riskmanager\riskmanager.vcxproj">
+      <Project>{4117bc7e-4bfb-47a1-af10-99edf804fe09}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\systemsettings\systemsettings.vcxproj">
       <Project>{b2408e62-da0a-4f39-8257-b9c33d09bd03}</Project>
     </ProjectReference>

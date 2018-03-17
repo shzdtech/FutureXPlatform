@@ -10,7 +10,7 @@
 #include <map>
 #include <memory>
 #include <functional>
-#include "libcuckoo/cuckoohash_map.hh"
+#include "../include/libcuckoo/cuckoohash_map.hh"
 #include "../utility/cuckoohashmap_wrapper.h"
 
 template <class K, class V, class Hash = std::hash<K>, class Pred = std::equal_to<K>>

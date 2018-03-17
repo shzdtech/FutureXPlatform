@@ -177,12 +177,11 @@ int UserInfoDAO::ResetPassword(const std::string& userId, const std::string& pas
 }
 
 
-VectorDO_Ptr<UserInfoDO> UserInfoDAO::FindTradingDesksByAdminId(const std::string adminID)
+VectorDO_Ptr<UserInfoDO> UserInfoDAO::FindTradingDesksByAdminId(const std::string& adminID)
 {
 	static const std::string sql_findalluser(
 		"SELECT accountid,username,firstname,lastname,is_trading_allowed,"
-		"email,gender,contactnum,address,zipcode "
-		"roletype "
+		"email,gender,contactnum,address,zipcode,roletype "
 		"FROM vw_tradingdesk_detail WHERE adminid = ?");
 
 	auto ret = std::make_shared<VectorDO<UserInfoDO>>();

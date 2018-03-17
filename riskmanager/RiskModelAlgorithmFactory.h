@@ -9,8 +9,9 @@
 #define __riskmanager_RiskModelAlgorithmFactory_h
 
 #include "IRiskModelAlgorithmFactory.h"
+#include "riskmanager_exp.h"
 
-class RiskModelAlgorithmFactory : public IRiskModelAlgorithmFactory
+class RISKMANAGER_CLASS_EXPORTS RiskModelAlgorithmFactory : public IRiskModelAlgorithmFactory
 {
 public:
    std::vector<IRiskModelAlgorithm_Ptr> CreateModelAlgorithms(void);

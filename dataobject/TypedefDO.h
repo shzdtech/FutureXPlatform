@@ -1,10 +1,11 @@
 #if !defined(__dataobject_TypedefDO_h)
 #define __dataobject_TypedefDO_h
 
-#include "../include/libcuckoo/cuckoohash_map.hh"
+#include "../utility/cuckoohashmap_wrapper.h"
 #include "../utility/autofillmap.h"
 #include "../utility/pairhash.h"
 #include "../utility/stringutility.h"
+#include "../utility/lockfree_set.h"
 #include "ContractKey.h"
 #include "ContractParamDO.h"
 #include "PortfolioDO.h"
@@ -15,6 +16,7 @@
 #include "UserPositionDO.h"
 #include "TemplateDO.h"
 #include "EnumTypes.h"
+#include "ModelParamsDO.h"
 
 template <typename V>
 using ContractMap = typename autofillmap<ContractKey, V>;
@@ -53,5 +55,8 @@ typedef autofillmap<std::string, autofillmap<std::pair<PositionDateFlagType, Pos
 typedef autofillmap<std::string, autofillmap<std::string, PortfolioDO>> PortfolioDOMap;
 
 typedef VectorDO<ContractKey> ContractList;
+
+typedef cuckoohashmap_wrapper<std::string, ModelKey> UserModelKeyMap;
+typedef cuckoohash_map<std::string, UserModelKeyMap> ModelKeyMap;
 
 #endif

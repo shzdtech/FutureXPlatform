@@ -19,6 +19,11 @@
 #include "../dataobject/TypedefDO.h"
 #include "../litelogger/LiteLogger.h"
 #include "../bizutility/PositionPortfolioMap.h"
+#include "../bizutility/ModelParamDefCache.h"
+#include "../bizutility/ModelParamsCache.h"
+#include "../riskmanager/RiskModelAlgorithmManager.h"
+#include "../riskmanager/RiskContext.h"
+#include "../riskmanager/RiskModelParams.h"
 
  ////////////////////////////////////////////////////////////////////////
  // Name:       CTPTradeLoginHandler::LoginFromServer()
@@ -26,7 +31,7 @@
  // Return:     int
  ////////////////////////////////////////////////////////////////////////
 
-std::shared_ptr<UserInfoDO> CTPTradeLoginHandler::LoginFromServer(const IMessageProcessor_Ptr& msgProcessor, 
+std::shared_ptr<UserInfoDO> CTPTradeLoginHandler::LoginFromServer(const IMessageProcessor_Ptr& msgProcessor,
 	const std::shared_ptr<UserInfoDO> & userInfoDO_Ptr, uint requestId, const std::string& serverName)
 {
 	auto& session = msgProcessor->getMessageSession();
@@ -42,7 +47,7 @@ std::shared_ptr<UserInfoDO> CTPTradeLoginHandler::LoginFromServer(const IMessage
 	}
 
 	LoginFromDB(msgProcessor);
-		
+
 	if (userInfoDO_Ptr->ExchangeUser.empty())
 	{
 		pProcessor->getMessageSession()->setLoginTimeStamp();
@@ -60,7 +65,7 @@ std::shared_ptr<UserInfoDO> CTPTradeLoginHandler::LoginFromServer(const IMessage
 	CThostFtdcReqUserLoginField req{};
 	std::strncpy(req.BrokerID, userInfo.getBrokerId().data(), sizeof(req.BrokerID));
 	std::strncpy(req.UserID, userInfo.getInvestorId().data(), sizeof(req.UserID));
-	std::strncpy(req.Password, userInfo.getPassword().data(), sizeof(req.Password));
+	std::strncpy(req.Password, userInfoDO_Ptr->ExchangePassword.data(), sizeof(req.Password));
 
 	pProcessor->CreateCTPAPI(userInfo.getInvestorId(), exDO.Address);
 
@@ -77,7 +82,7 @@ std::shared_ptr<UserInfoDO> CTPTradeLoginHandler::LoginFromServer(const IMessage
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
 
-	if(ret == 0)
+	if (ret == 0)
 		ret = pProcessor->RawAPI_Ptr()->TdAPIProxy()->get()->ReqUserLogin(&req, requestId);
 
 	// try after market server
@@ -97,6 +102,8 @@ std::shared_ptr<UserInfoDO> CTPTradeLoginHandler::LoginFromServer(const IMessage
 	}
 
 	CTPUtility::CheckReturnError(ret);
+
+	LoadUserRiskModel(msgProcessor);
 
 	return nullptr;
 }
@@ -125,6 +132,47 @@ bool CTPTradeLoginHandler::LoginFromDB(const IMessageProcessor_Ptr& msgProcessor
 	}
 
 	return true;
+}
+
+void CTPTradeLoginHandler::LoadUserRiskModel(const IMessageProcessor_Ptr & msgProcessor)
+{
+	if (auto pWorkerProc = GetWorkerProcessor(msgProcessor))
+	{
+		auto session = msgProcessor->getMessageSession();
+		auto& userId = session->getUserInfo().getUserId();
+
+		auto preTradeModel = RiskContext::Instance()->GetPreTradeUserModel(userId);
+		auto postTradeModel = RiskContext::Instance()->GetPostTradeUserModel(userId);
+		if (!preTradeModel)
+		{
+			ModelParamsCache::Load(userId);
+			if (auto userModels = ModelParamsCache::FindModelsByUser(userId))
+			{
+				for (auto model_ptr : *userModels)
+				{
+					if (auto alg_ptr = RiskModelAlgorithmManager::Instance()->FindModel(model_ptr->Model))
+					{
+						if (auto modeldef_ptr = ModelParamDefCache::FindOrRetrieveModelParamDef(model_ptr->Model))
+						{
+							for (auto pair : modeldef_ptr->ModelDefMap)
+							{
+								model_ptr->Params.emplace(pair.first, pair.second.DefaultVal);
+							}
+							alg_ptr->ParseParams(model_ptr->Params, model_ptr->ParsedParams);
+
+							if (auto pRiskModelParam = (RiskModelParams*)model_ptr->ParsedParams.get())
+							{
+								if(pRiskModelParam->PreTrade)
+									RiskContext::Instance()->InsertPreTradeUserModel(userId, model_ptr->InstanceName);
+								else
+									RiskContext::Instance()->InsertPostTradeUserModel(userId, model_ptr->InstanceName);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 dataobj_ptr CTPTradeLoginHandler::HandleResponse(const uint32_t serialId, const param_vector & rawRespParams, IRawAPI * rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)

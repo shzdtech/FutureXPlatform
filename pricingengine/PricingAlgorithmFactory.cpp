@@ -22,8 +22,6 @@ std::vector<IPricingAlgorithm_Ptr> PricingAlgorithmFactory::CreateAlgorithms(voi
 {
 	std::vector<IPricingAlgorithm_Ptr> ret;
 
-	IPricingAlgorithm_Ptr algptr;
-
 	ret.push_back(std::make_shared<BetaSumPricingAlgorithm>());
 	ret.push_back(std::make_shared<ETPPricingAlgorithm>());
 	ret.push_back(std::make_shared<BlackScholesPricingAlgorithm>());

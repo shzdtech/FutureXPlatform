@@ -155,18 +155,28 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="IRiskContext.h" />
-    <ClInclude Include="IRiskModelBase.h" />
     <ClInclude Include="IRiskModelAlgorithm.h" />
     <ClInclude Include="IRiskModelAlgorithmFactory.h" />
+    <ClInclude Include="RiskContext.h" />
     <ClInclude Include="RiskModelAlgorithmFactory.h" />
     <ClInclude Include="RiskModelAlgorithmManager.h" />
     <ClInclude Include="riskmanager_exp.h" />
+    <ClInclude Include="RiskModelBase.h" />
+    <ClInclude Include="RiskModelParams.h" />
+    <ClInclude Include="RMNPLModel.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="RiskContext.cpp" />
     <ClCompile Include="RiskModelAlgorithmFactory.cpp" />
     <ClCompile Include="RiskModelAlgorithmManager.cpp" />
+    <ClCompile Include="RiskModelBase.cpp" />
+    <ClCompile Include="RiskModelParams.cpp" />
+    <ClCompile Include="RMNPLModel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\bizutility\bizutility.vcxproj">
+      <Project>{e3f399cf-2d32-49a8-b536-ea7fad14483f}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\ordermanager\ordermanager.vcxproj">
       <Project>{be84a8c2-79ea-49a5-ab37-23250e0631b6}</Project>
     </ProjectReference>

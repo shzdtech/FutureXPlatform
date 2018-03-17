@@ -21,6 +21,10 @@
 
 #include "../dataobject/OrderDO.h"
 
+#include "../bizutility/ModelParamsCache.h"
+#include "../riskmanager/RiskModelAlgorithmManager.h"
+#include "../riskmanager/RiskContext.h"
+
 
 
  ////////////////////////////////////////////////////////////////////////
@@ -42,6 +46,28 @@ dataobj_ptr CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_pt
 	auto pDO = (OrderRequestDO*)reqDO.get();
 
 	auto& userInfo = session->getUserInfo();
+
+	// Pretrade risk check
+	if (pDO->OpenClose == OrderOpenCloseType::OPEN)
+	{
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+		{
+			if (auto modelKeyMap = RiskContext::Instance()->GetPreTradeUserModel(userInfo.getUserId()))
+			{
+				auto positionCtx = pWorkerProc->GetUserPositionContext();
+				for (auto pair : modelKeyMap.map()->lock_table())
+				{
+					if (auto modelparams_ptr = ModelParamsCache::FindModel(pair.second))
+					{
+						if (auto model_ptr = RiskModelAlgorithmManager::Instance()->FindModel(modelparams_ptr->Model))
+						{
+							model_ptr->CheckRisk(*modelparams_ptr, *positionCtx, userInfo.getUserId());
+						}
+					}
+				}
+			}
+		}
+	}
 
 	// 端登成功,发出报单录入请求
 	CThostFtdcInputOrderField req{};
@@ -136,7 +162,7 @@ dataobj_ptr CTPNewOrder::HandleResponse(const uint32_t serialId, const param_vec
 			{
 				ret->HasMore = false;
 			}
-		}	
+		}
 	}
 	else
 	{

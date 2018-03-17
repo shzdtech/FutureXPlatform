@@ -22,6 +22,7 @@ PBMessageSerializerFactory::PBMessageSerializerFactory()
 	_serializer_map[MSG_ID_QUERY_MODELPARAMS] = PBModelParamsSerializer::Instance();
 	_serializer_map[MSG_ID_UPDATE_MODELPARAMS] = std::make_shared<PBCombineSerializer>
 		(PBResultSerializer::Instance(), PBModelParamsSerializer::Instance());
+	_serializer_map[MSG_ID_QUERY_MODELPARAMDEF] = PBModelParamDefSerializer::Instance();
 	_serializer_map[MSG_ID_UPDATE_TEMPMODELPARAMS] = std::make_shared<PBCombineSerializer>
 		(PBResultSerializer::Instance(), PBModelParamsSerializer::Instance());
 	_serializer_map[MSG_ID_QUERY_SYSPARAMS] = PBStringMapSerializer::Instance();

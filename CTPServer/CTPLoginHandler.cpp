@@ -67,9 +67,8 @@ dataobj_ptr CTPLoginHandler::HandleRequest(const uint32_t serialId, const dataob
 		{
 			if (password != userInfo_Ptr->Password)
 			{
-				throw UserException("Wrong password!");
+				throw UserException(WRONG_PASSWORD, "Wrong password!");
 			}
-
 			userInfo.setRole(userInfo_Ptr->Role);
 		}
 		userInfo.setPermission(userInfo_Ptr->Permission);
@@ -80,12 +79,11 @@ dataobj_ptr CTPLoginHandler::HandleRequest(const uint32_t serialId, const dataob
 		session->getUserInfo().setExtInfo(userInfo_Ptr);
 	}
 	else
-		throw UserException("User: " + username + " cannot login.");
+		throw UserException(NOTFOUND_ERROR, "Cannot find user: '" + username + "'");
 
 	userInfo_Ptr->ExchangeUser = exchangeUser;
 	userInfo_Ptr->ExchangePassword = exchangePwd;
 	userInfo.setInvestorId(exchangeUser);
-
 	userInfo.setBrokerId(exDO.BrokeID);
 	userInfo.setPassword(password);
 	pProcessor->LoginSerialId = serialId;

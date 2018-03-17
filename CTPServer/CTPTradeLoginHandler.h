@@ -20,6 +20,8 @@ public:
 	virtual CTPTradeProcessor * GetTradeProcessor(const IMessageProcessor_Ptr & msgProcessor);
 	virtual CTPTradeWorkerProcessor * GetWorkerProcessor(const IMessageProcessor_Ptr & msgProcessor);
 	virtual bool LoginFromDB(const IMessageProcessor_Ptr& msgProcessor);
+	virtual void LoadUserRiskModel(const IMessageProcessor_Ptr& msgProcessor);
+
 	dataobj_ptr HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session);
 
 protected:

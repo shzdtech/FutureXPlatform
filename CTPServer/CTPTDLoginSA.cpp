@@ -93,49 +93,56 @@ dataobj_ptr CTPTDLoginSA::HandleResponse(const uint32_t serialId, const param_ve
 
 std::shared_ptr<UserInfoDO> CTPTDLoginSA::Login(const dataobj_ptr reqDO, IRawAPI * rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	if (session->getLoginTimeStamp() <= 0)
+	auto stdo = (StringMapDO<std::string>*)reqDO.get();
+	auto& userid = stdo->TryFind(STR_USER_NAME, EMPTY_STRING);
+	auto& password = stdo->TryFind(STR_PASSWORD, EMPTY_STRING);
+
+	bool userInCache = false;
+	std::shared_ptr<UserInfoDO> userInfo_Ptr;
+
+	auto& userInfo = session->getUserInfo();
+
+	if (auto userInfoCache = std::static_pointer_cast<IUserInfoPtrMap>(AppContext::GetData(STR_KEY_APP_USER_DETAIL)))
 	{
-		auto stdo = (StringMapDO<std::string>*)reqDO.get();
-		auto& userid = stdo->TryFind(STR_USER_NAME, EMPTY_STRING);
-		auto& password = stdo->TryFind(STR_PASSWORD, EMPTY_STRING);
-
-		bool userInCache = false;
-		std::shared_ptr<UserInfoDO> userInfo_Ptr;
-
-		if (auto userInfoCache = std::static_pointer_cast<IUserInfoPtrMap>(AppContext::GetData(STR_KEY_APP_USER_DETAIL)))
+		auto it = userInfoCache->find(userid);
+		if (it != userInfoCache->end())
 		{
-			auto it = userInfoCache->find(userid);
-			if (it != userInfoCache->end())
-			{
-				userInfo_Ptr = std::static_pointer_cast<UserInfoDO>(it->second->getExtInfo());
-				userInCache = true;
-			}
+			userInfo_Ptr = std::static_pointer_cast<UserInfoDO>(it->second->getExtInfo());
+			userInCache = true;
 		}
-
-		// Try to load from database
-		if (!userInCache)
-			userInfo_Ptr = UserInfoDAO::FindUser(userid);
-
-		if (!userInfo_Ptr)
-		{
-			throw UserException(USERID_NOT_EXITS, "UserId: " + userid + " not exists.");
-		}
-		else if (userInfo_Ptr->Password != password)
-		{
-			throw UserException(WRONG_PASSWORD, "Wrong password.");
-		}
-
-		auto& userInfo = session->getUserInfo();
-		userInfo.setName(userInfo_Ptr->UserName);
-		userInfo.setPassword(userInfo_Ptr->Password);
-		userInfo.setUserId(userInfo_Ptr->UserId);
-		userInfo.setRole(userInfo_Ptr->Role);
-		userInfo.setPermission(userInfo_Ptr->Permission);
-		userInfo.setExtInfo(userInfo_Ptr);
-		userInfo.setSharedAccount(true);
-
-		session->setLoginTimeStamp();
 	}
+
+	// Try to load from database
+	if (!userInCache)
+		userInfo_Ptr = UserInfoDAO::FindUser(userid);
+
+	if (!userInfo_Ptr)
+	{
+		throw UserException(USERID_NOT_EXITS, "UserId: " + userid + " not exists.");
+	}
+	
+	if (userInfo.getRole() < ROLE_ADMIN)
+	{
+		if (password != userInfo_Ptr->Password)
+		{
+			throw UserException(WRONG_PASSWORD, "Wrong password!");
+		}
+		userInfo.setRole(userInfo_Ptr->Role);
+	}
+	else
+	{
+		userInfo.setRole(userInfo_Ptr->Role);
+	}
+
+	
+	userInfo.setName(userInfo_Ptr->UserName);
+	userInfo.setPassword(userInfo_Ptr->Password);
+	userInfo.setUserId(userInfo_Ptr->UserId);
+	userInfo.setPermission(userInfo_Ptr->Permission);
+	userInfo.setExtInfo(userInfo_Ptr);
+	userInfo.setSharedAccount(true);
+
+	session->setLoginTimeStamp();
 
 	auto userInfoDO_Ptr = std::static_pointer_cast<UserInfoDO>(session->getUserInfo().getExtInfo());
 

@@ -13,12 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="头文件\Model">
+      <UniqueIdentifier>{f1637341-e049-4de6-bbb7-0bc0718fe66c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Model">
+      <UniqueIdentifier>{f24fbe51-5e27-4cfd-8672-903a9ebafc4d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="riskmanager_exp.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="IRiskModelBase.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="IRiskModelAlgorithm.h">
@@ -36,6 +39,18 @@
     <ClInclude Include="IRiskContext.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="RiskContext.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="RMNPLModel.h">
+      <Filter>头文件\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="RiskModelBase.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="RiskModelParams.h">
+      <Filter>头文件\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RiskModelAlgorithmFactory.cpp">
@@ -43,6 +58,18 @@
     </ClCompile>
     <ClCompile Include="RiskModelAlgorithmManager.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="RiskContext.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="RMNPLModel.cpp">
+      <Filter>源文件\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="RiskModelBase.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="RiskModelParams.cpp">
+      <Filter>源文件\Model</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
