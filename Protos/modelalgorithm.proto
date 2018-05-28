@@ -11,6 +11,7 @@ message ModelParams
 	string model = 3;
 	string modelAim = 4;
 	map<string, double> params = 5;
+	map<string, string> paramstring = 6;
 }
 
 message ModelDef

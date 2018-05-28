@@ -23,6 +23,10 @@
 #include "../databaseop/PositionDAO.h"
 #include "../ordermanager/OrderSeqGen.h"
 #include "../ordermanager/OrderPortfolioCache.h"
+#include "../bizutility/ModelParamsCache.h"
+#include "../riskmanager/RiskModelAlgorithmManager.h"
+#include "../riskmanager/RiskContext.h"
+#include "../riskmanager/RiskModelParams.h"
 
 #include "../bizutility/ContractCache.h"
 #include "../litelogger/LiteLogger.h"
@@ -143,6 +147,35 @@ bool CTPTradeWorkerProcessor::IsLoadPositionFromDB()
 bool CTPTradeWorkerProcessor::IsSaveTrade()
 {
 	return _logTrades;
+}
+
+int CTPTradeWorkerProcessor::CheckRisk(const OrderRequestDO & orderReq)
+{
+	int ret = 0;
+	if (orderReq.OpenClose == OrderOpenCloseType::OPEN && orderReq.TradingType != OrderTradingType::TRADINGTYPE_HEDGE)
+	{
+		if (auto modelKeyMap = RiskContext::Instance()->GetPreTradeUserModel(orderReq))
+		{
+			auto positionCtx = GetUserPositionContext();
+			for (auto pair : modelKeyMap.map()->lock_table())
+			{
+				if (auto modelparams_ptr = ModelParamsCache::FindModel(pair.first))
+				{
+					if (auto model_ptr = RiskModelAlgorithmManager::Instance()->FindModel(modelparams_ptr->Model))
+					{
+						int action = model_ptr->CheckRisk(orderReq, *modelparams_ptr, *positionCtx);
+						if (action != 0)
+							ret = action;
+					}
+				}
+			}
+		}
+		else
+		{
+			throw BizException(RiskModelParams::STOP_OPEN_ORDER, "User: " + orderReq.UserID() +" Portfolio: " + orderReq.PortfolioID() + " is not allowed for open order!");
+		}
+	}
+	return ret;
 }
 
 void CTPTradeWorkerProcessor::OnNewManualTrade(const TradeRecordDO & tradeDO)

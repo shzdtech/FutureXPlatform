@@ -31,6 +31,7 @@ data_buffer PBModelParamsSerializer::Serialize(const dataobj_ptr& abstractDO)
 	pb.set_modelaim(pDO->ModelAim);
 
 	pb.mutable_params()->insert(pDO->Params.begin(), pDO->Params.end());
+	pb.mutable_paramstring()->insert(pDO->ParamString.begin(), pDO->ParamString.end());
 
 	SerializeWithReturn(pb);
 }
@@ -57,6 +58,7 @@ dataobj_ptr PBModelParamsSerializer::Deserialize(const data_buffer& rawdata)
 	pDO->ModelAim = pb.modelaim();
 
 	pDO->Params.insert(pb.params().begin(), pb.params().end());
+	pDO->ParamString.insert(pb.paramstring().begin(), pb.paramstring().end());
 
 	return ret;
 }

@@ -215,6 +215,7 @@ void AutoOrderManager::TradeByStrategy(const StrategyContractDO& strategyDO, IOr
 			{
 				// Make new orders
 				OrderRequestDO newOrder(strategyDO, strategyDO.PortfolioID());
+				newOrder.TradingType = OrderTradingType::TRADINGTYPE_AUTO;
 
 				UserPositionExDO_Ptr longPos_Ptr, shortPos_Ptr;
 				bool isSHFE = newOrder.ExchangeID() == "SHFE";

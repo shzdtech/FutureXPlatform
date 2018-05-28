@@ -13,12 +13,12 @@ RMNPLModel::~RMNPLModel()
 }
 
 
-int RMNPLModel::CheckRisk(ModelParamsDO & modelParams, IUserPositionContext & positionCtx, const std::string & userID)
+int RMNPLModel::CheckRisk(const OrderRequestDO& orderReq, ModelParamsDO& modelParams, IUserPositionContext& positionCtx)
 {
+	auto& instrumentCache = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE);
 	autofillmap<std::string, int> positionMap;
-	if(auto portfolioPositionPNL = positionCtx.GetPortfolioPositionsPnLByUser(userID))
-	{
-		auto& instrumentCache = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE);
+	if (auto portfolioPositionPNL = positionCtx.GetPortfolioPositionsPnLByUser(orderReq.UserID()))
+	{	
 		for (auto pair : portfolioPositionPNL.map()->lock_table())
 		{
 			for (auto pPair : pair.second.map()->lock_table())
@@ -30,6 +30,11 @@ int RMNPLModel::CheckRisk(ModelParamsDO & modelParams, IUserPositionContext & po
 				}
 			}
 		}
+	}
+
+	if (auto pInstrument = instrumentCache.QueryInstrumentOrAddById(orderReq.InstrumentID()))
+	{
+		positionMap.getorfill(orderReq.ExchangeID() + '-' + pInstrument->ProductID) += orderReq.Volume;
 	}
 
 	if (!modelParams.ParsedParams)
@@ -50,7 +55,15 @@ int RMNPLModel::CheckRisk(ModelParamsDO & modelParams, IUserPositionContext & po
 					{
 						if (pRiskModelParam->MatchAny)
 						{
-							throw BizException(modelParams.InstanceName + ": " + pair.first + ": " + std::to_string(position) + ">" + std::to_string(limitPos));
+							switch (pRiskModelParam->Action)
+							{
+							case RiskModelParams::STOP_OPEN_ORDER:
+								throw BizException(RiskModelParams::STOP_OPEN_ORDER, modelParams.InstanceName + ": " + pair.first + ": " + std::to_string(position) + ">" + std::to_string(limitPos));
+							case RiskModelParams::WARNING:
+								throw BizException(RiskModelParams::WARNING, "Warining: " + modelParams.InstanceName + ": " + pair.first + ": " + std::to_string(position) + ">" + std::to_string(limitPos));
+							default:
+								return pRiskModelParam->Action;
+							}
 						}
 					}
 					else
@@ -58,10 +71,22 @@ int RMNPLModel::CheckRisk(ModelParamsDO & modelParams, IUserPositionContext & po
 						matchAll = false;
 					}
 				}
+				else
+				{
+					matchAll = false;
+				}
 			}
 			if (matchAll)
 			{
-				throw BizException(modelParams.InstanceName + " is violated!");
+				switch (pRiskModelParam->Action)
+				{
+				case RiskModelParams::STOP_OPEN_ORDER:
+					throw BizException(RiskModelParams::STOP_OPEN_ORDER, modelParams.InstanceName + " 'match all' is violated!");
+				case RiskModelParams::WARNING:
+					throw BizException(RiskModelParams::WARNING, "Warning: " + modelParams.InstanceName + " 'match all' is violated!");
+				default:
+					return pRiskModelParam->Action;
+				}
 			}
 		}
 	}

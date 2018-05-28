@@ -4,7 +4,7 @@
 ModelParamsDO_Ptr ModelParamsDAO::FindUserModel(const std::string& userid, const std::string& modelInstance)
 {
 	static const std::string sql_findstrategyparam(
-		"SELECT model,modelaim,paramname,paramvalue FROM vm_usermodel_params "
+		"SELECT model,modelaim,paramname,paramvalue,paramstring FROM vm_usermodel_params "
 		"WHERE accountid = ? and modelinstance = ?");
 
 	ModelParamsDO_Ptr ret;
@@ -22,12 +22,18 @@ ModelParamsDO_Ptr ModelParamsDAO::FindUserModel(const std::string& userid, const
 		{
 			ret = std::make_shared<ModelParamsDO>(modelInstance, rs->getString(1), userid);
 			ret->ModelAim = rs->getString(2);
-			ret->Params.emplace(rs->getString(3), rs->getDouble(4));
+			if (rs->isNull(5))
+				ret->Params[rs->getString(3)] = rs->getDouble(4);
+			else
+				ret->ParamString[rs->getString(3)] = rs->getString(5);
 		}
 
 		while (rs->next())
 		{
-			ret->Params.emplace(rs->getString(3), rs->getDouble(4));
+			if (rs->isNull(5))
+				ret->Params[rs->getString(3)] = rs->getDouble(4);
+			else
+				ret->ParamString[rs->getString(3)] = rs->getString(5);
 		}
 	}
 	catch (sql::SQLException& sqlEx)
@@ -42,7 +48,7 @@ ModelParamsDO_Ptr ModelParamsDAO::FindUserModel(const std::string& userid, const
 void ModelParamsDAO::FindAllModels(const std::string& userId, autofillmap<ModelKey, ModelParamsDO_Ptr>& modelMap)
 {
 	static const std::string sql_findstrategyparam(
-		"SELECT accountid,modelinstance,model,modelaim,paramname,paramvalue FROM vm_usermodel_params "
+		"SELECT accountid,modelinstance,model,modelaim,paramname,paramvalue,paramstring FROM vm_usermodel_params "
 		"WHERE accountid like ?");
 
 	VectorDO_Ptr<ModelParamsDO_Ptr> ret = std::make_shared<VectorDO<ModelParamsDO_Ptr>>();
@@ -68,7 +74,11 @@ void ModelParamsDAO::FindAllModels(const std::string& userId, autofillmap<ModelK
 				ret->ModelAim = modelaim;
 				return ret;
 			});
-			model_ptr->Params.emplace(rs->getString(5), rs->getDouble(6));
+
+			if (rs->isNull(7))
+				model_ptr->Params[rs->getString(5)] = rs->getDouble(6);
+			else
+				model_ptr->ParamString[rs->getString(5)] = rs->getString(7);
 		}
 	}
 	catch (sql::SQLException& sqlEx)

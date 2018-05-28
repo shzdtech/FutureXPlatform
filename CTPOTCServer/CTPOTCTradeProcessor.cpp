@@ -25,6 +25,10 @@
 #include "../ordermanager/OrderSeqGen.h"
 #include "../ordermanager/OrderPortfolioCache.h"
 
+#include "../riskmanager/RiskModelAlgorithmManager.h"
+#include "../riskmanager/RiskContext.h"
+#include "../riskmanager/RiskModelParams.h"
+
 #include "../bizutility/ContractCache.h"
 #include "../litelogger/LiteLogger.h"
 #include "../message/MessageUtility.h"
@@ -61,10 +65,25 @@ void CTPOTCTradeProcessor::OnTraded(const TradeRecordDO_Ptr& tradeDO)
 	}
 }
 
-
 OrderDO_Ptr CTPOTCTradeProcessor::CreateOrder(const OrderRequestDO& orderReq)
 {
 	OrderDO_Ptr ret;
+
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCTradeWorkerProcessor>(this))
+	{
+		try
+		{
+			pWorkerProc->CheckRisk(orderReq);
+		}
+		catch (BizException& ex)
+		{
+			if (ex.ErrorCode() > RiskModelParams::WARNING)
+			{
+				SendExceptionMessage(MSG_ID_ORDER_NEW, ex, 0);
+				return ret;
+			}
+		}
+	}
 
 	if (auto tdApiProxy = _rawAPI->TdAPIProxy())
 	{

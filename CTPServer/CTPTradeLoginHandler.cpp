@@ -48,6 +48,8 @@ std::shared_ptr<UserInfoDO> CTPTradeLoginHandler::LoginFromServer(const IMessage
 
 	LoginFromDB(msgProcessor);
 
+	LoadUserRiskModel(msgProcessor);
+
 	if (userInfoDO_Ptr->ExchangeUser.empty())
 	{
 		pProcessor->getMessageSession()->setLoginTimeStamp();
@@ -103,8 +105,6 @@ std::shared_ptr<UserInfoDO> CTPTradeLoginHandler::LoginFromServer(const IMessage
 
 	CTPUtility::CheckReturnError(ret);
 
-	LoadUserRiskModel(msgProcessor);
-
 	return nullptr;
 }
 
@@ -141,32 +141,36 @@ void CTPTradeLoginHandler::LoadUserRiskModel(const IMessageProcessor_Ptr & msgPr
 		auto session = msgProcessor->getMessageSession();
 		auto& userId = session->getUserInfo().getUserId();
 
-		auto preTradeModel = RiskContext::Instance()->GetPreTradeUserModel(userId);
-		auto postTradeModel = RiskContext::Instance()->GetPostTradeUserModel(userId);
-		if (!preTradeModel)
+		auto userModels = ModelParamsCache::FindModelsByUser(userId);
+		if (!userModels)
 		{
 			ModelParamsCache::Load(userId);
-			if (auto userModels = ModelParamsCache::FindModelsByUser(userId))
-			{
-				for (auto model_ptr : *userModels)
-				{
-					if (auto alg_ptr = RiskModelAlgorithmManager::Instance()->FindModel(model_ptr->Model))
-					{
-						if (auto modeldef_ptr = ModelParamDefCache::FindOrRetrieveModelParamDef(model_ptr->Model))
-						{
-							for (auto pair : modeldef_ptr->ModelDefMap)
-							{
-								model_ptr->Params.emplace(pair.first, pair.second.DefaultVal);
-							}
-							alg_ptr->ParseParams(model_ptr->Params, model_ptr->ParsedParams);
+			userModels = ModelParamsCache::FindModelsByUser(userId);
+		}
 
-							if (auto pRiskModelParam = (RiskModelParams*)model_ptr->ParsedParams.get())
-							{
-								if(pRiskModelParam->PreTrade)
-									RiskContext::Instance()->InsertPreTradeUserModel(userId, model_ptr->InstanceName);
-								else
-									RiskContext::Instance()->InsertPostTradeUserModel(userId, model_ptr->InstanceName);
-							}
+		if (userModels)
+		{
+			for (auto model_ptr : *userModels)
+			{
+				if (auto alg_ptr = RiskModelAlgorithmManager::Instance()->FindModel(model_ptr->Model))
+				{
+					if (auto modeldef_ptr = ModelParamDefCache::FindOrRetrieveModelParamDef(model_ptr->Model))
+					{
+						for (auto pair : modeldef_ptr->ModelDefMap)
+						{
+							model_ptr->Params.emplace(pair.first, pair.second.DefaultVal);
+						}
+						alg_ptr->ParseParams(model_ptr->Params, model_ptr->ParsedParams);
+
+						PortfolioKey portfolioID(model_ptr->ParamString[RiskModelParams::__portfolio__], userId);
+
+						if (auto pRiskModelParam = (RiskModelParams*)model_ptr->ParsedParams.get())
+						{
+
+							if (pRiskModelParam->PreTrade)
+								RiskContext::Instance()->InsertPreTradeUserModel(portfolioID, model_ptr->InstanceName);
+							else
+								RiskContext::Instance()->InsertPostTradeUserModel(portfolioID, model_ptr->InstanceName);
 						}
 					}
 				}

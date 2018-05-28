@@ -27,6 +27,7 @@ const ::google::protobuf::Descriptor* ModelParams_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   ModelParams_reflection_ = NULL;
 const ::google::protobuf::Descriptor* ModelParams_ParamsEntry_descriptor_ = NULL;
+const ::google::protobuf::Descriptor* ModelParams_ParamstringEntry_descriptor_ = NULL;
 const ::google::protobuf::Descriptor* ModelDef_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   ModelDef_reflection_ = NULL;
@@ -45,12 +46,13 @@ void protobuf_AssignDesc_modelalgorithm_2eproto() {
       "modelalgorithm.proto");
   GOOGLE_CHECK(file != NULL);
   ModelParams_descriptor_ = file->message_type(0);
-  static const int ModelParams_offsets_[5] = {
+  static const int ModelParams_offsets_[6] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelParams, header_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelParams, instancename_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelParams, model_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelParams, modelaim_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelParams, params_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelParams, paramstring_),
   };
   ModelParams_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
@@ -64,6 +66,7 @@ void protobuf_AssignDesc_modelalgorithm_2eproto() {
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelParams, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelParams, _is_default_instance_));
   ModelParams_ParamsEntry_descriptor_ = ModelParams_descriptor_->nested_type(0);
+  ModelParams_ParamstringEntry_descriptor_ = ModelParams_descriptor_->nested_type(1);
   ModelDef_descriptor_ = file->message_type(1);
   static const int ModelDef_offsets_[9] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModelDef, defaultval_),
@@ -129,6 +132,15 @@ void protobuf_RegisterTypes(const ::std::string&) {
             0>::CreateDefaultInstance(
                 ModelParams_ParamsEntry_descriptor_));
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+        ModelParams_ParamstringEntry_descriptor_,
+        ::google::protobuf::internal::MapEntry<
+            ::std::string,
+            ::std::string,
+            ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
+            ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
+            0>::CreateDefaultInstance(
+                ModelParams_ParamstringEntry_descriptor_));
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
       ModelDef_descriptor_, &ModelDef::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
       ModelParamDef_descriptor_, &ModelParamDef::default_instance());
@@ -163,23 +175,26 @@ void protobuf_AddDesc_modelalgorithm_2eproto() {
   ::Micro::Future::Message::protobuf_AddDesc_commondefine_2eproto();
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\024modelalgorithm.proto\022\024Micro.Future.Mes"
-    "sage\032\022commondefine.proto\"\344\001\n\013ModelParams"
+    "sage\032\022commondefine.proto\"\341\002\n\013ModelParams"
     "\0220\n\006header\030\001 \001(\0132 .Micro.Future.Message."
     "DataHeader\022\024\n\014instanceName\030\002 \001(\t\022\r\n\005mode"
     "l\030\003 \001(\t\022\020\n\010modelAim\030\004 \001(\t\022=\n\006params\030\005 \003("
     "\0132-.Micro.Future.Message.ModelParams.Par"
-    "amsEntry\032-\n\013ParamsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005"
-    "value\030\002 \001(\001:\0028\001\"\242\001\n\010ModelDef\022\022\n\ndefaultV"
-    "al\030\001 \001(\001\022\016\n\006minVal\030\002 \001(\001\022\016\n\006maxVal\030\003 \001(\001"
-    "\022\021\n\tstringVal\030\004 \001(\t\022\014\n\004step\030\005 \001(\001\022\016\n\006dig"
-    "its\030\006 \001(\005\022\020\n\010dataType\030\007 \001(\005\022\017\n\007visible\030\010"
-    " \001(\010\022\016\n\006enable\030\t \001(\010\"\344\001\n\rModelParamDef\0220"
-    "\n\006header\030\001 \001(\0132 .Micro.Future.Message.Da"
-    "taHeader\022\021\n\tmodelName\030\002 \001(\t\022\?\n\006params\030\003 "
-    "\003(\0132/.Micro.Future.Message.ModelParamDef"
-    ".ParamsEntry\032M\n\013ParamsEntry\022\013\n\003key\030\001 \001(\t"
-    "\022-\n\005value\030\002 \001(\0132\036.Micro.Future.Message.M"
-    "odelDef:\0028\001b\006proto3", 699);
+    "amsEntry\022G\n\013paramstring\030\006 \003(\01322.Micro.Fu"
+    "ture.Message.ModelParams.ParamstringEntr"
+    "y\032-\n\013ParamsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002"
+    " \001(\001:\0028\001\0322\n\020ParamstringEntry\022\013\n\003key\030\001 \001("
+    "\t\022\r\n\005value\030\002 \001(\t:\0028\001\"\242\001\n\010ModelDef\022\022\n\ndef"
+    "aultVal\030\001 \001(\001\022\016\n\006minVal\030\002 \001(\001\022\016\n\006maxVal\030"
+    "\003 \001(\001\022\021\n\tstringVal\030\004 \001(\t\022\014\n\004step\030\005 \001(\001\022\016"
+    "\n\006digits\030\006 \001(\005\022\020\n\010dataType\030\007 \001(\005\022\017\n\007visi"
+    "ble\030\010 \001(\010\022\016\n\006enable\030\t \001(\010\"\344\001\n\rModelParam"
+    "Def\0220\n\006header\030\001 \001(\0132 .Micro.Future.Messa"
+    "ge.DataHeader\022\021\n\tmodelName\030\002 \001(\t\022\?\n\006para"
+    "ms\030\003 \003(\0132/.Micro.Future.Message.ModelPar"
+    "amDef.ParamsEntry\032M\n\013ParamsEntry\022\013\n\003key\030"
+    "\001 \001(\t\022-\n\005value\030\002 \001(\0132\036.Micro.Future.Mess"
+    "age.ModelDef:\0028\001b\006proto3", 824);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "modelalgorithm.proto", &protobuf_RegisterTypes);
   ModelParams::default_instance_ = new ModelParams();
@@ -216,6 +231,7 @@ const int ModelParams::kInstanceNameFieldNumber;
 const int ModelParams::kModelFieldNumber;
 const int ModelParams::kModelAimFieldNumber;
 const int ModelParams::kParamsFieldNumber;
+const int ModelParams::kParamstringFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 ModelParams::ModelParams()
@@ -249,6 +265,10 @@ void ModelParams::SharedCtor() {
       protobuf_AssignDescriptorsOnce);
   params_.SetEntryDescriptor(
       &::Micro::Future::Message::ModelParams_ParamsEntry_descriptor_);
+  paramstring_.SetAssignDescriptorCallback(
+      protobuf_AssignDescriptorsOnce);
+  paramstring_.SetEntryDescriptor(
+      &::Micro::Future::Message::ModelParams_ParamstringEntry_descriptor_);
 }
 
 ModelParams::~ModelParams() {
@@ -298,6 +318,7 @@ void ModelParams::Clear() {
   model_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   modelaim_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   params_.Clear();
+  paramstring_.Clear();
 }
 
 bool ModelParams::MergePartialFromCodedStream(
@@ -391,6 +412,33 @@ bool ModelParams::MergePartialFromCodedStream(
           goto handle_unusual;
         }
         if (input->ExpectTag(42)) goto parse_loop_params;
+        if (input->ExpectTag(50)) goto parse_loop_paramstring;
+        input->UnsafeDecrementRecursionDepth();
+        break;
+      }
+
+      // map<string, string> paramstring = 6;
+      case 6: {
+        if (tag == 50) {
+          DO_(input->IncrementRecursionDepth());
+         parse_loop_paramstring:
+          ::google::protobuf::scoped_ptr<ModelParams_ParamstringEntry> entry(paramstring_.NewEntry());
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+              input, entry.get()));
+          (*mutable_paramstring())[entry->key()] = *entry->mutable_value();
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            entry->key().data(), entry->key().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.ModelParams.ParamstringEntry.key"));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            entry->mutable_value()->data(),
+            entry->mutable_value()->length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "Micro.Future.Message.ModelParams.ParamstringEntry.value"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(50)) goto parse_loop_paramstring;
         input->UnsafeDecrementRecursionDepth();
         if (input->ExpectAtEnd()) goto success;
         break;
@@ -472,6 +520,26 @@ void ModelParams::SerializeWithCachedSizes(
     }
   }
 
+  // map<string, string> paramstring = 6;
+  {
+    ::google::protobuf::scoped_ptr<ModelParams_ParamstringEntry> entry;
+    for (::google::protobuf::Map< ::std::string, ::std::string >::const_iterator
+        it = this->paramstring().begin();
+        it != this->paramstring().end(); ++it) {
+      entry.reset(paramstring_.NewEntryWrapper(it->first, it->second));
+      ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+          6, *entry, output);
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        it->first.data(), it->first.length(),
+        ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+        "Micro.Future.Message.ModelParams.ParamstringEntry.key");
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        it->second.data(), it->second.length(),
+        ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+        "Micro.Future.Message.ModelParams.ParamstringEntry.value");
+    }
+  }
+
   // @@protoc_insertion_point(serialize_end:Micro.Future.Message.ModelParams)
 }
 
@@ -535,6 +603,27 @@ void ModelParams::SerializeWithCachedSizes(
     }
   }
 
+  // map<string, string> paramstring = 6;
+  {
+    ::google::protobuf::scoped_ptr<ModelParams_ParamstringEntry> entry;
+    for (::google::protobuf::Map< ::std::string, ::std::string >::const_iterator
+        it = this->paramstring().begin();
+        it != this->paramstring().end(); ++it) {
+      entry.reset(paramstring_.NewEntryWrapper(it->first, it->second));
+      target = ::google::protobuf::internal::WireFormatLite::
+          WriteMessageNoVirtualToArray(
+              6, *entry, target);
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        it->first.data(), it->first.length(),
+        ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+        "Micro.Future.Message.ModelParams.ParamstringEntry.key");
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        it->second.data(), it->second.length(),
+        ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+        "Micro.Future.Message.ModelParams.ParamstringEntry.value");
+    }
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.ModelParams)
   return target;
 }
@@ -584,6 +673,19 @@ int ModelParams::ByteSize() const {
     }
   }
 
+  // map<string, string> paramstring = 6;
+  total_size += 1 * this->paramstring_size();
+  {
+    ::google::protobuf::scoped_ptr<ModelParams_ParamstringEntry> entry;
+    for (::google::protobuf::Map< ::std::string, ::std::string >::const_iterator
+        it = this->paramstring().begin();
+        it != this->paramstring().end(); ++it) {
+      entry.reset(paramstring_.NewEntryWrapper(it->first, it->second));
+      total_size += ::google::protobuf::internal::WireFormatLite::
+          MessageSizeNoVirtual(*entry);
+    }
+  }
+
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = total_size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
@@ -609,6 +711,7 @@ void ModelParams::MergeFrom(const ModelParams& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:Micro.Future.Message.ModelParams)
   if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
   params_.MergeFrom(from.params_);
+  paramstring_.MergeFrom(from.paramstring_);
   if (from.has_header()) {
     mutable_header()->::Micro::Future::Message::DataHeader::MergeFrom(from.header());
   }
@@ -655,6 +758,7 @@ void ModelParams::InternalSwap(ModelParams* other) {
   model_.Swap(&other->model_);
   modelaim_.Swap(&other->modelaim_);
   params_.Swap(&other->params_);
+  paramstring_.Swap(&other->paramstring_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -856,6 +960,24 @@ ModelParams::params() const {
 ModelParams::mutable_params() {
   // @@protoc_insertion_point(field_mutable_map:Micro.Future.Message.ModelParams.params)
   return params_.MutableMap();
+}
+
+// map<string, string> paramstring = 6;
+int ModelParams::paramstring_size() const {
+  return paramstring_.size();
+}
+void ModelParams::clear_paramstring() {
+  paramstring_.Clear();
+}
+ const ::google::protobuf::Map< ::std::string, ::std::string >&
+ModelParams::paramstring() const {
+  // @@protoc_insertion_point(field_map:Micro.Future.Message.ModelParams.paramstring)
+  return paramstring_.GetMap();
+}
+ ::google::protobuf::Map< ::std::string, ::std::string >*
+ModelParams::mutable_paramstring() {
+  // @@protoc_insertion_point(field_mutable_map:Micro.Future.Message.ModelParams.paramstring)
+  return paramstring_.MutableMap();
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

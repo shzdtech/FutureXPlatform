@@ -20,11 +20,7 @@
 #include "../ordermanager/OrderPortfolioCache.h"
 
 #include "../dataobject/OrderDO.h"
-
-#include "../bizutility/ModelParamsCache.h"
-#include "../riskmanager/RiskModelAlgorithmManager.h"
-#include "../riskmanager/RiskContext.h"
-
+#include "../riskmanager/RiskModelParams.h"
 
 
  ////////////////////////////////////////////////////////////////////////
@@ -43,29 +39,28 @@ dataobj_ptr CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_pt
 	CheckAllowTrade(session);
 	CTPUtility::CheckTradeInit((CTPRawAPI*)rawAPI);
 
-	auto pDO = (OrderRequestDO*)reqDO.get();
+	auto pOrderReqDO = (OrderRequestDO*)reqDO.get();
+	pOrderReqDO->TradingType = OrderTradingType::TRADINGTYPE_MANUAL;
 
 	auto& userInfo = session->getUserInfo();
 
+	pOrderReqDO->SetUserID(userInfo.getUserId());
+
+	std::shared_ptr<BizException> bizEx_Ptr;
 	// Pretrade risk check
-	if (pDO->OpenClose == OrderOpenCloseType::OPEN)
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 	{
-		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+		try
 		{
-			if (auto modelKeyMap = RiskContext::Instance()->GetPreTradeUserModel(userInfo.getUserId()))
-			{
-				auto positionCtx = pWorkerProc->GetUserPositionContext();
-				for (auto pair : modelKeyMap.map()->lock_table())
-				{
-					if (auto modelparams_ptr = ModelParamsCache::FindModel(pair.second))
-					{
-						if (auto model_ptr = RiskModelAlgorithmManager::Instance()->FindModel(modelparams_ptr->Model))
-						{
-							model_ptr->CheckRisk(*modelparams_ptr, *positionCtx, userInfo.getUserId());
-						}
-					}
-				}
-			}
+			pWorkerProc->CheckRisk(*pOrderReqDO);
+		}
+		catch (BizException& ex)
+		{
+			if (ex.ErrorCode() > RiskModelParams::WARNING)
+				throw ex;
+
+			if (ex.ErrorCode() > RiskModelParams::NO_ACTION)
+				bizEx_Ptr = std::make_shared<BizException>(ex);
 		}
 	}
 
@@ -77,34 +72,33 @@ dataobj_ptr CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_pt
 	//投资者代码
 	std::strncpy(req.InvestorID, userInfo.getInvestorId().data(), sizeof(req.InvestorID));
 	// 合约代码
-	std::strncpy(req.InstrumentID, pDO->InstrumentID().data(), sizeof(req.InstrumentID));
+	std::strncpy(req.InstrumentID, pOrderReqDO->InstrumentID().data(), sizeof(req.InstrumentID));
 	///报单引用
-	pDO->OrderID = OrderSeqGen::GenOrderID(userInfo.getSessionId());
+	pOrderReqDO->OrderID = OrderSeqGen::GenOrderID(userInfo.getSessionId());
 
-	std::snprintf(req.OrderRef, sizeof(req.OrderRef), FMT_ORDERREF, pDO->OrderID);
+	std::snprintf(req.OrderRef, sizeof(req.OrderRef), FMT_ORDERREF, pOrderReqDO->OrderID);
 	// 用户代码
-	pDO->SetUserID(userInfo.getUserId());
-	std::strncpy(req.UserID, pDO->UserID().data(), sizeof(req.UserID));
+	std::strncpy(req.UserID, pOrderReqDO->UserID().data(), sizeof(req.UserID));
 	// 报单价格条件
-	auto it = CTPExecPriceMapping.find((OrderExecType)pDO->ExecType);
+	auto it = CTPExecPriceMapping.find((OrderExecType)pOrderReqDO->ExecType);
 	req.OrderPriceType = it != CTPExecPriceMapping.end() ? it->second : THOST_FTDC_OPT_LimitPrice;
 	// 买卖方向
-	req.Direction = pDO->Direction > 0 ? THOST_FTDC_D_Buy : THOST_FTDC_D_Sell;
+	req.Direction = pOrderReqDO->Direction > 0 ? THOST_FTDC_D_Buy : THOST_FTDC_D_Sell;
 	///组合开平标志: 开仓
-	req.CombOffsetFlag[0] = THOST_FTDC_OF_Open + pDO->OpenClose;
+	req.CombOffsetFlag[0] = THOST_FTDC_OF_Open + pOrderReqDO->OpenClose;
 	///组合投机套保标志
 	req.CombHedgeFlag[0] = THOST_FTDC_HF_Speculation;
 	// 价格
-	req.LimitPrice = pDO->LimitPrice;
+	req.LimitPrice = pOrderReqDO->LimitPrice;
 	// 数量
-	req.VolumeTotalOriginal = pDO->Volume;
+	req.VolumeTotalOriginal = pOrderReqDO->Volume;
 	// 有效期类型
-	auto tit = CTPTIFMapping.find((OrderTIFType)pDO->TIF);
+	auto tit = CTPTIFMapping.find((OrderTIFType)pOrderReqDO->TIF);
 	req.TimeCondition = tit != CTPTIFMapping.end() ? tit->second : THOST_FTDC_TC_GFD;
 	// GTD日期
 	//std::strcpy(req.GTDDate, "");
 	// 成交量类型
-	auto vit = CTPVolCondMapping.find((OrderVolType)pDO->VolCondition);
+	auto vit = CTPVolCondMapping.find((OrderVolType)pOrderReqDO->VolCondition);
 	req.VolumeCondition = vit != CTPVolCondMapping.end() ? vit->second : THOST_FTDC_VC_AV;
 	// 最小成交量
 	req.MinVolume = 1;
@@ -119,21 +113,24 @@ dataobj_ptr CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_pt
 
 	req.RequestID = serialId;
 
-	bool insertPortfolio = !pDO->PortfolioID().empty();
+	bool insertPortfolio = !pOrderReqDO->PortfolioID().empty();
 
 	if (insertPortfolio)
 	{
-		OrderPortfolioCache::Insert(pDO->OrderID, *pDO);
+		OrderPortfolioCache::Insert(pOrderReqDO->OrderID, *pOrderReqDO);
 	}
 
 	int iRet = ((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqOrderInsert(&req, serialId);
 
 	if (iRet != 0 && insertPortfolio)
 	{
-		OrderPortfolioCache::Remove(pDO->OrderID);
+		OrderPortfolioCache::Remove(pOrderReqDO->OrderID);
 	}
 
 	CTPUtility::CheckReturnError(iRet);
+
+	if (bizEx_Ptr)
+		throw *bizEx_Ptr;
 
 	return nullptr;
 }

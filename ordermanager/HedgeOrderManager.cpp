@@ -230,6 +230,7 @@ HedgeOrderManager::HedgeStatus HedgeOrderManager::Hedge(const PortfolioKey& port
 
 			// Make new orders
 			OrderRequestDO newOrder(0, hedgeContract->ExchangeID(), hedgeContract->InstrumentID(), pPortfolio->UserID(), pPortfolio->PortfolioID());
+			newOrder.TradingType = OrderTradingType::TRADINGTYPE_HEDGE;
 			newOrder.TIF = OrderTIFType::IOC;
 			newOrder.VolCondition = OrderVolType::ANYVOLUME;
 

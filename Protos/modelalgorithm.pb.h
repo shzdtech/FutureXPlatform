@@ -155,6 +155,15 @@ class ModelParams : public ::google::protobuf::Message {
   ::google::protobuf::Map< ::std::string, double >*
       mutable_params();
 
+  // map<string, string> paramstring = 6;
+  int paramstring_size() const;
+  void clear_paramstring();
+  static const int kParamstringFieldNumber = 6;
+  const ::google::protobuf::Map< ::std::string, ::std::string >&
+      paramstring() const;
+  ::google::protobuf::Map< ::std::string, ::std::string >*
+      mutable_paramstring();
+
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.ModelParams)
  private:
 
@@ -175,6 +184,17 @@ class ModelParams : public ::google::protobuf::Message {
       ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
       ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE,
       0 > params_;
+  typedef ::google::protobuf::internal::MapEntryLite<
+      ::std::string, ::std::string,
+      ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
+      ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
+      0 >
+      ModelParams_ParamstringEntry;
+  ::google::protobuf::internal::MapField<
+      ::std::string, ::std::string,
+      ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
+      ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
+      0 > paramstring_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_modelalgorithm_2eproto();
   friend void protobuf_AssignDesc_modelalgorithm_2eproto();
@@ -630,6 +650,24 @@ inline ::google::protobuf::Map< ::std::string, double >*
 ModelParams::mutable_params() {
   // @@protoc_insertion_point(field_mutable_map:Micro.Future.Message.ModelParams.params)
   return params_.MutableMap();
+}
+
+// map<string, string> paramstring = 6;
+inline int ModelParams::paramstring_size() const {
+  return paramstring_.size();
+}
+inline void ModelParams::clear_paramstring() {
+  paramstring_.Clear();
+}
+inline const ::google::protobuf::Map< ::std::string, ::std::string >&
+ModelParams::paramstring() const {
+  // @@protoc_insertion_point(field_map:Micro.Future.Message.ModelParams.paramstring)
+  return paramstring_.GetMap();
+}
+inline ::google::protobuf::Map< ::std::string, ::std::string >*
+ModelParams::mutable_paramstring() {
+  // @@protoc_insertion_point(field_mutable_map:Micro.Future.Message.ModelParams.paramstring)
+  return paramstring_.MutableMap();
 }
 
 // -------------------------------------------------------------------

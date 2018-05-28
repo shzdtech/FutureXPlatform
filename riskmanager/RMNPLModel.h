@@ -6,7 +6,7 @@ public:
 	RMNPLModel();
 	~RMNPLModel();
 
-	virtual int CheckRisk(ModelParamsDO& modelParams, IUserPositionContext& positionCtx, const std::string& userID);
+	virtual int CheckRisk(const OrderRequestDO& orderReq, ModelParamsDO& modelParams, IUserPositionContext& positionCtx);
 	virtual const std::string& Name(void) const;
 
 public:

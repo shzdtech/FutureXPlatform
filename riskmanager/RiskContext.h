@@ -8,14 +8,14 @@ class RISKMANAGER_CLASS_EXPORTS RiskContext : public IRiskContext, public single
 public:
 	RiskContext();
 
-	virtual UserModelKeyMap GetPreTradeUserModel(const std::string& userId);
-	virtual UserModelKeyMap InsertPreTradeUserModel(const std::string& userId, const std::string& instanceName);
+	virtual ModelKeyMap GetPreTradeUserModel(const PortfolioKey& portfolioID);
+	virtual ModelKeyMap InsertPreTradeUserModel(const PortfolioKey& portfolioID, const std::string& instanceName);
 
-	virtual UserModelKeyMap GetPostTradeUserModel(const std::string& userId);
-	virtual UserModelKeyMap InsertPostTradeUserModel(const std::string& userId, const std::string& instanceName);
+	virtual ModelKeyMap GetPostTradeUserModel(const PortfolioKey& portfolioID);
+	virtual ModelKeyMap InsertPostTradeUserModel(const PortfolioKey& portfolioID, const std::string& instanceName);
 
 private:
-	ModelKeyMap _preTradeUserModels;
-	ModelKeyMap _postTradeUserModels;
+	PortfolioModelKeyMap _preTradeUserModels;
+	PortfolioModelKeyMap _postTradeUserModels;
 };
 

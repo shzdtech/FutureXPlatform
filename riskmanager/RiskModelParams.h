@@ -3,8 +3,9 @@
 
 #include <string>
 #include "../dataobject/ParamsBase.h"
+#include "riskmanager_exp.h"
 
-class RiskModelParams : public ParamsBase
+class RISKMANAGER_CLASS_EXPORTS RiskModelParams : public ParamsBase
 {
 public:
 	enum ActionType { NO_ACTION = 0, WARNING = 1, STOP_OPEN_ORDER = 2 };
@@ -22,6 +23,7 @@ public:
 	static const std::string __interval__;
 	static const std::string __match__;
 	static const std::string __type__;
+	static const std::string __portfolio__;
 };
 
 #endif

@@ -7,45 +7,45 @@ RiskContext::RiskContext()
 {
 }
 
-UserModelKeyMap RiskContext::GetPreTradeUserModel(const std::string& userId)
+ModelKeyMap RiskContext::GetPreTradeUserModel(const PortfolioKey& portfolioID)
 {
-	UserModelKeyMap ret;
-	_preTradeUserModels.find(userId, ret);
+	ModelKeyMap ret;
+	_preTradeUserModels.find(portfolioID, ret);
 	return ret;
 }
 
-UserModelKeyMap RiskContext::InsertPreTradeUserModel(const std::string& userId, const std::string& instanceName)
+ModelKeyMap RiskContext::InsertPreTradeUserModel(const PortfolioKey& portfolioID, const std::string& instanceName)
 {
-	UserModelKeyMap ret;
-	if (!_preTradeUserModels.find(userId, ret))
+	ModelKeyMap ret;
+	if (!_preTradeUserModels.find(portfolioID, ret))
 	{
-		_preTradeUserModels.insert(userId, UserModelKeyMap(4));
-		_preTradeUserModels.find(userId, ret);
+		_preTradeUserModels.insert(portfolioID, ModelKeyMap(2));
+		_preTradeUserModels.find(portfolioID, ret);
 	}
 
-	ret.map()->insert_or_assign(instanceName, ModelKey(instanceName, userId));
+	ret.map()->insert_or_assign(ModelKey(instanceName, portfolioID.UserID()), true);
 
 	return ret;
 }
 
-UserModelKeyMap RiskContext::GetPostTradeUserModel(const std::string& userId)
+ModelKeyMap RiskContext::GetPostTradeUserModel(const PortfolioKey& portfolioID)
 {
-	UserModelKeyMap ret;
-	_postTradeUserModels.find(userId, ret);
+	ModelKeyMap ret;
+	_postTradeUserModels.find(portfolioID, ret);
 	return ret;
 }
 
 
-UserModelKeyMap RiskContext::InsertPostTradeUserModel(const std::string& userId, const std::string& instanceName)
+ModelKeyMap RiskContext::InsertPostTradeUserModel(const PortfolioKey& portfolioID, const std::string& instanceName)
 {
-	UserModelKeyMap ret;
-	if (!_postTradeUserModels.find(userId, ret))
+	ModelKeyMap ret;
+	if (!_postTradeUserModels.find(portfolioID, ret))
 	{
-		_postTradeUserModels.insert(userId, UserModelKeyMap(4));
-		_postTradeUserModels.find(userId, ret);
+		_postTradeUserModels.insert(portfolioID, ModelKeyMap(2));
+		_postTradeUserModels.find(portfolioID, ret);
 	}
 
-	ret.map()->insert_or_assign(instanceName, ModelKey(instanceName, userId));
+	ret.map()->insert_or_assign(ModelKey(instanceName, portfolioID.UserID()), true);
 
 	return ret;
 }

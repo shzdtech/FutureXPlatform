@@ -56,7 +56,7 @@ typedef autofillmap<std::string, autofillmap<std::string, PortfolioDO>> Portfoli
 
 typedef VectorDO<ContractKey> ContractList;
 
-typedef cuckoohashmap_wrapper<std::string, ModelKey> UserModelKeyMap;
-typedef cuckoohash_map<std::string, UserModelKeyMap> ModelKeyMap;
+typedef cuckoohashmap_wrapper<ModelKey, bool, ModelKeyHash> ModelKeyMap;
+typedef cuckoohash_map<PortfolioKey, ModelKeyMap, PortfolioKeyHash> PortfolioModelKeyMap;
 
 #endif

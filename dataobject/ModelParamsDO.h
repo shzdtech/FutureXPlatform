@@ -48,6 +48,7 @@ public:
 		this->Model = modelParams.Model;
 		this->ModelAim = modelParams.ModelAim;
 		this->Params = modelParams.Params;
+		this->ParamString = modelParams.ParamString;
 	}
 
 	ModelParamsDO(const std::string& instanceName, const std::string& modelType, const std::string& userID)
@@ -58,6 +59,8 @@ public:
 	std::string ModelAim;
 
 	std::map<std::string, double> Params;
+
+	std::map<std::string, std::string> ParamString;
 
 	std::unique_ptr<ParamsBase> ParsedParams;
 };

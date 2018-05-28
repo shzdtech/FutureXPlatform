@@ -11,7 +11,7 @@
 class IRiskModelAlgorithm : public IAlgorithmBase
 {
 public:
-	virtual int CheckRisk(ModelParamsDO& modelParams, IUserPositionContext& positionCtx, const std::string& userID) = 0;
+	virtual int CheckRisk(const OrderRequestDO& orderReq, ModelParamsDO& modelParams, IUserPositionContext& positionCtx) = 0;
 };
 
 typedef std::shared_ptr<IRiskModelAlgorithm> IRiskModelAlgorithm_Ptr;

@@ -82,6 +82,8 @@ public:
 
 	bool IsSaveTrade();
 
+	int CheckRisk(const OrderRequestDO& orderReq);
+
 	int RetryInterval = 30000;
 	int RetryTimes = 10;
 
