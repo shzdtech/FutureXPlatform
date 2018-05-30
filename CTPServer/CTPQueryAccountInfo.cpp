@@ -37,26 +37,7 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const uint32_t serialId, const da
 {
 	CheckLogin(session);
 
-	auto stdo = (StringMapDO<std::string>*)reqDO.get();
-	auto& brokeid = session->getUserInfo().getBrokerId();
-	auto& investorid = session->getUserInfo().getInvestorId();
-
 	AccountInfoDO_Ptr ret;
-	if (CTPUtility::HasTradeInit((CTPRawAPI*)rawAPI))
-	{
-		CThostFtdcQryTradingAccountField req{};
-		std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID));
-		std::strncpy(req.InvestorID, investorid.data(), sizeof(req.InvestorID));
-
-		int iRet = ((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryTradingAccount(&req, serialId);
-	}
-	else
-	{
-		ret = std::make_shared<AccountInfoDO>();
-	}
-
-	/*AccountInfoDO_Ptr ret;
-
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 	{
 		ret = pWorkerProc->GetAccountInfo(session->getUserInfo().getUserId());
@@ -65,15 +46,7 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const uint32_t serialId, const da
 		{
 			ret = pWorkerProc->GetAccountInfo(pWorkerProc->getMessageSession()->getUserInfo().getUserId());
 		}
-
-		auto endit = accountInfoMap.end();
-		for (auto it = accountInfoMap.begin(); it != endit; it++)
-		{
-			auto accountptr = std::make_shared<AccountInfoDO>(it->second);
-			accountptr->HasMore = std::next(it) != endit;
-			
-		}
-	}*/
+	}
 
 	return ret;
 }
@@ -132,6 +105,7 @@ dataobj_ptr CTPQueryAccountInfo::HandleResponse(const uint32_t serialId, const p
 		pDO->DeliveryMargin = pData->DeliveryMargin;
 		pDO->ExchangeDeliveryMargin = pData->ExchangeDeliveryMargin;
 		pDO->ReserveBalance = pData->Reserve;
+		pDO->RiskRatio = pDO->Balance > 0 ? pDO->CurrMargin / pDO->Balance : 0;
 
 		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 		{

@@ -51,6 +51,9 @@
     <ClInclude Include="RiskModelParams.h">
       <Filter>头文件\Model</Filter>
     </ClInclude>
+    <ClInclude Include="RMACCTModel.h">
+      <Filter>头文件\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RiskModelAlgorithmFactory.cpp">
@@ -69,6 +72,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="RiskModelParams.cpp">
+      <Filter>源文件\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="RMACCTModel.cpp">
       <Filter>源文件\Model</Filter>
     </ClCompile>
   </ItemGroup>

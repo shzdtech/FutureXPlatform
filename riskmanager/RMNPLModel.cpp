@@ -13,28 +13,31 @@ RMNPLModel::~RMNPLModel()
 }
 
 
-int RMNPLModel::CheckRisk(const OrderRequestDO& orderReq, ModelParamsDO& modelParams, IUserPositionContext& positionCtx)
+int RMNPLModel::CheckRisk(const OrderRequestDO& orderReq, ModelParamsDO& modelParams, IUserPositionContext* pPositionCtx, AccountInfoDO* pAccountInfo)
 {
 	auto& instrumentCache = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE);
-	autofillmap<std::string, int> positionMap;
-	if (auto portfolioPositionPNL = positionCtx.GetPortfolioPositionsPnLByUser(orderReq.UserID()))
-	{	
-		for (auto pair : portfolioPositionPNL.map()->lock_table())
+	if (auto pInstrument = instrumentCache.QueryInstrumentOrAddById(orderReq.InstrumentID()))
+	{
+		auto& underlying = pInstrument->ExchangeID() + '-' + pInstrument->ProductID;
+		if (modelParams.Params.find(underlying) == modelParams.Params.end())
 		{
-			for (auto pPair : pair.second.map()->lock_table())
-			{
-				int position = pPair.second->NetPosition();
-				if (auto pInstrument = instrumentCache.QueryInstrumentOrAddById(pPair.second->InstrumentID()))
-				{
-					positionMap.getorfill(pPair.second->ExchangeID() + '-' + pInstrument->ProductID) += position;
-				}
-			}
+			throw BizException(RiskModelParams::STOP_OPEN_ORDER, underlying + "is not found in " + modelParams.InstanceName);
 		}
 	}
 
-	if (auto pInstrument = instrumentCache.QueryInstrumentOrAddById(orderReq.InstrumentID()))
+	autofillmap<std::string, int> positionMap;
+	if (auto portfolioPositionPNL = pPositionCtx->GetPositionsByUser(orderReq.UserID(), orderReq.PortfolioID()))
 	{
-		positionMap.getorfill(orderReq.ExchangeID() + '-' + pInstrument->ProductID) += orderReq.Volume;
+		for (auto pair : portfolioPositionPNL.map()->lock_table())
+		{
+			int position = pair.second->Position();
+			if (auto pInstrument = instrumentCache.QueryInstrumentOrAddById(pair.second->InstrumentID()))
+			{
+				auto& underlying = pInstrument->ExchangeID() + '-' + pInstrument->ProductID;
+				if (modelParams.Params.find(underlying) != modelParams.Params.end())
+					positionMap.getorfill(underlying) += position;
+			}
+		}
 	}
 
 	if (!modelParams.ParsedParams)
@@ -44,46 +47,34 @@ int RMNPLModel::CheckRisk(const OrderRequestDO& orderReq, ModelParamsDO& modelPa
 	{
 		if (pRiskModelParam->Enabled)
 		{
-			bool matchAll = true;
+			bool throwErr = false;
+			std::string errMsg;
 			for (auto pair : modelParams.Params)
 			{
 				if (auto pPos = positionMap.tryfind(pair.first))
 				{
-					auto position = std::labs(*pPos);
-					auto limitPos = (long)pair.second;
-					if (position > limitPos)
+					auto position = std::abs(*pPos);
+					auto limitPos = (int)pair.second;
+					auto totalPos = orderReq.Volume + position;
+					if (totalPos > limitPos)
 					{
 						if (pRiskModelParam->MatchAny)
 						{
-							switch (pRiskModelParam->Action)
-							{
-							case RiskModelParams::STOP_OPEN_ORDER:
-								throw BizException(RiskModelParams::STOP_OPEN_ORDER, modelParams.InstanceName + ": " + pair.first + ": " + std::to_string(position) + ">" + std::to_string(limitPos));
-							case RiskModelParams::WARNING:
-								throw BizException(RiskModelParams::WARNING, "Warining: " + modelParams.InstanceName + ": " + pair.first + ": " + std::to_string(position) + ">" + std::to_string(limitPos));
-							default:
-								return pRiskModelParam->Action;
-							}
+							errMsg = modelParams.InstanceName + ": " + pair.first + ": " + std::to_string(totalPos) + " > " + std::to_string(limitPos);
+							throwErr = true;
+							break;
 						}
 					}
-					else
-					{
-						matchAll = false;
-					}
-				}
-				else
-				{
-					matchAll = false;
 				}
 			}
-			if (matchAll)
+			if (throwErr)
 			{
 				switch (pRiskModelParam->Action)
 				{
 				case RiskModelParams::STOP_OPEN_ORDER:
-					throw BizException(RiskModelParams::STOP_OPEN_ORDER, modelParams.InstanceName + " 'match all' is violated!");
+					throw BizException(RiskModelParams::STOP_OPEN_ORDER, errMsg);
 				case RiskModelParams::WARNING:
-					throw BizException(RiskModelParams::WARNING, "Warning: " + modelParams.InstanceName + " 'match all' is violated!");
+					throw BizException(RiskModelParams::WARNING, "Warning: " + errMsg);
 				default:
 					return pRiskModelParam->Action;
 				}

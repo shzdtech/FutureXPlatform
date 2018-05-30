@@ -5,13 +5,14 @@
 #include <memory>
 #include "../pricingengine/IAlgorithmBase.h"
 #include "../dataobject/ModelParamsDO.h"
+#include "../dataobject/AccountInfoDO.h"
 #include "../common/typedefs.h"
 #include "../ordermanager/IUserPositionContext.h"
 
 class IRiskModelAlgorithm : public IAlgorithmBase
 {
 public:
-	virtual int CheckRisk(const OrderRequestDO& orderReq, ModelParamsDO& modelParams, IUserPositionContext& positionCtx) = 0;
+	virtual int CheckRisk(const OrderRequestDO& orderReq, ModelParamsDO& modelParams, IUserPositionContext* pPositionCtx, AccountInfoDO* pAccountInfo) = 0;
 };
 
 typedef std::shared_ptr<IRiskModelAlgorithm> IRiskModelAlgorithm_Ptr;

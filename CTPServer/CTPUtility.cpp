@@ -524,10 +524,10 @@ UserPositionExDO_Ptr CTPUtility::ParseRawPosition(CThostFtdcInvestorPositionFiel
 	}
 
 	std::string portfolio;
-	if (auto pPortfolioKey = PositionPortfolioMap::FindPortfolio(userId, pRspPosition->InstrumentID))
-	{
-		portfolio = pPortfolioKey->PortfolioID();
-	}
+	//if (auto pPortfolioKey = PositionPortfolioMap::FindPortfolio(userId, pRspPosition->InstrumentID))
+	//{
+	//	portfolio = pPortfolioKey->PortfolioID();
+	//}
 
 	auto pDO = new UserPositionExDO(exchange, pRspPosition->InstrumentID, portfolio, userId);
 	UserPositionExDO_Ptr ret(pDO);

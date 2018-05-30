@@ -61,6 +61,7 @@ data_buffer PBAccountInfoSerializer::Serialize(const dataobj_ptr& abstractDO)
 	PB.set_exchangedeliverymargin(pDO->ExchangeDeliveryMargin);
 	PB.set_reservebalance(pDO->ReserveBalance);
 	PB.set_userbalance(pDO->UserBalance);
+	PB.set_riskratio(pDO->RiskRatio);
 
 	SerializeWithReturn(PB);
 }

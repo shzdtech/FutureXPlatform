@@ -46,6 +46,7 @@ public:
 	double ExchangeDeliveryMargin = 0;
 	double ReserveBalance = 0;
 	double UserBalance = 0;
+	double RiskRatio = 0;
 
 
 protected:

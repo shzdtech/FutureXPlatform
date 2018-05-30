@@ -154,24 +154,16 @@ void CTPTradeLoginHandler::LoadUserRiskModel(const IMessageProcessor_Ptr & msgPr
 			{
 				if (auto alg_ptr = RiskModelAlgorithmManager::Instance()->FindModel(model_ptr->Model))
 				{
-					if (auto modeldef_ptr = ModelParamDefCache::FindOrRetrieveModelParamDef(model_ptr->Model))
+					alg_ptr->ParseParams(model_ptr->Params, model_ptr->ParsedParams);
+
+					PortfolioKey portfolioID(model_ptr->ParamString[RiskModelParams::__portfolio__], userId);
+
+					if (auto pRiskModelParam = (RiskModelParams*)model_ptr->ParsedParams.get())
 					{
-						for (auto pair : modeldef_ptr->ModelDefMap)
-						{
-							model_ptr->Params.emplace(pair.first, pair.second.DefaultVal);
-						}
-						alg_ptr->ParseParams(model_ptr->Params, model_ptr->ParsedParams);
-
-						PortfolioKey portfolioID(model_ptr->ParamString[RiskModelParams::__portfolio__], userId);
-
-						if (auto pRiskModelParam = (RiskModelParams*)model_ptr->ParsedParams.get())
-						{
-
-							if (pRiskModelParam->PreTrade)
-								RiskContext::Instance()->InsertPreTradeUserModel(portfolioID, model_ptr->InstanceName);
-							else
-								RiskContext::Instance()->InsertPostTradeUserModel(portfolioID, model_ptr->InstanceName);
-						}
+						if (pRiskModelParam->PreTrade)
+							RiskContext::Instance()->InsertPreTradeUserModel(portfolioID, model_ptr->InstanceName);
+						else
+							RiskContext::Instance()->InsertPostTradeUserModel(portfolioID, model_ptr->InstanceName);
 					}
 				}
 			}

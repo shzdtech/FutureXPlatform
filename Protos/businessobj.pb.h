@@ -4356,6 +4356,12 @@ class PBAccountInfo : public ::google::protobuf::Message {
   double userbalance() const;
   void set_userbalance(double value);
 
+  // optional double riskRatio = 34;
+  void clear_riskratio();
+  static const int kRiskRatioFieldNumber = 34;
+  double riskratio() const;
+  void set_riskratio(double value);
+
   // @@protoc_insertion_point(class_scope:Micro.Future.Message.Business.PBAccountInfo)
  private:
 
@@ -4394,6 +4400,7 @@ class PBAccountInfo : public ::google::protobuf::Message {
   double exchangedeliverymargin_;
   double reservebalance_;
   double userbalance_;
+  double riskratio_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_businessobj_2eproto();
   friend void protobuf_AssignDesc_businessobj_2eproto();
@@ -12828,6 +12835,20 @@ inline void PBAccountInfo::set_userbalance(double value) {
   
   userbalance_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.userBalance)
+}
+
+// optional double riskRatio = 34;
+inline void PBAccountInfo::clear_riskratio() {
+  riskratio_ = 0;
+}
+inline double PBAccountInfo::riskratio() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.riskRatio)
+  return riskratio_;
+}
+inline void PBAccountInfo::set_riskratio(double value) {
+  
+  riskratio_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.riskRatio)
 }
 
 // -------------------------------------------------------------------

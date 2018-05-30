@@ -78,6 +78,8 @@ public:
 
 	void LogTrade();
 
+	void QueryAccountWorker();
+
 	bool IsLoadPositionFromDB();
 
 	bool IsSaveTrade();
@@ -115,9 +117,13 @@ protected:
 	cuckoohash_map<std::string, SysPosition_HashMap> _ydSysPositions;
 
 	bool _loadPositionFromDB = false;
+
 	bool _logTrades = false;
-	std::thread _tradeDBSerializer;
+	std::future<void> _tradeDBSerializer;
 	lockfree_queue<TradeRecordDO_Ptr> _tradeQueue;
+
+	bool _isQueryAccount = true;
+	std::future<void> _accountQuery;
 
 public:
 	virtual void OnFrontConnected();

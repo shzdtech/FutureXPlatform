@@ -510,6 +510,8 @@ message PBAccountInfo {
 	double	reserveBalance = 32;
 	///客户权益
 	double userBalance = 33;
+	///Risk Ration
+	double riskRatio = 34;
 }
 
 message PBMarketInfo {

@@ -768,7 +768,7 @@ void protobuf_AssignDesc_businessobj_2eproto() {
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPosition, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBPosition, _is_default_instance_));
   PBAccountInfo_descriptor_ = file->message_type(27);
-  static const int PBAccountInfo_offsets_[33] = {
+  static const int PBAccountInfo_offsets_[34] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBAccountInfo, header_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBAccountInfo, brokerid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBAccountInfo, accountid_),
@@ -802,6 +802,7 @@ void protobuf_AssignDesc_businessobj_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBAccountInfo, exchangedeliverymargin_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBAccountInfo, reservebalance_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBAccountInfo, userbalance_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PBAccountInfo, riskratio_),
   };
   PBAccountInfo_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
@@ -1445,7 +1446,7 @@ void protobuf_AddDesc_businessobj_2eproto() {
     "t\030\024 \001(\001\022\030\n\020longFrozenVolume\030\025 \001(\005\022\031\n\021sho"
     "rtFrozenVolume\030\026 \001(\005\022\030\n\020longFrozenAmount"
     "\030\027 \001(\001\022\031\n\021shortFrozenAmount\030\030 \001(\001\022\021\n\tlas"
-    "tPrice\030\031 \001(\001\022\020\n\010avgPrice\030\032 \001(\001\"\322\005\n\rPBAcc"
+    "tPrice\030\031 \001(\001\022\020\n\010avgPrice\030\032 \001(\001\"\345\005\n\rPBAcc"
     "ountInfo\0220\n\006header\030\001 \001(\0132 .Micro.Future."
     "Message.DataHeader\022\020\n\010brokerID\030\002 \001(\t\022\021\n\t"
     "accountID\030\003 \001(\t\022\023\n\013preMortgage\030\004 \001(\001\022\021\n\t"
@@ -1463,85 +1464,85 @@ void protobuf_AddDesc_businessobj_2eproto() {
     "credit\030\033 \001(\001\022\020\n\010mortgage\030\034 \001(\001\022\026\n\016exchan"
     "geMargin\030\035 \001(\001\022\026\n\016deliveryMargin\030\036 \001(\001\022\036"
     "\n\026exchangeDeliveryMargin\030\037 \001(\001\022\026\n\016reserv"
-    "eBalance\030  \001(\001\022\023\n\013userBalance\030! \001(\001\"r\n\014P"
-    "BMarketInfo\0220\n\006header\030\001 \001(\0132 .Micro.Futu"
-    "re.Message.DataHeader\022\020\n\010exchange\030\002 \001(\t\022"
-    "\014\n\004name\030\003 \001(\014\022\020\n\010property\030\004 \001(\014\"\214\005\n\016PBCo"
-    "ntractInfo\022\020\n\010exchange\030\001 \001(\t\022\020\n\010contract"
-    "\030\002 \001(\t\022\014\n\004name\030\003 \001(\014\022\021\n\tproductID\030\004 \001(\t\022"
-    "\023\n\013productType\030\005 \001(\005\022\024\n\014deliveryYear\030\006 \001"
-    "(\005\022\025\n\rdeliveryMonth\030\007 \001(\005\022\034\n\024maxMarketOr"
-    "derVolume\030\010 \001(\005\022\034\n\024minMarketOrderVolume\030"
-    "\t \001(\005\022\033\n\023maxLimitOrderVolume\030\n \001(\005\022\033\n\023mi"
-    "nLimitOrderVolume\030\013 \001(\005\022\026\n\016volumeMultipl"
-    "e\030\014 \001(\005\022\021\n\tpriceTick\030\r \001(\001\022\022\n\ncreateDate"
-    "\030\016 \001(\t\022\020\n\010openDate\030\017 \001(\t\022\022\n\nexpireDate\030\020"
-    " \001(\t\022\026\n\016startDelivDate\030\021 \001(\t\022\024\n\014endDeliv"
-    "Date\030\022 \001(\t\022\021\n\tlifePhase\030\023 \001(\005\022\021\n\tisTradi"
-    "ng\030\024 \001(\010\022\024\n\014positionType\030\025 \001(\005\022\030\n\020positi"
-    "onDateType\030\026 \001(\005\022\027\n\017longMarginRatio\030\027 \001("
-    "\001\022\030\n\020shortMarginRatio\030\030 \001(\001\022\032\n\022underlyin"
-    "gExchange\030\031 \001(\t\022\032\n\022underlyingContract\030\032 "
-    "\001(\t\022\024\n\014contractType\030\033 \001(\005\022\023\n\013strikePrice"
-    "\030\034 \001(\001\"\213\001\n\022PBContractInfoList\0220\n\006header\030"
+    "eBalance\030  \001(\001\022\023\n\013userBalance\030! \001(\001\022\021\n\tr"
+    "iskRatio\030\" \001(\001\"r\n\014PBMarketInfo\0220\n\006header"
+    "\030\001 \001(\0132 .Micro.Future.Message.DataHeader"
+    "\022\020\n\010exchange\030\002 \001(\t\022\014\n\004name\030\003 \001(\014\022\020\n\010prop"
+    "erty\030\004 \001(\014\"\214\005\n\016PBContractInfo\022\020\n\010exchang"
+    "e\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022\014\n\004name\030\003 \001(\014\022"
+    "\021\n\tproductID\030\004 \001(\t\022\023\n\013productType\030\005 \001(\005\022"
+    "\024\n\014deliveryYear\030\006 \001(\005\022\025\n\rdeliveryMonth\030\007"
+    " \001(\005\022\034\n\024maxMarketOrderVolume\030\010 \001(\005\022\034\n\024mi"
+    "nMarketOrderVolume\030\t \001(\005\022\033\n\023maxLimitOrde"
+    "rVolume\030\n \001(\005\022\033\n\023minLimitOrderVolume\030\013 \001"
+    "(\005\022\026\n\016volumeMultiple\030\014 \001(\005\022\021\n\tpriceTick\030"
+    "\r \001(\001\022\022\n\ncreateDate\030\016 \001(\t\022\020\n\010openDate\030\017 "
+    "\001(\t\022\022\n\nexpireDate\030\020 \001(\t\022\026\n\016startDelivDat"
+    "e\030\021 \001(\t\022\024\n\014endDelivDate\030\022 \001(\t\022\021\n\tlifePha"
+    "se\030\023 \001(\005\022\021\n\tisTrading\030\024 \001(\010\022\024\n\014positionT"
+    "ype\030\025 \001(\005\022\030\n\020positionDateType\030\026 \001(\005\022\027\n\017l"
+    "ongMarginRatio\030\027 \001(\001\022\030\n\020shortMarginRatio"
+    "\030\030 \001(\001\022\032\n\022underlyingExchange\030\031 \001(\t\022\032\n\022un"
+    "derlyingContract\030\032 \001(\t\022\024\n\014contractType\030\033"
+    " \001(\005\022\023\n\013strikePrice\030\034 \001(\001\"\213\001\n\022PBContract"
+    "InfoList\0220\n\006header\030\001 \001(\0132 .Micro.Future."
+    "Message.DataHeader\022C\n\014contractInfo\030\002 \003(\013"
+    "2-.Micro.Future.Message.Business.PBContr"
+    "actInfo\"\214\002\n\017PBBankOpRequest\0220\n\006header\030\001 "
+    "\001(\0132 .Micro.Future.Message.DataHeader\022\016\n"
+    "\006bankID\030\002 \001(\t\022\024\n\014bankBranchID\030\003 \001(\t\022\024\n\014b"
+    "ankPassword\030\004 \001(\t\022\023\n\013bankAccount\030\005 \001(\t\022\020"
+    "\n\010brokerID\030\006 \001(\t\022\026\n\016brokerBranchID\030\007 \001(\t"
+    "\022\021\n\taccountID\030\010 \001(\t\022\020\n\010password\030\t \001(\t\022\022\n"
+    "\ncurrencyID\030\n \001(\t\022\023\n\013tradeAmount\030\013 \001(\001\"\210"
+    "\004\n\016PBBankOpResult\0220\n\006header\030\001 \001(\0132 .Micr"
+    "o.Future.Message.DataHeader\022\016\n\006bankID\030\002 "
+    "\001(\t\022\024\n\014bankBranchID\030\003 \001(\t\022\024\n\014bankPasswor"
+    "d\030\004 \001(\t\022\023\n\013bankAccount\030\005 \001(\t\022\020\n\010brokerID"
+    "\030\006 \001(\t\022\026\n\016brokerBranchID\030\007 \001(\t\022\021\n\taccoun"
+    "tID\030\010 \001(\t\022\020\n\010password\030\t \001(\t\022\022\n\ncurrencyI"
+    "D\030\n \001(\t\022\023\n\013tradeAmount\030\013 \001(\001\022\021\n\tserialNu"
+    "m\030\014 \001(\t\022\022\n\ntradingDay\030\r \001(\005\022\021\n\ttradeDate"
+    "\030\016 \001(\t\022\021\n\ttradeTime\030\017 \001(\t\022\021\n\ttradeCode\030\020"
+    " \001(\t\022\022\n\nbankSerial\030\021 \001(\t\022\025\n\rfutureAccTyp"
+    "e\030\022 \001(\005\022\023\n\013bankAccType\030\023 \001(\005\022\024\n\014futureSe"
+    "rial\030\024 \001(\t\022\017\n\007custFee\030\025 \001(\001\022\021\n\tbrokerFee"
+    "\030\026 \001(\001\022\017\n\007errorID\030\027 \001(\005\022\020\n\010errorMsg\030\030 \001("
+    "\014\"n\n\nPBBankInfo\0220\n\006header\030\001 \001(\0132 .Micro."
+    "Future.Message.DataHeader\022\016\n\006bankID\030\002 \001("
+    "\t\022\020\n\010branchID\030\003 \001(\t\022\014\n\004name\030\004 \001(\014\"\320\002\n\021PB"
+    "UserAccountInfo\0220\n\006header\030\001 \001(\0132 .Micro."
+    "Future.Message.DataHeader\022\016\n\006bankID\030\002 \001("
+    "\t\022\024\n\014bankBranchID\030\003 \001(\t\022\023\n\013bankAccount\030\004"
+    " \001(\t\022\020\n\010brokerID\030\005 \001(\t\022\026\n\016brokerBranchID"
+    "\030\006 \001(\t\022\021\n\taccountID\030\007 \001(\t\022\020\n\010idCardNo\030\010 "
+    "\001(\t\022\024\n\014customerName\030\t \001(\014\022\022\n\ncurrencyID\030"
+    "\n \001(\t\022\020\n\010custType\030\013 \001(\005\022\023\n\013bankAccType\030\014"
+    " \001(\005\022\025\n\rbankUseAmount\030\r \001(\001\022\027\n\017bankFetch"
+    "Amount\030\016 \001(\001\"t\n\021PBPositionCompare\022\020\n\010con"
+    "tract\030\001 \001(\t\022\021\n\tportfolio\030\002 \001(\t\022\021\n\tdirect"
+    "ion\030\003 \001(\005\022\022\n\ndbPosition\030\004 \001(\005\022\023\n\013sysPosi"
+    "tion\030\005 \001(\005\"\216\001\n\025PBPositionCompareList\0220\n\006"
+    "header\030\001 \001(\0132 .Micro.Future.Message.Data"
+    "Header\022C\n\tpositions\030\002 \003(\01320.Micro.Future"
+    ".Message.Business.PBPositionCompare\"\\\n\023P"
+    "BValuationContract\022\020\n\010exchange\030\001 \001(\t\022\020\n\010"
+    "contract\030\002 \001(\t\022\r\n\005price\030\003 \001(\001\022\022\n\nvolatil"
+    "ity\030\004 \001(\001\"\307\001\n\017PBValuationRisk\0220\n\006header\030"
     "\001 \001(\0132 .Micro.Future.Message.DataHeader\022"
-    "C\n\014contractInfo\030\002 \003(\0132-.Micro.Future.Mes"
-    "sage.Business.PBContractInfo\"\214\002\n\017PBBankO"
-    "pRequest\0220\n\006header\030\001 \001(\0132 .Micro.Future."
-    "Message.DataHeader\022\016\n\006bankID\030\002 \001(\t\022\024\n\014ba"
-    "nkBranchID\030\003 \001(\t\022\024\n\014bankPassword\030\004 \001(\t\022\023"
-    "\n\013bankAccount\030\005 \001(\t\022\020\n\010brokerID\030\006 \001(\t\022\026\n"
-    "\016brokerBranchID\030\007 \001(\t\022\021\n\taccountID\030\010 \001(\t"
-    "\022\020\n\010password\030\t \001(\t\022\022\n\ncurrencyID\030\n \001(\t\022\023"
-    "\n\013tradeAmount\030\013 \001(\001\"\210\004\n\016PBBankOpResult\0220"
-    "\n\006header\030\001 \001(\0132 .Micro.Future.Message.Da"
-    "taHeader\022\016\n\006bankID\030\002 \001(\t\022\024\n\014bankBranchID"
-    "\030\003 \001(\t\022\024\n\014bankPassword\030\004 \001(\t\022\023\n\013bankAcco"
-    "unt\030\005 \001(\t\022\020\n\010brokerID\030\006 \001(\t\022\026\n\016brokerBra"
-    "nchID\030\007 \001(\t\022\021\n\taccountID\030\010 \001(\t\022\020\n\010passwo"
-    "rd\030\t \001(\t\022\022\n\ncurrencyID\030\n \001(\t\022\023\n\013tradeAmo"
-    "unt\030\013 \001(\001\022\021\n\tserialNum\030\014 \001(\t\022\022\n\ntradingD"
-    "ay\030\r \001(\005\022\021\n\ttradeDate\030\016 \001(\t\022\021\n\ttradeTime"
-    "\030\017 \001(\t\022\021\n\ttradeCode\030\020 \001(\t\022\022\n\nbankSerial\030"
-    "\021 \001(\t\022\025\n\rfutureAccType\030\022 \001(\005\022\023\n\013bankAccT"
-    "ype\030\023 \001(\005\022\024\n\014futureSerial\030\024 \001(\t\022\017\n\007custF"
-    "ee\030\025 \001(\001\022\021\n\tbrokerFee\030\026 \001(\001\022\017\n\007errorID\030\027"
-    " \001(\005\022\020\n\010errorMsg\030\030 \001(\014\"n\n\nPBBankInfo\0220\n\006"
-    "header\030\001 \001(\0132 .Micro.Future.Message.Data"
-    "Header\022\016\n\006bankID\030\002 \001(\t\022\020\n\010branchID\030\003 \001(\t"
-    "\022\014\n\004name\030\004 \001(\014\"\320\002\n\021PBUserAccountInfo\0220\n\006"
-    "header\030\001 \001(\0132 .Micro.Future.Message.Data"
-    "Header\022\016\n\006bankID\030\002 \001(\t\022\024\n\014bankBranchID\030\003"
-    " \001(\t\022\023\n\013bankAccount\030\004 \001(\t\022\020\n\010brokerID\030\005 "
-    "\001(\t\022\026\n\016brokerBranchID\030\006 \001(\t\022\021\n\taccountID"
-    "\030\007 \001(\t\022\020\n\010idCardNo\030\010 \001(\t\022\024\n\014customerName"
-    "\030\t \001(\014\022\022\n\ncurrencyID\030\n \001(\t\022\020\n\010custType\030\013"
-    " \001(\005\022\023\n\013bankAccType\030\014 \001(\005\022\025\n\rbankUseAmou"
-    "nt\030\r \001(\001\022\027\n\017bankFetchAmount\030\016 \001(\001\"t\n\021PBP"
-    "ositionCompare\022\020\n\010contract\030\001 \001(\t\022\021\n\tport"
-    "folio\030\002 \001(\t\022\021\n\tdirection\030\003 \001(\005\022\022\n\ndbPosi"
-    "tion\030\004 \001(\005\022\023\n\013sysPosition\030\005 \001(\005\"\216\001\n\025PBPo"
-    "sitionCompareList\0220\n\006header\030\001 \001(\0132 .Micr"
-    "o.Future.Message.DataHeader\022C\n\tpositions"
-    "\030\002 \003(\01320.Micro.Future.Message.Business.P"
-    "BPositionCompare\"\\\n\023PBValuationContract\022"
-    "\020\n\010exchange\030\001 \001(\t\022\020\n\010contract\030\002 \001(\t\022\r\n\005p"
-    "rice\030\003 \001(\001\022\022\n\nvolatility\030\004 \001(\001\"\307\001\n\017PBVal"
-    "uationRisk\0220\n\006header\030\001 \001(\0132 .Micro.Futur"
-    "e.Message.DataHeader\022I\n\rcontractValue\030\002 "
-    "\003(\01322.Micro.Future.Message.Business.PBVa"
-    "luationContract\022\022\n\ndaysRemain\030\003 \001(\005\022\020\n\010i"
-    "nterest\030\004 \001(\001\022\021\n\tportfolio\030\005 \001(\t\"\346\002\n\rPBP"
-    "ositionPnL\0220\n\006header\030\001 \001(\0132 .Micro.Futur"
-    "e.Message.DataHeader\022\020\n\010exchange\030\002 \001(\t\022\020"
-    "\n\010contract\030\003 \001(\t\022\021\n\tportfolio\030\004 \001(\t\022\025\n\rt"
-    "dBuyPosition\030\005 \001(\005\022\025\n\rydBuyPosition\030\006 \001("
-    "\005\022\026\n\016tdSellPosition\030\007 \001(\005\022\026\n\016ydSellPosit"
-    "ion\030\010 \001(\005\022\023\n\013tdBuyAmount\030\t \001(\001\022\024\n\014tdSell"
-    "Amount\030\n \001(\001\022\021\n\tbuyProfit\030\013 \001(\001\022\022\n\nsellP"
-    "rofit\030\014 \001(\001\022\021\n\tlastPrice\030\r \001(\001\022\023\n\013avgBuy"
-    "Price\030\016 \001(\001\022\024\n\014avgSellPrice\030\017 \001(\001b\006proto"
-    "3", 10161);
+    "I\n\rcontractValue\030\002 \003(\01322.Micro.Future.Me"
+    "ssage.Business.PBValuationContract\022\022\n\nda"
+    "ysRemain\030\003 \001(\005\022\020\n\010interest\030\004 \001(\001\022\021\n\tport"
+    "folio\030\005 \001(\t\"\346\002\n\rPBPositionPnL\0220\n\006header\030"
+    "\001 \001(\0132 .Micro.Future.Message.DataHeader\022"
+    "\020\n\010exchange\030\002 \001(\t\022\020\n\010contract\030\003 \001(\t\022\021\n\tp"
+    "ortfolio\030\004 \001(\t\022\025\n\rtdBuyPosition\030\005 \001(\005\022\025\n"
+    "\rydBuyPosition\030\006 \001(\005\022\026\n\016tdSellPosition\030\007"
+    " \001(\005\022\026\n\016ydSellPosition\030\010 \001(\005\022\023\n\013tdBuyAmo"
+    "unt\030\t \001(\001\022\024\n\014tdSellAmount\030\n \001(\001\022\021\n\tbuyPr"
+    "ofit\030\013 \001(\001\022\022\n\nsellProfit\030\014 \001(\001\022\021\n\tlastPr"
+    "ice\030\r \001(\001\022\023\n\013avgBuyPrice\030\016 \001(\001\022\024\n\014avgSel"
+    "lPrice\030\017 \001(\001b\006proto3", 10180);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "businessobj.proto", &protobuf_RegisterTypes);
   PBInstrument::default_instance_ = new PBInstrument();
@@ -22581,6 +22582,7 @@ const int PBAccountInfo::kDeliveryMarginFieldNumber;
 const int PBAccountInfo::kExchangeDeliveryMarginFieldNumber;
 const int PBAccountInfo::kReserveBalanceFieldNumber;
 const int PBAccountInfo::kUserBalanceFieldNumber;
+const int PBAccountInfo::kRiskRatioFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 PBAccountInfo::PBAccountInfo()
@@ -22639,6 +22641,7 @@ void PBAccountInfo::SharedCtor() {
   exchangedeliverymargin_ = 0;
   reservebalance_ = 0;
   userbalance_ = 0;
+  riskratio_ = 0;
 }
 
 PBAccountInfo::~PBAccountInfo() {
@@ -22705,7 +22708,7 @@ void PBAccountInfo::Clear() {
   ZR_(interestbase_, currmargin_);
   ZR_(cashin_, reserve_);
   ZR_(tradingday_, reservebalance_);
-  userbalance_ = 0;
+  ZR_(userbalance_, riskratio_);
 
 #undef ZR_HELPER_
 #undef ZR_
@@ -23214,6 +23217,21 @@ bool PBAccountInfo::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
+        if (input->ExpectTag(273)) goto parse_riskRatio;
+        break;
+      }
+
+      // optional double riskRatio = 34;
+      case 34: {
+        if (tag == 273) {
+         parse_riskRatio:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &riskratio_)));
+
+        } else {
+          goto handle_unusual;
+        }
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -23418,6 +23436,11 @@ void PBAccountInfo::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteDouble(33, this->userbalance(), output);
   }
 
+  // optional double riskRatio = 34;
+  if (this->riskratio() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(34, this->riskratio(), output);
+  }
+
   // @@protoc_insertion_point(serialize_end:Micro.Future.Message.Business.PBAccountInfo)
 }
 
@@ -23603,6 +23626,11 @@ void PBAccountInfo::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(33, this->userbalance(), target);
   }
 
+  // optional double riskRatio = 34;
+  if (this->riskratio() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(34, this->riskratio(), target);
+  }
+
   // @@protoc_insertion_point(serialize_to_array_end:Micro.Future.Message.Business.PBAccountInfo)
   return target;
 }
@@ -23786,6 +23814,11 @@ int PBAccountInfo::ByteSize() const {
     total_size += 2 + 8;
   }
 
+  // optional double riskRatio = 34;
+  if (this->riskratio() != 0) {
+    total_size += 2 + 8;
+  }
+
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = total_size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
@@ -23911,6 +23944,9 @@ void PBAccountInfo::MergeFrom(const PBAccountInfo& from) {
   if (from.userbalance() != 0) {
     set_userbalance(from.userbalance());
   }
+  if (from.riskratio() != 0) {
+    set_riskratio(from.riskratio());
+  }
 }
 
 void PBAccountInfo::CopyFrom(const ::google::protobuf::Message& from) {
@@ -23970,6 +24006,7 @@ void PBAccountInfo::InternalSwap(PBAccountInfo* other) {
   std::swap(exchangedeliverymargin_, other->exchangedeliverymargin_);
   std::swap(reservebalance_, other->reservebalance_);
   std::swap(userbalance_, other->userbalance_);
+  std::swap(riskratio_, other->riskratio_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -24529,6 +24566,20 @@ void PBAccountInfo::clear_userbalance() {
   
   userbalance_ = value;
   // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.userBalance)
+}
+
+// optional double riskRatio = 34;
+void PBAccountInfo::clear_riskratio() {
+  riskratio_ = 0;
+}
+ double PBAccountInfo::riskratio() const {
+  // @@protoc_insertion_point(field_get:Micro.Future.Message.Business.PBAccountInfo.riskRatio)
+  return riskratio_;
+}
+ void PBAccountInfo::set_riskratio(double value) {
+  
+  riskratio_ = value;
+  // @@protoc_insertion_point(field_set:Micro.Future.Message.Business.PBAccountInfo.riskRatio)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

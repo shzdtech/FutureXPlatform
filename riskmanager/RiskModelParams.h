@@ -24,6 +24,7 @@ public:
 	static const std::string __match__;
 	static const std::string __type__;
 	static const std::string __portfolio__;
+	static const std::string RiskRatio;
 };
 
 #endif

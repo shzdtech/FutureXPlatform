@@ -6,3 +6,4 @@ const std::string RiskModelParams::__interval__("__interval__");
 const std::string RiskModelParams::__match__("__match__");
 const std::string RiskModelParams::__type__("__type__");
 const std::string RiskModelParams::__portfolio__("__portfolio__");
+const std::string RiskModelParams::RiskRatio("RiskRatio");

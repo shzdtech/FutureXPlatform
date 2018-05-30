@@ -147,6 +147,7 @@ public:
 	int BuyPosition() const { return YdBuyVolume + TdBuyVolume; }
 	int SellPosition() const { return YdSellVolume + TdSellVolume; }
 	int NetPosition() const { return BuyPosition() - SellPosition(); };
+	int TotalPosition() const { return BuyPosition() + SellPosition(); };
 
 	double BuyAvgPrice() const { return BuyPosition() > 0 ? ((TdBuyAmount / Multiplier + YdBuyVolume * PreSettlementPrice) / BuyPosition()) : 0; }
 	double SellAvgPrice() const { return SellPosition() > 0 ? ((TdSellAmount / Multiplier + YdSellVolume * PreSettlementPrice) / SellPosition()) : 0; }

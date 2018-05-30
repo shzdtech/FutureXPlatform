@@ -7,6 +7,7 @@
 
 #include "RiskModelAlgorithmFactory.h"
 #include "RMNPLModel.h"
+#include "RMACCTModel.h"
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -20,6 +21,8 @@ std::vector<IRiskModelAlgorithm_Ptr> RiskModelAlgorithmFactory::CreateModelAlgor
 	std::vector<IRiskModelAlgorithm_Ptr> ret;
 
 	ret.push_back(std::make_shared<RMNPLModel>());
+		
+	ret.push_back(std::make_shared<RMACCTModel>());
 	
 	return ret;
 }
