@@ -40,7 +40,7 @@ dataobj_ptr CTPQueryPositionDiffer::HandleRequest(const uint32_t serialId, const
 		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 		{
 			autofillmap<std::tuple<std::string, std::string, PositionDirectionType>, std::pair<int, int>> positions;
-			pWorkerProc->ComparePosition(userInfo.getUserId(), positions);
+			pWorkerProc->ComparePosition(userInfo.getUserId(), userInfo.getInvestorId(), positions);
 
 			for (auto& pair : positions)
 			{

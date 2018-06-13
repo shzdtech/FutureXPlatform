@@ -11,6 +11,9 @@
 #include "../message/DefMessageID.h"
 #include "../systemsettings/AppContext.h"
 
+void OTCTradeProcessor::OnTraded(const TradeRecordDO_Ptr& tradeDO)
+{
+}
 
 bool OTCTradeProcessor::Dispose(void)
 {

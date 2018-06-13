@@ -22,8 +22,8 @@ class OTCSERVER_CLASS_EXPORT OTCTradeWorkerProcessor : public OTCTradeProcessor
 public:
 	OTCTradeWorkerProcessor(const IPricingDataContext_Ptr& pricingCtx);
 
-	virtual void TriggerHedgeOrderUpdating(const PortfolioKey& portfolioKey, const OTCTradeProcessor_Ptr& processor_ptr = nullptr) = 0;
-	virtual void TriggerAutoOrderUpdating(const UserContractKey& strategyKey, const OTCTradeProcessor_Ptr& processor_ptr = nullptr) = 0;
+	virtual void TriggerHedgeOrderUpdating(const PortfolioKey& portfolioKey, const IOrderAPI_Ptr& orderAPI_ptr = nullptr) = 0;
+	virtual void TriggerAutoOrderUpdating(const UserContractKey& strategyKey, const IOrderAPI_Ptr& orderAPI_ptr = nullptr) = 0;
 
 	virtual void TriggerOTCOrderUpdating(const StrategyContractDO& strategyDO);
 

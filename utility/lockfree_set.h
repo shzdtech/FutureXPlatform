@@ -16,7 +16,7 @@ class lockfree_set
 public:
 	typedef std::unordered_set<Key, Hash, Pred, Alloc> _MySet;
 
-	lockfree_set() { _opState.clear(); }
+	lockfree_set() = default;
 
 	void emplace(Key&& value)
 	{

@@ -30,6 +30,11 @@ CTPProcessor::CTPProcessor()
 	 DataLoadMask = NO_DATA_LOADED;
  }
 
+ void CTPProcessor::setRawAPI_Ptr(const CTPRawAPI_Ptr & rawAPI)
+ {
+	 _rawAPI = rawAPI;
+ }
+
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPProcessor::getRawAPI()
 // Purpose:    Implementation of CTPProcessor::getRawAPI()
@@ -49,11 +54,6 @@ IRawAPI* CTPProcessor::getRawAPI(void)
 
 void CTPProcessor::Initialize(IServerContext* serverCtx)
 {
-}
-
-bool CTPProcessor::CreateCTPAPI(const std::string& flowId, const std::string& serverAddr)
-{
-	return false;
 }
 
 CTPRawAPI_Ptr& CTPProcessor::RawAPI_Ptr(void)

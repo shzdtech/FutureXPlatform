@@ -20,11 +20,14 @@ class MESSAGE_CLASS_EXPORT TemplateMessageProcessor : public MessageProcessor
 public:
 	virtual dataobj_ptr ProcessRequest(const uint32_t msgId, const uint32_t serialId, const dataobj_ptr& reqDO, bool sendRsp);
 	virtual dataobj_ptr ProcessResponse(const uint32_t msgId, const uint32_t serialId, param_vector& rawRespParamsconst, bool sendRsp);
+	virtual data_buffer Deserialize(const uint32_t msgId, const uint32_t serialId, const dataobj_ptr& dataobj);
+	virtual data_buffer DeserializeException(uint32_t msgId, uint32_t serialId, const MessageException & msgException);
 	virtual int SendDataObject(const ISession_Ptr& session, const uint32_t msgId, const uint32_t serialId, const dataobj_ptr& dataobj);
+	virtual int SendDataObject(const ISession_Ptr& session, const uint32_t msgId, const data_buffer& msg);
+	virtual void SendExceptionMessage(const ISession_Ptr& session, const uint32_t msgId, uint32_t serialId, const MessageException& msgException);
 
 	int OnRequest(const uint32_t msgId, const data_buffer& msg);
 	int OnResponse(const uint32_t msgId, const uint32_t serailId, param_vector& rawRespParams);
-	void SendExceptionMessage(const uint32_t msgId, MessageException& msgException, uint32_t serialId);
 
 protected:
 

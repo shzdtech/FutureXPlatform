@@ -14,8 +14,17 @@ public:
 	virtual ModelKeyMap GetPostTradeUserModel(const PortfolioKey& portfolioID);
 	virtual ModelKeyMap InsertPostTradeUserModel(const PortfolioKey& portfolioID, const std::string& instanceName);
 
+	virtual ModelKeyMap GetPreTradeAccountModel(const std::string& userID);
+	virtual ModelKeyMap InsertPreTradeAccountModel(const std::string& userID, const std::string& instanceName);
+
+	virtual ModelKeyMap GetPostTradeAccountModel(const std::string& userID);
+	virtual ModelKeyMap InsertPostTradeAccountModel(const std::string& userID, const std::string& instanceName);
+
 private:
 	PortfolioModelKeyMap _preTradeUserModels;
 	PortfolioModelKeyMap _postTradeUserModels;
+
+	AccountModelKeyMap _preTradeAccountModels;
+	AccountModelKeyMap _postTradeAccountModels;
 };
 

@@ -162,7 +162,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Attribute_Key.h" />
     <ClInclude Include="CTPAddManualTrade.h" />
     <ClInclude Include="CTPAPISwitch.h" />
     <ClInclude Include="CTPQueryPositionPnL.h" />
@@ -210,6 +209,7 @@
     <ClInclude Include="CTPQueryAccountInfo.h" />
     <ClInclude Include="CTPTradeUpdated.h" />
     <ClInclude Include="CTPTradeWorkerProcessor.h" />
+    <ClInclude Include="CTPTradeWorkerProcessorBase.h" />
     <ClInclude Include="CTPTradeWorkerSAProcessor.h" />
     <ClInclude Include="CTPTransferUpdated.h" />
     <ClInclude Include="CTPUnsubMarketData.h" />
@@ -268,6 +268,7 @@
     <ClCompile Include="CTPQueryAccountInfo.cpp" />
     <ClCompile Include="CTPTradeUpdated.cpp" />
     <ClCompile Include="CTPTradeWorkerProcessor.cpp" />
+    <ClCompile Include="CTPTradeWorkerProcessorBase.cpp" />
     <ClCompile Include="CTPTradeWorkerSAProcessor.cpp" />
     <ClCompile Include="CTPTransferUpdated.cpp" />
     <ClCompile Include="CTPUnsubMarketData.cpp" />

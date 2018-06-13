@@ -23,16 +23,13 @@ public:
 	virtual OrderDO_Ptr OTCCancelOrder(OrderRequestDO& orderReq);
 	virtual OrderDO_Ptr CancelAutoOrder(const UserContractKey& userContractKey);
 	virtual OrderDO_Ptr CancelHedgeOrder(const PortfolioKey& portfolioKey);
+	virtual void OnTraded(const TradeRecordDO_Ptr & tradeDO);
+	virtual bool Dispose(void);
 
 	virtual OTCOrderManager& GetOTCOrderManager(void) = 0;
 	virtual AutoOrderManager& GetAutoOrderManager(void) = 0;
 	virtual HedgeOrderManager& GetHedgeOrderManager(void) = 0;
-
-	virtual bool Dispose(void);
-
 private:
-
-
 };
 
 typedef std::shared_ptr<OTCTradeProcessor> OTCTradeProcessor_Ptr;

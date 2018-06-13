@@ -14,7 +14,8 @@
 #include "../dataobject/TypedefDO.h"
 #include "ctpexport.h"
 
-class CTP_CLASS_EXPORT CTPMarketDataSAProcessor : public MessageWorkerProcessor, public CTPMarketDataProcessor {
+class CTP_CLASS_EXPORT CTPMarketDataSAProcessor : public MessageWorkerProcessor, public CTPMarketDataProcessor 
+{
 public:
 	CTPMarketDataSAProcessor(IServerContext* pServerCtx, MarketDataDOMap* pMktDataDOMap);
 	~CTPMarketDataSAProcessor();
@@ -25,6 +26,7 @@ public:
 	int LoginSystemUserIfNeed(void);
 	virtual int ResubMarketData();
 	virtual void DispatchUserMessage(int msgId, int serialId, const std::string& userId, const dataobj_ptr& dataobj_ptr);
+	virtual void DispatchUserExceptionMessage(int msgId, int serialId, const std::string& userId, const MessageException& msgExcept);
 	MarketDataDOMap& GetMarketDataMap();
 
 public:

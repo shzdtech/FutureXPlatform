@@ -11,18 +11,18 @@
 #include <set>
 #include <list>
 #include "CTPOTCTradeWorkerProcessor.h"
-#include "../ordermanager/OTCOrderManager.h"
 #include "../CTPServer/CTPMarketDataSAProcessor.h"
+#include "../ordermanager/OTCOrderManager.h"
 #include "../dataobject/TypedefDO.h"
 #include "../OTCServer/OTCWorkerProcessor.h"
 
 #include "../message/SessionContainer.h"
 #include "ctpotc_export.h"
 
-class CTP_OTC_CLASS_EXPORT CTPOTCWorkerProcessor : public OTCWorkerProcessor, public CTPMarketDataSAProcessor
+class CTP_OTC_CLASS_EXPORT CTPOTCWorkerProcessor : public CTPMarketDataSAProcessor, public OTCWorkerProcessor
 {
 public:
-	CTPOTCWorkerProcessor(IServerContext* pServerCtx, const std::shared_ptr<CTPOTCTradeWorkerProcessor>& CTPOTCTradeWorkerProcessorPtr);
+	CTPOTCWorkerProcessor(IServerContext* pServerCtx, const CTPOTCTradeWorkerProcessorBase_Ptr& CTPOTCTradeWorkerProcessorPtr);
 
 	~CTPOTCWorkerProcessor();
 
@@ -40,12 +40,10 @@ public:
 
 	OTCTradeWorkerProcessor* GetOTCTradeWorkerProcessor();
 
-	CTPOTCTradeWorkerProcessor* GetCTPOTCTradeWorkerProcessor();
-
 	int ResubMarketData(void);
 
 protected:
-	std::shared_ptr<CTPOTCTradeWorkerProcessor> _CTPOTCTradeWorkerProcessorPtr;
+	CTPOTCTradeWorkerProcessorBase_Ptr _CTPOTCTradeWorkerProcessorPtr;
 	std::future<void> _initializer;
 	std::set<ContractKey> _subedContracts;
 	UserInfo _systemUser;

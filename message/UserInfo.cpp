@@ -53,7 +53,7 @@ void UserInfo::setAttribute(const std::string& key, const attribute_ptr& value)
 	_attributes[key] = value;
 }
 
-const std::string & UserInfo::getBrokerInvestorId(void) const
+const std::string UserInfo::getBrokerInvestorId(void) const
 {
 	return _brokerId + _investorId;
 }

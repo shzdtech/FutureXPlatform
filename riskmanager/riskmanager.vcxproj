@@ -163,6 +163,7 @@
     <ClInclude Include="riskmanager_exp.h" />
     <ClInclude Include="RiskModelBase.h" />
     <ClInclude Include="RiskModelParams.h" />
+    <ClInclude Include="RiskUtil.h" />
     <ClInclude Include="RMACCTModel.h" />
     <ClInclude Include="RMNPLModel.h" />
   </ItemGroup>
@@ -172,6 +173,7 @@
     <ClCompile Include="RiskModelAlgorithmManager.cpp" />
     <ClCompile Include="RiskModelBase.cpp" />
     <ClCompile Include="RiskModelParams.cpp" />
+    <ClCompile Include="RiskUtil.cpp" />
     <ClCompile Include="RMACCTModel.cpp" />
     <ClCompile Include="RMNPLModel.cpp" />
   </ItemGroup>

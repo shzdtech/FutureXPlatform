@@ -36,9 +36,9 @@ public:
 	MessageException() :
 		std::exception("") {}
 
-	int ErrorCode(void) { return _errorcode; };
+	int ErrorCode(void) const { return _errorcode; };
 
-	int ErrorType(void) { return _errortype; };
+	int ErrorType(void) const  { return _errortype; };
 
 protected:
 

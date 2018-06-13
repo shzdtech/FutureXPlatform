@@ -20,7 +20,7 @@ dataobj_ptr CTPOTCQueryValuationRisk::HandleRequest(const uint32_t serialId, con
 
 	auto ret = std::make_shared<VectorDO<RiskDO>>();
 
-	if (auto pOTCTradeProc = MessageUtility::WorkerProcessorPtr<CTPOTCTradeWorkerProcessor>(msgProcessor))
+	if (auto pOTCTradeProc = MessageUtility::WorkerProcessorPtr<CTPOTCTradeWorkerProcessorBase>(msgProcessor))
 	{
 		UnderlyingRiskMap riskMap;
 

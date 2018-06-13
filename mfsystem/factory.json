@@ -16,7 +16,6 @@
         "class.uuid": "factory.singleaccount.ctp.marketdata.service",
         "params": {
           "product_type": "0;1;2",
-
           "TARGET.MD.CFG": "f:9999:sim:pri:md",
           "TARGET.MDAM.CFG": "f:9999:sim:am:md"
         }
@@ -28,28 +27,14 @@
         "params": {
           "product_type": "0;1;2",
           "save_contract": "true",
+          "logout_dataloaded": "true",
           "SAVE.TRADE": "true",
-
           "TARGET.TD.CFG": "f:9999:sim:pri:td",
           "TARGET.TDAM.CFG": "f:9999:sim:pri:td"
         }
       }
     },
     "otc": {
-      "option": {
-        "module.uuid": "com.micro.future.ctp.otc.dll",
-        "module.path": "CTPOTCServer.dll",
-        "class.uuid": "factory.otc.option",
-        "params": {
-          "tradeworker": "ctp.otc.option.tradeworker",
-          "strategy_producttype": "0;1;9",
-
-          "TARGET.MD.CFG": "f:9999:sim:pri:md",
-          "TARGET.MDAM.CFG": "f:9999:sim:am:md",
-          "TARGET.TD.CFG": "f:9999:sim:pri:td",
-          "TARGET.TDAM.CFG": "f:9999:sim:pri:td"
-        }
-      },
       "option_trade": {
         "module.uuid": "com.micro.future.ctp.otc.dll",
         "module.path": "CTPOTCServer.dll",
@@ -57,34 +42,20 @@
         "params": {
           "product_type": "0;1;2",
           "tradeworker": "ctp.otc.option.tradeworker",
-
+          "logout_dataloaded": "true",
           "TARGET.TD.CFG": "f:9999:sim:pri:td",
           "TARGET.TDAM.CFG": "f:9999:sim:pri:td"
         }
-      }
-    },
-    "cts": {
-      "client": {
-        "module.uuid": "com.micro.future.cts.dll",
-        "module.path": "CTSServer.dll",
-        "class.uuid": "factory.cts.service",
+      },
+      "option": {
+        "module.uuid": "com.micro.future.ctp.otc.dll",
+        "module.path": "CTPOTCServer.dll",
+        "class.uuid": "factory.otc.option",
         "params": {
-        }
-      }
-    },
-    "testing": {
-      "sim": {
-        "module.uuid": "com.micro.future.testing.dll",
-        "module.path": "TestingServer.dll",
-        "class.uuid": "factory.testing.sim.service",
-        "mdInterval": "3000",
-        "params": {
-          "load_workprocessor": "true",
-          "logout_dataloaded": "true",
-          "//CTP.TRADER.SERVER": "tcp://ctpfz1-front3.citicsf.com:51205",
-          "//CTP.TRADER.LOGIN.BROKERID": "6000",
-          "//CTP.TRADER.LOGIN.USERID": "01301321",
-          "//CTP.TRADER.LOGIN.PASSWORD": "123456"
+          "tradeworker": "ctp.otc.option.tradeworker",
+          "strategy_producttype": "0;1;9",
+          "TARGET.MD.CFG": "f:9999:sim:pri:md",
+          "TARGET.MDAM.CFG": "f:9999:sim:am:md"
         }
       }
     }

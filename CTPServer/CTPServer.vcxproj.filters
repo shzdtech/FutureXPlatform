@@ -120,9 +120,6 @@
     <ClInclude Include="CTPCancelOrder.h">
       <Filter>头文件\CTPHandler\Trader</Filter>
     </ClInclude>
-    <ClInclude Include="Attribute_Key.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -221,6 +218,9 @@
     </ClInclude>
     <ClInclude Include="CTPQueryPositionPnL.h">
       <Filter>头文件\CTPHandler\Trader</Filter>
+    </ClInclude>
+    <ClInclude Include="CTPTradeWorkerProcessorBase.h">
+      <Filter>头文件\CTPHandler\SharedAccount</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -370,6 +370,9 @@
     </ClCompile>
     <ClCompile Include="CTPQueryPositionPnL.cpp">
       <Filter>源文件\CTPHandler\Trader</Filter>
+    </ClCompile>
+    <ClCompile Include="CTPTradeWorkerProcessorBase.cpp">
+      <Filter>源文件\CTPHandler\SharedAccount</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

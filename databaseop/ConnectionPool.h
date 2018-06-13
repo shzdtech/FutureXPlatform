@@ -72,7 +72,8 @@ public:
 		{
 			if (_pos >= 0)
 			{
-				_pool->release(_pos);
+				if(_pool)
+					_pool->release(_pos);
 				_pos = -1;
 			}
 		}

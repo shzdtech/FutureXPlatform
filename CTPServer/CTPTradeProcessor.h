@@ -18,7 +18,7 @@ public:
 	CTPTradeProcessor();
 	CTPTradeProcessor(const CTPRawAPI_Ptr& rawAPI);
 	virtual ~CTPTradeProcessor();
-	virtual bool CreateCTPAPI(const std::string& flowId, const std::string& serverAddr);
+	virtual bool CreateCTPAPI(CThostFtdcTraderSpi *pSpi, const std::string& flowId, const std::string& serverAddr);
 	bool OnSessionClosing(void);
 
 	void QueryUserPositionAsyncIfNeed();

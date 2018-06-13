@@ -19,11 +19,9 @@
  // Return:     int
  ////////////////////////////////////////////////////////////////////////
 
-std::shared_ptr<UserInfoDO> CTPMDLoginHandler::LoginFromServer(const IMessageProcessor_Ptr& msgProcessor,
+std::shared_ptr<UserInfoDO> CTPMDLoginHandler::LoginFromServer(const CTPProcessor_Ptr& msgProcessor,
 	const std::shared_ptr<UserInfoDO> & userInfoDO_Ptr, uint requestId, const std::string& serverName)
 {
-	auto pProcessor = (CTPProcessor*)msgProcessor.get();
-
 	/*if (!msgProcessor->getServerContext()->getConfigVal(CTP_MD_SERVER, address))
 	{
 		std::string server = serverName.empty() ? brokerId + ':' + ExchangeRouterTable::TARGET_MD : serverName;
@@ -37,16 +35,18 @@ std::shared_ptr<UserInfoDO> CTPMDLoginHandler::LoginFromServer(const IMessagePro
 	ExchangeRouterDO exDO;
 	ExchangeRouterTable::TryFind(server, exDO);
 
-	pProcessor->CreateCTPAPI(exDO.UserID, exDO.Address);
+	auto mktProc_Ptr = std::static_pointer_cast<CTPMarketDataProcessor>(msgProcessor);
 
-	auto& userInfo = pProcessor->getMessageSession()->getUserInfo();
+	mktProc_Ptr->CreateCTPAPI(mktProc_Ptr.get(), exDO.UserID, exDO.Address);
+
+	auto& userInfo = msgProcessor->getMessageSession()->getUserInfo();
 
 	CThostFtdcReqUserLoginField req{};
 	std::strncpy(req.BrokerID, exDO.BrokeID.data(), sizeof(req.BrokerID));
 	std::strncpy(req.UserID, userInfo.getInvestorId().data(), sizeof(req.UserID));
 	std::strncpy(req.Password, userInfo.getPassword().data(), sizeof(req.Password));
 	// std::strcpy(req.UserProductInfo, UUID_MICROFUTURE_CTP)
-	int ret = pProcessor->RawAPI_Ptr()->MdAPIProxy()->get()->ReqUserLogin(&req, requestId);
+	int ret = msgProcessor->RawAPI_Ptr()->MdAPIProxy()->get()->ReqUserLogin(&req, requestId);
 
 	// try after market server
 	if (ret == -1)
@@ -54,8 +54,8 @@ std::shared_ptr<UserInfoDO> CTPMDLoginHandler::LoginFromServer(const IMessagePro
 		msgProcessor->getServerContext()->getConfigVal(ExchangeRouterTable::TARGET_MD_AM, server);
 		if (ExchangeRouterTable::TryFind(server, exDO))
 		{
-			pProcessor->CreateCTPAPI(exDO.UserID, exDO.Address);
-			ret = pProcessor->RawAPI_Ptr()->MdAPIProxy()->get()->ReqUserLogin(&req, requestId);
+			mktProc_Ptr->CreateCTPAPI(mktProc_Ptr.get(), exDO.UserID, exDO.Address);
+			ret = msgProcessor->RawAPI_Ptr()->MdAPIProxy()->get()->ReqUserLogin(&req, requestId);
 		}
 	}
 

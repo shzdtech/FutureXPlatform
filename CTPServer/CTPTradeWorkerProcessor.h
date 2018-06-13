@@ -9,7 +9,8 @@
 #define __CTPServer_CTPTradeWorkerProcessor_h
 
 #include "CTPTradeProcessor.h"
-#include "../message/MessageWorkerProcessor.h"
+#include "CTPTradeWorkerSAProcessor.h"
+#include "CTPTradeWorkerProcessorBase.h"
 #include "../ordermanager/IOrderAPI.h"
 #include "../ordermanager/UserOrderContext.h"
 #include "../ordermanager/UserTradeContext.h"
@@ -27,100 +28,38 @@
 
 #include "ctpexport.h"
 
-class CTP_CLASS_EXPORT CTPTradeWorkerProcessor : public MessageWorkerProcessor, public CTPTradeProcessor, public IManualOp
+class CTP_CLASS_EXPORT CTPTradeWorkerProcessor : public CTPTradeWorkerProcessorBase, public CTPTradeProcessor
 {
 public:
 	CTPTradeWorkerProcessor(IServerContext* pServerCtx, const IUserPositionContext_Ptr& positionCtx = nullptr);
 	~CTPTradeWorkerProcessor();
 
-	virtual void OnNewManualTrade(const TradeRecordDO& tradeDO);
-	virtual void OnUpdateManualPosition(const UserPositionExDO& positionDO);
-	virtual void OnUpdateMarketData(const MarketDataDO& mdDO);
-
 	virtual void Initialize(IServerContext* pServerCtx);
+
+
 	virtual int RequestData(void);
 	virtual int LoginSystemUser(void);
 	virtual int LoginSystemUserIfNeed(void);
+	virtual int LogoutSystemUser(void);
 	virtual int LoadContractFromDB(void);
-	virtual int LoadDataAsync(void);
-	virtual void OnDataLoaded(void);
+	virtual int& GetDataLoadMask(void);
+	virtual TemplateMessageProcessor* GetTemplateProcessor(void);
+	virtual IServerContext* getServerContext(void);
 
-	virtual void DispatchUserMessage(int msgId, int serialId, const std::string& userId, const dataobj_ptr& dataobj_ptr);
-	virtual void DispatchMessageForAll(int msgId, int serialId, const dataobj_ptr & dataobj_ptr);
-	virtual AccountInfoDO_Ptr GetAccountInfo(const std::string& userId);
-	virtual void UpdateAccountInfo(const std::string& userId, const AccountInfoDO_Ptr& accoutInfo);
-	virtual std::set<ExchangeDO>& GetExchangeInfo();
-	virtual IUserPositionContext_Ptr& GetUserPositionContext();
-	virtual UserTradeContext& GetUserTradeContext();
-	virtual UserOrderContext& GetUserOrderContext();
-	virtual std::set<ProductType>& GetProductTypeToLoad();
-	//virtual UserOrderContext& GetUserErrOrderContext(void);
-
-	int ComparePosition(const std::string& userId, autofillmap<std::tuple<std::string, std::string, PositionDirectionType>, std::pair<int, int>>& positions);
+	virtual CTPTradeWorkerSAProcessor_Ptr CreateSAProcessor();
+	virtual void LoginUserSession(const CTPProcessor_Ptr& sessionPtr, 
+		const std::string & brokerId, const std::string & investorId, const std::string & password, const std::string & serverName = "");
+	void UpdateSharedUserInfo(const std::string& investorId, const CTPTradeWorkerSAProcessor_Ptr& proc_ptr);
+	bool IsUserLogged(const std::string & userId);
 
 	virtual TradeRecordDO_Ptr RefineTrade(CThostFtdcTradeField * pTrade);
-
-	virtual UserPositionExDO_Ptr UpdatePosition(const TradeRecordDO_Ptr& trdDO_Ptr);
-
 	virtual OrderDO_Ptr CTPTradeWorkerProcessor::RefineOrder(CThostFtdcOrderField *pOrder);
-
-	void LoadPositonFromDatabase(const std::string & userId, const std::string& tradingday);
-
-	void UpdateSysYdPosition(const std::string & userId, const UserPositionExDO_Ptr & position_ptr);
-
-	UserPositionExDO_Ptr FindDBYdPostion(const std::string& userid, const std::string& contract, const std::string& portfolio, PositionDirectionType direction);
-
-	UserPositionExDO_Ptr FindSysYdPostion(const std::string& userid, const std::string& contract, PositionDirectionType direction);
-
-	MarketDataDOMap* GetMarketDataDOMap();
-
-	void PushToLogQueue(const TradeRecordDO_Ptr& tradeDO_Ptr);
-
-	void LogTrade();
 
 	void QueryAccountWorker();
 
-	bool IsLoadPositionFromDB();
-
-	bool IsSaveTrade();
-
-	int CheckRisk(const OrderRequestDO& orderReq);
-
-	int RetryInterval = 30000;
-	int RetryTimes = 10;
-
 protected:
-	std::string _authCode;
-	std::string _productInfo;
-
-	std::mutex _loginMutex;
-	std::set<ExchangeDO> _exchangeInfo_Set;
-	IUserPositionContext_Ptr _userPositionCtx_Ptr;
-	UserTradeContext _userTradeCtx;
-	UserOrderContext _userOrderCtx;
-	MarketDataDOMap* _pMktDataMap;
-
-	//UserOrderContext _userErrOrderCtx;
-	std::set<ProductType> _productTypes;
-
-	std::future<void> _initializer;
-
-	cuckoohash_map<std::string, AccountInfoDO_Ptr> _accountInfoMap;
-
-	typedef cuckoohashmap_wrapper<std::tuple<std::string, std::string, PositionDirectionType>, UserPositionExDO_Ptr, 
-		std::hash<std::tuple<std::string, std::string, PositionDirectionType>>> Position_HashMap;
-
-	typedef cuckoohashmap_wrapper<std::pair<std::string, PositionDirectionType>, UserPositionExDO_Ptr,
-		pairhash<std::string, PositionDirectionType>> SysPosition_HashMap;
-
-	cuckoohash_map<std::string, Position_HashMap> _ydDBPositions;
-	cuckoohash_map<std::string, SysPosition_HashMap> _ydSysPositions;
-
-	bool _loadPositionFromDB = false;
-
-	bool _logTrades = false;
-	std::future<void> _tradeDBSerializer;
-	lockfree_queue<TradeRecordDO_Ptr> _tradeQueue;
+	cuckoohash_map<std::string, CTPTradeWorkerSAProcessor_Ptr> _sharedProcHub;
+	SessionContainer_Ptr<std::string> _sharedSystemSessionHub;
 
 	bool _isQueryAccount = true;
 	std::future<void> _accountQuery;
@@ -157,6 +96,8 @@ public:
 
 	///请求查询投资者持仓响应
 	virtual void OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+
+	virtual void OnRspQryTradingAccount(CThostFtdcTradingAccountField * pTradingAccount, CThostFtdcRspInfoField * pRspInfo, int nRequestID, bool bIsLast);
 };
 
 #endif

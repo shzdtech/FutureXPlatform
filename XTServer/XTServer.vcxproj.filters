@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="头文件\handler">
+      <UniqueIdentifier>{6f9d640d-2ed2-4e9b-8939-4f8c46f31f49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\handler">
+      <UniqueIdentifier>{08c040d0-29b9-4bf5-949c-56abc02a4b61}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="XTUtility.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xt_bizhandlers.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xt_export.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="XTConstant.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="XTMapping.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="XTOTCOptionServiceFactory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="XTOTCTradeProcessor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="XTOTCTradeServiceFactory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="XTOTCTradeWorkerProcessor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="XTTradeProcessor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="XTTradeServiceFactory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="XTTradeWorkerProcessor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="XTCancelOrder.h">
+      <Filter>头文件\handler</Filter>
+    </ClInclude>
+    <ClInclude Include="XTNewOrder.h">
+      <Filter>头文件\handler</Filter>
+    </ClInclude>
+    <ClInclude Include="XTOrderUpdated.h">
+      <Filter>头文件\handler</Filter>
+    </ClInclude>
+    <ClInclude Include="XTOTCTradeLoginHandler.h">
+      <Filter>头文件\handler</Filter>
+    </ClInclude>
+    <ClInclude Include="XTQueryAccountInfo.h">
+      <Filter>头文件\handler</Filter>
+    </ClInclude>
+    <ClInclude Include="XTQueryOrder.h">
+      <Filter>头文件\handler</Filter>
+    </ClInclude>
+    <ClInclude Include="XTQueryPosition.h">
+      <Filter>头文件\handler</Filter>
+    </ClInclude>
+    <ClInclude Include="XTQueryTrade.h">
+      <Filter>头文件\handler</Filter>
+    </ClInclude>
+    <ClInclude Include="XTTradeLoginHandler.h">
+      <Filter>头文件\handler</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="XTUtility.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xt_export.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="XTOTCOptionServiceFactory.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="XTOTCTradeProcessor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="XTOTCTradeServiceFactory.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="XTOTCTradeWorkerProcessor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="XTTradeProcessor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="XTTradeServiceFactory.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="XTTradeWorkerProcessor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="XTNewOrder.cpp">
+      <Filter>源文件\handler</Filter>
+    </ClCompile>
+    <ClCompile Include="XTCancelOrder.cpp">
+      <Filter>源文件\handler</Filter>
+    </ClCompile>
+    <ClCompile Include="XTOrderUpdated.cpp">
+      <Filter>源文件\handler</Filter>
+    </ClCompile>
+    <ClCompile Include="XTOTCTradeLoginHandler.cpp">
+      <Filter>源文件\handler</Filter>
+    </ClCompile>
+    <ClCompile Include="XTQueryAccountInfo.cpp">
+      <Filter>源文件\handler</Filter>
+    </ClCompile>
+    <ClCompile Include="XTQueryOrder.cpp">
+      <Filter>源文件\handler</Filter>
+    </ClCompile>
+    <ClCompile Include="XTQueryPosition.cpp">
+      <Filter>源文件\handler</Filter>
+    </ClCompile>
+    <ClCompile Include="XTQueryTrade.cpp">
+      <Filter>源文件\handler</Filter>
+    </ClCompile>
+    <ClCompile Include="XTTradeLoginHandler.cpp">
+      <Filter>源文件\handler</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

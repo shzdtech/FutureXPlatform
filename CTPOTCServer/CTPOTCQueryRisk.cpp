@@ -22,7 +22,7 @@ dataobj_ptr CTPOTCQueryRisk::HandleRequest(const uint32_t serialId, const dataob
 
 	if (!stdo->empty())
 	{
-		if (auto pOTCTradeProc = MessageUtility::WorkerProcessorPtr<CTPOTCTradeWorkerProcessor>(msgProcessor))
+		if (auto pOTCTradeProc = MessageUtility::WorkerProcessorPtr<CTPOTCTradeWorkerProcessorBase>(msgProcessor))
 		{
 			UnderlyingRiskMap riskMap;
 

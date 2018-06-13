@@ -58,5 +58,6 @@ typedef VectorDO<ContractKey> ContractList;
 
 typedef cuckoohashmap_wrapper<ModelKey, bool, ModelKeyHash> ModelKeyMap;
 typedef cuckoohash_map<PortfolioKey, ModelKeyMap, PortfolioKeyHash> PortfolioModelKeyMap;
+typedef cuckoohash_map<std::string, ModelKeyMap> AccountModelKeyMap;
 
 #endif

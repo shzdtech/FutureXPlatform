@@ -191,8 +191,10 @@
     <ClCompile Include="CTPOTCServiceFactory.cpp" />
     <ClCompile Include="CTPOTCTradeLoginHandler.cpp" />
     <ClCompile Include="CTPOTCTradeProcessor.cpp" />
+    <ClCompile Include="CTPOTCTradeSAProcessor.cpp" />
     <ClCompile Include="CTPOTCTradeServiceFactory.cpp" />
     <ClCompile Include="CTPOTCTradeWorkerProcessor.cpp" />
+    <ClCompile Include="CTPOTCTradeWorkerProcessorBase.cpp" />
     <ClCompile Include="CTPOTCWorkerProcessor.cpp" />
     <ClCompile Include="ctpotc_export.cpp" />
     <ClCompile Include="CTPSimMarketData.cpp" />
@@ -207,7 +209,9 @@
     <ClInclude Include="CTPOTCTradeProcessor.h" />
     <ClInclude Include="CTPOTCSessionProcessor.h" />
     <ClInclude Include="CTPOTCServiceFactory.h" />
+    <ClInclude Include="CTPOTCTradeSAProcessor.h" />
     <ClInclude Include="CTPOTCTradeServiceFactory.h" />
+    <ClInclude Include="CTPOTCTradeWorkerProcessorBase.h" />
     <ClInclude Include="CTPOTCWorkerProcessor.h" />
     <ClInclude Include="ctpotc_bizhandlers.h" />
     <ClInclude Include="ctpotc_export.h" />
@@ -249,6 +253,9 @@
     </ProjectReference>
     <ProjectReference Include="..\pricingengine\pricingengine.vcxproj">
       <Project>{001a89a1-70d7-4a9b-a7b2-82d0be1ba07c}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\riskmanager\riskmanager.vcxproj">
+      <Project>{4117bc7e-4bfb-47a1-af10-99edf804fe09}</Project>
     </ProjectReference>
     <ProjectReference Include="..\systemsettings\systemsettings.vcxproj">
       <Project>{b2408e62-da0a-4f39-8257-b9c33d09bd03}</Project>

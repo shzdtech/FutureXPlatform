@@ -9,6 +9,7 @@
 #define __ordermanager_IOrderAPI_h
 
 #include "../dataobject/OrderDO.h"
+#include <memory>
 
 class IOrderAPI
 {
@@ -21,5 +22,7 @@ protected:
 private:
 
 };
+
+typedef std::shared_ptr<IOrderAPI> IOrderAPI_Ptr;
 
 #endif

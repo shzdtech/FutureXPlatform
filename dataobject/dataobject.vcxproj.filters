@@ -147,6 +147,9 @@
     <ClInclude Include="ModelParamDefDO.h">
       <Filter>头文件\system</Filter>
     </ClInclude>
+    <ClInclude Include="SysEnums.h">
+      <Filter>头文件\common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

@@ -267,36 +267,38 @@ const std::map<std::string, double>& WingsVolatilityModel::DefaultParams(void) c
 
 void WingsVolatilityModel::ParseParams(const std::map<std::string, double>& modelParams, std::unique_ptr<ParamsBase>& target)
 {
-	auto ret = std::make_unique<WingsParams>();
-	ret->alpha = modelParams.at(WingsParams::PARAM_ALPHA);
-	ret->ssr = modelParams.at(WingsParams::PARAM_SSR);
-	ret->f_ref = modelParams.at(WingsParams::PARAM_F_REF);
+	if (!target)
+		target = std::make_unique<WingsParams>();
 
-	ret->scr = modelParams.at(WingsParams::PARAM_SCR);
-	ret->vcr = modelParams.at(WingsParams::PARAM_VCR);
-	ret->vol_ref = modelParams.at(WingsParams::PARAM_VOL_REF);
-	ret->slope_ref = modelParams.at(WingsParams::PARAM_SLOPE_REF);
-	ret->dn_cf = modelParams.at(WingsParams::PARAM_DN_CF);
-	ret->up_cf = modelParams.at(WingsParams::PARAM_UP_CF);
-	ret->dn_sm = modelParams.at(WingsParams::PARAM_DN_SM);
-	ret->up_sm = modelParams.at(WingsParams::PARAM_UP_SM);
-	ret->put_curv = modelParams.at(WingsParams::PARAM_PUT_CURV);
-	ret->call_curv = modelParams.at(WingsParams::PARAM_CALL_CURV);
-	ret->dn_slope = modelParams.at(WingsParams::PARAM_DN_SLOPE);
-	ret->up_slope = modelParams.at(WingsParams::PARAM_UP_SLOPE);
+	auto pParam = (WingsParams*)target.get();
 
-	ret->scr_offset = modelParams.at(WingsParams::PARAM_SCR_OFFSET);
-	ret->vcr_offset = modelParams.at(WingsParams::PARAM_VCR_OFFSET);
-	ret->vol_ref_offset = modelParams.at(WingsParams::PARAM_VOL_REF_OFFSET);
-	ret->slope_ref_offset = modelParams.at(WingsParams::PARAM_SLOPE_REF_OFFSET);
-	ret->dn_cf_offset = modelParams.at(WingsParams::PARAM_DN_CF_OFFSET);
-	ret->up_cf_offset = modelParams.at(WingsParams::PARAM_UP_CF_OFFSET);
-	ret->dn_sm_offset = modelParams.at(WingsParams::PARAM_DN_SM_OFFSET);
-	ret->up_sm_offset = modelParams.at(WingsParams::PARAM_UP_SM_OFFSET);
-	ret->put_curv_offset = modelParams.at(WingsParams::PARAM_PUT_CURV_OFFSET);
-	ret->call_curv_offset = modelParams.at(WingsParams::PARAM_CALL_CURV_OFFSET);
-	ret->dn_slope_offset = modelParams.at(WingsParams::PARAM_DN_SLOPE_OFFSET);
-	ret->up_slope_offset = modelParams.at(WingsParams::PARAM_UP_SLOPE_OFFSET);
+	pParam->alpha = modelParams.at(WingsParams::PARAM_ALPHA);
+	pParam->ssr = modelParams.at(WingsParams::PARAM_SSR);
+	pParam->f_ref = modelParams.at(WingsParams::PARAM_F_REF);
 
-	target = std::move(ret);
+	pParam->scr = modelParams.at(WingsParams::PARAM_SCR);
+	pParam->vcr = modelParams.at(WingsParams::PARAM_VCR);
+	pParam->vol_ref = modelParams.at(WingsParams::PARAM_VOL_REF);
+	pParam->slope_ref = modelParams.at(WingsParams::PARAM_SLOPE_REF);
+	pParam->dn_cf = modelParams.at(WingsParams::PARAM_DN_CF);
+	pParam->up_cf = modelParams.at(WingsParams::PARAM_UP_CF);
+	pParam->dn_sm = modelParams.at(WingsParams::PARAM_DN_SM);
+	pParam->up_sm = modelParams.at(WingsParams::PARAM_UP_SM);
+	pParam->put_curv = modelParams.at(WingsParams::PARAM_PUT_CURV);
+	pParam->call_curv = modelParams.at(WingsParams::PARAM_CALL_CURV);
+	pParam->dn_slope = modelParams.at(WingsParams::PARAM_DN_SLOPE);
+	pParam->up_slope = modelParams.at(WingsParams::PARAM_UP_SLOPE);
+
+	pParam->scr_offset = modelParams.at(WingsParams::PARAM_SCR_OFFSET);
+	pParam->vcr_offset = modelParams.at(WingsParams::PARAM_VCR_OFFSET);
+	pParam->vol_ref_offset = modelParams.at(WingsParams::PARAM_VOL_REF_OFFSET);
+	pParam->slope_ref_offset = modelParams.at(WingsParams::PARAM_SLOPE_REF_OFFSET);
+	pParam->dn_cf_offset = modelParams.at(WingsParams::PARAM_DN_CF_OFFSET);
+	pParam->up_cf_offset = modelParams.at(WingsParams::PARAM_UP_CF_OFFSET);
+	pParam->dn_sm_offset = modelParams.at(WingsParams::PARAM_DN_SM_OFFSET);
+	pParam->up_sm_offset = modelParams.at(WingsParams::PARAM_UP_SM_OFFSET);
+	pParam->put_curv_offset = modelParams.at(WingsParams::PARAM_PUT_CURV_OFFSET);
+	pParam->call_curv_offset = modelParams.at(WingsParams::PARAM_CALL_CURV_OFFSET);
+	pParam->dn_slope_offset = modelParams.at(WingsParams::PARAM_DN_SLOPE_OFFSET);
+	pParam->up_slope_offset = modelParams.at(WingsParams::PARAM_UP_SLOPE_OFFSET);
 }

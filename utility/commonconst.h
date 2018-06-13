@@ -3,8 +3,8 @@
 
 #include <string>
 
-static const std::string EMPTY_STRING;
-static const std::string START_STRING("*");
+static const std::string EMPTY_STRING("");
+static const std::string STAR_STRING("*");
 static const std::string CHARSET_GB2312("gb2312");
 
 #endif

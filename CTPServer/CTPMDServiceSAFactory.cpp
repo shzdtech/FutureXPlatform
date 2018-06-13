@@ -83,6 +83,7 @@ IMessageProcessor_Ptr CTPMDServiceSAFactory::CreateWorkerProcessor(IServerContex
 
 void CTPMDServiceSAFactory::SetServerContext(IServerContext * serverCtx)
 {
+	MessageServiceFactory::SetServerContext(serverCtx);
 	auto mktDataMap = AppContext::GetData(STR_KEY_APP_MARKETDATA);
 	if (!mktDataMap)
 	{

@@ -39,7 +39,7 @@ CTPMarketDataProcessor::~CTPMarketDataProcessor() {
 	LOG_DEBUG << __FUNCTION__;
 }
 
-bool CTPMarketDataProcessor::CreateCTPAPI(const std::string& flowId, const std::string & serverAddr)
+bool CTPMarketDataProcessor::CreateCTPAPI(CThostFtdcMdSpi *pSpi, const std::string& flowId, const std::string & serverAddr)
 {
 	fs::path localpath = CTPProcessor::FlowPath;
 	if (!fs::exists(localpath))

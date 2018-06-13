@@ -41,7 +41,7 @@
  ////////////////////////////////////////////////////////////////////////
 
 CTPOTCWorkerProcessor::CTPOTCWorkerProcessor(IServerContext* pServerCtx, 
-	const std::shared_ptr<CTPOTCTradeWorkerProcessor>& otcTradeProcessorPtr) :
+	const CTPOTCTradeWorkerProcessorBase_Ptr& otcTradeProcessorPtr) :
 	CTPMarketDataSAProcessor(pServerCtx, otcTradeProcessorPtr->PricingDataContext()->GetMarketDataMap()),
 	OTCWorkerProcessor(otcTradeProcessorPtr->PricingDataContext()),
 	_CTPOTCTradeWorkerProcessorPtr(otcTradeProcessorPtr)
@@ -134,13 +134,7 @@ ProductType CTPOTCWorkerProcessor::GetContractProductType() const
 	return ProductType::PRODUCT_OTC;
 }
 
-
 OTCTradeWorkerProcessor * CTPOTCWorkerProcessor::GetOTCTradeWorkerProcessor()
-{
-	return _CTPOTCTradeWorkerProcessorPtr.get();
-}
-
-CTPOTCTradeWorkerProcessor * CTPOTCWorkerProcessor::GetCTPOTCTradeWorkerProcessor()
 {
 	return _CTPOTCTradeWorkerProcessorPtr.get();
 }

@@ -50,10 +50,13 @@ bool CTPOTCOptionWorkerProcessor::TriggerTradingDeskParams(const StrategyContrac
 
 	auto tradingDeskData = OTCOptionPricingParams::GenerateTradingDeskData(strategyDO, pricingCtx, true);
 
-	_tradingDeskNotifers->foreach(strategyDO, [this, &tradingDeskData](const IMessageSession_Ptr& session_ptr)
+	if (auto msg = Deserialize(MSG_ID_RTN_TRADINGDESK_PRICING, 0, tradingDeskData))
 	{
-		SendDataObject(session_ptr, MSG_ID_RTN_TRADINGDESK_PRICING, 0, tradingDeskData);
-	});
+		_tradingDeskNotifers->foreach(strategyDO, [this, &msg](const IMessageSession_Ptr& session_ptr)
+		{
+			SendDataObject(session_ptr, MSG_ID_RTN_TRADINGDESK_PRICING, msg);
+		});
+	}
 
 	return true;
 }

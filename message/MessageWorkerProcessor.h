@@ -20,6 +20,7 @@ public:
 	virtual bool ConnectedToServer(void);
 	virtual const IUserInfo& GetSystemUser();
 
+	virtual void RegisterSession(const std::string& id, const IMessageSession_Ptr& sessionPtr);
 	virtual void RegisterLoggedSession(const IMessageSession_Ptr& sessionPtr);
 
 protected:

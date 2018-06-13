@@ -1,0 +1,17 @@
+#if !defined(__dataobject_SysEnums_h)
+#define __dataobject_SysEnums_h
+
+enum DataLoadType
+{
+	NO_DATA_LOADED = 0,
+	ORDER_DATA_LOADED = 0x1,
+	TRADE_DATA_LOADED = 0x2,
+	POSITION_DATA_LOADED = 0x4,
+	ACCOUNT_DATA_LOADED = 0x8,
+	EXCHANGE_DATA_LOADED = 0x10,
+	INSTRUMENT_DATA_LOADED = 0x20,
+	PORTFOLIO_DATA_LOADED = 0x40,
+	ALL_DATA_LOADED = 0xFFFFFFFF,
+};
+
+#endif

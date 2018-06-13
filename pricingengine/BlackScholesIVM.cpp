@@ -136,12 +136,12 @@ const std::map<std::string, double>& BlackScholesIVM::DefaultParams(void) const
 
 void BlackScholesIVM::ParseParams(const std::map<std::string, double>& modelParams, std::unique_ptr<ParamsBase>& target)
 {
-	auto ret = std::make_unique<OptionParams>();
+	if(!target)
+		target = std::make_unique<OptionParams>();
 
-	ret->riskFreeRate = modelParams.at(OptionParams::riskFreeRate_name);
-	ret->dividend = modelParams.at(OptionParams::dividend_name);
-
-	target = std::move(ret);
+	auto pParam = (OptionParams*)target.get();
+	pParam->riskFreeRate = modelParams.at(OptionParams::riskFreeRate_name);
+	pParam->dividend = modelParams.at(OptionParams::dividend_name);
 }
 
 double BlackScholesIVM::CaclImpliedVolatility(

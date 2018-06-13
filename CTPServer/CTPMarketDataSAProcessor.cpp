@@ -128,7 +128,7 @@ int CTPMarketDataSAProcessor::LoginSystemUserIfNeed(void)
 	if (!_isLogged || !_isConnected)
 	{
 		std::string address(_systemUser.getServer());
-		CreateCTPAPI(_systemUser.getUserId(), address);
+		CreateCTPAPI(this, _systemUser.getUserId(), address);
 		ret = LoginSystemUser();
 		if (ret == -1)
 		{
@@ -140,7 +140,7 @@ int CTPMarketDataSAProcessor::LoginSystemUserIfNeed(void)
 			ExchangeRouterDO exDO;
 			if (ExchangeRouterTable::TryFind(defaultCfg, exDO))
 			{
-				CreateCTPAPI(_systemUser.getUserId(), exDO.Address);
+				CreateCTPAPI(this, _systemUser.getUserId(), exDO.Address);
 				ret = LoginSystemUser();
 			}
 
@@ -167,8 +167,20 @@ int CTPMarketDataSAProcessor::LoginSystemUserIfNeed(void)
 
 void CTPMarketDataSAProcessor::DispatchUserMessage(int msgId, int serialId, const std::string& userId, const dataobj_ptr& dataobj_ptr)
 {
-	_userSessionCtn_Ptr->foreach(userId, [msgId, serialId, dataobj_ptr, this](const IMessageSession_Ptr& session_ptr)
-	{ SendDataObject(session_ptr, msgId, serialId, dataobj_ptr); });
+	if (auto msg = Deserialize(msgId, serialId, dataobj_ptr))
+	{
+		_userSessionCtn_Ptr->foreach(userId, [msgId, &msg, this](const IMessageSession_Ptr& session_ptr)
+		{SendDataObject(session_ptr, msgId, msg); });
+	}
+}
+
+void CTPMarketDataSAProcessor::DispatchUserExceptionMessage(int msgId, int serialId, const std::string& userId, const MessageException& msgExcept)
+{
+	if (auto msg = DeserializeException(msgId, serialId, msgExcept))
+	{
+		_userSessionCtn_Ptr->foreach(userId, [msgId, &msg, this](const IMessageSession_Ptr& session_ptr)
+		{ SendDataObject(session_ptr, msgId, msg); } );
+	}
 }
 
 MarketDataDOMap & CTPMarketDataSAProcessor::GetMarketDataMap()
@@ -301,7 +313,10 @@ void CTPMarketDataSAProcessor::OnRtnDepthMarketData(CThostFtdcDepthMarketDataFie
 
 		ManualOpHub::Instance()->NotifyUpdateMarketData(mdo);
 
-		MarketDataNotifers->foreach(mdo.InstrumentID(), [this, &mdo](const IMessageSession_Ptr& session_ptr)
-		{ SendDataObject(session_ptr, MSG_ID_RET_MARKETDATA, 0, std::make_shared<MarketDataDO>(mdo)); });
+		if (auto msg = Deserialize(MSG_ID_RET_MARKETDATA, 0, std::make_shared<MarketDataDO>(mdo)))
+		{
+			MarketDataNotifers->foreach(mdo.InstrumentID(), [this, &msg](const IMessageSession_Ptr& session_ptr)
+			{SendDataObject(session_ptr, MSG_ID_RET_MARKETDATA, msg); });
+		}
 	});
 }

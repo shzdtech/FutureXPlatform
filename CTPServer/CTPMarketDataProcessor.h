@@ -11,13 +11,14 @@
 #include "CTPProcessor.h"
 #include "ctpexport.h"
 #include "CTPAPISwitch.h"
-#include "../utility/lockfree_set.h"
 
-class CTP_CLASS_EXPORT CTPMarketDataProcessor : public CTPProcessor, public CThostFtdcMdSpi {
+
+class CTP_CLASS_EXPORT CTPMarketDataProcessor : public CTPProcessor, public CThostFtdcMdSpi 
+{
 public:
 	CTPMarketDataProcessor();
 	~CTPMarketDataProcessor();
-	bool CreateCTPAPI(const std::string& flowId, const std::string& serverAddr);
+	bool CreateCTPAPI(CThostFtdcMdSpi *pSpi, const std::string& flowId, const std::string& serverAddr);
 
 protected:
 	int _tradingDay;

@@ -52,14 +52,6 @@ dataobj_ptr CTPOTCLogin::HandleRequest(const uint32_t serialId, const dataobj_pt
 
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPOTCWorkerProcessor>(msgProcessor))
 	{
-		//if (role == ROLE_TRADINGDESK)
-		//{
-		//	pWorkerProc->GetCTPOTCTradeWorkerProcessor()->getMessageSession()
-		//		->getUserInfo().setUserId(userInfo.getUserId());
-		//}
-
-		//pWorkerProc->RegisterLoggedSession(pWorkerProc->getMessageSession());
-
 		pWorkerProc->RegisterLoggedSession(session);
 
 		bool connected = pWorkerProc->ConnectedToServer();

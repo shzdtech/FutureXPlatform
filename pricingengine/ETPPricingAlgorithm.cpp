@@ -126,11 +126,11 @@ const std::map<std::string, double>& ETPPricingAlgorithm::DefaultParams(void) co
 
 void ETPPricingAlgorithm::ParseParams(const std::map<std::string, double>& modelParams, std::unique_ptr<ParamsBase>& target)
 {
-	auto ret = std::make_unique<ETPParams>();
+	if (!target)
+		target = std::make_unique<ETPParams>();
 
-	ret->coeff = modelParams.at(ETPParams::coeff_name);
-	ret->offset = modelParams.at(ETPParams::offset_name);
-	ret->spread = modelParams.at(ETPParams::spread_name);
-
-	target = std::move(ret);
+	auto pParam = (ETPParams*)target.get();
+	pParam->coeff = modelParams.at(ETPParams::coeff_name);
+	pParam->offset = modelParams.at(ETPParams::offset_name);
+	pParam->spread = modelParams.at(ETPParams::spread_name);
 }

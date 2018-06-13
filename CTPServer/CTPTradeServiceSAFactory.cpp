@@ -8,7 +8,7 @@
 #include "CTPTradeServiceSAFactory.h"
 #include "CTPWorkerProcessorID.h"
 #include "ctp_bizhandlers.h"
-#include "CTPTradeWorkerSAProcessor.h"
+#include "CTPTradeWorkerProcessor.h"
 #include "../message/MessageUtility.h"
 #include "../common/Attribute_Key.h"
 
@@ -61,7 +61,7 @@ std::map<uint, IDataSerializer_Ptr> CTPTradeServiceSAFactory::CreateDataSerializ
 
 IMessageProcessor_Ptr CTPTradeServiceSAFactory::CreateMessageProcessor(IServerContext* serverCtx)
 {
-	auto pWorker = std::static_pointer_cast<CTPTradeWorkerSAProcessor>(serverCtx->getWorkerProcessor());
+	auto pWorker = std::static_pointer_cast<CTPTradeWorkerProcessor>(serverCtx->getWorkerProcessor());
 	return std::make_shared<CTPProcessor>(pWorker->RawAPI_Ptr());
 }
 
@@ -75,13 +75,12 @@ IMessageProcessor_Ptr CTPTradeServiceSAFactory::CreateWorkerProcessor(IServerCon
 {
 	if (!serverCtx->getWorkerProcessor())
 	{
-		auto worker_ptr = std::make_shared<CTPTradeWorkerSAProcessor>(serverCtx, 
-			std::make_shared<PricingDataContext>(),
+		auto worker_ptr = std::make_shared<CTPTradeWorkerProcessor>(serverCtx, 
 			std::make_shared<PortfolioPositionContext>());
 		ManualOpHub::Instance()->addListener(worker_ptr);
 		worker_ptr->Initialize(serverCtx);
 		serverCtx->setWorkerProcessor(worker_ptr);
-		serverCtx->setSubTypeWorkerPtr(static_cast<CTPTradeWorkerSAProcessor*>(worker_ptr.get()));
+		serverCtx->setSubTypeWorkerPtr(static_cast<CTPTradeWorkerProcessor*>(worker_ptr.get()));
 	}
 
 	return serverCtx->getWorkerProcessor();

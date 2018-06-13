@@ -117,12 +117,12 @@ public:
 	double TdSellAmount = 0;
 
 	int Multiplier = 1;
-	double LastPrice;
+	double LastPrice = 0;
 	double PreSettlementPrice = 0;
 
 	double TdBuyProfit() const {
 		double deltaPrice = LastPrice - BuyAvgPrice();
-		return TdSellVolume * deltaPrice * Multiplier;
+		return TdBuyVolume * deltaPrice * Multiplier;
 	}
 
 	double TdSellProfit() const {
@@ -132,7 +132,7 @@ public:
 
 	double YdBuyProfit() const {
 		double deltaPrice = LastPrice - PreSettlementPrice;
-		return YdSellVolume * deltaPrice * Multiplier;
+		return YdBuyVolume * deltaPrice * Multiplier;
 	}
 
 	double YdSellProfit() const {
@@ -147,7 +147,6 @@ public:
 	int BuyPosition() const { return YdBuyVolume + TdBuyVolume; }
 	int SellPosition() const { return YdSellVolume + TdSellVolume; }
 	int NetPosition() const { return BuyPosition() - SellPosition(); };
-	int TotalPosition() const { return BuyPosition() + SellPosition(); };
 
 	double BuyAvgPrice() const { return BuyPosition() > 0 ? ((TdBuyAmount / Multiplier + YdBuyVolume * PreSettlementPrice) / BuyPosition()) : 0; }
 	double SellAvgPrice() const { return SellPosition() > 0 ? ((TdSellAmount / Multiplier + YdSellVolume * PreSettlementPrice) / SellPosition()) : 0; }

@@ -3,7 +3,7 @@
     "admin": {
       "manage": {
         "port": "31234",
-        "workerthread": "1",
+        "workerthread": "2",
         "timeout": "120",
         "max_msg_size": "0x10000"
       }
@@ -11,13 +11,13 @@
     "ctp": {
       "marketdata": {
         "port": "31000",
-        "workerthread": "2",
+        "workerthread": "10",
         "timeout": "120",
         "max_msg_size": "0x10000"
       },
       "trade": {
         "port": "31001",
-        "workerthread": "2",
+        "workerthread": "10",
         "timeout": "120",
         "max_msg_size": "0x10000"
       }
@@ -31,13 +31,13 @@
       },
       "option": {
         "port": "31003",
-        "workerthread": "1",
+        "workerthread": "5",
         "timeout": "120",
         "max_msg_size": "0x10000"
       },
       "option_trade": {
         "port": "31006",
-        "workerthread": "2",
+        "workerthread": "10",
         "timeout": "120",
         "max_msg_size": "0x10000"
       }

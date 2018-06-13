@@ -8,7 +8,7 @@ template <class T>
 class lockfree_queue
 {
 public:
-	lockfree_queue() { _opState.clear(); }
+	lockfree_queue() = default;
 
 	void push(T&& value)
 	{

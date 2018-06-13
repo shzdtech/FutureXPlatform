@@ -36,7 +36,7 @@
 
 dataobj_ptr CTPLoginHandler::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	auto pProcessor = (CTPProcessor*)msgProcessor.get();;
+	auto ctpProcessor = std::static_pointer_cast<CTPProcessor>(msgProcessor);
 
 	auto stdo = (StringMapDO<std::string>*)reqDO.get();
 
@@ -81,13 +81,15 @@ dataobj_ptr CTPLoginHandler::HandleRequest(const uint32_t serialId, const dataob
 	else
 		throw UserException(NOTFOUND_ERROR, "Cannot find user: '" + username + "'");
 
+	userInfo_Ptr->BrokerId = exDO.BrokeID;
 	userInfo_Ptr->ExchangeUser = exchangeUser;
 	userInfo_Ptr->ExchangePassword = exchangePwd;
 	userInfo.setInvestorId(exchangeUser);
 	userInfo.setBrokerId(exDO.BrokeID);
 	userInfo.setPassword(password);
-	pProcessor->LoginSerialId = serialId;
-	auto ret = LoginFromServer(msgProcessor, userInfo_Ptr, serialId, routername);
+	
+	ctpProcessor->LoginSerialId = serialId;
+	auto ret = LoginFromServer(ctpProcessor, userInfo_Ptr, serialId, routername);
 
 	LOG_DEBUG << "Login: " << userInfo.getBrokerId() << ":" << username << ":" << password;
 
@@ -122,6 +124,15 @@ dataobj_ptr CTPLoginHandler::HandleResponse(const uint32_t serialId, const param
 	userInfo.setTradingDay(std::atoi(pData->TradingDay));
 
 	session->setLoginTimeStamp();
+
+	pDO->BrokerId = userInfo.getBrokerId();
+	pDO->Company = userInfo.getBrokerId();
+	pDO->UserName = userInfo.getName();
+	pDO->Password = userInfo.getPassword();
+	pDO->Permission = userInfo.getPermission();
+	pDO->Role = userInfo.getRole();
+	pDO->UserId = userInfo.getUserId();
+	pDO->ExchangeUser = userInfo.getInvestorId();
 
 	LOG_DEBUG << pDO->UserId << " login successful.";
 

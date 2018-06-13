@@ -17,7 +17,7 @@ public:
 	virtual attribute_ptr getAttribute(const std::string& key) const = 0;
 	virtual void setAttribute(const std::string& key, const attribute_ptr& value) = 0;
 
-	virtual const std::string& getBrokerInvestorId(void) const = 0;
+	virtual const std::string getBrokerInvestorId(void) const = 0;
 
 	virtual const std::string& getBrokerId(void) const = 0;
 	virtual void setBrokerId(const std::string& newBrokerId) = 0;
