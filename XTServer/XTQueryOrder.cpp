@@ -1,14 +1,14 @@
 /***********************************************************************
- * Module:  CTPQueryOrder.cpp
+ * Module:  XTQueryOrder.cpp
  * Author:  milk
  * Modified: 2015年7月11日 13:18:21
- * Purpose: Implementation of the class CTPQueryOrder
+ * Purpose: Implementation of the class XTQueryOrder
  ***********************************************************************/
 
-#include "CTPQueryOrder.h"
-#include "CTPRawAPI.h"
-#include "CTPUtility.h"
-#include "CTPTradeWorkerProcessor.h"
+#include "XTQueryOrder.h"
+#include "XTRawAPI.h"
+#include "XTUtility.h"
+#include "XTTradeWorkerProcessor.h"
 #include "CTPWorkerProcessorID.h"
 #include "../message/DefMessageID.h"
 #include "../message/MessageUtility.h"
@@ -21,8 +21,8 @@
 #include "../dataobject/OrderDO.h"
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, IMessageProcessor* msgProcessor
- // Purpose:    Implementation of CTPQueryOrder::HandleRequest()
+ // Name:       XTQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, IMessageProcessor* msgProcessor
+ // Purpose:    Implementation of XTQueryOrder::HandleRequest()
  // Parameters:
  // - reqDO
  // - rawAPI
@@ -30,7 +30,7 @@
  // Return:     void
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
+dataobj_ptr XTQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
 
@@ -50,16 +50,16 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 		auto& userOrderCtx = pWorkerProc->GetUserOrderContext();
 		auto vectorPtr = userOrderCtx.GetOrdersByUser(session->getUserInfo().getUserId());
 
-		auto pProcessor = (CTPProcessor*)msgProcessor.get();
+		auto pProcessor = (XTProcessor*)msgProcessor.get();
 		if (!(pProcessor->DataLoadMask & DataLoadType::ORDER_DATA_LOADED))
 		{
 			/*CThostFtdcQryOrderField req{};
 			std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID));
 			std::strncpy(req.InvestorID, investorid.data(), sizeof(req.InvestorID));
-			int iRet = ((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryOrder(&req, serialId);
-			CTPUtility::CheckReturnError(iRet);*/
+			int iRet = ((XTRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryOrder(&req, serialId);
+			XTUtility::CheckReturnError(iRet);*/
 
-			std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
+			std::this_thread::sleep_for(XTProcessor::DefaultQueryTime);
 			vectorPtr = userOrderCtx.GetOrdersByUser(session->getUserInfo().getUserId());
 			pProcessor->DataLoadMask |= DataLoadType::ORDER_DATA_LOADED;
 		}
@@ -104,8 +104,8 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPQueryOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, IMessageProcessor* msgProcessor
-// Purpose:    Implementation of CTPQueryOrder::HandleResponse(const uint32_t serialId, )
+// Name:       XTQueryOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, IMessageProcessor* msgProcessor
+// Purpose:    Implementation of XTQueryOrder::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
 // - rawAPI
@@ -113,9 +113,9 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
+dataobj_ptr XTQueryOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	CTPUtility::CheckNotFound(rawRespParams[0]);
+	XTUtility::CheckNotFound(rawRespParams[0]);
 
 	OrderDO_Ptr ret;
 	if (auto pData = (CThostFtdcOrderField*)rawRespParams[0])
@@ -124,12 +124,12 @@ dataobj_ptr CTPQueryOrder::HandleResponse(const uint32_t serialId, const param_v
 		{
 			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 			{
-				if (auto orderid = CTPUtility::ToUInt64(pData->OrderSysID))
+				if (auto orderid = XTUtility::ToUInt64(pData->OrderSysID))
 				{
 					ret = pWorkerProc->GetUserOrderContext().FindOrder(orderid);
 					if (!ret)
 					{
-						ret = CTPUtility::ParseRawOrder(pData);
+						ret = XTUtility::ParseRawOrder(pData);
 						pWorkerProc->GetUserOrderContext().UpsertOrder(orderid, ret);
 						ret.reset();
 					}
@@ -137,7 +137,7 @@ dataobj_ptr CTPQueryOrder::HandleResponse(const uint32_t serialId, const param_v
 			}
 			else
 			{
-				ret = CTPUtility::ParseRawOrder(pData);
+				ret = XTUtility::ParseRawOrder(pData);
 				ret->HasMore = !*(bool*)rawRespParams[3];
 			}
 		}

@@ -107,7 +107,7 @@ void CTPMarketDataSAProcessor::Initialize(IServerContext* pServerCtx)
 int CTPMarketDataSAProcessor::LoginSystemUser(void)
 {
 	int ret = -1;
-	if (auto mdAPI = _rawAPI->MdAPIProxy())
+	if (auto mdAPI = std::static_pointer_cast<CTPRawAPI>(_rawAPI)->MdAPIProxy())
 	{
 		CThostFtdcReqUserLoginField req{};
 		std::strncpy(req.BrokerID, _systemUser.getBrokerId().data(), sizeof(req.BrokerID));
@@ -128,7 +128,7 @@ int CTPMarketDataSAProcessor::LoginSystemUserIfNeed(void)
 	if (!_isLogged || !_isConnected)
 	{
 		std::string address(_systemUser.getServer());
-		CreateCTPAPI(this, _systemUser.getUserId(), address);
+		CreateBackendAPI(this, _systemUser.getUserId(), address);
 		ret = LoginSystemUser();
 		if (ret == -1)
 		{
@@ -140,7 +140,7 @@ int CTPMarketDataSAProcessor::LoginSystemUserIfNeed(void)
 			ExchangeRouterDO exDO;
 			if (ExchangeRouterTable::TryFind(defaultCfg, exDO))
 			{
-				CreateCTPAPI(this, _systemUser.getUserId(), exDO.Address);
+				CreateBackendAPI(this, _systemUser.getUserId(), exDO.Address);
 				ret = LoginSystemUser();
 			}
 
@@ -196,7 +196,7 @@ int CTPMarketDataSAProcessor::ResubMarketData()
 		for (auto pair : _pMarketDataMap->lock_table())
 		{
 			char* contract[] = { const_cast<char*>(pair.first.data()) };
-			_rawAPI->MdAPIProxy()->get()->SubscribeMarketData(contract, 1);
+			std::static_pointer_cast<CTPRawAPI>(_rawAPI)->MdAPIProxy()->get()->SubscribeMarketData(contract, 1);
 		}
 	}
 

@@ -18,11 +18,13 @@ public:
 	CTPTradeProcessor();
 	CTPTradeProcessor(const CTPRawAPI_Ptr& rawAPI);
 	virtual ~CTPTradeProcessor();
-	virtual bool CreateCTPAPI(CThostFtdcTraderSpi *pSpi, const std::string& flowId, const std::string& serverAddr);
+	virtual bool CreateBackendAPI(CThostFtdcTraderSpi *pSpi, const std::string& flowId, const std::string& serverAddr);
 	bool OnSessionClosing(void);
 
 	void QueryUserPositionAsyncIfNeed();
 	void QueryPositionAsync(void);
+
+	std::shared_ptr<CTPRawAPI::CThostFtdcTdApiProxy>& TradeApi(void);
 
 protected:
 	// lockfree_set<std::string> _updatePositionSet;

@@ -5,15 +5,15 @@
  * Purpose: Implementation of the class CTPOTCServiceFactory
  ***********************************************************************/
 
-#include "CTPOTCOptionServiceFactory.h"
-#include "CTPOTCSessionProcessor.h"
-#include "CTPOTCTradeWorkerProcessor.h"
-#include "CTPOTCOptionWorkerProcessor.h"
+#include "XTOTCOptionServiceFactory.h"
+#include "../CTPOTCServer/CTPOTCSessionProcessor.h"
+#include "XTOTCTradeWorkerProcessor.h"
+#include "XTOTCOptionWorkerProcessor.h"
 
 #include "../CTPServer/CTPWorkerProcessorID.h"
 #include "../OTCServer/otc_bizhandlers.h"
 #include "../OptionServer/otcoption_bizhandlers.h"
-#include "../CTPServer/ctp_bizhandlers.h"
+#include "../CTPServer/xt_bizhandlers.h"
 #include "../OptionServer/OTCOptionPricingParams.h"
 #include "ctpotc_bizhandlers.h"
 
@@ -35,7 +35,7 @@
  // Return:     std::map<uint, IMessageHandler_Ptr>
  ////////////////////////////////////////////////////////////////////////
 
-std::map<uint, IMessageHandler_Ptr> CTPOTCOptionServiceFactory::CreateMessageHandlers(IServerContext* serverCtx)
+std::map<uint, IMessageHandler_Ptr> XTOTCOptionServiceFactory::CreateMessageHandlers(IServerContext* serverCtx)
 {
 	std::map<uint, IMessageHandler_Ptr> msg_hdl_map(std::move(CTPOTCServiceFactory::CreateMessageHandlers(serverCtx)));
 
@@ -50,19 +50,19 @@ std::map<uint, IMessageHandler_Ptr> CTPOTCOptionServiceFactory::CreateMessageHan
 // Return:     std::map<uint, IProcessorBase_Ptr>
 ////////////////////////////////////////////////////////////////////////
 
-IMessageProcessor_Ptr CTPOTCOptionServiceFactory::CreateWorkerProcessor(IServerContext* serverCtx)
+IMessageProcessor_Ptr XTOTCOptionServiceFactory::CreateWorkerProcessor(IServerContext* serverCtx)
 {
 	if (!serverCtx->getWorkerProcessor())
 	{
 		std::string tradeWorker;
 		serverCtx->getConfigVal("tradeworker", tradeWorker);
 
-		auto tradeProcessor = std::static_pointer_cast<CTPOTCTradeWorkerProcessor>(GlobalProcessorRegistry::FindProcessor(tradeWorker));
+		auto tradeProcessor = std::static_pointer_cast<XTOTCTradeWorkerProcessor>(GlobalProcessorRegistry::FindProcessor(tradeWorker));
 
-		std::shared_ptr<CTPOTCOptionWorkerProcessor> worker_ptr(new CTPOTCOptionWorkerProcessor(serverCtx, tradeProcessor));
+		std::shared_ptr<XTOTCOptionWorkerProcessor> worker_ptr(new XTOTCOptionWorkerProcessor(serverCtx, tradeProcessor));
 		worker_ptr->Initialize(serverCtx);
 		serverCtx->setWorkerProcessor(worker_ptr);
-		serverCtx->setSubTypeWorkerPtr(static_cast<CTPOTCOptionWorkerProcessor*>(worker_ptr.get()));
+		serverCtx->setSubTypeWorkerPtr(static_cast<XTOTCOptionWorkerProcessor*>(worker_ptr.get()));
 		serverCtx->setAbstractSubTypeWorkerPtr(static_cast<OTCWorkerProcessor*>(worker_ptr.get()));
 	}
 

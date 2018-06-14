@@ -1,27 +1,27 @@
 /***********************************************************************
- * Module:  CTPOTCTradeProcessor.h
+ * Module:  XTOTCTradeProcessor.h
  * Author:  milk
  * Modified: 2015年10月27日 22:51:43
- * Purpose: Declaration of the class CTPOTCTradeProcessor
+ * Purpose: Declaration of the class XTOTCTradeProcessor
  ***********************************************************************/
 
 #if !defined(__XTOTC_CTPOTCTradeProcessor_h)
 #define __XTOTC_CTPOTCTradeProcessor_h
 
-#include "../CTPServer/CTPTradeProcessor.h"
+#include "XTTradeProcessor.h"
 #include "../OTCServer/OTCTradeProcessor.h"
 #include "../utility/lockfree_set.h"
 
 #include "xt_export.h"
 
-class CTPOTCTradeWorkerProcessorBase;
+class XTOTCTradeWorkerProcessor;
 
-class XT_CLASS_EXPORT CTPOTCTradeProcessor : public CTPTradeProcessor, public OTCTradeProcessor
+class XT_CLASS_EXPORT XTOTCTradeProcessor : public XTTradeProcessor, public OTCTradeProcessor
 {
 public:
-	CTPOTCTradeProcessor();
-	CTPOTCTradeProcessor(const CTPRawAPI_Ptr& rawAPI);
-	~CTPOTCTradeProcessor();
+	XTOTCTradeProcessor();
+	XTOTCTradeProcessor(const XTRawAPI_Ptr& rawAPI);
+	~XTOTCTradeProcessor();
 
 	virtual void OnTraded(const TradeRecordDO_Ptr & tradeDO);
 
@@ -34,11 +34,11 @@ public:
 	virtual HedgeOrderManager& GetHedgeOrderManager(void);
 
 protected:
-	CTPOTCTradeWorkerProcessor * getWorkerProcessor();
+	XTOTCTradeWorkerProcessor * getWorkerProcessor();
 
 private:
 };
 
-typedef std::shared_ptr<CTPOTCTradeProcessor> CTPOTCTradeProcessor_Ptr;
+typedef std::shared_ptr<XTOTCTradeProcessor> XTOTCTradeProcessor_Ptr;
 
 #endif

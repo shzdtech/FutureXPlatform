@@ -109,7 +109,7 @@ OrderDO_Ptr CTPOTCTradeProcessor::CreateOrder(const OrderRequestDO& orderReq)
 		}
 	}
 
-	if (auto tdApiProxy = _rawAPI->TdAPIProxy())
+	if (auto tdApiProxy = TradeApi())
 	{
 		auto& userInfo = getMessageSession()->getUserInfo();
 
@@ -173,7 +173,7 @@ OrderDO_Ptr CTPOTCTradeProcessor::CancelOrder(const OrderRequestDO& orderReq)
 {
 	OrderDO_Ptr ret;
 
-	if (auto tdApiProxy = _rawAPI->TdAPIProxy())
+	if (auto tdApiProxy = TradeApi())
 	{
 		auto& userInfo = getMessageSession()->getUserInfo();
 

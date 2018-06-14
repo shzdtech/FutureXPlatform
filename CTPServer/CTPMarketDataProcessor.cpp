@@ -39,7 +39,7 @@ CTPMarketDataProcessor::~CTPMarketDataProcessor() {
 	LOG_DEBUG << __FUNCTION__;
 }
 
-bool CTPMarketDataProcessor::CreateCTPAPI(CThostFtdcMdSpi *pSpi, const std::string& flowId, const std::string & serverAddr)
+bool CTPMarketDataProcessor::CreateBackendAPI(CThostFtdcMdSpi *pSpi, const std::string& flowId, const std::string & serverAddr)
 {
 	fs::path localpath = CTPProcessor::FlowPath;
 	if (!fs::exists(localpath))
@@ -60,7 +60,7 @@ bool CTPMarketDataProcessor::CreateCTPAPI(CThostFtdcMdSpi *pSpi, const std::stri
 	mdAPI->get()->RegisterFront(const_cast<char*> (server_addr.data()));
 	mdAPI->get()->Init();
 
-	_rawAPI->ResetMdAPIProxy(mdAPI);
+	std::static_pointer_cast<CTPRawAPI>(_rawAPI)->ResetMdAPIProxy(mdAPI);
 
 	std::this_thread::sleep_for(std::chrono::seconds(2));
 

@@ -9,13 +9,13 @@
 #define __XT_CTPTradeLoginHandler_h
 
 #include "CTPLoginHandler.h"
-#include "CTPTradeWorkerProcessor.h"
+#include "XTTradeWorkerProcessor.h"
 #include "xt_export.h"
 
 class XT_CLASS_EXPORT CTPTradeLoginHandler : public CTPLoginHandler
 {
 public:
-	virtual std::shared_ptr<UserInfoDO> LoginFromServer(const CTPProcessor_Ptr& msgProcessor,
+	virtual std::shared_ptr<UserInfoDO> LoginFromServer(const XTProcessor_Ptr& msgProcessor,
 		const std::shared_ptr<UserInfoDO> & userInfoDO_Ptr, uint requestId, const std::string& serverName);
 	virtual CTPTradeWorkerProcessor * GetWorkerProcessor(const IMessageProcessor_Ptr & msgProcessor);
 	virtual bool LoginFromDB(const IMessageProcessor_Ptr& msgProcessor);

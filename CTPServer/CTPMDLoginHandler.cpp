@@ -37,7 +37,7 @@ std::shared_ptr<UserInfoDO> CTPMDLoginHandler::LoginFromServer(const CTPProcesso
 
 	auto mktProc_Ptr = std::static_pointer_cast<CTPMarketDataProcessor>(msgProcessor);
 
-	mktProc_Ptr->CreateCTPAPI(mktProc_Ptr.get(), exDO.UserID, exDO.Address);
+	mktProc_Ptr->CreateBackendAPI(mktProc_Ptr.get(), exDO.UserID, exDO.Address);
 
 	auto& userInfo = msgProcessor->getMessageSession()->getUserInfo();
 
@@ -46,7 +46,7 @@ std::shared_ptr<UserInfoDO> CTPMDLoginHandler::LoginFromServer(const CTPProcesso
 	std::strncpy(req.UserID, userInfo.getInvestorId().data(), sizeof(req.UserID));
 	std::strncpy(req.Password, userInfo.getPassword().data(), sizeof(req.Password));
 	// std::strcpy(req.UserProductInfo, UUID_MICROFUTURE_CTP)
-	int ret = msgProcessor->RawAPI_Ptr()->MdAPIProxy()->get()->ReqUserLogin(&req, requestId);
+	int ret = ((CTPRawAPI*)msgProcessor->getRawAPI())->MdAPIProxy()->get()->ReqUserLogin(&req, requestId);
 
 	// try after market server
 	if (ret == -1)
@@ -54,8 +54,8 @@ std::shared_ptr<UserInfoDO> CTPMDLoginHandler::LoginFromServer(const CTPProcesso
 		msgProcessor->getServerContext()->getConfigVal(ExchangeRouterTable::TARGET_MD_AM, server);
 		if (ExchangeRouterTable::TryFind(server, exDO))
 		{
-			mktProc_Ptr->CreateCTPAPI(mktProc_Ptr.get(), exDO.UserID, exDO.Address);
-			ret = msgProcessor->RawAPI_Ptr()->MdAPIProxy()->get()->ReqUserLogin(&req, requestId);
+			mktProc_Ptr->CreateBackendAPI(mktProc_Ptr.get(), exDO.UserID, exDO.Address);
+			ret = ((CTPRawAPI*)msgProcessor->getRawAPI())->MdAPIProxy()->get()->ReqUserLogin(&req, requestId);
 		}
 	}
 

@@ -18,7 +18,7 @@ class CTP_CLASS_EXPORT CTPMarketDataProcessor : public CTPProcessor, public CTho
 public:
 	CTPMarketDataProcessor();
 	~CTPMarketDataProcessor();
-	bool CreateCTPAPI(CThostFtdcMdSpi *pSpi, const std::string& flowId, const std::string& serverAddr);
+	bool CreateBackendAPI(CThostFtdcMdSpi *pSpi, const std::string& flowId, const std::string& serverAddr);
 
 protected:
 	int _tradingDay;

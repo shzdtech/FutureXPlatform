@@ -1,16 +1,15 @@
 /***********************************************************************
- * Module:  CTPTradeWorkerProcessor.h
+ * Module:  XTTradeWorkerProcessor.h
  * Author:  milk
  * Modified: 2016年6月16日 11:57:29
- * Purpose: Declaration of the class CTPTradeWorkerProcessor
+ * Purpose: Declaration of the class XTTradeWorkerProcessor
  ***********************************************************************/
 
-#if !defined(__XTServer_CTPTradeWorkerProcessor_h)
-#define __XTServer_CTPTradeWorkerProcessor_h
+#if !defined(__XTServer_XTTradeWorkerProcessor_h)
+#define __XTServer_XTTradeWorkerProcessor_h
 
-#include "CTPTradeProcessor.h"
-#include "CTPTradeWorkerSAProcessor.h"
-#include "CTPTradeWorkerProcessorBase.h"
+#include "XTTradeProcessor.h"
+#include "../CTPServer/CTPTradeWorkerProcessorBase.h"
 #include "../ordermanager/IOrderAPI.h"
 #include "../ordermanager/UserOrderContext.h"
 #include "../ordermanager/UserTradeContext.h"
@@ -28,11 +27,11 @@
 
 #include "xt_export.h"
 
-class XT_CLASS_EXPORT CTPTradeWorkerProcessor : public CTPTradeWorkerProcessorBase, public CTPTradeProcessor
+class XT_CLASS_EXPORT XTTradeWorkerProcessor : public CTPTradeWorkerProcessorBase, public XTTradeProcessor
 {
 public:
-	CTPTradeWorkerProcessor(IServerContext* pServerCtx, const IUserPositionContext_Ptr& positionCtx = nullptr);
-	~CTPTradeWorkerProcessor();
+	XTTradeWorkerProcessor(IServerContext* pServerCtx, const IUserPositionContext_Ptr& positionCtx = nullptr);
+	~XTTradeWorkerProcessor();
 
 	virtual void Initialize(IServerContext* pServerCtx);
 
@@ -41,63 +40,58 @@ public:
 	virtual int LoginSystemUser(void);
 	virtual int LoginSystemUserIfNeed(void);
 	virtual int LogoutSystemUser(void);
-	virtual int LoadContractFromDB(void);
 	virtual int& GetDataLoadMask(void);
 	virtual TemplateMessageProcessor* GetTemplateProcessor(void);
 	virtual IServerContext* getServerContext(void);
 
-	virtual CTPTradeWorkerSAProcessor_Ptr CreateSAProcessor();
-	virtual void LoginUserSession(const CTPProcessor_Ptr& sessionPtr, 
-		const std::string & brokerId, const std::string & investorId, const std::string & password, const std::string & serverName = "");
-	void UpdateSharedUserInfo(const std::string& investorId, const CTPTradeWorkerSAProcessor_Ptr& proc_ptr);
-	bool IsUserLogged(const std::string & userId);
-
-	virtual TradeRecordDO_Ptr RefineTrade(CThostFtdcTradeField * pTrade);
-	virtual OrderDO_Ptr CTPTradeWorkerProcessor::RefineOrder(CThostFtdcOrderField *pOrder);
+	virtual TradeRecordDO_Ptr RefineTrade(CDealDetail* pTrade);
+	virtual OrderDO_Ptr XTTradeWorkerProcessor::RefineOrder(COrderDetail *pOrder);
 
 	void QueryAccountWorker();
 
 protected:
-	cuckoohash_map<std::string, CTPTradeWorkerSAProcessor_Ptr> _sharedProcHub;
-	SessionContainer_Ptr<std::string> _sharedSystemSessionHub;
 
 	bool _isQueryAccount = true;
 	std::future<void> _accountQuery;
 
 public:
-	virtual void OnFrontConnected();
-	///当客户端与交易后台通信连接断开时，该方法被调用。当发生这个情况后，API会自动重新连接，客户端可不做处理。
-	///@param nReason 错误原因
-	///        0x1001 网络读失败
-	///        0x1002 网络写失败
-	///        0x2001 接收心跳超时
-	///        0x2002 发送心跳失败
-	///        0x2003 收到错误报文
-	virtual void OnFrontDisconnected(int nReason);
-	///客户端认证响应
-	virtual void OnRspAuthenticate(CThostFtdcRspAuthenticateField *pRspAuthenticateField, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-	///登录请求响应
-	virtual void OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-	///请求查询合约响应
-	virtual void OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
-	///报单录入错误回报
-	virtual void OnErrRtnOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo);
-	///报单操作错误回报
-	virtual void OnErrRtnOrderAction(CThostFtdcOrderActionField *pOrderAction, CThostFtdcRspInfoField *pRspInfo);
+	// 相应请求的回调函数
+	// @param   nRequestId 和请求函数中 nRequestId 想对应
+	// @param   error 请求函数的返回是否成功，如果失败有错误信息
+	// @remark  函数名组成：以 on 为前缀，加上相应请求函数的函数名称（请求函数首字母大写）
 
-	virtual void OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+	// 连接服务器的回调函数
+	// @param success   服务器连接是否成
+	// @param errorMsg  如果服务器连接失败，存储错误信息
+	virtual void onConnected(bool success, const char* errorMsg);
+	// 客户端用户登录的回调函数
+	virtual void onUserLogin(const char* userName, const char* password, int nRequestId, const XtError& error);
+	// /客户端用户登出的回调函数
+	virtual void onUserLogout(const char* userName, const char* password, int nRequestId, const XtError& error);
 
-	virtual void OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+	// 下单的回调
+	virtual void onOrder(int nRequestId, int orderID, const XtError& error);
+	
+	virtual void onCancelOrder(int nRequestId, const XtError& error);
+	
+	// 请求当前数据的回调函数
+	// @param data 请求数据的返回
+	// @param isLast 请求数据可能有多条，需要多次回调该函数，标记是否是一次请求的最后一次回调
+	virtual void onReqAccountDetail(const char* accountID, int nRequestId, const CAccountDetail* data, bool isLast, const XtError& error);
 
-	virtual void OnRtnOrder(CThostFtdcOrderField *pOrder);
+	virtual void onReqPositionDetail(const char* accountID, int nRequestId, const CPositionDetail* data, bool isLast, const XtError& error);
 
-	///成交通知
-	virtual void OnRtnTrade(CThostFtdcTradeField *pTrade);
 
-	///请求查询投资者持仓响应
-	virtual void OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+	// 主推接口
 
-	virtual void OnRspQryTradingAccount(CThostFtdcTradingAccountField * pTradingAccount, CThostFtdcRspInfoField * pRspInfo, int nRequestID, bool bIsLast);
+	// 获得主推的委托明细（委托）
+	virtual void onRtnOrderDetail(const COrderDetail* data);
+	// 获得主推的成交明细
+	virtual void onRtnDealDetail(const CDealDetail* data);
+	// 获得主推的委托错误信息
+	virtual void onRtnOrderError(const COrderError* data);
+	// 获得主推的撤销信息
+	virtual void onRtnCancelError(const CCancelError* data);
 };
 
 #endif

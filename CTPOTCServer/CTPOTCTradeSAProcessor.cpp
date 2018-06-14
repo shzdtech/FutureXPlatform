@@ -74,7 +74,7 @@ OrderDO_Ptr CTPOTCTradeSAProcessor::CreateOrder(const OrderRequestDO& orderReq)
 		}
 	}
 
-	if (auto tdApiProxy = _rawAPI->TdAPIProxy())
+	if (auto tdApiProxy = TradeApi())
 	{
 		// 端登成功,发出报单录入请求
 		CThostFtdcInputOrderField req{};
@@ -139,7 +139,7 @@ OrderDO_Ptr CTPOTCTradeSAProcessor::CancelOrder(const OrderRequestDO& orderReq)
 {
 	OrderDO_Ptr ret;
 
-	if (auto tdApiProxy = _rawAPI->TdAPIProxy())
+	if (auto tdApiProxy = TradeApi())
 	{
 		auto& sysUser = getSystemUser();
 

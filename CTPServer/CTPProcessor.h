@@ -21,11 +21,11 @@ class CTP_CLASS_EXPORT CTPProcessor : public TemplateMessageProcessor
 {
 public:
 	CTPProcessor();
-	CTPProcessor(const CTPRawAPI_Ptr& rawAPI);
-	void setRawAPI_Ptr(const CTPRawAPI_Ptr& rawAPI);
+	CTPProcessor(const IRawAPI_Ptr& rawAPI);
+	void setRawAPI_Ptr(const IRawAPI_Ptr& rawAPI);
 	IRawAPI* getRawAPI(void);
 	virtual void Initialize(IServerContext* serverCtx);
-	CTPRawAPI_Ptr& RawAPI_Ptr(void);
+	IRawAPI_Ptr& RawAPI_Ptr(void);
 
 	int DataLoadMask;
 
@@ -35,7 +35,7 @@ public:
 	static std::string FlowPath;
 
 protected:
-	CTPRawAPI_Ptr _rawAPI;	
+	IRawAPI_Ptr _rawAPI;
 
 private:
 };

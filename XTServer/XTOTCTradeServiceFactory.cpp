@@ -1,17 +1,17 @@
 /***********************************************************************
- * Module:  CTPOTCTradeServiceFactory.cpp
+ * Module:  XTOTCTradeServiceFactory.cpp
  * Author:  milk
  * Modified: 2015年8月31日 19:44:34
- * Purpose: Implementation of the class CTPOTCTradeServiceFactory
+ * Purpose: Implementation of the class XTOTCTradeServiceFactory
  ***********************************************************************/
 
-#include "CTPOTCTradeServiceFactory.h"
-#include "CTPOTCWorkerProcessor.h"
-#include "CTPOTCTradeProcessor.h"
+#include "XTOTCTradeServiceFactory.h"
+#include "../CTPOTCServer/CTPOTCWorkerProcessor.h"
+#include "XTOTCTradeProcessor.h"
 
 #include "../CTPServer/CTPWorkerProcessorID.h"
 #include "../OTCServer/otc_bizhandlers.h"
-#include "../CTPServer/ctp_bizhandlers.h"
+#include "../CTPServer/xt_bizhandlers.h"
 #include "ctpotc_bizhandlers.h"
 
 #include "../message/MessageUtility.h"
@@ -29,12 +29,12 @@
 #include "../systemsettings/AppContext.h"
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCTradeServiceFactory::CreateMessageHandlers()
-// Purpose:    Implementation of CTPOTCTradeServiceFactory::CreateMessageHandlers()
+// Name:       XTOTCTradeServiceFactory::CreateMessageHandlers()
+// Purpose:    Implementation of XTOTCTradeServiceFactory::CreateMessageHandlers()
 // Return:     std::map<uint, IMessageHandler_Ptr>
 ////////////////////////////////////////////////////////////////////////
 
-std::map<uint, IMessageHandler_Ptr> CTPOTCTradeServiceFactory::CreateMessageHandlers(IServerContext* serverCtx)
+std::map<uint, IMessageHandler_Ptr> XTOTCTradeServiceFactory::CreateMessageHandlers(IServerContext* serverCtx)
 {
 	std::map<uint, IMessageHandler_Ptr> msg_hdl_map;
 
@@ -66,18 +66,18 @@ std::map<uint, IMessageHandler_Ptr> CTPOTCTradeServiceFactory::CreateMessageHand
 
 	msg_hdl_map[MSG_ID_QUERY_VALUATION_RISK] = std::make_shared<CTPOTCQueryValuationRisk>();
 
-	//msg_hdl_map[MSG_ID_QUERY_ACCOUNT_INFO] = std::make_shared<CTPQueryAccountInfo>();
+	//msg_hdl_map[MSG_ID_QUERY_ACCOUNT_INFO] = std::make_shared<XTQueryAccountInfo>();
 
 	return msg_hdl_map;
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCTradeServiceFactory::CreateDataSerializers()
-// Purpose:    Implementation of CTPOTCTradeServiceFactory::CreateDataSerializers()
+// Name:       XTOTCTradeServiceFactory::CreateDataSerializers()
+// Purpose:    Implementation of XTOTCTradeServiceFactory::CreateDataSerializers()
 // Return:     std::map<uint, IDataSerializer_Ptr>
 ////////////////////////////////////////////////////////////////////////
 
-std::map<uint, IDataSerializer_Ptr> CTPOTCTradeServiceFactory::CreateDataSerializers(IServerContext* serverCtx)
+std::map<uint, IDataSerializer_Ptr> XTOTCTradeServiceFactory::CreateDataSerializers(IServerContext* serverCtx)
 {
 	std::map<uint, IDataSerializer_Ptr> ret;
 	AbstractDataSerializerFactory::Instance()->CreateDataSerializers(ret);
@@ -86,25 +86,25 @@ std::map<uint, IDataSerializer_Ptr> CTPOTCTradeServiceFactory::CreateDataSeriali
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCTradeServiceFactory::CreateMessageProcessor()
-// Purpose:    Implementation of CTPOTCTradeServiceFactory::CreateMessageProcessor()
+// Name:       XTOTCTradeServiceFactory::CreateMessageProcessor()
+// Purpose:    Implementation of XTOTCTradeServiceFactory::CreateMessageProcessor()
 // Return:     IMessageProcessor_Ptr
 ////////////////////////////////////////////////////////////////////////
 
-IMessageProcessor_Ptr CTPOTCTradeServiceFactory::CreateMessageProcessor(IServerContext* serverCtx)
+IMessageProcessor_Ptr XTOTCTradeServiceFactory::CreateMessageProcessor(IServerContext* serverCtx)
 {
-	auto ret = std::make_shared<CTPOTCTradeProcessor>();
+	auto ret = std::make_shared<XTOTCTradeProcessor>();
 	ret->Initialize(serverCtx);
 	return ret;
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPOTCTradeServiceFactory::CreateWorkerProcessor()
-// Purpose:    Implementation of CTPOTCTradeServiceFactory::CreateWorkerProcessor()
+// Name:       XTOTCTradeServiceFactory::CreateWorkerProcessor()
+// Purpose:    Implementation of XTOTCTradeServiceFactory::CreateWorkerProcessor()
 // Return:     std::map<uint, IProcessorBase_Ptr>
 ////////////////////////////////////////////////////////////////////////
 
-IMessageProcessor_Ptr CTPOTCTradeServiceFactory::CreateWorkerProcessor(IServerContext* serverCtx)
+IMessageProcessor_Ptr XTOTCTradeServiceFactory::CreateWorkerProcessor(IServerContext* serverCtx)
 {
 	if (!serverCtx->getWorkerProcessor())
 	{
@@ -120,11 +120,11 @@ IMessageProcessor_Ptr CTPOTCTradeServiceFactory::CreateWorkerProcessor(IServerCo
 		std::string tradeWorker;
 		serverCtx->getConfigVal("tradeworker", tradeWorker);
 
-		auto tradeProcessor = std::static_pointer_cast<CTPOTCTradeWorkerProcessor>(GlobalProcessorRegistry::FindProcessor(tradeWorker));
+		auto tradeProcessor = std::static_pointer_cast<XTOTCTradeWorkerProcessor>(GlobalProcessorRegistry::FindProcessor(tradeWorker));
 
 		if (!tradeProcessor)
 		{
-			tradeProcessor.reset(new CTPOTCTradeWorkerProcessor(serverCtx, pricingCtx, positionCtx));
+			tradeProcessor.reset(new XTOTCTradeWorkerProcessor(serverCtx, pricingCtx, positionCtx));
 			ManualOpHub::Instance()->addListener(tradeProcessor);
 			tradeProcessor->Initialize(serverCtx);
 
@@ -132,14 +132,14 @@ IMessageProcessor_Ptr CTPOTCTradeServiceFactory::CreateWorkerProcessor(IServerCo
 		}
 
 		serverCtx->setWorkerProcessor(tradeProcessor);
-		serverCtx->setSubTypeWorkerPtr(static_cast<CTPOTCTradeWorkerProcessor*>(tradeProcessor.get()));
+		serverCtx->setSubTypeWorkerPtr(static_cast<XTOTCTradeWorkerProcessor*>(tradeProcessor.get()));
 		serverCtx->setAbstractSubTypeWorkerPtr(static_cast<OTCTradeWorkerProcessor*>(tradeProcessor.get()));
 	}
 
 	return serverCtx->getWorkerProcessor();
 }
 
-void CTPOTCTradeServiceFactory::SetServerContext(IServerContext * serverCtx)
+void XTOTCTradeServiceFactory::SetServerContext(IServerContext * serverCtx)
 {
 	CTPMDServiceFactory::SetServerContext(serverCtx);
 	auto pricingCtx = AppContext::GetData(STR_KEY_SERVER_PRICING_DATACONTEXT);

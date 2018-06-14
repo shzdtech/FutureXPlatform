@@ -18,7 +18,7 @@ class CTP_OTC_CLASS_EXPORT CTPOTCOptionWorkerProcessor : public CTPOTCWorkerProc
 {
 public:
 	CTPOTCOptionWorkerProcessor(IServerContext* pServerCtx,
-		const std::shared_ptr<CTPOTCTradeWorkerProcessor>& CTPOTCTradeWorkerProcessorPtr);
+		const CTPOTCTradeWorkerProcessorBase_Ptr& CTPOTCTradeWorkerProcessorPtr);
 
 	~CTPOTCOptionWorkerProcessor();
 

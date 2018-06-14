@@ -23,8 +23,8 @@
 
 CTPOTCOptionWorkerProcessor::CTPOTCOptionWorkerProcessor(
 	IServerContext* pServerCtx,
-	const std::shared_ptr<CTPOTCTradeWorkerProcessor>& otcTradeProcessorPtr) :
-	CTPOTCWorkerProcessor(pServerCtx, otcTradeProcessorPtr)
+	const CTPOTCTradeWorkerProcessorBase_Ptr& CTPOTCTradeWorkerProcessorPtr) :
+	CTPOTCWorkerProcessor(pServerCtx, CTPOTCTradeWorkerProcessorPtr)
 {
 
 }

@@ -1,13 +1,12 @@
 /***********************************************************************
- * Module:  CTPOTCTradeWorkerProcessor.cpp
+ * Module:  XTOTCTradeWorkerProcessor.cpp
  * Author:  milk
  * Modified: 2015年10月27日 22:51:43
- * Purpose: Implementation of the class CTPOTCTradeWorkerProcessor
+ * Purpose: Implementation of the class XTOTCTradeWorkerProcessor
  ***********************************************************************/
 
-#include "CTPOTCTradeWorkerProcessor.h"
-#include "CTPOTCTradeSAProcessor.h"
-#include "../CTPServer/CTPUtility.h"
+#include "XTOTCTradeWorkerProcessor.h"
+#include "../CTPServer/XTUtility.h"
 #include "../CTPServer/CTPConstant.h"
 #include "../CTPServer/CTPMapping.h"
 #include "../dataobject/TradeRecordDO.h"
@@ -28,12 +27,12 @@
 #include "../litelogger/LiteLogger.h"
 
 
-CTPOTCTradeWorkerProcessor::CTPOTCTradeWorkerProcessor(
+XTOTCTradeWorkerProcessor::XTOTCTradeWorkerProcessor(
 	IServerContext* pServerCtx,
 	const IPricingDataContext_Ptr& pricingDataCtx,
 	const IUserPositionContext_Ptr& positionCtx)
 	: CTPOTCTradeWorkerProcessorBase(pServerCtx, pricingDataCtx, positionCtx),
-	CTPTradeWorkerProcessor(pServerCtx, positionCtx)
+	XTTradeWorkerProcessor(pServerCtx, positionCtx)
 {
 	_logTrades = false;
 }
@@ -45,16 +44,11 @@ CTPOTCTradeWorkerProcessor::CTPOTCTradeWorkerProcessor(
 // Return:     
 ////////////////////////////////////////////////////////////////////////
 
-CTPOTCTradeWorkerProcessor::~CTPOTCTradeWorkerProcessor()
+XTOTCTradeWorkerProcessor::~XTOTCTradeWorkerProcessor()
 {
 }
 
-CTPTradeWorkerSAProcessor_Ptr CTPOTCTradeWorkerProcessor::CreateSAProcessor()
-{
-	return std::make_shared<CTPOTCTradeSAProcessor>(this);
-}
-
-void CTPOTCTradeWorkerProcessor::OnTraded(const TradeRecordDO_Ptr& tradeDO)
+void XTOTCTradeWorkerProcessor::OnTraded(const TradeRecordDO_Ptr& tradeDO)
 {
 	DispatchUserMessage(MSG_ID_TRADE_RTN, 0, tradeDO->UserID(), tradeDO);
 
@@ -65,12 +59,12 @@ void CTPOTCTradeWorkerProcessor::OnTraded(const TradeRecordDO_Ptr& tradeDO)
 }
 
 
-OrderDO_Ptr CTPOTCTradeWorkerProcessor::CreateOrder(const OrderRequestDO& orderReq)
+OrderDO_Ptr XTOTCTradeWorkerProcessor::CreateOrder(const OrderRequestDO& orderReq)
 {
 	OrderDO_Ptr ret;
 	_userSessionCtn_Ptr->forfirst(orderReq.UserID(), [this, &orderReq, &ret](const IMessageSession_Ptr& msgSession)
 	{
-		if (auto otcTradeProc_Ptr = std::static_pointer_cast<CTPOTCTradeProcessor>(msgSession->LockMessageProcessor()))
+		if (auto otcTradeProc_Ptr = std::static_pointer_cast<XTOTCTradeProcessor>(msgSession->LockMessageProcessor()))
 			ret = otcTradeProc_Ptr->CreateOrder(orderReq);
 	});
 
@@ -78,12 +72,12 @@ OrderDO_Ptr CTPOTCTradeWorkerProcessor::CreateOrder(const OrderRequestDO& orderR
 }
 
 
-OrderDO_Ptr CTPOTCTradeWorkerProcessor::CancelOrder(const OrderRequestDO& orderReq)
+OrderDO_Ptr XTOTCTradeWorkerProcessor::CancelOrder(const OrderRequestDO& orderReq)
 {
 	OrderDO_Ptr ret;
 	_userSessionCtn_Ptr->forfirst(orderReq.UserID(), [this, &orderReq, &ret](const IMessageSession_Ptr& msgSession)
 	{
-		if (auto otcTradeProc_Ptr = std::static_pointer_cast<CTPOTCTradeProcessor>(msgSession->LockMessageProcessor()))
+		if (auto otcTradeProc_Ptr = std::static_pointer_cast<XTOTCTradeProcessor>(msgSession->LockMessageProcessor()))
 			ret = otcTradeProc_Ptr->CancelOrder(orderReq);
 	});
 
@@ -91,84 +85,56 @@ OrderDO_Ptr CTPOTCTradeWorkerProcessor::CancelOrder(const OrderRequestDO& orderR
 }
 
 
-OrderDO_Ptr CTPOTCTradeWorkerProcessor::CancelAutoOrder(const UserContractKey& userContractKey)
+OrderDO_Ptr XTOTCTradeWorkerProcessor::CancelAutoOrder(const UserContractKey& userContractKey)
 {
 	OrderDO_Ptr ret;
 	_userSessionCtn_Ptr->forfirst(userContractKey.UserID(), [this, &userContractKey, &ret](const IMessageSession_Ptr& msgSession)
 	{
-		if (auto otcTradeProc_Ptr = std::static_pointer_cast<CTPOTCTradeProcessor>(msgSession->LockMessageProcessor()))
+		if (auto otcTradeProc_Ptr = std::static_pointer_cast<XTOTCTradeProcessor>(msgSession->LockMessageProcessor()))
 			ret = otcTradeProc_Ptr->CancelAutoOrder(userContractKey);
 	});
 
 	return ret;
 }
 
-OrderDO_Ptr CTPOTCTradeWorkerProcessor::CancelHedgeOrder(const PortfolioKey& portfolioKey)
+OrderDO_Ptr XTOTCTradeWorkerProcessor::CancelHedgeOrder(const PortfolioKey& portfolioKey)
 {
 	OrderDO_Ptr ret;
 	_userSessionCtn_Ptr->forfirst(portfolioKey.UserID(), [this, &portfolioKey, &ret](const IMessageSession_Ptr& msgSession)
 	{
-		if (auto otcTradeProc_Ptr = std::static_pointer_cast<CTPOTCTradeProcessor>(msgSession->LockMessageProcessor()))
+		if (auto otcTradeProc_Ptr = std::static_pointer_cast<XTOTCTradeProcessor>(msgSession->LockMessageProcessor()))
 			ret = otcTradeProc_Ptr->CancelHedgeOrder(portfolioKey);
 	});
 
 	return ret;
 }
 
-uint32_t CTPOTCTradeWorkerProcessor::GetSessionId(void)
+uint32_t XTOTCTradeWorkerProcessor::GetSessionId(void)
 {
 	return _systemUser.getSessionId();
 }
 
-bool & CTPOTCTradeWorkerProcessor::Closing(void)
+bool & XTOTCTradeWorkerProcessor::Closing(void)
 {
 	return (bool)_closing;
 }
 
-SessionContainer_Ptr<std::string>& CTPOTCTradeWorkerProcessor::GetUserSessionContainer(void)
+SessionContainer_Ptr<std::string>& XTOTCTradeWorkerProcessor::GetUserSessionContainer(void)
 {
 	return _userSessionCtn_Ptr;
 }
 
-IUserPositionContext_Ptr & CTPOTCTradeWorkerProcessor::GetUserPositionContext()
+IUserPositionContext_Ptr & XTOTCTradeWorkerProcessor::GetUserPositionContext()
 {
 	return _userPositionCtx_Ptr;
 }
 
-UserTradeContext & CTPOTCTradeWorkerProcessor::GetUserTradeContext()
+UserTradeContext & XTOTCTradeWorkerProcessor::GetUserTradeContext()
 {
 	return _userTradeCtx;
 }
 
-UserOrderContext & CTPOTCTradeWorkerProcessor::GetExchangeOrderContext(void)
+UserOrderContext & XTOTCTradeWorkerProcessor::GetExchangeOrderContext(void)
 {
 	return _userOrderCtx;
-}
-
-
-//CTP API
-
-void CTPOTCTradeWorkerProcessor::OnRspOrderInsert(CThostFtdcInputOrderField * pInputOrder, CThostFtdcRspInfoField * pRspInfo, int nRequestID, bool bIsLast)
-{
-}
-
-void CTPOTCTradeWorkerProcessor::OnRspOrderAction(CThostFtdcInputOrderActionField * pInputOrderAction, CThostFtdcRspInfoField * pRspInfo, int nRequestID, bool bIsLast)
-{
-}
-
-void CTPOTCTradeWorkerProcessor::OnErrRtnOrderInsert(CThostFtdcInputOrderField * pInputOrder, CThostFtdcRspInfoField * pRspInfo)
-{
-}
-
-void CTPOTCTradeWorkerProcessor::OnErrRtnOrderAction(CThostFtdcOrderActionField * pOrderAction, CThostFtdcRspInfoField * pRspInfo)
-{
-}
-
-void CTPOTCTradeWorkerProcessor::OnRtnOrder(CThostFtdcOrderField * pOrder)
-{
-}
-
-
-void CTPOTCTradeWorkerProcessor::OnRtnTrade(CThostFtdcTradeField * pTrade)
-{
 }

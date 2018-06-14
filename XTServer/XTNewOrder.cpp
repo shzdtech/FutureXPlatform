@@ -1,16 +1,16 @@
 /***********************************************************************
- * Module:  CTPNewOrder.cpp
+ * Module:  XTNewOrder.cpp
  * Author:  milk
  * Modified: 2015年10月20日 22:38:54
- * Purpose: Implementation of the class CTPNewOrder
+ * Purpose: Implementation of the class XTNewOrder
  ***********************************************************************/
 
-#include "CTPNewOrder.h"
-#include "CTPRawAPI.h"
-#include "CTPUtility.h"
-#include "CTPMapping.h"
-#include "CTPConstant.h"
-#include "CTPTradeWorkerProcessor.h"
+#include "XTNewOrder.h"
+#include "XTRawAPI.h"
+#include "XTUtility.h"
+#include "XTMapping.h"
+#include "XTConstant.h"
+#include "XTTradeWorkerProcessor.h"
 
 #include "../ordermanager/OrderSeqGen.h"
 #include "../message/message_macro.h"
@@ -24,8 +24,8 @@
 
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, IMessageProcessor* msgProcessor
- // Purpose:    Implementation of CTPNewOrder::HandleRequest()
+ // Name:       XTNewOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, IMessageProcessor* msgProcessor
+ // Purpose:    Implementation of XTNewOrder::HandleRequest()
  // Parameters:
  // - reqDO
  // - rawAPI
@@ -33,11 +33,11 @@
  // Return:     dataobj_ptr
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
+dataobj_ptr XTNewOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
 	CheckAllowTrade(session);
-	CTPUtility::CheckTradeInit((CTPRawAPI*)rawAPI);
+	XTUtility::CheckTradeInit((XTRawAPI*)rawAPI);
 
 	auto pOrderReqDO = (OrderRequestDO*)reqDO.get();
 	pOrderReqDO->TradingType = OrderTradingType::TRADINGTYPE_MANUAL;
@@ -120,14 +120,8 @@ dataobj_ptr CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_pt
 		OrderPortfolioCache::Insert(pOrderReqDO->OrderID, *pOrderReqDO);
 	}
 
-	int iRet = ((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqOrderInsert(&req, serialId);
+	((XTRawAPI*)rawAPI)->get()->order();
 
-	if (iRet != 0 && insertPortfolio)
-	{
-		OrderPortfolioCache::Remove(pOrderReqDO->OrderID);
-	}
-
-	CTPUtility::CheckReturnError(iRet);
 
 	if (bizEx_Ptr)
 		throw *bizEx_Ptr;
@@ -136,8 +130,8 @@ dataobj_ptr CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_pt
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPNewOrder::HandleResponse(const uint32_t serialId, param_vector rawRespParams, IRawAPI* rawAPI, IMessageProcessor* msgProcessor
-// Purpose:    Implementation of CTPNewOrder::HandleResponse(const uint32_t serialId, )
+// Name:       XTNewOrder::HandleResponse(const uint32_t serialId, param_vector rawRespParams, IRawAPI* rawAPI, IMessageProcessor* msgProcessor
+// Purpose:    Implementation of XTNewOrder::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
 // - rawAPI
@@ -145,7 +139,7 @@ dataobj_ptr CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_pt
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPNewOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
+dataobj_ptr XTNewOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	OrderDO_Ptr ret;
 
@@ -155,7 +149,7 @@ dataobj_ptr CTPNewOrder::HandleResponse(const uint32_t serialId, const param_vec
 		{
 			auto pRsp = (CThostFtdcRspInfoField*)rawRespParams[1];
 
-			if (ret = CTPUtility::ParseRawOrder(pData, pRsp, session->getUserInfo().getSessionId()))
+			if (ret = XTUtility::ParseRawOrder(pData, pRsp, session->getUserInfo().getSessionId()))
 			{
 				ret->HasMore = false;
 			}
@@ -163,7 +157,7 @@ dataobj_ptr CTPNewOrder::HandleResponse(const uint32_t serialId, const param_vec
 	}
 	else
 	{
-		CTPUtility::CheckError(rawRespParams[1]);
+		XTUtility::CheckError(rawRespParams[1]);
 	}
 
 	return ret;

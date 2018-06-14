@@ -19,6 +19,9 @@
     <Filter Include="源文件\handler">
       <UniqueIdentifier>{08c040d0-29b9-4bf5-949c-56abc02a4b61}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\apihead">
+      <UniqueIdentifier>{c875775b-49a7-42e5-9e8f-92d8604051a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -87,6 +90,30 @@
     <ClInclude Include="XTTradeLoginHandler.h">
       <Filter>头文件\handler</Filter>
     </ClInclude>
+    <ClInclude Include="include\MarketType.h">
+      <Filter>头文件\apihead</Filter>
+    </ClInclude>
+    <ClInclude Include="include\XtDataType.h">
+      <Filter>头文件\apihead</Filter>
+    </ClInclude>
+    <ClInclude Include="include\XtDef.h">
+      <Filter>头文件\apihead</Filter>
+    </ClInclude>
+    <ClInclude Include="include\XtError.h">
+      <Filter>头文件\apihead</Filter>
+    </ClInclude>
+    <ClInclude Include="include\XtStructs.h">
+      <Filter>头文件\apihead</Filter>
+    </ClInclude>
+    <ClInclude Include="include\XtTraderApi.h">
+      <Filter>头文件\apihead</Filter>
+    </ClInclude>
+    <ClInclude Include="XTRawAPI.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="XTTradeUpdated.h">
+      <Filter>头文件\handler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="XTUtility.cpp">
@@ -141,6 +168,12 @@
       <Filter>源文件\handler</Filter>
     </ClCompile>
     <ClCompile Include="XTTradeLoginHandler.cpp">
+      <Filter>源文件\handler</Filter>
+    </ClCompile>
+    <ClCompile Include="XTRawAPI.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="XTTradeUpdated.cpp">
       <Filter>源文件\handler</Filter>
     </ClCompile>
   </ItemGroup>

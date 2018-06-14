@@ -7,10 +7,10 @@
 
 #include "CTPTradeLoginHandler.h"
 #include "CTPTradeProcessor.h"
-#include "CTPRawAPI.h"
+#include "XTRawAPI.h"
 #include "CTPConstant.h"
-#include "CTPTradeWorkerProcessor.h"
-#include "CTPUtility.h"
+#include "XTTradeWorkerProcessor.h"
+#include "XTUtility.h"
 
 #include "../message/DefMessageID.h"
 #include "../message/MessageUtility.h"
@@ -31,7 +31,7 @@
  // Return:     int
  ////////////////////////////////////////////////////////////////////////
 
-std::shared_ptr<UserInfoDO> CTPTradeLoginHandler::LoginFromServer(const CTPProcessor_Ptr& msgProcessor,
+std::shared_ptr<UserInfoDO> CTPTradeLoginHandler::LoginFromServer(const XTProcessor_Ptr& msgProcessor,
 	const std::shared_ptr<UserInfoDO> & userInfoDO_Ptr, uint requestId, const std::string& serverName)
 {
 	auto& session = msgProcessor->getMessageSession();
@@ -137,7 +137,7 @@ dataobj_ptr CTPTradeLoginHandler::HandleResponse(const uint32_t serialId, const 
 	dataobj_ptr ret = CTPLoginHandler::HandleResponse(serialId, rawRespParams, rawAPI, msgProcessor, session);
 
 	CThostFtdcSettlementInfoConfirmField reqsettle{};
-	((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqSettlementInfoConfirm(&reqsettle, 0);
+	((XTRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqSettlementInfoConfirm(&reqsettle, 0);
 
 	LoginFromDB(msgProcessor);
 

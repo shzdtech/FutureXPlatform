@@ -5,9 +5,9 @@
  * Purpose: Implementation of the class CTPCancleOrder
  ***********************************************************************/
 
-#include "CTPCancelOrder.h"
-#include "CTPRawAPI.h"
-#include "CTPUtility.h"
+#include "XTCancelOrder.h"
+#include "XTRawAPI.h"
+#include "XTUtility.h"
 #include "CTPMapping.h"
 #include "CTPConstant.h"
 
@@ -18,7 +18,7 @@
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       CTPCancleOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
-// Purpose:    Implementation of CTPCancelOrder::HandleRequest()
+// Purpose:    Implementation of XTCancelOrder::HandleRequest()
 // Parameters:
 // - reqDO
 // - rawAPI
@@ -26,10 +26,10 @@
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPCancelOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
+dataobj_ptr XTCancelOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
-	CTPUtility::CheckTradeInit((CTPRawAPI*)rawAPI);
+	XTUtility::CheckTradeInit((XTRawAPI*)rawAPI);
 
 	auto pDO = (OrderRequestDO*)reqDO.get();
 
@@ -56,14 +56,13 @@ dataobj_ptr CTPCancelOrder::HandleRequest(const uint32_t serialId, const dataobj
 		std::snprintf(req.OrderRef, sizeof(req.OrderRef), FMT_ORDERREF, pDO->OrderID);
 	}
 
-	int iRet = ((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqOrderAction(&req, serialId);
-	CTPUtility::CheckReturnError(iRet);
+	((XTRawAPI*)rawAPI)->get()->cancelOrder();
 
 	return nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPCancelOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
+// Name:       XTCancelOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 // Purpose:    Implementation of CTPCancleOrder::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
@@ -72,18 +71,18 @@ dataobj_ptr CTPCancelOrder::HandleRequest(const uint32_t serialId, const dataobj
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPCancelOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
+dataobj_ptr XTCancelOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	OrderDO_Ptr ret;
 	auto pRsp = (CThostFtdcRspInfoField*)rawRespParams[1];
-	CTPUtility::CheckError(pRsp);
+	XTUtility::CheckError(pRsp);
 	if (rawRespParams.size() > 2)
 	{
 		if (auto pData = (CThostFtdcInputOrderActionField*)rawRespParams[0])
 		{
 			if (session->getUserInfo().getUserId() == pData->UserID)
 			{
-				ret = CTPUtility::ParseRawOrder(pData, pRsp);
+				ret = XTUtility::ParseRawOrder(pData, pRsp);
 			}
 		}
 	}
@@ -92,7 +91,7 @@ dataobj_ptr CTPCancelOrder::HandleResponse(const uint32_t serialId, const param_
 		if (auto pData = (CThostFtdcOrderActionField*)rawRespParams[0])
 			if (session->getUserInfo().getUserId() == pData->UserID)
 			{
-				ret = CTPUtility::ParseRawOrder(pData, pRsp);
+				ret = XTUtility::ParseRawOrder(pData, pRsp);
 			}
 	}
 

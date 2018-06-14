@@ -1,15 +1,15 @@
 /***********************************************************************
- * Module:  CTPQueryPosition.cpp
+ * Module:  XTQueryPosition.cpp
  * Author:  milk
  * Modified: 2015年7月11日 13:38:08
- * Purpose: Implementation of the class CTPQueryPosition
+ * Purpose: Implementation of the class XTQueryPosition
  ***********************************************************************/
 
-#include "CTPQueryPosition.h"
-#include "CTPRawAPI.h"
-#include "CTPUtility.h"
+#include "XTQueryPosition.h"
+#include "XTRawAPI.h"
+#include "XTUtility.h"
 #include "CTPConstant.h"
-#include "CTPTradeWorkerProcessor.h"
+#include "XTTradeWorkerProcessor.h"
 #include "CTPWorkerProcessorID.h"
 
 #include "../litelogger/LiteLogger.h"
@@ -27,8 +27,8 @@
 
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       CTPQueryPosition::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
- // Purpose:    Implementation of CTPQueryPosition::HandleRequest()
+ // Name:       XTQueryPosition::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
+ // Purpose:    Implementation of XTQueryPosition::HandleRequest()
  // Parameters:
  // - reqDO
  // - rawAPI
@@ -36,7 +36,7 @@
  // Return:     void
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryPosition::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
+dataobj_ptr XTQueryPosition::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
 
@@ -46,14 +46,14 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const uint32_t serialId, const datao
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 	{
 		PortfolioPosition positionMap;
-		auto pProcessor = (CTPProcessor*)msgProcessor.get();
+		auto pProcessor = (XTProcessor*)msgProcessor.get();
 		if (!(pProcessor->DataLoadMask & DataLoadType::POSITION_DATA_LOADED))
 		{
-			if (CTPUtility::HasTradeInit((CTPRawAPI*)rawAPI))
+			if (XTUtility::HasTradeInit((XTRawAPI*)rawAPI))
 			{
 				CThostFtdcQryInvestorPositionField req{};
-				int iRet = ((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryInvestorPosition(&req, serialId);
-				std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
+				int iRet = ((XTRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryInvestorPosition(&req, serialId);
+				std::this_thread::sleep_for(XTProcessor::DefaultQueryTime);
 			}
 		}
 
@@ -124,28 +124,13 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const uint32_t serialId, const datao
 		if (!found)
 			throw NotFoundException();
 	}
-	else
-	{
-		CTPUtility::CheckTradeInit((CTPRawAPI*)rawAPI);
-
-		auto& brokeid = session->getUserInfo().getBrokerId();
-		auto& investorid = session->getUserInfo().getInvestorId();
-
-		CThostFtdcQryInvestorPositionField req{};
-		std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID));
-		std::strncpy(req.InvestorID, investorid.data(), sizeof(req.InvestorID));
-		std::strncpy(req.InstrumentID, instrumentid.data(), sizeof(req.InstrumentID));
-
-		int iRet = ((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryInvestorPosition(&req, serialId);
-		CTPUtility::CheckReturnError(iRet);
-	}
 
 	return nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPQueryPosition::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
-// Purpose:    Implementation of CTPQueryPosition::HandleResponse(const uint32_t serialId, )
+// Name:       XTQueryPosition::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
+// Purpose:    Implementation of XTQueryPosition::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
 // - rawAPI
@@ -153,10 +138,10 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const uint32_t serialId, const datao
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryPosition::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
+dataobj_ptr XTQueryPosition::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	CTPUtility::CheckNotFound(rawRespParams[0]);
-	CTPUtility::CheckError(rawRespParams[1]);
+	XTUtility::CheckNotFound(rawRespParams[0]);
+	XTUtility::CheckError(rawRespParams[1]);
 
 	auto pData = (CThostFtdcInvestorPositionField*)rawRespParams[0];
 
@@ -168,7 +153,7 @@ dataobj_ptr CTPQueryPosition::HandleResponse(const uint32_t serialId, const para
 	{
 		auto& userId = session->getUserInfo().getUserId();
 		auto& sysUserId = session->getUserInfo().getInvestorId();
-		auto position_ptr = CTPUtility::ParseRawPosition(pData, sysUserId);
+		auto position_ptr = XTUtility::ParseRawPosition(pData, sysUserId);
 
 		pWorkerProc->UpdateSysYdPosition(sysUserId, position_ptr);
 

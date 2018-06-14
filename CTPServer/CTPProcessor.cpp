@@ -19,18 +19,17 @@ std::string CTPProcessor::FlowPath("ctpflow");
 ////////////////////////////////////////////////////////////////////////
 
 CTPProcessor::CTPProcessor()
-	: _rawAPI(new CTPRawAPI)
 {
 	DataLoadMask = NO_DATA_LOADED;
 }
 
- CTPProcessor::CTPProcessor(const CTPRawAPI_Ptr& rawAPI)
+ CTPProcessor::CTPProcessor(const IRawAPI_Ptr& rawAPI)
 	 : _rawAPI(rawAPI)
  {
 	 DataLoadMask = NO_DATA_LOADED;
  }
 
- void CTPProcessor::setRawAPI_Ptr(const CTPRawAPI_Ptr & rawAPI)
+ void CTPProcessor::setRawAPI_Ptr(const IRawAPI_Ptr & rawAPI)
  {
 	 _rawAPI = rawAPI;
  }
@@ -43,6 +42,8 @@ CTPProcessor::CTPProcessor()
 
 IRawAPI* CTPProcessor::getRawAPI(void)
 {
+	if (!_rawAPI)
+		_rawAPI.reset(new CTPRawAPI);
 	return _rawAPI.get();
 }
 
@@ -56,7 +57,7 @@ void CTPProcessor::Initialize(IServerContext* serverCtx)
 {
 }
 
-CTPRawAPI_Ptr& CTPProcessor::RawAPI_Ptr(void)
+IRawAPI_Ptr& CTPProcessor::RawAPI_Ptr(void)
 {
 	return _rawAPI;
 }

@@ -1,14 +1,14 @@
 /***********************************************************************
- * Module:  CTPOTCTradeProcessor.cpp
+ * Module:  XTOTCTradeProcessor.cpp
  * Author:  milk
  * Modified: 2015年10月27日 22:51:43
- * Purpose: Implementation of the class CTPOTCTradeProcessor
+ * Purpose: Implementation of the class XTOTCTradeProcessor
  ***********************************************************************/
 
-#include "CTPOTCTradeProcessor.h"
-#include "CTPOTCTradeWorkerProcessor.h"
+#include "XTOTCTradeProcessor.h"
+#include "XTOTCTradeWorkerProcessor.h"
 
-#include "../CTPServer/CTPUtility.h"
+#include "../CTPServer/XTUtility.h"
 #include "../CTPServer/CTPConstant.h"
 #include "../CTPServer/CTPMapping.h"
 #include "../dataobject/TradeRecordDO.h"
@@ -30,7 +30,7 @@
 #include "../bizutility/ContractCache.h"
 #include "../litelogger/LiteLogger.h"
 #include "../message/MessageUtility.h"
-#include "CTPOTCWorkerProcessor.h"
+#include "../CTPOTCServer/CTPOTCWorkerProcessor.h"
 
 
  ////////////////////////////////////////////////////////////////////////
@@ -39,21 +39,21 @@
  // Return:     
  ////////////////////////////////////////////////////////////////////////
 
-CTPOTCTradeProcessor::CTPOTCTradeProcessor()
+XTOTCTradeProcessor::XTOTCTradeProcessor()
 {
 }
 
-CTPOTCTradeProcessor::CTPOTCTradeProcessor(const CTPRawAPI_Ptr & rawAPI)
-	: CTPTradeProcessor(rawAPI)
+XTOTCTradeProcessor::XTOTCTradeProcessor(const XTRawAPI_Ptr & rawAPI)
+	: XTTradeProcessor(rawAPI)
 {
 }
 
-CTPOTCTradeProcessor::~CTPOTCTradeProcessor()
+XTOTCTradeProcessor::~XTOTCTradeProcessor()
 {
 	LOG_DEBUG << __FUNCTION__;
 }
 
-void CTPOTCTradeProcessor::OnTraded(const TradeRecordDO_Ptr& tradeDO)
+void XTOTCTradeProcessor::OnTraded(const TradeRecordDO_Ptr& tradeDO)
 {
 	/*if (auto pWorkerProc = getWorkerProcessor())
 	{
@@ -66,29 +66,29 @@ void CTPOTCTradeProcessor::OnTraded(const TradeRecordDO_Ptr& tradeDO)
 	}*/
 }
 
-CTPOTCTradeWorkerProcessor* CTPOTCTradeProcessor::getWorkerProcessor()
+XTOTCTradeWorkerProcessor* XTOTCTradeProcessor::getWorkerProcessor()
 {
-	return MessageUtility::WorkerProcessorPtr<CTPOTCTradeWorkerProcessor>(getMessageSession()->LockMessageProcessor()).get();
+	return MessageUtility::WorkerProcessorPtr<XTOTCTradeWorkerProcessor>(getMessageSession()->LockMessageProcessor());
 }
 
 
-OTCOrderManager & CTPOTCTradeProcessor::GetOTCOrderManager(void)
+OTCOrderManager & XTOTCTradeProcessor::GetOTCOrderManager(void)
 {
 	return getWorkerProcessor()->GetOTCOrderManager();
 }
 
-AutoOrderManager & CTPOTCTradeProcessor::GetAutoOrderManager(void)
+AutoOrderManager & XTOTCTradeProcessor::GetAutoOrderManager(void)
 {
 	return getWorkerProcessor()->GetAutoOrderManager();
 }
 
-HedgeOrderManager & CTPOTCTradeProcessor::GetHedgeOrderManager(void)
+HedgeOrderManager & XTOTCTradeProcessor::GetHedgeOrderManager(void)
 {
 	return getWorkerProcessor()->GetHedgeOrderManager();
 }
 
 
-OrderDO_Ptr CTPOTCTradeProcessor::CreateOrder(const OrderRequestDO& orderReq)
+OrderDO_Ptr XTOTCTradeProcessor::CreateOrder(const OrderRequestDO& orderReq)
 {
 	OrderDO_Ptr ret;
 
@@ -109,7 +109,7 @@ OrderDO_Ptr CTPOTCTradeProcessor::CreateOrder(const OrderRequestDO& orderReq)
 		}
 	}
 
-	if (auto tdApiProxy = _rawAPI->TdAPIProxy())
+	if (auto tdApiProxy = std::static_pointer_cast<CTPRawAPI>(_rawAPI)->TdAPIProxy())
 	{
 		auto& userInfo = getMessageSession()->getUserInfo();
 
@@ -158,7 +158,7 @@ OrderDO_Ptr CTPOTCTradeProcessor::CreateOrder(const OrderRequestDO& orderReq)
 
 		if (tdApiProxy->get()->ReqOrderInsert(&req, 0) == 0)
 		{
-			ret = CTPUtility::ParseRawOrder(&req, nullptr, orderReq.SessionID ? orderReq.SessionID : userInfo.getSessionId());
+			ret = XTUtility::ParseRawOrder(&req, nullptr, orderReq.SessionID ? orderReq.SessionID : userInfo.getSessionId());
 		}
 		else
 		{
@@ -169,11 +169,11 @@ OrderDO_Ptr CTPOTCTradeProcessor::CreateOrder(const OrderRequestDO& orderReq)
 	return ret;
 }
 
-OrderDO_Ptr CTPOTCTradeProcessor::CancelOrder(const OrderRequestDO& orderReq)
+OrderDO_Ptr XTOTCTradeProcessor::CancelOrder(const OrderRequestDO& orderReq)
 {
 	OrderDO_Ptr ret;
 
-	if (auto tdApiProxy = _rawAPI->TdAPIProxy())
+	if (auto tdApiProxy = std::static_pointer_cast<CTPRawAPI>(_rawAPI)->TdAPIProxy())
 	{
 		auto& userInfo = getMessageSession()->getUserInfo();
 
@@ -202,14 +202,14 @@ OrderDO_Ptr CTPOTCTradeProcessor::CancelOrder(const OrderRequestDO& orderReq)
 		if (tdApiProxy->get()->ReqOrderAction(&req, AppContext::GenNextSeq()) == 0)
 		{
 			req.SessionID = orderReq.SessionID ? orderReq.SessionID : userInfo.getSessionId();
-			ret = CTPUtility::ParseRawOrder(&req, nullptr);
+			ret = XTUtility::ParseRawOrder(&req, nullptr);
 		}
 	}
 
 	return ret;
 }
 
-uint32_t CTPOTCTradeProcessor::GetSessionId(void)
+uint32_t XTOTCTradeProcessor::GetSessionId(void)
 {
 	return getMessageSession()->getUserInfo().getSessionId();
 }

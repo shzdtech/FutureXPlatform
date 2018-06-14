@@ -69,7 +69,7 @@ int CTPTradeWorkerSAProcessor::Login(const std::string & brokerId, const std::st
 	std::strncpy(req.UserID, investorId.data(), sizeof(req.UserID));
 	std::strncpy(req.Password, password.data(), sizeof(req.Password));
 
-	CreateCTPAPI(this, investorId, exDO.Address);
+	CreateBackendAPI(this, investorId, exDO.Address);
 
 	CThostFtdcReqAuthenticateField reqAuth{};
 
@@ -80,12 +80,12 @@ int CTPTradeWorkerSAProcessor::Login(const std::string & brokerId, const std::st
 		std::strncpy(reqAuth.AuthCode, exDO.AuthCode.data(), sizeof(reqAuth.AuthCode));
 		std::strncpy(reqAuth.UserProductInfo, exDO.ProductInfo.data(), sizeof(reqAuth.UserProductInfo));
 
-		retcode = RawAPI_Ptr()->TdAPIProxy()->get()->ReqAuthenticate(&reqAuth, 0);
+		retcode = TradeApi()->get()->ReqAuthenticate(&reqAuth, 0);
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
 
 	if (retcode == 0)
-		retcode = RawAPI_Ptr()->TdAPIProxy()->get()->ReqUserLogin(&req, 0);
+		retcode = TradeApi()->get()->ReqUserLogin(&req, 0);
 
 	// try after market server
 	if (retcode == -1)
@@ -93,13 +93,13 @@ int CTPTradeWorkerSAProcessor::Login(const std::string & brokerId, const std::st
 		getServerContext()->getConfigVal(ExchangeRouterTable::TARGET_TD_AM, server);
 		if (ExchangeRouterTable::TryFind(server, exDO))
 		{
-			CreateCTPAPI(this, investorId, exDO.Address);
+			CreateBackendAPI(this, investorId, exDO.Address);
 			if (exDO.AuthCode.empty())
 			{
-				retcode = RawAPI_Ptr()->TdAPIProxy()->get()->ReqAuthenticate(&reqAuth, 0);
+				retcode = TradeApi()->get()->ReqAuthenticate(&reqAuth, 0);
 				std::this_thread::sleep_for(std::chrono::seconds(1));
 			}
-			retcode = RawAPI_Ptr()->TdAPIProxy()->get()->ReqUserLogin(&req, 0);
+			retcode = TradeApi()->get()->ReqUserLogin(&req, 0);
 		}
 	}
 
@@ -152,7 +152,7 @@ void CTPTradeWorkerSAProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField * pRs
 		CThostFtdcSettlementInfoConfirmField reqsettle{};
 		std::strncpy(reqsettle.BrokerID, sysUser.getBrokerId().data(), sizeof(reqsettle.BrokerID));
 		std::strncpy(reqsettle.InvestorID, sysUser.getInvestorId().data(), sizeof(reqsettle.InvestorID));
-		_rawAPI->TdAPIProxy()->get()->ReqSettlementInfoConfirm(&reqsettle, 0);
+		TradeApi()->get()->ReqSettlementInfoConfirm(&reqsettle, 0);
 
 		QueryUserPositionAsyncIfNeed();
 	}

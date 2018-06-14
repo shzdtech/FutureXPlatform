@@ -114,7 +114,7 @@ int CTPOTCWorkerProcessor::SubscribeMarketData(const ContractKey& contractId)
 	if (_isLogged && _subedContracts.find(contractId) == _subedContracts.end())
 	{
 		char* contract[] = { const_cast<char*>(contractId.InstrumentID().data()) };
-		if (auto mdApiProxy = _rawAPI->MdAPIProxy())
+		if (auto mdApiProxy = std::static_pointer_cast<CTPRawAPI>(_rawAPI)->MdAPIProxy())
 		{
 			ret = mdApiProxy->get()->SubscribeMarketData(contract, 1);
 		}

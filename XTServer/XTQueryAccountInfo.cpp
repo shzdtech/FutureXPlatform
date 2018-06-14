@@ -5,10 +5,9 @@
  * Purpose: Implementation of the class CTpData
  ***********************************************************************/
 
-#include "CTPQueryAccountInfo.h"
-#include "CTPRawAPI.h"
-#include "CTPTradeWorkerProcessor.h"
-#include "CTPWorkerProcessorID.h"
+#include "XTQueryAccountInfo.h"
+#include "XTRawAPI.h"
+#include "XTTradeWorkerProcessor.h"
 
 #include "../message/MessageUtility.h"
 #include "../dataobject/TemplateDO.h"
@@ -22,10 +21,10 @@
 
 #include "../dataobject/AccountInfoDO.h"
 
-#include "CTPUtility.h"
+#include "XTUtility.h"
  ////////////////////////////////////////////////////////////////////////
- // Name:       CTPQueryAccountInfo::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
- // Purpose:    Implementation of CTPQueryAccountInfo::HandleRequest()
+ // Name:       XTQueryAccountInfo::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
+ // Purpose:    Implementation of XTQueryAccountInfo::HandleRequest()
  // Parameters:
  // - reqDO
  // - rawAPI
@@ -33,7 +32,7 @@
  // Return:     void
  ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryAccountInfo::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
+dataobj_ptr XTQueryAccountInfo::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	CheckLogin(session);
 
@@ -52,8 +51,8 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const uint32_t serialId, const da
 }
 
 ////////////////////////////////////////////////////////////////////////
-// Name:       CTPQueryAccountInfo::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
-// Purpose:    Implementation of CTPQueryAccountInfo::HandleResponse(const uint32_t serialId, )
+// Name:       XTQueryAccountInfo::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
+// Purpose:    Implementation of XTQueryAccountInfo::HandleResponse(const uint32_t serialId, )
 // Parameters:
 // - rawRespParams
 // - rawAPI
@@ -61,10 +60,10 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const uint32_t serialId, const da
 // Return:     dataobj_ptr
 ////////////////////////////////////////////////////////////////////////
 
-dataobj_ptr CTPQueryAccountInfo::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
+dataobj_ptr XTQueryAccountInfo::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	CTPUtility::CheckNotFound(rawRespParams[0]);
-	CTPUtility::CheckError(rawRespParams[1]);
+	XTUtility::CheckNotFound(rawRespParams[0]);
+	XTUtility::CheckError(rawRespParams[1]);
 
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
 	{

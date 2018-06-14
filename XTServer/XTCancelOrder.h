@@ -10,7 +10,7 @@
 
 #include "../message/MessageHandler.h"
 
-class CTPCancelOrder : public MessageHandler
+class XTCancelOrder : public MessageHandler
 {
 public:
    dataobj_ptr HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session);

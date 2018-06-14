@@ -58,7 +58,7 @@ CTPTradeProcessor::~CTPTradeProcessor()
 }
 
 
-bool CTPTradeProcessor::CreateCTPAPI(CThostFtdcTraderSpi *pSpi, const std::string& flowId, const std::string & serverAddr)
+bool CTPTradeProcessor::CreateBackendAPI(CThostFtdcTraderSpi *pSpi, const std::string& flowId, const std::string & serverAddr)
 {
 	while (_updateFlag.test_and_set(std::memory_order::memory_order_acquire));
 
@@ -84,7 +84,7 @@ bool CTPTradeProcessor::CreateCTPAPI(CThostFtdcTraderSpi *pSpi, const std::strin
 	tdAPI->get()->SubscribePublicTopic(THOST_TERT_RESTART);
 	tdAPI->get()->Init();
 
-	_rawAPI->ResetTdAPIProxy(tdAPI);
+	std::static_pointer_cast<CTPRawAPI>(_rawAPI)->ResetTdAPIProxy(tdAPI);
 
 	std::this_thread::sleep_for(std::chrono::seconds(2));
 
@@ -101,7 +101,7 @@ bool CTPTradeProcessor::OnSessionClosing(void)
 
 	if (auto sessionptr = getMessageSession())
 	{
-		if (auto tdProxy = _rawAPI->TdAPIProxy())
+		if (auto tdProxy = TradeApi())
 		{
 			CThostFtdcUserLogoutField logout{};
 			std::strncpy(logout.BrokerID, sessionptr->getUserInfo().getBrokerId().data(), sizeof(logout.BrokerID));
@@ -330,7 +330,7 @@ void CTPTradeProcessor::QueryPositionAsync(void)
 		std::this_thread::sleep_for(std::chrono::seconds(2));
 		if (!_exiting && currentCnt == _tradeCnt)
 		{
-			if (auto tdProxy = _rawAPI->TdAPIProxy())
+			if (auto tdProxy = TradeApi())
 			{
 				CThostFtdcQryInvestorPositionField req{};
 				_updateFlag.clear(std::memory_order::memory_order_release);
@@ -340,6 +340,11 @@ void CTPTradeProcessor::QueryPositionAsync(void)
 			}
 		}
 	}
+}
+
+std::shared_ptr<CTPRawAPI::CThostFtdcTdApiProxy>& CTPTradeProcessor::TradeApi(void)
+{
+	return std::static_pointer_cast<CTPRawAPI>(_rawAPI)->TdAPIProxy();
 }
 
 

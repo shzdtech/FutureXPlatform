@@ -41,7 +41,6 @@ public:
 	virtual int LoginSystemUser(void);
 	virtual int LoginSystemUserIfNeed(void);
 	virtual int LogoutSystemUser(void);
-	virtual int LoadContractFromDB(void);
 	virtual int& GetDataLoadMask(void);
 	virtual TemplateMessageProcessor* GetTemplateProcessor(void);
 	virtual IServerContext* getServerContext(void);

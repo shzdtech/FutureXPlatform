@@ -6,7 +6,7 @@
  ***********************************************************************/
 
 #include "CTPOTCTradeLoginHandler.h"
-#include "CTPOTCTradeWorkerProcessor.h"
+#include "XTOTCTradeWorkerProcessor.h"
 #include "../message/DefMessageID.h"
 #include "../message/MessageUtility.h"
 #include "../utility/TUtil.h"
@@ -17,5 +17,5 @@
 
 CTPTradeWorkerProcessor* CTPOTCTradeLoginHandler::GetWorkerProcessor(const IMessageProcessor_Ptr& msgProcessor)
 {
-	return MessageUtility::WorkerProcessorPtr<CTPOTCTradeWorkerProcessor>(msgProcessor);
+	return MessageUtility::WorkerProcessorPtr<XTOTCTradeWorkerProcessor>(msgProcessor);
 }

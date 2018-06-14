@@ -99,7 +99,7 @@ int CTPTradeWorkerProcessor::RequestData(void)
 	if (HasLogged())
 	{
 		LOG_INFO << _serverCtx->getServerUri() << ": Try preloading data...";
-		auto trdAPI = _rawAPI->TdAPIProxy();
+		auto trdAPI = TradeApi();
 
 		auto session = getMessageSession();
 		while (!session)
@@ -186,7 +186,7 @@ int CTPTradeWorkerProcessor::LoginSystemUser(void)
 		std::strncpy(reqAuth.UserID, _systemUser.getUserId().data(), sizeof(reqAuth.UserID));
 		std::strncpy(reqAuth.AuthCode, _authCode.data(), sizeof(reqAuth.AuthCode));
 		std::strncpy(reqAuth.UserProductInfo, _productInfo.data(), sizeof(reqAuth.UserProductInfo));
-		ret = _rawAPI->TdAPIProxy()->get()->ReqAuthenticate(&reqAuth, 0);
+		ret = TradeApi()->get()->ReqAuthenticate(&reqAuth, 0);
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
 
@@ -198,7 +198,7 @@ int CTPTradeWorkerProcessor::LoginSystemUser(void)
 		std::strncpy(req.Password, _systemUser.getPassword().data(), sizeof(req.Password));
 		std::strncpy(req.UserProductInfo, _productInfo.data(), sizeof(req.UserProductInfo));
 
-		ret = _rawAPI->TdAPIProxy()->get()->ReqUserLogin(&req, 0);
+		ret = TradeApi()->get()->ReqUserLogin(&req, 0);
 	}
 
 	return ret;
@@ -213,7 +213,7 @@ int CTPTradeWorkerProcessor::LoginSystemUserIfNeed(void)
 	if (!_isLogged || !_isConnected)
 	{
 		std::string address(_systemUser.getServer());
-		CreateCTPAPI(this, _systemUser.getInvestorId(), address);
+		CreateBackendAPI(this, _systemUser.getInvestorId(), address);
 		ret = LoginSystemUser();
 		if (ret == -1)
 		{
@@ -225,7 +225,7 @@ int CTPTradeWorkerProcessor::LoginSystemUserIfNeed(void)
 			ExchangeRouterDO exDO;
 			if (ExchangeRouterTable::TryFind(defaultCfg, exDO))
 			{
-				CreateCTPAPI(this, _systemUser.getInvestorId(), exDO.Address);
+				CreateBackendAPI(this, _systemUser.getInvestorId(), exDO.Address);
 				ret = LoginSystemUser();
 			}
 
@@ -255,24 +255,7 @@ int CTPTradeWorkerProcessor::LogoutSystemUser(void)
 	CThostFtdcUserLogoutField logout{};
 	std::strncpy(logout.BrokerID, _systemUser.getBrokerId().data(), sizeof(logout.BrokerID));
 	std::strncpy(logout.UserID, _systemUser.getInvestorId().data(), sizeof(logout.UserID));
-	return _rawAPI->TdAPIProxy()->get()->ReqUserLogout(&logout, 0);
-}
-
-int CTPTradeWorkerProcessor::LoadContractFromDB()
-{
-	for (auto productType : _productTypes)
-	{
-		if (auto vectPtr = ContractDAO::FindContractByProductType(productType))
-		{
-			InstrumentCache& cache = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE);
-			for (auto& contract : *vectPtr)
-				cache.Add(contract);
-		}
-	}
-
-	GetDataLoadMask() |= INSTRUMENT_DATA_LOADED;
-
-	return 0;
+	return TradeApi()->get()->ReqUserLogout(&logout, 0);
 }
 
 int & CTPTradeWorkerProcessor::GetDataLoadMask(void)
@@ -474,7 +457,7 @@ void CTPTradeWorkerProcessor::OnRspAuthenticate(CThostFtdcRspAuthenticateField *
 	//std::strncpy(req.Password, _systemUser.getPassword().data(), sizeof(req.Password));
 	//std::strncpy(req.UserProductInfo, _productInfo.data(), sizeof(req.UserProductInfo));
 
-	//_rawAPI->TdAPIProxy()->get()->ReqUserLogin(&req, 0);
+	//std::static_pointer_cast<CTPRawAPI>(_rawAPI)->get()->ReqUserLogin(&req, 0);
 }
 
 ///登录请求响应
@@ -525,7 +508,7 @@ void CTPTradeWorkerProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUs
 		CThostFtdcSettlementInfoConfirmField reqsettle{};
 		std::strncpy(reqsettle.BrokerID, _systemUser.getBrokerId().data(), sizeof(reqsettle.BrokerID));
 		std::strncpy(reqsettle.InvestorID, _systemUser.getInvestorId().data(), sizeof(reqsettle.InvestorID));
-		_rawAPI->TdAPIProxy()->get()->ReqSettlementInfoConfirm(&reqsettle, 0);
+		TradeApi()->get()->ReqSettlementInfoConfirm(&reqsettle, 0);
 
 		_isLogged = true;
 
