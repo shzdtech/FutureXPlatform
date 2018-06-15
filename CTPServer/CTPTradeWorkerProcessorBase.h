@@ -49,6 +49,11 @@ public:
 
 	virtual void Init(IServerContext* pServerCtx);
 
+	virtual void LoginUserSession(const CTPProcessor_Ptr& sessionPtr,
+		const std::string & brokerId, const std::string & investorId, const std::string & password, const std::string & serverName = "");
+	bool IsUserLogged(const std::string & userId);
+
+
 	virtual int LoadDataAsync(void);
 	virtual int LoadContractFromDB(void);
 	virtual void OnDataLoaded(void);
@@ -120,6 +125,8 @@ protected:
 
 	cuckoohash_map<std::string, Position_HashMap> _ydDBPositions;
 	cuckoohash_map<std::string, SysPosition_HashMap> _ydSysPositions;
+
+	SessionContainer_Ptr<std::string> _sharedSystemSessionHub;
 
 	bool _loadPositionFromDB = false;
 

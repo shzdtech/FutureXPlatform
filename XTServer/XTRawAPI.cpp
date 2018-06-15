@@ -1,7 +1,7 @@
 #include "XTRawAPI.h"
 
 
-XTRawAPI::XTRawAPI(const char * address)
+XTRawAPI::XTRawAPI(const std::string& address)
 {
 	CreateApi(address);
 }
@@ -15,10 +15,10 @@ XTRawAPI::~XTRawAPI()
 	}
 }
 
-void XTRawAPI::CreateApi(const char * address)
+void XTRawAPI::CreateApi(const std::string& address)
 {
 	if (!_api)
-		_api = XtTraderApi::createXtTraderApi(address);
+		_api = XtTraderApi::createXtTraderApi(address.data());
 }
 
 XtTraderApi * XTRawAPI::get()

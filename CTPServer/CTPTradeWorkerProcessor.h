@@ -46,9 +46,10 @@ public:
 	virtual IServerContext* getServerContext(void);
 
 	virtual CTPTradeWorkerSAProcessor_Ptr CreateSAProcessor();
-	virtual void LoginUserSession(const CTPProcessor_Ptr& sessionPtr, 
-		const std::string & brokerId, const std::string & investorId, const std::string & password, const std::string & serverName = "");
 	void UpdateSharedUserInfo(const std::string& investorId, const CTPTradeWorkerSAProcessor_Ptr& proc_ptr);
+
+	virtual void LoginUserSession(const CTPProcessor_Ptr& sessionPtr,
+		const std::string & brokerId, const std::string & investorId, const std::string & password, const std::string & serverName = "");
 	bool IsUserLogged(const std::string & userId);
 
 	virtual TradeRecordDO_Ptr RefineTrade(CThostFtdcTradeField * pTrade);
@@ -58,7 +59,6 @@ public:
 
 protected:
 	cuckoohash_map<std::string, CTPTradeWorkerSAProcessor_Ptr> _sharedProcHub;
-	SessionContainer_Ptr<std::string> _sharedSystemSessionHub;
 
 	bool _isQueryAccount = true;
 	std::future<void> _accountQuery;

@@ -61,27 +61,9 @@ bool XTTradeProcessor::CreateBackendAPI(XtTraderApiCallback *pSpi, const std::st
 {
 	while (_updateFlag.test_and_set(std::memory_order::memory_order_acquire));
 
-	fs::path localpath = CTPProcessor::FlowPath;
-	if (!fs::exists(localpath))
-	{
-		std::error_code ec;
-		fs::create_directories(localpath, ec);
-	}
-
-	localpath /= flowId + "_" + std::to_string(std::time(nullptr)) + "_" + std::to_string(std::rand());
-	std::string server_addr(serverAddr);
-	if (server_addr.empty() && !_serverCtx->getConfigVal(CTP_TRADER_SERVER, server_addr))
-	{
-		SysParam::TryGet(CTP_TRADER_SERVER, server_addr);
-	}
-
-	auto tdAPI = std::make_shared<XTRawAPI>(localpath.string().data());
-
-	tdAPI->get()->RegisterSpi(this);
-	tdAPI->get()->RegisterFront(const_cast<char*> (server_addr.data()));
-	tdAPI->get()->SubscribePrivateTopic(THOST_TERT_RESTART);
-	tdAPI->get()->SubscribePublicTopic(THOST_TERT_RESTART);
-	tdAPI->get()->Init();
+	auto tdAPI = std::make_shared<XTRawAPI>(serverAddr.data());
+	tdAPI->get()->setCallback(pSpi);
+	tdAPI->get()->init();
 
 	_rawAPI = tdAPI;
 
@@ -102,10 +84,7 @@ bool XTTradeProcessor::OnSessionClosing(void)
 	{
 		if (auto tdProxy = TradeApi())
 		{
-			CThostFtdcUserLogoutField logout{};
-			std::strncpy(logout.BrokerID, sessionptr->getUserInfo().getBrokerId().data(), sizeof(logout.BrokerID));
-			std::strncpy(logout.UserID, sessionptr->getUserInfo().getUserId().data(), sizeof(logout.UserID));
-			tdProxy->get()->ReqUserLogout(&logout, 0);
+			tdProxy->get()->userLogout(sessionptr->getUserInfo().getInvestorId().data(), sessionptr->getUserInfo().getPassword().data(), 0);
 		}
 	}
 
@@ -124,9 +103,9 @@ void XTTradeProcessor::QueryPositionAsync(void)
 			{
 				CThostFtdcQryInvestorPositionField req{};
 				_updateFlag.clear(std::memory_order::memory_order_release);
-				int iRet = tdProxy->get()->ReqQryInvestorPosition(&req, -1);
-				if (iRet == 0 || _updateFlag.test_and_set(std::memory_order::memory_order_acquire)) // check if lock
-					break;
+				tdProxy->get()->reqPositionDetail(getMessageSession()->getUserInfo().getInvestorId().data(), -1);
+				_updateFlag.test_and_set(std::memory_order::memory_order_acquire); // check if lock
+				break;
 			}
 		}
 	}
@@ -209,6 +188,11 @@ void XTTradeProcessor::onReqPositionDetail(const char* accountID, int nRequestId
 void XTTradeProcessor::onReqAccountDetail(const char* accountID, int nRequestId, const CAccountDetail* data, bool isLast, const XtError& error)
 {
 	OnResponseMacro(MSG_ID_QUERY_ACCOUNT_INFO, nRequestId, accountID, data, &isLast, &error)
+}
+
+void XTTradeProcessor::onRtnLoginStatus(const char * accountID, EBrokerLoginStatus status, int brokerType, const char * errorMsg)
+{
+	getMessageSession()->getUserInfo().setInvestorId(accountID);
 }
 
 ///报单通知

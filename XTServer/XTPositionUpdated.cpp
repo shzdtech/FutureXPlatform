@@ -1,26 +1,25 @@
-#include "CTPPositionUpdated.h"
-#include "CTPUtility.h"
-#include "CTPMapping.h"
-#include "CTPConstant.h"
+#include "XTPositionUpdated.h"
+#include "XTUtility.h"
+#include "XTMapping.h"
+#include "XTConstant.h"
 #include "../message/MessageUtility.h"
-#include "CTPTradeWorkerProcessor.h"
-#include "CTPWorkerProcessorID.h"
+#include "XTTradeWorkerProcessor.h"
 
 #include "../litelogger/LiteLogger.h"
 
 #include "../dataobject/OrderDO.h"
 #include "../message/DefMessageID.h"
-#include "CTPAPISwitch.h"
 
-dataobj_ptr CTPPositionUpdated::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
+
+dataobj_ptr XTPositionUpdated::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	if (auto pData = (CThostFtdcInvestorPositionField*)rawRespParams[0])
+	if (auto pData = (CPositionDetail*)rawRespParams[1])
 	{
 		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
 		{
 			auto& userId = session->getUserInfo().getUserId();
 
-			auto position_ptr = CTPUtility::ParseRawPosition(pData, userId);
+			auto position_ptr = XTUtility::ParseRawPosition(pData, userId);
 
 			LOG_DEBUG << pData->InstrumentID << ',' << pData->PositionDate << ',' << pData->PosiDirection;
 

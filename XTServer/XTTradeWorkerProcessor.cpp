@@ -117,56 +117,6 @@ int XTTradeWorkerProcessor::RequestData(void)
 			userInfo.setSessionId(_systemUser.getSessionId());
 			userInfo.setTradingDay(_systemUser.getTradingDay());
 		}
-
-		if (!(GetDataLoadMask() & INSTRUMENT_DATA_LOADED))
-		{
-			CThostFtdcQryInstrumentField reqinstr{};
-			ret = trdAPI->get()->ReqQryInstrument(&reqinstr, 0);
-		}
-
-		//std::this_thread::sleep_for(delay);
-		//CThostFtdcQryTradingAccountField reqaccount{};
-		//ret = trdAPI->ReqQryTradingAccount(&reqaccount, 0);
-
-		/*if (!(GetDataLoadMask() & POSITION_DATA_LOADED))
-		{
-			std::this_thread::sleep_for(DefaultQueryTime);
-			CThostFtdcQryInvestorPositionField reqposition{};
-			ret = trdAPI->get()->ReqQryInvestorPosition(&reqposition, 0);
-		}*/
-
-		//if (!(GetDataLoadMask() & EXCHANGE_DATA_LOADED))
-		//{
-		//	std::this_thread::sleep_for(DefaultQueryTime);
-		//	CThostFtdcQryExchangeField reqexchange{};
-		//	ret = trdAPI->ReqQryExchange(&reqexchange, 0);
-		//	if (ret == 0)
-		//		GetDataLoadMask() |= EXCHANGE_DATA_LOADED;
-		//	else
-		//		return ret;
-		//}
-
-		//if (!(GetDataLoadMask() & ORDER_DATA_LOADED))
-		//{
-		//	std::this_thread::sleep_for(DefaultQueryTime);
-		//	CThostFtdcQryOrderField reqorder{};
-		//	ret = trdAPI->ReqQryOrder(&reqorder, 0);
-		//	if (ret == 0)
-		//		GetDataLoadMask() |= ORDER_DATA_LOADED;
-		//	else
-		//		return ret;
-		//}
-
-		//if (!(GetDataLoadMask() & TRADE_DATA_LOADED))
-		//{
-		//	std::this_thread::sleep_for(DefaultQueryTime);
-		//	CThostFtdcQryTradeField reqtrd{};
-		//	ret = trdAPI->ReqQryTrade(&reqtrd, 0);
-		//	if (ret == 0)
-		//		GetDataLoadMask() |= TRADE_DATA_LOADED;
-		//	else
-		//		return ret;
-		//}
 	}
 
 	return ret;
@@ -176,27 +126,7 @@ int XTTradeWorkerProcessor::LoginSystemUser(void)
 {
 	int ret = 0;
 
-	if (!_authCode.empty())
-	{
-		CThostFtdcReqAuthenticateField reqAuth{};
-		std::strncpy(reqAuth.BrokerID, _systemUser.getBrokerId().data(), sizeof(reqAuth.BrokerID));
-		std::strncpy(reqAuth.UserID, _systemUser.getUserId().data(), sizeof(reqAuth.UserID));
-		std::strncpy(reqAuth.AuthCode, _authCode.data(), sizeof(reqAuth.AuthCode));
-		std::strncpy(reqAuth.UserProductInfo, _productInfo.data(), sizeof(reqAuth.UserProductInfo));
-		ret = TradeApi()->get()->ReqAuthenticate(&reqAuth, 0);
-		std::this_thread::sleep_for(std::chrono::seconds(1));
-	}
-
-	if (ret == 0)
-	{
-		CThostFtdcReqUserLoginField req{};
-		std::strncpy(req.BrokerID, _systemUser.getBrokerId().data(), sizeof(req.BrokerID));
-		std::strncpy(req.UserID, _systemUser.getInvestorId().data(), sizeof(req.UserID));
-		std::strncpy(req.Password, _systemUser.getPassword().data(), sizeof(req.Password));
-		std::strncpy(req.UserProductInfo, _productInfo.data(), sizeof(req.UserProductInfo));
-
-		ret = TradeApi()->get()->ReqUserLogin(&req, 0);
-	}
+	TradeApi()->get()->userLogin(_systemUser.getBrokerId().data(), _systemUser.getPassword().data(), 0);
 
 	return ret;
 }
@@ -222,7 +152,7 @@ int XTTradeWorkerProcessor::LoginSystemUserIfNeed(void)
 			ExchangeRouterDO exDO;
 			if (ExchangeRouterTable::TryFind(defaultCfg, exDO))
 			{
-				CreateBackendAPI(this, _systemUser.getInvestorId(), exDO.Address);
+				CreateBackendAPI(this, _systemUser.getBrokerId(), exDO.Address);
 				ret = LoginSystemUser();
 			}
 
@@ -249,10 +179,8 @@ int XTTradeWorkerProcessor::LoginSystemUserIfNeed(void)
 
 int XTTradeWorkerProcessor::LogoutSystemUser(void)
 {
-	CThostFtdcUserLogoutField logout{};
-	std::strncpy(logout.BrokerID, _systemUser.getBrokerId().data(), sizeof(logout.BrokerID));
-	std::strncpy(logout.UserID, _systemUser.getInvestorId().data(), sizeof(logout.UserID));
-	return TradeApi()->get()->ReqUserLogout(&logout, 0);
+	TradeApi()->get()->userLogout(_systemUser.getBrokerId().data(), _systemUser.getPassword().data(), 0);
+	return 0;
 }
 
 int & XTTradeWorkerProcessor::GetDataLoadMask(void)
@@ -274,7 +202,7 @@ IServerContext * XTTradeWorkerProcessor::getServerContext(void)
 OrderDO_Ptr XTTradeWorkerProcessor::RefineOrder(COrderDetail *pOrder)
 {
 	// update orders
-	auto orderSysId = XTUtility::ToUInt64(pOrder->OrderSysID);
+	auto orderSysId = XTUtility::ToUInt64(pOrder->m_strOrderSysID);
 	OrderDO_Ptr ctxOrder = orderSysId ? _userOrderCtx.FindOrder(orderSysId) : nullptr;
 	auto orderptr = XTUtility::ParseRawOrder(pOrder, ctxOrder);
 
@@ -374,9 +302,9 @@ void XTTradeWorkerProcessor::onConnected(bool success, const char* errorMsg)
 ///登录请求响应
 void XTTradeWorkerProcessor::onUserLogin(const char* userName, const char* password, int nRequestId, const XtError& error)
 {
-	if (XTUtility::HasError(pRspInfo))
+	if (XTUtility::HasError(&error))
 	{
-		LOG_ERROR << _serverCtx->getServerUri() << ": " << pRspInfo->ErrorMsg;
+		LOG_ERROR << _serverCtx->getServerUri() << ": " << error.errorMsg();
 	}
 	else
 	{
@@ -389,19 +317,6 @@ void XTTradeWorkerProcessor::onUserLogin(const char* userName, const char* passw
 		_systemUser.setFrontId(pRspUserLogin->FrontID);
 		_systemUser.setSessionId(pRspUserLogin->SessionID);
 		_systemUser.setTradingDay(std::atoi(pRspUserLogin->TradingDay));
-
-		if (auto session = getMessageSession())
-		{
-			session->setLoginTimeStamp();
-			auto& userInfo = session->getUserInfo();
-			userInfo.setUserId(_systemUser.getUserId());
-			userInfo.setBrokerId(_systemUser.getBrokerId());
-			userInfo.setInvestorId(_systemUser.getInvestorId());
-			userInfo.setPermission(ALLOW_TRADING);
-			userInfo.setFrontId(_systemUser.getFrontId());
-			userInfo.setSessionId(_systemUser.getSessionId());
-			userInfo.setTradingDay(_systemUser.getTradingDay());
-		}
 
 		std::string tradingDay;
 		SysParam::TryGet(STR_KEY_APP_TRADINGDAY, tradingDay);
@@ -416,15 +331,7 @@ void XTTradeWorkerProcessor::onUserLogin(const char* userName, const char* passw
 			LoadPositonFromDatabase(_systemUser.getUserId(), _systemUser.getInvestorId(),
 				std::to_string(_systemUser.getTradingDay()));*/
 
-		CThostFtdcSettlementInfoConfirmField reqsettle{};
-		std::strncpy(reqsettle.BrokerID, _systemUser.getBrokerId().data(), sizeof(reqsettle.BrokerID));
-		std::strncpy(reqsettle.InvestorID, _systemUser.getInvestorId().data(), sizeof(reqsettle.InvestorID));
-		TradeApi()->get()->ReqSettlementInfoConfirm(&reqsettle, 0);
-
 		_isLogged = true;
-
-		LOG_INFO << getServerContext()->getServerUri() << ": System user " << _systemUser.getInvestorId() << " has logged on trading server.";
-		LOG_FLUSH;
 	}
 }
 
@@ -479,7 +386,7 @@ void XTTradeWorkerProcessor::onOrder(int nRequestId, int orderID, const XtError&
 			}
 		}
 		orderptr->HasMore = false;
-		DispatchUserMessage(MSG_ID_ORDER_NEW, nRequestID, orderptr->UserID(), orderptr);
+		DispatchUserMessage(MSG_ID_ORDER_NEW, nRequestId, orderptr->UserID(), orderptr);
 	}
 }
 
@@ -488,34 +395,53 @@ void XTTradeWorkerProcessor::onCancelOrder(int nRequestId, const XtError& error)
 	if(auto orderptr = XTUtility::ParseRawOrder(pInputOrderAction, pRspInfo,
 		_userOrderCtx.FindOrder(XTUtility::ToUInt64(pInputOrderAction->OrderSysID))))
 	{
-		orderptr->HasMore = !bIsLast;
-		DispatchUserMessage(MSG_ID_ORDER_CANCEL, nRequestID, orderptr->UserID(), orderptr);
+		DispatchUserMessage(MSG_ID_ORDER_CANCEL, nRequestId, orderptr->UserID(), orderptr);
 	}
+}
+
+void XTTradeWorkerProcessor::onRtnLoginStatus(const char * accountID, EBrokerLoginStatus status, int brokerType, const char * errorMsg)
+{
+	_systemUser.setUserId(accountID);
+	if (auto session = getMessageSession())
+	{
+		session->setLoginTimeStamp();
+		auto& userInfo = session->getUserInfo();
+		userInfo.setUserId(_systemUser.getUserId());
+		userInfo.setBrokerId(_systemUser.getBrokerId());
+		userInfo.setInvestorId(_systemUser.getInvestorId());
+		userInfo.setPermission(ALLOW_TRADING);
+		userInfo.setFrontId(_systemUser.getFrontId());
+		userInfo.setSessionId(_systemUser.getSessionId());
+		userInfo.setTradingDay(_systemUser.getTradingDay());
+	}
+
+	LOG_INFO << getServerContext()->getServerUri() << ": System user " << _systemUser.getInvestorId() << " has logged on trading server.";
+	LOG_FLUSH;
 }
 
 void XTTradeWorkerProcessor::onRtnOrderDetail(const COrderDetail* data)
 {
-	if (pOrder)
+	if (data)
 	{
-		auto orderptr = RefineOrder(pOrder);
+		auto orderptr = RefineOrder(data);
 
-		if (auto msgId = XTUtility::ParseOrderMessageID(orderptr->OrderStatus))
-		{
-			auto sid = msgId == MSG_ID_ORDER_CANCEL ? orderptr->OrderSysID : pOrder->RequestID;
-			DispatchUserMessage(msgId, sid, orderptr->UserID(), orderptr);
-		}
+		//if (auto msgId = XTUtility::ParseOrderMessageID(orderptr->OrderStatus))
+		//{
+		//	auto sid = msgId == MSG_ID_ORDER_CANCEL ? orderptr->OrderSysID : 0;
+		//	DispatchUserMessage(msgId, sid, orderptr->UserID(), orderptr);
+		//}
 
-		DispatchUserMessage(MSG_ID_ORDER_UPDATE, pOrder->RequestID, orderptr->UserID(), orderptr);
+		DispatchUserMessage(MSG_ID_ORDER_UPDATE, 0, orderptr->UserID(), orderptr);
 	}
 }
 
 void XTTradeWorkerProcessor::onRtnDealDetail(const CDealDetail* data)
 {
-	if (pTrade)
+	if (data)
 	{
 		_tradeCnt++;
 
-		if (auto trdDO_Ptr = RefineTrade(pTrade))
+		if (auto trdDO_Ptr = RefineTrade(data))
 		{
 			PushToLogQueue(trdDO_Ptr);
 
@@ -535,16 +461,16 @@ void XTTradeWorkerProcessor::onRtnDealDetail(const CDealDetail* data)
 ///请求查询投资者持仓响应
 void XTTradeWorkerProcessor::onReqPositionDetail(const char* accountID, int nRequestId, const CPositionDetail* data, bool isLast, const XtError& error)
 {
-	std::string sysUserId = pInvestorPosition->InvestorID;
+	std::string sysUserId = accountID;
 	//sysUserId += pInvestorPosition->InvestorID;
 
-	auto position = XTUtility::ParseRawPosition(pInvestorPosition, sysUserId);
+	auto position = XTUtility::ParseRawPosition(data, sysUserId);
 	UpdateSysYdPosition(sysUserId, position);
 
 	if (!IsLoadPositionFromDB())
 	{
 		std::set<std::string> userSet;
-		_sharedSystemSessionHub->foreach(sysUserId, [pInvestorPosition, &position, &sysUserId, &userSet, this](const IMessageSession_Ptr& session_ptr)
+		_sharedSystemSessionHub->foreach(sysUserId, [data, &position, &sysUserId, &userSet, this](const IMessageSession_Ptr& session_ptr)
 		{
 			auto& userId = session_ptr->getUserInfo().getUserId();
 			if (userSet.find(userId) == userSet.end())
@@ -573,7 +499,7 @@ void XTTradeWorkerProcessor::onReqAccountDetail(const char* accountID, int nRequ
 {
 	std::shared_ptr<AccountInfoDO> accountInfo_ptr;
 
-	if (pTradingAccount)
+	if (data)
 	{
 		auto pDO = new AccountInfoDO;
 		accountInfo_ptr.reset(pDO);
@@ -615,7 +541,7 @@ void XTTradeWorkerProcessor::onReqAccountDetail(const char* accountID, int nRequ
 		//sysUserId += pTradingAccount->AccountID;
 
 		std::set<std::string> userSet;
-		_sharedSystemSessionHub->foreach(sysUserId, [&sysUserId, &accountInfo_ptr, &userSet, nRequestID, this](const IMessageSession_Ptr& session_ptr)
+		_sharedSystemSessionHub->foreach(sysUserId, [&sysUserId, &accountInfo_ptr, &userSet, nRequestId, this](const IMessageSession_Ptr& session_ptr)
 		{
 			auto& userId = session_ptr->getUserInfo().getUserId();
 
@@ -649,7 +575,7 @@ void XTTradeWorkerProcessor::onReqAccountDetail(const char* accountID, int nRequ
 				accountInfo_ptr = GetAccountInfo(userId);
 			}
 
-			SendDataObject(session_ptr, MSG_ID_QUERY_ACCOUNT_INFO, nRequestID, accountInfo_ptr);
+			SendDataObject(session_ptr, MSG_ID_QUERY_ACCOUNT_INFO, nRequestId, accountInfo_ptr);
 		});
 	}
 }

@@ -64,9 +64,9 @@ std::shared_ptr<UserInfoDO> CTPTradeLoginHandler::LoginFromServer(const CTPProce
 	return userInfoDO_Ptr;
 }
 
-CTPTradeWorkerProcessor* CTPTradeLoginHandler::GetWorkerProcessor(const IMessageProcessor_Ptr& msgProcessor)
+CTPTradeWorkerProcessorBase* CTPTradeLoginHandler::GetWorkerProcessor(const IMessageProcessor_Ptr& msgProcessor)
 {
-	return MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor);
+	return MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor);
 }
 
 bool CTPTradeLoginHandler::LoginFromDB(const IMessageProcessor_Ptr& msgProcessor)
@@ -138,8 +138,6 @@ dataobj_ptr CTPTradeLoginHandler::HandleResponse(const uint32_t serialId, const 
 
 	CThostFtdcSettlementInfoConfirmField reqsettle{};
 	((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqSettlementInfoConfirm(&reqsettle, 0);
-
-	LoginFromDB(msgProcessor);
 
 	((CTPTradeProcessor*)msgProcessor.get())->QueryUserPositionAsyncIfNeed();
 

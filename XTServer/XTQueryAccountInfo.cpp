@@ -37,7 +37,7 @@ dataobj_ptr XTQueryAccountInfo::HandleRequest(const uint32_t serialId, const dat
 	CheckLogin(session);
 
 	AccountInfoDO_Ptr ret;
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
 	{
 		ret = pWorkerProc->GetAccountInfo(session->getUserInfo().getUserId());
 
@@ -65,11 +65,7 @@ dataobj_ptr XTQueryAccountInfo::HandleResponse(const uint32_t serialId, const pa
 	XTUtility::CheckNotFound(rawRespParams[0]);
 	XTUtility::CheckError(rawRespParams[1]);
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
-	{
-		pWorkerProc->OnRspQryTradingAccount((CThostFtdcTradingAccountField*)rawRespParams[0], (CThostFtdcRspInfoField*)rawRespParams[1],
-			*((int*)rawRespParams[2]), *((bool*)rawRespParams[3]));
-	}
+	
 
 	return nullptr;
 }

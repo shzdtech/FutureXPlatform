@@ -43,10 +43,9 @@ dataobj_ptr CTPQueryPositionSA::HandleRequest(const uint32_t serialId, const dat
 	auto stdo = (StringMapDO<std::string>*)reqDO.get();
 	auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
 	{
 		PortfolioPosition positionMap;
-		auto pProcessor = (CTPProcessor*)msgProcessor.get();
 
 		auto& userId = session->getUserInfo().getUserId();
 		positionMap = pWorkerProc->GetUserPositionContext()->GetPortfolioPositionsByUser(userId);
@@ -55,6 +54,7 @@ dataobj_ptr CTPQueryPositionSA::HandleRequest(const uint32_t serialId, const dat
 			throw NotFoundException();
 		}
 
+		auto pTemplateProc = (TemplateMessageProcessor*)msgProcessor.get();
 
 		bool found = false;
 		if (instrumentid != EMPTY_STRING)
@@ -71,13 +71,13 @@ dataobj_ptr CTPQueryPositionSA::HandleRequest(const uint32_t serialId, const dat
 					found = true;
 					auto position_ptr = std::make_shared<UserPositionExDO>(*longPosition);
 					position_ptr->HasMore = (bool)shortPosition;
-					pWorkerProc->SendDataObject(session, MSG_ID_QUERY_POSITION, serialId, position_ptr);
+					pTemplateProc->SendDataObject(session, MSG_ID_QUERY_POSITION, serialId, position_ptr);
 				}
 				if (shortPosition)
 				{
 					found = true;
 					auto position_ptr = std::make_shared<UserPositionExDO>(*shortPosition);
-					pWorkerProc->SendDataObject(session, MSG_ID_QUERY_POSITION, serialId, position_ptr);
+					pTemplateProc->SendDataObject(session, MSG_ID_QUERY_POSITION, serialId, position_ptr);
 				}
 
 				if (found)
@@ -98,7 +98,7 @@ dataobj_ptr CTPQueryPositionSA::HandleRequest(const uint32_t serialId, const dat
 					{
 						auto positionDO_Ptr = std::make_shared<UserPositionExDO>(*cit->second);
 						positionDO_Ptr->HasMore = ++cit != clock.end() && it != locktb.end();
-						pWorkerProc->SendDataObject(session, MSG_ID_QUERY_POSITION, serialId, positionDO_Ptr);
+						pTemplateProc->SendDataObject(session, MSG_ID_QUERY_POSITION, serialId, positionDO_Ptr);
 
 						found = true;
 					}
@@ -113,8 +113,8 @@ dataobj_ptr CTPQueryPositionSA::HandleRequest(const uint32_t serialId, const dat
 		if (!found)
 			throw NotFoundException();
 
-		if (!pWorkerProc->IsLoadPositionFromDB())
-			pWorkerProc->QueryUserPositionAsyncIfNeed();
+		//if (!pWorkerProc->IsLoadPositionFromDB())
+		//	pWorkerProc->QueryUserPositionAsyncIfNeed();
 	}
 
 	return nullptr;

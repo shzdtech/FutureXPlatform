@@ -7,9 +7,8 @@
 
 #include "XTQueryTrade.h"
 #include "XTRawAPI.h"
-#include "CTPConstant.h"
+#include "XTConstant.h"
 #include "XTTradeWorkerProcessor.h"
-#include "CTPWorkerProcessorID.h"
 #include "../message/DefMessageID.h"
 #include "../message/MessageUtility.h"
 #include "../common/Attribute_Key.h"
@@ -23,7 +22,8 @@
 #include "../utility/TUtil.h"
 
 #include "XTUtility.h"
-#include "CTPConstant.h"
+
+
  ////////////////////////////////////////////////////////////////////////
  // Name:       XTQueryTrade::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
  // Purpose:    Implementation of XTQueryTrade::HandleRequest()
@@ -39,11 +39,11 @@ dataobj_ptr XTQueryTrade::HandleRequest(const uint32_t serialId, const dataobj_p
 	CheckLogin(session);
 	auto& userid = session->getUserInfo().getUserId();
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
 	{
 		auto userTrades = pWorkerProc->GetUserTradeContext().GetTradesByUser(userid);
 
-		auto pProcessor = (XTProcessor*)msgProcessor.get();
+		auto pProcessor = (CTPProcessor*)msgProcessor.get();
 		if (!(pProcessor->DataLoadMask & DataLoadType::TRADE_DATA_LOADED))
 		{
 			/*CThostFtdcQryTradeField req{};
@@ -53,7 +53,7 @@ dataobj_ptr XTQueryTrade::HandleRequest(const uint32_t serialId, const dataobj_p
 			int iRet = ((XTRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryTrade(&req, serialId);
 			XTUtility::CheckReturnError(iRet);*/
 
-			std::this_thread::sleep_for(XTProcessor::DefaultQueryTime);
+			std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
 			userTrades = pWorkerProc->GetUserTradeContext().GetTradesByUser(userid);
 			pProcessor->DataLoadMask |= DataLoadType::TRADE_DATA_LOADED;
 		}
@@ -77,7 +77,7 @@ dataobj_ptr XTQueryTrade::HandleRequest(const uint32_t serialId, const dataobj_p
 		for(int i=0; i<=size; i++)
 		{
 			sendList[i]->HasMore = i<size;
-			pWorkerProc->SendDataObject(session, MSG_ID_QUERY_TRADE, serialId, sendList[i]);
+			pProcessor->SendDataObject(session, MSG_ID_QUERY_TRADE, serialId, sendList[i]);
 		}
 	}
 
@@ -96,17 +96,17 @@ dataobj_ptr XTQueryTrade::HandleRequest(const uint32_t serialId, const dataobj_p
 
 dataobj_ptr XTQueryTrade::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	XTUtility::CheckNotFound(rawRespParams[0]);
-	XTUtility::CheckError(rawRespParams[1]);
+	XTUtility::CheckNotFound(rawRespParams[2]);
+	XTUtility::CheckError(rawRespParams[4]);
 
-	auto pTradeInfo = (CThostFtdcTradeField*)rawRespParams[0];
+	auto pTradeInfo = (CDealDetail*)rawRespParams[2];
 	TradeRecordDO_Ptr ret;
 	if (ret = XTUtility::ParseRawTrade(pTradeInfo))
 	{
 		auto userID = session->getUserInfo().getUserId();
 		ret->HasMore = !*(bool*)rawRespParams[3];
 
-		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
 		{
 			if (auto order_ptr = pWorkerProc->GetUserOrderContext().FindOrder(ret->OrderSysID))
 			{

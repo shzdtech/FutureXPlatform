@@ -45,14 +45,14 @@ dataobj_ptr OTCQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 		ContractKey(EMPTY_STRING, instrumentid));
 	ThrowNotFoundExceptionIfEmpty(ordervec_ptr);
 
-	if (auto pWorkerProc = (TemplateMessageProcessor*)msgProcessor.get())
+	if (auto pTemplateProcessor = (TemplateMessageProcessor*)msgProcessor.get())
 	{
 		auto lastidx = ordervec_ptr->size() - 1;
 		for (int i = 0; i <= lastidx; i++)
 		{
 			auto rspOrderPtr = std::make_shared<OrderDO>(ordervec_ptr->at(i));
 			rspOrderPtr->HasMore = i < lastidx;
-			pWorkerProc->SendDataObject(session, MSG_ID_QUERY_ORDER, serialId, rspOrderPtr);
+			pTemplateProcessor->SendDataObject(session, MSG_ID_QUERY_ORDER, serialId, rspOrderPtr);
 		}
 	}
 

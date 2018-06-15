@@ -43,7 +43,7 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const uint32_t serialId, const datao
 	auto stdo = (StringMapDO<std::string>*)reqDO.get();
 	auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
 	{
 		PortfolioPosition positionMap;
 		auto pProcessor = (CTPProcessor*)msgProcessor.get();
@@ -64,7 +64,6 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const uint32_t serialId, const datao
 			throw NotFoundException();
 		}
 
-
 		bool found = false;
 		if (instrumentid != EMPTY_STRING)
 		{
@@ -80,13 +79,13 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const uint32_t serialId, const datao
 					found = true;
 					auto position_ptr = std::make_shared<UserPositionExDO>(*longPosition);
 					position_ptr->HasMore = (bool)shortPosition;
-					pWorkerProc->SendDataObject(session, MSG_ID_QUERY_POSITION, serialId, position_ptr);
+					pProcessor->SendDataObject(session, MSG_ID_QUERY_POSITION, serialId, position_ptr);
 				}
 				if (shortPosition)
 				{
 					found = true;
 					auto position_ptr = std::make_shared<UserPositionExDO>(*shortPosition);
-					pWorkerProc->SendDataObject(session, MSG_ID_QUERY_POSITION, serialId, position_ptr);
+					pProcessor->SendDataObject(session, MSG_ID_QUERY_POSITION, serialId, position_ptr);
 				}
 
 				if (found)
@@ -109,7 +108,7 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const uint32_t serialId, const datao
 					{
 						auto positionDO_Ptr = std::make_shared<UserPositionExDO>(*cit->second);
 						positionDO_Ptr->HasMore = ++cit != cendit && it != endit;
-						pWorkerProc->SendDataObject(session, MSG_ID_QUERY_POSITION, serialId, positionDO_Ptr);
+						pProcessor->SendDataObject(session, MSG_ID_QUERY_POSITION, serialId, positionDO_Ptr);
 
 						found = true;
 					}
@@ -164,7 +163,7 @@ dataobj_ptr CTPQueryPosition::HandleResponse(const uint32_t serialId, const para
 
 	LOG_DEBUG << pData->InstrumentID << ',' << pData->PositionDate << ',' << pData->PosiDirection;
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
 	{
 		auto& userId = session->getUserInfo().getUserId();
 		auto& sysUserId = session->getUserInfo().getInvestorId();

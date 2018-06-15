@@ -28,11 +28,11 @@
 
 void XTUtility::CheckError(const void* pRspInfo)
 {
-	auto pRsp = (CThostFtdcRspInfoField*)pRspInfo;
+	auto pRsp = (XtError*)pRspInfo;
 	if (HasError(pRsp))
 	{	
-		throw ApiException(pRsp->ErrorID,
-			std::move(boost::locale::conv::to_utf<char>(pRsp->ErrorMsg, CHARSET_GB2312)));
+		throw ApiException(pRsp->errorID(),
+			std::move(boost::locale::conv::to_utf<char>(pRsp->errorMsg(), CHARSET_GB2312)));
 	}
 }
 
@@ -48,7 +48,7 @@ void XTUtility::CheckTradeInit(XTRawAPI * pCtpAPI)
 {
 	if (!pCtpAPI)
 	{
-		throw UserException("Not login to CTP trade server ...");
+		throw UserException("Not login to XT trade server ...");
 	}
 }
 
@@ -65,16 +65,13 @@ void XTUtility::CheckNotFound(const void * pRspData)
 	}
 }
 
-bool XTUtility::HasError(CThostFtdcRspInfoField* pRspInfo)
+bool XTUtility::HasError(XtError* pRspInfo)
 {
 	bool ret = false;
 
 	if (pRspInfo)
 	{
-		if (pRspInfo->ErrorID)
-		{
-			ret = true;
-		}
+		ret = pRspInfo->isSuccess();
 	}
 
 	return ret;
@@ -110,7 +107,7 @@ std::shared_ptr<ApiException> XTUtility::HasReturnError(const int rtnCode)
 	case 0:
 		return nullptr;
 	case -1:
-		return std::make_shared<ApiException>(CONNECTION_ERROR, "Cannot connect to CTP server");
+		return std::make_shared<ApiException>(CONNECTION_ERROR, "Cannot connect to XT server");
 	case -2:
 		return std::make_shared<ApiException>(NO_PERMISSION, "Unresolved requests exeeding permission");
 	case -3:
@@ -131,7 +128,7 @@ std::shared_ptr<ApiException> XTUtility::HasReturnError(const int rtnCode)
 // Return:     bool
 ////////////////////////////////////////////////////////////////////////
 
-bool XTUtility::IsOrderActive(TThostFtdcOrderStatusType status)
+bool XTUtility::IsOrderActive(EEntrustStatus status)
 {
 	bool ret = true;
 
@@ -151,7 +148,7 @@ bool XTUtility::IsOrderActive(TThostFtdcOrderStatusType status)
 }
 
 
-OrderStatusType XTUtility::CheckOrderStatus(TThostFtdcOrderStatusType status, TThostFtdcOrderSubmitStatusType submitStatus)
+OrderStatusType XTUtility::CheckOrderStatus(EEntrustStatus status, EEntrustSubmitStatus submitStatus)
 {
 	OrderStatusType ret = OrderStatusType::UNDEFINED;
 
@@ -198,146 +195,44 @@ OrderStatusType XTUtility::CheckOrderStatus(TThostFtdcOrderStatusType status, TT
 	return ret;
 }
 
-OrderDO_Ptr XTUtility::ParseRawOrder(CThostFtdcOrderField *pOrder, OrderDO_Ptr baseOrder)
+OrderDO_Ptr XTUtility::ParseRawOrder(COrderDetail *pOrder, XtError *pRsp, int sessionID, OrderDO_Ptr baseOrder)
 {
 	if (!baseOrder)
 	{
-		baseOrder.reset(new OrderDO(ToUInt64(pOrder->OrderRef),	pOrder->ExchangeID, pOrder->InstrumentID, pOrder->UserID));
-	}
-
-	auto pDO = baseOrder.get();
-	pDO->Direction = (pOrder->Direction == THOST_FTDC_D_Buy) ?
-		DirectionType::BUY : DirectionType::SELL;
-	pDO->OpenClose = (OrderOpenCloseType)(pOrder->CombOffsetFlag[0] - THOST_FTDC_OF_Open);
-	pDO->LimitPrice = pOrder->LimitPrice;
-	pDO->Volume = pOrder->VolumeTotalOriginal;
-	pDO->StopPrice = pOrder->StopPrice;
-	pDO->OrderSysID = ToUInt64(pOrder->OrderSysID);
-	pDO->Active = IsOrderActive(pOrder->OrderStatus);
-	pDO->OrderStatus = CheckOrderStatus(pOrder->OrderStatus, pOrder->OrderSubmitStatus);
-	pDO->VolumeTraded = pOrder->VolumeTraded;
-	pDO->TIF = pOrder->TimeCondition == THOST_FTDC_TC_IOC ? OrderTIFType::IOC : OrderTIFType::GFD;
-	pDO->VolCondition = (OrderVolType)(pOrder->VolumeCondition - THOST_FTDC_VC_AV);
-
-	pDO->BrokerID = pOrder->BrokerID;
-	pDO->InvestorID = pOrder->InvestorID;
-	pDO->InsertDate = pOrder->InsertDate;
-	pDO->InsertTime = pOrder->InsertTime;
-	pDO->UpdateTime = pOrder->UpdateTime;
-	pDO->CancelTime = pOrder->CancelTime;
-	pDO->TradingDay = std::atoi(pOrder->TradingDay);
-	pDO->Message = std::move(boost::locale::conv::to_utf<char>(pOrder->StatusMsg, CHARSET_GB2312));
-	pDO->SessionID = pOrder->SessionID;
-
-	return baseOrder;
-}
-
-OrderDO_Ptr XTUtility::ParseRawOrder(
-	CThostFtdcInputOrderActionField *pOrderAction,
-	CThostFtdcRspInfoField *pRsp,
-	OrderDO_Ptr baseOrder)
-{
-	if (!baseOrder)
-	{
-		baseOrder.reset(new OrderDO(ToUInt64(pOrderAction->OrderRef),
-			pOrderAction->ExchangeID, pOrderAction->InstrumentID, pOrderAction->UserID));
-	}
-
-	auto pDO = baseOrder.get();
-	pDO->OrderSysID = ToUInt64(pOrderAction->OrderSysID);
-	pDO->LimitPrice = pOrderAction->LimitPrice;
-	pDO->Active = pRsp == nullptr;
-	pDO->OrderStatus = pRsp ? OrderStatusType::CANCEL_REJECTED : OrderStatusType::CANCELING;
-	pDO->SessionID = pOrderAction->SessionID;
-
-	pDO->BrokerID = pOrderAction->BrokerID;
-	pDO->InvestorID = pOrderAction->InvestorID;
-
-	if (pRsp)
-	{
-		pDO->ErrorCode = pRsp->ErrorID;
-		pDO->Message = std::move(boost::locale::conv::to_utf<char>(pRsp->ErrorMsg, CHARSET_GB2312));
-	}
-
-	return baseOrder;
-}
-
-OrderDO_Ptr XTUtility::ParseRawOrder(
-	CThostFtdcInputOrderField *pOrderInput,
-	CThostFtdcRspInfoField *pRsp,
-	int sessionID,
-	OrderDO_Ptr baseOrder)
-{
-	if (!baseOrder)
-	{
-		const char* pExchange = "";
-		if (auto pInstument = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentOrAddById(pOrderInput->InstrumentID))
-		{
-			pExchange = pInstument->ExchangeID().data();
-		}
-
-		baseOrder.reset(new OrderDO(ToUInt64(pOrderInput->OrderRef),
-			pExchange, pOrderInput->InstrumentID, pOrderInput->UserID));
+		baseOrder.reset(new OrderDO(pOrder->m_nOrderID, pOrder->m_strExchangeID, pOrder->m_strInstrumentID, pOrder->m_strAccountID));
 	}
 
 	auto pDO = baseOrder.get();
 	pDO->SessionID = sessionID;
-	pDO->Direction = (pOrderInput->Direction == THOST_FTDC_D_Buy) ? DirectionType::BUY : DirectionType::SELL;
-	pDO->LimitPrice = pOrderInput->LimitPrice;
-	pDO->Volume = pOrderInput->VolumeTotalOriginal;
-	pDO->StopPrice = pOrderInput->StopPrice;
-	pDO->Active = pRsp == nullptr;
-	pDO->OrderStatus = pRsp ? OrderStatusType::OPEN_REJECTED : OrderStatusType::OPENING;
+	pDO->Direction = (pOrder->Direction == THOST_FTDC_D_Buy) ?
+		DirectionType::BUY : DirectionType::SELL;
+	pDO->OpenClose = (OrderOpenCloseType)(pOrder->CombOffsetFlag[0] - THOST_FTDC_OF_Open);
+	pDO->LimitPrice = pOrder->m_dLimitPrice;
+	pDO->Volume = pOrder->m_nTotalVolume;
+	pDO->StopPrice = pOrder->StopPrice;
+	pDO->OrderSysID = ToUInt64(pOrder->m_strOrderSysID);
+	pDO->Active = IsOrderActive(pOrder->m_eOrderStatus);
+	pDO->OrderStatus = CheckOrderStatus(pOrder->m_eOrderStatus, pOrder->m_eOrderSubmitStatus);
+	pDO->VolumeTraded = pOrder->m_nTradedVolume;
+	pDO->TIF = pOrder->TimeCondition == THOST_FTDC_TC_IOC ? OrderTIFType::IOC : OrderTIFType::GFD;
+	pDO->VolCondition = (OrderVolType)(pOrder->VolumeCondition - THOST_FTDC_VC_AV);
 
-	pDO->BrokerID = pOrderInput->BrokerID;
-	pDO->InvestorID = pOrderInput->InvestorID;
-	//auto now = std::time(nullptr);
-	//auto tm = std::localtime(&now);
-	//char timebuf[20];
-	//std::strftime(timebuf, sizeof(timebuf), "%Y%m%d %T", tm);
-	//pDO->InsertTime = timebuf;
+	pDO->InsertDate = pOrder->m_strInsertDate;
+	pDO->InsertTime = pOrder->m_strInsertTime;
 
-	if (pRsp) {
-		pDO->ErrorCode = pRsp->ErrorID;
-		pDO->Message = std::move(boost::locale::conv::to_utf<char>(pRsp->ErrorMsg, CHARSET_GB2312));
-	}
+	pDO->Message = std::move(boost::locale::conv::to_utf<char>(pOrder->m_strErrorMsg, CHARSET_GB2312));
 
 	return baseOrder;
 }
 
-OrderDO_Ptr XTUtility::ParseRawOrder(CThostFtdcOrderActionField * pOrderAction, CThostFtdcRspInfoField * pRsp, OrderDO_Ptr baseOrder)
+void XTUtility::ParseRawOrder(OrderDO_Ptr& baseOrder, XtError * pRsp, int sessionID)
 {
-	if (!baseOrder)
-	{
-		baseOrder.reset(new OrderDO(ToUInt64(pOrderAction->OrderRef),
-			pOrderAction->ExchangeID, pOrderAction->InstrumentID, pOrderAction->UserID));
-	}
-
-	auto pDO = baseOrder.get();
-
-	pDO->OrderSysID = ToUInt64(pOrderAction->OrderSysID);
-	pDO->LimitPrice = pOrderAction->LimitPrice;
-	pDO->Active = pRsp == nullptr;
-	pDO->OrderStatus = pRsp ? OrderStatusType::CANCEL_REJECTED : OrderStatusType::CANCELING;
-	pDO->SessionID = pOrderAction->SessionID;
-
-	pDO->BrokerID = pOrderAction->BrokerID;
-	pDO->InvestorID = pOrderAction->InvestorID;
-
-	if (pRsp)
-	{
-		pDO->ErrorCode = pRsp->ErrorID;
-		pDO->Message = std::move(boost::locale::conv::to_utf<char>(pRsp->ErrorMsg, CHARSET_GB2312));
-	}
-	else
-	{
-		pDO->Message = std::move(boost::locale::conv::to_utf<char>(pOrderAction->StatusMsg, CHARSET_GB2312));
-	}
-
-	return baseOrder;
+	baseOrder->SessionID = sessionID;
+	if(HasError(pRsp))
+		baseOrder->Message = std::move(boost::locale::conv::to_utf<char>(pRsp->errorMsg(), CHARSET_GB2312));
 }
 
-TradeRecordDO_Ptr XTUtility::ParseRawTrade(CThostFtdcTradeField * pTrade)
+TradeRecordDO_Ptr XTUtility::ParseRawTrade(CDealDetail * pTrade)
 {
 	TradeRecordDO_Ptr ret;
 	if (pTrade)
@@ -370,7 +265,7 @@ TradeRecordDO_Ptr XTUtility::ParseRawTrade(CThostFtdcTradeField * pTrade)
 	return ret;
 }
 
-UserPositionExDO_Ptr XTUtility::ParseRawPosition(CThostFtdcInvestorPositionField * pRspPosition, const std::string& userId)
+UserPositionExDO_Ptr XTUtility::ParseRawPosition(CPositionDetail * pRspPosition, const std::string& userId)
 {
 	std::string exchange;
 	if (auto pInstrumentDO = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentOrAddById(pRspPosition->InstrumentID))

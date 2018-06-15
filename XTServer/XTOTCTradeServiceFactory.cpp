@@ -8,11 +8,12 @@
 #include "XTOTCTradeServiceFactory.h"
 #include "../CTPOTCServer/CTPOTCWorkerProcessor.h"
 #include "XTOTCTradeProcessor.h"
+#include "XTOTCTradeWorkerProcessor.h"
 
 #include "../CTPServer/CTPWorkerProcessorID.h"
 #include "../OTCServer/otc_bizhandlers.h"
-#include "../CTPServer/xt_bizhandlers.h"
-#include "ctpotc_bizhandlers.h"
+#include "xt_bizhandlers.h"
+#include "../CTPOTCServer/ctpotc_bizhandlers.h"
 
 #include "../message/MessageUtility.h"
 #include "../common/Attribute_Key.h"
@@ -36,53 +37,11 @@
 
 std::map<uint, IMessageHandler_Ptr> XTOTCTradeServiceFactory::CreateMessageHandlers(IServerContext* serverCtx)
 {
-	std::map<uint, IMessageHandler_Ptr> msg_hdl_map;
+	std::map<uint, IMessageHandler_Ptr> msg_hdl_map = CTPOTCTradeServiceFactory::CreateMessageHandlers(serverCtx);
 
-	msg_hdl_map[MSG_ID_ECHO] = std::make_shared<EchoMessageHandler>();
-
-	msg_hdl_map[MSG_ID_LOGIN] = std::make_shared<CTPOTCTradeLoginHandler>();
-
-	msg_hdl_map[MSG_ID_ORDER_NEW] = std::make_shared<OTCNewOrder>();
-
-	msg_hdl_map[MSG_ID_ORDER_CANCEL] = std::make_shared<OTCCancelOrder>();
-
-	msg_hdl_map[MSG_ID_QUERY_ORDER] = std::make_shared<OTCQueryOrder>();
-
-	msg_hdl_map[MSG_ID_ORDER_UPDATE] = msg_hdl_map[MSG_ID_QUERY_ORDER];
-
-	// msg_hdl_map[MSG_ID_QUERY_INSTRUMENT] = std::make_shared<OTCQueryInstrument>();
-
-	msg_hdl_map[MSG_ID_QUERY_TRADE] = std::make_shared<OTCQueryTrade>();
-
-	msg_hdl_map[MSG_ID_QUERY_POSITION] = std::make_shared<OTCQueryPosition>();
-
-	msg_hdl_map[MSG_ID_SYNC_POSITION] = std::make_shared<CTPSyncPositionDiffer>();
-
-	msg_hdl_map[MSG_ID_ADD_MANUAL_TRADE] = std::make_shared<CTPAddManualTrade>();
-
-	msg_hdl_map[MSG_ID_QUERY_RISK] = std::make_shared<CTPOTCQueryRisk>();
-
-	msg_hdl_map[MSG_ID_RISK_UPDATED] = std::make_shared<OTCRiskUpdated>();
-
-	msg_hdl_map[MSG_ID_QUERY_VALUATION_RISK] = std::make_shared<CTPOTCQueryValuationRisk>();
-
-	//msg_hdl_map[MSG_ID_QUERY_ACCOUNT_INFO] = std::make_shared<XTQueryAccountInfo>();
+	msg_hdl_map[MSG_ID_LOGIN] = std::make_shared<XTOTCTradeLoginHandler>();
 
 	return msg_hdl_map;
-}
-
-////////////////////////////////////////////////////////////////////////
-// Name:       XTOTCTradeServiceFactory::CreateDataSerializers()
-// Purpose:    Implementation of XTOTCTradeServiceFactory::CreateDataSerializers()
-// Return:     std::map<uint, IDataSerializer_Ptr>
-////////////////////////////////////////////////////////////////////////
-
-std::map<uint, IDataSerializer_Ptr> XTOTCTradeServiceFactory::CreateDataSerializers(IServerContext* serverCtx)
-{
-	std::map<uint, IDataSerializer_Ptr> ret;
-	AbstractDataSerializerFactory::Instance()->CreateDataSerializers(ret);
-
-	return ret;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -137,17 +96,4 @@ IMessageProcessor_Ptr XTOTCTradeServiceFactory::CreateWorkerProcessor(IServerCon
 	}
 
 	return serverCtx->getWorkerProcessor();
-}
-
-void XTOTCTradeServiceFactory::SetServerContext(IServerContext * serverCtx)
-{
-	CTPMDServiceFactory::SetServerContext(serverCtx);
-	auto pricingCtx = AppContext::GetData(STR_KEY_SERVER_PRICING_DATACONTEXT);
-	if (!pricingCtx)
-	{
-		pricingCtx = std::make_shared<PricingDataContext>();
-		AppContext::SetData(STR_KEY_SERVER_PRICING_DATACONTEXT, pricingCtx);
-	}
-
-	serverCtx->setAttribute(STR_KEY_SERVER_PRICING_DATACONTEXT, pricingCtx);
 }

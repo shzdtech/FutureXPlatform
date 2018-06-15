@@ -172,7 +172,7 @@ dataobj_ptr CTPQueryInstrument::HandleResponse(const uint32_t serialId, const pa
 		if (!ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentById(pData->InstrumentID))
 		{
 			bool cache = true;
-			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
 			{
 				auto& productSet = pWorkerProc->GetProductTypeToLoad();
 				cache = productSet.find(insDO.ProductType) != productSet.end();

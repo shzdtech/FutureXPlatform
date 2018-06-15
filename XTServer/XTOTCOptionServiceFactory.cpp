@@ -8,14 +8,13 @@
 #include "XTOTCOptionServiceFactory.h"
 #include "../CTPOTCServer/CTPOTCSessionProcessor.h"
 #include "XTOTCTradeWorkerProcessor.h"
-#include "XTOTCOptionWorkerProcessor.h"
 
 #include "../CTPServer/CTPWorkerProcessorID.h"
+#include "../CTPOTCServer/CTPOTCOptionWorkerProcessor.h"
 #include "../OTCServer/otc_bizhandlers.h"
 #include "../OptionServer/otcoption_bizhandlers.h"
-#include "../CTPServer/xt_bizhandlers.h"
 #include "../OptionServer/OTCOptionPricingParams.h"
-#include "ctpotc_bizhandlers.h"
+#include "xt_bizhandlers.h"
 
 #include "../message/MessageUtility.h"
 #include "../common/Attribute_Key.h"
@@ -37,7 +36,7 @@
 
 std::map<uint, IMessageHandler_Ptr> XTOTCOptionServiceFactory::CreateMessageHandlers(IServerContext* serverCtx)
 {
-	std::map<uint, IMessageHandler_Ptr> msg_hdl_map(std::move(CTPOTCServiceFactory::CreateMessageHandlers(serverCtx)));
+	std::map<uint, IMessageHandler_Ptr> msg_hdl_map(std::move(CTPOTCOptionServiceFactory::CreateMessageHandlers(serverCtx)));
 
 	msg_hdl_map[MSG_ID_SUB_PRICING] = std::make_shared<OTCOptionSubMarketData>();
 
@@ -59,10 +58,10 @@ IMessageProcessor_Ptr XTOTCOptionServiceFactory::CreateWorkerProcessor(IServerCo
 
 		auto tradeProcessor = std::static_pointer_cast<XTOTCTradeWorkerProcessor>(GlobalProcessorRegistry::FindProcessor(tradeWorker));
 
-		std::shared_ptr<XTOTCOptionWorkerProcessor> worker_ptr(new XTOTCOptionWorkerProcessor(serverCtx, tradeProcessor));
+		std::shared_ptr<CTPOTCOptionWorkerProcessor> worker_ptr(new CTPOTCOptionWorkerProcessor(serverCtx, tradeProcessor));
 		worker_ptr->Initialize(serverCtx);
 		serverCtx->setWorkerProcessor(worker_ptr);
-		serverCtx->setSubTypeWorkerPtr(static_cast<XTOTCOptionWorkerProcessor*>(worker_ptr.get()));
+		serverCtx->setSubTypeWorkerPtr(static_cast<CTPOTCOptionWorkerProcessor*>(worker_ptr.get()));
 		serverCtx->setAbstractSubTypeWorkerPtr(static_cast<OTCWorkerProcessor*>(worker_ptr.get()));
 	}
 

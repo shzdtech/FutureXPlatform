@@ -23,7 +23,6 @@
 
 #include "xt_export.h"
 
-class CTPOTCWorkerProcessor;
 
 class XT_CLASS_EXPORT XTOTCTradeWorkerProcessor : public CTPOTCTradeWorkerProcessorBase, public XTTradeWorkerProcessor
 {

@@ -5,7 +5,7 @@
  * Purpose: Implementation of the class CTPOTCTradeLoginHandler
  ***********************************************************************/
 
-#include "CTPOTCTradeLoginHandler.h"
+#include "XTOTCTradeLoginHandler.h"
 #include "XTOTCTradeWorkerProcessor.h"
 #include "../message/DefMessageID.h"
 #include "../message/MessageUtility.h"
@@ -14,8 +14,3 @@
 #include "../dataobject/TypedefDO.h"
 #include "../litelogger/LiteLogger.h"
 
-
-CTPTradeWorkerProcessor* CTPOTCTradeLoginHandler::GetWorkerProcessor(const IMessageProcessor_Ptr& msgProcessor)
-{
-	return MessageUtility::WorkerProcessorPtr<XTOTCTradeWorkerProcessor>(msgProcessor);
-}

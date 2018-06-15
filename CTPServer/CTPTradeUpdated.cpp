@@ -33,10 +33,10 @@ dataobj_ptr CTPTradeUpdated::HandleResponse(const uint32_t serialId, const param
 					{
 						pWorkerProc->PushToLogQueue(ret);
 
-						auto pProcessor = (CTPProcessor*)msgProcessor.get();
+						auto pTemplateProcessor = (TemplateMessageProcessor*)msgProcessor.get();
 						if (position_ptr->Position() >= 0)
 						{
-							pWorkerProc->SendDataObject(session, MSG_ID_POSITION_UPDATED, 0, position_ptr);
+							pTemplateProcessor->SendDataObject(session, MSG_ID_POSITION_UPDATED, 0, position_ptr);
 						}
 					}
 				}

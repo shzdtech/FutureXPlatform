@@ -52,7 +52,7 @@ dataobj_ptr OTCQueryTrade::HandleRequest(const uint32_t serialId, const dataobj_
 		ContractKey(exchangeid, instrumentid), tmstart, tmend);
 	ThrowNotFoundExceptionIfEmpty(tradeVec_Ptr);
 
-	if (auto pWorkerProc = (TemplateMessageProcessor*)msgProcessor.get())
+	if (auto pTemplateProcessor = (TemplateMessageProcessor*)msgProcessor.get())
 	{
 		auto lastIdx = tradeVec_Ptr->size() - 1;
 		for (int i = 0; i <= lastIdx; i++)
@@ -60,7 +60,7 @@ dataobj_ptr OTCQueryTrade::HandleRequest(const uint32_t serialId, const dataobj_
 			auto trade_ptr = std::make_shared<TradeRecordDO>(tradeVec_Ptr->at(i));
 			trade_ptr->HasMore = i < lastIdx;
 
-			pWorkerProc->SendDataObject(session, MSG_ID_QUERY_TRADE, serialId, trade_ptr);
+			pTemplateProcessor->SendDataObject(session, MSG_ID_QUERY_TRADE, serialId, trade_ptr);
 		}
 	}
 

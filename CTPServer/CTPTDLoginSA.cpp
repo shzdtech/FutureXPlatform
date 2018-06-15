@@ -49,7 +49,7 @@ dataobj_ptr CTPTDLoginSA::HandleRequest(const uint32_t serialId, const dataobj_p
 	auto& userInfo = session->getUserInfo();
 	auto role = userInfo.getRole();
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
 	{
 		bool connected = pWorkerProc->ConnectedToServer();
 		bool logged = pWorkerProc->HasLogged();

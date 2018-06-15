@@ -81,11 +81,6 @@ dataobj_ptr CTPQueryTransferBank::HandleResponse(const uint32_t serialId, const 
 		pDO->BankID = pData->BankID;
 		pDO->BranchID = pData->BankBrchID;
 		pDO->BankName = boost::locale::conv::to_utf<char>(pData->BankName, CHARSET_GB2312);
-
-		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
-		{
-			
-		}
 	}
 
 	return ret;

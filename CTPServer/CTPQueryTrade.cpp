@@ -39,7 +39,7 @@ dataobj_ptr CTPQueryTrade::HandleRequest(const uint32_t serialId, const dataobj_
 	CheckLogin(session);
 	auto& userid = session->getUserInfo().getUserId();
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
 	{
 		auto userTrades = pWorkerProc->GetUserTradeContext().GetTradesByUser(userid);
 
@@ -77,7 +77,7 @@ dataobj_ptr CTPQueryTrade::HandleRequest(const uint32_t serialId, const dataobj_
 		for(int i=0; i<=size; i++)
 		{
 			sendList[i]->HasMore = i<size;
-			pWorkerProc->SendDataObject(session, MSG_ID_QUERY_TRADE, serialId, sendList[i]);
+			pProcessor->SendDataObject(session, MSG_ID_QUERY_TRADE, serialId, sendList[i]);
 		}
 	}
 	else
@@ -131,7 +131,7 @@ dataobj_ptr CTPQueryTrade::HandleResponse(const uint32_t serialId, const param_v
 		auto userID = session->getUserInfo().getUserId();
 		ret->HasMore = !*(bool*)rawRespParams[3];
 
-		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
 		{
 			if (auto order_ptr = pWorkerProc->GetUserOrderContext().FindOrder(ret->OrderSysID))
 			{

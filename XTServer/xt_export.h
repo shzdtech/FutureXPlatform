@@ -21,5 +21,8 @@
 static const char* UUID_XT_TRADE_FACTORY = "factory.xt.trade.service";
 static const char* UUID_SINGLE_ACCOUNT_XT_TRADE_FACTORY = "factory.singleaccount.xt.trade.service";
 
+static const char* UUID_XT_OTC_OPTION_FACTORY = "factory.xt.otc.option";
+static const char* UUID_XT_OTC_OPTION_TRADE_FACTORY = "factory.xt.otc.option.trade";
+
 #endif	/* CTPEXPORT_H */
 

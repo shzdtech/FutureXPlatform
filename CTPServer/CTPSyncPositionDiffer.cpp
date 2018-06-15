@@ -41,7 +41,7 @@ dataobj_ptr CTPSyncPositionDiffer::HandleRequest(const uint32_t serialId, const 
 
 	if (role >= ROLE_TRADINGDESK)
 	{
-		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
 		{
 			std::vector<UserPositionDO> userPosition;
 

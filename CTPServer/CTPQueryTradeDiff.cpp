@@ -39,7 +39,7 @@ dataobj_ptr CTPQueryTradeDiff::HandleRequest(const uint32_t serialId, const data
 	CheckLogin(session);
 	auto& userid = session->getUserInfo().getUserId();
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
 	{
 		auto userTrades = pWorkerProc->GetUserTradeContext().GetTradesByUser(userid);
 
@@ -76,7 +76,7 @@ dataobj_ptr CTPQueryTradeDiff::HandleRequest(const uint32_t serialId, const data
 		for (int i = 0; i <= size; i++)
 		{
 			sendList[i]->HasMore = i<size;
-			pWorkerProc->SendDataObject(session, MSG_ID_QUERY_TRADE_DIFFER, serialId, sendList[i]);
+			pProcessor->SendDataObject(session, MSG_ID_QUERY_TRADE_DIFFER, serialId, sendList[i]);
 		}
 	}
 

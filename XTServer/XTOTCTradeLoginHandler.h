@@ -8,14 +8,12 @@
 #if !defined(__XT_CTPOTCTradeLoginHandler_h)
 #define __XT_CTPOTCTradeLoginHandler_h
 
-#include "../CTPServer/CTPTradeLoginHandler.h"
+#include "XTTradeLoginHandler.h"
 #include "xt_export.h"
 
-class XT_CLASS_EXPORT CTPOTCTradeLoginHandler : public CTPTradeLoginHandler
+class XT_CLASS_EXPORT XTOTCTradeLoginHandler : public XTTradeLoginHandler
 {
 public:
-	CTPTradeWorkerProcessor * GetWorkerProcessor(const IMessageProcessor_Ptr & msgProcessor);
-
 protected:
 private:
 

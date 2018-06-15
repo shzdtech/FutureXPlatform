@@ -17,7 +17,7 @@ class CTP_CLASS_EXPORT CTPTradeLoginHandler : public CTPLoginHandler
 public:
 	virtual std::shared_ptr<UserInfoDO> LoginFromServer(const CTPProcessor_Ptr& msgProcessor,
 		const std::shared_ptr<UserInfoDO> & userInfoDO_Ptr, uint requestId, const std::string& serverName);
-	virtual CTPTradeWorkerProcessor * GetWorkerProcessor(const IMessageProcessor_Ptr & msgProcessor);
+	virtual CTPTradeWorkerProcessorBase * GetWorkerProcessor(const IMessageProcessor_Ptr & msgProcessor);
 	virtual bool LoginFromDB(const IMessageProcessor_Ptr& msgProcessor);
 	virtual void LoadUserRiskModel(const IMessageProcessor_Ptr& msgProcessor);
 

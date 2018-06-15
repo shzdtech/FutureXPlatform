@@ -214,6 +214,7 @@
     <ClInclude Include="XTOTCTradeProcessor.h" />
     <ClInclude Include="XTOTCTradeServiceFactory.h" />
     <ClInclude Include="XTOTCTradeWorkerProcessor.h" />
+    <ClInclude Include="XTPositionUpdated.h" />
     <ClInclude Include="XTQueryAccountInfo.h" />
     <ClInclude Include="XTQueryOrder.h" />
     <ClInclude Include="XTQueryPosition.h" />
@@ -237,6 +238,7 @@
     <ClCompile Include="XTOTCTradeProcessor.cpp" />
     <ClCompile Include="XTOTCTradeServiceFactory.cpp" />
     <ClCompile Include="XTOTCTradeWorkerProcessor.cpp" />
+    <ClCompile Include="XTPositionUpdated.cpp" />
     <ClCompile Include="XTQueryAccountInfo.cpp" />
     <ClCompile Include="XTQueryOrder.cpp" />
     <ClCompile Include="XTQueryPosition.cpp" />

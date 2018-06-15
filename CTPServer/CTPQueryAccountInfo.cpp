@@ -38,7 +38,7 @@ dataobj_ptr CTPQueryAccountInfo::HandleRequest(const uint32_t serialId, const da
 	CheckLogin(session);
 
 	AccountInfoDO_Ptr ret;
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
 	{
 		ret = pWorkerProc->GetAccountInfo(session->getUserInfo().getUserId());
 

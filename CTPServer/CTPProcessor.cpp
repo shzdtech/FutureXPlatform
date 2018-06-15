@@ -42,8 +42,6 @@ CTPProcessor::CTPProcessor()
 
 IRawAPI* CTPProcessor::getRawAPI(void)
 {
-	if (!_rawAPI)
-		_rawAPI.reset(new CTPRawAPI);
 	return _rawAPI.get();
 }
 

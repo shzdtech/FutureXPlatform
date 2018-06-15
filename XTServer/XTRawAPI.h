@@ -19,10 +19,10 @@ class XT_CLASS_EXPORT XTRawAPI : public IRawAPI
 {
 public:
 	XTRawAPI(const XTRawAPI&) = delete;
-	XTRawAPI(const char* path = nullptr);
+	XTRawAPI(const std::string& address);
 	~XTRawAPI();
 
-	void CreateApi(const char* address);
+	void CreateApi(const std::string& address);
 
 	XtTraderApi* get();
 

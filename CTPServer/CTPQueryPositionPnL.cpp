@@ -43,7 +43,7 @@ dataobj_ptr CTPQueryPositionPnL::HandleRequest(const uint32_t serialId, const da
 	auto stdo = (StringMapDO<std::string>*)reqDO.get();
 	auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
 	{
 		auto& userId = session->getUserInfo().getUserId();
 		auto positionPnLMap = pWorkerProc->GetUserPositionContext()->GetPortfolioPositionsPnLByUser(userId);
@@ -54,6 +54,7 @@ dataobj_ptr CTPQueryPositionPnL::HandleRequest(const uint32_t serialId, const da
 
 		bool found = false;
 
+		auto pTemplateProc = (TemplateMessageProcessor*)msgProcessor.get();
 		auto locktb = positionPnLMap.map()->lock_table();
 		auto endit = locktb.end();
 		for (auto it = locktb.begin(); it != endit;)
@@ -68,7 +69,7 @@ dataobj_ptr CTPQueryPositionPnL::HandleRequest(const uint32_t serialId, const da
 				{
 					auto positionPnLDO_Ptr = std::make_shared<PositionPnLDO>(*cit->second);
 					positionPnLDO_Ptr->HasMore = ++cit != cendit && it != endit;
-					pWorkerProc->SendDataObject(session, MSG_ID_QUERY_POSITIONPNL, serialId, positionPnLDO_Ptr);
+					pTemplateProc->SendDataObject(session, MSG_ID_QUERY_POSITIONPNL, serialId, positionPnLDO_Ptr);
 
 					found = true;
 				}

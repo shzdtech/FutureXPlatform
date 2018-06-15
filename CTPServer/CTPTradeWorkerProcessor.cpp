@@ -39,7 +39,7 @@
  ////////////////////////////////////////////////////////////////////////
 
 CTPTradeWorkerProcessor::CTPTradeWorkerProcessor(IServerContext* pServerCtx, const IUserPositionContext_Ptr& positionCtx)
-	: _sharedProcHub(4), _sharedSystemSessionHub(SessionContainer<std::string>::NewInstancePtr()), _isQueryAccount(true),
+	: _sharedProcHub(4), _isQueryAccount(true),
 	CTPTradeWorkerProcessorBase(pServerCtx, positionCtx)
 {
 	_serverCtx = pServerCtx;
@@ -253,8 +253,6 @@ int CTPTradeWorkerProcessor::LoginSystemUserIfNeed(void)
 int CTPTradeWorkerProcessor::LogoutSystemUser(void)
 {
 	CThostFtdcUserLogoutField logout{};
-	std::strncpy(logout.BrokerID, _systemUser.getBrokerId().data(), sizeof(logout.BrokerID));
-	std::strncpy(logout.UserID, _systemUser.getInvestorId().data(), sizeof(logout.UserID));
 	return TradeApi()->get()->ReqUserLogout(&logout, 0);
 }
 

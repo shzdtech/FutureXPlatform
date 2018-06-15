@@ -28,17 +28,15 @@ public:
 	static void CheckError(const void* pRspInfo);
 	static std::shared_ptr<ApiException> HasReturnError(const int rtnCode);
 	static void CheckReturnError(const int rtncode);
-	static bool IsOrderActive(TThostFtdcOrderStatusType status);
-	static OrderStatusType CheckOrderStatus(TThostFtdcOrderStatusType status, TThostFtdcOrderSubmitStatusType submitStatus);
+	static bool IsOrderActive(EEntrustStatus status);
+	static OrderStatusType CheckOrderStatus(EEntrustStatus status, EEntrustSubmitStatus submitStatus);
 
-	static OrderDO_Ptr ParseRawOrder(CThostFtdcInputOrderField *pOrder, CThostFtdcRspInfoField *pRsp, int sessionID, OrderDO_Ptr baseOrder = nullptr);
-	static OrderDO_Ptr ParseRawOrder(CThostFtdcOrderField *pOrder, OrderDO_Ptr baseOrder = nullptr);
-	static OrderDO_Ptr ParseRawOrder(CThostFtdcInputOrderActionField *pOrderAction, CThostFtdcRspInfoField *pRsp, OrderDO_Ptr baseOrder = nullptr);
-	static OrderDO_Ptr ParseRawOrder(CThostFtdcOrderActionField *pOrderAction, CThostFtdcRspInfoField *pRsp, OrderDO_Ptr baseOrder = nullptr);
+	static OrderDO_Ptr ParseRawOrder(COrderDetail *pOrder, XtError *pRsp, int sessionID, OrderDO_Ptr baseOrder = nullptr);
+	static void ParseRawOrder(OrderDO_Ptr& baseOrder, XtError *pRsp, int sessionID);
 
-	static TradeRecordDO_Ptr ParseRawTrade(CThostFtdcTradeField *pTrade);
+	static TradeRecordDO_Ptr ParseRawTrade(CDealDetail *pTrade);
 
-	static UserPositionExDO_Ptr ParseRawPosition(CThostFtdcInvestorPositionField* pRspPosition, const std::string& userId);
+	static UserPositionExDO_Ptr ParseRawPosition(CPositionDetail* pRspPosition, const std::string& userId);
 
 	static uint32_t ParseOrderMessageID(OrderStatusType orderStatus);
 
@@ -50,7 +48,6 @@ public:
 		uint64_t ret = low32;
 		return ret | ((uint64_t)high32) << 32;
 	}
-
 
 
 protected:

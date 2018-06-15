@@ -25,7 +25,7 @@ dataobj_ptr CTPSyncTrade::HandleRequest(const uint32_t serialId, const dataobj_p
 
 	if (userInfo.getRole() >= ROLE_TRADINGDESK)
 	{
-		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
 		{
 			auto trade_ptr = pWorkerProc->GetUserTradeContext().FindTrade(tradeDO_Ptr->TradeID128());
 			if (!trade_ptr)

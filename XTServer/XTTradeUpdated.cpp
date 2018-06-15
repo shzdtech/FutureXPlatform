@@ -11,9 +11,9 @@
 dataobj_ptr XTTradeUpdated::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	TradeRecordDO_Ptr ret;
-	if (auto pTrade = (CThostFtdcTradeField*)rawRespParams[0])
+	if (auto pTrade = (CDealDetail*)rawRespParams[0])
 	{
-		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<XTTradeWorkerProcessor>(msgProcessor))
 		{
 			auto& userId = session->getUserInfo().getUserId();
 
@@ -33,10 +33,10 @@ dataobj_ptr XTTradeUpdated::HandleResponse(const uint32_t serialId, const param_
 					{
 						pWorkerProc->PushToLogQueue(ret);
 
-						auto pProcessor = (CTPProcessor*)msgProcessor.get();
+						auto pTemplateProcessor = (TemplateMessageProcessor*)msgProcessor.get();
 						if (position_ptr->Position() >= 0)
 						{
-							pWorkerProc->SendDataObject(session, MSG_ID_POSITION_UPDATED, 0, position_ptr);
+							pTemplateProcessor->SendDataObject(session, MSG_ID_POSITION_UPDATED, 0, position_ptr);
 						}
 					}
 				}

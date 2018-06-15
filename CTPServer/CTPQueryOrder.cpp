@@ -34,7 +34,7 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 {
 	CheckLogin(session);
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
 	{
 		auto stdo = (StringMapDO<std::string>*)reqDO.get();
 
@@ -72,7 +72,7 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 			{
 				auto rspOrderPtr = std::make_shared<OrderDO>(*orderptr);
 				rspOrderPtr->HasMore = false;
-				pWorkerProc->SendDataObject(session, MSG_ID_QUERY_ORDER, serialId, rspOrderPtr);
+				pProcessor->SendDataObject(session, MSG_ID_QUERY_ORDER, serialId, rspOrderPtr);
 			}
 			else
 				throw NotFoundException();
@@ -95,7 +95,7 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 			{
 				auto rspOrderPtr = std::make_shared<OrderDO>(*orderList[i]);
 				rspOrderPtr->HasMore = i < lastidx;
-				pWorkerProc->SendDataObject(session, MSG_ID_QUERY_ORDER, serialId, rspOrderPtr);
+				pProcessor->SendDataObject(session, MSG_ID_QUERY_ORDER, serialId, rspOrderPtr);
 			}
 		}
 	}
@@ -122,7 +122,7 @@ dataobj_ptr CTPQueryOrder::HandleResponse(const uint32_t serialId, const param_v
 	{
 		if (session->getUserInfo().getUserId() == pData->UserID)
 		{
-			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
 			{
 				if (auto orderid = CTPUtility::ToUInt64(pData->OrderSysID))
 				{

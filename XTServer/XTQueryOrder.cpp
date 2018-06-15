@@ -34,7 +34,7 @@ dataobj_ptr XTQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_p
 {
 	CheckLogin(session);
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<XTTradeWorkerProcessor>(msgProcessor))
 	{
 		auto stdo = (StringMapDO<std::string>*)reqDO.get();
 
@@ -50,7 +50,7 @@ dataobj_ptr XTQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_p
 		auto& userOrderCtx = pWorkerProc->GetUserOrderContext();
 		auto vectorPtr = userOrderCtx.GetOrdersByUser(session->getUserInfo().getUserId());
 
-		auto pProcessor = (XTProcessor*)msgProcessor.get();
+		auto pProcessor = (CTPProcessor*)msgProcessor.get();
 		if (!(pProcessor->DataLoadMask & DataLoadType::ORDER_DATA_LOADED))
 		{
 			/*CThostFtdcQryOrderField req{};
@@ -59,7 +59,7 @@ dataobj_ptr XTQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_p
 			int iRet = ((XTRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryOrder(&req, serialId);
 			XTUtility::CheckReturnError(iRet);*/
 
-			std::this_thread::sleep_for(XTProcessor::DefaultQueryTime);
+			std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
 			vectorPtr = userOrderCtx.GetOrdersByUser(session->getUserInfo().getUserId());
 			pProcessor->DataLoadMask |= DataLoadType::ORDER_DATA_LOADED;
 		}
@@ -72,7 +72,7 @@ dataobj_ptr XTQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_p
 			{
 				auto rspOrderPtr = std::make_shared<OrderDO>(*orderptr);
 				rspOrderPtr->HasMore = false;
-				pWorkerProc->SendDataObject(session, MSG_ID_QUERY_ORDER, serialId, rspOrderPtr);
+				pProcessor->SendDataObject(session, MSG_ID_QUERY_ORDER, serialId, rspOrderPtr);
 			}
 			else
 				throw NotFoundException();
@@ -95,7 +95,7 @@ dataobj_ptr XTQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_p
 			{
 				auto rspOrderPtr = std::make_shared<OrderDO>(*orderList[i]);
 				rspOrderPtr->HasMore = i < lastidx;
-				pWorkerProc->SendDataObject(session, MSG_ID_QUERY_ORDER, serialId, rspOrderPtr);
+				pProcessor->SendDataObject(session, MSG_ID_QUERY_ORDER, serialId, rspOrderPtr);
 			}
 		}
 	}
@@ -115,14 +115,14 @@ dataobj_ptr XTQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_p
 
 dataobj_ptr XTQueryOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	XTUtility::CheckNotFound(rawRespParams[0]);
+	XTUtility::CheckNotFound(rawRespParams[2]);
 
 	OrderDO_Ptr ret;
-	if (auto pData = (CThostFtdcOrderField*)rawRespParams[0])
+	if (auto pData = (COrderDetail*)rawRespParams[2])
 	{
 		if (session->getUserInfo().getUserId() == pData->UserID)
 		{
-			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
 			{
 				if (auto orderid = XTUtility::ToUInt64(pData->OrderSysID))
 				{

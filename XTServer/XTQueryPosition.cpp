@@ -8,9 +8,8 @@
 #include "XTQueryPosition.h"
 #include "XTRawAPI.h"
 #include "XTUtility.h"
-#include "CTPConstant.h"
+#include "XTConstant.h"
 #include "XTTradeWorkerProcessor.h"
-#include "CTPWorkerProcessorID.h"
 
 #include "../litelogger/LiteLogger.h"
 #include "../message/DefMessageID.h"
@@ -43,17 +42,17 @@ dataobj_ptr XTQueryPosition::HandleRequest(const uint32_t serialId, const dataob
 	auto stdo = (StringMapDO<std::string>*)reqDO.get();
 	auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
 	{
 		PortfolioPosition positionMap;
-		auto pProcessor = (XTProcessor*)msgProcessor.get();
+		auto pProcessor = (CTPProcessor*)msgProcessor.get();
 		if (!(pProcessor->DataLoadMask & DataLoadType::POSITION_DATA_LOADED))
 		{
 			if (XTUtility::HasTradeInit((XTRawAPI*)rawAPI))
 			{
-				CThostFtdcQryInvestorPositionField req{};
-				int iRet = ((XTRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryInvestorPosition(&req, serialId);
-				std::this_thread::sleep_for(XTProcessor::DefaultQueryTime);
+				auto& investorid = session->getUserInfo().getInvestorId();
+				((XTRawAPI*)rawAPI)->get()->reqPositionDetail(investorid.data(), serialId);
+				std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
 			}
 		}
 
@@ -63,7 +62,6 @@ dataobj_ptr XTQueryPosition::HandleRequest(const uint32_t serialId, const dataob
 		{
 			throw NotFoundException();
 		}
-
 
 		bool found = false;
 		if (instrumentid != EMPTY_STRING)
@@ -80,13 +78,13 @@ dataobj_ptr XTQueryPosition::HandleRequest(const uint32_t serialId, const dataob
 					found = true;
 					auto position_ptr = std::make_shared<UserPositionExDO>(*longPosition);
 					position_ptr->HasMore = (bool)shortPosition;
-					pWorkerProc->SendDataObject(session, MSG_ID_QUERY_POSITION, serialId, position_ptr);
+					pProcessor->SendDataObject(session, MSG_ID_QUERY_POSITION, serialId, position_ptr);
 				}
 				if (shortPosition)
 				{
 					found = true;
 					auto position_ptr = std::make_shared<UserPositionExDO>(*shortPosition);
-					pWorkerProc->SendDataObject(session, MSG_ID_QUERY_POSITION, serialId, position_ptr);
+					pProcessor->SendDataObject(session, MSG_ID_QUERY_POSITION, serialId, position_ptr);
 				}
 
 				if (found)
@@ -109,7 +107,7 @@ dataobj_ptr XTQueryPosition::HandleRequest(const uint32_t serialId, const dataob
 					{
 						auto positionDO_Ptr = std::make_shared<UserPositionExDO>(*cit->second);
 						positionDO_Ptr->HasMore = ++cit != cendit && it != endit;
-						pWorkerProc->SendDataObject(session, MSG_ID_QUERY_POSITION, serialId, positionDO_Ptr);
+						pProcessor->SendDataObject(session, MSG_ID_QUERY_POSITION, serialId, positionDO_Ptr);
 
 						found = true;
 					}
@@ -123,6 +121,12 @@ dataobj_ptr XTQueryPosition::HandleRequest(const uint32_t serialId, const dataob
 
 		if (!found)
 			throw NotFoundException();
+	}
+	else
+	{
+		XTUtility::CheckTradeInit((XTRawAPI*)rawAPI);
+		auto& investorid = session->getUserInfo().getInvestorId();
+		((XTRawAPI*)rawAPI)->get()->reqPositionDetail(investorid.data(), serialId);
 	}
 
 	return nullptr;
@@ -140,16 +144,16 @@ dataobj_ptr XTQueryPosition::HandleRequest(const uint32_t serialId, const dataob
 
 dataobj_ptr XTQueryPosition::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	XTUtility::CheckNotFound(rawRespParams[0]);
-	XTUtility::CheckError(rawRespParams[1]);
+	XTUtility::CheckNotFound(rawRespParams[2]);
+	XTUtility::CheckError(rawRespParams[4]);
 
-	auto pData = (CThostFtdcInvestorPositionField*)rawRespParams[0];
+	auto pData = (CPositionDetail*)rawRespParams[2];
 
 	// position_ptr->HasMore = !*(bool*)rawRespParams[3];
 
 	LOG_DEBUG << pData->InstrumentID << ',' << pData->PositionDate << ',' << pData->PosiDirection;
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
 	{
 		auto& userId = session->getUserInfo().getUserId();
 		auto& sysUserId = session->getUserInfo().getInvestorId();

@@ -114,6 +114,9 @@
     <ClInclude Include="XTTradeUpdated.h">
       <Filter>头文件\handler</Filter>
     </ClInclude>
+    <ClInclude Include="XTPositionUpdated.h">
+      <Filter>头文件\handler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="XTUtility.cpp">
@@ -174,6 +177,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="XTTradeUpdated.cpp">
+      <Filter>源文件\handler</Filter>
+    </ClCompile>
+    <ClCompile Include="XTPositionUpdated.cpp">
       <Filter>源文件\handler</Filter>
     </ClCompile>
   </ItemGroup>

@@ -8,10 +8,10 @@
 #if !defined(__XTOTC_CTPOTCOptionServiceFactory_h)
 #define __XTOTC_CTPOTCOptionServiceFactory_h
 
-#include "../CTPOTCServer/CTPOTCServiceFactory.h"
+#include "../CTPOTCServer/CTPOTCOptionServiceFactory.h"
 #include "xt_export.h"
 
-class XT_CLASS_EXPORT XTOTCOptionServiceFactory : public CTPOTCServiceFactory
+class XT_CLASS_EXPORT XTOTCOptionServiceFactory : public CTPOTCOptionServiceFactory
 {
 public:
 	std::map<uint, IMessageHandler_Ptr> CreateMessageHandlers(IServerContext* serverCtx);

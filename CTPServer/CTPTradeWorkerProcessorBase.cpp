@@ -38,7 +38,8 @@
  ////////////////////////////////////////////////////////////////////////
 
 CTPTradeWorkerProcessorBase::CTPTradeWorkerProcessorBase(IServerContext* pServerCtx, const IUserPositionContext_Ptr& positionCtx)
-	: _accountInfoMap(4), _ydDBPositions(4), _ydSysPositions(4), _logTrades(false), _loadPositionFromDB(false), _pMktDataMap(nullptr)
+	: _accountInfoMap(4), _ydDBPositions(4), _ydSysPositions(4), _logTrades(false), _loadPositionFromDB(false), _pMktDataMap(nullptr),
+	_sharedSystemSessionHub(SessionContainer<std::string>::NewInstancePtr())
 {
 	_userPositionCtx_Ptr = positionCtx ? positionCtx : std::make_shared<PortfolioPositionContext>();
 
@@ -298,6 +299,15 @@ void CTPTradeWorkerProcessorBase::Init(IServerContext* pServerCtx)
 	}
 
 	LoadDataAsync();
+}
+
+void CTPTradeWorkerProcessorBase::LoginUserSession(const CTPProcessor_Ptr & sessionPtr, const std::string & brokerId, const std::string & investorId, const std::string & password, const std::string & serverName)
+{
+}
+
+bool CTPTradeWorkerProcessorBase::IsUserLogged(const std::string & userId)
+{
+	return false;
 }
 
 int CTPTradeWorkerProcessorBase::LoadContractFromDB()

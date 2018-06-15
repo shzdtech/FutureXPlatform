@@ -87,7 +87,7 @@ public:
 	// @param   status 主推资金账号的登录状态
 	// @param   brokerType 主推资金账号的类型 
 	// 1:期货账号, 2:股票账号, 3:信用账号, 4:贵金属账号, 5:期货期权账号, 6:股票期权账号, 7:沪港通账号, 10:全国股转账号
-	virtual void onRtnLoginStatus(const char* accountID, EBrokerLoginStatus status, int brokerType, const char* errorMsg) {}
+	virtual void onRtnLoginStatus(const char* accountID, EBrokerLoginStatus status, int brokerType, const char* errorMsg);
 	// 获取主推的报单状态（指令）
 	virtual void onRtnOrder(const COrderInfo* data) {}
 	// 获得主推的委托明细（委托）

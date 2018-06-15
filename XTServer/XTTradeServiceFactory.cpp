@@ -8,6 +8,7 @@
 #include "XTTradeServiceFactory.h"
 #include "XTTradeProcessor.h"
 #include "XTTradeWorkerProcessor.h"
+#include "../CTPServer/ctp_bizhandlers.h"
 #include "xt_bizhandlers.h"
 #include "XTConstant.h"
 
@@ -32,7 +33,7 @@ std::map<uint, IMessageHandler_Ptr> XTTradeServiceFactory::CreateMessageHandlers
 
 	msg_hdl_map[MSG_ID_ECHO] = std::make_shared<EchoMessageHandler>();
 
-	msg_hdl_map[MSG_ID_LOGIN] = std::make_shared<CTPTradeLoginHandler>();
+	msg_hdl_map[MSG_ID_LOGIN] = std::make_shared<XTTradeLoginHandler>();
 
 	msg_hdl_map[MSG_ID_QUERY_ACCOUNT_INFO] = std::make_shared<XTQueryAccountInfo>();
 
@@ -46,27 +47,23 @@ std::map<uint, IMessageHandler_Ptr> XTTradeServiceFactory::CreateMessageHandlers
 
 	msg_hdl_map[MSG_ID_QUERY_POSITION] = std::make_shared<XTQueryPosition>();
 
-	msg_hdl_map[MSG_ID_POSITION_UPDATED] = std::make_shared<CTPPositionUpdated>();
+	msg_hdl_map[MSG_ID_POSITION_UPDATED] = std::make_shared<XTPositionUpdated>();
 
 	msg_hdl_map[MSG_ID_QUERY_TRADE] = std::make_shared<XTQueryTrade>();
 
 	msg_hdl_map[MSG_ID_TRADE_RTN] = std::make_shared<XTTradeUpdated>();
-		
-	msg_hdl_map[MSG_ID_RET_FUTURE_TO_BANK] = msg_hdl_map[MSG_ID_RET_BANK_TO_FUTURE];
 
-	msg_hdl_map[MSG_ID_QUERY_USER_BANKACCOUNT] = std::make_shared<CTPQueryUserBankAccount>();
-
-	msg_hdl_map[MSG_ID_QUERY_POSITION_DIFFER] = std::make_shared<XTQueryPositionDiffer>();
+	msg_hdl_map[MSG_ID_QUERY_POSITION_DIFFER] = std::make_shared<CTPQueryPositionDiffer>();
 
 	msg_hdl_map[MSG_ID_SYNC_POSITION] = std::make_shared<CTPSyncPositionDiffer>();
 
 	msg_hdl_map[MSG_ID_ADD_MANUAL_TRADE] = std::make_shared<CTPAddManualTrade>();
 
-	msg_hdl_map[MSG_ID_QUERY_TRADE_DIFFER] = std::make_shared<XTQueryTradeDiff>();
+	msg_hdl_map[MSG_ID_QUERY_TRADE_DIFFER] = std::make_shared<CTPQueryTradeDiff>();
 
 	msg_hdl_map[MSG_ID_SYNC_TRADE] = std::make_shared<CTPSyncTrade>();
 
-	msg_hdl_map[MSG_ID_QUERY_POSITIONPNL] = std::make_shared<XTQueryPositionPnL>();
+	msg_hdl_map[MSG_ID_QUERY_POSITIONPNL] = std::make_shared<CTPQueryPositionPnL>();
 
 	return msg_hdl_map;
 }

@@ -14,7 +14,7 @@
 class CTP_OTC_CLASS_EXPORT CTPOTCTradeLoginHandler : public CTPTradeLoginHandler
 {
 public:
-	CTPTradeWorkerProcessor * GetWorkerProcessor(const IMessageProcessor_Ptr & msgProcessor);
+	virtual CTPTradeWorkerProcessorBase * GetWorkerProcessor(const IMessageProcessor_Ptr & msgProcessor);
 
 protected:
 private:

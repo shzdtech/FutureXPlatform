@@ -27,6 +27,8 @@ namespace fs = std::experimental::filesystem;
 
 CTPMarketDataProcessor::CTPMarketDataProcessor()
 {
+	if (!_rawAPI)
+		_rawAPI = std::make_shared<CTPRawAPI>();
 }
 
 ////////////////////////////////////////////////////////////////////////

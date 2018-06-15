@@ -37,7 +37,7 @@ dataobj_ptr CTPQueryPositionDiffer::HandleRequest(const uint32_t serialId, const
 
 	if (role >= ROLE_TRADINGDESK)
 	{
-		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
 		{
 			autofillmap<std::tuple<std::string, std::string, PositionDirectionType>, std::pair<int, int>> positions;
 			pWorkerProc->ComparePosition(userInfo.getUserId(), userInfo.getInvestorId(), positions);

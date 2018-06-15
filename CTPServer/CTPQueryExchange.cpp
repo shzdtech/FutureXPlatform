@@ -39,7 +39,7 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const uint32_t serialId, const datao
 {
 	CheckLogin(session);
 
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
 	{
 		auto stdo = (StringMapDO<std::string>*)reqDO.get();
 		auto& exchangeid = stdo->TryFind(STR_EXCHANGE_ID, EMPTY_STRING);
@@ -58,6 +58,7 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const uint32_t serialId, const datao
 		}
 
 		// ThrowNotFoundExceptionIfEmpty(&exchangeInfo);
+		auto pTemplateProc = (TemplateMessageProcessor*)msgProcessor.get();
 
 		if (exchangeid.empty())
 		{
@@ -67,7 +68,7 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const uint32_t serialId, const datao
 				auto exchangeDO_Ptr = std::make_shared<ExchangeDO>(*it);
 				exchangeDO_Ptr->HasMore = std::next(it) != endit ;
 
-				pWorkerProc->SendDataObject(session, MSG_ID_QUERY_EXCHANGE, serialId, exchangeDO_Ptr);
+				pTemplateProc->SendDataObject(session, MSG_ID_QUERY_EXCHANGE, serialId, exchangeDO_Ptr);
 			}
 		}
 		else
@@ -78,7 +79,7 @@ dataobj_ptr CTPQueryExchange::HandleRequest(const uint32_t serialId, const datao
 			if (it != exchangeInfo.end())
 			{
 				auto exchangeDO_Ptr = std::make_shared<ExchangeDO>(*it);
-				pWorkerProc->SendDataObject(session, MSG_ID_QUERY_EXCHANGE, serialId, exchangeDO_Ptr);
+				pTemplateProc->SendDataObject(session, MSG_ID_QUERY_EXCHANGE, serialId, exchangeDO_Ptr);
 			}
 			else
 			{
@@ -123,7 +124,7 @@ dataobj_ptr CTPQueryExchange::HandleResponse(const uint32_t serialId, const para
 		pDO->Name = boost::locale::conv::to_utf<char>(pData->ExchangeName, CHARSET_GB2312);
 		pDO->Property = pData->ExchangeProperty;
 
-		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
 		{
 			auto& exchangeSet = pWorkerProc->GetExchangeInfo();
 			if (exchangeSet.find(*pDO) == exchangeSet.end())

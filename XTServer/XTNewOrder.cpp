@@ -48,7 +48,7 @@ dataobj_ptr XTNewOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr
 
 	std::shared_ptr<BizException> bizEx_Ptr;
 	// Pretrade risk check
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
 	{
 		try
 		{

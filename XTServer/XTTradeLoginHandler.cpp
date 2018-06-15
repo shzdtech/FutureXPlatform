@@ -1,14 +1,14 @@
 /***********************************************************************
- * Module:  CTPTradeLoginHandler.cpp
+ * Module:  XTTradeLoginHandler.cpp
  * Author:  milk
  * Modified: 2015年3月8日 13:12:23
- * Purpose: Implementation of the class CTPTradeLoginHandler
+ * Purpose: Implementation of the class XTTradeLoginHandler
  ***********************************************************************/
 
-#include "CTPTradeLoginHandler.h"
-#include "CTPTradeProcessor.h"
+#include "XTTradeLoginHandler.h"
+#include "XTTradeProcessor.h"
 #include "XTRawAPI.h"
-#include "CTPConstant.h"
+#include "XTConstant.h"
 #include "XTTradeWorkerProcessor.h"
 #include "XTUtility.h"
 
@@ -26,12 +26,12 @@
 #include "../riskmanager/RiskModelParams.h"
 
  ////////////////////////////////////////////////////////////////////////
- // Name:       CTPTradeLoginHandler::LoginFromServer()
- // Purpose:    Implementation of CTPTradeLoginHandler::LoginFromServer()
+ // Name:       XTTradeLoginHandler::LoginFromServer()
+ // Purpose:    Implementation of XTTradeLoginHandler::LoginFromServer()
  // Return:     int
  ////////////////////////////////////////////////////////////////////////
 
-std::shared_ptr<UserInfoDO> CTPTradeLoginHandler::LoginFromServer(const XTProcessor_Ptr& msgProcessor,
+std::shared_ptr<UserInfoDO> XTTradeLoginHandler::LoginFromServer(const CTPProcessor_Ptr& msgProcessor,
 	const std::shared_ptr<UserInfoDO> & userInfoDO_Ptr, uint requestId, const std::string& serverName)
 {
 	auto& session = msgProcessor->getMessageSession();
@@ -54,94 +54,16 @@ std::shared_ptr<UserInfoDO> CTPTradeLoginHandler::LoginFromServer(const XTProces
 		return userInfoDO_Ptr;
 	}
 
-	if (auto pWorkerProc = GetWorkerProcessor(msgProcessor))
-	{
-		pWorkerProc->LoginUserSession(msgProcessor, userInfoDO_Ptr->BrokerId, userInfoDO_Ptr->ExchangeUser, userInfoDO_Ptr->ExchangePassword, serverName);
-		msgProcessor->getMessageSession()->setLoginTimeStamp();
-		//LoginFromDB(msgProcessor);
-	}
+	((XTRawAPI*)msgProcessor->getRawAPI())->get()->userLogin(userInfoDO_Ptr->ExchangeUser.data(), userInfoDO_Ptr->ExchangePassword.data(), requestId);
 
-	return userInfoDO_Ptr;
+	return nullptr;
 }
 
-CTPTradeWorkerProcessor* CTPTradeLoginHandler::GetWorkerProcessor(const IMessageProcessor_Ptr& msgProcessor)
+dataobj_ptr XTTradeLoginHandler::HandleResponse(const uint32_t serialId, const param_vector & rawRespParams, IRawAPI * rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	return MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor);
-}
-
-bool CTPTradeLoginHandler::LoginFromDB(const IMessageProcessor_Ptr& msgProcessor)
-{
-	if (auto pWorkerProc = GetWorkerProcessor(msgProcessor))
-	{
-		auto session = msgProcessor->getMessageSession();
-
-		if (pWorkerProc->IsLoadPositionFromDB())
-		{
-			pWorkerProc->LoadPositonFromDatabase(session->getUserInfo().getUserId(),
-				std::to_string(session->getUserInfo().getTradingDay()));
-		}
-	}
-
-	return true;
-}
-
-void CTPTradeLoginHandler::LoadUserRiskModel(const IMessageProcessor_Ptr & msgProcessor)
-{
-	if (auto pWorkerProc = GetWorkerProcessor(msgProcessor))
-	{
-		auto session = msgProcessor->getMessageSession();
-		auto& userId = session->getUserInfo().getUserId();
-
-		auto userModels = ModelParamsCache::FindModelsByUser(userId);
-		if (!userModels)
-		{
-			ModelParamsCache::Load(userId);
-			userModels = ModelParamsCache::FindModelsByUser(userId);
-		}
-
-		if (userModels)
-		{
-			for (auto model_ptr : *userModels)
-			{
-				if (auto alg_ptr = RiskModelAlgorithmManager::Instance()->FindModel(model_ptr->Model))
-				{
-					alg_ptr->ParseParams(model_ptr->Params, model_ptr->ParsedParams);
-
-					if (auto pRiskModelParam = (RiskModelParams*)model_ptr->ParsedParams.get())
-					{
-						auto it = model_ptr->ParamString.find(RiskModelParams::__portfolio__);
-						if (it != model_ptr->ParamString.end())
-						{
-							PortfolioKey portfolioID(it->second, userId);
-							if (pRiskModelParam->PreTrade)
-								RiskContext::Instance()->InsertPreTradeUserModel(portfolioID, model_ptr->InstanceName);
-							else
-								RiskContext::Instance()->InsertPostTradeUserModel(portfolioID, model_ptr->InstanceName);
-						}
-						else
-						{
-							if (pRiskModelParam->PreTrade)
-								RiskContext::Instance()->InsertPreTradeAccountModel(userId, model_ptr->InstanceName);
-							else
-								RiskContext::Instance()->InsertPostTradeAccountModel(userId, model_ptr->InstanceName);
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
-dataobj_ptr CTPTradeLoginHandler::HandleResponse(const uint32_t serialId, const param_vector & rawRespParams, IRawAPI * rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
-{
-	dataobj_ptr ret = CTPLoginHandler::HandleResponse(serialId, rawRespParams, rawAPI, msgProcessor, session);
-
-	CThostFtdcSettlementInfoConfirmField reqsettle{};
-	((XTRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqSettlementInfoConfirm(&reqsettle, 0);
-
-	LoginFromDB(msgProcessor);
-
-	((CTPTradeProcessor*)msgProcessor.get())->QueryUserPositionAsyncIfNeed();
-
-	return ret;
+	XTUtility::CheckError(rawRespParams[3]);
+	auto& userInfo = session->getUserInfo();
+	userInfo.setBrokerId((char*)rawRespParams[0]);
+	userInfo.setPassword((char*)rawRespParams[1]);
+	return std::static_pointer_cast<UserInfoDO>(userInfo.getExtInfo());
 }

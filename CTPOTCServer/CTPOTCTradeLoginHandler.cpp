@@ -15,7 +15,7 @@
 #include "../litelogger/LiteLogger.h"
 
 
-CTPTradeWorkerProcessor* CTPOTCTradeLoginHandler::GetWorkerProcessor(const IMessageProcessor_Ptr& msgProcessor)
+CTPTradeWorkerProcessorBase* CTPOTCTradeLoginHandler::GetWorkerProcessor(const IMessageProcessor_Ptr& msgProcessor)
 {
 	return MessageUtility::WorkerProcessorPtr<CTPOTCTradeWorkerProcessor>(msgProcessor);
 }

@@ -69,6 +69,7 @@ public:
 	// /客户端用户登出的回调函数
 	virtual void onUserLogout(const char* userName, const char* password, int nRequestId, const XtError& error);
 
+
 	// 下单的回调
 	virtual void onOrder(int nRequestId, int orderID, const XtError& error);
 	
@@ -83,7 +84,11 @@ public:
 
 
 	// 主推接口
-
+	// 获得主推的用户登录状态
+	// @param   status 主推资金账号的登录状态
+	// @param   brokerType 主推资金账号的类型 
+	// 1:期货账号, 2:股票账号, 3:信用账号, 4:贵金属账号, 5:期货期权账号, 6:股票期权账号, 7:沪港通账号, 10:全国股转账号
+	virtual void onRtnLoginStatus(const char* accountID, EBrokerLoginStatus status, int brokerType, const char* errorMsg);
 	// 获得主推的委托明细（委托）
 	virtual void onRtnOrderDetail(const COrderDetail* data);
 	// 获得主推的成交明细

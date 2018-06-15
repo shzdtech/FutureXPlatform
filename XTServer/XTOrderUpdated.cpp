@@ -1,23 +1,21 @@
 #include "XTOrderUpdated.h"
 #include "XTUtility.h"
-#include "CTPMapping.h"
-#include "CTPConstant.h"
+#include "XTMapping.h"
+#include "XTConstant.h"
 #include "../message/MessageUtility.h"
 #include "XTTradeWorkerProcessor.h"
-#include "CTPWorkerProcessorID.h"
 
 #include "../dataobject/OrderDO.h"
 #include "../message/DefMessageID.h"
-#include "CTPAPISwitch.h"
 
 dataobj_ptr XTOrderUpdated::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
 	OrderDO_Ptr orderPtr;
-	if (auto pOrder = (CThostFtdcOrderField*)rawRespParams[0])
+	if (auto pOrder = (COrderDetail*)rawRespParams[0])
 	{
-		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessor>(msgProcessor))
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<XTTradeWorkerProcessor>(msgProcessor))
 		{
-			if (orderPtr = pWorkerProc->GetUserOrderContext().FindOrder(XTUtility::ToUInt64(pOrder->OrderSysID)))
+			if (orderPtr = pWorkerProc->GetUserOrderContext().FindOrder(XTUtility::ToUInt64(pOrder->m_strOrderSysID)))
 			{
 				orderPtr = XTUtility::ParseRawOrder(pOrder, orderPtr);
 			}
@@ -44,9 +42,9 @@ dataobj_ptr XTOrderUpdated::HandleResponse(const uint32_t serialId, const param_
 		{
 			if (auto msgId = XTUtility::ParseOrderMessageID(orderPtr->OrderStatus))
 			{
-				auto pProcessor = (TemplateMessageProcessor*)msgProcessor.get();
+				auto pTemplateProcessor = (TemplateMessageProcessor*)msgProcessor.get();
 				auto sid = msgId == MSG_ID_ORDER_CANCEL ? orderPtr->OrderSysID : serialId;
-				pProcessor->SendDataObject(session, msgId, sid, orderPtr);
+				pTemplateProcessor->SendDataObject(session, msgId, sid, orderPtr);
 			}
 
 			if (!orderPtr->OrderSysID)
