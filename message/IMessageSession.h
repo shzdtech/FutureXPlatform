@@ -24,6 +24,7 @@ public:
 	virtual IMessageProcessor_Ptr LockMessageProcessor(void) = 0;
 
 	virtual ISessionManager_Ptr& getSessionManager(void) = 0;
+	virtual void setSessionManager(const ISessionManager_Ptr& sessionMgr_Ptr) = 0;
 
 protected:
 private:

@@ -44,6 +44,8 @@ CTPTradeWorkerProcessor::CTPTradeWorkerProcessor(IServerContext* pServerCtx, con
 {
 	_serverCtx = pServerCtx;
 
+	_msgsession_ptr = std::make_shared<MessageSession>();
+
 	if (_isQueryAccount)
 		_accountQuery = std::async(std::launch::async, &CTPTradeWorkerProcessor::QueryAccountWorker, this);
 }
@@ -102,11 +104,6 @@ int CTPTradeWorkerProcessor::RequestData(void)
 		auto trdAPI = TradeApi();
 
 		auto session = getMessageSession();
-		while (!session)
-		{
-			std::this_thread::sleep_for(std::chrono::seconds(1));
-			session = getMessageSession();
-		}
 
 		if (!session->getLoginTimeStamp())
 		{

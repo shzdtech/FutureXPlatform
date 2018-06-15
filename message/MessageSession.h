@@ -23,6 +23,7 @@ class MESSAGE_CLASS_EXPORT MessageSession : public IMessageSession,
 	public std::enable_shared_from_this<MessageSession>
 {
 public:
+	MessageSession() = default;
 	MessageSession(const ISessionManager_Ptr& sessionMgr_Ptr);
 	~MessageSession();
 

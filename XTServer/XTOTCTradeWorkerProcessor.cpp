@@ -6,7 +6,7 @@
  ***********************************************************************/
 
 #include "XTOTCTradeWorkerProcessor.h"
-#include "../CTPServer/XTUtility.h"
+#include "XTUtility.h"
 #include "../CTPServer/CTPConstant.h"
 #include "../CTPServer/CTPMapping.h"
 #include "../dataobject/TradeRecordDO.h"
@@ -14,6 +14,7 @@
 #include "../systemsettings/AppContext.h"
 #include "../message/DefMessageID.h"
 #include "../message/message_macro.h"
+#include "../message/MessageSession.h"
 #include "../bizutility/ExchangeRouterTable.h"
 #include "../bizutility/PositionPortfolioMap.h"
 
@@ -35,6 +36,7 @@ XTOTCTradeWorkerProcessor::XTOTCTradeWorkerProcessor(
 	XTTradeWorkerProcessor(pServerCtx, positionCtx)
 {
 	_logTrades = false;
+	_msgsession_ptr = std::make_shared<MessageSession>();
 }
 
 
