@@ -52,6 +52,8 @@ enum OrderVolType
 class OrderRequestDO : public UserContractKey, public PortfolioKey, public dataobjectbase
 {
 public:
+	OrderRequestDO() = default;
+
 	OrderRequestDO(const uint64_t orderID, const char* exchangeID, const char* instrumentID,
 		const char* userID, const char* portfolioID) : OrderID(orderID), UserKey(userID),
 		UserContractKey(exchangeID, instrumentID, userID), PortfolioKey(portfolioID, userID) {}

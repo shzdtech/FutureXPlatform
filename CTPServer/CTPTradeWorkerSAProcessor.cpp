@@ -14,7 +14,7 @@
 #include "../databaseop/ContractDAO.h"
 #include "../databaseop/TradeDAO.h"
 #include "../ordermanager/OrderSeqGen.h"
-#include "../ordermanager/OrderPortfolioCache.h"
+#include "../ordermanager/OrderReqCache.h"
 
 #include "../bizutility/ContractCache.h"
 #include "../litelogger/LiteLogger.h"

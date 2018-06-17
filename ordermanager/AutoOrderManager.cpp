@@ -10,7 +10,7 @@
 #include "../utility/epsdouble.h"
 #include "AutoOrderManager.h"
 #include "OrderSeqGen.h"
-#include "OrderPortfolioCache.h"
+#include "OrderReqCache.h"
 #include "../databaseop/OrderDAO.h"
 #include "../pricingengine/PricingUtility.h"
 
@@ -40,11 +40,10 @@ OrderDO_Ptr AutoOrderManager::CreateOrder(OrderRequestDO& orderReq, IOrderAPI* o
 	{
 		orderReq.SessionID = orderAPI->GetSessionId();
 		orderReq.OrderID = OrderSeqGen::GenOrderID(orderAPI->GetSessionId());
-		_userOrderCtx.UpsertOrder(orderReq.OrderID, orderReq);
-		ret = orderAPI->CreateOrder(orderReq);
-		if (!ret)
+		//_userOrderCtx.UpsertOrder(orderReq.OrderID, orderReq);
+		if (ret = orderAPI->CreateOrder(orderReq))
 		{
-			_userOrderCtx.RemoveOrder(orderReq.OrderID);
+			_userOrderCtx.UpsertOrder(ret->OrderID, ret);
 		}
 	}
 

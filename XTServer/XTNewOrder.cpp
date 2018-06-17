@@ -17,11 +17,11 @@
 #include "../message/DefMessageID.h"
 #include "../message/MessageUtility.h"
 
-#include "../ordermanager/OrderPortfolioCache.h"
+#include "../ordermanager/OrderReqCache.h"
 
 #include "../dataobject/OrderDO.h"
 #include "../riskmanager/RiskUtil.h"
-
+#include "../bizutility/ContractCache.h"
 
  ////////////////////////////////////////////////////////////////////////
  // Name:       XTNewOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr& reqDO, IRawAPI* rawAPI, IMessageProcessor* msgProcessor
@@ -45,86 +45,58 @@ dataobj_ptr XTNewOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr
 	auto& userInfo = session->getUserInfo();
 
 	pOrderReqDO->SetUserID(userInfo.getUserId());
+	pOrderReqDO->SessionID = userInfo.getSessionId();
+	pOrderReqDO->SerialId = serialId;
+	pOrderReqDO->OrderID = OrderSeqGen::GenOrderID();
 
-	std::shared_ptr<BizException> bizEx_Ptr;
-	// Pretrade risk check
-	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
+	ProductType productType;
+	InstrumentCache& cache = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE);
+	if (auto* pInstrument = cache.QueryInstrumentOrAddById(pOrderReqDO->InstrumentID()))
 	{
-		try
-		{
-			RiskUtil::CheckRisk(*pOrderReqDO, pWorkerProc->GetUserPositionContext().get(), pWorkerProc->GetAccountInfo(pOrderReqDO->UserID()).get());
-		}
-		catch (BizException& ex)
-		{
-			if (ex.ErrorCode() > RiskModelParams::WARNING)
-				throw ex;
-
-			if (ex.ErrorCode() > RiskModelParams::NO_ACTION)
-				bizEx_Ptr = std::make_shared<BizException>(ex);
-		}
+		productType = pInstrument->ProductType;
+		if (pOrderReqDO->ExchangeID().empty())
+			pOrderReqDO->setExchangeID(pInstrument->ExchangeID());
 	}
 
-	// 端登成功,发出报单录入请求
-	CThostFtdcInputOrderField req{};
+	COrdinaryOrder orderReq{};
 
-	//经纪公司代码
-	std::strncpy(req.BrokerID, userInfo.getBrokerId().data(), sizeof(req.BrokerID));
-	//投资者代码
-	std::strncpy(req.InvestorID, userInfo.getInvestorId().data(), sizeof(req.InvestorID));
-	// 合约代码
-	std::strncpy(req.InstrumentID, pOrderReqDO->InstrumentID().data(), sizeof(req.InstrumentID));
-	///报单引用
-	pOrderReqDO->OrderID = OrderSeqGen::GenOrderID(userInfo.getSessionId());
+	// 资金账号，必填参数。不填会被api打回，并且通过onOrder反馈失败
+	std::strncpy(orderReq.m_strAccountID, userInfo.getInvestorId().data(), sizeof(orderReq.m_strAccountID));
 
-	std::snprintf(req.OrderRef, sizeof(req.OrderRef), FMT_ORDERREF, pOrderReqDO->OrderID);
-	// 用户代码
-	std::strncpy(req.UserID, pOrderReqDO->UserID().data(), sizeof(req.UserID));
-	// 报单价格条件
-	auto it = CTPExecPriceMapping.find((OrderExecType)pOrderReqDO->ExecType);
-	req.OrderPriceType = it != CTPExecPriceMapping.end() ? it->second : THOST_FTDC_OPT_LimitPrice;
-	// 买卖方向
-	req.Direction = pOrderReqDO->Direction > 0 ? THOST_FTDC_D_Buy : THOST_FTDC_D_Sell;
-	///组合开平标志: 开仓
-	req.CombOffsetFlag[0] = THOST_FTDC_OF_Open + pOrderReqDO->OpenClose;
-	///组合投机套保标志
-	req.CombHedgeFlag[0] = THOST_FTDC_HF_Speculation;
-	// 价格
-	req.LimitPrice = pOrderReqDO->LimitPrice;
-	// 数量
-	req.VolumeTotalOriginal = pOrderReqDO->Volume;
-	// 有效期类型
-	auto tit = CTPTIFMapping.find((OrderTIFType)pOrderReqDO->TIF);
-	req.TimeCondition = tit != CTPTIFMapping.end() ? tit->second : THOST_FTDC_TC_GFD;
-	// GTD日期
-	//std::strcpy(req.GTDDate, "");
-	// 成交量类型
-	auto vit = CTPVolCondMapping.find((OrderVolType)pOrderReqDO->VolCondition);
-	req.VolumeCondition = vit != CTPVolCondMapping.end() ? vit->second : THOST_FTDC_VC_AV;
-	// 最小成交量
-	req.MinVolume = 1;
-	// 触发条件
-	req.ContingentCondition = THOST_FTDC_CC_Immediately;
-	// 止损价
-	req.StopPrice = 0;
-	// 强平原因
-	req.ForceCloseReason = THOST_FTDC_FCC_NotForceClose;
-	// 自动挂起标志
-	req.IsAutoSuspend = false;
+	// 单笔超价百分比，选填字段。默认为0
+	orderReq.m_dSuperPriceRate = 0;
 
-	req.RequestID = serialId;
+	// 报单市场。必填字段。股票市场有"CFFEX"/"SHFE"/"DCE"/"CZCE"，如果填空或填错都会被api直接打回
+	std::strncpy(orderReq.m_strMarket, pOrderReqDO->ExchangeID().data(), sizeof(orderReq.m_strMarket));
+
+	// 报单合约代码，必填字段。
+	std::strncpy(orderReq.m_strInstrument, pOrderReqDO->InstrumentID().data(), sizeof(orderReq.m_strInstrument));
+
+	// 报单委托量，必填字段。默认int最大值，填0或不填会被api打回
+	orderReq.m_nVolume = pOrderReqDO->Volume;
+
+	// 报单委托类型。必填字段。根据相应的业务选择，具体请参考XtDataType.h，默认为无效值(OPT_INVALID)。不填会被api打回
+	orderReq.m_eOperationType = XTUtility::GetOperationType(productType, pOrderReqDO->Direction, pOrderReqDO->OpenClose);
+
+	// 报单价格类型，必填字段。默认为无效(PTRP_INVALID)，具体可参考XtDataType.h
+	orderReq.m_ePriceType = PRTP_HANG;
+
+	// 报单价格，默认为double最大值。当价格类型m_ePriceType为指定价PRTP_FIX时，必填字段。当价格类型为其他时填了也没用
+	orderReq.m_dPrice = pOrderReqDO->LimitPrice;
+
+	// 投机套保标志，选填字段。有"投机"/"套利"/"套保"方式。除期货三个方式都可选之外都是填“投机”。默认为“投机”
+	orderReq.m_eHedgeFlag = HEDGE_FLAG_SPECULATION;
 
 	bool insertPortfolio = !pOrderReqDO->PortfolioID().empty();
 
+	int reqId = (int)pOrderReqDO->OrderID;
+
 	if (insertPortfolio)
 	{
-		OrderPortfolioCache::Insert(pOrderReqDO->OrderID, *pOrderReqDO);
+		OrderReqCache::Insert(reqId, *pOrderReqDO);
 	}
 
-	((XTRawAPI*)rawAPI)->get()->order();
-
-
-	if (bizEx_Ptr)
-		throw *bizEx_Ptr;
+	((XTRawAPI*)rawAPI)->get()->order(&orderReq, reqId);
 
 	return nullptr;
 }
@@ -141,24 +113,11 @@ dataobj_ptr XTNewOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr
 
 dataobj_ptr XTNewOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	OrderDO_Ptr ret;
+	XTUtility::CheckError(rawRespParams[2]);
 
-	if (auto pData = (CThostFtdcInputOrderField*)rawRespParams[0])
-	{
-		if (session->getUserInfo().getUserId() == pData->UserID)
-		{
-			auto pRsp = (CThostFtdcRspInfoField*)rawRespParams[1];
+	auto orderId = *(int*)rawRespParams[1];
 
-			if (ret = XTUtility::ParseRawOrder(pData, pRsp, session->getUserInfo().getSessionId()))
-			{
-				ret->HasMore = false;
-			}
-		}
-	}
-	else
-	{
-		XTUtility::CheckError(rawRespParams[1]);
-	}
+	auto ret = XTUtility::ParseRawOrder(serialId, orderId);
 
 	return ret;
 }

@@ -1,6 +1,6 @@
 #include "XTTradeUpdated.h"
 #include "XTUtility.h"
-#include "CTPConstant.h"
+#include "XTConstant.h"
 #include "XTTradeWorkerProcessor.h"
 #include "../bizutility/ContractCache.h"
 #include "../databaseop/ContractDAO.h"

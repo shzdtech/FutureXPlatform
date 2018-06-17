@@ -23,7 +23,7 @@
 #include "../databaseop/TradeDAO.h"
 #include "../databaseop/PositionDAO.h"
 #include "../ordermanager/OrderSeqGen.h"
-#include "../ordermanager/OrderPortfolioCache.h"
+#include "../ordermanager/OrderReqCache.h"
 #include "../bizutility/ModelParamsCache.h"
 #include "../riskmanager/RiskModelAlgorithmManager.h"
 #include "../riskmanager/RiskContext.h"
@@ -180,7 +180,7 @@ int CTPTradeWorkerProcessor::LoginSystemUser(void)
 	{
 		CThostFtdcReqAuthenticateField reqAuth{};
 		std::strncpy(reqAuth.BrokerID, _systemUser.getBrokerId().data(), sizeof(reqAuth.BrokerID));
-		std::strncpy(reqAuth.UserID, _systemUser.getUserId().data(), sizeof(reqAuth.UserID));
+		std::strncpy(reqAuth.UserID, _systemUser.getInvestorId().data(), sizeof(reqAuth.UserID));
 		std::strncpy(reqAuth.AuthCode, _authCode.data(), sizeof(reqAuth.AuthCode));
 		std::strncpy(reqAuth.UserProductInfo, _productInfo.data(), sizeof(reqAuth.UserProductInfo));
 		ret = TradeApi()->get()->ReqAuthenticate(&reqAuth, 0);
@@ -250,6 +250,8 @@ int CTPTradeWorkerProcessor::LoginSystemUserIfNeed(void)
 int CTPTradeWorkerProcessor::LogoutSystemUser(void)
 {
 	CThostFtdcUserLogoutField logout{};
+	std::strncpy(logout.BrokerID, _systemUser.getBrokerId().data(), sizeof(logout.BrokerID));
+	std::strncpy(logout.UserID, _systemUser.getInvestorId().data(), sizeof(logout.UserID));
 	return TradeApi()->get()->ReqUserLogout(&logout, 0);
 }
 
@@ -278,14 +280,16 @@ OrderDO_Ptr CTPTradeWorkerProcessor::RefineOrder(CThostFtdcOrderField *pOrder)
 
 	if (orderptr->PortfolioID().empty())
 	{
-		PortfolioKey portfolio;
-		if (OrderPortfolioCache::Find(OrderSeqGen::GetOrderID(orderptr->OrderID, orderptr->SessionID), portfolio))
+		OrderRequestDO orderReqDO;
+		if (OrderReqCache::Find(OrderSeqGen::GetOrderID(orderptr->OrderID, orderptr->SessionID), orderReqDO))
 		{
-			orderptr->SetPortfolioID(portfolio.PortfolioID());
+			orderptr->SetPortfolioID(orderReqDO.PortfolioID());
+			OrderReqCache::Remove(OrderSeqGen::GetOrderID(orderptr->OrderID, orderptr->SessionID));
 		}
-		else if (orderSysId && OrderPortfolioCache::Find(orderSysId, portfolio))
+		else if (orderSysId && OrderReqCache::Find(orderSysId, orderReqDO))
 		{
-			orderptr->SetPortfolioID(portfolio.PortfolioID());
+			orderptr->SetPortfolioID(orderReqDO.PortfolioID());
+			OrderReqCache::Remove(OrderSeqGen::GetOrderID(orderSysId, orderptr->SessionID));
 		}
 	}
 
@@ -311,25 +315,28 @@ TradeRecordDO_Ptr CTPTradeWorkerProcessor::RefineTrade(CThostFtdcTradeField * pT
 
 	if (trdDO_Ptr)
 	{
-		PortfolioKey portfolio;
-		if (OrderPortfolioCache::Find(trdDO_Ptr->OrderSysID, portfolio))
-		{
-			trdDO_Ptr->SetPortfolioID(portfolio.PortfolioID());
-		}
-		else if (auto order_ptr = _userOrderCtx.FindOrder(trdDO_Ptr->OrderSysID))
+		OrderRequestDO orderReqDO;
+		if (auto order_ptr = _userOrderCtx.FindOrder(trdDO_Ptr->OrderSysID))
 		{
 			if (!order_ptr->PortfolioID().empty())
 			{
 				trdDO_Ptr->SetPortfolioID(order_ptr->PortfolioID());
 			}
-			else if (OrderPortfolioCache::Find(OrderSeqGen::GetOrderID(order_ptr->OrderID, order_ptr->SessionID), portfolio))
+			else if (OrderReqCache::Find(OrderSeqGen::GetOrderID(order_ptr->OrderID, order_ptr->SessionID), orderReqDO))
 			{
-				trdDO_Ptr->SetPortfolioID(portfolio.PortfolioID());
+				trdDO_Ptr->SetPortfolioID(orderReqDO.PortfolioID());
+				OrderReqCache::Remove(OrderSeqGen::GetOrderID(order_ptr->OrderID, order_ptr->SessionID));
 			}
 		}
-		else if (OrderPortfolioCache::Find(OrderSeqGen::GetOrderID(trdDO_Ptr->OrderID, _systemUser.getSessionId()), portfolio))
+		else if (OrderReqCache::Find(trdDO_Ptr->OrderSysID, orderReqDO))
 		{
-			trdDO_Ptr->SetPortfolioID(portfolio.PortfolioID());
+			trdDO_Ptr->SetPortfolioID(orderReqDO.PortfolioID());
+			OrderReqCache::Remove(trdDO_Ptr->OrderSysID);
+		}
+		else if (OrderReqCache::Find(OrderSeqGen::GetOrderID(trdDO_Ptr->OrderID, _systemUser.getSessionId()), orderReqDO))
+		{
+			trdDO_Ptr->SetPortfolioID(orderReqDO.PortfolioID());
+			OrderReqCache::Remove(OrderSeqGen::GetOrderID(trdDO_Ptr->OrderID, _systemUser.getSessionId()));
 		}
 
 		//if (trdDO_Ptr->PortfolioID().empty())
@@ -545,12 +552,12 @@ void CTPTradeWorkerProcessor::OnErrRtnOrderInsert(CThostFtdcInputOrderField *pIn
 	{
 		if (auto orderptr = CTPUtility::ParseRawOrder(pInputOrder, pRspInfo, _systemUser.getSessionId()))
 		{
-			PortfolioKey portfolio;
+			OrderRequestDO orderReqDO;
 			auto orderId = OrderSeqGen::GetOrderID(orderptr->OrderID, orderptr->SessionID);
-			if (OrderPortfolioCache::Find(orderId, portfolio))
+			if (OrderReqCache::Find(orderId, orderReqDO))
 			{
-				orderptr->SetPortfolioID(portfolio.PortfolioID());
-				OrderPortfolioCache::Remove(orderId);
+				orderptr->SetPortfolioID(orderReqDO.PortfolioID());
+				OrderReqCache::Remove(orderId);
 			}
 			orderptr->HasMore = false;
 			DispatchUserMessage(MSG_ID_ORDER_NEW, pInputOrder->RequestID, orderptr->UserID(), orderptr);
@@ -584,12 +591,12 @@ void CTPTradeWorkerProcessor::OnRspOrderInsert(CThostFtdcInputOrderField *pInput
 		{
 			if (orderptr->ErrorCode)
 			{
-				PortfolioKey portfolio;
+				OrderRequestDO orderReqDO;
 				auto orderId = OrderSeqGen::GetOrderID(orderptr->OrderID, orderptr->SessionID);
-				if (OrderPortfolioCache::Find(orderId, portfolio))
+				if (OrderReqCache::Find(orderId, orderReqDO))
 				{
-					orderptr->SetPortfolioID(portfolio.PortfolioID());
-					OrderPortfolioCache::Remove(orderId);
+					orderptr->SetPortfolioID(orderReqDO.PortfolioID());
+					OrderReqCache::Remove(orderId);
 				}
 			}
 			orderptr->HasMore = false;
@@ -692,45 +699,11 @@ void CTPTradeWorkerProcessor::OnRspQryInvestorPosition(CThostFtdcInvestorPositio
 
 void CTPTradeWorkerProcessor::OnRspQryTradingAccount(CThostFtdcTradingAccountField * pTradingAccount, CThostFtdcRspInfoField * pRspInfo, int nRequestID, bool bIsLast)
 {
-	std::shared_ptr<AccountInfoDO> accountInfo_ptr;
+	AccountInfoDO_Ptr accountInfo_ptr;
 
 	if (pTradingAccount)
 	{
-		auto pDO = new AccountInfoDO;
-		accountInfo_ptr.reset(pDO);
-
-		pDO->BrokerID = pTradingAccount->BrokerID;
-		pDO->AccountID = pTradingAccount->AccountID;
-		pDO->PreMortgage = pTradingAccount->PreMortgage;
-		pDO->PreCredit = pTradingAccount->PreCredit;
-		pDO->PreDeposit = pTradingAccount->PreDeposit;
-		pDO->PreBalance = pTradingAccount->PreBalance;
-		pDO->PreMargin = pTradingAccount->PreMargin;
-		pDO->InterestBase = pTradingAccount->InterestBase;
-		pDO->Interest = pTradingAccount->Interest;
-		pDO->Deposit = pTradingAccount->Deposit;
-		pDO->Withdraw = pTradingAccount->Withdraw;
-		pDO->FrozenMargin = pTradingAccount->FrozenMargin;
-		pDO->FrozenCash = pTradingAccount->FrozenCash;
-		pDO->FrozenCommission = pTradingAccount->FrozenCommission;
-		pDO->CurrMargin = pTradingAccount->CurrMargin;
-		pDO->CashIn = pTradingAccount->CashIn;
-		pDO->Commission = pTradingAccount->Commission;
-		pDO->CloseProfit = pTradingAccount->CloseProfit;
-		pDO->PositionProfit = pTradingAccount->PositionProfit;
-		pDO->Balance = pTradingAccount->Balance;
-		pDO->Available = pTradingAccount->Available;
-		pDO->WithdrawQuota = pTradingAccount->WithdrawQuota;
-		pDO->Reserve = pTradingAccount->Reserve;
-		pDO->TradingDay = std::atoi(pTradingAccount->TradingDay);
-		pDO->SettlementID = pTradingAccount->SettlementID;
-		pDO->Credit = pTradingAccount->Credit;
-		pDO->Mortgage = pTradingAccount->Mortgage;
-		pDO->ExchangeMargin = pTradingAccount->ExchangeMargin;
-		pDO->DeliveryMargin = pTradingAccount->DeliveryMargin;
-		pDO->ExchangeDeliveryMargin = pTradingAccount->ExchangeDeliveryMargin;
-		pDO->ReserveBalance = pTradingAccount->Reserve;
-		pDO->RiskRatio = pDO->Balance > 0 ? pDO->CurrMargin / pDO->Balance : 0;
+		accountInfo_ptr = CTPUtility::ParseRawAccountInfo(pTradingAccount);
 
 		std::string sysUserId = pTradingAccount->AccountID;
 		//sysUserId += pTradingAccount->AccountID;

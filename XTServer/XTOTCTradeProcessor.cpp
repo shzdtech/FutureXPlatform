@@ -8,7 +8,7 @@
 #include "XTOTCTradeProcessor.h"
 #include "XTOTCTradeWorkerProcessor.h"
 
-#include "../CTPServer/XTUtility.h"
+#include "XTUtility.h"
 #include "../CTPServer/CTPConstant.h"
 #include "../CTPServer/CTPMapping.h"
 #include "../dataobject/TradeRecordDO.h"
@@ -23,7 +23,7 @@
 #include "../databaseop/ContractDAO.h"
 #include "../databaseop/TradeDAO.h"
 #include "../ordermanager/OrderSeqGen.h"
-#include "../ordermanager/OrderPortfolioCache.h"
+#include "../ordermanager/OrderReqCache.h"
 
 #include "../riskmanager/RiskUtil.h"
 
@@ -90,119 +90,74 @@ HedgeOrderManager & XTOTCTradeProcessor::GetHedgeOrderManager(void)
 
 OrderDO_Ptr XTOTCTradeProcessor::CreateOrder(const OrderRequestDO& orderReq)
 {
-	OrderDO_Ptr ret;
-
-	if (auto pWorkerProc = getWorkerProcessor())
-	{
-		try
-		{
-			RiskUtil::CheckRisk(orderReq, pWorkerProc->GetUserPositionContext().get(), pWorkerProc->GetAccountInfo(orderReq.UserID()).get());
-		}
-		catch (BizException& ex)
-		{
-			if (ex.ErrorCode() > RiskModelParams::WARNING)
-			{
-				if (auto mdWorker = pWorkerProc->GetMDWorkerProcessor())
-					mdWorker->DispatchUserExceptionMessage(MSG_ID_ORDER_NEW, 0, orderReq.UserID(), ex);
-				return ret;
-			}
-		}
-	}
-
 	if (auto tdApiProxy = std::static_pointer_cast<CTPRawAPI>(_rawAPI)->TdAPIProxy())
 	{
 		auto& userInfo = getMessageSession()->getUserInfo();
 
-		// 端登成功,发出报单录入请求
-		CThostFtdcInputOrderField req{};
-
-		//经纪公司代码
-		std::strncpy(req.BrokerID, userInfo.getBrokerId().data(), sizeof(req.BrokerID));
-		//投资者代码
-		std::strncpy(req.InvestorID, userInfo.getInvestorId().data(), sizeof(req.InvestorID));
-		// 合约代码
-		std::strncpy(req.InstrumentID, orderReq.InstrumentID().data(), sizeof(req.InstrumentID));
-		///报单引用
-		std::snprintf(req.OrderRef, sizeof(req.OrderRef), FMT_ORDERREF, orderReq.OrderID);
-		// 用户代码
-		std::strncpy(req.UserID, orderReq.UserID().data(), sizeof(req.UserID));
-		// 报单价格条件
-		req.OrderPriceType = THOST_FTDC_OPT_LimitPrice;
-		// 买卖方向
-		req.Direction = orderReq.Direction > 0 ? THOST_FTDC_D_Buy : THOST_FTDC_D_Sell;
-		///组合开平标志: 开仓
-		req.CombOffsetFlag[0] = THOST_FTDC_OF_Open + orderReq.OpenClose;
-		///组合投机套保标志
-		req.CombHedgeFlag[0] = THOST_FTDC_HF_Speculation;
-		// 价格
-		req.LimitPrice = orderReq.LimitPrice;
-		// 数量
-		req.VolumeTotalOriginal = orderReq.Volume;
-		// 有效期类型
-		req.TimeCondition = orderReq.TIF == OrderTIFType::IOC ? THOST_FTDC_TC_IOC : THOST_FTDC_TC_GFD;
-		// 成交量类型
-		auto vit = CTPVolCondMapping.find((OrderVolType)orderReq.VolCondition);
-		req.VolumeCondition = vit != CTPVolCondMapping.end() ? vit->second : THOST_FTDC_VC_AV;
-		// 最小成交量
-		req.MinVolume = 1;
-		// 触发条件
-		req.ContingentCondition = THOST_FTDC_CC_Immediately;
-		// 止损价
-		req.StopPrice = 0;
-		// 强平原因
-		req.ForceCloseReason = THOST_FTDC_FCC_NotForceClose;
-		// 自动挂起标志
-		req.IsAutoSuspend = false;
-
-		OrderPortfolioCache::Insert(orderReq.OrderID, orderReq);
-
-		if (tdApiProxy->get()->ReqOrderInsert(&req, 0) == 0)
+		ProductType productType;
+		InstrumentCache& cache = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE);
+		if (auto* pInstrument = cache.QueryInstrumentOrAddById(orderReq.InstrumentID()))
 		{
-			ret = XTUtility::ParseRawOrder(&req, nullptr, orderReq.SessionID ? orderReq.SessionID : userInfo.getSessionId());
+			productType = pInstrument->ProductType;
 		}
-		else
-		{
-			OrderPortfolioCache::Remove(orderReq.OrderID);
-		}
+
+		COrdinaryOrder order{};
+
+		// 资金账号，必填参数。不填会被api打回，并且通过onOrder反馈失败
+		std::strncpy(order.m_strAccountID, userInfo.getInvestorId().data(), sizeof(order.m_strAccountID));
+
+		// 单笔超价百分比，选填字段。默认为0
+		order.m_dSuperPriceRate = 0;
+
+		// 报单市场。必填字段。股票市场有"CFFEX"/"SHFE"/"DCE"/"CZCE"，如果填空或填错都会被api直接打回
+		std::strncpy(order.m_strMarket, orderReq.ExchangeID().data(), sizeof(order.m_strMarket));
+
+		// 报单合约代码，必填字段。
+		std::strncpy(order.m_strInstrument, orderReq.InstrumentID().data(), sizeof(order.m_strInstrument));
+
+		// 报单委托量，必填字段。默认int最大值，填0或不填会被api打回
+		order.m_nVolume = orderReq.Volume;
+
+		// 报单委托类型。必填字段。根据相应的业务选择，具体请参考XtDataType.h，默认为无效值(OPT_INVALID)。不填会被api打回
+		order.m_eOperationType = XTUtility::GetOperationType(productType, orderReq.Direction, orderReq.OpenClose);
+
+		// 报单价格类型，必填字段。默认为无效(PTRP_INVALID)，具体可参考XtDataType.h
+		order.m_ePriceType = PRTP_HANG;
+
+		// 报单价格，默认为double最大值。当价格类型m_ePriceType为指定价PRTP_FIX时，必填字段。当价格类型为其他时填了也没用
+		order.m_dPrice = orderReq.LimitPrice;
+
+		// 投机套保标志，选填字段。有"投机"/"套利"/"套保"方式。除期货三个方式都可选之外都是填“投机”。默认为“投机”
+		order.m_eHedgeFlag = HEDGE_FLAG_SPECULATION;
+
+		int reqId = (int)orderReq.OrderID;
+
+		OrderReqCache::Insert(reqId, orderReq);
+
+		std::static_pointer_cast<XTRawAPI>(_rawAPI)->get()->order(&order, reqId);
 	}
 
-	return ret;
+	return std::make_shared<OrderDO>(orderReq);
 }
 
 OrderDO_Ptr XTOTCTradeProcessor::CancelOrder(const OrderRequestDO& orderReq)
 {
 	OrderDO_Ptr ret;
 
-	if (auto tdApiProxy = std::static_pointer_cast<CTPRawAPI>(_rawAPI)->TdAPIProxy())
+	if (auto tdApiProxy = std::static_pointer_cast<XTRawAPI>(_rawAPI))
 	{
 		auto& userInfo = getMessageSession()->getUserInfo();
 
-		CThostFtdcInputOrderActionField req{};
-
-		req.ActionFlag = THOST_FTDC_AF_Delete;
-		//经纪公司代码
-		std::strncpy(req.BrokerID, userInfo.getBrokerId().data(), sizeof(req.BrokerID));
-		std::strncpy(req.InvestorID, userInfo.getUserId().data(), sizeof(req.InvestorID));
-		std::strncpy(req.UserID, orderReq.UserID().data(), sizeof(req.UserID));
-
 		if (orderReq.OrderSysID != 0)
 		{
-			std::strncpy(req.ExchangeID, orderReq.ExchangeID().data(), sizeof(req.ExchangeID));
-			std::snprintf(req.OrderSysID, sizeof(req.OrderSysID), FMT_ORDERSYSID, orderReq.OrderSysID);
+			char orderSysId[sizeof(uint64_t) + 1];
+			std::snprintf(orderSysId, sizeof(orderSysId), FMT_ORDERSYSID, orderReq.OrderSysID);
+			std::static_pointer_cast<XTRawAPI>(_rawAPI)->get()->cancelOrder(userInfo.getInvestorId().data(), orderSysId, orderReq.ExchangeID().data(),
+				orderReq.InstrumentID().data(), orderReq.SerialId);
 		}
 		else
 		{
-			req.FrontID = userInfo.getFrontId();
-			req.SessionID = orderReq.SessionID ? orderReq.SessionID : userInfo.getSessionId();
-			std::strncpy(req.InstrumentID, orderReq.InstrumentID().data(), sizeof(req.InstrumentID));
-			std::snprintf(req.OrderRef, sizeof(req.OrderRef), FMT_ORDERREF, orderReq.OrderID);
-		}
-
-
-		if (tdApiProxy->get()->ReqOrderAction(&req, AppContext::GenNextSeq()) == 0)
-		{
-			req.SessionID = orderReq.SessionID ? orderReq.SessionID : userInfo.getSessionId();
-			ret = XTUtility::ParseRawOrder(&req, nullptr);
+			std::static_pointer_cast<XTRawAPI>(_rawAPI)->get()->cancel(orderReq.OrderID, orderReq.SerialId);
 		}
 	}
 

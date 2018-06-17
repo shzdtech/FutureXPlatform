@@ -51,7 +51,7 @@
     <ClCompile Include="PortfolioPositionContext.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="OrderPortfolioCache.cpp">
+    <ClCompile Include="OrderReqCache.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -104,10 +104,10 @@
     <ClInclude Include="PortfolioPositionContext.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="OrderPortfolioCache.h">
+    <ClInclude Include="IUserPositionContext.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="IUserPositionContext.h">
+    <ClInclude Include="OrderReqCache.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

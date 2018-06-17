@@ -162,7 +162,7 @@
     <ClCompile Include="ContractOrderContext.cpp" />
     <ClCompile Include="HedgeOrderManager.cpp" />
     <ClCompile Include="MarketPositionContext.cpp" />
-    <ClCompile Include="OrderPortfolioCache.cpp" />
+    <ClCompile Include="OrderReqCache.cpp" />
     <ClCompile Include="OTCUserPositionContext.cpp" />
     <ClCompile Include="PortfolioPositionContext.cpp" />
     <ClCompile Include="UserOrderContext.cpp" />
@@ -179,7 +179,7 @@
     <ClInclude Include="IOrderAPI.h" />
     <ClInclude Include="IUserPositionContext.h" />
     <ClInclude Include="MarketPositionContext.h" />
-    <ClInclude Include="OrderPortfolioCache.h" />
+    <ClInclude Include="OrderReqCache.h" />
     <ClInclude Include="OTCUserPositionContext.h" />
     <ClInclude Include="PortfolioPositionContext.h" />
     <ClInclude Include="resource.h" />

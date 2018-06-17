@@ -23,7 +23,7 @@
 #include "../databaseop/ContractDAO.h"
 #include "../databaseop/TradeDAO.h"
 #include "../ordermanager/OrderSeqGen.h"
-#include "../ordermanager/OrderPortfolioCache.h"
+#include "../ordermanager/OrderReqCache.h"
 
 #include "../riskmanager/RiskUtil.h"
 
@@ -119,7 +119,7 @@ OrderDO_Ptr CTPOTCTradeSAProcessor::CreateOrder(const OrderRequestDO& orderReq)
 		// 自动挂起标志
 		req.IsAutoSuspend = false;
 
-		OrderPortfolioCache::Insert(orderReq.OrderID, orderReq);
+		OrderReqCache::Insert(orderReq.OrderID, orderReq);
 
 		if (tdApiProxy->get()->ReqOrderInsert(&req, 0) == 0)
 		{
@@ -127,7 +127,7 @@ OrderDO_Ptr CTPOTCTradeSAProcessor::CreateOrder(const OrderRequestDO& orderReq)
 		}
 		else
 		{
-			OrderPortfolioCache::Remove(orderReq.OrderID);
+			OrderReqCache::Remove(orderReq.OrderID);
 		}
 	}
 

@@ -23,7 +23,7 @@
       "server.module.path": "communication.dll",
       "server.class.uuid": "server.asiotcp.lite",
       "server.config": "server.json",
-      "server.config.section": "server.ctp.marketdata",
+      "server.config.section": "server.simple.marketdata",
       "factory.config": "factory.json",
       "factory.config.section": "factory.ctp.marketdata"
     },
@@ -33,19 +33,19 @@
       "server.module.path": "communication.dll",
       "server.class.uuid": "server.asiotcp.lite",
       "server.config": "server.json",
-      "server.config.section": "server.ctp.trade",
+      "server.config.section": "server.simple.trade",
       "factory.config": "factory.json",
       "factory.config.section": "factory.ctp.trade"
     },
-    "ctp_option": {
-      "server.uri": "ctp.option",
+    "xt_option": {
+      "server.uri": "xt.option",
       "server.module.uuid": "com.micro.future.asio.dll",
       "server.module.path": "communication.dll",
       "server.class.uuid": "server.asiotcp.lite",
       "server.config": "server.json",
-      "server.config.section": "server.ctp.option",
+      "server.config.section": "server.simple.option",
       "factory.config": "factory.json",
-      "factory.config.section": "factory.ctp.option"
+      "factory.config.section": "factory.xt.option"
     },
     "otc": {
       "server.uri": "otc.contract",

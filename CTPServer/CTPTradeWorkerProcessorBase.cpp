@@ -22,7 +22,7 @@
 #include "../databaseop/TradeDAO.h"
 #include "../databaseop/PositionDAO.h"
 #include "../ordermanager/OrderSeqGen.h"
-#include "../ordermanager/OrderPortfolioCache.h"
+#include "../ordermanager/OrderReqCache.h"
 #include "../bizutility/ModelParamsCache.h"
 #include "../riskmanager/RiskModelAlgorithmManager.h"
 #include "../riskmanager/RiskContext.h"
@@ -428,7 +428,9 @@ void CTPTradeWorkerProcessorBase::LoadPositonFromDatabase(const std::string & us
 			for (auto& trade : *trades)
 			{
 				if (!trade.PortfolioID().empty())
-					OrderPortfolioCache::Insert(trade.OrderSysID, trade);
+				{
+					OrderReqCache::Insert(trade.OrderSysID, OrderRequestDO(trade, trade.PortfolioID()));
+				}
 
 				auto tradePtr = std::make_shared<TradeRecordDO>(trade);
 

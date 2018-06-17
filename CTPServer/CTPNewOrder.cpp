@@ -17,7 +17,7 @@
 #include "../message/DefMessageID.h"
 #include "../message/MessageUtility.h"
 
-#include "../ordermanager/OrderPortfolioCache.h"
+#include "../ordermanager/OrderReqCache.h"
 
 #include "../dataobject/OrderDO.h"
 #include "../riskmanager/RiskUtil.h"
@@ -117,14 +117,14 @@ dataobj_ptr CTPNewOrder::HandleRequest(const uint32_t serialId, const dataobj_pt
 
 	if (insertPortfolio)
 	{
-		OrderPortfolioCache::Insert(pOrderReqDO->OrderID, *pOrderReqDO);
+		OrderReqCache::Insert(pOrderReqDO->OrderID, *pOrderReqDO);
 	}
 
 	int iRet = ((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqOrderInsert(&req, serialId);
 
 	if (iRet != 0 && insertPortfolio)
 	{
-		OrderPortfolioCache::Remove(pOrderReqDO->OrderID);
+		OrderReqCache::Remove(pOrderReqDO->OrderID);
 	}
 
 	CTPUtility::CheckReturnError(iRet);

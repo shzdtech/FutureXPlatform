@@ -8,7 +8,7 @@
         "max_msg_size": "0x10000"
       }
     },
-    "ctp": {
+    "simple": {
       "marketdata": {
         "port": "31000",
         "workerthread": "10",

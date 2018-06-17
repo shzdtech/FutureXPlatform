@@ -227,6 +227,48 @@ void CTPUtility::LogFrontDisconnected(int nReseason, std::string& errMsg)
 	}
 }
 
+AccountInfoDO_Ptr CTPUtility::ParseRawAccountInfo(CThostFtdcTradingAccountField * pTradingAccount)
+{
+	AccountInfoDO_Ptr ret;
+	auto pDO = new AccountInfoDO;
+	ret.reset(pDO);
+
+	pDO->BrokerID = pTradingAccount->BrokerID;
+	pDO->AccountID = pTradingAccount->AccountID;
+	pDO->PreMortgage = pTradingAccount->PreMortgage;
+	pDO->PreCredit = pTradingAccount->PreCredit;
+	pDO->PreDeposit = pTradingAccount->PreDeposit;
+	pDO->PreBalance = pTradingAccount->PreBalance;
+	pDO->PreMargin = pTradingAccount->PreMargin;
+	pDO->InterestBase = pTradingAccount->InterestBase;
+	pDO->Interest = pTradingAccount->Interest;
+	pDO->Deposit = pTradingAccount->Deposit;
+	pDO->Withdraw = pTradingAccount->Withdraw;
+	pDO->FrozenMargin = pTradingAccount->FrozenMargin;
+	pDO->FrozenCash = pTradingAccount->FrozenCash;
+	pDO->FrozenCommission = pTradingAccount->FrozenCommission;
+	pDO->CurrMargin = pTradingAccount->CurrMargin;
+	pDO->CashIn = pTradingAccount->CashIn;
+	pDO->Commission = pTradingAccount->Commission;
+	pDO->CloseProfit = pTradingAccount->CloseProfit;
+	pDO->PositionProfit = pTradingAccount->PositionProfit;
+	pDO->Balance = pTradingAccount->Balance;
+	pDO->Available = pTradingAccount->Available;
+	pDO->WithdrawQuota = pTradingAccount->WithdrawQuota;
+	pDO->Reserve = pTradingAccount->Reserve;
+	pDO->TradingDay = std::atoi(pTradingAccount->TradingDay);
+	pDO->SettlementID = pTradingAccount->SettlementID;
+	pDO->Credit = pTradingAccount->Credit;
+	pDO->Mortgage = pTradingAccount->Mortgage;
+	pDO->ExchangeMargin = pTradingAccount->ExchangeMargin;
+	pDO->DeliveryMargin = pTradingAccount->DeliveryMargin;
+	pDO->ExchangeDeliveryMargin = pTradingAccount->ExchangeDeliveryMargin;
+	pDO->ReserveBalance = pTradingAccount->Reserve;
+	pDO->RiskRatio = pDO->Balance > 0 ? pDO->CurrMargin / pDO->Balance : 0;
+
+	return ret;
+}
+
 OrderDO_Ptr CTPUtility::ParseRawOrder(CThostFtdcOrderField *pOrder, OrderDO_Ptr baseOrder)
 {
 	if (!baseOrder)

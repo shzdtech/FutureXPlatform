@@ -128,11 +128,11 @@ int CTPMarketDataSAProcessor::LoginSystemUserIfNeed(void)
 	if (!_isLogged || !_isConnected)
 	{
 		std::string address(_systemUser.getServer());
-		CreateBackendAPI(this, _systemUser.getUserId(), address);
+		CreateBackendAPI(this, _systemUser.getInvestorId(), address);
 		ret = LoginSystemUser();
 		if (ret == -1)
 		{
-			LOG_WARN << getServerContext()->getServerUri() << ": System user " << _systemUser.getUserId()
+			LOG_WARN << getServerContext()->getServerUri() << ": System user " << _systemUser.getInvestorId()
 				<< " cannot connect to market data server at: " << address;
 
 			std::string defaultCfg;
@@ -140,24 +140,24 @@ int CTPMarketDataSAProcessor::LoginSystemUserIfNeed(void)
 			ExchangeRouterDO exDO;
 			if (ExchangeRouterTable::TryFind(defaultCfg, exDO))
 			{
-				CreateBackendAPI(this, _systemUser.getUserId(), exDO.Address);
+				CreateBackendAPI(this, _systemUser.getInvestorId(), exDO.Address);
 				ret = LoginSystemUser();
 			}
 
 			if (ret == 0)
 			{
-				LOG_INFO << getServerContext()->getServerUri() << ": System user " << _systemUser.getUserId()
+				LOG_INFO << getServerContext()->getServerUri() << ": System user " << _systemUser.getInvestorId()
 					<< " has connected to post market data server at: " << address;
 			}
 			else
 			{
-				LOG_WARN << getServerContext()->getServerUri() << ": System user " << _systemUser.getUserId()
+				LOG_WARN << getServerContext()->getServerUri() << ": System user " << _systemUser.getInvestorId()
 					<< " cannot connect to post market data server at: " << address;
 			}
 		}
 		else
 		{
-			LOG_INFO << getServerContext()->getServerUri() << ": System user " << _systemUser.getUserId()
+			LOG_INFO << getServerContext()->getServerUri() << ": System user " << _systemUser.getInvestorId()
 				<< " has connected to market data server at: " << address;
 		}
 	}

@@ -8,8 +8,8 @@
 #include "XTCancelOrder.h"
 #include "XTRawAPI.h"
 #include "XTUtility.h"
-#include "CTPMapping.h"
-#include "CTPConstant.h"
+#include "XTMapping.h"
+#include "XTConstant.h"
 
 #include "../dataobject/OrderDO.h"
 
@@ -34,29 +34,18 @@ dataobj_ptr XTCancelOrder::HandleRequest(const uint32_t serialId, const dataobj_
 	auto pDO = (OrderRequestDO*)reqDO.get();
 
 	auto& userInfo = session->getUserInfo();
-
-	CThostFtdcInputOrderActionField req{};
-	req.RequestID = serialId;
-
-	req.ActionFlag = THOST_FTDC_AF_Delete;
-	std::strncpy(req.BrokerID, userInfo.getBrokerId().data(), sizeof(req.BrokerID));
-	std::strncpy(req.InvestorID, userInfo.getInvestorId().data(), sizeof(req.InvestorID));
-	std::strncpy(req.UserID, userInfo.getUserId().data(), sizeof(req.UserID));
 	
 	if (pDO->OrderSysID != 0)
 	{
-		std::strncpy(req.ExchangeID, pDO->ExchangeID().data(), sizeof(req.ExchangeID));
-		std::snprintf(req.OrderSysID, sizeof(req.OrderSysID), FMT_ORDERSYSID, pDO->OrderSysID);
+		char orderSysId[sizeof(uint64_t)+1];
+		std::snprintf(orderSysId, sizeof(orderSysId), FMT_ORDERSYSID, pDO->OrderSysID);
+		((XTRawAPI*)rawAPI)->get()->cancelOrder(userInfo.getInvestorId().data(), orderSysId, pDO->ExchangeID().data(), pDO->InstrumentID().data(), serialId);
 	}
 	else
 	{
-		req.SessionID = userInfo.getSessionId();
-		req.FrontID = userInfo.getFrontId();
-		std::strncpy(req.InstrumentID, pDO->InstrumentID().data(), sizeof(req.InstrumentID));
-		std::snprintf(req.OrderRef, sizeof(req.OrderRef), FMT_ORDERREF, pDO->OrderID);
+		((XTRawAPI*)rawAPI)->get()->cancel(pDO->OrderID, serialId);
 	}
 
-	((XTRawAPI*)rawAPI)->get()->cancelOrder();
 
 	return nullptr;
 }
@@ -73,27 +62,14 @@ dataobj_ptr XTCancelOrder::HandleRequest(const uint32_t serialId, const dataobj_
 
 dataobj_ptr XTCancelOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
+	XTUtility::CheckError(rawRespParams[2]);
+
 	OrderDO_Ptr ret;
-	auto pRsp = (CThostFtdcRspInfoField*)rawRespParams[1];
-	XTUtility::CheckError(pRsp);
-	if (rawRespParams.size() > 2)
-	{
-		if (auto pData = (CThostFtdcInputOrderActionField*)rawRespParams[0])
-		{
-			if (session->getUserInfo().getUserId() == pData->UserID)
-			{
-				ret = XTUtility::ParseRawOrder(pData, pRsp);
-			}
-		}
-	}
-	else
-	{
-		if (auto pData = (CThostFtdcOrderActionField*)rawRespParams[0])
-			if (session->getUserInfo().getUserId() == pData->UserID)
-			{
-				ret = XTUtility::ParseRawOrder(pData, pRsp);
-			}
-	}
+
+	int reqId = *(int*)rawRespParams[0];
+	int orderId = *(int*)rawRespParams[1];
+
+	return ret;
 
 	return ret;
 }

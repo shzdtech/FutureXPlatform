@@ -44,8 +44,8 @@ public:
 	virtual TemplateMessageProcessor* GetTemplateProcessor(void);
 	virtual IServerContext* getServerContext(void);
 
-	virtual TradeRecordDO_Ptr RefineTrade(CDealDetail* pTrade);
-	virtual OrderDO_Ptr XTTradeWorkerProcessor::RefineOrder(COrderDetail *pOrder);
+	virtual TradeRecordDO_Ptr RefineTrade(const CDealDetail* pTrade);
+	virtual OrderDO_Ptr XTTradeWorkerProcessor::RefineOrder(const COrderDetail *pOrder);
 
 	void QueryAccountWorker();
 

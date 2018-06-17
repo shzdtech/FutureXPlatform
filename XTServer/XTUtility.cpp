@@ -17,6 +17,8 @@
 #include "../ordermanager/OrderSeqGen.h"
 #include "../databaseop/ContractDAO.h"
 #include "../litelogger/LiteLogger.h"
+#include "../ordermanager/OrderReqCache.h"
+#include "../ordermanager/OrderSeqGen.h"
 
 #include "../message/DefMessageID.h"
 
@@ -65,7 +67,7 @@ void XTUtility::CheckNotFound(const void * pRspData)
 	}
 }
 
-bool XTUtility::HasError(XtError* pRspInfo)
+bool XTUtility::HasError(const XtError* pRspInfo)
 {
 	bool ret = false;
 
@@ -89,6 +91,47 @@ void XTUtility::CheckReturnError(const int rtnCode)
 {
 	if (auto bizError_Ptr = HasReturnError(rtnCode))
 		throw *bizError_Ptr;
+}
+
+AccountInfoDO_Ptr XTUtility::ParseRawAccountInfo(const CAccountDetail * pAccountInfo)
+{
+	AccountInfoDO_Ptr ret;
+	auto pDO = new AccountInfoDO;
+	ret.reset(pDO);
+
+	pDO->AccountID = pAccountInfo->m_strAccountID;
+	pDO->PreMortgage = pAccountInfo->PreMortgage;
+	pDO->PreCredit = pAccountInfo->PreCredit;
+	pDO->PreDeposit = pAccountInfo->PreDeposit;
+	pDO->PreBalance = pAccountInfo->PreBalance;
+	pDO->PreMargin = pAccountInfo->PreMargin;
+	pDO->InterestBase = pAccountInfo->InterestBase;
+	pDO->Interest = pAccountInfo->Interest;
+	pDO->Deposit = pAccountInfo->Deposit;
+	pDO->Withdraw = pAccountInfo->Withdraw;
+	pDO->FrozenMargin = pAccountInfo->FrozenMargin;
+	pDO->FrozenCash = pAccountInfo->FrozenCash;
+	pDO->FrozenCommission = pAccountInfo->FrozenCommission;
+	pDO->CurrMargin = pAccountInfo->m_dCurrMargin;
+	pDO->CashIn = pAccountInfo->CashIn;
+	pDO->Commission = pAccountInfo->Commission;
+	pDO->CloseProfit = pAccountInfo->CloseProfit;
+	pDO->PositionProfit = pAccountInfo->PositionProfit;
+	pDO->Balance = pAccountInfo->m_dBalance;
+	pDO->Available = pAccountInfo->Available;
+	pDO->WithdrawQuota = pAccountInfo->WithdrawQuota;
+	pDO->Reserve = pAccountInfo->Reserve;
+	pDO->TradingDay = std::atoi(pAccountInfo->TradingDay);
+	pDO->SettlementID = pAccountInfo->SettlementID;
+	pDO->Credit = pAccountInfo->Credit;
+	pDO->Mortgage = pAccountInfo->Mortgage;
+	pDO->ExchangeMargin = pAccountInfo->ExchangeMargin;
+	pDO->DeliveryMargin = pAccountInfo->DeliveryMargin;
+	pDO->ExchangeDeliveryMargin = pAccountInfo->ExchangeDeliveryMargin;
+	pDO->ReserveBalance = pAccountInfo->Reserve;
+	pDO->RiskRatio = pDO->Balance > 0 ? pDO->CurrMargin / pDO->Balance : 0;
+
+	return ret;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -128,16 +171,23 @@ std::shared_ptr<ApiException> XTUtility::HasReturnError(const int rtnCode)
 // Return:     bool
 ////////////////////////////////////////////////////////////////////////
 
+EOperationType XTUtility::GetOperationType(ProductType productType, DirectionType direction, OrderOpenCloseType openClose)
+{
+	EOperationType ret;
+	return ret;
+}
+
 bool XTUtility::IsOrderActive(EEntrustStatus status)
 {
 	bool ret = true;
 
 	switch (status)
 	{
-	case THOST_FTDC_OST_AllTraded:
-	case THOST_FTDC_OST_PartTradedNotQueueing:
-	case THOST_FTDC_OST_NoTradeNotQueueing:
-	case THOST_FTDC_OST_Canceled:
+	case ENTRUST_STATUS_PART_CANCEL:
+	case ENTRUST_STATUS_CANCELED:
+	case ENTRUST_STATUS_PART_SUCC:
+	case ENTRUST_STATUS_SUCCEEDED:
+	case ENTRUST_STATUS_JUNK:
 		ret = false;
 		break;
 	default:
@@ -154,37 +204,37 @@ OrderStatusType XTUtility::CheckOrderStatus(EEntrustStatus status, EEntrustSubmi
 
 	switch (status)
 	{
-	case THOST_FTDC_OST_Canceled:
+	case ENTRUST_STATUS_CANCELED:
 		ret = OrderStatusType::CANCELED;
 		break;
-	case THOST_FTDC_OST_AllTraded:
+	case ENTRUST_STATUS_SUCCEEDED:
 		ret = OrderStatusType::ALL_TRADED;
 		break;
-	case THOST_FTDC_OST_NoTradeQueueing:
+	case ENTRUST_STATUS_REPORTED:
 		ret = OrderStatusType::OPENED;
 		break;
-	case THOST_FTDC_OST_NoTradeNotQueueing:
+	case ENTRUST_STATUS_JUNK:
 		ret = OrderStatusType::OPEN_REJECTED;
 		break;
-	case THOST_FTDC_OST_PartTradedQueueing:
+	case ENTRUST_STATUS_PARTSUCC_CANCEL:
 		ret = OrderStatusType::PARTIAL_TRADING;
 		break;
-	case THOST_FTDC_OST_PartTradedNotQueueing:
+	case ENTRUST_STATUS_PART_SUCC:
 		ret = OrderStatusType::PARTIAL_TRADED;
 		break;
 	default:
 		switch (submitStatus)
 		{
-		case THOST_FTDC_OSS_InsertSubmitted:
+		case ENTRUST_SUBMIT_STATUS_InsertSubmitted:
 			ret = OrderStatusType::OPENING;
 			break;
-		case THOST_FTDC_OSS_InsertRejected:
+		case ENTRUST_SUBMIT_STATUS_InsertRejected:
 			ret = OrderStatusType::OPEN_REJECTED;
 			break;
-		case THOST_FTDC_OSS_CancelSubmitted:
+		case ENTRUST_SUBMIT_STATUS_CancelSubmitted:
 			ret = OrderStatusType::CANCELING;
 			break;
-		case THOST_FTDC_OSS_CancelRejected:
+		case ENTRUST_SUBMIT_STATUS_CancelRejected:
 			ret = OrderStatusType::CANCEL_REJECTED;
 			break;
 		default:
@@ -195,7 +245,23 @@ OrderStatusType XTUtility::CheckOrderStatus(EEntrustStatus status, EEntrustSubmi
 	return ret;
 }
 
-OrderDO_Ptr XTUtility::ParseRawOrder(COrderDetail *pOrder, XtError *pRsp, int sessionID, OrderDO_Ptr baseOrder)
+OrderDO_Ptr XTUtility::ParseRawOrder(int requestId, int orderId)
+{
+	OrderDO_Ptr ret;
+
+	OrderRequestDO orderReqDO;
+	if (OrderReqCache::Find(requestId, orderReqDO))
+	{
+		orderReqDO.OrderID = orderId;
+		OrderReqCache::Insert(OrderSeqGen::GetOrderID(orderId), orderReqDO);
+		OrderReqCache::Remove(requestId);
+		ret = std::make_shared<OrderDO>(orderReqDO);
+	}
+
+	return ret;
+}
+
+OrderDO_Ptr XTUtility::ParseRawOrder(const COrderDetail *pOrder, const XtError *pRsp, int sessionID, OrderDO_Ptr baseOrder)
 {
 	if (!baseOrder)
 	{
@@ -209,7 +275,7 @@ OrderDO_Ptr XTUtility::ParseRawOrder(COrderDetail *pOrder, XtError *pRsp, int se
 	pDO->OpenClose = (OrderOpenCloseType)(pOrder->CombOffsetFlag[0] - THOST_FTDC_OF_Open);
 	pDO->LimitPrice = pOrder->m_dLimitPrice;
 	pDO->Volume = pOrder->m_nTotalVolume;
-	pDO->StopPrice = pOrder->StopPrice;
+	pDO->StopPrice = pOrder->m_dAveragePrice;
 	pDO->OrderSysID = ToUInt64(pOrder->m_strOrderSysID);
 	pDO->Active = IsOrderActive(pOrder->m_eOrderStatus);
 	pDO->OrderStatus = CheckOrderStatus(pOrder->m_eOrderStatus, pOrder->m_eOrderSubmitStatus);
@@ -225,19 +291,19 @@ OrderDO_Ptr XTUtility::ParseRawOrder(COrderDetail *pOrder, XtError *pRsp, int se
 	return baseOrder;
 }
 
-void XTUtility::ParseRawOrder(OrderDO_Ptr& baseOrder, XtError * pRsp, int sessionID)
+void XTUtility::ParseRawOrder(OrderDO_Ptr& baseOrder, const XtError * pRsp, int sessionID)
 {
 	baseOrder->SessionID = sessionID;
 	if(HasError(pRsp))
 		baseOrder->Message = std::move(boost::locale::conv::to_utf<char>(pRsp->errorMsg(), CHARSET_GB2312));
 }
 
-TradeRecordDO_Ptr XTUtility::ParseRawTrade(CDealDetail * pTrade)
+TradeRecordDO_Ptr XTUtility::ParseRawTrade(const CDealDetail * pTrade)
 {
 	TradeRecordDO_Ptr ret;
 	if (pTrade)
 	{
-		auto pDO = new TradeRecordDO(pTrade->ExchangeID, pTrade->InstrumentID, pTrade->UserID, "");
+		auto pDO = new TradeRecordDO(pTrade->m_strExchangeID, pTrade->m_strInstrumentID, pTrade->UserID, "");
 		ret.reset(pDO);
 
 		pDO->OrderID = ToUInt64(pTrade->OrderRef);
@@ -265,21 +331,15 @@ TradeRecordDO_Ptr XTUtility::ParseRawTrade(CDealDetail * pTrade)
 	return ret;
 }
 
-UserPositionExDO_Ptr XTUtility::ParseRawPosition(CPositionDetail * pRspPosition, const std::string& userId)
+UserPositionExDO_Ptr XTUtility::ParseRawPosition(const CPositionDetail * pRspPosition, const std::string& userId)
 {
-	std::string exchange;
-	if (auto pInstrumentDO = ContractCache::Get(ProductCacheType::PRODUCT_CACHE_EXCHANGE).QueryInstrumentOrAddById(pRspPosition->InstrumentID))
-	{
-		exchange = pInstrumentDO->ExchangeID();
-	}
-
 	std::string portfolio;
 	//if (auto pPortfolioKey = PositionPortfolioMap::FindPortfolio(userId, pRspPosition->InstrumentID))
 	//{
 	//	portfolio = pPortfolioKey->PortfolioID();
 	//}
 
-	auto pDO = new UserPositionExDO(exchange, pRspPosition->InstrumentID, portfolio, userId);
+	auto pDO = new UserPositionExDO(pRspPosition->m_strExchangeID, pRspPosition->m_strInstrumentID, portfolio, userId);
 	UserPositionExDO_Ptr ret(pDO);
 
 	pDO->Direction = (PositionDirectionType)(pRspPosition->PosiDirection - THOST_FTDC_PD_Net);

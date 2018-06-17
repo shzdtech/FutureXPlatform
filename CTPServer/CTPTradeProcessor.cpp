@@ -107,6 +107,8 @@ bool CTPTradeProcessor::OnSessionClosing(void)
 		if (auto tdProxy = TradeApi())
 		{
 			CThostFtdcUserLogoutField logout{};
+			std::strncpy(logout.BrokerID, sessionptr->getUserInfo().getBrokerId().data(), sizeof(logout.BrokerID));
+			std::strncpy(logout.UserID, sessionptr->getUserInfo().getInvestorId().data(), sizeof(logout.UserID));
 			tdProxy->get()->ReqUserLogout(&logout, 0);
 		}
 	}

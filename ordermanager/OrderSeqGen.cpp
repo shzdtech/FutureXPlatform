@@ -20,11 +20,6 @@ OrderSeqGen::static_initializer::static_initializer()
 	_high32Id = now.time_since_epoch().count();
 }
 
-uint32_t OrderSeqGen::GetHigh32ID(uint64_t value)
-{
-	return _high32Id;
-}
-
 void OrderSeqGen::SetStartSeq(uint64_t value)
 {
 	_seqGen = value;

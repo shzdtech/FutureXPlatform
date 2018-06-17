@@ -65,7 +65,5 @@ dataobj_ptr XTQueryAccountInfo::HandleResponse(const uint32_t serialId, const pa
 	XTUtility::CheckNotFound(rawRespParams[0]);
 	XTUtility::CheckError(rawRespParams[1]);
 
-	
-
 	return nullptr;
 }

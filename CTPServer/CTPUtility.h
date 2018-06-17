@@ -15,6 +15,7 @@
 #include "../dataobject/BankOpResultDO.h"
 #include "../dataobject/UserAccountRegisterDO.h"
 #include "../dataobject/UserPositionDO.h"
+#include "../dataobject/AccountInfoDO.h"
 #include "CTPAPISwitch.h"
 #include "CTPRawAPI.h"
 #include "ctpexport.h"
@@ -32,6 +33,8 @@ public:
 	static bool IsOrderActive(TThostFtdcOrderStatusType status);
 	static OrderStatusType CheckOrderStatus(TThostFtdcOrderStatusType status, TThostFtdcOrderSubmitStatusType submitStatus);
 	static void LogFrontDisconnected(int nReseason, std::string& errMsg);
+
+	static AccountInfoDO_Ptr ParseRawAccountInfo(CThostFtdcTradingAccountField* pTradingAccount);
 
 	static OrderDO_Ptr ParseRawOrder(CThostFtdcInputOrderField *pOrder, CThostFtdcRspInfoField *pRsp, int sessionID, OrderDO_Ptr baseOrder = nullptr);
 	static OrderDO_Ptr ParseRawOrder(CThostFtdcOrderField *pOrder, OrderDO_Ptr baseOrder = nullptr);
