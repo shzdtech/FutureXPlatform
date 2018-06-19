@@ -235,6 +235,8 @@ namespace xti
         OPT_OPTION_PUT_EXERCISE,    //认沽行权
         OPT_OPTION_SECU_LOCK,       //证券锁定
         OPT_OPTION_SECU_UNLOCK,     //证券解锁
+        //期货期权
+        OPT_FUTURE_OPTION_EXERCISE = 50,//期货期权行权
         //ETF业务
         OPT_ETF_PURCHASE = 1004,    //ETF申购
         OPT_ETF_REDEMPTION,         //ETF赎回

@@ -38,6 +38,14 @@ void XTUtility::CheckError(const void* pRspInfo)
 	}
 }
 
+void XTUtility::CheckError(const char * pErrMsg)
+{
+	if (!pErrMsg && pErrMsg[0])
+	{
+		throw ApiException(std::move(boost::locale::conv::to_utf<char>(pErrMsg, CHARSET_GB2312)));
+	}
+}
+
 ////////////////////////////////////////////////////////////////////////
 // Name:       XTUtility::HasError(void* pRespInfo)
 // Purpose:    Implementation of XTUtility::HasError()
@@ -100,31 +108,31 @@ AccountInfoDO_Ptr XTUtility::ParseRawAccountInfo(const CAccountDetail * pAccount
 	ret.reset(pDO);
 
 	pDO->AccountID = pAccountInfo->m_strAccountID;
-	pDO->PreMortgage = pAccountInfo->PreMortgage;
-	pDO->PreCredit = pAccountInfo->PreCredit;
+	pDO->PreMortgage = pAccountInfo->m_dMortgage;
+	pDO->PreCredit = pAccountInfo->m_dCredit;
 	pDO->PreDeposit = pAccountInfo->PreDeposit;
 	pDO->PreBalance = pAccountInfo->PreBalance;
 	pDO->PreMargin = pAccountInfo->PreMargin;
 	pDO->InterestBase = pAccountInfo->InterestBase;
 	pDO->Interest = pAccountInfo->Interest;
-	pDO->Deposit = pAccountInfo->Deposit;
-	pDO->Withdraw = pAccountInfo->Withdraw;
+	pDO->Deposit = pAccountInfo->m_dDeposit;
+	pDO->Withdraw = pAccountInfo->m_dWithdraw;
 	pDO->FrozenMargin = pAccountInfo->FrozenMargin;
 	pDO->FrozenCash = pAccountInfo->FrozenCash;
 	pDO->FrozenCommission = pAccountInfo->FrozenCommission;
 	pDO->CurrMargin = pAccountInfo->m_dCurrMargin;
-	pDO->CashIn = pAccountInfo->CashIn;
-	pDO->Commission = pAccountInfo->Commission;
-	pDO->CloseProfit = pAccountInfo->CloseProfit;
-	pDO->PositionProfit = pAccountInfo->PositionProfit;
+	pDO->CashIn = pAccountInfo->m_dCashIn;
+	pDO->Commission = pAccountInfo->m_dCommission;
+	pDO->CloseProfit = pAccountInfo->m_dCloseProfit;
+	pDO->PositionProfit = pAccountInfo->m_dPositionProfit;
 	pDO->Balance = pAccountInfo->m_dBalance;
-	pDO->Available = pAccountInfo->Available;
-	pDO->WithdrawQuota = pAccountInfo->WithdrawQuota;
+	pDO->Available = pAccountInfo->m_dAvailable;
+	pDO->WithdrawQuota = pAccountInfo->m_dWithdraw;
 	pDO->Reserve = pAccountInfo->Reserve;
 	pDO->TradingDay = std::atoi(pAccountInfo->TradingDay);
 	pDO->SettlementID = pAccountInfo->SettlementID;
 	pDO->Credit = pAccountInfo->Credit;
-	pDO->Mortgage = pAccountInfo->Mortgage;
+	pDO->Mortgage = pAccountInfo->m_dMortgage;
 	pDO->ExchangeMargin = pAccountInfo->ExchangeMargin;
 	pDO->DeliveryMargin = pAccountInfo->DeliveryMargin;
 	pDO->ExchangeDeliveryMargin = pAccountInfo->ExchangeDeliveryMargin;
@@ -245,7 +253,7 @@ OrderStatusType XTUtility::CheckOrderStatus(EEntrustStatus status, EEntrustSubmi
 	return ret;
 }
 
-OrderDO_Ptr XTUtility::ParseRawOrder(int requestId, int orderId)
+OrderDO_Ptr XTUtility::ParseRawOrder(int requestId, int orderId, const XtError *pOrderError)
 {
 	OrderDO_Ptr ret;
 
@@ -256,12 +264,54 @@ OrderDO_Ptr XTUtility::ParseRawOrder(int requestId, int orderId)
 		OrderReqCache::Insert(OrderSeqGen::GetOrderID(orderId), orderReqDO);
 		OrderReqCache::Remove(requestId);
 		ret = std::make_shared<OrderDO>(orderReqDO);
+		ret->Active = false;
+		ret->OrderStatus = OrderStatusType::OPEN_REJECTED;
+		if (HasError(pOrderError))
+		{
+			ret->ErrorCode = pOrderError->errorID();
+			ret->Message = std::move(boost::locale::conv::to_utf<char>(pOrderError->errorMsg(), CHARSET_GB2312));
+		}
 	}
 
 	return ret;
 }
 
-OrderDO_Ptr XTUtility::ParseRawOrder(const COrderDetail *pOrder, const XtError *pRsp, int sessionID, OrderDO_Ptr baseOrder)
+OrderDO_Ptr XTUtility::ParseRawOrder(const COrderError * pOrderError)
+{
+	OrderDO_Ptr ret;
+
+	OrderRequestDO orderReqDO;
+	if (OrderReqCache::Find(pOrderError->m_nRequestID, orderReqDO))
+	{
+		orderReqDO.OrderID = pOrderError->m_nOrderID;
+		OrderReqCache::Remove(pOrderError->m_nRequestID);
+		ret = std::make_shared<OrderDO>(orderReqDO);
+		ret->Active = false;
+		ret->OrderStatus = OrderStatusType::OPEN_REJECTED;
+		ret->ErrorCode = pOrderError->m_nErrorID;
+		ret->Message = std::move(boost::locale::conv::to_utf<char>(pOrderError->m_strErrorMsg, CHARSET_GB2312));
+	}
+	return ret;
+}
+
+OrderDO_Ptr XTUtility::ParseRawOrder(const CCancelError * pOrderError)
+{
+	OrderDO_Ptr ret;
+
+	OrderRequestDO orderReqDO;
+	if (OrderReqCache::Find(pOrderError->m_nRequestID, orderReqDO))
+	{
+		orderReqDO.OrderID = pOrderError->m_nOrderID;
+		ret = std::make_shared<OrderDO>(orderReqDO);
+		ret->Active = false;
+		ret->OrderStatus = OrderStatusType::CANCEL_REJECTED;
+		ret->ErrorCode = pOrderError->m_nErrorID;
+		ret->Message = std::move(boost::locale::conv::to_utf<char>(pOrderError->m_strErrorMsg, CHARSET_GB2312));
+	}
+	return ret;
+}
+
+OrderDO_Ptr XTUtility::ParseRawOrder(const COrderDetail *pOrder, int sessionID, OrderDO_Ptr baseOrder)
 {
 	if (!baseOrder)
 	{
@@ -270,8 +320,7 @@ OrderDO_Ptr XTUtility::ParseRawOrder(const COrderDetail *pOrder, const XtError *
 
 	auto pDO = baseOrder.get();
 	pDO->SessionID = sessionID;
-	pDO->Direction = (pOrder->Direction == THOST_FTDC_D_Buy) ?
-		DirectionType::BUY : DirectionType::SELL;
+	pDO->Direction = (pOrder->m_nDirection == ENTRUST_BUY) ? DirectionType::BUY : DirectionType::SELL;
 	pDO->OpenClose = (OrderOpenCloseType)(pOrder->CombOffsetFlag[0] - THOST_FTDC_OF_Open);
 	pDO->LimitPrice = pOrder->m_dLimitPrice;
 	pDO->Volume = pOrder->m_nTotalVolume;
@@ -280,7 +329,7 @@ OrderDO_Ptr XTUtility::ParseRawOrder(const COrderDetail *pOrder, const XtError *
 	pDO->Active = IsOrderActive(pOrder->m_eOrderStatus);
 	pDO->OrderStatus = CheckOrderStatus(pOrder->m_eOrderStatus, pOrder->m_eOrderSubmitStatus);
 	pDO->VolumeTraded = pOrder->m_nTradedVolume;
-	pDO->TIF = pOrder->TimeCondition == THOST_FTDC_TC_IOC ? OrderTIFType::IOC : OrderTIFType::GFD;
+	pDO->TIF = OrderTIFType::GFD;
 	pDO->VolCondition = (OrderVolType)(pOrder->VolumeCondition - THOST_FTDC_VC_AV);
 
 	pDO->InsertDate = pOrder->m_strInsertDate;
@@ -306,21 +355,21 @@ TradeRecordDO_Ptr XTUtility::ParseRawTrade(const CDealDetail * pTrade)
 		auto pDO = new TradeRecordDO(pTrade->m_strExchangeID, pTrade->m_strInstrumentID, pTrade->UserID, "");
 		ret.reset(pDO);
 
-		pDO->OrderID = ToUInt64(pTrade->OrderRef);
-		pDO->OrderSysID = ToUInt64(pTrade->OrderSysID);
-		pDO->Direction = pTrade->Direction == THOST_FTDC_D_Buy ? DirectionType::BUY : DirectionType::SELL;
+		pDO->OrderID = pTrade->m_nOrderID;
+		pDO->OrderSysID = ToUInt64(pTrade->m_strOrderSysID);
+		pDO->Direction = (pTrade->m_nDirection == ENTRUST_BUY) ? DirectionType::BUY : DirectionType::SELL;
 		pDO->OpenClose = (OrderOpenCloseType)(pTrade->OffsetFlag - THOST_FTDC_OF_Open);
-		pDO->Price = pTrade->Price;
-		pDO->Volume = pTrade->Volume;
-		pDO->TradeID = ToUInt64(pTrade->TradeID);
-		pDO->TradeDate = pTrade->TradeDate;
-		pDO->TradeTime = pTrade->TradeTime;
+		pDO->Price = pTrade->m_dAveragePrice;
+		pDO->Volume = pTrade->m_nVolume;
+		pDO->TradeID = ToUInt64(pTrade->m_strTradeID);
+		pDO->TradeDate = pTrade->m_strTradeDate;
+		pDO->TradeTime = pTrade->m_strTradeTime;
 		pDO->TradingDay = std::atoi(pTrade->TradingDay);
 		pDO->TradeType = (OrderTradingType)pTrade->TradeType;
 		pDO->HedgeFlag = (HedgeType)(pTrade->HedgeFlag - THOST_FTDC_HF_Speculation);
 
 		pDO->BrokerID = pTrade->BrokerID;
-		pDO->InvestorID = pTrade->InvestorID;
+		pDO->InvestorID = pTrade->m_strAccountID;
 
 		if (pDO->OpenClose == OrderOpenCloseType::CLOSETODAY && pDO->ExchangeID() != EXCHANGE_SHFE)
 		{
@@ -346,18 +395,18 @@ UserPositionExDO_Ptr XTUtility::ParseRawPosition(const CPositionDetail * pRspPos
 	pDO->HedgeFlag = (HedgeType)(pRspPosition->HedgeFlag - THOST_FTDC_HF_Speculation);
 	pDO->PositionDateFlag = (PositionDateFlagType)(pRspPosition->PositionDate - THOST_FTDC_PSD_Today);
 
-	pDO->YdInitPosition = pRspPosition->YdPosition;
+	pDO->YdInitPosition = pRspPosition->m_nYesterdayVolume;
 
-	if (pRspPosition->PositionDate == THOST_FTDC_PSD_Today)
+	if (pRspPosition->m_bIsToday)
 	{
 		// pDO->TdPosition = pRspPosition->Position;
-		pDO->TdCost = pRspPosition->PositionCost;
+		pDO->TdCost = pRspPosition->m_dPositionCost;
 		// pDO->TdProfit = pRspPosition->PositionProfit;
 	}
 	else
 	{
 		// pDO->YdPosition = pRspPosition->Position - pRspPosition->YdPosition;
-		pDO->YdCost = pRspPosition->PositionCost;
+		pDO->YdCost = pRspPosition->m_dPositionCost;
 		// pDO->YdProfit = pRspPosition->PositionProfit;
 	}
 
@@ -367,26 +416,27 @@ UserPositionExDO_Ptr XTUtility::ParseRawPosition(const CPositionDetail * pRspPos
 	pDO->ShortFrozenAmount = pRspPosition->ShortFrozenAmount;
 
 	pDO->OpenVolume = pRspPosition->OpenVolume;
-	pDO->CloseVolume = pRspPosition->CloseVolume;
+	pDO->CloseVolume = pRspPosition->m_nCloseVolume;
 	pDO->OpenAmount = pRspPosition->OpenAmount;
-	pDO->CloseAmount = pRspPosition->CloseAmount;
+	pDO->CloseAmount = pRspPosition->m_dCloseAmount;
 	pDO->PreMargin = pRspPosition->PreMargin;
-	pDO->UseMargin = pRspPosition->UseMargin;
+	pDO->UseMargin = pRspPosition->m_dMargin;
 	pDO->FrozenMargin = pRspPosition->FrozenMargin;
 	pDO->FrozenCash = pRspPosition->FrozenCash;
 	pDO->FrozenCommission = pRspPosition->FrozenCommission;
 	pDO->CashIn = pRspPosition->CashIn;
 	pDO->Commission = pRspPosition->Commission;
-	pDO->CloseProfit = pRspPosition->CloseProfit;
-	pDO->PreSettlementPrice = pRspPosition->PreSettlementPrice;
-	pDO->SettlementPrice = pRspPosition->SettlementPrice;
+	pDO->CloseProfit = pRspPosition->m_dCloseProfit;
+	pDO->PreSettlementPrice = pRspPosition->m_dLastSettlementPrice;
+	pDO->SettlementPrice = pRspPosition->m_dSettlementPrice;
 	pDO->TradingDay = std::atoi(pRspPosition->TradingDay);
 	pDO->SettlementID = pRspPosition->SettlementID;
-	pDO->OpenCost = pRspPosition->OpenCost;
+	pDO->OpenCost = pRspPosition->m_dOpenCost;
 	pDO->ExchangeMargin = pRspPosition->ExchangeMargin;
 	pDO->CombPosition = pRspPosition->CombPosition;
 	pDO->CombLongFrozen = pRspPosition->CombLongFrozen;
 	pDO->CombShortFrozen = pRspPosition->CombShortFrozen;
+	pDO->LastPrice = pRspPosition->m_dLastPrice;
 	/*pDO->CloseProfitByDate = pRspPosition->CloseProfitByDate;
 	pDO->CloseProfitByTrade = pRspPosition->CloseProfitByTrade;
 	pDO->MarginRateByMoney = pRspPosition->MarginRateByMoney;

@@ -32,11 +32,12 @@
 #include "../bizutility/ContractCache.h"
 #include "../litelogger/LiteLogger.h"
 
- ////////////////////////////////////////////////////////////////////////
- // Name:       XTTradeWorkerProcessor::XTTradeWorkerProcessor()
- // Purpose:    Implementation of XTTradeWorkerProcessor::XTTradeWorkerProcessor()
- // Return:     
- ////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////
+// Name:       XTTradeWorkerProcessor::XTTradeWorkerProcessor()
+// Purpose:    Implementation of XTTradeWorkerProcessor::XTTradeWorkerProcessor()
+// Return:     
+////////////////////////////////////////////////////////////////////////
 
 XTTradeWorkerProcessor::XTTradeWorkerProcessor(IServerContext* pServerCtx, const IUserPositionContext_Ptr& positionCtx)
 	: CTPTradeWorkerProcessorBase(pServerCtx, positionCtx)
@@ -135,14 +136,19 @@ int XTTradeWorkerProcessor::LoginSystemUserIfNeed(void)
 {
 	std::lock_guard<std::mutex> lock(_loginMutex);
 
-	int ret = 0;
+	int ret = -1;
 
 	if (!_isLogged || !_isConnected)
 	{
 		std::string address(_systemUser.getServer());
-		CreateBackendAPI(this, _systemUser.getInvestorId(), address);
-		ret = LoginSystemUser();
-		if (ret == -1)
+		CreateBackendAPI(this, _configPath, address);
+		if (_isConnected)
+		{
+			LoginSystemUser();
+			LOG_INFO << getServerContext()->getServerUri() << ": System user " << _systemUser.getInvestorId()
+				<< " has connected to trading server at: " << address;
+		}
+		else
 		{
 			LOG_WARN << getServerContext()->getServerUri() << ": System user " << _systemUser.getInvestorId()
 				<< " cannot connect to trading server at: " << address;
@@ -152,11 +158,14 @@ int XTTradeWorkerProcessor::LoginSystemUserIfNeed(void)
 			ExchangeRouterDO exDO;
 			if (ExchangeRouterTable::TryFind(defaultCfg, exDO))
 			{
-				CreateBackendAPI(this, _systemUser.getBrokerId(), exDO.Address);
-				ret = LoginSystemUser();
+				CreateBackendAPI(this, _configPath, exDO.Address);
+				if (_isConnected)
+				{
+					LoginSystemUser();
+				}
 			}
 
-			if (ret == 0)
+			if (_isConnected)
 			{
 				LOG_INFO << getServerContext()->getServerUri() << ": System user " << _systemUser.getInvestorId()
 					<< " has connected to post trading server at: " << address;
@@ -166,11 +175,6 @@ int XTTradeWorkerProcessor::LoginSystemUserIfNeed(void)
 				LOG_WARN << getServerContext()->getServerUri() << ": System user " << _systemUser.getInvestorId()
 					<< " cannot connect to post trading server at: " << address;
 			}
-		}
-		else
-		{
-			LOG_INFO << getServerContext()->getServerUri() << ": System user " << _systemUser.getInvestorId()
-				<< " has connected to trading server at: " << address;
 		}
 	}
 
@@ -204,7 +208,7 @@ OrderDO_Ptr XTTradeWorkerProcessor::RefineOrder(const COrderDetail *pOrder)
 	// update orders
 	auto orderSysId = XTUtility::ToUInt64(pOrder->m_strOrderSysID);
 	OrderDO_Ptr ctxOrder = orderSysId ? _userOrderCtx.FindOrder(orderSysId) : nullptr;
-	auto orderptr = XTUtility::ParseRawOrder(pOrder, ctxOrder);
+	auto orderptr = XTUtility::ParseRawOrder(pOrder, 0, ctxOrder);
 
 	if (orderptr->PortfolioID().empty())
 	{
@@ -333,7 +337,7 @@ void XTTradeWorkerProcessor::onRtnOrderError(const COrderError* data)
 {
 	if (data)
 	{
-		if (auto orderptr = XTUtility::ParseRawOrder(data, _systemUser.getSessionId()))
+		if (auto orderptr = XTUtility::ParseRawOrder(data))
 		{
 			OrderRequestDO orderReq;
 			auto orderId = OrderSeqGen::GetOrderID(orderptr->OrderID, orderptr->SessionID);
@@ -351,18 +355,17 @@ void XTTradeWorkerProcessor::onRtnOrderError(const COrderError* data)
 ///报单操作错误回报
 void XTTradeWorkerProcessor::onRtnCancelError(const CCancelError* data)
 {
-	if (auto orderptr = XTUtility::ParseRawOrder(pOrderAction, pRspInfo,
-		_userOrderCtx.FindOrder(XTUtility::ToUInt64(pOrderAction->OrderSysID))))
+	if (auto orderptr = XTUtility::ParseRawOrder(data))
 	{
 		orderptr->HasMore = false;
-		DispatchUserMessage(MSG_ID_ORDER_CANCEL, pOrderAction->RequestID, orderptr->UserID(), orderptr);
+		DispatchUserMessage(MSG_ID_ORDER_CANCEL, data->m_nRequestID, orderptr->UserID(), orderptr);
 	}
 }
 
 ///报单录入请求响应
 void XTTradeWorkerProcessor::onOrder(int nRequestId, int orderID, const XtError& error)
 {
-	if (auto orderptr = XTUtility::ParseRawOrder(pInputOrder, pRspInfo, _systemUser.getSessionId()))
+	if (auto orderptr = XTUtility::ParseRawOrder(nRequestId, orderID, &error))
 	{
 		if (orderptr->ErrorCode)
 		{
@@ -381,11 +384,6 @@ void XTTradeWorkerProcessor::onOrder(int nRequestId, int orderID, const XtError&
 
 void XTTradeWorkerProcessor::onCancelOrder(int nRequestId, const XtError& error)
 {
-	if (auto orderptr = XTUtility::ParseRawOrder(pInputOrderAction, pRspInfo,
-		_userOrderCtx.FindOrder(XTUtility::ToUInt64(pInputOrderAction->OrderSysID))))
-	{
-		DispatchUserMessage(MSG_ID_ORDER_CANCEL, nRequestId, orderptr->UserID(), orderptr);
-	}
 }
 
 void XTTradeWorkerProcessor::onRtnLoginStatus(const char * accountID, EBrokerLoginStatus status, int brokerType, const char * errorMsg)
@@ -457,16 +455,13 @@ void XTTradeWorkerProcessor::onRtnDealDetail(const CDealDetail* data)
 ///请求查询投资者持仓响应
 void XTTradeWorkerProcessor::onReqPositionDetail(const char* accountID, int nRequestId, const CPositionDetail* data, bool isLast, const XtError& error)
 {
-	std::string sysUserId = accountID;
-	//sysUserId += pInvestorPosition->InvestorID;
-
-	auto position = XTUtility::ParseRawPosition(data, sysUserId);
-	UpdateSysYdPosition(sysUserId, position);
+	auto position = XTUtility::ParseRawPosition(data, accountID);
+	UpdateSysYdPosition(accountID, position);
 
 	if (!IsLoadPositionFromDB())
 	{
 		std::set<std::string> userSet;
-		_userSessionCtn_Ptr->foreach(sysUserId, [data, &position, &sysUserId, &userSet, this](const IMessageSession_Ptr& session_ptr)
+		_userSessionCtn_Ptr->foreach(accountID, [data, &position, &userSet, this](const IMessageSession_Ptr& session_ptr)
 		{
 			auto& userId = session_ptr->getUserInfo().getUserId();
 			if (userSet.find(userId) == userSet.end())
@@ -475,7 +470,7 @@ void XTTradeWorkerProcessor::onReqPositionDetail(const char* accountID, int nReq
 				position->SetUserID(userId);
 				if (position->ExchangeID() == EXCHANGE_SHFE)
 				{
-					if (pInvestorPosition->PositionDate == THOST_FTDC_PSD_Today)
+					if (data->m_bIsToday)
 					{
 						position = GetUserPositionContext()->UpsertPosition(userId, *position, false, false);
 					}
@@ -499,11 +494,8 @@ void XTTradeWorkerProcessor::onReqAccountDetail(const char* accountID, int nRequ
 	{
 		accountInfo_ptr = XTUtility::ParseRawAccountInfo(data);
 
-		std::string sysUserId = data->m_strAccountID;
-		//sysUserId += data->AccountID;
-
 		std::set<std::string> userSet;
-		_userSessionCtn_Ptr->foreach(sysUserId, [&sysUserId, &accountInfo_ptr, &userSet, nRequestId, this](const IMessageSession_Ptr& session_ptr)
+		_userSessionCtn_Ptr->foreach(accountID, [&accountInfo_ptr, &userSet, nRequestId, this](const IMessageSession_Ptr& session_ptr)
 		{
 			auto& userId = session_ptr->getUserInfo().getUserId();
 

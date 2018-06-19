@@ -41,23 +41,19 @@ dataobj_ptr XTQueryTrade::HandleRequest(const uint32_t serialId, const dataobj_p
 
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
 	{
-		auto userTrades = pWorkerProc->GetUserTradeContext().GetTradesByUser(userid);
-
 		auto pProcessor = (CTPProcessor*)msgProcessor.get();
 		if (!(pProcessor->DataLoadMask & DataLoadType::TRADE_DATA_LOADED))
 		{
-			/*CThostFtdcQryTradeField req{};
-			std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID));
-			std::strncpy(req.InvestorID, investorid.data(), sizeof(req.InvestorID));
+			if (XTUtility::HasTradeInit((XTRawAPI*)rawAPI))
+			{
+				auto& investorid = session->getUserInfo().getInvestorId();
+				((XTRawAPI*)rawAPI)->get()->reqDealDetail(investorid.data(), serialId);
 
-			int iRet = ((XTRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryTrade(&req, serialId);
-			XTUtility::CheckReturnError(iRet);*/
-
-			std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
-			userTrades = pWorkerProc->GetUserTradeContext().GetTradesByUser(userid);
-			pProcessor->DataLoadMask |= DataLoadType::TRADE_DATA_LOADED;
+				std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
+			}
 		}
 
+		auto userTrades = pWorkerProc->GetUserTradeContext().GetTradesByUser(userid);
 		if (userTrades.empty())
 			throw NotFoundException();
 
@@ -99,23 +95,31 @@ dataobj_ptr XTQueryTrade::HandleResponse(const uint32_t serialId, const param_ve
 	XTUtility::CheckNotFound(rawRespParams[2]);
 	XTUtility::CheckError(rawRespParams[4]);
 
-	auto pTradeInfo = (CDealDetail*)rawRespParams[2];
 	TradeRecordDO_Ptr ret;
-	if (ret = XTUtility::ParseRawTrade(pTradeInfo))
+	if (auto pTradeInfo = (CDealDetail*)rawRespParams[2])
 	{
-		auto userID = session->getUserInfo().getUserId();
-		ret->HasMore = !*(bool*)rawRespParams[3];
-
-		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
+		if (ret = XTUtility::ParseRawTrade(pTradeInfo))
 		{
-			if (auto order_ptr = pWorkerProc->GetUserOrderContext().FindOrder(ret->OrderSysID))
-			{
-				userID = order_ptr->UserID();
-				ret->SetPortfolioID(order_ptr->PortfolioID());
-			}
+			auto userID = session->getUserInfo().getUserId();
 
-			pWorkerProc->GetUserTradeContext().InsertTrade(userID, ret);
+			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
+			{
+				if (auto order_ptr = pWorkerProc->GetUserOrderContext().FindOrder(ret->OrderSysID))
+				{
+					userID = order_ptr->UserID();
+					ret->SetPortfolioID(order_ptr->PortfolioID());
+				}
+
+				pWorkerProc->GetUserTradeContext().InsertTrade(userID, ret);
+				ret.reset();
+			}
 		}
+	}
+
+	if (*(bool*)rawRespParams[3])
+	{
+		auto pProcessor = (CTPProcessor*)msgProcessor.get();
+		pProcessor->DataLoadMask |= DataLoadType::TRADE_DATA_LOADED;
 	}
 
 	return ret;

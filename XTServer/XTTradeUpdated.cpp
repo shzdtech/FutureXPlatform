@@ -41,10 +41,10 @@ dataobj_ptr XTTradeUpdated::HandleResponse(const uint32_t serialId, const param_
 					}
 				}
 
-				if (userId != pTrade->UserID)
-				{
-					ret.reset();
-				}
+				//if (userId != pTrade->UserID)
+				//{
+				//	ret.reset();
+				//}
 			}
 		}
 	}

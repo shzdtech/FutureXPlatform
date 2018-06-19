@@ -6,7 +6,7 @@
  ***********************************************************************/
 
 #if !defined(__ordermanager_OrderSeqGen_h)
-#define __ordermanager_OrderContext_h
+#define __ordermanager_OrderSeqGen_h
 #include "ordermgr_export.h"
 #include <cstdint>
 

@@ -51,17 +51,21 @@ dataobj_ptr CTPQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_
 		auto vectorPtr = userOrderCtx.GetOrdersByUser(session->getUserInfo().getUserId());
 
 		auto pProcessor = (CTPProcessor*)msgProcessor.get();
-		if (!(pProcessor->DataLoadMask & DataLoadType::ORDER_DATA_LOADED))
-		{
-			/*CThostFtdcQryOrderField req{};
-			std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID));
-			std::strncpy(req.InvestorID, investorid.data(), sizeof(req.InvestorID));
-			int iRet = ((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryOrder(&req, serialId);
-			CTPUtility::CheckReturnError(iRet);*/
 
-			std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
-			vectorPtr = userOrderCtx.GetOrdersByUser(session->getUserInfo().getUserId());
-			pProcessor->DataLoadMask |= DataLoadType::ORDER_DATA_LOADED;
+		if (TUtil::IsNullOrEmpty(vectorPtr))
+		{
+			if (!(pProcessor->DataLoadMask & DataLoadType::ORDER_DATA_LOADED))
+			{
+				/*CThostFtdcQryOrderField req{};
+				std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID));
+				std::strncpy(req.InvestorID, investorid.data(), sizeof(req.InvestorID));
+				int iRet = ((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryOrder(&req, serialId);
+				CTPUtility::CheckReturnError(iRet);*/
+
+				std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
+				vectorPtr = userOrderCtx.GetOrdersByUser(session->getUserInfo().getUserId());
+				pProcessor->DataLoadMask |= DataLoadType::ORDER_DATA_LOADED;
+			}
 		}
 
 		ThrowNotFoundExceptionIfEmpty(vectorPtr);

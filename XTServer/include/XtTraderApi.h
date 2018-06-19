@@ -95,6 +95,8 @@ namespace xti
         // 风险试算
         virtual void check(const COrdinaryOrder* orderInfo ,int nRequestId) = 0;
 
+        virtual void check(const CGroupOrder* orderInfo ,int nRequestId) = 0;
+
         //查询产品
         virtual void reqProductData(int nRequestId) = 0;
 

@@ -113,11 +113,17 @@ dataobj_ptr XTNewOrder::HandleRequest(const uint32_t serialId, const dataobj_ptr
 
 dataobj_ptr XTNewOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	XTUtility::CheckError(rawRespParams[2]);
+	OrderDO_Ptr ret;
+	if (rawRespParams.size() > 1)
+	{
+		auto orderId = *(int*)rawRespParams[1];
 
-	auto orderId = *(int*)rawRespParams[1];
-
-	auto ret = XTUtility::ParseRawOrder(serialId, orderId);
+		ret = XTUtility::ParseRawOrder(serialId, orderId, (XtError*)rawRespParams[2]);
+	}
+	else
+	{
+		ret = XTUtility::ParseRawOrder((COrderError*)rawRespParams[0]);
+	}
 
 	return ret;
 }

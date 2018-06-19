@@ -218,9 +218,6 @@ void CTPTradeProcessor::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField
 	{
 		auto msgId = nRequestID == -1 ? MSG_ID_POSITION_UPDATED : MSG_ID_QUERY_POSITION;
 
-		if (bIsLast)
-			DataLoadMask |= DataLoadType::POSITION_DATA_LOADED;
-
 		OnResponseMacro(msgId, nRequestID, pInvestorPosition, pRspInfo, &nRequestID, &bIsLast);	
 	}
 }

@@ -13,12 +13,16 @@
 #include "../message/DefMessageID.h"
 #include "../message/message_macro.h"
 #include "../bizutility/ContractCache.h"
+#include "../bizutility/ExchangeRouterTable.h"
 #include "../message/MessageUtility.h"
 #include "XTTradeWorkerProcessor.h"
 
 #include <filesystem>
 
 namespace fs = std::experimental::filesystem;
+
+std::string XTTradeProcessor::_configPath("./config");
+
 ////////////////////////////////////////////////////////////////////////
 // Name:       XTTradeProcessor::XTTradeProcessor(const std::map<std::string, std::string>& configMap)
 // Purpose:    Implementation of XTTradeProcessor::XTTradeProcessor()
@@ -33,8 +37,7 @@ XTTradeProcessor::XTTradeProcessor()
 	_tradeCnt = 0;
 }
 
-XTTradeProcessor::XTTradeProcessor(const XTRawAPI_Ptr& rawAPI)
-	: CTPProcessor(rawAPI)
+XTTradeProcessor::XTTradeProcessor(const XTRawAPI_Ptr& rawAPI) : CTPProcessor(rawAPI)
 {
 	_exiting = false;
 	_tradeCnt = 0;
@@ -56,22 +59,44 @@ XTTradeProcessor::~XTTradeProcessor()
 		_updateTask.wait_for(std::chrono::seconds(3));
 }
 
+int XTTradeProcessor::Login(int requestId, const std::string & userName, const std::string & password, const std::string & serverName)
+{
+	int retcode = -1;
 
-bool XTTradeProcessor::CreateBackendAPI(XtTraderApiCallback *pSpi, const std::string& flowId, const std::string & serverAddr)
+	std::string server = serverName;
+	if (server.empty())
+		getServerContext()->getConfigVal(ExchangeRouterTable::TARGET_TD, server);
+
+	if (!TradeApi())
+	{
+		CreateBackendAPI(this, _configPath, server);
+	}
+
+	if (auto tradeAPI = TradeApi())
+	{
+		tradeAPI->get()->userLogin(userName.data(), password.data(), requestId);
+		retcode = 0;
+	}
+
+	return retcode;
+}
+
+bool XTTradeProcessor::CreateBackendAPI(XtTraderApiCallback *pSpi, const std::string& configPath, const std::string & serverAddr)
 {
 	while (_updateFlag.test_and_set(std::memory_order::memory_order_acquire));
 
 	auto tdAPI = std::make_shared<XTRawAPI>(serverAddr.data());
 	tdAPI->get()->setCallback(pSpi);
-	tdAPI->get()->init();
+	bool ret = tdAPI->get()->init(configPath.data());
 
 	_rawAPI = tdAPI;
 
-	std::this_thread::sleep_for(std::chrono::seconds(2));
+	if(ret)
+		std::this_thread::sleep_for(std::chrono::seconds(2));
 
 	_updateFlag.clear(std::memory_order::memory_order_release);
 
-	return (bool)_rawAPI;
+	return ret;
 }
 
 bool XTTradeProcessor::OnSessionClosing(void)
@@ -105,7 +130,6 @@ void XTTradeProcessor::QueryPositionAsync(void)
 				_updateFlag.clear(std::memory_order::memory_order_release);
 				tdProxy->get()->reqPositionDetail(getMessageSession()->getUserInfo().getInvestorId().data(), -1);
 				_updateFlag.test_and_set(std::memory_order::memory_order_acquire); // check if lock
-				break;
 			}
 		}
 	}
@@ -177,9 +201,6 @@ void XTTradeProcessor::onReqPositionDetail(const char* accountID, int nRequestId
 	{
 		auto msgId = nRequestId == -1 ? MSG_ID_POSITION_UPDATED : MSG_ID_QUERY_POSITION;
 
-		if (isLast)
-			DataLoadMask |= DataLoadType::POSITION_DATA_LOADED;
-
 		OnResponseMacro(msgId, nRequestId, accountID, &nRequestId, data, &isLast, &error);
 	}
 }
@@ -192,7 +213,7 @@ void XTTradeProcessor::onReqAccountDetail(const char* accountID, int nRequestId,
 
 void XTTradeProcessor::onRtnLoginStatus(const char * accountID, EBrokerLoginStatus status, int brokerType, const char * errorMsg)
 {
-	getMessageSession()->getUserInfo().setInvestorId(accountID);
+	OnResponseMacro(MSG_ID_LOGIN, LoginSerialId, &LoginSerialId, accountID, &status, &brokerType, &errorMsg)
 }
 
 ///报单通知
@@ -215,11 +236,13 @@ void XTTradeProcessor::onRtnDealDetail(const CDealDetail* data)
 ///报单录入错误回报
 void XTTradeProcessor::onRtnOrderError(const COrderError* data)
 {
-	OnResponseMacro(MSG_ID_ORDER_NEW, 0, data)
+	if (data)
+		OnResponseMacro(MSG_ID_ORDER_NEW, data->m_nRequestID, data)
 }
 
 ///报单操作错误回报
 void XTTradeProcessor::onRtnCancelError(const CCancelError* data)
 {
-	OnResponseMacro(MSG_ID_ORDER_CANCEL, 0, data)
+	if (data)
+		OnResponseMacro(MSG_ID_ORDER_CANCEL, data->m_nRequestID, data)
 }

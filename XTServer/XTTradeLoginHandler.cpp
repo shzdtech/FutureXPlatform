@@ -54,16 +54,32 @@ std::shared_ptr<UserInfoDO> XTTradeLoginHandler::LoginFromServer(const CTPProces
 		return userInfoDO_Ptr;
 	}
 
-	((XTRawAPI*)msgProcessor->getRawAPI())->get()->userLogin(userInfoDO_Ptr->ExchangeUser.data(), userInfoDO_Ptr->ExchangePassword.data(), requestId);
+	auto tradeProcessor = std::static_pointer_cast<XTTradeProcessor>(msgProcessor);
+	tradeProcessor->Login(requestId, userInfoDO_Ptr->ExchangeUser, userInfoDO_Ptr->Password, serverName);
 
 	return nullptr;
 }
 
+
 dataobj_ptr XTTradeLoginHandler::HandleResponse(const uint32_t serialId, const param_vector & rawRespParams, IRawAPI * rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	XTUtility::CheckError(rawRespParams[3]);
+	std::shared_ptr<UserInfoDO> ret;
+
 	auto& userInfo = session->getUserInfo();
-	userInfo.setBrokerId((char*)rawRespParams[0]);
-	userInfo.setPassword((char*)rawRespParams[1]);
-	return std::static_pointer_cast<UserInfoDO>(userInfo.getExtInfo());
+	if (rawRespParams.size() == 4)
+	{
+		XTUtility::CheckError(rawRespParams[3]);
+		userInfo.setBrokerId((char*)rawRespParams[0]);
+		userInfo.setPassword((char*)rawRespParams[1]);
+	}
+	else
+	{
+		XTUtility::CheckError(rawRespParams[4]);
+		userInfo.setInvestorId((char*)rawRespParams[1]);
+		ret = std::static_pointer_cast<UserInfoDO>(userInfo.getExtInfo());
+
+		((XTRawAPI*)rawAPI)->get()->reqPositionDetail(userInfo.getInvestorId().data(), 0);
+	}
+
+	return ret;
 }

@@ -168,3 +168,198 @@ uint32_t XTOTCTradeProcessor::GetSessionId(void)
 {
 	return getMessageSession()->getUserInfo().getSessionId();
 }
+
+std::shared_ptr<XTOTCTradeProcessor> XTOTCTradeProcessor::Shared_This()
+{
+	return std::static_pointer_cast<XTOTCTradeProcessor>(shared_from_this());
+}
+
+//XT API
+void XTOTCTradeProcessor::onOrder(int nRequestId, int orderID, const XtError & error)
+{
+	if (auto pWorkerProc = getWorkerProcessor())
+	{
+		if (auto orderptr = XTUtility::ParseRawOrder(nRequestId, orderID, &error))
+		{
+			if (!orderptr->ErrorCode)
+			{
+				pWorkerProc->GetAutoOrderManager().OnMarketOrderUpdated(*orderptr, this);
+				pWorkerProc->GetHedgeOrderManager().OnMarketOrderUpdated(*orderptr, this);
+
+				StrategyContractDO_Ptr strategy_ptr;
+				pWorkerProc->PricingDataContext()->GetStrategyMap()->find(*orderptr, strategy_ptr);
+				if (strategy_ptr && orderptr->TIF != OrderTIFType::IOC)
+				{
+					pWorkerProc->CancelAutoOrder(*orderptr);
+					strategy_ptr->AutoOrderSettings.LimitOrderCounter--;
+					strategy_ptr->BidEnabled = false;
+					strategy_ptr->AskEnabled = false;
+					if (auto mdWorker = pWorkerProc->GetMDWorkerProcessor())
+						mdWorker->DispatchUserMessage(MSG_ID_MODIFY_STRATEGY, 0, strategy_ptr->UserID(), strategy_ptr);
+				}
+			}
+
+			//SendDataObject(getMessageSession(), MSG_ID_ORDER_NEW, 0, orderptr);
+		}
+	}
+}
+
+void XTOTCTradeProcessor::onCancelOrder(int nRequestId, const XtError & error)
+{
+}
+
+void XTOTCTradeProcessor::onReqAccountDetail(const char * accountID, int nRequestId, const CAccountDetail * data, bool isLast, const XtError & error)
+{
+	if (auto pWorkerProc = getWorkerProcessor())
+	{
+		pWorkerProc->onReqAccountDetail(accountID, nRequestId, data, isLast, error);
+	}
+}
+
+void XTOTCTradeProcessor::onReqPositionDetail(const char * accountID, int nRequestId, const CPositionDetail * data, bool isLast, const XtError & error)
+{
+	if (auto pWorkerProc = getWorkerProcessor())
+	{
+		pWorkerProc->onReqPositionDetail(accountID, nRequestId, data, isLast, error);
+	}
+}
+
+void XTOTCTradeProcessor::onRtnOrderDetail(const COrderDetail * data)
+{
+	if (data)
+	{
+		if (auto pWorkerProc = getWorkerProcessor())
+		{
+			bool sendNotification = false;
+
+			if (int orderSysId = XTUtility::ToUInt64(data->m_strOrderSysID))
+			{
+				sendNotification = !pWorkerProc->GetUserOrderContext().FindOrder(orderSysId);
+			}
+
+			auto orderptr = pWorkerProc->RefineOrder(data);
+
+			StrategyContractDO_Ptr strategy_ptr;
+
+			if (sendNotification)
+			{
+				int limitOrders = pWorkerProc->GetUserOrderContext().GetLimitOrderCount(orderptr->InstrumentID());
+
+				if (pWorkerProc->PricingDataContext()->GetStrategyMap()->find(*orderptr, strategy_ptr))
+				{
+					if (strategy_ptr->AutoOrderSettings.LimitOrderCounter < limitOrders)
+					{
+						strategy_ptr->AutoOrderSettings.LimitOrderCounter = limitOrders;
+					}
+				}
+			}
+
+			// update auto orders
+			int ret = pWorkerProc->GetAutoOrderManager().OnMarketOrderUpdated(*orderptr, this);
+			if (ret != 0)
+			{
+				if (!strategy_ptr)
+					pWorkerProc->PricingDataContext()->GetStrategyMap()->find(*orderptr, strategy_ptr);
+
+				if (strategy_ptr)
+				{
+					if (ret > 0)
+					{
+						sendNotification = true;
+
+						if (orderptr->Direction == DirectionType::SELL)
+						{
+							strategy_ptr->AutoOrderSettings.AskCounter += ret;
+						}
+						else
+						{
+							strategy_ptr->AutoOrderSettings.BidCounter += ret;
+						}
+					}
+					else if (ret < 0 && orderptr->TIF != OrderTIFType::IOC && !orderptr->OrderSysID)
+					{
+						strategy_ptr->AutoOrderSettings.LimitOrderCounter--;
+					}
+				}
+			}
+
+			// update hedge orders
+			ret = pWorkerProc->GetHedgeOrderManager().OnMarketOrderUpdated(*orderptr, this);
+
+			if (sendNotification)
+			{
+				if (!strategy_ptr)
+					pWorkerProc->PricingDataContext()->GetStrategyMap()->find(*orderptr, strategy_ptr);
+
+				if (strategy_ptr)
+					if (auto mdWorker = pWorkerProc->GetMDWorkerProcessor())
+						mdWorker->DispatchUserMessage(MSG_ID_MODIFY_STRATEGY, 0, strategy_ptr->UserID(), strategy_ptr);
+			}
+		}
+	}
+}
+
+void XTOTCTradeProcessor::onRtnDealDetail(const CDealDetail * data)
+{
+	if (data)
+	{
+		if (auto pWorkerProc = getWorkerProcessor())
+		{
+			if (auto trdDO_Ptr = pWorkerProc->RefineTrade(data))
+			{
+				pWorkerProc->PushToLogQueue(trdDO_Ptr);
+				pWorkerProc->UpdatePosition(trdDO_Ptr);
+				StrategyContractDO_Ptr strategy_ptr;
+				if (pWorkerProc->PricingDataContext()->GetStrategyMap()->find(*trdDO_Ptr, strategy_ptr))
+				{
+					pWorkerProc->TriggerAutoOrderUpdating(*strategy_ptr, Shared_This());
+				}
+			}
+		}
+	}
+}
+
+void XTOTCTradeProcessor::onRtnOrderError(const COrderError * data)
+{
+	if (data)
+	{
+		if (auto pWorkerProc = getWorkerProcessor())
+		{
+			if (auto orderptr = XTUtility::ParseRawOrder(data))
+			{
+				pWorkerProc->GetAutoOrderManager().OnMarketOrderUpdated(*orderptr, this);
+				pWorkerProc->GetHedgeOrderManager().OnMarketOrderUpdated(*orderptr, this);
+
+				StrategyContractDO_Ptr strategy_ptr;
+				pWorkerProc->PricingDataContext()->GetStrategyMap()->find(*orderptr, strategy_ptr);
+				if (strategy_ptr && orderptr->TIF != OrderTIFType::IOC)
+				{
+					pWorkerProc->CancelAutoOrder(*orderptr);
+					strategy_ptr->AutoOrderSettings.LimitOrderCounter--;
+					strategy_ptr->BidEnabled = false;
+					strategy_ptr->AskEnabled = false;
+					if (auto mdWorker = pWorkerProc->GetMDWorkerProcessor())
+						mdWorker->DispatchUserMessage(MSG_ID_MODIFY_STRATEGY, 0, strategy_ptr->UserID(), strategy_ptr);
+				}
+
+				//SendDataObject(getMessageSession(), MSG_ID_ORDER_NEW, 0, orderptr);
+			}
+		}
+	}
+}
+
+void XTOTCTradeProcessor::onRtnCancelError(const CCancelError * data)
+{
+	if (data)
+	{
+		if (auto pWorkerProc = getWorkerProcessor())
+		{
+			if (auto orderptr = XTUtility::ParseRawOrder(data))
+			{
+				pWorkerProc->GetAutoOrderManager().OnMarketOrderUpdated(*orderptr, this);
+				pWorkerProc->GetHedgeOrderManager().OnMarketOrderUpdated(*orderptr, this);
+			}
+		}
+	}
+}
+

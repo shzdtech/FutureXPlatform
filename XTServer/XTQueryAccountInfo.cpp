@@ -62,8 +62,14 @@ dataobj_ptr XTQueryAccountInfo::HandleRequest(const uint32_t serialId, const dat
 
 dataobj_ptr XTQueryAccountInfo::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	XTUtility::CheckNotFound(rawRespParams[0]);
-	XTUtility::CheckError(rawRespParams[1]);
+	XTUtility::CheckNotFound(rawRespParams[2]);
+	XTUtility::CheckError(rawRespParams[4]);
+
+	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<XTTradeWorkerProcessor>(msgProcessor))
+	{
+		pWorkerProc->onReqAccountDetail(session->getUserInfo().getUserId().data(), 0, 
+			(CAccountDetail*)rawRespParams[2], *(bool*)rawRespParams[2], *(XtError*)rawRespParams[4]);
+	}
 
 	return nullptr;
 }

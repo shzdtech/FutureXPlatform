@@ -46,19 +46,25 @@ dataobj_ptr CTPQueryPosition::HandleRequest(const uint32_t serialId, const datao
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
 	{
 		PortfolioPosition positionMap;
-		auto pProcessor = (CTPProcessor*)msgProcessor.get();
-		if (!(pProcessor->DataLoadMask & DataLoadType::POSITION_DATA_LOADED))
-		{
-			if (CTPUtility::HasTradeInit((CTPRawAPI*)rawAPI))
-			{
-				CThostFtdcQryInvestorPositionField req{};
-				int iRet = ((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryInvestorPosition(&req, serialId);
-				std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
-			}
-		}
-
 		auto& userId = session->getUserInfo().getUserId();
 		positionMap = pWorkerProc->GetUserPositionContext()->GetPortfolioPositionsByUser(userId);
+
+		auto pProcessor = (CTPProcessor*)msgProcessor.get();
+
+		if (positionMap.empty())
+		{
+			if (!(pProcessor->DataLoadMask & DataLoadType::POSITION_DATA_LOADED))
+			{
+				if (CTPUtility::HasTradeInit((CTPRawAPI*)rawAPI))
+				{
+					CThostFtdcQryInvestorPositionField req{};
+					int iRet = ((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryInvestorPosition(&req, serialId);
+					std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
+					positionMap = pWorkerProc->GetUserPositionContext()->GetPortfolioPositionsByUser(userId);
+				}
+			}
+		}
+		
 		if (positionMap.empty())
 		{
 			throw NotFoundException();
@@ -187,6 +193,12 @@ dataobj_ptr CTPQueryPosition::HandleResponse(const uint32_t serialId, const para
 			else
 				position_ptr = pWorkerProc->GetUserPositionContext()->UpsertPosition(userId, *position_ptr, false, true);
 		}
+	}
+
+	if (*(bool*)rawRespParams[3])
+	{
+		auto pProcessor = (CTPProcessor*)msgProcessor.get();
+		pProcessor->DataLoadMask |= DataLoadType::POSITION_DATA_LOADED;
 	}
 
 	return nullptr;

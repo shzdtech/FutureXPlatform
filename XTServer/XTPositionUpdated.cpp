@@ -21,7 +21,7 @@ dataobj_ptr XTPositionUpdated::HandleResponse(const uint32_t serialId, const par
 
 			auto position_ptr = XTUtility::ParseRawPosition(pData, userId);
 
-			LOG_DEBUG << pData->InstrumentID << ',' << pData->PositionDate << ',' << pData->PosiDirection;
+			LOG_DEBUG << pData->m_strInstrumentID << ',' << pData->m_strOpenDate << ',' << pData->m_nDirection;
 
 			pWorkerProc->UpdateSysYdPosition(userId, position_ptr);
 
@@ -29,7 +29,7 @@ dataobj_ptr XTPositionUpdated::HandleResponse(const uint32_t serialId, const par
 			{
 				if (position_ptr->ExchangeID() == EXCHANGE_SHFE)
 				{
-					if (pData->PositionDate == THOST_FTDC_PSD_Today)
+					if (pData->m_bIsToday)
 					{
 						position_ptr = pWorkerProc->GetUserPositionContext()->UpsertPosition(userId, *position_ptr, false, false);
 					}

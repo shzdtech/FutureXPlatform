@@ -17,7 +17,7 @@ dataobj_ptr XTOrderUpdated::HandleResponse(const uint32_t serialId, const param_
 		{
 			if (orderPtr = pWorkerProc->GetUserOrderContext().FindOrder(XTUtility::ToUInt64(pOrder->m_strOrderSysID)))
 			{
-				orderPtr = XTUtility::ParseRawOrder(pOrder, orderPtr);
+				orderPtr = XTUtility::ParseRawOrder(pOrder, 0, orderPtr);
 			}
 			else
 			{
@@ -33,10 +33,10 @@ dataobj_ptr XTOrderUpdated::HandleResponse(const uint32_t serialId, const param_
 			orderPtr = XTUtility::ParseRawOrder(pOrder);
 		}
 
-		if (session->getUserInfo().getUserId() != pOrder->UserID)
-		{
-			orderPtr.reset();
-		}
+		//if (session->getUserInfo().getUserId() != pOrder->UserID)
+		//{
+		//	orderPtr.reset();
+		//}
 
 		if (orderPtr)
 		{

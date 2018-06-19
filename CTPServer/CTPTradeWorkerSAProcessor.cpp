@@ -71,36 +71,43 @@ int CTPTradeWorkerSAProcessor::Login(const std::string & brokerId, const std::st
 
 	CreateBackendAPI(this, investorId, exDO.Address);
 
-	CThostFtdcReqAuthenticateField reqAuth{};
-
-	if (!exDO.AuthCode.empty())
+	if (auto tradeAPI = TradeApi())
 	{
-		std::strncpy(reqAuth.BrokerID, exDO.BrokeID.data(), sizeof(reqAuth.BrokerID));
-		std::strncpy(reqAuth.UserID, investorId.data(), sizeof(reqAuth.UserID));
-		std::strncpy(reqAuth.AuthCode, exDO.AuthCode.data(), sizeof(reqAuth.AuthCode));
-		std::strncpy(reqAuth.UserProductInfo, exDO.ProductInfo.data(), sizeof(reqAuth.UserProductInfo));
+		CThostFtdcReqAuthenticateField reqAuth{};
 
-		retcode = TradeApi()->get()->ReqAuthenticate(&reqAuth, 0);
-		std::this_thread::sleep_for(std::chrono::seconds(1));
-	}
-
-	if (retcode == 0)
-		retcode = TradeApi()->get()->ReqUserLogin(&req, 0);
-
-	// try after market server
-	if (retcode == -1)
-	{
-		getServerContext()->getConfigVal(ExchangeRouterTable::TARGET_TD_AM, server);
-		if (ExchangeRouterTable::TryFind(server, exDO))
+		if (!exDO.AuthCode.empty())
 		{
-			CreateBackendAPI(this, investorId, exDO.Address);
-			if (exDO.AuthCode.empty())
-			{
-				retcode = TradeApi()->get()->ReqAuthenticate(&reqAuth, 0);
-				std::this_thread::sleep_for(std::chrono::seconds(1));
-			}
-			retcode = TradeApi()->get()->ReqUserLogin(&req, 0);
+			std::strncpy(reqAuth.BrokerID, exDO.BrokeID.data(), sizeof(reqAuth.BrokerID));
+			std::strncpy(reqAuth.UserID, investorId.data(), sizeof(reqAuth.UserID));
+			std::strncpy(reqAuth.AuthCode, exDO.AuthCode.data(), sizeof(reqAuth.AuthCode));
+			std::strncpy(reqAuth.UserProductInfo, exDO.ProductInfo.data(), sizeof(reqAuth.UserProductInfo));
+
+			retcode = tradeAPI->get()->ReqAuthenticate(&reqAuth, 0);
+			std::this_thread::sleep_for(std::chrono::seconds(1));
 		}
+
+		if (retcode == 0)
+			retcode = tradeAPI->get()->ReqUserLogin(&req, 0);
+
+		// try after market server
+		if (retcode == -1)
+		{
+			getServerContext()->getConfigVal(ExchangeRouterTable::TARGET_TD_AM, server);
+			if (ExchangeRouterTable::TryFind(server, exDO))
+			{
+				CreateBackendAPI(this, investorId, exDO.Address);
+				if (exDO.AuthCode.empty())
+				{
+					retcode = tradeAPI->get()->ReqAuthenticate(&reqAuth, 0);
+					std::this_thread::sleep_for(std::chrono::seconds(1));
+				}
+				retcode = tradeAPI->get()->ReqUserLogin(&req, 0);
+			}
+		}
+	}
+	else
+	{
+		retcode = -1;
 	}
 
 	if (retcode == 0)
@@ -152,7 +159,8 @@ void CTPTradeWorkerSAProcessor::OnRspUserLogin(CThostFtdcRspUserLoginField * pRs
 		CThostFtdcSettlementInfoConfirmField reqsettle{};
 		std::strncpy(reqsettle.BrokerID, sysUser.getBrokerId().data(), sizeof(reqsettle.BrokerID));
 		std::strncpy(reqsettle.InvestorID, sysUser.getInvestorId().data(), sizeof(reqsettle.InvestorID));
-		TradeApi()->get()->ReqSettlementInfoConfirm(&reqsettle, 0);
+		if (auto tradeAPI = TradeApi())
+			tradeAPI->get()->ReqSettlementInfoConfirm(&reqsettle, 0);
 
 		QueryUserPositionAsyncIfNeed();
 	}

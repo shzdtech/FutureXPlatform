@@ -45,6 +45,8 @@ dataobj_ptr XTQueryPosition::HandleRequest(const uint32_t serialId, const dataob
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
 	{
 		PortfolioPosition positionMap;
+		auto& userId = session->getUserInfo().getUserId();
+		
 		auto pProcessor = (CTPProcessor*)msgProcessor.get();
 		if (!(pProcessor->DataLoadMask & DataLoadType::POSITION_DATA_LOADED))
 		{
@@ -55,8 +57,7 @@ dataobj_ptr XTQueryPosition::HandleRequest(const uint32_t serialId, const dataob
 				std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
 			}
 		}
-
-		auto& userId = session->getUserInfo().getUserId();
+		
 		positionMap = pWorkerProc->GetUserPositionContext()->GetPortfolioPositionsByUser(userId);
 		if (positionMap.empty())
 		{
@@ -151,7 +152,7 @@ dataobj_ptr XTQueryPosition::HandleResponse(const uint32_t serialId, const param
 
 	// position_ptr->HasMore = !*(bool*)rawRespParams[3];
 
-	LOG_DEBUG << pData->InstrumentID << ',' << pData->PositionDate << ',' << pData->PosiDirection;
+	LOG_DEBUG << pData->m_strInstrumentID << ',' << pData->m_strOpenDate << ',' << pData->m_nDirection;
 
 	if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
 	{
@@ -165,7 +166,7 @@ dataobj_ptr XTQueryPosition::HandleResponse(const uint32_t serialId, const param
 		{
 			if (position_ptr->ExchangeID() == EXCHANGE_SHFE)
 			{
-				if (pData->PositionDate == THOST_FTDC_PSD_Today)
+				if (pData->m_bIsToday)
 				{
 					position_ptr = pWorkerProc->GetUserPositionContext()->UpsertPosition(userId, *position_ptr, false, false);
 				}
@@ -177,6 +178,12 @@ dataobj_ptr XTQueryPosition::HandleResponse(const uint32_t serialId, const param
 			else
 				position_ptr = pWorkerProc->GetUserPositionContext()->UpsertPosition(userId, *position_ptr, false, true);
 		}
+	}
+
+	if (*(bool*)rawRespParams[3])
+	{
+		auto pProcessor = (CTPProcessor*)msgProcessor.get();
+		pProcessor->DataLoadMask |= DataLoadType::POSITION_DATA_LOADED;
 	}
 
 	return nullptr;

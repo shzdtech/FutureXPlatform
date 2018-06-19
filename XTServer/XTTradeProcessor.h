@@ -10,11 +10,8 @@
 
 #include "../CTPServer/CTPProcessor.h"
 #include "xt_export.h"
-#include "include/XtTraderApi.h"
+#include "XTRawAPI.h"
 #include <future>
-
-
-using namespace xti;
 
 class XT_CLASS_EXPORT XTTradeProcessor : public CTPProcessor, public XtTraderApiCallback
 {
@@ -22,7 +19,8 @@ public:
 	XTTradeProcessor();
 	XTTradeProcessor(const XTRawAPI_Ptr& rawAPI);
 	virtual ~XTTradeProcessor();
-	virtual bool CreateBackendAPI(XtTraderApiCallback *pSpi, const std::string& flowId, const std::string& serverAddr);
+	virtual int Login(int requestId, const std::string & userName, const std::string & password, const std::string & serverName);
+	virtual bool CreateBackendAPI(XtTraderApiCallback *pSpi, const std::string& configPath, const std::string& serverAddr);
 	bool OnSessionClosing(void);
 
 	void QueryUserPositionAsyncIfNeed();
@@ -35,6 +33,8 @@ protected:
 	std::atomic_flag _updateFlag;
 	volatile uint _tradeCnt;
 	volatile bool _exiting;
+
+	static std::string _configPath;
 
 private:
 

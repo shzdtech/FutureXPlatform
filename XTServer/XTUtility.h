@@ -29,6 +29,7 @@ public:
 	static void CheckNotFound(const void* pRspData);
 	static bool HasError(const XtError* pRspInfo);
 	static void CheckError(const void* pRspInfo);
+	static void CheckError(const char* pErrMsg);
 	static std::shared_ptr<ApiException> HasReturnError(const int rtnCode);
 	static void CheckReturnError(const int rtncode);
 	
@@ -38,8 +39,10 @@ public:
 	static bool IsOrderActive(EEntrustStatus status);
 	static OrderStatusType CheckOrderStatus(EEntrustStatus status, EEntrustSubmitStatus submitStatus);
 
-	static OrderDO_Ptr ParseRawOrder(int requestId, int orderId);
-	static OrderDO_Ptr ParseRawOrder(const COrderDetail *pOrder, const XtError *pRsp, int sessionID, OrderDO_Ptr baseOrder = nullptr);
+	static OrderDO_Ptr ParseRawOrder(int requestId, int orderId, const XtError *pOrderError);
+	static OrderDO_Ptr ParseRawOrder(const COrderError* pOrderError);
+	static OrderDO_Ptr ParseRawOrder(const CCancelError *pOrderError);
+	static OrderDO_Ptr ParseRawOrder(const COrderDetail *pOrder, int sessionID = 0, OrderDO_Ptr baseOrder = nullptr);
 	static void ParseRawOrder(OrderDO_Ptr& baseOrder, const XtError *pRsp, int sessionID);
 
 	static TradeRecordDO_Ptr ParseRawTrade(const CDealDetail *pTrade);

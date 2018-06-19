@@ -9,12 +9,10 @@
 #include "XTRawAPI.h"
 #include "XTUtility.h"
 #include "XTTradeWorkerProcessor.h"
-#include "CTPWorkerProcessorID.h"
 #include "../message/DefMessageID.h"
 #include "../message/MessageUtility.h"
 #include "../dataobject/TemplateDO.h"
 #include "../dataobject/FieldName.h"
-#include <boost/locale/encoding.hpp>
 #include "../utility/TUtil.h"
 #include "../utility/stringutility.h"
 
@@ -38,31 +36,27 @@ dataobj_ptr XTQueryOrder::HandleRequest(const uint32_t serialId, const dataobj_p
 	{
 		auto stdo = (StringMapDO<std::string>*)reqDO.get();
 
-		auto& brokeid = session->getUserInfo().getBrokerId();
 		auto& userid = session->getUserInfo().getUserId();
-		auto& investorid = session->getUserInfo().getInvestorId();
 		auto& instrumentid = stdo->TryFind(STR_INSTRUMENT_ID, EMPTY_STRING);
 		//auto& exchangeid = stdo->TryFind(STR_EXCHANGE_ID, EMPTY_STRING);
 		auto& orderid = stdo->TryFind(STR_ORDER_ID, EMPTY_STRING);
 		//auto& tmstart = stdo->TryFind(STR_TIME_START, EMPTY_STRING);
 		//auto& tmend = stdo->TryFind(STR_TIME_END, EMPTY_STRING);
 
-		auto& userOrderCtx = pWorkerProc->GetUserOrderContext();
-		auto vectorPtr = userOrderCtx.GetOrdersByUser(session->getUserInfo().getUserId());
-
 		auto pProcessor = (CTPProcessor*)msgProcessor.get();
 		if (!(pProcessor->DataLoadMask & DataLoadType::ORDER_DATA_LOADED))
 		{
-			/*CThostFtdcQryOrderField req{};
-			std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID));
-			std::strncpy(req.InvestorID, investorid.data(), sizeof(req.InvestorID));
-			int iRet = ((XTRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryOrder(&req, serialId);
-			XTUtility::CheckReturnError(iRet);*/
+			if (XTUtility::HasTradeInit((XTRawAPI*)rawAPI))
+			{
+				auto& investorid = session->getUserInfo().getInvestorId();
+				((XTRawAPI*)rawAPI)->get()->reqOrderDetail(investorid.data(), serialId);
 
-			std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
-			vectorPtr = userOrderCtx.GetOrdersByUser(session->getUserInfo().getUserId());
-			pProcessor->DataLoadMask |= DataLoadType::ORDER_DATA_LOADED;
+				std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
+			}
 		}
+
+		auto& userOrderCtx = pWorkerProc->GetUserOrderContext();
+		auto vectorPtr = userOrderCtx.GetOrdersByUser(session->getUserInfo().getUserId());
 
 		ThrowNotFoundExceptionIfEmpty(vectorPtr);
 
@@ -120,27 +114,32 @@ dataobj_ptr XTQueryOrder::HandleResponse(const uint32_t serialId, const param_ve
 	OrderDO_Ptr ret;
 	if (auto pData = (COrderDetail*)rawRespParams[2])
 	{
-		if (session->getUserInfo().getUserId() == pData->UserID)
+		if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
 		{
-			if (auto pWorkerProc = MessageUtility::WorkerProcessorPtr<CTPTradeWorkerProcessorBase>(msgProcessor))
+			if (auto orderid = XTUtility::ToUInt64(pData->m_strOrderSysID))
 			{
-				if (auto orderid = XTUtility::ToUInt64(pData->OrderSysID))
+				ret = pWorkerProc->GetUserOrderContext().FindOrder(orderid);
+				if (!ret)
 				{
-					ret = pWorkerProc->GetUserOrderContext().FindOrder(orderid);
-					if (!ret)
-					{
-						ret = XTUtility::ParseRawOrder(pData);
-						pWorkerProc->GetUserOrderContext().UpsertOrder(orderid, ret);
-						ret.reset();
-					}
+					ret = XTUtility::ParseRawOrder(pData);
+					pWorkerProc->GetUserOrderContext().UpsertOrder(orderid, ret);
+					ret.reset();
 				}
 			}
-			else
-			{
-				ret = XTUtility::ParseRawOrder(pData);
-				ret->HasMore = !*(bool*)rawRespParams[3];
-			}
 		}
+		else
+		{
+			ret = XTUtility::ParseRawOrder(pData);
+			ret->HasMore = !*(bool*)rawRespParams[3];
+		}
+
+		
+	}
+
+	if (*(bool*)rawRespParams[3])
+	{
+		auto pProcessor = (CTPProcessor*)msgProcessor.get();
+		pProcessor->DataLoadMask |= DataLoadType::ORDER_DATA_LOADED;
 	}
 
 	return ret;

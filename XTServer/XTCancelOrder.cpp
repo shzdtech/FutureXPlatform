@@ -62,14 +62,15 @@ dataobj_ptr XTCancelOrder::HandleRequest(const uint32_t serialId, const dataobj_
 
 dataobj_ptr XTCancelOrder::HandleResponse(const uint32_t serialId, const param_vector& rawRespParams, IRawAPI* rawAPI, const IMessageProcessor_Ptr& msgProcessor, const IMessageSession_Ptr& session)
 {
-	XTUtility::CheckError(rawRespParams[2]);
-
 	OrderDO_Ptr ret;
-
-	int reqId = *(int*)rawRespParams[0];
-	int orderId = *(int*)rawRespParams[1];
-
-	return ret;
-
+	if (rawRespParams.size() == 1)
+	{
+		ret = XTUtility::ParseRawOrder((CCancelError*)rawRespParams[0]);
+	}
+	else
+	{
+		XTUtility::CheckError(rawRespParams[1]);
+		ret = std::make_shared<OrderDO>(OrderRequestDO());
+	}
 	return ret;
 }

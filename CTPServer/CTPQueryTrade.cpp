@@ -44,18 +44,22 @@ dataobj_ptr CTPQueryTrade::HandleRequest(const uint32_t serialId, const dataobj_
 		auto userTrades = pWorkerProc->GetUserTradeContext().GetTradesByUser(userid);
 
 		auto pProcessor = (CTPProcessor*)msgProcessor.get();
-		if (!(pProcessor->DataLoadMask & DataLoadType::TRADE_DATA_LOADED))
+
+		if (userTrades.empty())
 		{
-			/*CThostFtdcQryTradeField req{};
-			std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID));
-			std::strncpy(req.InvestorID, investorid.data(), sizeof(req.InvestorID));
+			if (!(pProcessor->DataLoadMask & DataLoadType::TRADE_DATA_LOADED))
+			{
+				/*CThostFtdcQryTradeField req{};
+				std::strncpy(req.BrokerID, brokeid.data(), sizeof(req.BrokerID));
+				std::strncpy(req.InvestorID, investorid.data(), sizeof(req.InvestorID));
 
-			int iRet = ((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryTrade(&req, serialId);
-			CTPUtility::CheckReturnError(iRet);*/
+				int iRet = ((CTPRawAPI*)rawAPI)->TdAPIProxy()->get()->ReqQryTrade(&req, serialId);
+				CTPUtility::CheckReturnError(iRet);*/
 
-			std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
-			userTrades = pWorkerProc->GetUserTradeContext().GetTradesByUser(userid);
-			pProcessor->DataLoadMask |= DataLoadType::TRADE_DATA_LOADED;
+				std::this_thread::sleep_for(CTPProcessor::DefaultQueryTime);
+				userTrades = pWorkerProc->GetUserTradeContext().GetTradesByUser(userid);
+				pProcessor->DataLoadMask |= DataLoadType::TRADE_DATA_LOADED;
+			}
 		}
 
 		if (userTrades.empty())
